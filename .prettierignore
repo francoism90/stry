@@ -1,0 +1,16 @@
+**/.git
+**/.hg
+**/.svn
+*.log
+*.log.*
+*.sql
+*.sqlite
+*.sql.gz
+/node_modules
+/public
+/storage
+/data
+/vendor
+composer.lock
+package-lock.json
+pnpm-lock.yaml

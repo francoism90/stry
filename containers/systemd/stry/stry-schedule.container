@@ -1,0 +1,21 @@
+[Unit]
+Description=Schedule container
+Requires=stry.service
+After=stry.service
+
+[Container]
+Image=localhost/stry:latest
+AutoUpdate=local
+LogDriver=none
+Exec=php /app/artisan schedule:work
+UserNS=keep-id
+Volume=${APP_PATH}:/app:rw,z
+Network=stry.network
+
+[Service]
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
+TimeoutStartSec=90
+Restart=unless-stopped
+
+[Install]
+WantedBy=multi-user.target

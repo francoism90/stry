@@ -1,0 +1,18 @@
+{
+    "recommendations": [
+        "aaron-bond.better-comments",
+        "bmewburn.vscode-intelephense-client",
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.npm-intellisense",
+        "christian-kohler.path-intellisense",
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "devsense.composer-php-vscode",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "laravel.vscode-laravel",
+        "oxc.oxc-vscode",
+        "stylelint.vscode-stylelint",
+        "Vue.volar"
+    ]
+}

@@ -1,0 +1,16 @@
+/* Tailwind */
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.ts';
+@source '../**/*.vue';
+
+/* Branding */
+@import './brand/theme.css';
+@import './brand/variables.css';
+
+/* Components */
+@import './components/divider.css';

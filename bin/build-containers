@@ -1,0 +1,2 @@
+#!/bin/sh
+podman build -t stry:latest -f ./containers/app/dev.Dockerfile "$@"

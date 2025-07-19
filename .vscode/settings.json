@@ -1,0 +1,32 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always",
+        "source.sortImports": "always",
+        "source.removeUnusedImports": "always",
+        "source.fixAll": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "eslint.useFlatConfig": true,
+    "tailwindCSS.classAttributes": ["class", "ui"],
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.experimental.classRegex": [
+        ":\\s*?[\"'`]([^\"'`]*).*?,",
+        "(?:const|let|var)\\s+[\\w$_][_\\w\\d]*\\s*=\\s*['\\\"](.*?)['\\\"]",
+        "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
+        ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
+        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+        ["twJoin\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"],
+        ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"],
+        ["\\s*.className\\s*=\\s*['\\\"](.*?)['\\\"]"],
+        ["classList.(?:add|remove|toggle)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"]
+    ],
+    "tailwindCSS.includeLanguages": {
+        "blade": "html",
+        "blade.php": "html",
+        "plaintext": "html",
+        "vue": "html",
+        "vue-html": "html"
+    }
+}

@@ -1,0 +1,436 @@
+#!/usr/bin/env bash
+
+UNAMEOUT="$(uname -s)"
+
+# Verify operating system is supported...
+case "${UNAMEOUT}" in
+    Linux*)             MACHINE=linux;;
+    Darwin*)            MACHINE=mac;;
+    *)                  MACHINE="UNKNOWN"
+esac
+
+if [ "$MACHINE" == "UNKNOWN" ]; then
+    echo "Unsupported operating system [$(uname -s)]. It supports macOS, Linux, and Windows (WSL2)." >&2
+
+    exit 1
+fi
+
+# Determine if stdout is a terminal...
+if test -t 1; then
+    # Determine if colors are supported...
+    ncolors=$(tput colors)
+
+    if test -n "$ncolors" && test "$ncolors" -ge 8; then
+        BOLD="$(tput bold)"
+        YELLOW="$(tput setaf 3)"
+        GREEN="$(tput setaf 2)"
+        NC="$(tput sgr0)"
+    fi
+fi
+
+# Function that prints the available commands...
+function display_help {
+    echo "Podman Quadlet"
+    echo
+    echo "${YELLOW}Usage:${NC}" >&2
+    echo "  COMMAND [options] [arguments]"
+    echo
+    echo "Unknown commands are passed to the podman binary."
+    echo
+    echo "${YELLOW}Artisan Commands:${NC}"
+    echo "  ${GREEN}artisan ...${NC}          Run an Artisan command"
+    echo "  ${GREEN}artisan queue:work${NC}"
+    echo
+    echo "${YELLOW}PHP Commands:${NC}"
+    echo "  ${GREEN}php ...${NC}   Run a snippet of PHP code"
+    echo "  ${GREEN}php -v${NC}"
+    echo
+    echo "${YELLOW}Composer Commands:${NC}"
+    echo "  ${GREEN}composer ...${NC}                       Run a Composer command"
+    echo "  ${GREEN}composer require laravel/sanctum${NC}"
+    echo
+    echo "${YELLOW}Node Commands:${NC}"
+    echo "  ${GREEN}node ...${NC}         Run a Node command"
+    echo "  ${GREEN}node --version${NC}"
+    echo
+    echo "${YELLOW}NPM Commands:${NC}"
+    echo "  ${GREEN}npm ...${NC}        Run a npm command"
+    echo "  ${GREEN}npx${NC}            Run a npx command"
+    echo "  ${GREEN}npm run prod${NC}"
+    echo
+    echo "${YELLOW}Yarn Commands:${NC}"
+    echo "  ${GREEN}yarn ...${NC}        Run a Yarn command"
+    echo "  ${GREEN}yarn run prod${NC}"
+    echo
+    echo "${YELLOW}Database Commands:${NC}"
+    echo "  ${GREEN}psql${NC}      Start a PostgreSQL CLI session within the 'pgsql' container"
+    echo "  ${GREEN}redis${NC}     Start a Redis CLI session within the 'redis' container"
+    echo
+    echo "${YELLOW}Debugging:${NC}"
+    echo "  ${GREEN}debug ...${NC}          Run an Artisan command in debug mode"
+    echo "  ${GREEN}debug queue:work${NC}"
+    echo
+    echo "${YELLOW}Running Tests:${NC}"
+    echo "  ${GREEN}test${NC}          Run the PHPUnit tests via the Artisan test command"
+    echo "  ${GREEN}pest ...${NC}      Run Pest"
+    echo "  ${GREEN}pint ...${NC}      Run Pint"
+    echo
+    echo "${YELLOW}Container CLI:${NC}"
+    echo "  ${GREEN}shell${NC}        Start a shell session within the application container"
+    echo "  ${GREEN}bash${NC}         Alias for 'shell'"
+    echo "  ${GREEN}root-shell${NC}   Start a root shell session within the application container"
+    echo "  ${GREEN}root-bash${NC}    Alias for 'root-shell'"
+    echo "  ${GREEN}tinker${NC}       Start a new Laravel Tinker session"
+    echo
+    echo "${YELLOW}Binaries:${NC}"
+    echo "  ${GREEN}bin ...${NC}   Run Composer binary scripts from the vendor/bin directory"
+
+    exit 1
+}
+
+# Proxy the "help" command...
+if [ $# -gt 0 ]; then
+    if [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ]; then
+        display_help
+    fi
+else
+    display_help
+fi
+
+# Source the ".env" file so Laravel's environment variables are available...
+# shellcheck source=/dev/null
+if [ -n "$APP_ENV" ] && [ -f ./.env."$APP_ENV" ]; then
+  source ./.env."$APP_ENV";
+elif [ -f ./.env ]; then
+  source ./.env;
+fi
+
+# Define environment variables...
+export APP_NAME=${APP_NAME:-"stry"}
+export APP_PORT=${APP_PORT:-443}
+export APP_SERVICE=${APP_SERVICE:-"systemd-stry"}
+export DB_PORT=${DB_PORT:-3306}
+export WWWUSER=${1000:-$UID}
+export WWWGROUP=${1000:-$(id -g)}
+
+# Function that outputs container is not running...
+function container_is_not_running {
+    echo "${BOLD}Container is not running.${NC}" >&2
+    echo "" >&2
+    echo "${BOLD}You may use the following commands:${NC} systemctl --user start ${APP_NAME}" >&2
+
+    exit 1
+}
+
+# Define Podman command prefix...
+PODMAIN=(podman)
+
+EXEC="yes"
+
+if [ -z "$INSTANCE_SKIP_CHECKS" ]; then
+    # Ensure that Podman is running...
+    if ! podman info > /dev/null 2>&1; then
+        echo "${BOLD}Podman is not running.${NC}" >&2
+
+        exit 1
+    fi
+
+    # Determine if container is currently up...
+    if "${PODMAIN[@]}" ps "$APP_SERVICE" 2>&1 | grep 'Exit\|exited'; then
+        echo "${BOLD}Shutting down old container processes...${NC}" >&2
+
+        "${PODMAIN[@]}" down > /dev/null 2>&1
+
+        EXEC="no"
+    elif [ -z "$("${PODMAIN[@]}" ps -q)" ]; then
+        EXEC="no"
+    fi
+fi
+
+ARGS=()
+
+# Proxy PHP commands to the "php" binary on the application container...
+if [ "$1" == "php" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" "php")
+    else
+        container_is_not_running
+    fi
+
+# Proxy vendor binary commands on the application container...
+elif [ "$1" == "bin" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        CMD=$1
+        shift 1
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" ./vendor/bin/"$CMD")
+    else
+        container_is_not_running
+    fi
+
+# Proxy podman commands to the podman binary on the application container...
+elif [ "$1" == "podman" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" "${PODMAIN[@]}")
+    else
+        container_is_not_running
+    fi
+
+# Proxy Composer commands to the "composer" binary on the application container...
+elif [ "$1" == "composer" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" "composer")
+    else
+        container_is_not_running
+    fi
+
+# Proxy Artisan commands to the "artisan" binary on the application container...
+elif [ "$1" == "artisan" ] || [ "$1" == "art" ] || [ "$1" == "a" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php artisan)
+    else
+        container_is_not_running
+    fi
+
+# Proxy the "debug" command to the "php artisan" binary on the application container with xdebug enabled...
+elif [ "$1" == "debug" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it -e XDEBUG_TRIGGER=1)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php artisan)
+    else
+        container_is_not_running
+    fi
+
+# Proxy the "test" command to the "php artisan test" Artisan command...
+elif [ "$1" == "test" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php artisan test)
+    else
+        container_is_not_running
+    fi
+
+# Proxy the "phpunit" command to "php vendor/bin/phpunit"...
+elif [ "$1" == "phpunit" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php vendor/bin/phpunit)
+    else
+        container_is_not_running
+    fi
+
+# Proxy the "pest" command to "php vendor/bin/pest"...
+elif [ "$1" == "pest" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php vendor/bin/pest)
+    else
+        container_is_not_running
+    fi
+
+# Proxy the "pint" command to "php vendor/bin/pint"...
+elif [ "$1" == "pint" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php vendor/bin/pint)
+    else
+        container_is_not_running
+    fi
+
+# Initiate a Laravel Tinker session within the application container...
+elif [ "$1" == "tinker" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" php artisan tinker)
+    else
+        container_is_not_running
+    fi
+
+# Proxy Node commands to the "node" binary on the application container...
+elif [ "$1" == "node" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" node)
+    else
+        container_is_not_running
+    fi
+
+# Proxy NPM commands to the "npm" binary on the application container...
+elif [ "$1" == "npm" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" npm)
+    else
+        container_is_not_running
+    fi
+
+# Proxy NPX commands to the "npx" binary on the application container...
+elif [ "$1" == "npx" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" npx)
+    else
+        container_is_not_running
+    fi
+
+# Proxy PNPM commands to the "pnpm" binary on the application container...
+elif [ "$1" == "pnpm" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" pnpm)
+    else
+        container_is_not_running
+    fi
+
+# Proxy PNPX commands to the "pnpx" binary on the application container...
+elif [ "$1" == "pnpx" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" pnpx)
+    else
+        container_is_not_running
+    fi
+
+# Proxy Yarn commands to the "yarn" binary on the application container...
+elif [ "$1" == "yarn" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" yarn)
+    else
+        container_is_not_running
+    fi
+
+# Initiate a MySQL CLI terminal session within the "mysql" container...
+elif [ "$1" == "mysql" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(systemd-stry-mysql bash -c)
+        ARGS+=("MYSQL_PWD=\${DB_PASSWORD} mysql -u \${DB_USERNAME} \${DB_DATABASE}")
+    else
+        container_is_not_running
+    fi
+
+# Initiate a MySQL CLI terminal session within the "mariadb" container...
+elif [ "$1" == "mariadb" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(systemd-stry-mariadb bash -c)
+        ARGS+=("MYSQL_PWD=\${DB_PASSWORD} mariadb -u \${DB_USERNAME} \${DB_DATABASE}")
+    else
+        container_is_not_running
+    fi
+
+# Initiate a PostgreSQL CLI terminal session within the "pgsql" container...
+elif [ "$1" == "psql" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(systemd-stry-pgsql bash -c)
+        ARGS+=("PGPASSWORD=\${DB_PASSWORD} psql -U \${DB_USERNAME} \${DB_DATABASE}")
+    else
+        container_is_not_running
+    fi
+
+# Initiate a Bash shell within the application container...
+elif [ "$1" == "shell" ] || [ "$1" == "bash" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -it)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" sh "$@")
+    else
+        container_is_not_running
+    fi
+
+# Initiate a root user Bash shell within the application container...
+elif [ "$1" == "root-shell" ] || [ "$1" == "root-bash" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -u root)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" sh "$@")
+    else
+        container_is_not_running
+    fi
+
+# Initiate a Redis CLI terminal session within the "redis" container...
+elif [ "$1" == "redis" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(systemd-stry-redis sh)
+    else
+        container_is_not_running
+    fi
+
+fi
+
+# Run Podman with the defined arguments...
+"${PODMAIN[@]}" "${ARGS[@]}" "$@"

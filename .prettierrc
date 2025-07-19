@@ -1,0 +1,11 @@
+{
+    "$schema": "https://json.schemastore.org/prettierrc",
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "printWidth": 200,
+    "semi": false,
+    "singleQuote": true,
+    "singleAttributePerLine": true,
+    "tailwindAttributes": ["class", "className", "ui", ":ui"],
+    "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],
+    "tailwindStylesheet": "./resources/css/app.css"
+}

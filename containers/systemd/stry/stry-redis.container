@@ -1,0 +1,18 @@
+[Unit]
+Description=Redis container
+
+[Container]
+Image=docker.io/valkey/valkey:latest
+AutoUpdate=registry
+LogDriver=none
+Exec=valkey-server --save --loglevel warning
+Volume=stry-redis:/data:rw,Z,U
+Network=stry.network
+ExposeHostPort=6379
+
+[Service]
+TimeoutStartSec=90
+Restart=unless-stopped
+
+[Install]
+WantedBy=multi-user.target

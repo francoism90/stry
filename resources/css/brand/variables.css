@@ -1,0 +1,7 @@
+:root {
+  --ui-bg: var(--ui-color-neutral-900);
+  --ui-primary: var(--ui-color-primary-300);
+  --ui-secondary: var(--ui-color-secondary-300);
+  --ui-border-accented: var(--ui-color-neutral-800);
+  --ui-divider-symbol: '·';
+}

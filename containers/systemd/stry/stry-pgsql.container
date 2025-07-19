@@ -1,0 +1,19 @@
+[Unit]
+Description=PostgreSQL container
+
+[Container]
+Image=docker.io/library/postgres:latest
+AutoUpdate=registry
+LogDriver=none
+EnvironmentFile=%h/.config/containers/systemd/stry/config/postgres.env
+ShmSize=100m
+Volume=stry-pgsql:/var/lib/postgresql/data:rw,Z,U
+Network=stry.network
+ExposeHostPort=5432
+
+[Service]
+TimeoutStartSec=90
+Restart=unless-stopped
+
+[Install]
+WantedBy=multi-user.target
