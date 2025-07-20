@@ -5,7 +5,7 @@ on:
     pull_request:
 
 concurrency:
-    group: ${{ gitstry.workflow }}-${{ gitstry.ref }}
+    group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
 jobs:

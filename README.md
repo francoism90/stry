@@ -4,16 +4,16 @@
 
 Stry is a video on demand (VOD) media distribution system that allows users to access to videos, television shows and movies.
 
-By using the [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls) package, it offers built-in HLS playlist generation with segment encryption and authorization.
+It uses the [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls) package, offering built-in HLS playlist generation with segment encryption and authorization.
 
-> Please note Stry is still in development.
+> **NOTE:** Stry is still in development, do not use on production.
 
 ## Details
 
 Stry uses the following stack:
 
 - [Laravel 12.x](https://laravel.com/)
-- [Inertia 2.x](https://inertiajs.com/)
+- [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)
 - [PostgreSQL 17.x](https://www.postgresql.org/)
 - [Podman 5.x](https://podman.io/)
 - [Meilisearch 1.x](https://www.meilisearch.com/)
@@ -31,14 +31,16 @@ Stry uses the following stack:
 
 ```bash
 cd ~/projects
-git https://gitstry.com/francoism90/stry.git
+git https://github.com/francoism90/stry.git
 ```
 
 1. Setup [Podman Quadlet](docs/podman.md).
 
+1. Setup [MinIO](docs/minio.md).
+
 1. Open the project with VSCode and run it as a dev-container.
 
-1. Perform the following commands in a terminal:
+1. Perform the following commands in the VSCode terminal:
 
 ```bash
 composer install
@@ -49,13 +51,15 @@ php artisan migrate --seed
 pnpm install && pnpm build
 ```
 
-1. To seed example users:
-
-```bash
-php artisan db:seed --class=UserSeeder
-```
+1. HLS generating can be configured in `config/playlist.php` (such as formats to use) or by setting environment variables.
 
 ## Usage
+
+To start Stry after following installation:
+
+```bash
+systemctl --user start stry proxy
+```
 
 The instance should be available at <https://stry.test>.
 

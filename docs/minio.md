@@ -18,6 +18,8 @@ To learn more about MinIO, consider reading the following resources:
 - MinIO up-and-running
 - MinIO Client `mc` (included in container)
 
+> **TIP:** You may want to setup MinIO using the dev-container.
+
 ## Usage
 
 1. Make sure minio is up and running:

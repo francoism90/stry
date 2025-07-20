@@ -32,7 +32,7 @@ RUN apt-get update && apt-get upgrade -y \
     && npm install -g pnpm \
     && npm install -g svgo
 
-ADD --chmod=0755 https://gitstry.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
     && install-php-extensions @composer apcu bcmath bz2 calendar ev event exif \
