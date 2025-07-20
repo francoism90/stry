@@ -126,6 +126,7 @@ stry help
 stry shell
 stry tinker
 stry a migrate
+stry a videos:import
 ```
 
 To interact with the container without the utility:

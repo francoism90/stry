@@ -61,7 +61,7 @@ php artisan db:seed --class=UserSeeder
 
 ## Usage
 
-To start Stry after following installation:
+To run the instance after following installation:
 
 ```bash
 systemctl --user start stry proxy
