@@ -92,7 +92,7 @@ jobs:
                   php artisan key:generate
                   php artisan storage:link
                   pnpm install
-                  pnpm approve-builds --allow-build=@tailwindcss/oxide --allow-build=esbuild --allow-build=vue-demi
+                  pnpm --allow-build=@tailwindcss/oxide --allow-build=esbuild --allow-build=vue-demi
                   pnpm build
 
             - name: Execute tests
