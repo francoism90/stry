@@ -87,9 +87,9 @@ Make sure to append the following entries to your hosts (`/etc/hosts`) file:
 ::1 stry.test ws.stry.test vite.stry.test s3.stry.test
 ```
 
-> Tip: You may want to use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) when using a homelab, and rewrite `stry.test` & `*stry.test` requests to your server instead.
+> **TIP:** You may want to use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) when using a homelab, and rewrite `stry.test` & `*.stry.test` requests to your server instead.
 
-1. Copy the generated Caddy CA, and import into your browsers certificate keychain:
+1. Copy the generated Caddy CA, and import into your browsers certificate trust keychain:
 
 ```bash
 podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/Downloads/proxy.crt
