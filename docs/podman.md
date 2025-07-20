@@ -110,7 +110,7 @@ podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/Downloads/p
 systemctl --user daemon-reload
 ```
 
-1. Make sure the minimal required services have been created and running:
+1. Make sure the minimal required dependencies have been created and running:
 
 ```bash
 systemctl --user restart stry-minio stry-pgsql stry-redis
