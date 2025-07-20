@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Domain\Playlists\Concerns;
 
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 trait InteractsWithPlaylists
@@ -29,13 +31,13 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
-    public function currentPlaylist(): ?Playlist
+    public function currentPlaylist(): MorphOne
     {
-        return $this->playlists()->active()->first();
-    }
-
-    public function isTranscoding(): bool
-    {
-        return $this->playlists()->pending()->exists();
+        return $this->morphOne(Playlist::class, 'playlistable')->ofMany([
+            'expires_at' => 'max',
+            'id' => 'max',
+        ], function (PlaylistQueryBuilder $query) {
+            $query->active();
+        });
     }
 }
