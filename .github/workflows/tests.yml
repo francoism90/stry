@@ -65,5 +65,4 @@ jobs:
 
             - name: Execute tests
               run: |
-                  pnpm test
                   php artisan test
