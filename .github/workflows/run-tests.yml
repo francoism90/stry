@@ -91,7 +91,9 @@ jobs:
                   composer install --prefer-dist --no-interaction --optimize-autoloader
                   php artisan key:generate
                   php artisan storage:link
-                  pnpm install && pnpm build
+                  pnpm install
+                  pnpm approve-builds
+                  pnpm build
 
             - name: Execute tests
               run: |
