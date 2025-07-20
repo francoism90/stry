@@ -54,6 +54,13 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
+1. You may need to set a SELinux Policy file context on writeable paths:
+
+```bash
+sudo semanage fcontext -a -t container_file_t '/var/home/user/projects/stry/storage/app/import(/.*)?'
+sudo restorecon -R -v /var/home/user/projects/stry/storage/app/import
+```
+
 ### Configure Proxy
 
 [Caddy](https://caddyserver.com/) is used as proxy, however you are free to use something else (i.e. traefik, nginx).
@@ -107,13 +114,6 @@ systemctl --user daemon-reload
 
 ```bash
 systemctl --user restart stry-minio stry-pgsql stry-redis
-```
-
-1. You may need to set a SELinux Policy file context on writeable paths:
-
-```bash
-sudo semanage fcontext -a -t container_file_t '/var/home/user/projects/stry/storage/app/import(/.*)?'
-sudo restorecon -R -v /var/home/user/projects/stry/storage/app/import
 ```
 
 ## Shell utility
