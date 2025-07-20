@@ -109,6 +109,13 @@ systemctl --user daemon-reload
 systemctl --user restart stry-minio stry-pgsql stry-redis
 ```
 
+1. You may need to set a SELinux Policy file context on writeable paths:
+
+```bash
+sudo semanage fcontext -a -t container_file_t '/var/home/user/projects/stry/storage/app/import(/.*)?'
+sudo restorecon -R -v /var/home/user/projects/stry/storage/app/import
+```
+
 ## Shell utility
 
 Stry provides a shell utility, which is a copy of [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail) with adjustments made for usage with Podman Quadlet.
