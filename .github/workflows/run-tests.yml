@@ -36,7 +36,7 @@ jobs:
 
         env:
             php-extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo, pcov, redis
-            key: ${{ matrix.os }}_Php${{ matrix.php }}
+            key: php-extensions-cache-v1
 
         steps:
             - name: Checkout code
@@ -91,6 +91,7 @@ jobs:
                   composer install --prefer-dist --no-interaction --optimize-autoloader
                   php artisan key:generate
                   php artisan storage:link
+                  php artisan wayfinder:generate
                   pnpm install
                   pnpm build
 
