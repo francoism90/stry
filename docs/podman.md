@@ -54,9 +54,16 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
+1. You may need to set a SELinux Policy file context on writeable paths:
+
+```bash
+sudo semanage fcontext -a -t container_file_t '/var/home/user/projects/stry/storage/app/import(/.*)?'
+sudo restorecon -R -v /var/home/user/projects/stry/storage/app/import
+```
+
 ### Configure Proxy
 
-[Caddy](https://caddyserver.com/) is used as proxy. However you are free to use something else (i.e. traefik, nginx).
+[Caddy](https://caddyserver.com/) is used as proxy, however you are free to use something else (i.e. traefik, nginx).
 
 1. Setup the Podman containers:
 
@@ -87,9 +94,9 @@ Make sure to append the following entries to your hosts (`/etc/hosts`) file:
 ::1 stry.test ws.stry.test vite.stry.test s3.stry.test
 ```
 
-> Tip: You may want to use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) when using a homelab, and rewrite `stry.test` & `*stry.test` requests to your server instead.
+> **TIP:** You may want to use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) when using a homelab, and rewrite `stry.test` & `*.stry.test` requests to your server instead.
 
-1. Copy the generated Caddy CA, and import into your browsers certificate keychain:
+1. Copy the generated Caddy CA, and import into your browsers certificate trust keychain:
 
 ```bash
 podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/Downloads/proxy.crt
@@ -103,10 +110,10 @@ podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/Downloads/p
 systemctl --user daemon-reload
 ```
 
-1. Make sure the network has been created:
+1. Make sure the minimal required dependencies have been created and running:
 
 ```bash
-systemctl --user restart stry-network.service
+systemctl --user restart stry-minio stry-pgsql stry-redis
 ```
 
 ## Shell utility
@@ -126,6 +133,7 @@ stry help
 stry shell
 stry tinker
 stry a migrate
+stry a videos:import
 ```
 
 To interact with the container without the utility:

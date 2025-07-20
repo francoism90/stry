@@ -35,7 +35,7 @@ mc alias set myminio http://systemd-stry-minio:9000 <username> <password>
 mc admin info myminio
 ```
 
-1. Generate an access key + secret key:
+1. Generate admin credentials:
 
 ```bash
 mc admin user svcacct add myminio stry
@@ -51,7 +51,7 @@ mc mb myminio/assets
 mc mb myminio/conversions
 ```
 
-1. Set anonymous `download` permissions:
+1. Set anonymous `download` permissions on required buckets:
 
 ```bash
 mc anonymous set download myminio/assets
@@ -60,7 +60,7 @@ mc anonymous set download myminio/conversions
 
 ## Disable bucket listing
 
-Disabling bucket listing is optional, but highly recommended on production.
+> **NOTE:** Disabling bucket listing is optional, but highly recommended on production.
 
 1. Export current bucket permissions:
 
@@ -83,12 +83,4 @@ vi conversions.json
 mc anonymous set-json assets.json myminio/assets
 mc anonymous set-json conversions.json myminio/conversions
 rm -rf assets.json conversions.json
-```
-
-## Migrate data
-
-To copy any local stored generated conversions to a backup:
-
-```bash
-mc cp --recursive conversions/ myminio/conversions/
 ```
