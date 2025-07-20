@@ -56,7 +56,7 @@ vi ~/projects/stry/.env
 
 ### Configure Proxy
 
-[Caddy](https://caddyserver.com/) is used as proxy. However you are free to use something else (i.e. traefik, nginx).
+[Caddy](https://caddyserver.com/) is used as proxy, however you are free to use something else (i.e. traefik, nginx).
 
 1. Setup the Podman containers:
 
@@ -103,10 +103,10 @@ podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/Downloads/p
 systemctl --user daemon-reload
 ```
 
-1. Make sure the network has been created:
+1. Make sure the minimal required services have been created and running:
 
 ```bash
-systemctl --user restart stry-network.service
+systemctl --user restart stry-minio stry-pgsql stry-redis
 ```
 
 ## Shell utility
