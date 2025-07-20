@@ -30,8 +30,11 @@ _ide_helper.php
 /vendor
 auto-imports.d.ts
 components.d.ts
+composer.lock
 Homestead.json
 Homestead.yaml
 npm-debug.log
+package-lock.json
+pnpm-lock.yaml
 Thumbs.db
 yarn-error.log
