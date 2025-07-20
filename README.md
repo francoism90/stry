@@ -53,6 +53,12 @@ pnpm install && pnpm build
 
 1. HLS generating can be configured in `config/playlist.php` (such as formats to use) or by setting environment variables.
 
+1. To seed an example user (`database/seeders/UserSeeder.php`):
+
+```bash
+php artisan db:seed --class=UserSeeder
+```
+
 ## Usage
 
 To start Stry after following installation:
