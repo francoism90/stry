@@ -7,11 +7,9 @@ namespace Domain\Playlists\Models;
 use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
-use Domain\Playlists\Scopes\OrderedScope;
 use Domain\Users\Concerns\InteractsWithUser;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -25,7 +23,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 #[ObservedBy(PlaylistObserver::class)]
-#[ScopedBy(OrderedScope::class)]
 class Playlist extends Model
 {
     use HasFactory;
