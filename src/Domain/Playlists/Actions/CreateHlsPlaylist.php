@@ -28,7 +28,7 @@ class CreateHlsPlaylist
                 ->setKeyFrameInterval(Playlist::getFrameInterval());
 
             // Use rotation key if specified
-            if (Playlist::useRotationKeys()) {
+            if (Playlist::shouldUseRotationKeys()) {
                 $secrets = $playlist->getSecretFilesystem();
                 $segmentsPerKey = Playlist::getRotationKeysSections();
 

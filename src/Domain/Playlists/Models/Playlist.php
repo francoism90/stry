@@ -203,7 +203,7 @@ class Playlist extends Model
         return config('playlist.max_disk_usage', 100 * 1024 * 1024 * 1024); // Default to 100 GB
     }
 
-    public static function useRotationKeys(): bool
+    public static function shouldUseRotationKeys(): bool
     {
         return config('playlist.rotation_keys', true);
     }
