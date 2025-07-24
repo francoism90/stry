@@ -13,7 +13,6 @@ use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -133,6 +132,11 @@ class Playlist extends Model
         return Storage::disk($this->getSecretDisk());
     }
 
+    public function getUrl(): string
+    {
+        return route('api.playlists.playlist', [$this, $this->file_name]);
+    }
+
     public function isExpired(): bool
     {
         return $this->getAttribute('expires_at')?->isNowOrPast();
@@ -151,13 +155,6 @@ class Playlist extends Model
     public function prunable(): PlaylistQueryBuilder
     {
         return static::query()->expired();
-    }
-
-    public function assetUri(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => route('api.playlists.playlist', [$this, $this->file_name]),
-        )->shouldCache();
     }
 
     public static function getSegmentLength(): int
