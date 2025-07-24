@@ -15,10 +15,12 @@ class GetVideoFormat
     {
         $ffmpeg = FFMpeg::fromDisk($disk)->open($path);
 
+        // Get the video and audio codecs from the media file
         $videoCodec = $ffmpeg->getVideoStream()->get('codec_name');
         $audioCodec = $ffmpeg->getAudioStream()->get('codec_name');
 
-        // Try to find the best suitable format based on the given formats
+        // Find the best suitable format based on the given formats and source codecs
+        // If no matching codec is found, default to first given format in list.
         $formats = Playlist::getVideoFormats();
 
         $format = $formats->first(
@@ -28,11 +30,11 @@ class GetVideoFormat
             fn () => $formats->first()
         );
 
-        // Determine if we can copy the audio and video formats
+        // Determine if we can copy the audio and video codecs
         $copyAudioFormat = (Playlist::copyAudioCodec() && in_array($audioCodec, $format->getAvailableAudioCodecs()));
         $copyVideoFormat = (Playlist::copyVideoCodec() && in_array($videoCodec, $format->getAvailableVideoCodecs()));
 
-        // If prevent transcoding is requested and both codecs can be copied
+        // If both audio and video codecs can be copied, copy the entire format to prevent transcoding
         $copyFormat = Playlist::shouldPreventTranscoding() && $copyAudioFormat && $copyVideoFormat;
 
         return Fluent::make([
