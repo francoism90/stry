@@ -17,7 +17,7 @@ return [
 
     'max_disk_usage' => (int) env('PLAYLIST_MAX_DISK_USAGE', 1073741824 * 100), // 100 GB
 
-    'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 4), // 4 hours
+    'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24), // 1 day
 
     /*
     |--------------------------------------------------------------------------
