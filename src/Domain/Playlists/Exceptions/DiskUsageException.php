@@ -9,7 +9,7 @@ use Illuminate\Support\Number;
 
 class DiskUsageException extends Exception
 {
-    public static function exceededUsage(string $path, float $maxDiskUsage): self
+    public static function exceededUsage(string $path, float|int $maxDiskUsage): self
     {
         $maxDiskUsage = Number::fileSize($maxDiskUsage);
 
