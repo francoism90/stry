@@ -15,7 +15,7 @@ return [
 
     'disk_name' => env('PLAYLIST_DISK', 'transcodes'),
 
-    'max_disk_usage' => (int) env('PLAYLIST_MAX_DISK_USAGE', 100 * 1024 * 1024 * 1024), // 100 GB
+    'max_disk_usage' => (int) env('PLAYLIST_MAX_DISK_USAGE', 1073741824 * 100), // 100 GB
 
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 4), // 4 hours
 

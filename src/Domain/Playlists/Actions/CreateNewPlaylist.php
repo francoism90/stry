@@ -13,6 +13,9 @@ class CreateNewPlaylist
     public function handle(Model $model, array $attributes = []): Playlist
     {
         return DB::transaction(function () use ($model, $attributes) {
+            // Validate that there is enough disk space available
+            app(ValidateDiskSpace::class)->handle();
+
             return $model->playlists()->create([
                 'file_name' => 'index.m3u8',
                 'disk' => Playlist::getTranscodeDisk(),
