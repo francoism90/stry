@@ -8,13 +8,12 @@ use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class TranscodeVideo implements ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -56,10 +55,5 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public function retryUntil(): \DateTime
     {
         return now()->addHour();
-    }
-
-    public function uniqueId(): string
-    {
-        return (string) $this->video->getKey();
     }
 }

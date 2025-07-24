@@ -14,7 +14,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
-    hmr: { host: 'vite.aqua.test', clientPort: 443, protocol: 'wss' },
+    hmr: { host: 'vite.stry.test', clientPort: 443, protocol: 'wss' },
   },
   resolve: {
     alias: {

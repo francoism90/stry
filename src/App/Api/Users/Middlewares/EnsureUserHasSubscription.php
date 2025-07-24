@@ -20,7 +20,7 @@ class EnsureUserHasSubscription
         }
 
         return $request->expectsJson()
-            ? abort(403, 'Your subscription plan is not verified.')
+            ? abort(403, 'Your subscription plan is expired.')
             : Redirect::guest(URL::route($redirectToRoute ?: 'subscription.notice'));
     }
 }

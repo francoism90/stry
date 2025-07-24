@@ -48,6 +48,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Playlist Route Middleware
+    |--------------------------------------------------------------------------
+    |
+    | These middleware are applied to the routes that handle playlist requests.
+    | They ensure that the user is authenticated and their email is verified.
+    |
+    */
+
+    'middleware' => [
+        'auth:sanctum',
+        'verified',
+        'subscribed',
+        'cache:public;max_age=86400;immutable',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Video Format Selection
     |--------------------------------------------------------------------------
     |

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
-use Domain\Playlists\Exceptions\ExpiredPlaylistException;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use League\Flysystem\WhitespacePathNormalizer;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -17,17 +15,14 @@ class PlaylistMediaController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return [
-            new Middleware('auth:sanctum'),
-            new Middleware('cache:public;max_age=604800;immutable'),
-        ];
+        return config('playlist.middleware', []);
     }
 
     public function __invoke(Playlist $playlist, string $path): StreamedResponse
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        throw_if($playlist->isExpired(), ExpiredPlaylistException::make());
+        abort_unless($playlist->isActive(), 410, 'The playlist has expired.');
 
         // Sanitize the path to prevent directory traversal attacks
         $path = (new WhitespacePathNormalizer)->normalizePath($path);

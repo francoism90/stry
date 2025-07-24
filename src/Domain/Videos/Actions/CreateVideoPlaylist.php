@@ -17,7 +17,7 @@ class CreateVideoPlaylist
     {
         return DB::transaction(function () use ($video, $attributes, $force) {
             // If the video already has a playlist, and we're not forcing recreation, return early
-            if ($video->currentPlaylist() && $force === false) {
+            if ($video->currentPlaylist() && ! $force) {
                 return;
             }
 

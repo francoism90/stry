@@ -13,9 +13,9 @@ class MarkVideoAsViewed
 {
     public function execute(User $user, Video $video): void
     {
-        DB::transaction(function () use ($video) {
+        DB::transaction(function () {
             // Playlist the video (if needed)
-            PlaylistVideo::dispatchIf(! $video->currentPlaylist(), $video);
+            // PlaylistVideo::dispatchIf(! $video->currentPlaylist(), $video);
         });
     }
 }

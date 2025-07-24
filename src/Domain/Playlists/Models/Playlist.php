@@ -7,9 +7,11 @@ namespace Domain\Playlists\Models;
 use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
+use Domain\Playlists\Scopes\PlaylistOrderedScope;
 use Domain\Users\Concerns\InteractsWithUser;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -22,6 +24,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
+#[ScopedBy(PlaylistOrderedScope::class)]
 #[ObservedBy(PlaylistObserver::class)]
 class Playlist extends Model
 {
@@ -132,17 +135,17 @@ class Playlist extends Model
 
     public function isExpired(): bool
     {
-        return $this->expires_at?->isPast() ?? false;
+        return $this->getAttribute('expires_at')?->isNowOrPast();
     }
 
     public function isTranscoded(): bool
     {
-        return $this->transcoded_at?->isPast() ?? false;
+        return $this->getAttribute('transcoded_at')?->isNowOrPast();
     }
 
     public function isActive(): bool
     {
-        return ! $this->isExpired() && ! $this->isTranscoded();
+        return $this->isTranscoded() && ! $this->isExpired();
     }
 
     public function prunable(): PlaylistQueryBuilder
@@ -223,7 +226,7 @@ class Playlist extends Model
         return config('playlist.copy_audio_codec', true);
     }
 
-    public static function preventTranscoding(): bool
+    public static function shouldPreventTranscoding(): bool
     {
         return config('playlist.prevent_transcoding', true);
     }

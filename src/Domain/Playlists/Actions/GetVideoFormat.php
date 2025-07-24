@@ -33,7 +33,7 @@ class GetVideoFormat
         $copyVideoFormat = (Playlist::copyVideoCodec() && in_array($videoCodec, $format->getAvailableVideoCodecs()));
 
         // If prevent transcoding is requested and both codecs can be copied
-        $copyFormat = Playlist::preventTranscoding() && $copyAudioFormat && $copyVideoFormat;
+        $copyFormat = Playlist::shouldPreventTranscoding() && $copyAudioFormat && $copyVideoFormat;
 
         return Fluent::make([
             'format' => $format,
