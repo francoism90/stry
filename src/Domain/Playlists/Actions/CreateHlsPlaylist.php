@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Actions;
 
-use Domain\Playlists\Jobs\PlaylistProgress;
+use Domain\Playlists\Jobs\SyncProgress;
 use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +36,7 @@ class CreateHlsPlaylist
             }
 
             // Monitor progress of the transcoding
-            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => PlaylistProgress::dispatch(
+            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => SyncProgress::dispatch(
                 playlist: $playlist,
                 attributes: compact('percentage', 'remaining', 'rate'),
             ));

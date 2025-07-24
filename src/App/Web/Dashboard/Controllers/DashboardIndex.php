@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use Domain\Videos\Algos\GenerateVideoRecommendation;
+use Domain\Videos\Algos\GenerateVideoCollection;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -22,7 +22,7 @@ class DashboardIndex implements HasMiddleware
     public function __invoke(): Response
     {
         return Inertia::render('Dashboard/DashboardIndex', [
-            'recent' => Inertia::defer(fn () => GenerateVideoRecommendation::make(), 'sections'),
+            'recent' => Inertia::defer(fn () => GenerateVideoCollection::make(), 'sections'),
         ]);
     }
 }

@@ -12,9 +12,6 @@ class PlaylistOrderedScope implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {
-        $builder
-            ->orderByDesc('expires_at')
-            ->orderByDesc('transcoded_at')
-            ->latest();
+        $builder->ordered();
     }
 }
