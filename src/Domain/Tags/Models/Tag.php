@@ -10,11 +10,9 @@ use Domain\Relates\Concerns\HasRelates;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
-use Domain\Tags\Scopes\OrderedScope;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -24,7 +22,6 @@ use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Tags\Tag as BaseTag;
 
-#[ScopedBy(OrderedScope::class)]
 class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsEvents;

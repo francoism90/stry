@@ -52,8 +52,6 @@ onMounted(async () => {
         <VideoNavigation :item />
       </div>
 
-      {{ playlists }}
-
       <Deferred :data="['queue']">
         <template #fallback>
           <div class="sr-only">Loading sections...</div>

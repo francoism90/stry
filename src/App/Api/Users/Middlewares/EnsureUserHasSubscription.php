@@ -14,7 +14,6 @@ class EnsureUserHasSubscription
     public function handle(Request $request, Closure $next, ?string $redirectToRoute = null): mixed
     {
         // TODO: check if user has a subscription
-
         if ($request->user()) {
             return $next($request);
         }
