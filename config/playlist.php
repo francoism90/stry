@@ -4,7 +4,7 @@ return [
 
     /**
      * This setting is used to define the disk where the playlist will be stored.
-     * You may want to use a temporary disk to improve performance.
+     * You may want to use a temporary path to improve performance.
      * The disk should be configured in the `filesystems.php` configuration file.
      */
 
@@ -120,7 +120,7 @@ return [
 
     /**
      * This setting is used to define the disk where the rotation keys will be stored.
-     * You may want to use a temporary disk to improve performance.
+     * You may want to use a temporary path to improve performance.
      * The disk should be configured in the `filesystems.php` configuration file.
      */
 
