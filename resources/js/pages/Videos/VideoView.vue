@@ -8,23 +8,21 @@ import { useShaka } from '@/composables/shaka'
 import type { Playlist, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { computed, onMounted, useTemplateRef } from 'vue'
+import { onMounted, useTemplateRef } from 'vue'
 
 interface Props {
   item: Video
-  playlists: Playlist[]
-  queue?: Video[]
+  playlist: Playlist | null
+  time?: number | null
+  queue?: Video[] | null
 }
 
 const props = defineProps<Props>()
 const player = useTemplateRef('video-player')
 
-const channel = computed(() => `videos.${props.item.id}`)
-const playlist = computed(() => props.playlists.find((playlist) => playlist.asset?.length))
+const { container, attach, load } = useShaka(props.playlist?.asset, props.time ?? 0)
 
-const { container, attach, load } = useShaka(playlist.value?.asset)
-
-useEcho<Video>(channel.value, '.video.updated', () => router.reload({ only: ['item', 'playlists'] }))
+useEcho<Video>(`videos.${props.item.id}`, '.video.updated', () => router.reload({ only: ['item', 'playlist'] }))
 
 onMounted(async () => {
   if (player.value?.shakaUi && player.value?.shakaVideo) {
