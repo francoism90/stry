@@ -3,16 +3,16 @@ import type { Page } from '@inertiajs/core'
 
 declare module '@inertiajs/core' {
   interface PageProps {
-    app: string
-    locale: string
-    location: string
-    query: string
-    flash: {
+    readonly app: string
+    readonly locale: string
+    readonly location: string
+    readonly query: string
+    readonly flash: {
       message: string
       class: string
       level: string
     }
-    auth: {
+    readonly auth: {
       user: User | undefined
     }
   }
