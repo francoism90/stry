@@ -1,7 +1,3 @@
-import type { FormDataConvertible } from '@inertiajs/core'
-
-export type FormDataType = Record<string, FormDataConvertible>
-
 export type User = {
   id: string
   name: string

@@ -198,11 +198,6 @@ class Playlist extends Model
         return $expires === null ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getMaxDiskUsage(): int
-    {
-        return config('playlist.max_disk_usage', 100 * 1024 * 1024 * 1024); // Default to 100 GB
-    }
-
     public static function shouldUseRotationKeys(): bool
     {
         return config('playlist.rotation_keys', true);
