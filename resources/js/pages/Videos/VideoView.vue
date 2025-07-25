@@ -29,7 +29,7 @@ onMounted(async () => {
     await container(player.value.shakaUi)
     await attach(player.value.shakaVideo)
 
-    if (props.playlist?.asset) {
+    if (props.playlist?.asset?.length) {
       await load()
     }
   }
