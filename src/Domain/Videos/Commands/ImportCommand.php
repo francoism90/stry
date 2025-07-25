@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\progress;
@@ -20,7 +21,8 @@ use function Laravel\Prompts\search;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 
-class ImportVideos extends Command implements Isolatable
+#[AsCommand(name: 'videos:import')]
+class ImportCommand extends Command implements Isolatable
 {
     /**
      * @var string

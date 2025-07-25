@@ -53,8 +53,9 @@ $app = Application::configure(basePath: $basePath)
     })
     ->withCommands([
         \Support\Scout\Commands\SyncIndexes::class,
-        \Domain\Videos\Commands\CleanVideos::class,
-        \Domain\Videos\Commands\ImportVideos::class,
+        \Domain\Videos\Commands\CleanCommand::class,
+        \Domain\Videos\Commands\ImportCommand::class,
+        \Domain\Playlists\Commands\ClearCommand::class,
     ])
     ->create();
 
