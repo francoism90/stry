@@ -37,7 +37,7 @@ return [
      */
 
     'hls_formats' => [
-        ['name' => 'default', 'bit_rate' => 1500],
+        ['name' => 'default', 'bit_rate' => 6000],
         // ['name' => 'low', 'bit_rate' => 500],
         // ['name' => 'mid', 'bit_rate' => 3000],
         // ['name' => 'high', 'bit_rate' => 6000],
