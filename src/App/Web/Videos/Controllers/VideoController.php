@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Playlists\Resources\PlaylistCollection;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\CreateVideoPlaylist;
@@ -48,8 +47,8 @@ class VideoController implements HasMiddleware
         app(CreateVideoPlaylist::class)->handle($video);
 
         return Inertia::render('Videos/VideoView', [
-            'item' => fn () => VideoResource::make($video->append(['content', 'titles'])),
-            'playlist' => fn () => PlaylistResource::make($video->currentPlaylist()),
+            'item' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
+            'playlist' => fn () => $video->currentPlaylist()->toResource(PlaylistResource::class),
             'queue' => Inertia::defer(fn () => GenerateVideoCollection::make(), 'sections'),
         ]);
     }
@@ -60,7 +59,7 @@ class VideoController implements HasMiddleware
 
         return Inertia::render('Videos/VideoEdit', [
             'item' => fn () => VideoResource::make($video->append(['content', 'titles'])),
-            'playlists' => fn () => PlaylistCollection::make($video->playlists),
+            'playlists' => fn () => PlaylistResource::collection($video->playlists),
         ]);
     }
 }

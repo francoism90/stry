@@ -10,6 +10,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TokenResource extends JsonResource
 {
     /**
+     * @var bool
+     */
+    public $preserveKeys = true;
+
+    /**
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array

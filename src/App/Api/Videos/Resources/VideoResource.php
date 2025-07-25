@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Resources;
 
-use App\Api\Tags\Resources\TagCollection;
+use App\Api\Tags\Resources\TagResource;
 use App\Api\Users\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VideoResource extends JsonResource
 {
+    /**
+     * @var bool
+     */
+    public $preserveKeys = true;
+
     public function toArray($request): array
     {
         return [
@@ -31,7 +36,7 @@ class VideoResource extends JsonResource
             'created' => $this->created_at,
             'updated' => $this->updated_at,
             'user' => UserResource::make($this->whenLoaded('user')),
-            'tags' => TagCollection::make($this->whenLoaded('tags')),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
     }
 }

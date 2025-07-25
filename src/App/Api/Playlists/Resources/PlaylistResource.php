@@ -8,6 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlaylistResource extends JsonResource
 {
+    /**
+     * @var bool
+     */
+    public $preserveKeys = true;
+
     public function toArray($request): array
     {
         return [
