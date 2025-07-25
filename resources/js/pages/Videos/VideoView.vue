@@ -28,7 +28,10 @@ onMounted(async () => {
   if (player.value?.shakaUi && player.value?.shakaVideo) {
     await container(player.value.shakaUi)
     await attach(player.value.shakaVideo)
-    await load()
+
+    if (props.playlist?.asset) {
+      await load()
+    }
   }
 })
 </script>
