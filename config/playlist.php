@@ -89,10 +89,10 @@ return [
 
     'copy_audio_codec' => (bool) env('PLAYLIST_COPY_AUDIO_CODEC', true),
 
-        /**
-     * When this setting is true, the playlist will not transcode the video files.
+    /**
+     * When this setting is true, the playlist will prevent transcoding of the video file.
      * This will ignore any video format settings (bitrate, filters, etc.) and will use the original video file as is.
-     * This is useful for cases where the original video file is already in a compatible format.
+     * This is useful for cases where the original video file (audio + video codec) is already in a compatible format.
      */
 
     'prevent_transcoding' => (bool) env('PLAYLIST_PREVENT_TRANSCODING', true),
