@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { useAuth } from '@/composables/auth'
 import type { Video } from '@/types'
-import { usePage } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 interface Props {
   item: Video
 }
 
 const props = defineProps<Props>()
-
-const page = usePage()
-
-const link = computed(() => edit.url(props.item.id))
-const editable = computed(() => page.props.auth.user?.permissions?.includes('edit videos') ?? false)
+const { hasPermission } = useAuth()
 
 const items = ref<NavigationMenuItem[][]>([
   [
@@ -26,10 +22,9 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Edit',
       icon: 'i-lucide-clipboard-pen',
-      disabled: !editable.value,
-      to: link,
+      to: edit.url(props.item.id),
       ui: {
-        item: editable.value ? undefined : 'hidden',
+        item: hasPermission('edit videos') ? undefined : 'hidden',
       },
     },
     {
