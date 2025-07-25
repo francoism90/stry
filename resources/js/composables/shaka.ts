@@ -38,7 +38,7 @@ export function useShaka(url?: MaybeRefOrGetter<string>, time?: MaybeRefOrGetter
     events.value = new shaka.util.EventManager()
 
     // Setup preload manager
-    if (assetUri) {
+    if (assetUri?.length) {
       manager.value = await player.value?.preload(assetUri, startTime)
     }
   })
