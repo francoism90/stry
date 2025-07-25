@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use Domain\Playlists\Actions\SetPlaylistProgress;
+use Domain\Playlists\Actions\SyncPlaylistProgress;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -51,7 +51,7 @@ class SyncProgress implements ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(SetPlaylistProgress::class)->handle($this->playlist, $this->attributes);
+        app(SyncPlaylistProgress::class)->handle($this->playlist, $this->attributes);
     }
 
     /**

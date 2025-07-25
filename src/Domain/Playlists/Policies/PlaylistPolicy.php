@@ -11,7 +11,7 @@ class PlaylistPolicy
 {
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasRole('super-admin');
     }
 
     public function view(User $user, Playlist $playlist): bool

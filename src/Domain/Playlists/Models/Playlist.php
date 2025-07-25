@@ -10,8 +10,10 @@ use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\Scopes\PlaylistOrderedScope;
 use Domain\Users\Concerns\InteractsWithUser;
 use FFMpeg\Format\Video\DefaultVideo;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +29,7 @@ use Illuminate\Support\Facades\Storage;
 #[ObservedBy(PlaylistObserver::class)]
 class Playlist extends Model
 {
+    use BroadcastsEvents;
     use HasFactory;
     use HasUlids;
     use InteractsWithUser;
@@ -90,6 +93,44 @@ class Playlist extends Model
     public function playlistable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn(string $event): array
+    {
+        if ($event === 'deleted') {
+            return [];
+        }
+
+        return [
+            new PrivateChannel('users.'.$this->user->getRouteKey()),
+            new PrivateChannel('playlists.'.$this->getRouteKey()),
+        ];
+    }
+
+    public function broadcastAs(string $event): ?string
+    {
+        return str($event)
+            ->prepend('playlist.')
+            ->trim('.')
+            ->value();
+    }
+
+    public function broadcastWith(string $event): array
+    {
+        return ['id' => $this->getRouteKey()];
+    }
+
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
+    }
+
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
     }
 
     public function getModel(): Model

@@ -7,7 +7,7 @@ namespace Domain\Playlists\Actions;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Support\Facades\DB;
 
-class SetPlaylistProgress
+class SyncPlaylistProgress
 {
     public function handle(Playlist $playlist, array $attributes = []): mixed
     {
@@ -16,6 +16,5 @@ class SetPlaylistProgress
 
             return $playlist;
         });
-
     }
 }
