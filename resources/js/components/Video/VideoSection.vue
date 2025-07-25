@@ -18,7 +18,7 @@ defineProps<Props>()
       <h2 class="font-serif text-lg font-semibold tracking-tight">{{ label }}</h2>
 
       <UNavigationMenu
-        v-if="actions && actions.length"
+        v-if="actions?.length"
         variant="link"
         :items="actions"
         :ui="{
