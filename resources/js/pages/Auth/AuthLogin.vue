@@ -1,32 +1,28 @@
 <script setup lang="ts">
+import { store } from '@/actions/Laravel/Fortify/Http/Controllers/AuthenticatedSessionController'
 import AuthLayout from '@/layouts/MinimalLayout.vue'
-import { useForm } from '@inertiajs/vue3'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
 defineOptions({
   layout: AuthLayout,
 })
 
-const props = defineProps<{
+defineProps<{
   action: string
   status?: string
 }>()
 
-const form = useForm({
+const form = useForm('post', store.url(), {
   email: '',
   password: '',
   remember: false,
 })
 
-const submit = async () => {
-  form
-    .transform((data) => ({
-      ...data,
-      remember: form.remember ? 'on' : '',
-    }))
-    .post(props.action, {
-      onFinish: () => form.reset('password'),
-    })
-}
+const submit = async () =>
+  form.submit({
+    preserveScroll: true,
+    onSuccess: () => form.reset('password'),
+  })
 </script>
 
 <template>

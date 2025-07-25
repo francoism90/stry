@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
+import PageFeature from '@/components/Ui/PageFeature.vue'
 import type { Playlist, Video } from '@/types'
 import { Head } from '@inertiajs/vue3'
 
@@ -18,7 +19,10 @@ defineProps<Props>()
 
   <Page>
     <PageBody>
-      {{ $page.props.auth.user?.permissions?.includes('edit videos') }}
+      <PageFeature
+        :title="item.name"
+        :description="item.summary"
+      />
     </PageBody>
   </Page>
 </template>
