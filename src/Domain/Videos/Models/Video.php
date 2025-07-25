@@ -9,7 +9,6 @@ use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Tags\Concerns\HasTags;
 use Domain\Users\Concerns\InteractsWithUser;
-use Domain\Users\Models\User;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithCache;
 use Domain\Videos\Concerns\InteractsWithVod;

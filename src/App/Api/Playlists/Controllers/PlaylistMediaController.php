@@ -22,7 +22,7 @@ class PlaylistMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        abort_unless($playlist->isActive(), 410, 'The playlist has expired.');
+        abort_unless($playlist->isValid(), 410, 'The playlist has expired.');
 
         // Sanitize the path to prevent directory traversal attacks
         $path = (new WhitespacePathNormalizer)->normalizePath($path);

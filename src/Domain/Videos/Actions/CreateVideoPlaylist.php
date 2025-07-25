@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Playlists\Actions\CreateNewPlaylist;
-use Domain\Playlists\Jobs\MakePlaylistable;
+use Domain\Playlists\Jobs\PerformTranscoding;
 use Domain\Videos\Exceptions\InvalidVideoException;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +29,7 @@ class CreateVideoPlaylist
             $playlist = app(CreateNewPlaylist::class)->handle($video, $attributes);
 
             // Create a new playlist for the video
-            MakePlaylistable::dispatch($playlist, $media->disk, $media->getPathRelativeToRoot());
+            PerformTranscoding::dispatch($playlist, $media->disk, $media->getPathRelativeToRoot());
         });
     }
 }

@@ -23,6 +23,7 @@ export type Tag = {
 export type Playlist = {
   id: string
   asset: string
+  valid: boolean
   expires: string
   created: string
   updated: string

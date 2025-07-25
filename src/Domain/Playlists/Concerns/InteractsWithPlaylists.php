@@ -29,13 +29,13 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
-    public function hasPendingPlaylists(): bool
-    {
-        return $this->playlists()->pending()->exists();
-    }
-
     public function currentPlaylist(): ?Playlist
     {
         return $this->playlists()->active()->first();
+    }
+
+    public function hasPendingPlaylists(): bool
+    {
+        return $this->playlists()->pending()->exists();
     }
 }

@@ -7,12 +7,10 @@ namespace Domain\Playlists\Models;
 use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
-use Domain\Playlists\Scopes\PlaylistOrderedScope;
 use Domain\Users\Concerns\InteractsWithUser;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -25,7 +23,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-#[ScopedBy(PlaylistOrderedScope::class)]
 #[ObservedBy(PlaylistObserver::class)]
 class Playlist extends Model
 {
@@ -180,17 +177,16 @@ class Playlist extends Model
 
     public function isExpired(): bool
     {
-        return $this->getAttribute('expires_at')?->isNowOrPast();
+        if (($expires = $this->getAttribute('expires_at')) && $expires->isPast()) {
+            return true;
+        }
+
+        return false;
     }
 
-    public function isTranscoded(): bool
+    public function isValid(): bool
     {
-        return $this->getAttribute('transcoded_at')?->isNowOrPast();
-    }
-
-    public function isActive(): bool
-    {
-        return $this->isTranscoded() && ! $this->isExpired();
+        return ! $this->isExpired() && $this->getAttribute('transcoded_at') !== null;
     }
 
     public function prunable(): PlaylistQueryBuilder

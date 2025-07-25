@@ -9,7 +9,7 @@ import { useShaka } from '@/composables/shaka'
 import type { Playlist, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { onMounted, useTemplateRef } from 'vue'
+import { computed, onMounted, useTemplateRef } from 'vue'
 
 interface Props {
   item: Video
@@ -21,7 +21,10 @@ interface Props {
 const props = defineProps<Props>()
 const player = useTemplateRef('video-player')
 
-const { container, attach, load } = useShaka(props.playlist?.asset, props.time ?? 0)
+const asset = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
+const time = computed(() => props.time ?? 0)
+
+const { container, attach, load } = useShaka(asset, time)
 
 useEcho<Video>(`videos.${props.item.id}`, '.video.updated', () => router.reload({ only: ['item', 'playlist'] }))
 
@@ -50,6 +53,8 @@ onMounted(async () => {
       />
 
       <VideoNavigation :item />
+
+      {{ playlist }}
 
       <Deferred :data="['queue']">
         <template #fallback>

@@ -17,8 +17,7 @@ class PlaylistQueryBuilder extends Builder
     public function transcoded(): self
     {
         return $this
-            ->whereNotNull('transcoded_at')
-            ->where('transcoded_at', '<', now());
+            ->whereNotNull('transcoded_at');
     }
 
     public function expired(): self

@@ -8,12 +8,13 @@ use Domain\Playlists\Actions\CreateHlsPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class MakePlaylistable implements ShouldQueueAfterCommit
+class PerformTranscoding implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -29,7 +30,7 @@ class MakePlaylistable implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 24;
+    public $timeout = 60 * 60 * 8;
 
     /**
      * @var bool
@@ -57,5 +58,10 @@ class MakePlaylistable implements ShouldQueueAfterCommit
     public function retryUntil(): \DateTime
     {
         return now()->addHour();
+    }
+
+    public function uniqueId(): string
+    {
+        return (string) $this->playlist->getKey();
     }
 }

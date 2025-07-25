@@ -43,7 +43,7 @@ class VideoController implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        // Create a playlist for the video if it doesn't have one
+        // Make sure the video has a playlist
         app(CreateVideoPlaylist::class)->handle($video);
 
         return Inertia::render('Videos/VideoView', [
