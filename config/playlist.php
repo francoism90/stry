@@ -31,6 +31,11 @@ return [
     |
     */
 
+    /**
+     * This setting is used to configure the HLS formats that will be used for the playlist.
+     * You can define multiple formats with different bit rates.
+     */
+
     'hls_formats' => [
         ['name' => 'default', 'bit_rate' => 1500],
         // ['name' => 'low', 'bit_rate' => 500],
@@ -72,7 +77,7 @@ return [
 
     /**
      * When this setting is true, the playlist will not transcode the video files.
-     * This will ignore any video format settings and will use the original video file as is.
+     * This will ignore any video format settings (bitrate, filters, etc.) and will use the original video file as is.
      * This is useful for cases where the original video file is already in a compatible format.
      */
 
