@@ -192,7 +192,6 @@ return [
         'resources/**/*.php',
         'routes',
         'src',
-        'vendor',
         'composer.lock',
         '.env',
     ],
@@ -221,6 +220,6 @@ return [
     |
     */
 
-    'max_execution_time' => 90,
+    'max_execution_time' => 30,
 
 ];

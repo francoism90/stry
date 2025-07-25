@@ -25,6 +25,8 @@ return [
 
         'url' => env('INERTIA_SSR_URL', 'http://127.0.0.1:13714'),
 
+        'ensure_bundle_exists' => (bool) env('INERTIA_SSR_ENSURE_BUNDLE_EXISTS', true),
+
         // 'bundle' => base_path('bootstrap/ssr/ssr.mjs'),
 
     ],
@@ -56,6 +58,45 @@ return [
             'ts',
             'tsx',
             'vue',
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Testing
+    |--------------------------------------------------------------------------
+    |
+    | The values described here are used to locate Inertia components on the
+    | filesystem. For instance, when using `assertInertia`, the assertion
+    | attempts to locate the component as a file relative to any of the
+    | paths AND with any of the extensions specified here.
+    |
+    | Note: In a future release, the `page_paths` and `page_extensions`
+    | options below will be removed. The root-level options above
+    | will be used for both application and testing purposes.
+    |
+    */
+
+    'testing' => [
+
+        'ensure_pages_exist' => true,
+
+        'page_paths' => [
+
+            resource_path('js/Pages'),
+
+        ],
+
+        'page_extensions' => [
+
+            'js',
+            'jsx',
+            'svelte',
+            'ts',
+            'tsx',
+            'vue',
+
         ],
 
     ],
