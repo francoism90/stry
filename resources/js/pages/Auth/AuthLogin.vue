@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { store } from '@/actions/Laravel/Fortify/Http/Controllers/AuthenticatedSessionController'
 import AuthLayout from '@/layouts/MinimalLayout.vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -7,12 +6,12 @@ defineOptions({
   layout: AuthLayout,
 })
 
-defineProps<{
+const props = defineProps<{
   action: string
   status?: string
 }>()
 
-const form = useForm('post', store.url(), {
+const form = useForm('post', props.action, {
   email: '',
   password: '',
   remember: false,
