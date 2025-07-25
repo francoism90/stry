@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
+import PageFeature from '@/components/Ui/PageFeature.vue'
 import VideoNavigation from '@/components/Video/VideoNavigation.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
 import VideoSection from '@/components/Video/VideoSection.vue'
@@ -43,15 +44,12 @@ onMounted(async () => {
     <PageBody>
       <VideoPlayer ref="video-player" />
 
-      <div class="flex flex-col gap-1.5">
-        <h1 class="line-clamp-2 font-serif font-semibold tracking-tight">{{ item.name }}</h1>
-        <p
-          v-if="item.summary?.length"
-          class="text-sm text-neutral-500"
-        />
+      <PageFeature
+        :title="item.name"
+        :description="item.summary"
+      />
 
-        <VideoNavigation :item />
-      </div>
+      <VideoNavigation :item />
 
       <Deferred :data="['queue']">
         <template #fallback>
@@ -59,7 +57,6 @@ onMounted(async () => {
         </template>
 
         <VideoSection
-          v-if="queue?.length"
           label="Up Next"
           :items="queue"
         />

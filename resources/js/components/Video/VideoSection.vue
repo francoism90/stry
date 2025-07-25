@@ -5,7 +5,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
   label: string
-  items?: Video[]
+  items?: Video[] | null
   actions?: NavigationMenuItem[]
 }
 
@@ -13,7 +13,10 @@ defineProps<Props>()
 </script>
 
 <template>
-  <section class="flex flex-col gap-1">
+  <section
+    v-if="items?.length"
+    class="flex flex-col gap-1"
+  >
     <div class="flex items-center justify-between gap-2">
       <h2 class="font-serif text-lg font-semibold tracking-tight">{{ label }}</h2>
 
