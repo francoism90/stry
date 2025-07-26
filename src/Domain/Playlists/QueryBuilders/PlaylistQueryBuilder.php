@@ -24,7 +24,7 @@ class PlaylistQueryBuilder extends Builder
     {
         return $this
             ->whereNotNull('expires_at')
-            ->where('expires_at', '<', now())
+            ->where('expires_at', '<=', now())
             ->orderBy('expires_at')
             ->orderBy('created_at');
     }
