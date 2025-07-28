@@ -6,6 +6,7 @@ export type User = {
   avatar?: string
   roles?: string[]
   permissions?: string[]
+  state: string
   created: string
   updated: string
 }
@@ -24,6 +25,7 @@ export type Playlist = {
   id: string
   asset: string
   valid: boolean
+  state: string
   expires: string
   created: string
   updated: string
@@ -49,6 +51,7 @@ export type Video = {
   released: string
   expires: string
   published: string
+  state: string
   created: string
   updated: string
   tags: Tag[]

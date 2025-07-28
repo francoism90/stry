@@ -141,6 +141,7 @@ class Video extends Model implements HasMedia
         $this
             ->addMediaConversion('thumbnail')
             ->performOnCollections('clips')
+            ->setExtractVideoFrameAtSecond($this->snapshot ?: 1)
             ->withResponsiveImages()
             ->width(368)
             ->height(232)

@@ -33,6 +33,7 @@ class VideoResource extends JsonResource
             'released' => $this->released_at,
             'expires' => $this->expires_at,
             'published' => $this->published_at,
+            'state' => $this->state,
             'created' => $this->created_at,
             'updated' => $this->updated_at,
             'user' => UserResource::make($this->whenLoaded('user')),
