@@ -46,13 +46,6 @@ class Video extends Model implements HasMedia
     /**
      * @var array<int, string>
      */
-    protected $with = [
-        'tags',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'user_id',
         'name',
