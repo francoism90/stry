@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('secret_disk')->nullable();
             $table->jsonb('progress')->nullable();
             $table->string('collection')->nullable()->index();
+            $table->string('state')->index();
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('transcoded_at')->nullable();
             $table->timestamps();

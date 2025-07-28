@@ -8,6 +8,7 @@ use Domain\Groups\Collections\GroupCollection;
 use Domain\Groups\Enums\GroupSet;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
+use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
@@ -50,6 +51,7 @@ class Group extends Model implements HasMedia, Sortable
         'content',
         'kind',
         'type',
+        'state',
         'options',
         'order_column',
     ];
@@ -64,6 +66,7 @@ class Group extends Model implements HasMedia, Sortable
     protected function casts(): array
     {
         return [
+            'state' => GroupState::class,
             'kind' => GroupSet::class,
             'type' => GroupType::class,
             'options' => AsArrayObject::class,

@@ -9,6 +9,7 @@ use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
+use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -44,7 +45,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
+        'state',
     ];
 
     /**
@@ -66,6 +69,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected function casts(): array
     {
         return [
+            'state' => UserState::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];

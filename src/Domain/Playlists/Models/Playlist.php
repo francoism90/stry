@@ -7,6 +7,7 @@ namespace Domain\Playlists\Models;
 use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
+use Domain\Playlists\States\PlaylistState;
 use Domain\Users\Concerns\InteractsWithUser;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -44,6 +45,7 @@ class Playlist extends Model
         'secret_disk',
         'progress',
         'collection',
+        'state',
         'expires_at',
         'transcoded_at',
     ];
@@ -61,6 +63,7 @@ class Playlist extends Model
     protected function casts(): array
     {
         return [
+            'state' => PlaylistState::class,
             'progress' => AsArrayObject::class,
             'expires_at' => 'datetime',
             'transcoded_at' => 'datetime',

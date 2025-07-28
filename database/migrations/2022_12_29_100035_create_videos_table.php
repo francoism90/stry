@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('part')->nullable()->index();
             $table->boolean('adult')->default(false)->index();
             $table->float('snapshot')->nullable();
+            $table->string('state')->index();
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamp('released_at')->nullable();
