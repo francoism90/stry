@@ -13,7 +13,7 @@ class UpdatePlaylistActivity
     {
         return DB::transaction(function () use ($playlist) {
             // Mark the playlist as accessed
-            $playlist->touch('accessed_at');
+            $playlist->touchQuietly('accessed_at');
 
             return $playlist;
         });

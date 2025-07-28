@@ -60,7 +60,7 @@ class SyncProgress implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(60),
         ];
     }
 

@@ -27,7 +27,7 @@ class PlaylistMediaController extends Controller implements HasMiddleware
         $path = (new WhitespacePathNormalizer)->normalizePath($path);
 
         // Update the playlist activity
-        UpdateActivity::dispatch($playlist);
+        UpdateActivity::dispatch($playlist)->delay(30);
 
         return $playlist->getFilesystem()->response($playlist->getPath($path));
     }

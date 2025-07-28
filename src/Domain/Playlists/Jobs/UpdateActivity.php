@@ -8,13 +8,14 @@ use Domain\Playlists\Actions\UpdatePlaylistActivity;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
+use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateActivity implements ShouldQueueAfterCommit
+class UpdateActivity implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -59,12 +60,17 @@ class UpdateActivity implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(600),
+            (new Skip($this->playlist->accessed_at?->lt(now()->subMinutes(5)))),
         ];
     }
 
     public function retryUntil(): \DateTime
     {
         return now()->addHour();
+    }
+
+    public function uniqueId(): string
+    {
+        return (string) $this->playlist->getKey();
     }
 }
