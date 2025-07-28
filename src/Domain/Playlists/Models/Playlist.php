@@ -196,7 +196,8 @@ class Playlist extends Model
     {
         return static::query()
             ->expired()
-            ->orWhere(fn ($query) => $query->stale());
+            ->orWhere(fn ($query) => $query->stale())
+            ->take(50);
     }
 
     public static function getSegmentLength(): int
