@@ -49,6 +49,7 @@ class Playlist extends Model
         'progress',
         'collection',
         'state',
+        'accessed_at',
         'expires_at',
         'transcoded_at',
     ];
@@ -68,6 +69,7 @@ class Playlist extends Model
         return [
             'state' => PlaylistState::class,
             'progress' => AsArrayObject::class,
+            'accessed_at' => 'datetime',
             'expires_at' => 'datetime',
             'transcoded_at' => 'datetime',
         ];
@@ -192,7 +194,9 @@ class Playlist extends Model
 
     public function prunable(): PlaylistQueryBuilder
     {
-        return static::query()->expired();
+        return static::query()
+            ->expired()
+            ->orWhere(fn ($query) => $query->stale());
     }
 
     public static function getSegmentLength(): int
@@ -234,6 +238,13 @@ class Playlist extends Model
         $expires = config('playlist.expires_after');
 
         return $expires === null ? null : Carbon::now()->addSeconds($expires);
+    }
+
+    public static function getStaleAfter(): ?Carbon
+    {
+        $stale = config('playlist.stale_after');
+
+        return $stale === null ? null : Carbon::now()->addSeconds($stale);
     }
 
     public static function shouldUseRotationKeys(): bool

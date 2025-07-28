@@ -24,6 +24,7 @@ return new class extends Migration
             $table->jsonb('progress')->nullable();
             $table->string('collection')->nullable()->index();
             $table->string('state')->index();
+            $table->timestamp('accessed_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('transcoded_at')->nullable();
             $table->timestamps();

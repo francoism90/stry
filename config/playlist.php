@@ -18,9 +18,16 @@ return [
     /**
      * This setting is used to define the expiration time for the playlist.
      * The value is in seconds, and it will be used to determine how long the playlist will be valid.
-     * After this time, the playlist will be considered expired and will be prunable.
+     * After this time, the playlist will be considered expired and can be prunable.
      */
-    'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 8), // 8 hours
+    'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24), // 24 hours
+
+    /**
+     * This setting is used to define the time after which the playlist will be considered stale.
+     * The value is in seconds, and it will be used to determine how long the playlist will be valid.
+     * After this time, the playlist will be considered stale and can be prunable.
+     */
+    'stale_after' => (int) env('PLAYLIST_LAST_ACCESSED', 60 * 60 * 4), // 4 hours
 
     /**
      * This setting is used to define the middleware that will be applied to the playlist routes.

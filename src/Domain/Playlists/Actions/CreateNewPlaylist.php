@@ -21,6 +21,7 @@ class CreateNewPlaylist
                 'disk' => Playlist::getTranscodeDisk(),
                 'secret_disk' => Playlist::getRotationKeyDisk(),
                 'expires_at' => Playlist::getExpiresAfter(),
+                'accessed_at' => now(),
             ], ...$attributes);
         });
     }

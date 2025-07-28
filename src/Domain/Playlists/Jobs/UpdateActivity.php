@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use Domain\Playlists\Actions\SyncPlaylistProgress;
+use Domain\Playlists\Actions\UpdatePlaylistActivity;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -14,7 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncProgress implements ShouldQueueAfterCommit
+class UpdateActivity implements ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -44,14 +44,13 @@ class SyncProgress implements ShouldQueueAfterCommit
 
     public function __construct(
         public Playlist $playlist,
-        public array $attributes = [],
     ) {
         $this->onQueue('processing');
     }
 
     public function handle(): void
     {
-        app(SyncPlaylistProgress::class)->handle($this->playlist, $this->attributes);
+        app(UpdatePlaylistActivity::class)->handle($this->playlist);
     }
 
     /**
@@ -60,7 +59,7 @@ class SyncProgress implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(600),
         ];
     }
 

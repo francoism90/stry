@@ -7,7 +7,6 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\CreateVideoPlaylist;
-use Domain\Videos\Algos\GenerateVideoCollection;
 use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
