@@ -8,6 +8,7 @@ use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Algos\GenerateVideoCollection;
+use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -49,7 +50,7 @@ class VideoController implements HasMiddleware
         return Inertia::render('Videos/VideoView', [
             'item' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'playlist' => fn () => $video->currentPlaylist()?->toResource(PlaylistResource::class),
-            'queue' => Inertia::defer(fn () => GenerateVideoCollection::make(), 'items'),
+            'queue' => Inertia::defer(fn () => GenerateVideoQueue::make($video), 'items'),
         ]);
     }
 

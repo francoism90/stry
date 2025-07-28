@@ -63,6 +63,7 @@ onMounted(async () => {
 
         <VideoSection
           label="Up Next"
+          :actions="[{ label: 'Show All', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
           :items="queue"
         />
       </Deferred>
