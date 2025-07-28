@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
+use DateTime;
 use Domain\Playlists\Actions\SyncPlaylistProgress;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncProgress implements ShouldQueueAfterCommit
+class SyncProgress implements ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -25,12 +26,17 @@ class SyncProgress implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $maxExceptions = 1;
+    public $backoff = 3;
 
     /**
      * @var int
      */
     public $timeout = 60;
+
+    /**
+     * @var int
+     */
+    public $maxExceptions = 1;
 
     /**
      * @var bool
@@ -60,12 +66,12 @@ class SyncProgress implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(60),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
         ];
     }
 
-    public function retryUntil(): \DateTime
+    public function retryUntil(): DateTime
     {
-        return now()->addHour();
+        return now()->addMinutes(30);
     }
 }

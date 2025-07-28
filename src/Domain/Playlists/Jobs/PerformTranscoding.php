@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
+use DateTime;
 use Domain\Playlists\Actions\CreateHlsPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class PerformTranscoding implements ShouldBeUnique, ShouldQueueAfterCommit
+class PerformTranscoding implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -25,12 +26,17 @@ class PerformTranscoding implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $maxExceptions = 1;
+    public $backoff = 3;
 
     /**
      * @var int
      */
     public $timeout = 60 * 60 * 8;
+
+    /**
+     * @var int
+     */
+    public $maxExceptions = 1;
 
     /**
      * @var bool
@@ -55,7 +61,7 @@ class PerformTranscoding implements ShouldBeUnique, ShouldQueueAfterCommit
         app(CreateHlsPlaylist::class)->handle($this->playlist, $this->disk, $this->path);
     }
 
-    public function retryUntil(): \DateTime
+    public function retryUntil(): DateTime
     {
         return now()->addHour();
     }

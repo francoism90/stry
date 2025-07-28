@@ -9,13 +9,13 @@ use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateActivity implements ShouldBeUnique, ShouldQueueAfterCommit
+class UpdateActivity implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -26,12 +26,22 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $maxExceptions = 1;
+    public $tries = 1;
+
+    /**
+     * @var int
+     */
+    public $backoff = 3;
 
     /**
      * @var int
      */
     public $timeout = 60;
+
+    /**
+     * @var int
+     */
+    public $maxExceptions = 1;
 
     /**
      * @var bool
@@ -60,13 +70,8 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new Skip($this->playlist->accessed_at?->lt(now()->subMinutes(5)))),
+            Skip::when($this->playlist->accessed_at?->lt(now()->subMinutes(5))),
         ];
-    }
-
-    public function retryUntil(): \DateTime
-    {
-        return now()->addHour();
     }
 
     public function uniqueId(): string
