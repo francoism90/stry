@@ -41,6 +41,6 @@ class CheckAvailableSpace
 
         $freeSpace = round(disk_free_space($absolutePath)) ?: 0;
 
-        throw_if($limit > 0 && ($limit < $freeSpace), DiskUsageException::exceededLimit($absolutePath, $freeSpace));
+        throw_if($limit > 0 && ($limit > $freeSpace), DiskUsageException::exceededLimit($absolutePath, $freeSpace));
     }
 }
