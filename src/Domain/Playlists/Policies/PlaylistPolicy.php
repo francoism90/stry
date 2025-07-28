@@ -16,7 +16,7 @@ class PlaylistPolicy
 
     public function view(User $user, Playlist $playlist): bool
     {
-        return true;
+        return $playlist->isValid() || $user->hasRole('super-admin');
     }
 
     public function create(User $user): bool
