@@ -22,7 +22,7 @@ const link = computed(() => show.url(props.item.id))
     }"
   >
     <Link :href="link">
-      <div class="absolute inset-0 z-10 size-full bg-gradient-to-t from-neutral-800/30 to-transparent" />
+      <div class="absolute inset-0 z-0 size-full rounded-2xl bg-gradient-to-t from-neutral-800/30 to-transparent" />
 
       <img
         :srcset="item.srcset"
@@ -32,7 +32,7 @@ const link = computed(() => show.url(props.item.id))
         loading="lazy"
       />
 
-      <div class="absolute inset-x-4 bottom-4 z-20 block group-hover:hidden">
+      <div class="absolute inset-x-4 bottom-4 z-10 block group-hover:hidden">
         <div class="grid content-end">
           <h2 class="line-clamp-2 text-sm font-medium tracking-tight text-neutral-100">{{ item.name }}</h2>
           <p class="line-clamp-1 text-xs font-light tracking-tight text-neutral-100">
@@ -42,7 +42,7 @@ const link = computed(() => show.url(props.item.id))
       </div>
     </Link>
 
-    <div class="absolute inset-x-0 bottom-0 z-30 hidden group-hover:block">
+    <div class="absolute inset-x-0 bottom-0 z-20 hidden group-hover:block">
       <USlider
         :default-value="50"
         :ui="{
