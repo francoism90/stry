@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Domain\Groups\Actions;
 
 use Domain\Groups\Models\Group;
-use Domain\Users\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class CreateNewGroup
 {
-    public function execute(User $user, array $attributes): Group
+    public function execute(Model $model, array $attributes): Group
     {
-        return DB::transaction(function () use ($user, $attributes) {
-            $model = $user->groups()->firstOrCreate(
-                Arr::only($attributes, ['name', 'kind', 'type']),
+        return DB::transaction(function () use ($model, $attributes) {
+            $model = $model->groups()->firstOrCreate(
+                Arr::only($attributes, ['name', 'type']),
                 Arr::only($attributes, app(Group::class)->getFillable()),
             );
 

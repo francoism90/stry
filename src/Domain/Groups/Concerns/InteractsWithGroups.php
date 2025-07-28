@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Groups\Concerns;
 
 use ArrayAccess;
-use Domain\Groups\Enums\GroupSet;
+use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
 use Illuminate\Database\Eloquent\Builder;
@@ -73,7 +73,7 @@ trait InteractsWithGroups
             ->filter();
     }
 
-    public function hasGroup(GroupSet|string|null $type = null): bool
+    public function hasGroup(?GroupType $type = null): bool
     {
         return $this
             ->groups()
@@ -81,7 +81,7 @@ trait InteractsWithGroups
             ->exists();
     }
 
-    public function scopeByGroup(Builder $query, ?GroupSet $type = null): Builder
+    public function scopeByGroup(Builder $query, ?GroupType $type = null): Builder
     {
         return $query->whereHas('groups', fn ($query) => $query
             ->when($type, fn ($query) => $query->where('type', $type->value))

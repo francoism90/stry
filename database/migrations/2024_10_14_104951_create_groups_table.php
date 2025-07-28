@@ -19,10 +19,10 @@ return new class extends Migration
                 ->cascadeOnUpdate();
             $table->string('name')->nullable();
             $table->jsonb('content')->nullable();
-            $table->string('kind')->nullable()->index();
-            $table->string('type')->nullable()->index();
+            $table->string('type')->index();
             $table->string('state')->index();
             $table->unsignedInteger('order_column')->nullable()->index();
+            $table->timestamp('expires_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

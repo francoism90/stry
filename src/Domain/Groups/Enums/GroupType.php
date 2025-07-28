@@ -6,18 +6,18 @@ namespace Domain\Groups\Enums;
 
 enum GroupType: string
 {
-    case System = 'system';
+    case Favorite = 'favorite';
     case Mixer = 'mixer';
-    case Private = 'private';
-    case Public = 'public';
+    case Saved = 'saved';
+    case Viewed = 'viewed';
 
     public function label(): string
     {
         return match ($this) {
-            self::System => __('System'),
+            self::Favorite => __('Favorite'),
             self::Mixer => __('Mixer'),
-            self::Private => __('Private'),
-            self::Public => __('Public'),
+            self::Saved => __('Saved'),
+            self::Viewed => __('History'),
         };
     }
 }

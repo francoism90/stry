@@ -13,6 +13,7 @@ use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithCache;
 use Domain\Videos\Concerns\InteractsWithVod;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
+use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -184,6 +185,15 @@ class Video extends Model implements HasMedia
     public function broadcastAfterCommit(): bool
     {
         return true;
+    }
+
+    public function isValid(): bool
+    {
+        if (! $this->state->equals(Verified::class)) {
+            return false;
+        }
+
+        return filled($this->expires_at) ? $this->expires_at->isFuture() : true;
     }
 
     public function makeSearchableUsing(VideoCollection $models): VideoCollection

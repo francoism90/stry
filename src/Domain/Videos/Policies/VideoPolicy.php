@@ -16,7 +16,7 @@ class VideoPolicy
 
     public function view(User $user, Video $video): bool
     {
-        return $video->user()->is($user) || $user->hasRole('super-admin');
+        return $video->isValid() || $user->hasRole('super-admin');
     }
 
     public function create(User $user): bool

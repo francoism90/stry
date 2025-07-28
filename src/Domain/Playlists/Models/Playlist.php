@@ -183,7 +183,7 @@ class Playlist extends Model
 
     public function isValid(): bool
     {
-        if (! $this->state instanceof Verified) {
+        if (! $this->state->equals(Verified::class)) {
             return false;
         }
 

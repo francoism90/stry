@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Groups\Models;
 
 use Domain\Groups\Collections\GroupCollection;
-use Domain\Groups\Enums\GroupSet;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
@@ -51,11 +50,12 @@ class Group extends Model implements HasMedia, Sortable
         'user_id',
         'name',
         'content',
-        'kind',
         'type',
         'state',
         'options',
         'order_column',
+        'expires_at',
+        'published_at',
     ];
 
     /**
@@ -69,9 +69,10 @@ class Group extends Model implements HasMedia, Sortable
     {
         return [
             'state' => GroupState::class,
-            'kind' => GroupSet::class,
             'type' => GroupType::class,
             'options' => AsArrayObject::class,
+            'expires_at' => 'datetime',
+            'published_at' => 'datetime',
         ];
     }
 
@@ -142,7 +143,6 @@ class Group extends Model implements HasMedia, Sortable
     {
         return static::query()
             ->where('user_id', $this->user_id)
-            ->where('kind', $this->kind)
             ->where('type', $this->type);
     }
 
@@ -153,19 +153,13 @@ class Group extends Model implements HasMedia, Sortable
             ->where('created_at', '<=', now()->subDay());
     }
 
-    public function isReserved(): bool
-    {
-        return in_array($this->type, [GroupType::System, GroupType::Mixer]);
-    }
-
     public function toSearchableArray(): array
     {
         return [
             'id' => $this->getScoutKey(),
             'name' => (string) $this->name,
             'content' => (string) $this->content,
-            'kind' => (string) $this->kind?->value,
-            'type' => (string) $this->type?->value,
+            'type' => (string) $this->type->value,
             'options' => (array) $this->options,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
