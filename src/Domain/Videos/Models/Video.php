@@ -25,12 +25,14 @@ use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\ModelStates\HasStates;
 use Spatie\Translatable\HasTranslations;
 
 class Video extends Model implements HasMedia
 {
     use BroadcastsEvents;
     use HasFactory;
+    use HasStates;
     use HasTags;
     use HasTranslations;
     use HasUlids;

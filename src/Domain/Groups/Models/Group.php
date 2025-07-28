@@ -28,11 +28,13 @@ use Laravel\Scout\Searchable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\ModelStates\HasStates;
 
 class Group extends Model implements HasMedia, Sortable
 {
     use BroadcastsEvents;
     use HasFactory;
+    use HasStates;
     use HasUlids;
     use InteractsWithMedia;
     use InteractsWithUser;

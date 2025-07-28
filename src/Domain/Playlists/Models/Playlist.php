@@ -23,12 +23,14 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(PlaylistObserver::class)]
 class Playlist extends Model
 {
     use BroadcastsEvents;
     use HasFactory;
+    use HasStates;
     use HasUlids;
     use InteractsWithUser;
     use Prunable;
