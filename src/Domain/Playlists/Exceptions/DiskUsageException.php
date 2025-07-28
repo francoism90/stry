@@ -9,10 +9,10 @@ use Illuminate\Support\Number;
 
 class DiskUsageException extends Exception
 {
-    public static function exceededUsage(string $path, float|int $maxDiskUsage): self
+    public static function exceededLimit(string $path, float|int $limit = 0): self
     {
-        $maxDiskUsage = Number::fileSize($maxDiskUsage);
+        $freeSpace = Number::fileSize($limit);
 
-        return new self("Disk usage exceeded for path: `{$path}` which is greater than the maximum allowed {$maxDiskUsage}");
+        return new self("Disk free space has exceeded for path: `{$path}` which is greater than the minimum allowed {$freeSpace}.");
     }
 }

@@ -13,7 +13,7 @@ return [
      * This setting is used to define the maximum disk usage for the playlist.
      * The value is in bytes, and it will be used to limit the size of the playlist storage.
      */
-    'disk_max_usage' => (int) env('PLAYLIST_DISK_USAGE', 1073741824 * 100), // 100 GB
+    'disk_size' => (int) env('PLAYLIST_DISK_SIZE', 1073741824 * 10), // 10 GB
 
     /**
      * This setting is used to define the expiration time for the playlist.
@@ -116,6 +116,6 @@ return [
      * This setting is used to define the maximum disk usage for the rotation keys.
      * The value is in bytes, and it will be used to limit the size of the rotation keys storage.
      */
-    'rotation_keys_disk_max_usage' => (int) env('PLAYLIST_ROTATION_DISK_USAGE', 1073741824 * 5), // 5 GB
+    'rotation_keys_disk_size' => (int) env('PLAYLIST_ROTATION_DISK_SIZE', 1073741824 * 2), // 2 GB
 
 ];
