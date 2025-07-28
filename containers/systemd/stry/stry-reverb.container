@@ -17,7 +17,7 @@ ExposeHostPort=6001
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 TimeoutStartSec=90
-Restart=unless-stopped
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

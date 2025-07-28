@@ -15,7 +15,7 @@ ExposeHostPort=1025
 ExposeHostPort=8025
 
 [Service]
-Restart=unless-stopped
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

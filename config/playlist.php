@@ -27,7 +27,7 @@ return [
      * The value is in seconds, and it will be used to determine how long the playlist will be valid.
      * After this time, the playlist will be considered stale and can be prunable.
      */
-    'stale_after' => (int) env('PLAYLIST_LAST_ACCESSED', 60 * 60 * 4), // 4 hours
+    'stale_after' => (int) env('PLAYLIST_STALE_AFTER', 60 * 60 * 4), // 4 hours
 
     /**
      * This setting is used to define the middleware that will be applied to the playlist routes.
@@ -58,9 +58,9 @@ return [
      * This setting is used to configure the segment length for the playlist.
      * The segment length is the duration of each segment in seconds.
      * A shorter segment length will result in more segments, which can improve seeking performance,
-     * but will also increase the file size.
+     * but will also increase the file size and requests.
      */
-    'segment_length' => (int) env('PLAYLIST_SEGMENT_LENGTH', 10),
+    'segment_length' => (int) env('PLAYLIST_SEGMENT_LENGTH', 6),
 
     /**
      * This setting is used to configure the frame interval for the playlist.
@@ -68,7 +68,7 @@ return [
      * A lower frame interval will result in more keyframes, which can improve seeking performance,
      * but will also increase the file size.
      */
-    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 48),
+    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 2),
 
     /**
      * This setting is used to configure the video formats that will be used for transcoding.
