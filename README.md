@@ -53,12 +53,6 @@ pnpm install && pnpm build
 
 1. HLS generating can be configured in `config/playlist.php` (such as formats to use) or by setting environment variables.
 
-1. To seed an example user (`database/seeders/UserSeeder.php`):
-
-```bash
-php artisan db:seed --class=UserSeeder
-```
-
 ## Usage
 
 To run the instance after following installation:
@@ -69,7 +63,13 @@ systemctl --user start stry proxy
 
 The instance should be available at <https://stry.test>.
 
-The following services are only accessible when being a *super-admin*:
+To seed an example super-admin user (only do this for testing!):
+
+```bash
+php artisan db:seed --class=AdminSeeder
+```
+
+The following services are only accessible when being logged in as *super-admin*:
 
 - <https://stry.test/horizon> - Laravel Horizon
 - <https://stry.test/telescope> - Laravel Telescope (disabled by default - only use on development)

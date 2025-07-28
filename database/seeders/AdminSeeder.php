@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Domain\Users\Models\User;
+use Domain\Users\States\Verified;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class UserSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
     public function run(): void
     {
@@ -16,5 +19,9 @@ class UserSeeder extends Seeder
         );
 
         $model->assignRole('super-admin');
+
+        if ($model->state->canTransitionTo(Verified::class)) {
+            $model->state->transitionTo(Verified::class);
+        }
     }
 }
