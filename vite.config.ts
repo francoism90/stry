@@ -50,7 +50,7 @@ export default defineConfig({
           neutral: 'zinc',
         },
         container: {
-          base: 'max-w-5xl',
+          base: 'max-w-6xl',
         },
         input: {
           slots: {
