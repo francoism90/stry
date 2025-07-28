@@ -67,8 +67,8 @@ class CreateHlsPlaylist
             // Run the transcoding process
             $ffmpeg->save($playlist->getPath($playlist->file_name));
 
-            // Mark the playlist as transcoded
-            $playlist->touch('transcoded_at');
+            // Mark the playlist as processed
+            app(MarkPlaylistAsProcessed::class)->handle($playlist);
 
             return $playlist;
         });

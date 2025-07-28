@@ -8,6 +8,7 @@ use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\PlaylistState;
+use Domain\Playlists\States\Verified;
 use Domain\Users\Concerns\InteractsWithUser;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -180,18 +181,13 @@ class Playlist extends Model
         return route('api.playlists.playlist', [$this, $this->file_name]);
     }
 
-    public function isExpired(): bool
-    {
-        if (($expires = $this->getAttribute('expires_at')) && $expires->isPast()) {
-            return true;
-        }
-
-        return false;
-    }
-
     public function isValid(): bool
     {
-        return ! $this->isExpired() && $this->getAttribute('transcoded_at') !== null;
+        if (! $this->state instanceof Verified) {
+            return false;
+        }
+
+        return filled($this->expires_at) ? $this->expires_at->isFuture() : true;
     }
 
     public function prunable(): PlaylistQueryBuilder

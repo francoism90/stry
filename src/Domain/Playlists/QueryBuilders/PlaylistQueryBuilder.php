@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\QueryBuilders;
 
+use Domain\Playlists\States\Pending;
+use Domain\Playlists\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
 
 class PlaylistQueryBuilder extends Builder
 {
     public function pending(): self
     {
-        return $this
-            ->whereNull('transcoded_at');
+        return $this->whereState('state', Pending::class);
     }
 
-    public function transcoded(): self
+    public function verified(): self
     {
-        return $this
-            ->whereNotNull('transcoded_at');
+        return $this->whereState('state', Verified::class);
     }
 
     public function expired(): self
@@ -32,7 +32,7 @@ class PlaylistQueryBuilder extends Builder
     public function active(): self
     {
         return $this
-            ->transcoded()
+            ->verified()
             ->whereNot(fn ($query) => $query->expired())
             ->ordered();
     }
