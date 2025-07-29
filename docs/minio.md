@@ -31,7 +31,7 @@ systemctl --user start stry-minio
 1. Setup connection using the generated access keys:
 
 ```bash
-mc alias set myminio http://systemd-stry-minio:9000 <username> <password>
+mc alias set myminio http://systemd-stry-minio:9000 <username>
 mc admin info myminio
 ```
 
@@ -49,6 +49,7 @@ mc admin user svcacct add myminio stry
 mc mb myminio/local
 mc mb myminio/assets
 mc mb myminio/conversions
+mc mb myminio/segments
 ```
 
 1. Set anonymous `download` permissions on required buckets:
@@ -56,6 +57,7 @@ mc mb myminio/conversions
 ```bash
 mc anonymous set download myminio/assets
 mc anonymous set download myminio/conversions
+mc anonymous set download myminio/segments
 ```
 
 ## Disable bucket listing

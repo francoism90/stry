@@ -7,7 +7,7 @@ return [
      * You may want to use a temporary path to improve performance.
      * The disk should be configured in the `filesystems.php` configuration file.
      */
-    'disk_name' => env('PLAYLIST_DISK', 'transcodes'),
+    'disk_name' => env('PLAYLIST_DISK', 'segments'),
 
     /**
      * This setting is used to define the free disk space requirements for playlists.
@@ -35,9 +35,9 @@ return [
      */
     'middleware' => [
         'auth:sanctum',
-        'verified',
+        'signed',
         'subscribed',
-        'cache:public;max_age=86400;immutable',
+        'cache:private;max_age=1200;immutable',
     ],
 
     /**

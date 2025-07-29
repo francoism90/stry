@@ -8,7 +8,6 @@ use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Gate;
-use League\Flysystem\WhitespacePathNormalizer;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PlaylistKeyController extends Controller implements HasMiddleware
@@ -21,9 +20,6 @@ class PlaylistKeyController extends Controller implements HasMiddleware
     public function __invoke(Playlist $playlist, string $path): StreamedResponse
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
-
-        // Sanitize the path to prevent directory traversal attacks
-        $path = (new WhitespacePathNormalizer)->normalizePath($path);
 
         return $playlist->getSecretFilesystem()->response($playlist->getPath($path));
     }

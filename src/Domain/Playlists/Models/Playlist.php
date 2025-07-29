@@ -24,6 +24,8 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use League\Flysystem\WhitespacePathNormalizer;
 use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(PlaylistObserver::class)]
@@ -155,12 +157,9 @@ class Playlist extends Model
 
     public function getPath(string $path = ''): string
     {
-        return (string) implode('/', [$this->getKey(), $path]);
-    }
-
-    public function getPathRelativeToRoot(): string
-    {
-        return $this->getPath($this->file_name);
+        return (new WhitespacePathNormalizer)->normalizePath(
+            implode('/', [$this->getKey(), $path])
+        );
     }
 
     public function getAbsolutePath(): string
@@ -178,9 +177,24 @@ class Playlist extends Model
         return Storage::disk($this->getSecretDisk());
     }
 
+    public function getMediaUrlResolver(string $path): string
+    {
+        return $this->getFilesystem()->url($this->getPath($path));
+    }
+
+    public function getKeyUrlResolver(string $path): string
+    {
+        return URL::signedRoute('api.playlists.key', ['playlist' => $this, 'path' => $path]);
+    }
+
+    public function getUrlResolver(?string $path = null): string
+    {
+        return URL::signedRoute('api.playlists.playlist', ['playlist' => $this, 'path' => $path]);
+    }
+
     public function getUrl(): string
     {
-        return route('api.playlists.playlist', [$this, $this->file_name]);
+        return $this->getUrlResolver($this->file_name);
     }
 
     public function isValid(): bool
@@ -212,7 +226,7 @@ class Playlist extends Model
 
     public static function getTranscodeDisk(): string
     {
-        return config('playlist.disk_name', 'transcodes');
+        return config('playlist.disk_name', 'segments');
     }
 
     public static function getRotationKeyDisk(): string

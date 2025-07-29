@@ -73,7 +73,6 @@ return [
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
-            'read-only' => false,
             'options' => [
                 'CacheControl' => 'public, max-age=604800, immutable',
             ],
@@ -91,7 +90,23 @@ return [
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
-            'read-only' => false,
+            'options' => [
+                'CacheControl' => 'public, max-age=604800, immutable',
+            ],
+        ],
+
+        'segments' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => 'segments',
+            'url' => env('AWS_URL').'/segments',
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
             'options' => [
                 'CacheControl' => 'public, max-age=604800, immutable',
             ],
@@ -105,28 +120,20 @@ return [
             'report' => false,
         ],
 
-        'import' => [
-            'driver' => 'local',
-            'root' => storage_path('app/import'),
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
-        ],
-
-        'transcodes' => [
-            'driver' => 'local',
-            'root' => storage_path('app/transcodes'),
-            'serve' => false,
-            'throw' => false,
-            'report' => false,
-        ],
-
         'secrets' => [
             'driver' => 'local',
             'root' => storage_path('app/secrets'),
             'serve' => false,
             'throw' => false,
             'report' => false,
+        ],
+
+        'import' => [
+            'driver' => 'local',
+            'root' => storage_path('app/import'),
+            'serve' => false,
+            'throw' => true,
+            'report' => true,
         ],
 
     ],

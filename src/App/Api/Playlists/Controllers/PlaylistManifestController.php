@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
+use Domain\Playlists\Jobs\UpdateActivity;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Gate;
-use League\Flysystem\WhitespacePathNormalizer;
 use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
@@ -23,14 +23,14 @@ class PlaylistManifestController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        // Sanitize the path to prevent directory traversal attacks
-        $path = (new WhitespacePathNormalizer)->normalizePath($path);
+        // Set last used activity
+        UpdateActivity::dispatch($playlist)->delay(60);
 
         return FFMpeg::dynamicHLSPlaylist()
             ->fromDisk($playlist->getDisk())
-            ->open("{$playlist->getPath()}/{$path}")
-            ->setKeyUrlResolver(fn (string $path) => route('api.playlists.key', ['playlist' => $playlist, 'path' => $path]))
-            ->setMediaUrlResolver(fn (string $path) => route('api.playlists.media', ['playlist' => $playlist, 'path' => $path]))
-            ->setPlaylistUrlResolver(fn (string $path) => route('api.playlists.playlist', ['playlist' => $playlist, 'path' => $path]));
+            ->open($playlist->getPath($path))
+            ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))
+            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+            ->setPlaylistUrlResolver(fn (string $path) => $playlist->getUrlResolver($path));
     }
 }
