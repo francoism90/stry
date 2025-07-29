@@ -32,7 +32,7 @@ const items = ref<TabsItem[]>([
 
 const form = useForm('put', update.url({ video: props.item.id }), reactivePick(props.item, 'name', 'episode', 'season', 'part', 'summary', 'released', 'tags'))
 
-const title = () => (form.name = titleCase(form.name.replace('_', ' ')))
+const format = () => (form.name = titleCase(form.name.replace('_', ' ')))
 const search = (search: string | null) => router.get(edit.url({ video: props.item.id }), { search }, { preserveState: true, preserveScroll: true })
 
 const submit = async () =>
@@ -86,7 +86,7 @@ const submit = async () =>
                     size="sm"
                     icon="i-lucide-wand-sparkles"
                     aria-label="Format name"
-                    @click="title()"
+                    @click="format()"
                   />
                 </template>
               </UInput>
