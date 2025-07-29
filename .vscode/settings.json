@@ -8,6 +8,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "eslint.useFlatConfig": true,
+    "html.customData": ["./node_modules/vidstack/vscode.html-data.json"],
     "tailwindCSS.classAttributes": ["class", "ui"],
     "tailwindCSS.emmetCompletions": true,
     "tailwindCSS.experimental.classRegex": [

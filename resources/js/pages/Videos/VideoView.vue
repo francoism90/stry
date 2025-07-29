@@ -5,11 +5,10 @@ import PageFeature from '@/components/Ui/PageFeature.vue'
 import VideoNavigation from '@/components/Video/VideoNavigation.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
 import VideoSection from '@/components/Video/VideoSection.vue'
-import { useShaka } from '@/composables/shaka'
 import type { Playlist, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { computed, onMounted, useTemplateRef } from 'vue'
+import { computed } from 'vue'
 
 interface Props {
   item: Video
@@ -19,25 +18,11 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const player = useTemplateRef('video-player')
 
-const asset = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
-const time = computed(() => props.time ?? 0)
-
-const { container, attach, load } = useShaka(asset, time)
+const src = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
+// const time = computed(() => props.time ?? 0)
 
 useEcho<Video>(`videos.${props.item.id}`, '.video.updated', () => router.reload({ only: ['item', 'playlist'] }))
-
-onMounted(async () => {
-  if (player.value?.shakaUi && player.value?.shakaVideo) {
-    await container(player.value.shakaUi)
-    await attach(player.value.shakaVideo)
-
-    if (props.playlist?.asset?.length) {
-      await load()
-    }
-  }
-})
 </script>
 
 <template>
@@ -45,7 +30,7 @@ onMounted(async () => {
 
   <Page>
     <PageBody>
-      <VideoPlayer ref="video-player" />
+      <VideoPlayer :src />
 
       <PageFeature
         :title="item.name"

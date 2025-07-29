@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import laravel from 'laravel-vite-plugin'
 import { fileURLToPath, URL } from 'node:url'
+import { vite as vidstack } from 'vidstack/plugins'
 import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
@@ -32,6 +33,9 @@ export default defineConfig({
     wayfinder(),
     vue({
       template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('media-'),
+        },
         transformAssetUrls: {
           base: null,
           includeAbsolute: false,
@@ -41,6 +45,7 @@ export default defineConfig({
     vueJsx(),
     vueDevTools(),
     tailwindcss(),
+    vidstack(),
     ui({
       inertia: true,
       ui: {
@@ -67,7 +72,7 @@ export default defineConfig({
         manualChunks: {
           http: ['axios'],
           broadcast: ['pusher-js', 'laravel-echo'],
-          video: ['shaka-player'],
+          play: ['vidstack'],
         },
       },
     },
