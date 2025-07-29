@@ -74,7 +74,7 @@ return [
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=604800, immutable',
+                'CacheControl' => 'public, max-age=259200, immutable',
             ],
         ],
 
@@ -91,7 +91,7 @@ return [
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=604800, immutable',
+                'CacheControl' => 'public, max-age=259200, immutable',
             ],
         ],
 
@@ -108,7 +108,7 @@ return [
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=604800, immutable',
+                'CacheControl' => 'public, max-age=259200, immutable',
             ],
         ],
 
