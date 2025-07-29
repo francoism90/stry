@@ -1,27 +1,21 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
+import 'vidstack/bundle'
 
-const shakaUi = useTemplateRef('shaka-ui')
-const shakaVideo = useTemplateRef('shaka-video')
+interface Props {
+  src?: string
+  title?: string
+}
 
-defineExpose({
-  shakaUi,
-  shakaVideo,
-})
+defineProps<Props>()
 </script>
 
 <template>
-  <div
-    data-shaka-player-container
-    ref="shaka-ui"
+  <media-player
+    .src="src"
+    autoPlay
+    playsInline
   >
-    <video
-      data-shaka-player
-      ref="shaka-video"
-      class="aspect-video min-h-52 w-full rounded-2xl bg-black"
-      autoplay
-      controls
-      playsinline
-    />
-  </div>
+    <media-provider></media-provider>
+    <media-video-layout></media-video-layout>
+  </media-player>
 </template>

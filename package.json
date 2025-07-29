@@ -19,8 +19,9 @@
         "@tailwindcss/vite": "^4.1.11",
         "@vueuse/core": "^13.6.0",
         "axios": "^1.11.0",
+        "hls.js": "^1.6.7",
         "laravel-precognition-vue-inertia": "^0.7.2",
-        "shaka-player": "^4.15.8",
+        "vidstack": "^1.12.13",
         "vue": "^3.5.18"
     },
     "devDependencies": {
@@ -38,7 +39,7 @@
         "@vue/tsconfig": "^0.7.0",
         "chokidar": "^4.0.3",
         "concurrently": "^9.2.0",
-        "eslint": "^9.31.0",
+        "eslint": "^9.32.0",
         "eslint-plugin-cypress": "^4.3.0",
         "eslint-plugin-oxlint": "^0.16.12",
         "eslint-plugin-vue": "~10.3.0",
