@@ -9,6 +9,7 @@ import { Head, router } from '@inertiajs/vue3'
 import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
 import { reactivePick } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
+import { titleCase } from 'title-case'
 import { ref } from 'vue'
 
 interface Props {
@@ -31,7 +32,8 @@ const items = ref<TabsItem[]>([
 
 const form = useForm('put', update.url({ video: props.item.id }), reactivePick(props.item, 'name', 'episode', 'season', 'part', 'summary', 'released', 'tags'))
 
-const onSearch = async (search: string) => router.get(edit.url({ video: props.item.id }), { search }, { preserveState: true, preserveScroll: true })
+const title = () => (form.name = titleCase(form.name.replace('_', ' ')))
+const search = (search: string | null) => router.get(edit.url({ video: props.item.id }), { search }, { preserveState: true, preserveScroll: true })
 
 const submit = async () =>
   form.submit({
@@ -72,7 +74,22 @@ const submit = async () =>
               <UInput
                 v-model.trim="form.name"
                 class="w-full"
-              />
+                :ui="{ trailing: 'pe-1' }"
+              >
+                <template
+                  v-if="form.name?.length"
+                  #trailing
+                >
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    icon="i-lucide-wand-sparkles"
+                    aria-label="Format name"
+                    @click="title()"
+                  />
+                </template>
+              </UInput>
             </UFormField>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
@@ -136,7 +153,7 @@ const submit = async () =>
                 label-key="name"
                 multiple
                 class="w-full"
-                @update:search-term="onSearch"
+                @update:search-term="search"
               >
                 <template #item-label="{ item }">
                   {{ item.name }}
