@@ -51,7 +51,7 @@ const submit = async () =>
           autocomplete="email"
           placeholder="email@example.com"
           size="lg"
-          v-model="form.email"
+          v-model.trim="form.email"
         />
       </UFormField>
 
@@ -68,7 +68,7 @@ const submit = async () =>
           autocomplete="current-password"
           placeholder="Password"
           size="lg"
-          v-model="form.password"
+          v-model.trim="form.password"
         />
       </UFormField>
 

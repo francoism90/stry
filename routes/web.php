@@ -10,4 +10,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', DashboardIndex::class)->name('home');
 
 // Videos
-Route::resource('videos', VideoController::class)->except(['store', 'update', 'destroy']);
+Route::resource('videos', VideoController::class);

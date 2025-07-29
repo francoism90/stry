@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateNewTag
 {
-    public function execute(array $attributes): Tag
+    public function handle(array $attributes): Tag
     {
         return DB::transaction(function () use ($attributes) {
             $attributes['type'] = TagType::from($attributes['type'])?->value;

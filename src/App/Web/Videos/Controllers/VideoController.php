@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Resources\PlaylistResource;
+use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use Domain\Tags\Algos\GetMatchingTagCollection;
 use Domain\Videos\Actions\CreateVideoPlaylist;
+use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -22,10 +26,16 @@ class VideoController implements HasMiddleware
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
     public function index(Request $request)
+    {
+        //
+    }
+
+    public function store(Request $request)
     {
         //
     }
@@ -53,13 +63,27 @@ class VideoController implements HasMiddleware
         ]);
     }
 
-    public function edit(Video $video): Response
+    public function edit(Request $request, Video $video): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
-            'item' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
-            'playlists' => fn () => $video->playlists->toResourceCollection(PlaylistResource::class),
+            'item' => fn () => $video->load('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
+            'tags' => fn () => GetMatchingTagCollection::make($request->input('search')),
         ]);
+    }
+
+    public function update(VideoUpdateRequest $request, Video $video): RedirectResponse
+    {
+        app(UpdateVideoDetails::class)->handle($video, $request->validated());
+
+        flash()->success('Video updated successfully!');
+
+        return back();
+    }
+
+    public function destroy(Video $video)
+    {
+        //
     }
 }

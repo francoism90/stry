@@ -10,7 +10,7 @@ use Illuminate\Support\LazyCollection;
 
 class SetTagsOrder
 {
-    public function execute(): void
+    public function handle(): void
     {
         $items = collect();
 

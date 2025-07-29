@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Controllers;
 
+use App\Api\Videos\Requests\VideoUpdateRequest;
+use App\Api\Videos\Resources\VideoResource;
+use Domain\Videos\Actions\UpdateVideoDetails;
+use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -18,41 +22,28 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(VideoUpdateRequest $request, Video $video): VideoResource
     {
-        //
+        $video = app(UpdateVideoDetails::class)->handle($video, $request->validated());
+
+        return VideoResource::make($video);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //

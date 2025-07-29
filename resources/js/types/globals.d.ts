@@ -10,7 +10,7 @@ declare module '@inertiajs/core' {
     readonly flash: {
       message: string
       class: string
-      level: string
+      level: 'success' | 'info' | 'warning' | 'error' | 'neutral' | 'primary' | 'secondary'
     }
     readonly auth: {
       user: User | undefined

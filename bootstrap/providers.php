@@ -16,4 +16,5 @@ return [
     Foundation\Providers\HorizonServiceProvider::class,
     Foundation\Providers\RouteServiceProvider::class,
     Foundation\Providers\TelescopeServiceProvider::class,
+    Foundation\Providers\ViewServiceProvider::class,
 ];

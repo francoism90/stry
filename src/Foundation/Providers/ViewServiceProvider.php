@@ -24,9 +24,13 @@ class ViewServiceProvider extends ServiceProvider
     protected function configureSessionFlash(): void
     {
         Flash::levels([
+            'primary' => 'alert-primary',
+            'secondary' => 'alert-secondary',
             'success' => 'alert-success',
+            'info' => 'alert-info',
             'warning' => 'alert-warning',
             'error' => 'alert-error',
+            'neutral' => 'alert-neutral',
         ]);
     }
 }

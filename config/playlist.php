@@ -27,7 +27,7 @@ return [
      * The value is in seconds, and it will be used to determine how long the playlist will be valid.
      * After this time, the playlist will be considered stale and can be prunable.
      */
-    'stale_after' => (int) env('PLAYLIST_STALE_AFTER', 60 * 60 * 4), // 4 hours
+    'stale_after' => (int) env('PLAYLIST_STALE_AFTER', 60 * 60 * 12), // 12 hours
 
     /**
      * This setting is used to define the middleware that will be applied to the playlist routes.

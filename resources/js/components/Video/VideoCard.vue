@@ -22,13 +22,13 @@ const link = computed(() => show.url(props.item.id))
     }"
   >
     <Link :href="link">
-      <div class="absolute inset-0 z-0 size-full rounded-2xl bg-gradient-to-t from-neutral-800/30 to-transparent" />
+      <div class="absolute inset-0 z-0 size-full rounded-xl bg-gradient-to-t from-neutral-800/30 to-transparent" />
 
       <img
         :srcset="item.srcset"
         :src="item.thumbnail"
         :alt="item.name"
-        class="h-52 w-full rounded-2xl object-fill group-hover:rounded-none"
+        class="h-52 w-full rounded-xl object-fill group-hover:rounded-none"
         loading="lazy"
       />
 

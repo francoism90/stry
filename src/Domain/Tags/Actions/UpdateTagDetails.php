@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateTagDetails
 {
-    public function execute(Tag $model, array $attributes): void
+    public function handle(Tag $model, array $attributes): void
     {
         DB::transaction(function () use ($model, $attributes) {
             $model->updateOrFail(
