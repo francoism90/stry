@@ -66,7 +66,7 @@ class SyncProgress implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
         ];
     }
 

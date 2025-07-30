@@ -39,7 +39,7 @@ class CreateHlsPlaylist
             $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => SyncProgress::dispatch(
                 playlist: $playlist,
                 attributes: compact('percentage', 'remaining', 'rate'),
-            )->delay(1));
+            ));
 
             // Find the video format for the given media file
             $video = app(GetVideoFormat::class)->handle($disk, $path);
