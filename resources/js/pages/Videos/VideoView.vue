@@ -55,10 +55,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.rel
       <VideoPlayer :src />
 
       <div class="flex flex-col gap-2 py-4">
-        <PageFeature
-          :title="video.name"
-          :description="video.summary"
-        />
+        <PageFeature :title="video.name" />
 
         <UNavigationMenu
           orientation="horizontal"
