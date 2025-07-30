@@ -214,11 +214,9 @@ class Playlist extends Model
         return $expires === null ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getStaleAfter(): ?Carbon
+    public static function getStaleAfter(): ?int
     {
-        $stale = config('playlist.stale_after');
-
-        return $stale === null ? null : Carbon::now()->addSeconds($stale);
+        return config('playlist.stale_after');
     }
 
     public static function shouldUseRotationKeys(): bool
