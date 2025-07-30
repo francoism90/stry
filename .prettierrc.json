@@ -1,9 +1,9 @@
 {
     "$schema": "https://json.schemastore.org/prettierrc",
     "plugins": ["prettier-plugin-tailwindcss"],
-    "printWidth": 180,
     "semi": false,
     "singleQuote": true,
+    "printWidth": 100,
     "singleAttributePerLine": true,
     "tailwindAttributes": ["class", "className", "ui", ":ui"],
     "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],
