@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Web\Dashboard\Controllers\DashboardIndex;
+use App\Web\Tags\Controllers\TagController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
 use Illuminate\Support\Facades\Route;
@@ -13,3 +14,6 @@ Route::get('/', DashboardIndex::class)->name('home');
 // Videos
 Route::resource('videos', VideoController::class);
 Route::resource('videos.playlists', VideoPlaylistController::class)->scoped();
+
+// Tags
+Route::resource('tags', TagController::class);

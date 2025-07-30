@@ -18,9 +18,9 @@ class UpdateTagDetails
             );
 
             if (array_key_exists('related', $attributes)) {
-                $related = collect(data_get($attributes['related'], '*.id', []))->toModels();
+                // $related = collect(data_get($attributes['related'], '*.id', []))->toModels();
 
-                $model->syncRelated($related);
+                // $model->syncRelated($related);
             }
         });
     }
