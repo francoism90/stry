@@ -13,7 +13,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <section
+  <div
     v-if="items?.length"
     class="flex flex-col gap-1"
   >
@@ -41,5 +41,5 @@ defineProps<Props>()
     >
       <VideoCard :item />
     </UCarousel>
-  </section>
+  </div>
 </template>

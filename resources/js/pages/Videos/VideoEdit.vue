@@ -1,39 +1,33 @@
 <script setup lang="ts">
 import { edit, update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import FlashAlert from '@/components/Ui/FlashAlert.vue'
-import Page from '@/components/Ui/Page.vue'
-import PageBody from '@/components/Ui/PageBody.vue'
-import PageFeature from '@/components/Ui/PageFeature.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import VideoLayout from '@/layouts/Video/ManageLayout.vue'
 import type { Video } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
-import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
+import { router } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { reactivePick } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { titleCase } from 'title-case'
-import { ref } from 'vue'
 
 interface Props {
-  item: Video
+  video: Video
   tags: SelectMenuItem[] | null
 }
 
+defineOptions({ layout: [DefaultLayout, VideoLayout] })
+
 const props = defineProps<Props>()
 
-const items = ref<TabsItem[]>([
-  {
-    label: 'General',
-    slot: 'general' as const,
-  },
-  {
-    label: 'Playlists',
-    slot: 'playlists' as const,
-  },
-])
-
-const form = useForm('put', update.url({ video: props.item.id }), reactivePick(props.item, 'name', 'episode', 'season', 'part', 'summary', 'released', 'tags'))
+const form = useForm(
+  'put',
+  update.url({ video: props.video.id }),
+  reactivePick(props.video, 'name', 'episode', 'season', 'part', 'summary', 'released', 'tags'),
+)
 
 const format = () => (form.name = titleCase(form.name.replace('_', ' ')))
-const search = (search: string | null) => router.get(edit.url({ video: props.item.id }), { search }, { preserveState: true, preserveScroll: true })
+const search = (search: string | null) =>
+  router.get(edit.url({ video: props.video.id }), { search }, { preserveState: true, preserveScroll: true })
 
 const submit = async () =>
   form.submit({
@@ -43,167 +37,133 @@ const submit = async () =>
 </script>
 
 <template>
-  <Head :title="item.name" />
+  <UForm
+    :state="form"
+    @submit.prevent="submit"
+    class="flex flex-col gap-4 pt-6"
+  >
+    <FlashAlert />
 
-  <Page>
-    <PageBody>
-      <PageFeature
-        :title="item.name"
-        :description="item.summary"
-      />
-
-      <UTabs
-        :items="items"
-        variant="link"
-        class="w-full gap-4"
+    <UFormField
+      label="Name"
+      name="name"
+      required
+      :error="form.errors.name"
+    >
+      <UInput
+        v-model.trim="form.name"
+        class="w-full"
+        :ui="{ trailing: 'pe-1' }"
       >
-        <template #general>
-          <UForm
-            :state="form"
-            @submit.prevent="submit"
-            class="flex flex-col gap-4"
-          >
-            <FlashAlert />
-
-            <UFormField
-              label="Name"
-              name="name"
-              required
-              :error="form.errors.name"
-            >
-              <UInput
-                v-model.trim="form.name"
-                class="w-full"
-                :ui="{ trailing: 'pe-1' }"
-              >
-                <template
-                  v-if="form.name?.length"
-                  #trailing
-                >
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-wand-sparkles"
-                    aria-label="Format name"
-                    @click="format()"
-                  />
-                </template>
-              </UInput>
-            </UFormField>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              <UFormField
-                label="Episode"
-                name="episode"
-                :error="form.errors.episode"
-              >
-                <UInput
-                  v-model.trim="form.episode"
-                  placeholder="1"
-                  class="w-full"
-                />
-              </UFormField>
-
-              <UFormField
-                label="Season"
-                name="season"
-                :error="form.errors.season"
-              >
-                <UInput
-                  v-model.trim="form.season"
-                  placeholder="1"
-                  class="w-full"
-                />
-              </UFormField>
-
-              <UFormField
-                label="Part"
-                name="part"
-                :error="form.errors.part"
-              >
-                <UInput
-                  v-model.trim="form.part"
-                  placeholder="1"
-                  class="w-full"
-                />
-              </UFormField>
-
-              <UFormField
-                label="Released"
-                name="released_at"
-                :error="form.errors.released"
-              >
-                <UInput
-                  v-model.trim="form.released"
-                  placeholder="YYYY-MM-DD"
-                  class="w-full"
-                />
-              </UFormField>
-            </div>
-
-            <UFormField
-              label="Tags"
-              name="tags"
-              :error="form.errors.tags"
-            >
-              <USelectMenu
-                v-model="form.tags"
-                :items="tags"
-                label-key="name"
-                multiple
-                class="w-full"
-                @update:search-term="search"
-              >
-                <template #item-label="{ item }">
-                  {{ item.name }}
-
-                  <span class="text-muted">
-                    {{ item.type }}
-                  </span>
-                </template>
-              </USelectMenu>
-            </UFormField>
-
-            <UFormField
-              label="Summary"
-              name="summary"
-              :error="form.errors.summary"
-            >
-              <UTextarea
-                v-model="form.summary"
-                class="w-full"
-                :ui="{
-                  base: 'h-32',
-                }"
-              />
-            </UFormField>
-
-            <UButton
-              label="Save changes"
-              type="submit"
-              variant="soft"
-              class="self-end"
-              loading-auto
-            />
-          </UForm>
+        <template
+          v-if="form.name?.length"
+          #trailing
+        >
+          <UButton
+            color="neutral"
+            variant="link"
+            size="sm"
+            icon="i-lucide-wand-sparkles"
+            aria-label="Format name"
+            @click="format()"
+          />
         </template>
+      </UInput>
+    </UFormField>
 
-        <template #playlists>
-          <UForm
-            :state="form"
-            @submit.prevent="submit"
-            class="flex flex-col gap-4"
-          >
-            <UButton
-              label="Change password"
-              type="submit"
-              variant="soft"
-              class="self-end"
-            />
-          </UForm>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+      <UFormField
+        label="Episode"
+        name="episode"
+        :error="form.errors.episode"
+      >
+        <UInput
+          v-model.trim="form.episode"
+          placeholder="1"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Season"
+        name="season"
+        :error="form.errors.season"
+      >
+        <UInput
+          v-model.trim="form.season"
+          placeholder="1"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Part"
+        name="part"
+        :error="form.errors.part"
+      >
+        <UInput
+          v-model.trim="form.part"
+          placeholder="1"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Released"
+        name="released_at"
+        :error="form.errors.released"
+      >
+        <UInput
+          v-model.trim="form.released"
+          placeholder="YYYY-MM-DD"
+          class="w-full"
+        />
+      </UFormField>
+    </div>
+
+    <UFormField
+      label="Tags"
+      name="tags"
+      :error="form.errors.tags"
+    >
+      <USelectMenu
+        v-model="form.tags"
+        :items="tags"
+        label-key="name"
+        multiple
+        class="w-full"
+        @update:search-term="search"
+      >
+        <template #item-label="{ item }">
+          {{ item.name }}
+
+          <span class="text-muted">
+            {{ item.type }}
+          </span>
         </template>
-      </UTabs>
-    </PageBody>
-  </Page>
+      </USelectMenu>
+    </UFormField>
+
+    <UFormField
+      label="Summary"
+      name="summary"
+      :error="form.errors.summary"
+    >
+      <UTextarea
+        v-model="form.summary"
+        class="w-full"
+        :ui="{
+          base: 'h-32',
+        }"
+      />
+    </UFormField>
+
+    <UButton
+      label="Save changes"
+      type="submit"
+      variant="soft"
+      class="self-end"
+      loading-auto
+    />
+  </UForm>
 </template>

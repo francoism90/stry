@@ -25,10 +25,10 @@ class VideoPlaylistController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request, Video $video): Response
+    public function index(Video $video): Response
     {
         return Inertia::render('Videos/VideoPlaylists', [
-            'item' => fn () => $video->toResource(VideoResource::class),
+            'video' => fn () => $video->toResource(VideoResource::class),
             'playlists' => fn () => [],
         ]);
     }

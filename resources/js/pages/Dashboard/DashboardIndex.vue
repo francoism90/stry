@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
-import VideoSection from '@/components/Video/VideoSection.vue'
+import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import type { Video } from '@/types'
 import { Deferred } from '@inertiajs/vue3'
 
@@ -20,8 +20,7 @@ defineProps<Props>()
           <div class="sr-only">Loading sections...</div>
         </template>
 
-        <VideoSection
-          v-if="recent?.length"
+        <VideoCarousel
           label="Continue Watching"
           :items="recent"
           :actions="[{ label: 'All Watching', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"

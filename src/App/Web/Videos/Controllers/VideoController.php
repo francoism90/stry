@@ -57,7 +57,7 @@ class VideoController implements HasMiddleware
         app(CreateVideoPlaylist::class)->handle($video);
 
         return Inertia::render('Videos/VideoView', [
-            'item' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
+            'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'playlist' => fn () => $video->currentPlaylist()?->toResource(PlaylistResource::class),
             'queue' => Inertia::defer(fn () => GenerateVideoQueue::make($video), 'items'),
         ]);
@@ -68,7 +68,7 @@ class VideoController implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
-            'item' => fn () => $video->load('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
+            'video' => fn () => $video->load('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
             'tags' => fn () => GetMatchingTagCollection::make($request->input('search')),
         ]);
     }
