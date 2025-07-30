@@ -58,7 +58,7 @@ const items = ref<NavigationMenuItem[][]>([
             }"
           />
 
-          <div class="h-[1px] bg-gradient-to-r from-neutral-500/0 via-primary-500/75 to-neutral-500/0"></div>
+          <div class="h-[1px] bg-gradient-to-r from-neutral-500/0 via-primary-500/25 to-neutral-500/0"></div>
         </UContainer>
       </header>
 

@@ -11,7 +11,7 @@ defineProps<Props>()
   <section class="relative flex flex-col gap-1.5">
     <h1
       v-if="title?.length"
-      class="line-clamp-2 font-serif font-semibold tracking-tight"
+      class="line-clamp-2 font-serif text-lg font-semibold tracking-tight"
     >
       {{ title }}
     </h1>
