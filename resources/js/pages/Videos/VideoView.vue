@@ -22,7 +22,8 @@ const props = defineProps<Props>()
 const src = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
 // const time = computed(() => props.time ?? 0)
 
-useEcho<Video>(`videos.${props.item.id}`, '.video.updated', () => router.reload({ only: ['item', 'playlist'] }))
+useEcho<Video>(`videos.${props.item.id}`, '.video.updated', () => router.reload({ only: ['item'] }))
+useEcho<Video>(`videos.${props.item.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
 </script>
 
 <template>

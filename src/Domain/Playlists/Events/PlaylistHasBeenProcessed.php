@@ -28,13 +28,14 @@ class PlaylistHasBeenProcessed implements ShouldBroadcast, ShouldDispatchAfterCo
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('playlists.'.$this->playlist->getRouteKey()),
+            new PrivateChannel($this->playlist),
+            new PrivateChannel($this->playlist->getModel()),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'playlist.updated';
+        return 'playlist.created';
     }
 
     /**
@@ -42,7 +43,9 @@ class PlaylistHasBeenProcessed implements ShouldBroadcast, ShouldDispatchAfterCo
      */
     public function broadcastWith(): array
     {
-        return ['id' => $this->playlist->getRouteKey()];
+        return [
+            'id' => $this->playlist->getRouteKey(),
+        ];
     }
 
     public function broadcastQueue(): string
