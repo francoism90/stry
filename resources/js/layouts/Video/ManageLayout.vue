@@ -35,10 +35,7 @@ const items = ref<NavigationMenuItem[][]>([
 
   <Page>
     <PageBody>
-      <PageFeature
-        :title="video.name"
-        :description="video.summary"
-      />
+      <PageFeature :title="video.name" />
 
       <PageNavigation :items />
 
