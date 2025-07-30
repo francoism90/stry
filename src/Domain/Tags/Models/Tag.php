@@ -12,7 +12,6 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -110,21 +109,22 @@ class Tag extends BaseTag implements HasMedia
      */
     public function broadcastOn(string $event): array
     {
-        if ($event === 'deleted') {
-            return [];
-        }
-
-        return [
-            new PrivateChannel('tags.'.$this->getRouteKey()),
-        ];
+        return [$this];
     }
 
-    public function broadcastAs(string $event): ?string
+    public function broadcastChannel(): string
     {
-        return str($event)
-            ->prepend('tag.')
-            ->trim('.')
-            ->value();
+        return 'tags.'.$this->getRouteKey();
+    }
+
+    public function broadcastChannelRoute(): string
+    {
+        return 'tags.{tag}';
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "tag.{$event}";
     }
 
     public function broadcastWith(string $event): array
@@ -135,11 +135,6 @@ class Tag extends BaseTag implements HasMedia
     public function broadcastQueue(): string
     {
         return 'broadcasts';
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
     }
 
     public function makeSearchableUsing(TagCollection $models): TagCollection
