@@ -11,7 +11,6 @@ use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -124,21 +123,22 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     public function broadcastOn(string $event): array
     {
-        if ($event === 'deleted') {
-            return [];
-        }
-
-        return [
-            new PrivateChannel('user.'.$this->getRouteKey()),
-        ];
+        return [$this];
     }
 
-    public function broadcastAs(string $event): ?string
+    public function broadcastChannel(): string
     {
-        return str($event)
-            ->prepend('users.')
-            ->trim('.')
-            ->value();
+        return 'users.'.$this->getRouteKey();
+    }
+
+    public function broadcastChannelRoute(): string
+    {
+        return 'users.{playlist}';
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "user.{$event}";
     }
 
     public function broadcastWith(string $event): array
@@ -151,14 +151,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return 'broadcasts';
     }
 
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
     public function receivesBroadcastNotificationsOn(): string
     {
-        return 'user.'.$this->getRouteKey();
+        return $this->broadcastChannel();
     }
 
     public function makeSearchableUsing(UserCollection $models): UserCollection

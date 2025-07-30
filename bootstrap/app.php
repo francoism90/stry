@@ -51,6 +51,9 @@ $app = Application::configure(basePath: $basePath)
         // $exceptions->dontReport([]);
         // $exceptions->render(fn (InvalidModel $e) => abort(404));
     })
+    ->withEvents(discover: [
+        base_path('src/Domain/*/Listeners'),
+    ])
     ->withCommands([
         \Support\Scout\Commands\SyncIndexes::class,
         \Domain\Videos\Commands\CleanCommand::class,

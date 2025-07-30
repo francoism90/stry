@@ -15,7 +15,6 @@ use Domain\Videos\Concerns\InteractsWithVod;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -154,22 +153,22 @@ class Video extends Model implements HasMedia
      */
     public function broadcastOn(string $event): array
     {
-        if ($event === 'deleted') {
-            return [];
-        }
-
-        return [
-            new PrivateChannel('users.'.$this->user->getRouteKey()),
-            new PrivateChannel('videos.'.$this->getRouteKey()),
-        ];
+        return [$this, $this->user];
     }
 
-    public function broadcastAs(string $event): ?string
+    public function broadcastChannel(): string
     {
-        return str($event)
-            ->prepend('video.')
-            ->trim('.')
-            ->value();
+        return 'videos.'.$this->getRouteKey();
+    }
+
+    public function broadcastChannelRoute(): string
+    {
+        return 'videos.{playlist}';
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "video.{$event}";
     }
 
     public function broadcastWith(string $event): array
@@ -180,11 +179,6 @@ class Video extends Model implements HasMedia
     public function broadcastQueue(): string
     {
         return 'broadcasts';
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
     }
 
     public function isValid(): bool

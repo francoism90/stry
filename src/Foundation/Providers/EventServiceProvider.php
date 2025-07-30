@@ -4,24 +4,28 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
-use Domain\Media\Listeners\SetMediaStreamData;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Foundation\Events\DiscoverEvents;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
+use Illuminate\Support\Str;
+use SplFileInfo;
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * @var array<class-string, array<int, class-string>>
-     */
-    protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
+    public function boot(): void
+    {
+        $this->configureEventAutoDiscovery();
+    }
 
-        MediaHasBeenAddedEvent::class => [
-            SetMediaStreamData::class,
-        ],
-    ];
+    protected function configureEventAutoDiscovery(): void
+    {
+        DiscoverEvents::guessClassNamesUsing(function (SplFileInfo $file, $basePath) {
+            $class = trim(Str::replaceFirst(base_path('src'), '', $file->getRealPath()), DIRECTORY_SEPARATOR);
+
+            return ucfirst(Str::camel(str_replace(
+                [DIRECTORY_SEPARATOR, ucfirst(basename(app()->path())).'\\'],
+                ['\\', app()->getNamespace()],
+                ucfirst(Str::replaceLast('.php', '', $class))
+            )));
+        });
+    }
 }
