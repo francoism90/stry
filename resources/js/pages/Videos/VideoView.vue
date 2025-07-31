@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoController from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
@@ -30,7 +30,7 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Edit',
       icon: 'i-lucide-clipboard-pen',
-      to: VideoController.edit.url(props.video.id),
+      to: edit.url(props.video.id),
     },
     {
       label: 'Save',
