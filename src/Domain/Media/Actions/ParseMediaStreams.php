@@ -2,36 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Listeners;
+namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
-class SetMediaStreamData
+class ParseMediaStreams
 {
-    public function handle(MediaHasBeenAddedEvent $event): void
+    public function handle(Media $media): Collection
     {
-        if (! Str::startsWith($event->media->mime_type, ['audio/', 'video/'])) {
-            return;
+        if (! Str::startsWith($media->mime_type, ['audio/', 'video/'])) {
+            return collect();
         }
 
-        $keys = $this->getStreamKeys();
-
-        $streams = $this->parseStreams($event->media, $keys);
-
-        $event->media->setCustomProperty('streams', $streams->toArray());
-        $event->media->saveOrFail();
-    }
-
-    protected function parseStreams(Media $media, array $keys): Collection
-    {
         $streams = FFMpeg::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->getStreams();
+
+        $keys = $this->getStreamKeys();
 
         return collect($streams)
             ->map(fn (Stream $stream) => collect($stream->all())->only($keys)->toArray())

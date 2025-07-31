@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
-use App\Api\Playlists\Resources\PlaylistResource;
-use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
-use Domain\Tags\Algos\GetMatchingTagCollection;
-use Domain\Tags\Actions\CreateTagPlaylist;
 use Domain\Tags\Actions\UpdateTagDetails;
-use Domain\Tags\Algos\GenerateTagQueue;
 use Domain\Tags\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
