@@ -15,7 +15,7 @@ class GetVideoFormat
     {
         $ffmpeg = FFMpeg::fromDisk($disk)->open($path);
 
-        // Get the video and audio codecs from the media file
+        // Detect the video and audio codecs of the source file
         $videoCodec = $ffmpeg->getVideoStream()->get('codec_name');
         $audioCodec = $ffmpeg->getAudioStream()->get('codec_name');
 
@@ -34,14 +34,10 @@ class GetVideoFormat
         $copyAudioFormat = (Playlist::copyAudioCodec() && in_array($audioCodec, $format->getAvailableAudioCodecs()));
         $copyVideoFormat = (Playlist::copyVideoCodec() && in_array($videoCodec, $format->getAvailableVideoCodecs()));
 
-        // If both audio and video codecs can be copied, copy the entire format to prevent transcoding
-        $copyFormat = Playlist::shouldPreventTranscoding() && $copyAudioFormat && $copyVideoFormat;
-
         return Fluent::make([
             'format' => $format,
             'video_codec' => $videoCodec,
             'audio_codec' => $audioCodec,
-            'copy_format' => $copyFormat,
             'copy_audio' => $copyAudioFormat,
             'copy_video' => $copyVideoFormat,
         ]);

@@ -273,9 +273,4 @@ class Playlist extends Model
     {
         return config('playlist.copy_audio_codec', true);
     }
-
-    public static function shouldPreventTranscoding(): bool
-    {
-        return config('playlist.prevent_transcoding', true);
-    }
 }

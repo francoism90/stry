@@ -11,14 +11,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\CopyVideoFormat;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Support\FFMpeg\Format\Video\X264;
 
 class CreateHlsPlaylist
 {
     public function handle(Playlist $playlist, string $disk, string $path): Playlist
     {
         return DB::transaction(function () use ($playlist, $disk, $path) {
-            // Initialize ffmpeg exporter
             $ffmpeg = FFMpeg::fromDisk($disk)
                 ->open($path)
                 ->exportForHLS()
@@ -46,21 +44,26 @@ class CreateHlsPlaylist
 
             // Add formats to the ffmpeg exporter
             Playlist::getHlsFormats()->each(function (Fluent $preset) use ($ffmpeg, $video) {
-                // If prevent-transcoding is requested and both codecs can be copied
-                if ($video->value('copy_format')) {
+                /** @var DefaultVideo $format */
+                $format = $preset->get('format', $video->get('format'));
+
+                $kiloBitrate = $preset->get('kilo_bitrate', $format->getKiloBitrate());
+
+                $videoCodec = $video->get('copy_video') && $kiloBitrate === 0 ? 'copy' : $preset->get('video_codec', $format->getVideoCodec());
+                $audioCodec = $video->get('copy_audio') ? 'copy' : $preset->get('audio_codec', $format->getAudioCodec());
+
+                // If bitrate is 0, we assume we want to copy the video and audio codecs
+                if ($videoCodec === 'copy' && $audioCodec === 'copy') {
                     $ffmpeg->addFormat(new CopyVideoFormat);
 
                     return;
                 }
 
-                /** @var DefaultVideo $format */
-                $format = $preset->value('format', $video->value('format', new X264));
-
                 $ffmpeg->addFormat(
                     $format
-                        ->setVideoCodec($video->value('copy_video') ? 'copy' : $preset->value('video_codec', $format->getVideoCodec()))
-                        ->setAudioCodec($video->value('copy_audio') ? 'copy' : $preset->value('audio_codec', $format->getAudioCodec()))
-                        ->setKiloBitrate($preset->value('kilo_bitrate', $format->getKiloBitrate()))
+                        ->setVideoCodec($videoCodec)
+                        ->setAudioCodec($audioCodec)
+                        ->setKiloBitrate($kiloBitrate)
                 );
             });
 

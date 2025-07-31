@@ -43,11 +43,10 @@ return [
     /**
      * This setting is used to configure the HLS formats that will be used for the playlist.
      * You can define multiple formats with different bit rates.
-     * When prevent transcoding is enabled, the playlist will use the original video file as is,
-     * and the bit rate will be ignored.
+     * A bitrate of 0 means that the format will try to use the copy-format (preventing transcoding).
      */
     'hls_formats' => [
-        ['name' => 'default', 'bit_rate' => 6000],
+        ['name' => 'default', 'bit_rate' => 0],
         // ['name' => 'low', 'bit_rate' => 500],
         // ['name' => 'mid', 'bit_rate' => 3000],
         // ['name' => 'high', 'bit_rate' => 6000],
@@ -92,13 +91,6 @@ return [
      * This is useful for cases where the original video file is already in a compatible audio codec.
      */
     'copy_audio_codec' => (bool) env('PLAYLIST_COPY_AUDIO_CODEC', true),
-
-    /**
-     * When this setting is true, the playlist will prevent transcoding of the video file.
-     * This will ignore any video format settings (bitrate, filters, etc.) and will use the original video file as is.
-     * This is useful for cases where the original video file (audio + video codec) is already in a suitable format.
-     */
-    'prevent_transcoding' => (bool) env('PLAYLIST_PREVENT_TRANSCODING', true),
 
     /**
      * This setting is used to enable or disable the rotation keys (encryption) for playlists.
