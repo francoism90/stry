@@ -23,6 +23,7 @@ class VideoUpdateRequest extends FormRequest
             'episode' => ['nullable', 'string', 'max:255'],
             'season' => ['nullable', 'string', 'max:255'],
             'part' => ['nullable', 'string', 'max:255'],
+            'snapshot' => ['nullable', 'numeric'],
             'tags' => ['nullable', 'array', 'max:10'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],
             'summary' => ['nullable', 'string', 'max:1000'],

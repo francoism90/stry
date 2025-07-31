@@ -82,6 +82,11 @@ class Video extends Model implements HasMedia
         'summary',
     ];
 
+    /**
+     * @var bool
+     */
+    public $registerMediaConversionsUsingModelInstance = true;
+
     protected static function newFactory(): VideoFactory
     {
         return VideoFactory::new();
@@ -141,7 +146,7 @@ class Video extends Model implements HasMedia
         $this
             ->addMediaConversion('thumbnail')
             ->performOnCollections('clips')
-            ->setExtractVideoFrameAtSecond($this->snapshot ?: 1)
+            ->extractVideoFrameAtSecond((float) $this->snapshot ?: 1)
             ->withResponsiveImages()
             ->width(368)
             ->height(232)
