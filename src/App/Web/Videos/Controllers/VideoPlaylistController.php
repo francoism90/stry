@@ -46,36 +46,4 @@ class VideoPlaylistController implements HasMiddleware
         //     //
         // ]);
     }
-
-    public function show(Playlist $playlist): Response
-    {
-        Gate::authorize('view', $playlist);
-
-        return Inertia::render('Videos/VideoPlaylists', [
-            //
-        ]);
-    }
-
-    public function edit(Request $request, Playlist $playlist): Response
-    {
-        Gate::authorize('update', $playlist);
-
-        return Inertia::render('Videos/VideoEdit', [
-            'item' => fn () => $playlist->load('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
-        ]);
-    }
-
-    public function update(Request $request, Playlist $playlist): RedirectResponse
-    {
-        // app(UpdateVideoDetails::class)->handle($playlist, $request->validated());
-
-        flash()->success('Video updated successfully!');
-
-        return back();
-    }
-
-    public function destroy(Playlist $playlist)
-    {
-        //
-    }
 }

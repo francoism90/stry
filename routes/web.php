@@ -13,7 +13,7 @@ Route::get('/', DashboardIndex::class)->name('home');
 
 // Videos
 Route::resource('videos', VideoController::class);
-Route::resource('videos.playlists', VideoPlaylistController::class)->scoped();
+Route::resource('videos.playlists', VideoPlaylistController::class)->shallow();
 
 // Tags
 Route::resource('tags', TagController::class);
