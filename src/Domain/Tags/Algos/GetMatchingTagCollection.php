@@ -12,7 +12,7 @@ class GetMatchingTagCollection
 {
     public static function make(?string $term = null, ?int $limit = null): ResourceCollection
     {
-        return Tag::query()
+        return Tag::search($term ?? '*')
             ->take($limit ?? 12)
             ->get()
             ->toResourceCollection(TagResource::class);

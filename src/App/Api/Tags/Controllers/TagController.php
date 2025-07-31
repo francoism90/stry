@@ -25,7 +25,7 @@ class TagController implements HasMiddleware
 
     public function index(TagIndexRequest $request): ResourceCollection
     {
-        return GetMatchingTagCollection::make($request->input('query'));
+        return GetMatchingTagCollection::make($request->input('search'));
     }
 
     public function store(Request $request)
@@ -38,7 +38,7 @@ class TagController implements HasMiddleware
         //
     }
 
-    public function update(Tag $tag): TagResource
+    public function update(Request $request, Tag $tag): TagResource
     {
         // $tag = app(UpdateTagDetails::class)->handle($tag, $request->validated());
 

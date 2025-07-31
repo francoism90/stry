@@ -20,7 +20,7 @@ class TagIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'query' => ['nullable', 'string', 'max:255'],
+            'search' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
