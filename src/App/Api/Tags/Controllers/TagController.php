@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
 class TagController implements HasMiddleware
 {
@@ -25,6 +26,8 @@ class TagController implements HasMiddleware
 
     public function index(TagIndexRequest $request): ResourceCollection
     {
+        Gate::authorize('viewAny', Tag::class);
+
         return GetMatchingTagCollection::make($request->input('search'));
     }
 
@@ -40,6 +43,8 @@ class TagController implements HasMiddleware
 
     public function update(Request $request, Tag $tag): TagResource
     {
+        Gate::authorize('update', $tag);
+
         // $tag = app(UpdateTagDetails::class)->handle($tag, $request->validated());
 
         return TagResource::make($tag);

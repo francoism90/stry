@@ -9,6 +9,15 @@ use Domain\Users\Models\User;
 
 class TagPolicy
 {
+    public function before(User $user, string $ability): ?bool
+    {
+        if ($user->hasRole('super-admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(User $user): bool
     {
         return true;
@@ -21,26 +30,26 @@ class TagPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 
     public function update(User $user, Tag $tag): bool
     {
-        return $tag->user()->is($user) || $user->hasRole('super-admin');
+        return $tag->user()->is($user);
     }
 
     public function delete(User $user, Tag $tag): bool
     {
-        return $tag->user()->is($user) || $user->hasRole('super-admin');
+        return $tag->user()->is($user);
     }
 
     public function restore(User $user, Tag $tag): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 
     public function forceDelete(User $user, Tag $tag): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 }

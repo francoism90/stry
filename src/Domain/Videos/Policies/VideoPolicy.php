@@ -9,6 +9,15 @@ use Domain\Videos\Models\Video;
 
 class VideoPolicy
 {
+    public function before(User $user, string $ability): ?bool
+    {
+        if ($user->hasRole('super-admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(User $user): bool
     {
         return true;
@@ -16,31 +25,31 @@ class VideoPolicy
 
     public function view(User $user, Video $video): bool
     {
-        return $video->isValid() || $user->hasRole('super-admin');
+        return $video->isValid();
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 
     public function update(User $user, Video $video): bool
     {
-        return $video->user()->is($user) || $user->hasRole('super-admin');
+        return $video->user()->is($user);
     }
 
     public function delete(User $user, Video $video): bool
     {
-        return $video->user()->is($user) || $user->hasRole('super-admin');
+        return $video->user()->is($user);
     }
 
     public function restore(User $user, Video $video): bool
     {
-        return $video->user()->is($user) || $user->hasRole('super-admin');
+        return $video->user()->is($user);
     }
 
     public function forceDelete(User $user, Video $video): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 }

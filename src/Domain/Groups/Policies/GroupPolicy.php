@@ -9,6 +9,15 @@ use Domain\Users\Models\User;
 
 class GroupPolicy
 {
+    public function before(User $user, string $ability): ?bool
+    {
+        if ($user->hasRole('super-admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(User $user): bool
     {
         return true;
@@ -16,31 +25,31 @@ class GroupPolicy
 
     public function view(User $user, Group $group): bool
     {
-        return $group->user()->is($user) || $user->hasRole('super-admin');
+        return $group->user()->is($user);
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 
     public function update(User $user, Group $group): bool
     {
-        return $group->user()->is($user) || $user->hasRole('super-admin');
+        return $group->user()->is($user);
     }
 
     public function delete(User $user, Group $group): bool
     {
-        return $group->user()->is($user) || $user->hasRole('super-admin');
+        return $group->user()->is($user);
     }
 
     public function restore(User $user, Group $group): bool
     {
-        return $group->user()->is($user) || $user->hasRole('super-admin');
+        return $group->user()->is($user);
     }
 
     public function forceDelete(User $user, Group $group): bool
     {
-        return $user->hasRole('super-admin');
+        return false;
     }
 }

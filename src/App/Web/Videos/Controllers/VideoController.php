@@ -7,7 +7,6 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Tags\Algos\GetMatchingTagCollection;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Algos\GenerateVideoQueue;
@@ -74,6 +73,8 @@ class VideoController implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): RedirectResponse
     {
+        Gate::authorize('update', $video);
+
         app(UpdateVideoDetails::class)->handle($video, $request->validated());
 
         flash()->success('Video updated successfully!');
