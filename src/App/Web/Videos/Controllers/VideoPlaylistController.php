@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
