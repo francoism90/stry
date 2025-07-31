@@ -40,7 +40,7 @@ class PlaylistQueryBuilder extends Builder
 
     public function stale(): self
     {
-        return $this->when(Playlist::getStaleAfter(), fn ($query, int $staleAfter = 0) => $query
+        return $this->when(Playlist::getStaleAfter() > 0, fn ($query, int $staleAfter = 0) => $query
             ->whereNotNull('accessed_at')
             ->whereNotNull('expires_at')
             ->where('accessed_at', '<=', now()->subSeconds($staleAfter))
