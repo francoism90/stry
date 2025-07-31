@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import VideoController from '@/actions/App/Web/Videos/Controllers/VideoController'
-import VideoPlaylistController from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
+import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { index } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
@@ -20,11 +20,11 @@ const items = ref<NavigationMenuItem[][]>([
   [
     {
       label: 'General',
-      to: VideoController.edit.url({ video: props.video.id }),
+      to: edit.url({ video: props.video.id }),
     },
     {
       label: 'Playlists',
-      to: VideoPlaylistController.index.url({ video: props.video.id }),
+      to: index.url({ video: props.video.id }),
     },
   ],
 ])
@@ -36,9 +36,7 @@ const items = ref<NavigationMenuItem[][]>([
   <Page>
     <PageBody>
       <PageFeature :title="video.name" />
-
       <PageNavigation :items />
-
       <slot />
     </PageBody>
   </Page>
