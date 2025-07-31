@@ -8,7 +8,6 @@ import VideoLayout from '@/layouts/Video/ManageLayout.vue'
 import type { Video } from '@/types'
 import type { QueryParams } from '@/wayfinder'
 import { router } from '@inertiajs/vue3'
-import { reactivePick } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref } from 'vue'
 
@@ -24,11 +23,7 @@ const query = ref<QueryParams>({ search: null })
 const { state } = useTags(props.video.tags, query)
 const { title } = useAppearance()
 
-const form = useForm(
-  'put',
-  update.url({ video: props.video.id }),
-  reactivePick(props.video, 'name', 'episode', 'season', 'part', 'summary', 'released', 'tags'),
-)
+const form = useForm('put', update.url({ video: props.video.id }), props.video)
 
 const submit = async () =>
   form.submit({
@@ -116,6 +111,44 @@ const submit = async () =>
       >
         <UInput
           v-model.trim="form.released"
+          placeholder="YYYY-MM-DD"
+          class="w-full"
+        />
+      </UFormField>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <UFormField
+        label="Snapshot"
+        name="snapshot"
+        :error="form.errors.snapshot"
+      >
+        <UInput
+          v-model.trim="form.snapshot"
+          placeholder="1.00"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Published"
+        name="published"
+        :error="form.errors.published"
+      >
+        <UInput
+          v-model.trim="form.published"
+          placeholder="YYYY-MM-DD"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Expires"
+        name="expires"
+        :error="form.errors.expires"
+      >
+        <UInput
+          v-model.trim="form.expires"
           placeholder="YYYY-MM-DD"
           class="w-full"
         />
