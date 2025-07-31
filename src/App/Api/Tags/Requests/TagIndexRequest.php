@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\Tags\Requests;
+
+use Domain\Tags\Models\Tag;
+use Illuminate\Foundation\Http\FormRequest;
+
+class TagIndexRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return $this->user()->can('viewAny', Tag::class);
+    }
+
+    /**
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'query' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+}

@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import { edit, update } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import FlashAlert from '@/components/Ui/FlashAlert.vue'
+import { useAppearance } from '@/composables/appearance'
+import { useTags } from '@/composables/tags'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoLayout from '@/layouts/Video/ManageLayout.vue'
 import type { Video } from '@/types'
+import type { QueryParams } from '@/wayfinder'
 import { router } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { reactivePick } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
-import { titleCase } from 'title-case'
+import { ref } from 'vue'
 
 interface Props {
   video: Video
-  tags: SelectMenuItem[] | null
 }
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
 const props = defineProps<Props>()
+const query = ref<QueryParams>({ search: null })
+
+const { state } = useTags(props.video.tags, query)
+const { title } = useAppearance()
 
 const form = useForm(
   'put',
   update.url({ video: props.video.id }),
   reactivePick(props.video, 'name', 'episode', 'season', 'part', 'summary', 'released', 'tags'),
 )
-
-const format = () => (form.name = titleCase(form.name.replace('_', ' ')))
-const search = (search: string | null) =>
-  router.get(edit.url({ video: props.video.id }), { search }, { preserveState: true, preserveScroll: true })
 
 const submit = async () =>
   form.submit({
@@ -65,7 +66,7 @@ const submit = async () =>
             size="sm"
             icon="i-lucide-wand-sparkles"
             aria-label="Format name"
-            @click="format()"
+            @click="form.name = title(form.name)"
           />
         </template>
       </UInput>
@@ -128,11 +129,11 @@ const submit = async () =>
     >
       <USelectMenu
         v-model="form.tags"
-        :items="tags"
+        :items="state"
         label-key="name"
         multiple
         class="w-full"
-        @update:search-term="search"
+        @update:search-term="(value) => (query.search = value || null)"
       >
         <template #item-label="{ item }">
           {{ item.name }}

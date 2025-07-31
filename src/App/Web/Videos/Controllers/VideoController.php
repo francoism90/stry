@@ -63,13 +63,12 @@ class VideoController implements HasMiddleware
         ]);
     }
 
-    public function edit(Request $request, Video $video): Response
+    public function edit(Video $video): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
             'video' => fn () => $video->load('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
-            'tags' => fn () => GetMatchingTagCollection::make($request->input('search')),
         ]);
     }
 
