@@ -59,6 +59,7 @@ class CreateHlsPlaylist
                     return;
                 }
 
+                // Add the format to the ffmpeg exporter
                 $ffmpeg->addFormat(
                     $format
                         ->setVideoCodec($videoCodec)

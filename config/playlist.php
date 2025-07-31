@@ -46,11 +46,11 @@ return [
      * A bitrate of 0 means that the format will try to use the copy-format (preventing transcoding).
      */
     'hls_formats' => [
-        ['name' => 'default', 'bit_rate' => 0],
-        // ['name' => 'low', 'bit_rate' => 500],
-        // ['name' => 'mid', 'bit_rate' => 3000],
-        // ['name' => 'high', 'bit_rate' => 6000],
-        // ['name' => 'ultra', 'bit_rate' => 9000],
+        ['name' => 'default', 'kilo_bitrate' => 0],
+        // ['name' => 'low', 'kilo_bitrate' => 500],
+        // ['name' => 'mid', 'kilo_bitrate' => 3000],
+        // ['name' => 'high', 'kilo_bitrate' => 6000],
+        // ['name' => 'ultra', 'kilo_bitrate' => 9000],
     ],
 
     /**
