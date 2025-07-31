@@ -208,7 +208,7 @@ class Video extends Model implements HasMedia
             'content' => (string) $this->content,
             'summary' => (string) $this->summary,
             'duration' => (float) $this->duration,
-            'caption' => (bool) $this->captions,
+            'captions' => (bool) $this->captions,
             'adult' => (bool) $this->adult,
             'tags' => (string) $this->tags_translated,
             'relatables' => (string) $this->tags_related,

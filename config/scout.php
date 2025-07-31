@@ -208,7 +208,7 @@ return [
                     'episode',
                     'part',
                     'adult',
-                    'caption',
+                    'captions',
                     'tagged',
                     'state',
                     'created_at',
@@ -227,7 +227,6 @@ return [
                     'relatables',
                     'content',
                     'summary',
-                    'released',
                 ],
 
                 'sortableAttributes' => [
@@ -241,6 +240,7 @@ return [
                     'released',
                     'duration',
                     'state',
+                    'released_at',
                     'created_at',
                     'updated_at',
                 ],
