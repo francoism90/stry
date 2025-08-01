@@ -28,7 +28,7 @@ class TagController implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Tag::search($request->input('search', '*'))
-            ->simplePaginate(perPage: 24)
+            ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }
 
