@@ -9,6 +9,7 @@ use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;
+use Domain\Videos\Algos\GenerateVideoLibrary;
 use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\RedirectResponse;
@@ -29,9 +30,19 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
+        Gate::authorize('viewAny', Video::class);
+
         //
+        $items = app(GenerateVideoLibrary::class)->handle();
+
+        return Inertia::render('Videos/VideoIndex', [
+            'items' => Inertia::defer(fn () => VideoResource::collection($items->items())),
+            'pages' => fn () => $items->hasMorePages(),
+            'next ' => fn () => $items->nextCursor(),
+            'previous' => fn () => $items->previousCursor(),
+        ]);
     }
 
     public function store(Request $request)

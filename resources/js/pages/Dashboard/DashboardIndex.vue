@@ -14,16 +14,22 @@ defineProps<Props>()
 
 <template>
   <Page>
-    <PageBody>
+    <PageBody class="gap-8">
       <Deferred :data="['recent']">
         <template #fallback>
           <div class="sr-only">Loading sections...</div>
         </template>
 
         <VideoCarousel
+          label="Made for You"
+          :items="recent"
+          :actions="[{ label: 'Show All', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
+        />
+
+        <VideoCarousel
           label="Continue Watching"
           :items="recent"
-          :actions="[{ label: 'All Watching', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
+          :actions="[{ label: 'Show All', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
         />
       </Deferred>
     </PageBody>

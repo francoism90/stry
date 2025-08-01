@@ -5,8 +5,8 @@ import { http } from '@/utils/http'
 import { type QueryParams } from '@/wayfinder'
 import { readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
-export function useTags(selected: MaybeRefOrGetter<Tag[]> = [], query: MaybeRefOrGetter<QueryParams> = {}) {
-  const state = ref<Tag[]>([])
+export function useTags(selected: MaybeRefOrGetter<Tag[] | null> = [], query: MaybeRefOrGetter<QueryParams> = {}) {
+  const state = ref<Tag[] | null>([])
 
   const fetch = async (query?: QueryParams) => http.get<Tag[]>(index.url({ query }))
 

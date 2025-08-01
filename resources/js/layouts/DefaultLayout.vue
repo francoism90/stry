@@ -7,6 +7,7 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'stry',
       to: '/',
+      exact: true,
       ui: {
         linkLabel: 'font-serif text-neutral-500 font-bold uppercase',
       },
@@ -16,7 +17,7 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Lists',
       icon: 'i-lucide-library',
-      to: '/lists',
+      to: '/videos',
       ui: {
         linkLabel: 'sr-only',
       },
@@ -44,10 +45,9 @@ const items = ref<NavigationMenuItem[][]>([
 <template>
   <UApp>
     <div class="relative flex h-dvh min-h-dvh flex-col overflow-x-hidden">
-      <header class="sticky inset-x-0 top-0 z-30 flex h-20 min-h-20 bg-default">
+      <header class="sticky inset-x-0 top-0 z-30 flex h-18 min-h-18 border-b border-default bg-default">
         <UContainer>
           <UNavigationMenu
-            orientation="horizontal"
             variant="link"
             :items="items"
             :ui="{
@@ -57,8 +57,6 @@ const items = ref<NavigationMenuItem[][]>([
               linkTrailingIcon: 'hidden',
             }"
           />
-
-          <div class="h-[1px] bg-gradient-to-r from-neutral-500/0 via-primary-500/25 to-neutral-500/0"></div>
         </UContainer>
       </header>
 

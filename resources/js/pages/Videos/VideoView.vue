@@ -58,7 +58,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.rel
         <PageFeature :title="video.name" />
 
         <UNavigationMenu
-          orientation="horizontal"
           :items="items"
           :ui="{
             root: 'size-full items-center overflow-x-auto',

@@ -33,28 +33,26 @@ export type Playlist = {
 
 export type Video = {
   id: string
-  user: User
+  user?: User
   name: string
-  summary: string
-  content: string
-  titles: string[]
-  season: string
-  episode: string
-  part: string
-  duration: number
-  timestamp: string
-  manifest: string
+  titles?: string[]
+  content?: string | null
+  summary: string | null
+  season: string | null
+  episode: string | null
+  part: string | null
   thumbnail: string
   srcset: string
-  favorited: boolean
-  saved: boolean
+  duration: number
+  timestamp: string
+  snapshot: number
   released: string
   expires: string
   published: string
   state: string
   created: string
   updated: string
-  tags: Tag[]
+  tags: Tag[] | null
 }
 
 export type Links = {

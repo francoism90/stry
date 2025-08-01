@@ -4,18 +4,21 @@ import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTags } from '@/composables/tags'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import VideoLayout from '@/layouts/Video/ManageLayout.vue'
-import type { Video } from '@/types'
+import VideoResource from '@/layouts/Video/VideoResource.vue'
+import type { Tag, Video } from '@/types'
 import type { QueryParams } from '@/wayfinder'
 import { router } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref } from 'vue'
+
+type TagSelect = Tag & SelectMenuItem
 
 interface Props {
   video: Video
 }
 
-defineOptions({ layout: [DefaultLayout, VideoLayout] })
+defineOptions({ layout: [DefaultLayout, VideoResource] })
 
 const props = defineProps<Props>()
 const query = ref<QueryParams>({ search: null })
@@ -161,8 +164,8 @@ const submit = async () =>
       :error="form.errors.tags"
     >
       <USelectMenu
-        v-model="form.tags"
-        :items="state"
+        v-model="form.tags as TagSelect[]"
+        :items="state as TagSelect[]"
         label-key="name"
         multiple
         class="w-full"
