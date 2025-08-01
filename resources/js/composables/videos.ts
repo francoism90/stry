@@ -6,7 +6,7 @@ const state = ref<Videos>()
 const results = ref<Video[]>([])
 
 export function useVideos() {
-  const merge = (items: Video[]) => items.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
+  const filter = (items: Video[]) => items.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
 
   const data = computed(() => state.value?.data || [])
   const nextPage = computed(() => state.value?.next_page_url)
@@ -16,7 +16,7 @@ export function useVideos() {
     state.value = toValue(usePage().props.items as Videos)
 
     // Merge the initial data with results
-    results.value = merge([...results.value, ...data.value])
+    results.value = filter([...results.value, ...data.value])
   })
 
   return {

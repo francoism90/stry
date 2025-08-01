@@ -1,3 +1,5 @@
+import type { SelectMenuItem } from '@nuxt/ui'
+
 export type User = {
   id: string
   name: string
@@ -20,6 +22,12 @@ export type Tag = {
   created: string
   updated: string
 }
+
+export type Tags = Omit<Paginator, 'data'> & {
+  data: Tag[] | null
+}
+
+export type TagMenuItem = Tag & SelectMenuItem
 
 export type Playlist = {
   id: string
@@ -55,7 +63,7 @@ export type Video = {
   tags: Tag[] | null
 }
 
-type Videos = Omit<Paginator, 'data'> & {
+export type Videos = Omit<Paginator, 'data'> & {
   data: Video[] | null
 }
 

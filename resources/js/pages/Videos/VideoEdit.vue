@@ -2,17 +2,12 @@
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import { useAppearance } from '@/composables/appearance'
-import { useTags } from '@/composables/tags'
+import { useTagInput } from '@/composables/taginput'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoResource from '@/layouts/Video/VideoResource.vue'
-import type { Tag, Video } from '@/types'
-import type { QueryParams } from '@/wayfinder'
+import type { TagMenuItem, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
-import { ref } from 'vue'
-
-type TagSelect = Tag & SelectMenuItem
 
 interface Props {
   video: Video
@@ -21,9 +16,8 @@ interface Props {
 defineOptions({ layout: [DefaultLayout, VideoResource] })
 
 const props = defineProps<Props>()
-const query = ref<QueryParams>({ search: null })
 
-const { state } = useTags(props.video.tags, query)
+const { results, query } = useTagInput(props.video.tags || [])
 const { title } = useAppearance()
 
 const form = useForm('put', update.url({ video: props.video.id }), props.video)
@@ -164,12 +158,12 @@ const submit = async () =>
       :error="form.errors.tags"
     >
       <USelectMenu
-        v-model="form.tags as TagSelect[]"
-        :items="state as TagSelect[]"
+        v-model="form.tags as TagMenuItem[]"
+        :items="results"
         label-key="name"
         multiple
         class="w-full"
-        @update:search-term="(value) => (query.search = value || null)"
+        @update:search-term="(value) => query({ search: value })"
       >
         <template #item-label="{ item }">
           {{ item.name }}

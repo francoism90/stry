@@ -6,10 +6,9 @@ namespace App\Api\Tags\Controllers;
 
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
-use Domain\Tags\Algos\GetMatchingTagCollection;
 use Domain\Tags\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -24,11 +23,13 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(TagIndexRequest $request): ResourceCollection
+    public function index(TagIndexRequest $request): Paginator
     {
         Gate::authorize('viewAny', Tag::class);
 
-        return GetMatchingTagCollection::make($request->input('search'));
+        return Tag::search($request->input('search', '*'))
+            ->simplePaginate(perPage: 24)
+            ->through(fn (Tag $tag) => TagResource::make($tag));
     }
 
     public function store(Request $request)

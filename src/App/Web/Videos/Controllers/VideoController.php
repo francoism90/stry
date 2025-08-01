@@ -10,7 +10,6 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Algos\GenerateVideoLibrary;
 use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\RedirectResponse;
@@ -35,15 +34,13 @@ class VideoController implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        $items = Video::query()->simplePaginate(
-            perPage: $request->input('per_page', 6),
-            page: $request->input('page', 1)
-        )->through(fn ($video) => VideoResource::make($video));
-
-        logger($items->currentPage());
+        $items = Video::query()
+            ->tap(new VideoListScope)
+            ->simplePaginate(perPage: $request->input('perPage', 3), page: $request->input('page', 1))
+            ->through(fn ($video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [
-            'items' => fn () => Inertia::defer(fn() => $items)->deepMerge(),
+            'items' => Inertia::defer(fn () => $items)->deepMerge(),
         ]);
     }
 
