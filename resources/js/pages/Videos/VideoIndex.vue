@@ -4,10 +4,10 @@ import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
-import VideoCard from '@/components/Video/VideoCard.vue'
+import VideoList from '@/components/Video/VideoList.vue'
 import { useVideos } from '@/composables/videos'
 import type { Videos } from '@/types'
-import { Deferred, router, WhenVisible } from '@inertiajs/vue3'
+import { Deferred } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
@@ -17,14 +17,7 @@ interface Props {
 
 defineProps<Props>()
 
-const { results, currentPage, hasPages, nextPage } = useVideos()
-
-const loadMore = () =>
-  router.visit(nextPage.value ?? index.url(), {
-    replace: true,
-    preserveScroll: true,
-    preserveState: true,
-  })
+const { results, currentPage, nextPage } = useVideos()
 
 const filters = ref<NavigationMenuItem[]>([
   { label: 'All', to: index.url(), exact: true },
@@ -44,36 +37,11 @@ const filters = ref<NavigationMenuItem[]>([
           <div>Loading items...</div>
         </template>
 
-        <div class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3">
-          <VideoCard
-            v-for="item in results"
-            :key="item.id"
-            :item
-          />
-        </div>
-
-        <WhenVisible
-          :always="hasPages"
-          :params="{
-            only: ['items'],
-            data: hasPages ? { page: currentPage + 1 } : undefined,
-          }"
-        >
-          <template #fallback>
-            <div class="sr-only">Loading more...</div>
-          </template>
-
-          <div
-            v-if="hasPages"
-            class="flex h-20 w-full items-center justify-center"
-          >
-            <UButton
-              label="Load more"
-              variant="soft"
-              @click="loadMore"
-            />
-          </div>
-        </WhenVisible>
+        <VideoList
+          :results
+          :currentPage
+          :nextPage
+        />
       </Deferred>
     </PageBody>
   </Page>
