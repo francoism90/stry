@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VideoCard from '@/components/Video/VideoCard.vue'
 import type { Video } from '@/types'
-import { Deferred, router, WhenVisible } from '@inertiajs/vue3'
+import { router, WhenVisible } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 interface Props {
@@ -23,11 +23,7 @@ const fetch = () =>
 </script>
 
 <template>
-  <Deferred data="items">
-    <template #fallback>
-      <div>Loading items...</div>
-    </template>
-
+  <div class="flex flex-col gap-4">
     <div class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3">
       <VideoCard
         v-for="item in results"
@@ -58,5 +54,5 @@ const fetch = () =>
         />
       </div>
     </WhenVisible>
-  </Deferred>
+  </div>
 </template>

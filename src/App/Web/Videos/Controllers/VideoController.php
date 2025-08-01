@@ -36,7 +36,7 @@ class VideoController implements HasMiddleware
 
         $items = Video::query()
             ->tap(new VideoListScope)
-            ->simplePaginate(perPage: $request->input('perPage', 3), page: $request->input('page', 1))
+            ->simplePaginate(perPage: 24, page: $request->input('page', 1))
             ->through(fn ($video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [

@@ -34,7 +34,7 @@ const filters = ref<NavigationMenuItem[]>([
 
       <Deferred data="items">
         <template #fallback>
-          <div>Loading items...</div>
+          <div class="sr-only">Loading items...</div>
         </template>
 
         <VideoList
