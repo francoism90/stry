@@ -4,12 +4,10 @@ import { http } from '@/utils/http'
 import { type QueryParams } from '@/wayfinder'
 import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
-const state = ref<Tag[]>([])
-
 export function useTagInput(selected: MaybeRefOrGetter<Tag[]> = []) {
-  const filter = (items: Tag[]) => items.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
+  const state = ref<Tag[]>([])
 
-  const results = computed(() => state.value as TagMenuItem[])
+  const filter = (items: Tag[]) => items.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
 
   const query = async (query?: QueryParams) => {
     const { data } = await http.get<Tags>(index.url({ query }))
@@ -17,6 +15,8 @@ export function useTagInput(selected: MaybeRefOrGetter<Tag[]> = []) {
     // Merge the fetched data with the current state
     state.value = filter([...state.value, ...(data.data || [])])
   }
+
+  const results = computed(() => state.value as TagMenuItem[])
 
   watchEffect(async () => {
     state.value = filter([...state.value, ...toValue(selected)])
