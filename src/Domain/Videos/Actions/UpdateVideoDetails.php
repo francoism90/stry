@@ -22,6 +22,10 @@ class UpdateVideoDetails
                 app(SyncModelTags::class)->handle($video, $attributes['tags']);
             }
 
+            if ($video->wasChanged('snapshot')) {
+                app(RegenerateVideoThumbnail::class)->execute($video);
+            }
+
             return $video;
         });
     }

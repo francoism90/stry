@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use DateTime;
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\CreateNewVideoByImport;
 use Illuminate\Bus\Batchable;
@@ -22,6 +21,11 @@ class ImportVideo implements ShouldBeUnique, ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
+    /**
+     * @var int
+     */
+    public $tries = 1;
 
     /**
      * @var int
@@ -64,10 +68,5 @@ class ImportVideo implements ShouldBeUnique, ShouldQueue
     public function uniqueId(): string
     {
         return hash('xxh128', implode(':', [$this->disk, $this->path]));
-    }
-
-    public function retryUntil(): DateTime
-    {
-        return now()->addHour();
     }
 }

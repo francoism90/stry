@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use DateTime;
 use Domain\Playlists\Actions\CreateHlsPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
@@ -22,6 +21,11 @@ class PerformTranscoding implements ShouldBeUnique, ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
+    /**
+     * @var int
+     */
+    public $tries = 1;
 
     /**
      * @var int
@@ -59,11 +63,6 @@ class PerformTranscoding implements ShouldBeUnique, ShouldQueue
     public function handle(): void
     {
         app(CreateHlsPlaylist::class)->handle($this->playlist, $this->disk, $this->path);
-    }
-
-    public function retryUntil(): DateTime
-    {
-        return now()->addHour();
     }
 
     public function uniqueId(): string
