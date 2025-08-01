@@ -7,7 +7,7 @@ import PageFilters from '@/components/Ui/PageFilters.vue'
 import VideoList from '@/components/Video/VideoList.vue'
 import { useVideos } from '@/composables/videos'
 import type { Videos } from '@/types'
-import { Deferred } from '@inertiajs/vue3'
+import { Deferred, Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
@@ -20,13 +20,15 @@ defineProps<Props>()
 const { results, currentPage, nextPage } = useVideos()
 
 const filters = ref<NavigationMenuItem[]>([
-  { label: 'All', to: index.url(), exact: true },
-  { label: 'New to you', to: index.url({ query: { list: 'unseen' } }) },
+  { label: 'All', to: index.url({ query: { list: 'all' } }) },
+  { label: 'Watched', to: index.url({ query: { list: 'watching' } }) },
   { label: 'Newest', to: index.url({ query: { list: 'newest' } }) },
 ])
 </script>
 
 <template>
+  <Head title="Videos" />
+
   <Page>
     <PageBody>
       <PageFeature title="Videos" />

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { index } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
@@ -23,13 +24,13 @@ defineProps<Props>()
         <VideoCarousel
           label="Made for You"
           :items="recent"
-          :actions="[{ label: 'Show All', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
+          :actions="[{ label: 'Show All', href: index.url({ query: { list: 'all' } }), trailingIcon: 'i-lucide-chevron-right' }]"
         />
 
         <VideoCarousel
           label="Continue Watching"
           :items="recent"
-          :actions="[{ label: 'Show All', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
+          :actions="[{ label: 'Show All', href: index.url({ query: { list: 'watching' } }), trailingIcon: 'i-lucide-chevron-right' }]"
         />
       </Deferred>
     </PageBody>

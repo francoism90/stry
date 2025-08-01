@@ -13,7 +13,7 @@ defineProps<Props>()
     :items
     :ui="{
       root: 'size-full items-center overflow-x-auto',
-      list: 'gap-1',
+      list: 'gap-0.5',
       link: 'text-xs',
     }"
   />
