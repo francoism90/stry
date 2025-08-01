@@ -10,7 +10,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class DashboardIndex implements HasMiddleware
+class SearchController implements HasMiddleware
 {
     public static function middleware(): array
     {
