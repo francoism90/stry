@@ -7,7 +7,7 @@ import PageFilters from '@/components/Ui/PageFilters.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
 import { useVideos } from '@/composables/videos'
 import type { Videos } from '@/types'
-import { Deferred, WhenVisible } from '@inertiajs/vue3'
+import { Deferred, router, WhenVisible } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
@@ -17,7 +17,14 @@ interface Props {
 
 defineProps<Props>()
 
-const { results, currentPage, nextPage } = useVideos()
+const { results, currentPage, hasPages, nextPage } = useVideos()
+
+const loadMore = () =>
+  router.visit(nextPage.value ?? index.url(), {
+    replace: true,
+    preserveScroll: true,
+    preserveState: true,
+  })
 
 const filters = ref<NavigationMenuItem[]>([
   { label: 'All', to: index.url(), exact: true },
@@ -46,18 +53,25 @@ const filters = ref<NavigationMenuItem[]>([
         </div>
 
         <WhenVisible
-          :always="nextPage !== null"
+          :always="hasPages"
           :params="{
             only: ['items'],
-            data: { page: currentPage + 1 },
+            data: hasPages ? { page: currentPage + 1 } : undefined,
           }"
         >
           <template #fallback>
             <div class="sr-only">Loading more...</div>
           </template>
 
-          <div class="flex h-20 items-center justify-center text-sm font-medium text-neutral-400">
-            <span v-if="nextPage !== null">Loading more items...</span>
+          <div
+            v-if="hasPages"
+            class="flex h-20 w-full items-center justify-center"
+          >
+            <UButton
+              label="Load more"
+              variant="soft"
+              @click="loadMore"
+            />
           </div>
         </WhenVisible>
       </Deferred>

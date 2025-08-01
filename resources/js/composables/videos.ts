@@ -9,8 +9,9 @@ export function useVideos() {
   const filter = (items: Video[]) => items.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
 
   const data = computed(() => state.value?.data || [])
-  const nextPage = computed(() => state.value?.next_page_url)
   const currentPage = computed(() => state.value?.current_page || 1)
+  const nextPage = computed(() => state.value?.next_page_url)
+  const hasPages = computed(() => !!nextPage.value)
 
   watchEffect(async () => {
     state.value = toValue(usePage().props.items as Videos)
@@ -23,7 +24,8 @@ export function useVideos() {
     state: readonly(state),
     results,
     data,
-    nextPage,
     currentPage,
+    nextPage,
+    hasPages,
   }
 }
