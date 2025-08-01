@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,6 +14,7 @@ class TagFactory extends Factory
     {
         return [
             'name' => fake()->sentence(),
+            'type' => fake()->randomElement(TagType::cases()),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Domain\Users\Models\User;
+use Domain\Users\States\Verified;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,6 +20,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
+            'state' => Verified::class,
         ];
     }
 

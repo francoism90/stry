@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VideoFactory extends Factory
@@ -18,6 +19,7 @@ class VideoFactory extends Factory
             'content' => fake()->paragraph(),
             'summary' => fake()->sentence(),
             'published_at' => now(),
+            'state' => Verified::class,
         ];
     }
 }
