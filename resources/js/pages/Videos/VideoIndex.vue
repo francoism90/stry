@@ -30,7 +30,7 @@ const filters = ref<NavigationMenuItem[]>([
   <Page>
     <PageBody>
       <PageFeature title="Videos" />
-      <PageFilters :filters />
+      <PageFilters :items="filters" />
 
       <Deferred data="items">
         <template #fallback>
