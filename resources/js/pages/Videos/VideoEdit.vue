@@ -17,7 +17,7 @@ defineOptions({ layout: [DefaultLayout, VideoResource] })
 
 const props = defineProps<Props>()
 
-const { results, query } = useTagInput(props.video.tags || [])
+const { data, query } = useTagInput(props.video.tags || [])
 const { title } = useAppearance()
 
 const form = useForm('put', update.url({ video: props.video.id }), props.video)
@@ -159,7 +159,7 @@ const submit = async () =>
     >
       <USelectMenu
         v-model="form.tags as TagMenuItem[]"
-        :items="results"
+        :items="data as TagMenuItem[]"
         label-key="name"
         multiple
         class="w-full"
