@@ -7,9 +7,9 @@ export function useVideos() {
 
   const data = computed(() => state.value?.data || [])
   const currentPage = computed(() => state.value?.current_page || 1)
-  const prevPage = computed(() => state.value?.prev_cursor || '')
-  const nextPage = computed(() => state.value?.next_cursor || '')
-  const hasPages = computed(() => !!nextPage.value)
+  const prevPage = computed(() => state.value?.prev_cursor || currentPage.value - 1)
+  const nextPage = computed(() => state.value?.next_cursor || currentPage.value + 1)
+  const hasPages = computed(() => Boolean(state.value?.next_cursor?.length || state.value?.next_page_url?.length))
 
   watchEffect(async () => {
     state.value = toValue(usePage().props.items as Videos)

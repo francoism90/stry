@@ -12,9 +12,9 @@ interface Props {
 
 defineProps<Props>()
 
-const { data, nextPage, hasPages } = useVideos()
+const { data, hasPages, nextPage } = useVideos()
 
-const fetch = () => router.get(usePage().props.location, { cursor: nextPage.value ?? '' })
+const fetch = () => router.get(usePage().props.location, { page: nextPage.value })
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const fetch = () => router.get(usePage().props.location, { cursor: nextPage.valu
           :buffer="100"
           :params="{
             only: ['items'],
-            data: hasPages ? { cursor: nextPage } : {},
+            data: hasPages ? { page: nextPage } : {},
           }"
         >
           <template #fallback>

@@ -16,6 +16,6 @@ class VideoListScope
     {
         $query
             ->with(['tags'])
-            ->when($this->type === 'all', fn ($query) => $query->inRandomOrder());
+            ->orderByDesc('created_at');
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use Domain\Videos\Algos\GenerateVideoCollection;
+use App\Api\Videos\Resources\VideoResource;
+use App\Web\Dashboard\Requests\SearchRequest;
+use Domain\Videos\Models\Video;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -16,13 +18,18 @@ class SearchController implements HasMiddleware
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
-    public function __invoke(): Response
+    public function __invoke(SearchRequest $request): Response
     {
-        return Inertia::render('Dashboard/DashboardIndex', [
-            'recent' => Inertia::defer(fn () => GenerateVideoCollection::make(), 'sections'),
+        $items = Video::search($request->input('search', '*'))
+            ->simplePaginate(perPage: 12, page: (int) $request->input('page', 1))
+            ->through(fn ($video) => VideoResource::make($video));
+
+        return Inertia::render('Dashboard/SearchIndex', [
+            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
 }
