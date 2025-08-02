@@ -12,7 +12,8 @@ class VideoListScope
         protected readonly ?string $type = null,
     ) {}
 
-    public function __invoke(VideoQueryBuilder $query): void {
+    public function __invoke(VideoQueryBuilder $query): void
+    {
         $query
             ->with(['tags'])
             ->when($this->type === 'all', fn ($query) => $query->inRandomOrder());

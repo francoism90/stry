@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Resources\PlaylistResource;
-use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Videos\Requests\VideoIndexRequest;
+use App\Web\Videos\Requests\VideoUpdateRequest;
 use App\Web\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;
@@ -30,10 +31,8 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(VideoIndexRequest $request): Response
     {
-        Gate::authorize('viewAny', Video::class);
-
         $items = Video::query()
             ->tap(new VideoListScope(
                 type: $request->input('type', 'all'),
@@ -85,8 +84,6 @@ class VideoController implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): RedirectResponse
     {
-        Gate::authorize('update', $video);
-
         app(UpdateVideoDetails::class)->handle($video, $request->validated());
 
         flash()->success('Video updated successfully!');
