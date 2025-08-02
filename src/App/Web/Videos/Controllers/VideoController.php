@@ -40,7 +40,7 @@ class VideoController implements HasMiddleware
             ->through(fn ($video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [
-            'items' => Inertia::defer(fn () => $items)->deepMerge(),
+            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
 
