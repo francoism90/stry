@@ -7,6 +7,7 @@ namespace App\Web\Dashboard\Controllers;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Dashboard\Requests\SearchRequest;
 use Domain\Videos\Models\Video;
+use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -24,12 +25,14 @@ class SearchController implements HasMiddleware
 
     public function __invoke(SearchRequest $request): Response
     {
-        $items = Video::search($request->input('search', '*'))
-            ->simplePaginate(perPage: 12, page: (int) $request->input('page', 1))
+        $items = Video::search($request->input('search', ''))
+            ->query(fn (VideoQueryBuilder $query) => $query->with('tags'))
+            ->simplePaginate(perPage: 24, page: (int) $request->input('page', 1))
             ->through(fn ($video) => VideoResource::make($video));
 
         return Inertia::render('Dashboard/SearchIndex', [
-            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
+            'search' => fn () => $request->input('search'),
+            'items' => Inertia::defer(fn () => $request->filled('search') ? $items : [])->deepMerge()->matchOn('data.id'),
         ]);
     }
 }

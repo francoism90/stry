@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import SearchController from '@/actions/App/Web/Dashboard/Controllers/SearchController'
 import PageFeature from '@/components/Ui/PageFeature.vue'
-import PageFilters from '@/components/Ui/PageFilters.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
-import { Head } from '@inertiajs/vue3'
-import type { NavigationMenuItem } from '@nuxt/ui'
+import { Head, router } from '@inertiajs/vue3'
+import { watchDebounced } from '@vueuse/core'
 import { ref } from 'vue'
+
+interface Props {
+  search?: string | null
+}
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
-const filters = ref<NavigationMenuItem[]>([
-  { label: 'All', to: SearchController.url({ query: { list: '' } }) },
-  { label: 'Watched', to: SearchController.url({ query: { list: 'watching' } }) },
-  { label: 'Newest', to: SearchController.url({ query: { list: 'newest' } }) },
-])
+const props = defineProps<Props>()
+
+const input = ref(props.search || '')
+
+watchDebounced(input, () => router.get(SearchController.url(), { search: input.value }, { preserveState: true, preserveScroll: true }), {
+  debounce: 350,
+  maxWait: 1000,
+})
 </script>
 
 <template>
@@ -22,6 +28,13 @@ const filters = ref<NavigationMenuItem[]>([
 
   <div>
     <PageFeature title="Search" />
-    <PageFilters :items="filters" />
+
+    <UFormField class="py-2">
+      <UInput
+        v-model.trim="input"
+        placeholder="Title, description, tags..."
+        class="w-full"
+      />
+    </UFormField>
   </div>
 </template>
