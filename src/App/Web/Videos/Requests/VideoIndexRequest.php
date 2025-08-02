@@ -20,7 +20,7 @@ class VideoIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'list' => ['required', 'string', 'in:all,watching'],
+            'list' => ['sometimes', 'string', 'in:all,watching'],
         ];
     }
 }
