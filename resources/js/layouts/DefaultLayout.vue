@@ -17,7 +17,7 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Lists',
       icon: 'i-lucide-library',
-      to: '/videos',
+      to: '/tags',
       ui: {
         linkLabel: 'sr-only',
       },

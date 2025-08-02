@@ -18,6 +18,8 @@ export type Tag = {
   name: string
   description: string
   type: string
+  thumbnail: string
+  srcset: string
   videos: number
   created: string
   updated: string

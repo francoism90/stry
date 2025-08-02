@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use BackedEnum;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
@@ -13,10 +14,12 @@ use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use stdClass;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureMorphMap();
         $this->configureCommands();
         $this->configureJsonResource();
+        $this->configureMacros();
     }
 
     protected function configureUrls(): void
@@ -63,5 +67,26 @@ class AppServiceProvider extends ServiceProvider
     protected function configureJsonResource(): void
     {
         JsonResource::withoutWrapping();
+    }
+
+    protected function configureMacros(): void
+    {
+        Collection::macro('forEnum', function () {
+            /** @var Collection $this */
+            return $this
+                ->map(fn (BackedEnum $item) => [
+                    'value' => method_exists($item, 'value') ? $item->value() : $item->value,
+                    'label' => method_exists($item, 'label') ? $item->label() : $item->name,
+                ]);
+        });
+
+        Collection::macro('forModel', function (string $label = 'name') {
+            /** @var Collection $this */
+            return $this
+                ->map(fn (Model $item) => [
+                    'value' => $item->getRouteKey(),
+                    'label' => $item->getAttribute($label),
+                ]);
+        });
     }
 }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
+use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
+use App\Web\Tags\Requests\TagIndexRequest;
 use Domain\Tags\Actions\UpdateTagDetails;
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,9 +28,15 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request)
+    public function index(TagIndexRequest $request)
     {
-        //
+        $items = Tag::query()
+            ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
+            ->through(fn (Tag $tag) => TagResource::make($tag));
+
+        return Inertia::render('Tags/TagIndex', [
+            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
+        ]);
     }
 
     public function store(Request $request)
@@ -58,11 +67,12 @@ class TagController implements HasMiddleware
         Gate::authorize('update', $tag);
 
         return Inertia::render('Tags/TagEdit', [
+            'types' => fn () => collect(TagType::cases())->forEnum(),
             'tag' => fn () => $tag->toResource(TagResource::class),
         ]);
     }
 
-    public function update(Request $request, Tag $tag): RedirectResponse
+    public function update(TagUpdateRequest $request, Tag $tag): RedirectResponse
     {
         app(UpdateTagDetails::class)->handle($tag, $request->validated());
 

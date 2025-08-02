@@ -48,10 +48,7 @@ const submit = async () =>
         class="w-full"
         :ui="{ trailing: 'pe-1' }"
       >
-        <template
-          v-if="form.name?.length"
-          #trailing
-        >
+        <template #trailing>
           <UButton
             color="neutral"
             variant="link"

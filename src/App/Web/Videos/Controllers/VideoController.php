@@ -7,8 +7,8 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Requests\VideoIndexRequest;
-use App\Web\Videos\Requests\VideoUpdateRequest;
-use App\Web\Videos\Scopes\VideoListScope;
+use App\Api\Videos\Requests\VideoUpdateRequest;
+use App\Web\Videos\Scopes\VideoIndexScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Algos\GenerateVideoQueue;
@@ -34,11 +34,9 @@ class VideoController implements HasMiddleware
     public function index(VideoIndexRequest $request): Response
     {
         $items = Video::query()
-            ->tap(new VideoListScope(
-                type: $request->input('type', 'all'),
-            ))
+            ->tap(new VideoIndexScope($request))
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
-            ->through(fn ($video) => VideoResource::make($video));
+            ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [
             'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),

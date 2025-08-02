@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Scopes;
 
+use App\Web\Videos\Requests\VideoIndexRequest;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
-class VideoListScope
+class VideoIndexScope
 {
     public function __construct(
-        protected readonly ?string $type = null,
+        protected readonly VideoIndexRequest $request,
     ) {}
 
     public function __invoke(VideoQueryBuilder $query): void
