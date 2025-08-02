@@ -23,7 +23,9 @@ class CreateVideoPlaylist
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            throw_unless($media, InvalidVideoException::emptyClipCollection($video));
+            if (! $media) {
+                return;
+            }
 
             // Create a new playlist for the video
             $playlist = app(CreateNewPlaylist::class)->handle($video, $attributes);
