@@ -2,7 +2,7 @@
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
-import { useVideos } from '@/composables/videos'
+import { usePagination } from '@/composables/pagination'
 import type { Videos } from '@/types'
 import { Deferred, router, usePage, WhenVisible } from '@inertiajs/vue3'
 
@@ -12,7 +12,7 @@ interface Props {
 
 defineProps<Props>()
 
-const { data, hasPages, nextPage } = useVideos()
+const { hasPages, nextPage } = usePagination()
 
 const fetch = () => router.get(usePage().props.location, { page: nextPage.value })
 </script>
@@ -28,9 +28,12 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
         </template>
 
         <div class="flex flex-col gap-4">
-          <div class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3">
+          <div
+            v-if="items?.data?.length"
+            class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3"
+          >
             <VideoCard
-              v-for="item in data"
+              v-for="item in items.data"
               :key="item.id"
               :item
             />

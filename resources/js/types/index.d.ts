@@ -1,6 +1,10 @@
 import type { SelectMenuItem } from '@nuxt/ui'
 
-export type User = {
+export type Model = {
+  id: string
+}
+
+export type User = Model & {
   id: string
   name: string
   email: string
@@ -13,7 +17,7 @@ export type User = {
   updated: string
 }
 
-export type Tag = {
+export type Tag = Model & {
   id: string
   name: string
   description: string
@@ -31,7 +35,7 @@ export type Tags = Omit<Paginator, 'data'> & {
 
 export type TagMenuItem = Tag & SelectMenuItem
 
-export type Playlist = {
+export type Playlist = Model & {
   id: string
   asset: string
   valid: boolean
@@ -41,7 +45,7 @@ export type Playlist = {
   updated: string
 }
 
-export type Video = {
+export type Video = Model & {
   id: string
   user?: User
   name: string
@@ -70,7 +74,7 @@ export type Videos = Omit<Paginator, 'data'> & {
 }
 
 export type Paginator = {
-  data: object[] | null
+  data: Model[] | null
   per_page: number | null
   current_page: number | null
   from: number | null
