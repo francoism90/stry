@@ -42,7 +42,7 @@ const fetch = () => router.get(usePage().props.location, { cursor: nextPage.valu
           :buffer="100"
           :params="{
             only: ['items'],
-            data: { cursor: hasPages ? nextPage : null },
+            data: hasPages ? { cursor: nextPage } : {},
           }"
         >
           <template #fallback>
