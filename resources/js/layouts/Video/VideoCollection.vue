@@ -4,7 +4,7 @@ import PageBody from '@/components/Ui/PageBody.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
 import { useVideos } from '@/composables/videos'
 import type { Videos } from '@/types'
-import { Deferred, router, WhenVisible } from '@inertiajs/vue3'
+import { Deferred, router, usePage, WhenVisible } from '@inertiajs/vue3'
 
 interface Props {
   items?: Videos
@@ -12,14 +12,9 @@ interface Props {
 
 defineProps<Props>()
 
-const { data, currentPage, nextPage, hasPages } = useVideos()
+const { data, nextPage, hasPages } = useVideos()
 
-const fetch = () =>
-  router.visit(nextPage.value ?? '/', {
-    replace: true,
-    preserveScroll: true,
-    preserveState: true,
-  })
+const fetch = () => router.get(usePage().props.location, { cursor: nextPage.value ?? '' })
 </script>
 
 <template>
@@ -47,7 +42,7 @@ const fetch = () =>
           :buffer="100"
           :params="{
             only: ['items'],
-            data: { page: hasPages ? currentPage + 1 : currentPage },
+            data: { cursor: hasPages ? nextPage : '' },
           }"
         >
           <template #fallback>

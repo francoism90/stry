@@ -7,7 +7,8 @@ export function useVideos() {
 
   const data = computed(() => state.value?.data || [])
   const currentPage = computed(() => state.value?.current_page || 1)
-  const nextPage = computed(() => state.value?.next_page_url || '')
+  const prevPage = computed(() => state.value?.prev_cursor || '')
+  const nextPage = computed(() => state.value?.next_cursor || '')
   const hasPages = computed(() => !!nextPage.value)
 
   watchEffect(async () => {
@@ -18,6 +19,7 @@ export function useVideos() {
     state: readonly(state),
     data,
     currentPage,
+    prevPage,
     nextPage,
     hasPages,
   }
