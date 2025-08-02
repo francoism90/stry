@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Scopes;
 
-use App\Web\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Requests\VideoIndexRequest;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
 class VideoIndexScope

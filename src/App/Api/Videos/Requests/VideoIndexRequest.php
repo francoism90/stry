@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Requests;
+namespace App\Api\Videos\Requests;
 
-use Domain\Tags\Models\Tag;
+use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TagIndexRequest extends FormRequest
+class VideoIndexRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        logger('auth');
-
-        return $this->user()->can('viewAny', Tag::class);
+        return $this->user()->can('viewAny', Video::class);
     }
 
     /**
@@ -22,7 +20,7 @@ class TagIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'list' => ['sometimes', 'string', 'in:all,watching'],
+            'type' => ['nullable', 'string', 'in:watching,newest'],
         ];
     }
 }

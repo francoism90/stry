@@ -11,7 +11,6 @@ import { ref } from 'vue'
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
 const filters = ref<NavigationMenuItem[]>([
-  { label: 'All', to: index.url({ query: { list: 'all' } }) },
   { label: 'Watched', to: index.url({ query: { list: 'watching' } }) },
   { label: 'Newest', to: index.url({ query: { list: 'newest' } }) },
 ])
@@ -22,6 +21,6 @@ const filters = ref<NavigationMenuItem[]>([
 
   <div>
     <PageFeature title="Videos" />
-    <PageFilters :items="filters" />
+    <PageFilters :filters />
   </div>
 </template>

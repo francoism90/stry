@@ -6,6 +6,8 @@ declare module '@inertiajs/core' {
     readonly app: string
     readonly locale: string
     readonly location: string
+    readonly root: string
+    readonly path: string
     readonly query: string
     readonly flash: {
       message: string

@@ -6,7 +6,8 @@ namespace App\Web\Tags\Controllers;
 
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
-use App\Web\Tags\Requests\TagIndexRequest;
+use App\Api\Tags\Requests\TagIndexRequest;
+use App\Web\Tags\Scopes\TagIndexScope;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
@@ -28,14 +29,17 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(TagIndexRequest $request)
+    public function index(TagIndexRequest $request): Response
     {
         $items = Tag::query()
+            ->tap(new TagIndexScope($request))
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
             ->through(fn (Tag $tag) => TagResource::make($tag));
 
         return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
+            'type' => fn () => TagType::tryFrom($request->input('type', '')),
+            'types' => fn () => collect(TagType::cases())->forEnum(),
         ]);
     }
 

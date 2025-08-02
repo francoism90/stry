@@ -6,22 +6,30 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagCollection from '@/layouts/Tag/TagCollection.vue'
 import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { computed } from 'vue'
+
+interface Props {
+  type: string
+  types: NavigationMenuItem[]
+}
 
 defineOptions({ layout: [DefaultLayout, TagCollection] })
 
-const filters = ref<NavigationMenuItem[]>([
-  { label: 'All', to: index.url({ query: { list: 'all' } }) },
-  { label: 'Watched', to: index.url({ query: { list: 'watching' } }) },
-  { label: 'Newest', to: index.url({ query: { list: 'newest' } }) },
-])
+const props = defineProps<Props>()
+
+const filters = computed(() =>
+  props.types.map((type) => ({
+    label: type.label,
+    to: index.url({ query: { type: type.value } }),
+  })),
+)
 </script>
 
 <template>
-  <Head title="Tags" />
+  <Head title="Lists" />
 
   <div>
-    <PageFeature title="Tags" />
-    <PageFilters :items="filters" />
+    <PageFeature title="Lists" />
+    <PageFilters :filters />
   </div>
 </template>

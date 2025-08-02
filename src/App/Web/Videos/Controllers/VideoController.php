@@ -6,7 +6,7 @@ namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Web\Videos\Scopes\VideoIndexScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;

@@ -1,11 +1,22 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
+import { ref } from 'vue'
 
 interface Props {
-  items: NavigationMenuItem[]
+  filters: NavigationMenuItem[]
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const items = ref<NavigationMenuItem[]>([
+  {
+    to: usePage().props.path,
+    label: 'All',
+    exact: true,
+  },
+  ...props.filters,
+])
 </script>
 
 <template>

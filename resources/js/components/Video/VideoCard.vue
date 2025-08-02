@@ -22,7 +22,10 @@ const link = computed(() => show.url(props.item.id))
       body: 'relative !p-0',
     }"
   >
-    <Link :href="link">
+    <Link
+      class="block"
+      :href="link"
+    >
       <div class="absolute inset-0 z-0 size-full rounded-xl bg-gradient-to-t from-neutral-800/30 to-transparent" />
 
       <img

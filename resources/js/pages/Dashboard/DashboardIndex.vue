@@ -24,7 +24,7 @@ defineProps<Props>()
         <VideoCarousel
           label="Made for You"
           :items="recent"
-          :actions="[{ label: 'Show All', href: index.url({ query: { list: 'all' } }), trailingIcon: 'i-lucide-chevron-right' }]"
+          :actions="[{ label: 'Show All', href: index.url(), trailingIcon: 'i-lucide-chevron-right' }]"
         />
 
         <VideoCarousel

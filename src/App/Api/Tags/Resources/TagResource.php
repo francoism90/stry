@@ -19,7 +19,7 @@ class TagResource extends JsonResource
             'id' => $this->getRouteKey(),
             'slug' => $this->slug,
             'name' => $this->name,
-            'type' => $this->type,
+            'type' => $this->type?->label(),
             'videos' => $this->whenCounted('videos'),
             'created' => $this->created_at,
             'updated' => $this->updated_at,
