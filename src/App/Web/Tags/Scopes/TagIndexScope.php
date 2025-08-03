@@ -16,6 +16,7 @@ class TagIndexScope
     public function __invoke(TagQueryBuilder $query): void
     {
         $query
+            ->withCount('videos')
             ->when($this->request->input('type'), fn ($query, $type) => $query->where('type', $type))
             ->ordered();
     }

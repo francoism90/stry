@@ -20,6 +20,8 @@ defineProps<Props>()
       <dl class="list text-xs font-light tracking-tight text-neutral-100">
         <dt class="sr-only">Type</dt>
         <dd>{{ item.type }}</dd>
+        <dt class="sr-only">Videos</dt>
+        <dd>{{ item.videos }} videos</dd>
       </dl>
     </Link>
   </UCard>
