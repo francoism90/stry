@@ -8,11 +8,12 @@ use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Scopes\VideoIndexScope;
+use App\Web\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
+use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VideoController implements HasMiddleware
+class VideoController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -34,7 +35,7 @@ class VideoController implements HasMiddleware
     public function index(VideoIndexRequest $request): Response
     {
         $items = Video::query()
-            ->tap(new VideoIndexScope($request))
+            ->tap(new VideoListScope)
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
             ->through(fn (Video $video) => VideoResource::make($video));
 

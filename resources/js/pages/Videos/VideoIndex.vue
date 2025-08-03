@@ -2,6 +2,7 @@
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
 import { Head } from '@inertiajs/vue3'
@@ -19,8 +20,8 @@ const filters = ref<NavigationMenuItem[]>([
 <template>
   <Head title="Videos" />
 
-  <div>
+  <PageSection>
     <PageFeature title="Videos" />
     <PageFilters :filters />
-  </div>
+  </PageSection>
 </template>

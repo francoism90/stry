@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Web\Dashboard\Controllers;
 
 use Domain\Videos\Algos\GenerateVideoCollection;
+use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class DashboardController implements HasMiddleware
+class DashboardController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {

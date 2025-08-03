@@ -2,6 +2,7 @@
 import { index } from '@/actions/App/Web/Tags/Controllers/TagController'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagCollection from '@/layouts/Tag/TagCollection.vue'
 import { Head } from '@inertiajs/vue3'
@@ -28,8 +29,8 @@ const filters = computed(() =>
 <template>
   <Head title="Lists" />
 
-  <div>
+  <PageSection>
     <PageFeature title="Lists" />
     <PageFilters :filters />
-  </div>
+  </PageSection>
 </template>

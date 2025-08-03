@@ -37,7 +37,6 @@ const items = ref<NavigationMenuItem[][]>([
     <PageBody>
       <PageFeature :title="video.name" />
       <PageNavigation :items />
-
       <slot />
     </PageBody>
   </Page>

@@ -8,12 +8,12 @@ use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Models\Video;
+use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Gate;
 
-class VideoController implements HasMiddleware
+class VideoController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -40,8 +40,6 @@ class VideoController implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): VideoResource
     {
-        Gate::authorize('update', $video);
-
         $video = app(UpdateVideoDetails::class)->handle($video, $request->validated());
 
         return VideoResource::make($video);

@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Scopes;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
+use Domain\Tags\Models\Tag;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
-class VideoIndexScope
+class VideoListScope
 {
     public function __construct(
-        protected readonly VideoIndexRequest $request,
+        protected readonly Tag|array|null $tags = null,
     ) {}
 
     public function __invoke(VideoQueryBuilder $query): void
     {
         $query
             ->with(['tags'])
+            ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags))
             ->orderByDesc('created_at');
     }
 }

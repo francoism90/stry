@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SearchController from '@/actions/App/Web/Dashboard/Controllers/SearchController'
 import PageFeature from '@/components/Ui/PageFeature.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
 import { Head, router } from '@inertiajs/vue3'
@@ -26,7 +27,7 @@ watchDebounced(input, () => router.get(SearchController.url(), { search: input.v
 <template>
   <Head title="Search" />
 
-  <div>
+  <PageSection>
     <PageFeature title="Search" />
 
     <UFormField class="py-2">
@@ -36,5 +37,5 @@ watchDebounced(input, () => router.get(SearchController.url(), { search: input.v
         class="w-full"
       />
     </UFormField>
-  </div>
+  </PageSection>
 </template>

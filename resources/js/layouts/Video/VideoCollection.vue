@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
 import { usePagination } from '@/composables/pagination'
 import type { Videos } from '@/types'
@@ -27,7 +28,7 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
           <div class="sr-only">Loading items...</div>
         </template>
 
-        <div class="flex flex-col gap-4">
+        <PageSection>
           <div
             v-if="items?.data?.length"
             class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3"
@@ -38,7 +39,7 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
               :item
             />
           </div>
-        </div>
+        </PageSection>
 
         <WhenVisible
           :always="hasPages"

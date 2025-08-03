@@ -3,6 +3,7 @@ import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import type { Playlist, Tag } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -46,7 +47,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
 
   <Page>
     <PageBody>
-      <div class="flex flex-col gap-2 py-4">
+      <PageSection class="flex flex-col gap-2 py-4">
         <PageFeature :title="tag.name" />
 
         <UNavigationMenu
@@ -59,7 +60,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
             linkLabel: 'text-xs text-neutral-400',
           }"
         />
-      </div>
+      </PageSection>
 
       <Deferred :data="['queue']">
         <template #fallback>

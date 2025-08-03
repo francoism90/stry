@@ -3,6 +3,7 @@ import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
 import type { Playlist, Video } from '@/types'
@@ -54,7 +55,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.rel
     <PageBody>
       <VideoPlayer :src />
 
-      <div class="flex flex-col gap-2 py-4">
+      <PageSection>
         <PageFeature :title="video.name" />
 
         <UNavigationMenu
@@ -67,7 +68,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.rel
             linkLabel: 'text-xs text-neutral-400',
           }"
         />
-      </div>
+      </PageSection>
 
       <Deferred :data="['queue']">
         <template #fallback>

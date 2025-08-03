@@ -2,6 +2,7 @@
 import TagCard from '@/components/Tag/TagCard.vue'
 import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import { usePagination } from '@/composables/pagination'
 import type { Tags } from '@/types'
 import { Deferred, router, usePage, WhenVisible } from '@inertiajs/vue3'
@@ -27,10 +28,10 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
           <div class="sr-only">Loading items...</div>
         </template>
 
-        <div class="flex flex-col gap-4">
+        <PageSection>
           <div
             v-if="items?.data?.length"
-            class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3"
+            class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
           >
             <TagCard
               v-for="item in items.data"
@@ -38,7 +39,7 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
               :item
             />
           </div>
-        </div>
+        </PageSection>
 
         <WhenVisible
           :always="hasPages"

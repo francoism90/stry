@@ -7,13 +7,14 @@ namespace App\Api\Tags\Controllers;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
+use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class TagController implements HasMiddleware
+class TagController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { index } from '@/actions/App/Web/Tags/Controllers/TagVideoController'
 import type { Tag } from '@/types'
 import { Link } from '@inertiajs/vue3'
 
@@ -14,7 +14,7 @@ defineProps<Props>()
   <UCard variant="soft">
     <Link
       class="block"
-      :href="show.url(item.id)"
+      :href="index.url(item.id)"
     >
       <h2>{{ item.name }}</h2>
       <dl class="list text-xs font-light tracking-tight text-neutral-100">

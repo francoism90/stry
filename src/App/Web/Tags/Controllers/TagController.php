@@ -11,6 +11,7 @@ use App\Web\Tags\Scopes\TagIndexScope;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
+use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TagController implements HasMiddleware
+class TagController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {

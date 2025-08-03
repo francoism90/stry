@@ -32,7 +32,6 @@ const items = ref<NavigationMenuItem[][]>([
     <PageBody>
       <PageFeature :title="tag.name" />
       <PageNavigation :items />
-
       <slot />
     </PageBody>
   </Page>
