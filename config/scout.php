@@ -196,7 +196,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 32000,
+                    'maxTotalHits' => 100000,
                 ],
             ],
 
@@ -293,7 +293,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 32000,
+                    'maxTotalHits' => 100000,
                 ],
             ],
 
@@ -373,7 +373,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 32000,
+                    'maxTotalHits' => 100000,
                 ],
             ],
         ],

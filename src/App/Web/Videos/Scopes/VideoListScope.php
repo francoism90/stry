@@ -10,14 +10,13 @@ use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 class VideoListScope
 {
     public function __construct(
-        protected readonly Tag|array|null $tags = null,
+        public readonly Tag|array|null $tags = null,
     ) {}
 
     public function __invoke(VideoQueryBuilder $query): void
     {
         $query
             ->with(['tags'])
-            ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags))
-            ->orderByDesc('created_at');
+            ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags));
     }
 }

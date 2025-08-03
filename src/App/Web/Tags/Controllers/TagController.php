@@ -33,7 +33,7 @@ class TagController extends Controller implements HasMiddleware
     public function index(TagIndexRequest $request): Response
     {
         $items = Tag::query()
-            ->tap(new TagIndexScope($request))
+            ->tap(new TagIndexScope(type: $request->input('type')))
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
             ->through(fn (Tag $tag) => TagResource::make($tag));
 

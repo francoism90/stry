@@ -7,7 +7,7 @@ namespace App\Web\Tags\Controllers;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Scopes\VideoListScope;
+use App\Web\Videos\Scopes\VideoFilterScope;
 use Domain\Tags\Models\Tag;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -29,9 +29,9 @@ class TagVideoController extends Controller implements HasMiddleware
 
     public function index(Tag $tag, VideoIndexRequest $request): Response
     {
-        $items = Video::query()
-            ->tap(new VideoListScope(tags: $tag))
-            ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
+        $items = Video::search($request->input('search', ''))
+            ->tap(new VideoFilterScope(tags: [$tag->getKey()], sort: $request->input('sort')))
+            ->simplePaginate(perPage: 24, page: (int) $request->input('page', 1))
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Tags/TagVideos', [

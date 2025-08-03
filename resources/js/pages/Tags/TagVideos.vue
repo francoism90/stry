@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { index } from '@/actions/App/Web/Tags/Controllers/TagVideoController'
 import PageFeature from '@/components/Ui/PageFeature.vue'
+import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
 import type { Tag } from '@/types'
 import { Head } from '@inertiajs/vue3'
+import type { NavigationMenuItem } from '@nuxt/ui'
+import { ref } from 'vue'
 
 interface Props {
   tag: Tag
@@ -12,7 +16,13 @@ interface Props {
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const filters = ref<NavigationMenuItem[]>([
+  { label: 'Ordered', to: index.url(props.tag.id, { query: { sort: 'ordered' } }) },
+  { label: 'Longest', to: index.url(props.tag.id, { query: { sort: 'longest' } }) },
+  { label: 'Shortest', to: index.url(props.tag.id, { query: { sort: 'shortest' } }) },
+])
 </script>
 
 <template>
@@ -27,5 +37,6 @@ defineProps<Props>()
         <dd>{{ tag.videos }} videos</dd>
       </dl>
     </PageFeature>
+    <PageFilters :filters />
   </PageSection>
 </template>

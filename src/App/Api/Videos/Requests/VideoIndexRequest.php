@@ -21,7 +21,8 @@ class VideoIndexRequest extends FormRequest
     {
         return [
             'search' => ['nullable', 'string', 'min:1', 'max:255'],
-            'type' => ['nullable', 'string', 'in:watching,newest'],
+            'sort' => ['nullable', 'string', 'in:recent,ordered,longest,shortest'],
+            'list' => ['nullable', 'string', 'in:watching,newest'],
         ];
     }
 }
