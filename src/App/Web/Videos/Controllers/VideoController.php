@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Resources\PlaylistResource;
-use App\Api\Videos\Resources\VideoResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
+use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Scopes\VideoIndexScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\UpdateVideoDetails;

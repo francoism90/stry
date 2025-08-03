@@ -6,7 +6,6 @@ namespace Domain\Videos\Actions;
 
 use Domain\Playlists\Actions\CreateNewPlaylist;
 use Domain\Playlists\Jobs\PerformTranscoding;
-use Domain\Videos\Exceptions\InvalidVideoException;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 
