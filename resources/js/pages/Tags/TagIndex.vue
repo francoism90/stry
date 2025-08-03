@@ -7,10 +7,9 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagCollection from '@/layouts/Tag/TagCollection.vue'
 import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import { ref } from 'vue'
 
 interface Props {
-  type: string
   types: NavigationMenuItem[]
 }
 
@@ -18,12 +17,17 @@ defineOptions({ layout: [DefaultLayout, TagCollection] })
 
 const props = defineProps<Props>()
 
-const filters = computed(() =>
-  props.types.map((type) => ({
+const filters = ref<NavigationMenuItem[]>([
+  {
+    label: 'All',
+    to: index.url(),
+    exact: true,
+  },
+  ...props.types.map((type) => ({
     label: type.label,
     to: index.url({ query: { type: type.value } }),
   })),
-)
+])
 </script>
 
 <template>

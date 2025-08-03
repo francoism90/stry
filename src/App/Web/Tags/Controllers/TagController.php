@@ -39,7 +39,6 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
-            'type' => fn () => TagType::tryFrom($request->input('type', '')),
             'types' => fn () => collect(TagType::cases())->forEnum(),
         ]);
     }

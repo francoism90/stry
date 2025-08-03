@@ -19,6 +19,7 @@ defineOptions({ layout: [DefaultLayout, VideoCollection] })
 const props = defineProps<Props>()
 
 const filters = ref<NavigationMenuItem[]>([
+  { label: 'All', to: index.url(props.tag.id), exact: true },
   { label: 'Ordered', to: index.url(props.tag.id, { query: { sort: 'ordered' } }) },
   { label: 'Longest', to: index.url(props.tag.id, { query: { sort: 'longest' } }) },
   { label: 'Shortest', to: index.url(props.tag.id, { query: { sort: 'shortest' } }) },

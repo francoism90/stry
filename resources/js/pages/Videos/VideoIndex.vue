@@ -12,6 +12,7 @@ import { ref } from 'vue'
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
 const filters = ref<NavigationMenuItem[]>([
+  { label: 'All', to: index.url(), exact: true },
   { label: 'Watched', to: index.url({ query: { list: 'watching' } }) },
   { label: 'Newest', to: index.url({ query: { list: 'newest' } }) },
 ])

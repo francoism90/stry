@@ -6,8 +6,8 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Videos\Scopes\VideoFilterScope;
 use Domain\Videos\Models\Video;
-use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -27,7 +27,7 @@ class SearchController extends Controller implements HasMiddleware
     public function __invoke(VideoIndexRequest $request): Response
     {
         $items = Video::search($request->input('search', ''))
-            ->query(fn (VideoQueryBuilder $query) => $query->with('tags'))
+            ->tap(new VideoFilterScope(sort: $request->input('sort')))
             ->simplePaginate(perPage: 24, page: (int) $request->input('page', 1))
             ->through(fn ($video) => VideoResource::make($video));
 
