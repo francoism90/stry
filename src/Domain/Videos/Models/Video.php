@@ -83,6 +83,13 @@ class Video extends Model implements HasMedia
     ];
 
     /**
+     * @var array<int, string>
+     */
+    protected $with = [
+        'tags',
+    ];
+
+    /**
      * @var bool
      */
     public $registerMediaConversionsUsingModelInstance = true;
@@ -195,11 +202,6 @@ class Video extends Model implements HasMedia
         return filled($this->expires_at) ? $this->expires_at->isFuture() : true;
     }
 
-    public function makeSearchableUsing(VideoCollection $models): VideoCollection
-    {
-        return $models->loadMissing('media', 'tags');
-    }
-
     public function toSearchableArray(): array
     {
         return [
@@ -223,11 +225,6 @@ class Video extends Model implements HasMedia
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
-    }
-
-    protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
-    {
-        return $query->with(['media', 'tags']);
     }
 
     public function identifier(): Attribute

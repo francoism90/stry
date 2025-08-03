@@ -7,10 +7,14 @@ namespace App\Web\Tags\Controllers;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
+use App\Api\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Scopes\TagIndexScope;
+use App\Web\Videos\Scopes\VideoFilterScope;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -57,12 +61,18 @@ class TagController extends Controller implements HasMiddleware
         // ]);
     }
 
-    public function show(Tag $tag): Response
+    public function show(Tag $tag, VideoIndexRequest $request): Response
     {
         Gate::authorize('view', $tag);
 
+        $items = Video::search($request->input('search', ''))
+            ->tap(new VideoFilterScope(tags: [$tag->getKey()], sort: $request->input('sort')))
+            ->simplePaginate(perPage: 24, page: (int) $request->input('page', 1))
+            ->through(fn (Video $video) => VideoResource::make($video));
+
         return Inertia::render('Tags/TagView', [
-            'tag' => fn () => $tag->toResource(TagResource::class),
+            'tag' => fn () => TagResource::make($tag->loadCount('videos')),
+            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
 

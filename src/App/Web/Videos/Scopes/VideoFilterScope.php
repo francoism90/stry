@@ -16,7 +16,6 @@ class VideoFilterScope
     public function __invoke(Builder $query): void
     {
         $query
-            ->query(fn ($query) => $query->with('tags'))
             ->when($this->tags, fn ($query, $tags) => $query->whereIn('tagged', $tags))
             ->when($this->sort === 'ordered', fn ($query) => $query->orderBy('name'))
             ->when($this->sort === 'longest', fn ($query) => $query->orderByDesc('duration'))

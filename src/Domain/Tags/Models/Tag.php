@@ -137,11 +137,6 @@ class Tag extends BaseTag implements HasMedia
         return 'broadcasts';
     }
 
-    public function makeSearchableUsing(TagCollection $models): TagCollection
-    {
-        return $models->loadMissing('relatables');
-    }
-
     public function toSearchableArray(): array
     {
         return [
@@ -156,11 +151,6 @@ class Tag extends BaseTag implements HasMedia
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
-    }
-
-    protected function makeAllSearchableUsing(TagQueryBuilder $query): TagQueryBuilder
-    {
-        return $query->with(['relatables']);
     }
 
     public function thumbnail(): Attribute

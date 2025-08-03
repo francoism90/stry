@@ -24,20 +24,16 @@ const props = defineProps<Props>()
 const input = ref(props.search || '')
 
 const filters = ref<NavigationMenuItem[]>([
-  { label: 'Relevant', to: SearchController.url({ mergeQuery: { sort: null } }), exact: true },
+  { label: 'Relevant', to: SearchController.url({ mergeQuery: { sort: '' } }), exact: true },
   { label: 'Ordered', to: SearchController.url({ mergeQuery: { sort: 'ordered' } }) },
   { label: 'Longest', to: SearchController.url({ mergeQuery: { sort: 'longest' } }) },
   { label: 'Shortest', to: SearchController.url({ mergeQuery: { sort: 'shortest' } }) },
 ])
 
-watchDebounced(
-  input,
-  () => router.get(SearchController.url(), { search: input.value }, { reset: ['page', 'items'], preserveState: true }),
-  {
-    debounce: 350,
-    maxWait: 1000,
-  },
-)
+watchDebounced(input, () => router.get(SearchController.url(), { search: input.value }), {
+  debounce: 350,
+  maxWait: 1000,
+})
 </script>
 
 <template>
@@ -57,7 +53,7 @@ watchDebounced(
 
     <PageFilters
       v-if="items?.data?.length"
-      :filters
+      :items="filters"
     />
   </PageSection>
 </template>

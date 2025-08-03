@@ -39,11 +39,14 @@ const link = computed(() => show.url(props.item.id))
       <div class="absolute inset-x-4 bottom-4 z-10 block group-hover:hidden">
         <div class="grid content-end gap-0.5">
           <h2 class="line-clamp-2 text-sm leading-tight font-medium tracking-tight text-neutral-100">{{ item.name }}</h2>
-          <dl class="list text-xs font-light tracking-tight text-neutral-100">
+          <dl class="details text-xs font-light tracking-tight text-neutral-100">
             <dt class="sr-only">Duration</dt>
             <dd>{{ item.timestamp }}</dd>
-            <dt class="sr-only">Tags</dt>
-            <dd class="truncate">{{ tags.join(', ') }}</dd>
+
+            <template v-if="tags.length">
+              <dt class="sr-only">Tags</dt>
+              <dd class="truncate">{{ tags.join(', ') }}</dd>
+            </template>
           </dl>
         </div>
       </div>

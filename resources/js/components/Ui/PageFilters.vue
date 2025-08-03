@@ -2,7 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
-  filters: NavigationMenuItem[]
+  items: NavigationMenuItem[]
 }
 
 defineProps<Props>()
@@ -10,7 +10,7 @@ defineProps<Props>()
 
 <template>
   <UNavigationMenu
-    :items="filters"
+    :items="items"
     :ui="{
       root: 'size-full items-center overflow-x-auto',
       list: 'gap-0.5',

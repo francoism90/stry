@@ -1,5 +1,5 @@
 <template>
-  <section class="relative flex flex-col gap-1">
+  <section class="flex flex-col gap-0.5">
     <slot />
   </section>
 </template>

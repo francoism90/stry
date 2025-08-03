@@ -2,10 +2,11 @@ import type { SelectMenuItem } from '@nuxt/ui'
 
 export type Model = {
   id: string
+  created: string
+  updated: string
 }
 
 export type User = Model & {
-  id: string
   name: string
   email: string
   email_verified: string
@@ -18,15 +19,12 @@ export type User = Model & {
 }
 
 export type Tag = Model & {
-  id: string
   name: string
   description: string
   type: string
   thumbnail: string
   srcset: string
   videos: number
-  created: string
-  updated: string
 }
 
 export type Tags = Omit<Paginator, 'data'> & {
@@ -36,17 +34,13 @@ export type Tags = Omit<Paginator, 'data'> & {
 export type TagMenuItem = Tag & SelectMenuItem
 
 export type Playlist = Model & {
-  id: string
   asset: string
   valid: boolean
   state: string
   expires: string
-  created: string
-  updated: string
 }
 
 export type Video = Model & {
-  id: string
   user?: User
   name: string
   titles?: string[]
@@ -64,8 +58,6 @@ export type Video = Model & {
   expires: string
   published: string
   state: string
-  created: string
-  updated: string
   tags: Tag[] | null
 }
 
@@ -86,4 +78,13 @@ export type Paginator = {
   prev_page_url: string | null
   next_cursor: string | null
   prev_cursor: string | null
+}
+
+export type DetailListItem = {
+  label: string
+  value?: unknown
+  description?: string
+  icon?: string
+  hidden?: boolean
+  to?: string
 }

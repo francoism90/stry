@@ -16,7 +16,6 @@ class VideoListScope
     public function __invoke(VideoQueryBuilder $query): void
     {
         $query
-            ->with(['tags'])
             ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags));
     }
 }

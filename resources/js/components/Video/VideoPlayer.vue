@@ -2,8 +2,9 @@
 import 'vidstack/bundle'
 
 interface Props {
-  src?: string
-  title?: string
+  src?: string | undefined
+  title?: string | undefined
+  time?: number | undefined
 }
 
 defineProps<Props>()
@@ -12,7 +13,9 @@ defineProps<Props>()
 <template>
   <media-player
     .src="src"
-    autoPlay
+    .title="title"
+    .clipStartTime="time"
+    preload="metadata"
     playsInline
   >
     <media-provider></media-provider>

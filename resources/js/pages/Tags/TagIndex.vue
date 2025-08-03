@@ -18,11 +18,7 @@ defineOptions({ layout: [DefaultLayout, TagCollection] })
 const props = defineProps<Props>()
 
 const filters = ref<NavigationMenuItem[]>([
-  {
-    label: 'All',
-    to: index.url(),
-    exact: true,
-  },
+  { label: 'All', to: index.url(), exact: true },
   ...props.types.map((type) => ({
     label: type.label,
     to: index.url({ query: { type: type.value } }),
@@ -35,6 +31,6 @@ const filters = ref<NavigationMenuItem[]>([
 
   <PageSection>
     <PageFeature title="Lists" />
-    <PageFilters :filters />
+    <PageFilters :items="filters" />
   </PageSection>
 </template>
