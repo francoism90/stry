@@ -10,8 +10,8 @@ use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
+use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Algos\GenerateVideoQueue;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -68,7 +68,7 @@ class VideoController extends Controller implements HasMiddleware
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'playlist' => fn () => $video->currentPlaylist()?->toResource(PlaylistResource::class),
-            'queue' => Inertia::defer(fn () => GenerateVideoQueue::make($video), 'items'),
+            'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video), 'items'),
         ]);
     }
 

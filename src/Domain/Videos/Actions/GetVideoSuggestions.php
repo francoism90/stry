@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Algos;
+namespace Domain\Videos\Actions;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GenerateVideoCollection
+class GetVideoSuggestions
 {
-    public static function make(?User $user = null, ?string $type = null, ?int $limit = null): ResourceCollection
+    public function handle(int $limit = 16): ResourceCollection
     {
         return Video::query()
-            ->orderByDesc('created_at')
-            ->take($limit ?? 12)
+            ->with('tags')
+            ->inRandomOrder()
+            ->published()
+            ->take($limit)
             ->get()
             ->toResourceCollection(VideoResource::class);
     }
