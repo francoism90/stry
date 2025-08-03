@@ -3,6 +3,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
   title: string
+  description?: string
   actions?: NavigationMenuItem[]
 }
 
@@ -12,9 +13,13 @@ defineProps<Props>()
 <template>
   <section class="relative flex flex-col gap-1">
     <div class="flex items-center justify-between gap-2">
-      <h1 class="line-clamp-2 font-serif text-lg font-semibold tracking-tight">
-        {{ title }}
-      </h1>
+      <div class="flex flex-col">
+        <h1 class="line-clamp-2 font-serif text-lg font-semibold tracking-tight">
+          {{ title }}
+        </h1>
+
+        <slot />
+      </div>
 
       <UNavigationMenu
         v-if="actions?.length"

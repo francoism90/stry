@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
+use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Scopes\VideoListScope;
@@ -34,8 +35,8 @@ class TagVideoController extends Controller implements HasMiddleware
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Tags/TagVideos', [
+            'tag' => fn () => TagResource::make($tag->loadCount('videos')),
             'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
-            'playlists' => fn () => [],
         ]);
     }
 
