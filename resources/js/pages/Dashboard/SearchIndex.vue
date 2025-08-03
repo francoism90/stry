@@ -30,10 +30,14 @@ const filters = ref<NavigationMenuItem[]>([
   { label: 'Shortest', to: SearchController.url({ mergeQuery: { sort: 'shortest' } }) },
 ])
 
-watchDebounced(input, () => router.get(SearchController.url(), { search: input.value }), {
-  debounce: 350,
-  maxWait: 1000,
-})
+watchDebounced(
+  input,
+  () => router.get(SearchController.url(), { search: input.value }, { reset: ['page', 'items'], preserveState: true }),
+  {
+    debounce: 350,
+    maxWait: 1000,
+  },
+)
 </script>
 
 <template>
@@ -53,7 +57,7 @@ watchDebounced(input, () => router.get(SearchController.url(), { search: input.v
 
     <PageFilters
       v-if="items?.data?.length"
-      :filters="filters"
+      :filters
     />
   </PageSection>
 </template>
