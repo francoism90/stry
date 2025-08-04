@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import Page from '@/components/Ui/Page.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import type { Video } from '@/types'
 import { Deferred } from '@inertiajs/vue3'
@@ -14,13 +14,13 @@ defineProps<Props>()
 </script>
 
 <template>
-  <Page>
-    <PageBody class="gap-8">
-      <Deferred :data="['recent']">
-        <template #fallback>
-          <div class="sr-only">Loading sections...</div>
-        </template>
+  <PageBody>
+    <Deferred :data="['recent']">
+      <template #fallback>
+        <div class="sr-only">Loading sections...</div>
+      </template>
 
+      <PageSection class="gap-8">
         <VideoCarousel
           label="Made for You"
           :items="recent"
@@ -32,7 +32,7 @@ defineProps<Props>()
           :items="recent"
           :actions="[{ label: 'Show All', href: index.url({ query: { list: 'watching' } }), trailingIcon: 'i-lucide-chevron-right' }]"
         />
-      </Deferred>
-    </PageBody>
-  </Page>
+      </PageSection>
+    </Deferred>
+  </PageBody>
 </template>

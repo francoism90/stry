@@ -12,7 +12,7 @@ defineProps<Props>()
 <template>
   <div
     v-if="items?.length"
-    class="flex flex-wrap gap-1 py-1"
+    class="flex flex-wrap gap-1 py-2"
   >
     <ULink
       v-for="item in items"

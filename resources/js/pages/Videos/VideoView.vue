@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import Page from '@/components/Ui/Page.vue'
 import PageBadge from '@/components/Ui/PageBadge.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
@@ -46,36 +45,33 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.rel
 <template>
   <Head :title="video.name" />
 
-  <Page>
-    <PageBody>
-      <VideoPlayer
-        :src="src"
-        :time="time"
-      />
+  <PageBody>
+    <VideoPlayer
+      :src="src"
+      :time="time"
+    />
 
-      <PageSection>
-        <PageColumns>
-          <template #left>
-            <PageFeature :title="video.name" />
-            <PageDetails :items="details" />
-          </template>
+    <PageSection class="gap-4">
+      <PageColumns>
+        <template #left>
+          <PageFeature :title="video.name" />
+          <PageDetails :items="details" />
+          <PageBadge :items="video.tags" />
+        </template>
 
-          <template #right>
-            <UNavigationMenu
-              :items="items"
-              :ui="{
-                root: 'size-full items-center overflow-x-auto',
-                list: 'inline-flex size-full items-center gap-2',
-                link: 'rounded-full bg-neutral-800/40',
-                linkLeadingIcon: 'size-3.5',
-                linkLabel: 'text-xs text-neutral-400',
-              }"
-            />
-          </template>
-        </PageColumns>
-
-        <PageBadge :items="video.tags" />
-      </PageSection>
+        <template #right>
+          <UNavigationMenu
+            :items="items"
+            :ui="{
+              root: 'size-full items-center overflow-x-auto',
+              list: 'inline-flex size-full items-center gap-2',
+              link: 'rounded-full bg-neutral-800/40',
+              linkLeadingIcon: 'size-3.5',
+              linkLabel: 'text-xs text-neutral-400',
+            }"
+          />
+        </template>
+      </PageColumns>
 
       <Deferred :data="['queue']">
         <template #fallback>
@@ -88,6 +84,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.rel
           :actions="[{ label: 'Show All', href: '/', trailingIcon: 'i-lucide-chevron-right' }]"
         />
       </Deferred>
-    </PageBody>
-  </Page>
+    </PageSection>
+  </PageBody>
 </template>

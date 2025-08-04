@@ -11,13 +11,7 @@ export default defineConfigWithVueTs(
     files: ['**/*.{ts,mts,tsx,vue}'],
   },
 
-  globalIgnores([
-    '**/vendor/**',
-    '**/node_modules/**',
-    '**/public/**',
-    '**/bootstrap/ssr/**',
-    '**/storage/**',
-  ]),
+  globalIgnores(['**/vendor/**', '**/node_modules/**', '**/public/**', '**/bootstrap/ssr/**', '**/storage/**']),
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
