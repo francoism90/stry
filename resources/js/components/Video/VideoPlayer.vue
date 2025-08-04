@@ -15,7 +15,6 @@ defineProps<Props>()
     .src="src"
     .title="title"
     .clipStartTime="time"
-    preload="metadata"
     playsInline
   >
     <media-provider></media-provider>
