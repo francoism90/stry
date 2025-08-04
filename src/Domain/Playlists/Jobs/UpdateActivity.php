@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
+use DateTime;
 use Domain\Playlists\Actions\UpdatePlaylistActivity;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
@@ -22,11 +23,6 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -70,12 +66,17 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueue
     public function middleware(): array
     {
         return [
-            Skip::when($this->playlist->accessed_at?->lt(now()->subMinutes(5))),
+            Skip::when($this->playlist->accessed_at?->lt(now()->subMinutes(10))),
         ];
     }
 
     public function uniqueId(): string
     {
         return (string) $this->playlist->getKey();
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addMinutes(30);
     }
 }

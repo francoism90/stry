@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Support\MediaLibrary\Jobs;
 
+use DateTime;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob as BasePerformConversionsJob;
 
 class PerformConversionsJob extends BasePerformConversionsJob
 {
-    /**
-     * @var int
-     */
-    public $tries = 1;
-
     /**
      * @var int
      */
@@ -45,7 +41,12 @@ class PerformConversionsJob extends BasePerformConversionsJob
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(60),
+            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
         ];
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addMinutes(30);
     }
 }

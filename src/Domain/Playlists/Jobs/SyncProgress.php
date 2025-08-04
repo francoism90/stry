@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
+use DateTime;
 use Domain\Playlists\Actions\SyncPlaylistProgress;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
@@ -21,11 +22,6 @@ class SyncProgress implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -70,7 +66,12 @@ class SyncProgress implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
         ];
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addMinutes(30);
     }
 }
