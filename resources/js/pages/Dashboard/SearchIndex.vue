@@ -8,20 +8,18 @@ import VideoCollection from '@/layouts/Video/VideoCollection.vue'
 import type { Videos } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { watchDebounced } from '@vueuse/core'
 import { ref } from 'vue'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
 interface Props {
-  search?: string | null
-  sort?: string | null
+  search: string | null
+  sort: string | null
   items?: Videos
 }
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
 const props = defineProps<Props>()
-
-const input = ref(props.search || '')
 
 const filters = ref<NavigationMenuItem[]>([
   { label: 'Relevant', to: SearchController.url({ mergeQuery: { sort: '' } }), exact: true },
@@ -30,10 +28,13 @@ const filters = ref<NavigationMenuItem[]>([
   { label: 'Shortest', to: SearchController.url({ mergeQuery: { sort: 'shortest' } }) },
 ])
 
-watchDebounced(input, () => router.get(SearchController.url(), { search: input.value }), {
-  debounce: 350,
-  maxWait: 1000,
-})
+const form = useForm('get', SearchController.url(), { search: props.search || '', sort: props.sort || '' })
+
+const submit = async () =>
+  form.submit({
+    preserveScroll: true,
+    onSuccess: () => router.reload({ except: ['flash'] }),
+  })
 </script>
 
 <template>
@@ -42,14 +43,23 @@ watchDebounced(input, () => router.get(SearchController.url(), { search: input.v
   <PageSection>
     <PageFeature title="Search" />
 
-    <UFormField class="pt-2">
-      <UInput
-        v-model.trim="input"
-        placeholder="Title, description, tags..."
-        class="w-full"
-        autofocus
-      />
-    </UFormField>
+    <UForm
+      :state="form"
+      @submit.prevent="submit"
+      class="flex flex-col gap-4 pt-2"
+    >
+      <UFormField
+        name="search"
+        :error="form.errors.search"
+      >
+        <UInput
+          v-model.trim="form.search"
+          placeholder="Title, description, tags..."
+          size="lg"
+          class="w-full"
+        />
+      </UFormField>
+    </UForm>
 
     <PageFilters
       v-if="items?.data?.length"

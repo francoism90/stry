@@ -33,6 +33,7 @@ class SearchController extends Controller implements HasMiddleware
 
         return Inertia::render('Dashboard/SearchIndex', [
             'search' => fn () => $request->input('search'),
+            'sort' => fn () => $request->input('sort'),
             'items' => Inertia::defer(fn () => $request->filled('search') ? $items : [])->deepMerge()->matchOn('data.id'),
         ]);
     }

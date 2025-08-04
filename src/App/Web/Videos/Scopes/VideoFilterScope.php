@@ -19,7 +19,6 @@ class VideoFilterScope
             ->when($this->tags, fn ($query, $tags) => $query->whereIn('tagged', $tags))
             ->when($this->sort === 'ordered', fn ($query) => $query->orderBy('name'))
             ->when($this->sort === 'longest', fn ($query) => $query->orderByDesc('duration'))
-            ->when($this->sort === 'shortest', fn ($query) => $query->orderBy('duration'))
-            ->orderByDesc('created_at');
+            ->when($this->sort === 'shortest', fn ($query) => $query->orderBy('duration'));
     }
 }
