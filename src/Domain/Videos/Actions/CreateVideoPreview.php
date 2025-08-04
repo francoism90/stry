@@ -29,18 +29,19 @@ class CreateVideoPreview
 
             $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
+            $path = "{$media->uuid}/preview.mp4";
+
             $segments = $this->getSegments($ffmpeg->getDurationInSeconds());
 
             $items = [];
 
-            // Create preview segments that can be concatenated later
             $ffmpeg->each($segments, function (MediaOpener $ffmpeg, float $seconds, int $key) use ($media, &$items) {
                 $items[] = $path = "{$media->uuid}/preview_{$key}.mp4";
 
                 return $ffmpeg->addFilter(fn (VideoFilters $filters) => $filters
                     ->clip(TimeCode::fromSeconds($seconds), TimeCode::fromSeconds(2)))
                     ->export()
-                    ->inFormat((new CopyVideoFormat())->setAdditionalParameters(['-an', '-reset_timestamps', '1']))
+                    ->inFormat((new CopyVideoFormat)->setAdditionalParameters(['-an', '-reset_timestamps', '1']))
                     ->toDisk('cache')
                     ->save($path);
             });
@@ -52,12 +53,12 @@ class CreateVideoPreview
                 ->inFormat(new X264)
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
-                ->save("{$media->uuid}/preview.mp4");
+                ->save($path);
 
             // Add the preview video to the media collection
             $video
-                ->addMediaFromDisk("{$media->uuid}/preview.mp4", 'cache')
-                ->toMediaCollection('preview')
+                ->addMediaFromDisk($path, 'cache')
+                ->toMediaCollection('previews')
                 ->saveOrFail();
 
             // Clean up the temporary preview segments

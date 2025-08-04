@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Users\Models\User;
+use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 use SplFileInfo;
@@ -25,6 +26,8 @@ class CreateNewVideoByImport
                 ->addMediaFromDisk($path, $disk)
                 ->withResponsiveImages()
                 ->toMediaCollection('clips');
+
+            VideoHasBeenAddedEvent::dispatch($video);
 
             return $video;
         });
