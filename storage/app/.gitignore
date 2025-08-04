@@ -1,3 +1,7 @@
 *
+!private/
 !public/
+!import/
+!media/
+!secrets/
 !.gitignore

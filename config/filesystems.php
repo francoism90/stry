@@ -47,6 +47,38 @@ return [
             'report' => false,
         ],
 
+        'cache' => [
+            'driver' => 'local',
+            'root' => storage_path('app/cache'),
+            'serve' => false,
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'media' => [
+            'driver' => 'local',
+            'root' => storage_path('app/media'),
+            'serve' => false,
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'secrets' => [
+            'driver' => 'local',
+            'root' => storage_path('app/secrets'),
+            'serve' => false,
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'import' => [
+            'driver' => 'local',
+            'root' => storage_path('app/import'),
+            'serve' => false,
+            'throw' => true,
+            'report' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -110,30 +142,6 @@ return [
             'options' => [
                 'CacheControl' => 'public, max-age=259200, immutable',
             ],
-        ],
-
-        'media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/media'),
-            'serve' => false,
-            'throw' => false,
-            'report' => false,
-        ],
-
-        'secrets' => [
-            'driver' => 'local',
-            'root' => storage_path('app/secrets'),
-            'serve' => false,
-            'throw' => false,
-            'report' => false,
-        ],
-
-        'import' => [
-            'driver' => 'local',
-            'root' => storage_path('app/import'),
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
         ],
 
     ],

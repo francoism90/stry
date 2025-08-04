@@ -146,6 +146,31 @@ class Video extends Model implements HasMedia
                 'video/x-m4v',
                 'video/x-matroska',
             ]);
+
+        $this
+            ->addMediaCollection('captions')
+            ->useDisk('media')
+            ->storeConversionsOnDisk('conversions')
+            ->acceptsMimeTypes([
+                'text/plain',
+                'text/vtt',
+            ]);
+
+        $this
+            ->addMediaCollection('preview')
+            ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
+            ->singleFile()
+            ->acceptsMimeTypes([
+                'video/av1',
+                'video/mp4',
+                'video/mp4v-es',
+                'video/ogg',
+                'video/quicktime',
+                'video/webm',
+                'video/x-m4v',
+                'video/x-matroska',
+            ]);
     }
 
     public function registerMediaConversions(?Media $media = null): void
