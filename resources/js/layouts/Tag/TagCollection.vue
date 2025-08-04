@@ -55,7 +55,7 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
 
           <div
             v-if="hasPages"
-            class="flex h-20 w-full items-center justify-center"
+            class="flex h-12 w-full items-center justify-center"
           >
             <UButton
               label="Load more"

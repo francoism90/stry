@@ -31,7 +31,7 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
         <PageSection>
           <div
             v-if="items?.data?.length"
-            class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3"
+            class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
           >
             <VideoCard
               v-for="item in items.data"
@@ -55,7 +55,7 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
 
           <div
             v-if="hasPages"
-            class="flex h-20 w-full items-center justify-center"
+            class="flex h-12 w-full items-center justify-center"
           >
             <UButton
               label="Load more"
