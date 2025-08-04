@@ -11,7 +11,6 @@ use Domain\Tags\Concerns\HasTags;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithCache;
-use Domain\Videos\Concerns\InteractsWithVod;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
@@ -21,9 +20,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 use Spatie\Translatable\HasTranslations;
@@ -41,7 +42,6 @@ class Video extends Model implements HasMedia
     use InteractsWithMedia;
     use InteractsWithPlaylists;
     use InteractsWithUser;
-    use InteractsWithVod;
     use Searchable;
     use SoftDeletes;
 
@@ -227,31 +227,95 @@ class Video extends Model implements HasMedia
         ];
     }
 
-    public function identifier(): Attribute
+    public function getClipCollection(): MediaCollection
+    {
+        return $this->getMedia('clips')->sortBy([
+            ['custom_properties->streams->bit_rate', 'desc'],
+            ['custom_properties->streams->width', 'desc'],
+            ['custom_properties->streams->height', 'desc'],
+        ]);
+    }
+
+    public function getCaptionCollection(): MediaCollection
+    {
+        return $this->getMedia('captions');
+    }
+
+    public function getVideoStreams(): Collection
+    {
+        return $this
+            ->getClipCollection()
+            ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []))
+            ->filter(fn (array $stream) => data_get($stream, 'codec_type') === 'video');
+    }
+
+    public function hasCaptions(): bool
+    {
+        if ($this->getCaptionCollection()->isNotEmpty()) {
+            return true;
+        }
+
+        return (bool) data_get($this->getVideoStreams()->first(), 'closed_captions', false);
+    }
+
+    public function durationInSeconds(): float
+    {
+        return (float) data_get($this->getVideoStreams()->first(), 'duration', 0);
+    }
+
+    protected function identifier(): Attribute
     {
         return Attribute::make(
             get: fn () => implode('-', array_filter([$this->season, $this->episode, $this->part]))
         )->shouldCache();
     }
 
-    public function title(): Attribute
+    protected function title(): Attribute
     {
         return Attribute::make(
             get: fn () => implode(' - ', array_filter([$this->name, $this->part]))
         )->shouldCache();
     }
 
-    public function thumbnail(): Attribute
+    protected function thumbnail(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getFirstMediaUrl('clips', 'thumbnail')
         )->shouldCache();
     }
 
-    public function srcset(): Attribute
+    protected function srcset(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getFirstMedia('clips')?->getSrcset('thumbnail')
+        )->shouldCache();
+    }
+
+    protected function captions(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->hasCaptions()
+        )->shouldCache();
+    }
+
+    protected function duration(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->durationInSeconds()
+        )->shouldCache();
+    }
+
+    protected function timestamp(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => duration($this->duration)
+        )->shouldCache();
+    }
+
+    protected function fileSize(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getClipCollection()->totalSizeInBytes(),
         )->shouldCache();
     }
 }

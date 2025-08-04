@@ -85,14 +85,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Write model relation count properties
+    | Write model relation count and exists properties
     |--------------------------------------------------------------------------
     |
-    | Set to false to disable writing of relation count properties to model DocBlocks.
+    | Set to false to disable writing of relation count and exists properties
+    | to model DocBlocks.
     |
     */
 
     'write_model_relation_count_properties' => true,
+    'write_model_relation_exists_properties' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -123,6 +125,7 @@ return [
 
     'helper_files' => [
         base_path('vendor/laravel/framework/src/Illuminate/Support/helpers.php'),
+        base_path('vendor/laravel/framework/src/Illuminate/Foundation/helpers.php'),
         base_path('src/Foundation/Helpers.php'),
     ],
 
@@ -140,8 +143,8 @@ return [
     */
 
     'model_locations' => [
-        'src/Domain',
-        'src/Support',
+        base_path('src/Domain/*/Models'),
+        base_path('src/Support/*/Models'),
     ],
 
     /*
@@ -277,6 +280,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default return types for macros
+    |--------------------------------------------------------------------------
+    |
+    | Define default return types for macros without explicit return types.
+    | e.g. `\Illuminate\Database\Query\Builder::class => 'static'`,
+    |      `\Illuminate\Support\Str::class => 'string'`
+    |
+    */
+    'macro_default_return_types' => [
+        Illuminate\Http\Client\Factory::class => Illuminate\Http\Client\PendingRequest::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Additional relation types
     |--------------------------------------------------------------------------
     |
@@ -303,6 +320,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Enforce nullable Eloquent relationships on not null columns
+    |--------------------------------------------------------------------------
+    |
+    | When set to true (default), this option enforces nullable Eloquent relationships.
+    | However, in cases where the application logic ensures the presence of related
+    | records it may be desirable to set this option to false to avoid unwanted null warnings.
+    |
+    | Default: true
+    | A not null column with no foreign key constraint will have a "nullable" relationship.
+    |  * @property int $not_null_column_with_no_foreign_key_constraint
+    |  * @property-read BelongsToVariation|null $notNullColumnWithNoForeignKeyConstraint
+    |
+    | Option: false
+    | A not null column with no foreign key constraint will have a "not nullable" relationship.
+    |  * @property int $not_null_column_with_no_foreign_key_constraint
+    |  * @property-read BelongsToVariation $notNullColumnWithNoForeignKeyConstraint
+    |
+    */
+
+    'enforce_nullable_relationships' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Run artisan commands after migrations to generate model helpers
     |--------------------------------------------------------------------------
     |
@@ -310,7 +350,7 @@ return [
     |
     */
     'post_migrate' => [
-        'ide-helper:models --nowrite',
+        'ide-helper:models --nowrite --write-mixin',
     ],
 
 ];

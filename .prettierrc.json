@@ -1,11 +1,11 @@
 {
-  "$schema": "https://json.schemastore.org/prettierrc",
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "semi": false,
-  "singleQuote": true,
-  "printWidth": 140,
-  "singleAttributePerLine": true,
-  "tailwindAttributes": ["class", "className", "ui", ":ui"],
-  "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],
-  "tailwindStylesheet": "./resources/css/app.css"
+    "$schema": "https://json.schemastore.org/prettierrc",
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 160,
+    "singleAttributePerLine": true,
+    "tailwindAttributes": ["class", "className", "ui", ":ui"],
+    "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],
+    "tailwindStylesheet": "./resources/css/app.css"
 }
