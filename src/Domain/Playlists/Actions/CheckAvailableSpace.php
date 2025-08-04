@@ -6,30 +6,28 @@ namespace Domain\Playlists\Actions;
 
 use Domain\Playlists\Exceptions\DiskUsageException;
 use Domain\Playlists\Models\Playlist;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Filesystem\LocalFilesystemAdapter;
-use Illuminate\Support\Facades\Storage;
 
 class CheckAvailableSpace
 {
-    public function handle(): void
+    public function handle(Playlist $playlist): void
     {
-        if (Playlist::shouldUseRotationKeys()) {
+        if (Playlist::shouldUseRotationKeys() && filled($playlist->secret_disk)) {
             $this->checkFreeSpace(
-                disk: Playlist::getRotationKeyDisk(),
+                adapter: $playlist->getSecretFilesystem(),
                 limit: config('playlist.rotation_keys_disk_size', 0),
             );
         }
 
         $this->checkFreeSpace(
-            disk: Playlist::getTranscodeDisk(),
+            adapter: $playlist->getFilesystem(),
             limit: config('playlist.disk_size', 0),
         );
     }
 
-    protected function checkFreeSpace(string $disk, int $limit = 0): void
+    protected function checkFreeSpace(FilesystemAdapter $adapter, int $limit = 0): void
     {
-        $adapter = Storage::disk($disk);
-
         if ($adapter instanceof LocalFilesystemAdapter) {
             $this->checkLocalFreeSpace($adapter, $limit);
         }

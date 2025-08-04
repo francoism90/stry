@@ -48,7 +48,7 @@ class Playlist extends Model
         'file_name',
         'secret_disk',
         'progress',
-        'collection',
+        'type',
         'state',
         'accessed_at',
         'expires_at',

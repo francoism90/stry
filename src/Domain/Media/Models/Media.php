@@ -34,6 +34,13 @@ class Media extends BaseMedia
         'user_id',
     ];
 
+    /**
+     * @var array<int, string>
+     */
+    protected $with = [
+        'model',
+    ];
+
     protected function casts(): array
     {
         return [

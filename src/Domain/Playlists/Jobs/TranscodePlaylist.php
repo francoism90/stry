@@ -14,7 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class PerformTranscoding implements ShouldBeUnique, ShouldQueue
+class TranscodePlaylist implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;

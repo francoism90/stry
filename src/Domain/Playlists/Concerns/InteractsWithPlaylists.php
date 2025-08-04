@@ -29,13 +29,21 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
-    public function currentPlaylist(): ?Playlist
+    public function currentPlaylist(?string $type = null): ?Playlist
     {
-        return $this->playlists()->active()->first();
+        return $this
+            ->playlists()
+            ->active()
+            ->when($type, fn ($query) => $query->type($type))
+            ->first();
     }
 
-    public function hasPendingPlaylists(): bool
+    public function hasPlaylists(?string $type = null): bool
     {
-        return $this->playlists()->pending()->exists();
+        return $this
+            ->playlists()
+            ->whereNot(fn ($query) => $query->expired())
+            ->when($type, fn ($query) => $query->type($type))
+            ->exists();
     }
 }

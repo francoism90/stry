@@ -17,6 +17,9 @@ class CreateHlsPlaylist
     public function handle(Playlist $playlist, string $disk, string $path): Playlist
     {
         return DB::transaction(function () use ($playlist, $disk, $path) {
+            // Make sure there is enough space available on the disk
+            app(CheckAvailableSpace::class)->handle($playlist);
+
             $ffmpeg = FFMpeg::fromDisk($disk)
                 ->open($path)
                 ->exportForHLS()

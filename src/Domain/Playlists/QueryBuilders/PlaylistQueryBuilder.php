@@ -21,6 +21,11 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', Verified::class);
     }
 
+    public function type(string $type): self
+    {
+        return $this->where('type', $type);
+    }
+
     public function active(): self
     {
         return $this

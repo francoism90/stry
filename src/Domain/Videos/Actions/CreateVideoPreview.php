@@ -29,8 +29,6 @@ class CreateVideoPreview
 
             $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-            $path = "{$media->uuid}/preview.mp4";
-
             $segments = $this->getSegments($ffmpeg->getDurationInSeconds());
 
             $items = [];
@@ -53,15 +51,15 @@ class CreateVideoPreview
                 ->inFormat(new X264)
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
-                ->save($path);
+                ->save("{$media->uuid}/preview.mp4");
 
             // Add the preview video to the media collection
             $video
-                ->addMediaFromDisk($path, 'cache')
+                ->addMediaFromDisk("{$media->uuid}/preview.mp4", 'cache')
                 ->toMediaCollection('previews')
                 ->saveOrFail();
 
-            // Clean up the temporary preview segments
+            // Delete the temporary preview directory
             Storage::disk('cache')->deleteDirectory($media->uuid);
         });
     }
