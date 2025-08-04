@@ -59,7 +59,7 @@ return [
      * A shorter segment length will result in more segments, which can improve seeking performance,
      * but will also increase the file size and requests.
      */
-    'segment_length' => (int) env('PLAYLIST_SEGMENT_LENGTH', 6),
+    'segment_length' => (int) env('PLAYLIST_SEGMENT_LENGTH', 10),
 
     /**
      * This setting is used to configure the frame interval for the playlist.
@@ -67,7 +67,7 @@ return [
      * A lower frame interval will result in more keyframes, which can improve seeking performance,
      * but will also increase the file size.
      */
-    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 2),
+    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 48),
 
     /**
      * This setting is used to configure the video formats that will be used for transcoding.
@@ -102,7 +102,7 @@ return [
      * Each section will have its own key, which will be used to encrypt the segments of the playlist.
      * A lower number of sections will result in more keys, which can decrease performance.
      */
-    'rotation_keys_sections' => (int) env('PLAYLIST_ROTATION_KEYS_SECTIONS', 10),
+    'rotation_keys_sections' => (int) env('PLAYLIST_ROTATION_KEYS_SECTIONS', 5),
 
     /**
      * This setting is used to define the disk where the rotation keys will be stored.
