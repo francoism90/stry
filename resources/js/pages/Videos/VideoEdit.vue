@@ -33,7 +33,7 @@ const submit = async () =>
   <UForm
     :state="form"
     @submit.prevent="submit"
-    class="flex flex-col gap-4"
+    class="flex flex-col gap-4 py-4"
   >
     <FlashAlert />
 
