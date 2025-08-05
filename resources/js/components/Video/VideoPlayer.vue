@@ -18,7 +18,7 @@ defineProps<Props>()
     .clipStartTime="time"
     .playsInline="true"
     .autoPlay="true"
-    class="player max-h-64 rounded-xl sm:max-h-96 lg:max-h-2/5"
+    class="default-video max-h-64 rounded-xl sm:max-h-96 lg:max-h-2/5"
   >
     <media-provider></media-provider>
     <media-video-layout></media-video-layout>

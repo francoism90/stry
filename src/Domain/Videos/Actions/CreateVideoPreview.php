@@ -19,7 +19,7 @@ class CreateVideoPreview
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if (! $video->hasMedia('clips')) {
+            if (! $video->hasPlaylists(PlaylistType::Preview) || ! $video->hasMedia('clips')) {
                 return;
             }
 
@@ -47,7 +47,7 @@ class CreateVideoPreview
             collect($paths)->each(fn (string $path) => Storage::disk('cache')->delete($path));
 
             // Create HLS playlist
-            app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Previews);
+            app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Preview);
 
             return $next($video);
         });

@@ -15,18 +15,24 @@ class CreateVideoPlaylist
     public function handle(Video $video, PlaylistType $type, bool $force = false): mixed
     {
         return DB::transaction(function () use ($video, $type, $force) {
-            if ($video->hasPlaylists($type->value) && ! $force) {
+            if ($video->hasPlaylists($type) && ! $force) {
                 return;
             }
 
-            // Ensure the video has media for the specified type
-            $media = $video->getFirstMedia($type->value);
+            // Check if the video has media for the specified type
+            $media = match ($type) {
+                PlaylistType::Preview => $video->getFirstMedia('preview'),
+                PlaylistType::Clip => $video->getFirstMedia('clips'),
+                default => $video->getFirstMedia($type->value),
+            };
 
             // Create a new playlist of the video clip
-            $attributes = match ($type) {
-                'previews' => ['type' => 'previews', 'expires_at' => null],
-                default => ['type' => $type],
-            };
+            $attributes = ['type' => $type];
+
+            // We don't want to set an expiration date for preview playlists
+            if ($type === PlaylistType::Preview) {
+                $attributes['expires_at'] = null;
+            }
 
             $playlist = app(CreateNewPlaylist::class)->handle($video, $attributes);
 

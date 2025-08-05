@@ -33,7 +33,7 @@ const link = computed(() => show.url(props.item.id))
       @touchstart.passive="preview = true"
       @touchend.passive="preview = false"
     >
-      <div class="absolute inset-0 z-0 size-full bg-gradient-to-t from-neutral-800/50 to-transparent" />
+      <div class="absolute inset-0 z-0 size-full bg-gradient-to-t from-neutral-900/70 to-transparent" />
 
       <img
         :srcset="item.srcset"
@@ -60,7 +60,7 @@ const link = computed(() => show.url(props.item.id))
 
       <div
         v-if="preview"
-        class="absolute inset-0 z-20 h-52 w-full group-hover:block"
+        class="absolute inset-0 z-10 h-52 w-full group-hover:block"
       >
         <media-player
           .src="item.preview"
@@ -69,7 +69,7 @@ const link = computed(() => show.url(props.item.id))
           .autoPlay="true"
           .muted="true"
           .loop="true"
-          class="player max-h-52"
+          class="default-video h-52 max-h-52"
         >
           <media-provider />
         </media-player>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Concerns;
 
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -29,7 +30,7 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
-    public function getFirstPlaylist(?string $type = null): ?Playlist
+    public function getFirstPlaylist(?PlaylistType $type = null): ?Playlist
     {
         return $this
             ->playlists()
@@ -38,7 +39,7 @@ trait InteractsWithPlaylists
             ->first();
     }
 
-    public function hasPlaylists(?string $type = null): bool
+    public function hasPlaylists(?PlaylistType $type = null): bool
     {
         return $this
             ->playlists()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\QueryBuilders;
 
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
@@ -21,7 +22,7 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', Verified::class);
     }
 
-    public function type(string $type): self
+    public function type(PlaylistType $type): self
     {
         return $this->where('type', $type);
     }

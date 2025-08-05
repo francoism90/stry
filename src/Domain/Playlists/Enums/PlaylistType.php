@@ -6,14 +6,14 @@ namespace Domain\Playlists\Enums;
 
 enum PlaylistType: string
 {
-    case Clips = 'clips';
-    case Previews = 'previews';
+    case Clip = 'clip';
+    case Preview = 'preview';
 
     public function label(): string
     {
         return match ($this) {
-            self::Clips => __('Clips'),
-            self::Previews => __('Previews'),
+            self::Clip => __('Clip'),
+            self::Preview => __('Previews'),
         };
     }
 }

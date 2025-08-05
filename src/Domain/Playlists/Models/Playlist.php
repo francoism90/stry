@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Playlists\Models;
 
 use Domain\Playlists\Collections\PlaylistCollection;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\PlaylistState;
@@ -69,6 +70,7 @@ class Playlist extends Model
     {
         return [
             'state' => PlaylistState::class,
+            'type' => PlaylistType::class,
             'progress' => AsArrayObject::class,
             'accessed_at' => 'datetime',
             'expires_at' => 'datetime',
