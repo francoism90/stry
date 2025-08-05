@@ -64,11 +64,6 @@ ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --ser
 COPY --from=base /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/99-user.ini
 
-RUN composer install --prefer-dist --no-interaction
-
-RUN php artisan storage:link && php artisan wayfinder:generate
-RUN pnpm install && pnpm run build
-
 FROM base as production
 
 COPY . /app
