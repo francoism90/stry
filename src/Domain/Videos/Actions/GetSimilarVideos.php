@@ -8,18 +8,18 @@ use App\Api\Videos\Resources\VideoResource;
 use Domain\Tags\Models\Tag;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\LazyCollection;
 
 class GetSimilarVideos
 {
-    public function handle(Video $video, int $limit = 16): Collection
+    public function handle(Video $video, int $limit = 16): ResourceCollection
     {
-        return VideoResource::collection([
+        return collect([
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->take($limit);
+        ])->unique()->take($limit)->toResourceCollection(VideoResource::class);
     }
 
     protected function phrases(Video $video): LazyCollection
@@ -77,7 +77,6 @@ class GetSimilarVideos
         return Video::query()
             ->verified()
             ->whereKeyNot($video)
-            ->inRandomOrder()
             ->take(16)
             ->cursor();
     }

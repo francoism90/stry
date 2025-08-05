@@ -69,7 +69,7 @@ class VideoController extends Controller implements HasMiddleware
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'playlist' => fn () => $video->getFirstPlaylist(PlaylistType::Clip)?->toResource(PlaylistResource::class),
-            'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video), 'items'),
+            'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
         ]);
     }
 
