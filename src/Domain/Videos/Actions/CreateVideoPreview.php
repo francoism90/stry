@@ -60,7 +60,7 @@ class CreateVideoPreview
                 ->saveOrFail();
 
             // Delete the temporary preview directory
-            Storage::disk('cache')->deleteDirectory($media->uuid);
+            $this->cleanupTemporaryFiles($media->uuid);
         });
     }
 
@@ -77,5 +77,10 @@ class CreateVideoPreview
         $items->pop();
 
         return $items->toArray();
+    }
+
+    protected function cleanupTemporaryFiles(string $uuid): void
+    {
+        Storage::disk('cache')->deleteDirectory($uuid);
     }
 }
