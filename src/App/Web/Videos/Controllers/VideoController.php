@@ -9,6 +9,7 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Scopes\VideoListScope;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\UpdateVideoDetails;
@@ -63,7 +64,7 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('view', $video);
 
         // Make sure the video has a playlist
-        app(CreateVideoPlaylist::class)->handle($video);
+        app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Clips);
 
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
