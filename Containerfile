@@ -59,7 +59,7 @@ ENTRYPOINT ["container-entrypoint.sh"]
 
 FROM base as development
 
-ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080 --watch"
+ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
 
 COPY --from=base /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/99-user.ini
@@ -71,4 +71,4 @@ COPY . /app
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 
 RUN php artisan storage:link && php artisan wayfinder:generate
-RUN pnpm install && pnpm run build
+RUN pnpm install && pnpm build
