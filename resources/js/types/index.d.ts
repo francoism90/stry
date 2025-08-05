@@ -1,4 +1,5 @@
 import type { SelectMenuItem } from '@nuxt/ui'
+import type { PlayerSrc } from 'vidstack'
 
 export type Model = {
   id: string
@@ -19,9 +20,9 @@ export type User = Model & {
 export type Tag = Model & {
   name: string
   description: string | null
-  type: string | null
-  thumbnail: string | null
-  srcset: string | null
+  type: string
+  thumbnail: string
+  srcset: string
   videos?: number
 }
 
@@ -32,7 +33,7 @@ export type Tags = Omit<Paginator, 'data'> & {
 export type TagMenuItem = Tag & SelectMenuItem
 
 export type Playlist = Model & {
-  asset: string | null
+  asset: PlayerSrc
   valid: boolean
   state: string
   expires: string | null
@@ -47,9 +48,9 @@ export type Video = Model & {
   season: string | null
   episode: string | null
   part: string | null
-  thumbnail: string | null
-  srcset: string | null
-  preview: string | null
+  thumbnail: string
+  srcset: string
+  preview: string
   duration: number | null
   timestamp: string | null
   snapshot: number | null

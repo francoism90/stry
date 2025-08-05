@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { PlayerSrc } from 'vidstack'
 import 'vidstack/bundle'
 
 interface Props {
-  src?: string | undefined
+  src: PlayerSrc
   title?: string | undefined
   time?: number | undefined
 }
