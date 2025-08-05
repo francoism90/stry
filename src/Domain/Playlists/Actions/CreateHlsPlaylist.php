@@ -76,7 +76,7 @@ class CreateHlsPlaylist
             $ffmpeg->save($playlist->getPath($playlist->file_name));
 
             // Mark the playlist as processed
-            app(MarkPlaylistAsProcessed::class)->handle($playlist);
+            app(MarkPlaylistAsVerified::class)->handle($playlist);
 
             return $playlist;
         });
