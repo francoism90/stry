@@ -15,6 +15,7 @@ import { Head, router } from '@inertiajs/vue3'
       <UButton
         label="Logout"
         class="w-fit"
+        variant="soft"
         @click="() => router.post('/logout')"
       />
     </PageSection>
