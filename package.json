@@ -47,7 +47,7 @@
         "concurrently": "^9.2.0",
         "eslint": "^9.32.0",
         "eslint-plugin-oxlint": "^1.9.0",
-        "eslint-plugin-vue": "~10.3.0",
+        "eslint-plugin-vue": "~10.4.0",
         "jiti": "^2.5.1",
         "jsdom": "^26.1.0",
         "laravel-echo": "^2.1.7",

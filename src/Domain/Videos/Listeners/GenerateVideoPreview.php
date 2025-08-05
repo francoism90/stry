@@ -49,13 +49,16 @@ class GenerateVideoPreview implements ShouldQueueAfterCommit
     {
         app(CreateVideoPreview::class)->handle($event->video);
 
-        // Get the first media item from the video
+        // Get the first media item for the video
         $media = $event->video->getFirstMedia('previews');
 
         // Create a new playlist for the video
-        $playlist = app(CreateNewPlaylist::class)->handle($event->video, ['type' => 'previews']);
+        $playlist = app(CreateNewPlaylist::class)->handle($event->video, [
+            'type' => 'previews',
+            'expires_at' => null,
+        ]);
 
-        // Create a new playlist for the video
+        // Create an HLS playlist for the video
         app(CreateHlsPlaylist::class)->handle($playlist, $media->disk, $media->getPathRelativeToRoot());
     }
 }

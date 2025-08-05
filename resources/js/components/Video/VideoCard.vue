@@ -3,13 +3,15 @@ import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import 'vidstack/bundle'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 interface Props {
   item: Video
 }
 
 const props = defineProps<Props>()
+
+const preview = ref<boolean>(false)
 
 const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) || [])
 const link = computed(() => show.url(props.item.id))
@@ -26,6 +28,10 @@ const link = computed(() => show.url(props.item.id))
     <Link
       class="block"
       :href="link"
+      @mouseenter.prevent="preview = true"
+      @mouseleave.prevent="preview = false"
+      @touchstart.passive="preview = true"
+      @touchend.passive="preview = false"
     >
       <div class="absolute inset-0 z-0 size-full bg-gradient-to-t from-neutral-800/50 to-transparent" />
 
@@ -52,7 +58,10 @@ const link = computed(() => show.url(props.item.id))
         </div>
       </div>
 
-      <div class="absolute inset-0 z-0 hidden h-52 w-full bg-neutral-800 group-hover:block">
+      <div
+        v-if="preview"
+        class="absolute inset-0 z-20 h-52 w-full group-hover:block"
+      >
         <media-player
           .src="item.preview"
           .playsInline="true"

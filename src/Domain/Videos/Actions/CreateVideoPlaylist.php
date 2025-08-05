@@ -21,10 +21,10 @@ class CreateVideoPlaylist
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            // Create a new playlist for the video
+            // Create a new playlist of the video clip
             $playlist = app(CreateNewPlaylist::class)->handle($video, ['type' => 'clips']);
 
-            // Create a new playlist for the video
+            // Create an HLS playlist for the video
             TranscodePlaylist::dispatch($playlist, $media->disk, $media->getPathRelativeToRoot());
         });
     }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import FlashAlert from '@/components/Ui/FlashAlert.vue'
+import VideoDeleteModal from '@/components/Video/VideoDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -186,12 +187,15 @@ const submit = async () =>
       />
     </UFormField>
 
-    <UButton
-      label="Save changes"
-      type="submit"
-      variant="soft"
-      class="self-end"
-      loading-auto
-    />
+    <div class="flex gap-2 self-end">
+      <VideoDeleteModal :item="video" />
+
+      <UButton
+        label="Save changes"
+        type="submit"
+        variant="soft"
+        loading-auto
+      />
+    </div>
   </UForm>
 </template>

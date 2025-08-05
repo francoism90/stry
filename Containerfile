@@ -1,4 +1,4 @@
-FROM docker.io/library/php:8.4-cli
+FROM docker.io/library/php:8.4-cli AS base
 
 ARG UID=1000
 ARG GID=$UID
@@ -10,7 +10,7 @@ WORKDIR /app
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080 --watch"
+ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV OCTANE_USER="docker"
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
@@ -34,13 +34,13 @@ RUN apt-get update && apt-get upgrade -y \
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
     && install-php-extensions @composer apcu bcmath bz2 calendar ev event exif \
     pdo_mysql pdo_pgsql pgsql gettext imap inotify intl msgpack opcache pcntl pcov \
     redis sockets swoole uv zip gd igbinary imagick
 
-COPY runtimes/container-entrypoint.sh /usr/local/bin/container-entrypoint.sh
-COPY runtimes/php-development.ini /usr/local/etc/php/conf.d/99-user.ini
+COPY containers/runtimes/container-entrypoint.sh /usr/local/bin/container-entrypoint.sh
+COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/99-user.ini
 
 RUN chmod +x /usr/local/bin/container-entrypoint.sh
 
@@ -56,3 +56,19 @@ EXPOSE 6001
 EXPOSE 8080
 
 ENTRYPOINT ["container-entrypoint.sh"]
+
+FROM base as development
+
+ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
+
+COPY --from=base /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/99-user.ini
+
+FROM base as production
+
+COPY . /app
+
+RUN composer install --prefer-dist --no-interaction --optimize-autoloader
+
+RUN php artisan storage:link && php artisan wayfinder:generate
+RUN pnpm install && pnpm build
