@@ -64,11 +64,11 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('view', $video);
 
         // Make sure the video has a playlist
-        app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Clips);
+        app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Clip);
 
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
-            'playlist' => fn () => $video->getFirstPlaylist('clips')?->toResource(PlaylistResource::class),
+            'playlist' => fn () => $video->getFirstPlaylist(PlaylistType::Clip)?->toResource(PlaylistResource::class),
             'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video), 'items'),
         ]);
     }

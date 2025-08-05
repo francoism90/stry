@@ -21,7 +21,7 @@ class CreateVideoPlaylist
 
             // Check if the video has media for the specified type
             $media = match ($type) {
-                PlaylistType::Preview => $video->getFirstMedia('preview'),
+                PlaylistType::Preview => $video->getFirstMedia('previews'),
                 PlaylistType::Clip => $video->getFirstMedia('clips'),
                 default => $video->getFirstMedia($type->value),
             };

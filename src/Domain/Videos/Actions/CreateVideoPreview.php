@@ -19,7 +19,7 @@ class CreateVideoPreview
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if (! $video->hasPlaylists(PlaylistType::Preview) || ! $video->hasMedia('clips')) {
+            if ($video->hasPlaylists(PlaylistType::Preview) || ! $video->hasMedia('clips')) {
                 return;
             }
 
@@ -33,7 +33,7 @@ class CreateVideoPreview
             FFMpeg::fromDisk('cache')
                 ->open($paths)
                 ->export()
-                ->inFormat(new X264)
+                ->inFormat((new X264)->setKiloBitrate(1500))
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
                 ->save($path);
