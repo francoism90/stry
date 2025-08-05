@@ -73,7 +73,7 @@ class ProcessVideo implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(60),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
         ];
     }
 
