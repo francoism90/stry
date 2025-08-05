@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
+use Closure;
+use Domain\Media\Actions\CreateMediaSegments;
 use Domain\Media\Models\Media;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Videos\Models\Video;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use ProtoneMedia\LaravelFFMpeg\FFMpeg\CopyVideoFormat;
-use ProtoneMedia\LaravelFFMpeg\MediaOpener;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Support\FFMpeg\Format\Video\X264;
 
 class CreateVideoPreview
 {
-    public function handle(Video $video): mixed
+    public function handle(Video $video, Closure $next): mixed
     {
-        return DB::transaction(function () use ($video) {
+        return DB::transaction(function () use ($video, $next) {
             if (! $video->hasMedia('clips')) {
                 return;
             }
@@ -27,60 +26,30 @@ class CreateVideoPreview
             /** @var Media $media */
             $media = $video->getClipCollection()->first();
 
-            $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
+            $path = "media_{$media->uuid}_preview.mp4";
 
-            $segments = $this->getSegments($ffmpeg->getDurationInSeconds());
+            $paths = app(CreateMediaSegments::class)->handle($media);
 
-            $items = [];
-
-            $ffmpeg->each($segments, function (MediaOpener $ffmpeg, float $seconds, int $key) use ($media, &$items) {
-                $items[] = $path = "{$media->uuid}/preview_{$key}.mp4";
-
-                return $ffmpeg->addFilter(fn (VideoFilters $filters) => $filters
-                    ->clip(TimeCode::fromSeconds($seconds), TimeCode::fromSeconds(2)))
-                    ->export()
-                    ->inFormat((new CopyVideoFormat)->setAdditionalParameters(['-an', '-reset_timestamps', '1']))
-                    ->toDisk('cache')
-                    ->save($path);
-            });
-
-            // Concatenate the segments into a single preview video
             FFMpeg::fromDisk('cache')
-                ->open($items)
+                ->open($paths)
                 ->export()
                 ->inFormat(new X264)
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
-                ->save("{$media->uuid}/preview.mp4");
+                ->save($path);
 
-            // Add the preview video to the media collection
             $video
-                ->addMediaFromDisk("{$media->uuid}/preview.mp4", 'cache')
+                ->addMediaFromDisk($path, 'cache')
                 ->toMediaCollection('previews')
                 ->saveOrFail();
 
-            // Delete the temporary preview directory
-            $this->cleanupTemporaryFiles($media->uuid);
+            // Clean up temporary files
+            collect($paths)->each(fn (string $path) => Storage::disk('cache')->delete($path));
+
+            // Create HLS playlist
+            app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Previews);
+
+            return $next($video);
         });
-    }
-
-    protected function getSegments(int $duration, int $count = 10): array
-    {
-        $segments = range(0, $duration, $duration / $count);
-
-        $items = collect($segments)
-            ->map(fn (float $segment) => ceil($segment))
-            ->unique()
-            ->take($count);
-
-        $items->shift();
-        $items->pop();
-
-        return $items->toArray();
-    }
-
-    protected function cleanupTemporaryFiles(string $uuid): void
-    {
-        Storage::disk('cache')->deleteDirectory($uuid);
     }
 }

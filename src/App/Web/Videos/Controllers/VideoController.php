@@ -11,7 +11,6 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\GetSimilarVideos;
-use Domain\Videos\Actions\MarkVideoAsDeleted;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -95,7 +94,7 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $video);
 
-        app(MarkVideoAsDeleted::class)->handle($video);
+        $video->delete();
 
         return redirect()->route('videos.index');
     }

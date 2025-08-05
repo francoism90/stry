@@ -5,27 +5,33 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Playlists\Actions\CreateNewPlaylist;
-use Domain\Playlists\Jobs\TranscodePlaylist;
+use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Jobs\ProcessPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 
 class CreateVideoPlaylist
 {
-    public function handle(Video $video, bool $force = false): mixed
+    public function handle(Video $video, PlaylistType $type, bool $force = false): mixed
     {
-        return DB::transaction(function () use ($video, $force) {
-            if (! $video->hasMedia('clips') || ($video->hasPlaylists('clips') && ! $force)) {
+        return DB::transaction(function () use ($video, $type, $force) {
+            if ($video->hasPlaylists($type->value) && ! $force) {
                 return;
             }
 
-            // Get the first media item from the video
-            $media = $video->getClipCollection()->first();
+            // Ensure the video has media for the specified type
+            $media = $video->getFirstMedia($type->value);
 
             // Create a new playlist of the video clip
-            $playlist = app(CreateNewPlaylist::class)->handle($video, ['type' => 'clips']);
+            $attributes = match ($type) {
+                'previews' => ['type' => 'previews', 'expires_at' => null],
+                default => ['type' => $type],
+            };
 
-            // Create an HLS playlist for the video
-            TranscodePlaylist::dispatch($playlist, $media->disk, $media->getPathRelativeToRoot());
+            $playlist = app(CreateNewPlaylist::class)->handle($video, $attributes);
+
+            // Add the media to the playlist
+            ProcessPlaylist::dispatch($playlist, $media->disk, $media->getPathRelativeToRoot());
         });
     }
 }

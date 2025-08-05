@@ -10,7 +10,7 @@ use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VideoHasBeenAddedEvent implements ShouldDispatchAfterCommit
+class VideoHasBeenProcessedEvent implements ShouldDispatchAfterCommit
 {
     use Dispatchable;
     use InteractsWithSockets;

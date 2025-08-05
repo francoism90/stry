@@ -13,13 +13,13 @@ class MarkPlaylistAsVerified
     public function handle(Playlist $playlist): Playlist
     {
         return DB::transaction(function () use ($playlist) {
-            // Mark the playlist as transcoded
-            $playlist->touch('transcoded_at');
-
             // Set state to verified if it can transition
             if ($playlist->state->canTransitionTo(Verified::class)) {
                 $playlist->state->transitionTo(Verified::class);
             }
+
+            // Mark the playlist as transcoded
+            $playlist->touch('transcoded_at');
 
             return $playlist;
         });
