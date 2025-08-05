@@ -20,7 +20,7 @@ class CreateVideoPreview
     public function handle(Video $video): mixed
     {
         return DB::transaction(function () use ($video) {
-            if ($video->hasMedia('preview') || ! $video->hasMedia('clips')) {
+            if ($video->hasMedia('previews') || ! $video->hasMedia('clips')) {
                 return;
             }
 

@@ -157,7 +157,7 @@ class Video extends Model implements HasMedia
             ]);
 
         $this
-            ->addMediaCollection('preview')
+            ->addMediaCollection('previews')
             ->useDisk('conversions')
             ->storeConversionsOnDisk('conversions')
             ->singleFile()
