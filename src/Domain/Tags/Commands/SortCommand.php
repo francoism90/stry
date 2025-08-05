@@ -8,7 +8,7 @@ use Domain\Tags\Actions\SetTagsOrder;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-class SortTags extends Command implements Isolatable
+class SortCommand extends Command implements Isolatable
 {
     /**
      * @var string
@@ -18,11 +18,11 @@ class SortTags extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $description = 'Set tags order';
+    protected $description = 'Set tags in order';
 
     public function handle(): void
     {
-        app(SetTagsOrder::class)->execute();
+        app(SetTagsOrder::class)->handle();
 
         $this->components->info('Tags have been sorted successfully.');
     }

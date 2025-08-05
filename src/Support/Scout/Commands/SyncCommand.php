@@ -7,7 +7,7 @@ namespace Support\Scout\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-class SyncIndexes extends Command implements Isolatable
+class SyncCommand extends Command implements Isolatable
 {
     /**
      * @var string

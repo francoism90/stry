@@ -9,6 +9,10 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Symfony\Component\Console\Attribute\AsCommand;
 
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\spin;
+use function Laravel\Prompts\table;
+
 #[AsCommand(name: 'videos:clean')]
 class CleanCommand extends Command implements Isolatable
 {
@@ -24,26 +28,36 @@ class CleanCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $items = Video::onlyTrashed()->lazy();
+        $videos = spin(
+            message: 'Retrieving deleted videos...',
+            callback: fn () => Video::onlyTrashed()->lazy()
+        );
 
-        // TODO: show table with items that will be deleted
-
-        if ($items->isEmpty()) {
+        if ($videos->isEmpty()) {
             $this->components->info('No videos found for deletion');
 
             return;
         }
 
-        throw_if(! $this->confirm("Are you sure to delete {$items->count()} videos?"));
+        table(
+            headers: ['ID', 'Name', 'File Size'],
+            rows: $videos->map(fn (Video $video) => [
+                $video->getKey(),
+                $video->name,
+                $video->file_size,
+            ])->all()
+        );
 
-        $items->each(function (Video $model) {
-            if (! $model->trashed()) {
-                return;
-            }
+        if (confirm('Are you sure you want to delete these videos?')) {
+            $videos->each(function (Video $model) {
+                if (! $model->trashed()) {
+                    return;
+                }
 
-            $this->components->info("deleting {$model->name} ({$model->getKey()})");
+                $this->components->info("deleting {$model->name} ({$model->getKey()})");
 
-            $model->forceDelete();
-        });
+                $model->forceDelete();
+            });
+        }
     }
 }

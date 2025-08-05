@@ -12,7 +12,7 @@ use Illuminate\Contracts\Console\Isolatable;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-class CreateTag extends Command implements Isolatable
+class CreateCommand extends Command implements Isolatable
 {
     /**
      * @var string
@@ -37,7 +37,7 @@ class CreateTag extends Command implements Isolatable
             required: true,
         );
 
-        app(CreateNewTag::class)->execute(compact('name', 'type'));
+        app(CreateNewTag::class)->handle(compact('name', 'type'));
 
         $this->components->info('Tag has been created successfully.');
     }
