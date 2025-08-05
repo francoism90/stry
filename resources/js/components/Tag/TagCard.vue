@@ -11,9 +11,12 @@ defineProps<Props>()
 </script>
 
 <template>
-  <UCard variant="soft">
+  <UCard
+    variant="soft"
+    :ui="{ body: '!p-0' }"
+  >
     <Link
-      class="block"
+      class="block p-4 sm:p-6"
       :href="show.url(item.id)"
     >
       <h2>{{ item.name }}</h2>

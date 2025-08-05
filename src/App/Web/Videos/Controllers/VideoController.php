@@ -36,7 +36,7 @@ class VideoController extends Controller implements HasMiddleware
     public function index(VideoIndexRequest $request): Response
     {
         $items = Video::query()
-            ->tap(new VideoListScope)
+            ->tap(new VideoListScope(list: $request->input('list'), sort: $request->input('sort')))
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
             ->through(fn (Video $video) => VideoResource::make($video));
 
