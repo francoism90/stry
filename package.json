@@ -59,7 +59,7 @@
         "pusher-js": "^8.4.0",
         "start-server-and-test": "^2.0.13",
         "tailwindcss": "^4.1.11",
-        "typescript": "~5.8.3",
+        "typescript": "~5.9.2",
         "vite": "^7.0.6",
         "vite-plugin-vue-devtools": "^8.0.0",
         "vitest": "^3.2.4",
