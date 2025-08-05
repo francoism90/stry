@@ -20,6 +20,7 @@ class CreateHlsPlaylist
             // Make sure there is enough space available on the disk
             app(CheckAvailableSpace::class)->handle($playlist);
 
+            // Initialize the FFMpeg exporter
             $ffmpeg = FFMpeg::fromDisk($disk)
                 ->open($path)
                 ->exportForHLS()

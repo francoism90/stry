@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
+use Domain\Playlists\Actions\CreateHlsPlaylist;
+use Domain\Playlists\Actions\CreateNewPlaylist;
 use Domain\Videos\Actions\CreateVideoPreview;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
@@ -46,5 +48,14 @@ class GenerateVideoPreview implements ShouldQueueAfterCommit
     public function handle(VideoHasBeenAddedEvent $event): void
     {
         app(CreateVideoPreview::class)->handle($event->video);
+
+        // Get the first media item from the video
+        $media = $event->video->getFirstMedia('previews');
+
+        // Create a new playlist for the video
+        $playlist = app(CreateNewPlaylist::class)->handle($event->video, ['type' => 'previews']);
+
+        // Create a new playlist for the video
+        app(CreateHlsPlaylist::class)->handle($playlist, $media->disk, $media->getPathRelativeToRoot());
     }
 }
