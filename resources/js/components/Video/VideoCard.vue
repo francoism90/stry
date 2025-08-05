@@ -52,7 +52,7 @@ const link = computed(() => show.url(props.item.id))
         </div>
       </div>
 
-      <div class="absolute inset-0 z-0 hidden h-52 w-full bg-neutral-800 group-hover:block">
+      <div class="absolute inset-0 z-0 hidden h-52 w-full group-hover:block">
         <media-player
           .src="item.preview"
           .playsInline="true"
