@@ -60,3 +60,15 @@ vi ~/projects/stry/.env
 sudo semanage fcontext -a -t container_file_t '/var/home/user/projects/stry/storage/app/import(/.*)?'
 sudo restorecon -R -v /var/home/user/projects/stry/storage/app/import
 ```
+
+1. Make sure to reload systemd on configuration changes:
+
+```bash
+systemctl --user daemon-reload
+```
+
+1. Make sure the minimal required dependencies have been created and running:
+
+```bash
+systemctl --user restart stry-minio stry-pgsql stry-redis
+```

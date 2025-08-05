@@ -1,26 +1,14 @@
 ---
-title: Using Stry
+title: Interaction
 order: 4
 tags:
   - stry
   - managing
+  - fish
+  - shell
 ---
 
-## Usage
-
-1. Make sure to reload systemd on configuration changes:
-
-```bash
-systemctl --user daemon-reload
-```
-
-1. Make sure the minimal required dependencies have been created and running:
-
-```bash
-systemctl --user restart stry-minio stry-pgsql stry-redis
-```
-
-## Shell utility
+## Interaction
 
 Stry provides a shell utility, which is a copy of [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail) with adjustments made for usage with Podman Quadlet.
 
