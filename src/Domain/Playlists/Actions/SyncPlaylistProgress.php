@@ -12,7 +12,7 @@ class SyncPlaylistProgress
     public function handle(Playlist $playlist, array $attributes = []): mixed
     {
         return DB::transaction(function () use ($playlist, $attributes) {
-            $playlist->updateOrFail(['progress' => $attributes]);
+            $playlist->updateQuietly(['progress' => $attributes]);
 
             return $playlist;
         });

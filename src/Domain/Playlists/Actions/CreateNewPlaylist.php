@@ -19,7 +19,7 @@ class CreateNewPlaylist
                 'secret_disk' => Playlist::getRotationKeyDisk(),
                 'expires_at' => Playlist::getExpiresAfter(),
                 'accessed_at' => now(),
-            ], ...$attributes);
+                ...$attributes]);
         });
     }
 }

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Domain\Videos\QueryBuilders;
 
+use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
 
 class VideoQueryBuilder extends Builder
 {
-    public function published(): self
+    public function verified(): self
     {
-        return $this->whereDate('published_at', '<=', now());
+        return $this->whereState('state', Verified::class);
     }
 
     public function recent(): self

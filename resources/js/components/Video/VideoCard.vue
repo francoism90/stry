@@ -2,6 +2,7 @@
 import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 import { Link } from '@inertiajs/vue3'
+import 'vidstack/bundle'
 import { computed } from 'vue'
 
 interface Props {
@@ -18,7 +19,7 @@ const link = computed(() => show.url(props.item.id))
   <UCard
     variant="solid"
     :ui="{
-      root: 'group h-52 min-h-52 rounded-none bg-transparent',
+      root: 'group h-52 max-h-52 min-h-52 rounded-xl bg-transparent',
       body: 'relative !p-0',
     }"
   >
@@ -26,13 +27,13 @@ const link = computed(() => show.url(props.item.id))
       class="block"
       :href="link"
     >
-      <div class="absolute inset-0 z-0 size-full rounded-xl bg-gradient-to-t from-neutral-800/30 to-transparent" />
+      <div class="absolute inset-0 z-0 size-full bg-gradient-to-t from-neutral-800/50 to-transparent" />
 
       <img
         :srcset="item.srcset"
         :src="item.thumbnail"
         :alt="item.name"
-        class="h-52 w-full rounded-xl object-fill group-hover:rounded-none"
+        class="h-52 w-full object-fill"
         loading="lazy"
       />
 
@@ -50,18 +51,20 @@ const link = computed(() => show.url(props.item.id))
           </dl>
         </div>
       </div>
-    </Link>
 
-    <div class="absolute inset-x-0 bottom-0 z-20 hidden group-hover:block">
-      <USlider
-        :default-value="50"
-        :ui="{
-          root: 'flex h-8 items-end',
-          track: 'h-1 rounded-none',
-          range: 'rounded-none',
-          thumb: 'hidden',
-        }"
-      />
-    </div>
+      <div class="absolute inset-0 z-0 hidden h-52 w-full bg-neutral-800 group-hover:block">
+        <media-player
+          .src="item.preview"
+          .playsInline="true"
+          .keyDisabled="true"
+          .autoPlay="true"
+          .muted="true"
+          .loop="true"
+          class="player max-h-52"
+        >
+          <media-provider />
+        </media-player>
+      </div>
+    </Link>
   </UCard>
 </template>

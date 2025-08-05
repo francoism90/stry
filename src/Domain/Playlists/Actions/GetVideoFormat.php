@@ -16,15 +16,15 @@ class GetVideoFormat
         $ffmpeg = FFMpeg::fromDisk($disk)->open($path);
 
         // Detect the video and audio codecs of the source file
-        $videoCodec = $ffmpeg->getVideoStream()->get('codec_name');
-        $audioCodec = $ffmpeg->getAudioStream()->get('codec_name');
+        $videoCodec = $ffmpeg->getVideoStream()?->get('codec_name');
+        $audioCodec = $ffmpeg->getAudioStream()?->get('codec_name');
 
         // Find the best suitable format based on the given formats and source codecs
         // If no matching codec is found, default to first given format in list.
         $formats = Playlist::getVideoFormats();
 
         $format = $formats->first(
-            fn (DefaultVideo $videoFormat) => method_exists($videoFormat, 'getAvailableVideoCodecs')
+            fn (DefaultVideo $videoFormat) => $videoCodec !== null
                 && in_array($audioCodec, $videoFormat->getAvailableAudioCodecs())
                 && in_array($videoCodec, $videoFormat->getAvailableVideoCodecs()),
             fn () => $formats->first()

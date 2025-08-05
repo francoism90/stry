@@ -15,7 +15,7 @@ class GetVideoSuggestions
         return Video::query()
             ->with('tags')
             ->inRandomOrder()
-            ->published()
+            ->verified()
             ->take($limit)
             ->get()
             ->toResourceCollection(VideoResource::class);

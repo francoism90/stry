@@ -316,6 +316,13 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    protected function preview(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getFirstPlaylist('previews')?->getUrl()
+        )->shouldCache();
+    }
+
     protected function captions(): Attribute
     {
         return Attribute::make(

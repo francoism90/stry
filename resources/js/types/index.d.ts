@@ -9,22 +9,20 @@ export type Model = {
 export type User = Model & {
   name: string
   email: string
-  email_verified: string
-  avatar?: string
+  email_verified: string | null
+  avatar?: string | null
   roles?: string[]
   permissions?: string[]
   state: string
-  created: string
-  updated: string
 }
 
 export type Tag = Model & {
   name: string
-  description: string
-  type: string
-  thumbnail: string
-  srcset: string
-  videos: number
+  description: string | null
+  type: string | null
+  thumbnail: string | null
+  srcset: string | null
+  videos?: number
 }
 
 export type Tags = Omit<Paginator, 'data'> & {
@@ -34,29 +32,30 @@ export type Tags = Omit<Paginator, 'data'> & {
 export type TagMenuItem = Tag & SelectMenuItem
 
 export type Playlist = Model & {
-  asset: string
+  asset: string | null
   valid: boolean
   state: string
-  expires: string
+  expires: string | null
 }
 
 export type Video = Model & {
   user?: User
   name: string
-  titles?: string[]
+  titles?: string[] | null
   content?: string | null
   summary: string | null
   season: string | null
   episode: string | null
   part: string | null
-  thumbnail: string
-  srcset: string
-  duration: number
-  timestamp: string
-  snapshot: number
-  released: string
-  expires: string
-  published: string
+  thumbnail: string | null
+  srcset: string | null
+  preview: string | null
+  duration: number | null
+  timestamp: string | null
+  snapshot: number | null
+  released: string | null
+  expires: string | null
+  published: string | null
   state: string
   tags: Tag[] | null
 }

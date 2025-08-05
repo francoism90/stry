@@ -61,7 +61,7 @@ class GetSimilarVideos
             ->all();
 
         return Video::query()
-            ->published()
+            ->verified()
             ->withAnyTagsOfAnyType([
                 ...$video->tags,
                 ...$relatables,
@@ -75,7 +75,7 @@ class GetSimilarVideos
     protected function random(Video $video): LazyCollection
     {
         return Video::query()
-            ->published()
+            ->verified()
             ->whereKeyNot($video)
             ->inRandomOrder()
             ->take(16)

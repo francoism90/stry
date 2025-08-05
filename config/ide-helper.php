@@ -350,7 +350,7 @@ return [
     |
     */
     'post_migrate' => [
-        'ide-helper:models --nowrite --write-mixin',
+        'ide-helper:models --nowrite',
     ],
 
 ];

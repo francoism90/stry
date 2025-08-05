@@ -29,7 +29,7 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
-    public function currentPlaylist(?string $type = null): ?Playlist
+    public function getFirstPlaylist(?string $type = null): ?Playlist
     {
         return $this
             ->playlists()
