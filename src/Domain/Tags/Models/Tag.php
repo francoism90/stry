@@ -148,6 +148,7 @@ class Tag extends BaseTag implements HasMedia
             'synonyms' => (string) $this->synonyms,
             'related' => (array) $this->relatables->modelKeys(),
             'order' => (int) $this->order_column,
+            'count' => (int) $this->videos()->count(),
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];

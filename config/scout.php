@@ -321,6 +321,7 @@ return [
                     'type',
                     'adult',
                     'order',
+                    'count',
                     'created_at',
                     'updated_at',
                 ],

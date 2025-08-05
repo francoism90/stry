@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Scopes;
+namespace App\Api\Videos\Scopes;
 
 use Domain\Tags\Models\Tag;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;

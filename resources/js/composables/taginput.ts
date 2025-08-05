@@ -18,6 +18,10 @@ export function useTagInput(selected?: MaybeRefOrGetter<Model[]>) {
   const data = computed(() => filter([...items.value, ...(state.value?.data || [])]))
 
   watchEffect(async () => {
+    if (!state.value) {
+      await query({ sort: 'popularity' })
+    }
+
     items.value = toValue(selected || [])
   })
 

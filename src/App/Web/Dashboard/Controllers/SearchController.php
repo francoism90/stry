@@ -6,7 +6,7 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Scopes\VideoFilterScope;
+use App\Api\Videos\Scopes\VideoFilterScope;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;

@@ -6,6 +6,7 @@ namespace App\Api\Tags\Controllers;
 
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
+use App\Api\Tags\Scopes\TagFilterScope;
 use Domain\Tags\Models\Tag;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,7 +29,8 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Tag::class);
 
-        return Tag::search($request->input('search', '*'))
+        return Tag::search($request->input('search'))
+            ->tap(new TagFilterScope(sort: $request->input('sort')))
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }

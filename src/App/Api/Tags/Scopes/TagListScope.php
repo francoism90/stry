@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Scopes;
+namespace App\Api\Tags\Scopes;
 
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 
-class TagIndexScope
+class TagListScope
 {
     public function __construct(
         public readonly ?string $type = null,

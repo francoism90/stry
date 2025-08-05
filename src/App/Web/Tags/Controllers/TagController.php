@@ -7,10 +7,10 @@ namespace App\Web\Tags\Controllers;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
+use App\Api\Tags\Scopes\TagListScope;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Tags\Scopes\TagIndexScope;
-use App\Web\Videos\Scopes\VideoFilterScope;
+use App\Api\Videos\Scopes\VideoFilterScope;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
@@ -37,7 +37,7 @@ class TagController extends Controller implements HasMiddleware
     public function index(TagIndexRequest $request): Response
     {
         $items = Tag::query()
-            ->tap(new TagIndexScope(type: $request->input('type')))
+            ->tap(new TagListScope(type: $request->input('type')))
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
             ->through(fn (Tag $tag) => TagResource::make($tag));
 

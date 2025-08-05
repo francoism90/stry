@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Scopes;
+namespace App\Api\Videos\Scopes;
 
 use Laravel\Scout\Builder;
 

@@ -82,7 +82,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         <VideoCarousel
           label="Up Next"
           :items="queue"
-          :actions="[{ label: 'Show All', href: '/', trailingIcon: 'i-lucide-chevron-right' }]"
+          :actions="[{ label: 'Show All', href: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
         />
       </Deferred>
     </PageSection>
