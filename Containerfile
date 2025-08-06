@@ -15,12 +15,14 @@ ENV OCTANE_USER="docker"
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
+RUN sed -i 's/^Components: main$/& contrib non-free/' /etc/apt/sources.list.d/debian.sources
+
 RUN cd /usr/local/src \
     && apt-get update && apt-get upgrade -y \
     && mkdir -p /etc/apt/keyrings \
     && apt-get install -y gnupg curl ca-certificates zip unzip tar xz-utils git postgresql-common dnsutils fswatch \
-    && curl -L https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz | tar -xJ --strip-components=2 --exclude="doc" --exclude="man" -C /usr/local/bin \
-    && apt-get install -y gifsicle jpegoptim optipng pngquant webp \
+    && apt-get install -y libopenh264-7 libde265-0 libvpx7 libwebp7 libheif1 libavif15 libfdk-aac2 libmp3lame0 libass9 \
+    && apt-get install -y ffmpeg gifsicle jpegoptim optipng pngquant \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
