@@ -70,5 +70,5 @@ COPY . /app
 
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 
-RUN php artisan storage:link && php artisan wayfinder:generate
-RUN pnpm install && pnpm build
+RUN php artisan storage:link
+RUN pnpm install
