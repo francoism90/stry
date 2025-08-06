@@ -8,6 +8,7 @@ use Closure;
 use Domain\Media\Actions\CreateMediaSegments;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -31,13 +32,17 @@ class CreateVideoPreview
             FFMpeg::fromDisk('cache')
                 ->open($paths)
                 ->export()
-                ->inFormat((new X264)->setKiloBitrate(1500))
+                ->inFormat((new X264)
+                    ->setKiloBitrate(1500)
+                    ->setAdditionalParameters(Playlist::getAdditionalParameters())
+                )
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
-                ->save('preview.mp4');
+                ->save("{$media->uuid}_clip.mp4");
 
             $video
-                ->addMediaFromDisk('preview.mp4', 'cache')
+                ->addMediaFromDisk("{$media->uuid}_clip.mp4", 'cache')
+                ->usingFileName('preview.mp4')
                 ->toMediaCollection('previews')
                 ->saveOrFail();
 
