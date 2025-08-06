@@ -18,7 +18,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'playlists:clear';
+    protected $signature = 'playlists:clear {--type=clip}';
 
     /**
      * @var string
@@ -32,6 +32,7 @@ class ClearCommand extends Command implements Isolatable
         }
 
         Playlist::query()
+            ->when($this->option('type'), fn ($query, $type) => $query->where('type', $type))
             ->lazyById(200, column: 'id')
             ->each->delete();
 
