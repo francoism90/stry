@@ -256,6 +256,11 @@ class Playlist extends Model
         return config('playlist.stale_after');
     }
 
+    public static function getAdditionalParameters(): array
+    {
+        return config('playlist.additional_parameters', []);
+    }
+
     public static function shouldUseRotationKeys(): bool
     {
         return config('playlist.rotation_keys', true);

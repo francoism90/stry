@@ -20,14 +20,14 @@ return [
      * The value is in seconds, and it will be used to determine how long the playlist will be valid.
      * After this time, the playlist will be considered expired and can be prunable.
      */
-    'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 7), // 7 days
+    'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 14), // 14 days
 
     /**
      * This setting is used to define the time after which the playlist will be considered stale.
      * The value is in seconds, and it will be used to determine how long the playlist will be valid.
      * After this time, the playlist will be considered stale and can be prunable.
      */
-    'stale_after' => (int) env('PLAYLIST_STALE_AFTER', 60 * 60 * 24 * 3), // 3 days
+    'stale_after' => (int) env('PLAYLIST_STALE_AFTER', 60 * 60 * 24 * 7), // 7 days
 
     /**
      * This setting is used to define the middleware that will be applied to the playlist routes.
@@ -46,7 +46,7 @@ return [
      * A bitrate of 0 means that the format will try to use the copy-format (preventing transcoding).
      */
     'hls_formats' => [
-        ['name' => 'default', 'kilo_bitrate' => 0],
+        ['name' => 'copy', 'kilo_bitrate' => 0],
         // ['name' => 'low', 'kilo_bitrate' => 500],
         // ['name' => 'mid', 'kilo_bitrate' => 3000],
         // ['name' => 'high', 'kilo_bitrate' => 6000],
@@ -78,6 +78,16 @@ return [
         \Support\FFMpeg\Format\Video\X264::class,
         \Support\FFMpeg\Format\Video\X265::class,
         \Support\FFMpeg\Format\Video\WebM::class,
+    ],
+
+    /**
+     * This setting is used to configure the additional parameters that will be passed to the FFMpeg exporter.
+     * These parameters will be used to configure the transcoding process.
+     */
+    'additional_parameters' => [
+        '-preset', 'veryfast',
+        '-tune', 'zerolatency',
+        '-movflags', '+faststart',
     ],
 
     /**
