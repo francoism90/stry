@@ -26,8 +26,6 @@ class CreateVideoPreview
             /** @var Media $media */
             $media = $video->getClipCollection()->first();
 
-            $path = "media_{$media->uuid}_preview.mp4";
-
             $paths = app(CreateMediaSegments::class)->handle($media);
 
             FFMpeg::fromDisk('cache')
@@ -36,10 +34,10 @@ class CreateVideoPreview
                 ->inFormat((new X264)->setKiloBitrate(1500))
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
-                ->save($path);
+                ->save('preview.mp4');
 
             $video
-                ->addMediaFromDisk($path, 'cache')
+                ->addMediaFromDisk('preview.mp4', 'cache')
                 ->toMediaCollection('previews')
                 ->saveOrFail();
 
