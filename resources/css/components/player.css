@@ -1,9 +1,9 @@
 @layer components {
   .default-video {
-    @apply !aspect-square !size-full;
+    @apply !aspect-square !size-full bg-inherit;
 
     video {
-      @apply !size-full max-h-fit !object-fill;
+      @apply !size-full max-h-fit bg-inherit !object-fill;
     }
   }
 }
