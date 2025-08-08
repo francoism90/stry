@@ -13,17 +13,17 @@ class PerformConversionsJob extends BasePerformConversionsJob
     /**
      * @var int
      */
-    public $backoff = 3;
-
-    /**
-     * @var int
-     */
-    public $timeout = 60 * 10;
+    public $tries = 1;
 
     /**
      * @var int
      */
     public $maxExceptions = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60 * 10;
 
     /**
      * @var bool
@@ -41,7 +41,7 @@ class PerformConversionsJob extends BasePerformConversionsJob
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
+            // (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
         ];
     }
 

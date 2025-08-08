@@ -30,17 +30,12 @@ class ImportVideo implements ShouldBeUnique, ShouldQueue
     /**
      * @var int
      */
-    public $backoff = 3;
+    public $maxExceptions = 1;
 
     /**
      * @var int
      */
     public $timeout = 60 * 60 * 8;
-
-    /**
-     * @var int
-     */
-    public $maxExceptions = 1;
 
     /**
      * @var bool

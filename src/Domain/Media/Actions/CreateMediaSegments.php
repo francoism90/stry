@@ -6,10 +6,8 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\Filters\Video\VideoFilters;
-use ProtoneMedia\LaravelFFMpeg\FFMpeg\CopyVideoFormat;
-use ProtoneMedia\LaravelFFMpeg\MediaOpener;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Support\FFMpeg\Format\Video\X264;
 
 class CreateMediaSegments
 {
@@ -17,19 +15,20 @@ class CreateMediaSegments
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-        $extension = pathinfo($media->file_name, PATHINFO_EXTENSION);
-
-        $segments = $this->getSegments($ffmpeg->getDurationInSeconds());
-
         $items = [];
 
-        $ffmpeg->each($segments, function (MediaOpener $ffmpeg, float $seconds, int $key) use ($media, $extension, &$items) {
-            $items[] = $path = "media_{$media->uuid}_{$key}.{$extension}";
+        $segments = collect($this->getSegments($ffmpeg->getDurationInSeconds()));
 
-            return $ffmpeg->addFilter(fn (VideoFilters $filters) => $filters
-                ->clip(TimeCode::fromSeconds($seconds), TimeCode::fromSeconds(2)))
+        $segments->each(function (float $seconds, int $key) use ($ffmpeg, $media, &$items) {
+            $items[] = $path = "{$media->uuid}_segment_{$key}.mp4";
+
+            $ffmpeg
                 ->export()
-                ->inFormat((new CopyVideoFormat)->setAdditionalParameters(['-an', '-reset_timestamps', '1']))
+                ->inFormat((new X264)
+                    ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(2)])
+                    ->setKiloBitrate(1500)
+                    ->setPasses(1)
+                )
                 ->toDisk('cache')
                 ->save($path);
         });

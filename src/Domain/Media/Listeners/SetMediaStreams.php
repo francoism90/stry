@@ -26,17 +26,12 @@ class SetMediaStreams implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $backoff = 3;
-
-    /**
-     * @var int
-     */
-    public $timeout = 60 * 2;
-
-    /**
-     * @var int
-     */
     public $maxExceptions = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60 * 3;
 
     /**
      * @var bool

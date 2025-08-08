@@ -29,17 +29,17 @@ class ProcessVideo implements ShouldQueue
     /**
      * @var int
      */
-    public $backoff = 3;
-
-    /**
-     * @var int
-     */
-    public $timeout = 60 * 60 * 8;
+    public $tries = 1;
 
     /**
      * @var int
      */
     public $maxExceptions = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60 * 60 * 8;
 
     /**
      * @var bool

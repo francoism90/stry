@@ -8,7 +8,6 @@ use Closure;
 use Domain\Media\Actions\CreateMediaSegments;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -32,10 +31,7 @@ class CreateVideoPreview
             FFMpeg::fromDisk('cache')
                 ->open($paths)
                 ->export()
-                ->inFormat((new X264)
-                    ->setKiloBitrate(1500)
-                    ->setAdditionalParameters(Playlist::getAdditionalParameters())
-                )
+                ->inFormat((new X264)->setKiloBitrate(1500))
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
                 ->save("{$media->uuid}_clip.mp4");
@@ -43,14 +39,12 @@ class CreateVideoPreview
             $video
                 ->addMediaFromDisk("{$media->uuid}_clip.mp4", 'cache')
                 ->usingFileName('preview.mp4')
-                ->toMediaCollection('previews')
-                ->saveOrFail();
+                ->toMediaCollection('previews');
+
+            $video->saveOrFail();
 
             // Clean up temporary files
             collect($paths)->each(fn (string $path) => Storage::disk('cache')->delete($path));
-
-            // Create HLS playlist
-            app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Preview);
 
             return $next($video);
         });

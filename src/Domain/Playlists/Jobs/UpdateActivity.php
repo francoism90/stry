@@ -27,17 +27,17 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueue
     /**
      * @var int
      */
-    public $backoff = 3;
-
-    /**
-     * @var int
-     */
-    public $timeout = 60;
+    public $tries = 1;
 
     /**
      * @var int
      */
     public $maxExceptions = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60 * 3;
 
     /**
      * @var bool

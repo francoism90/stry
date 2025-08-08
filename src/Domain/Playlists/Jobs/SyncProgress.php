@@ -26,11 +26,6 @@ class SyncProgress implements ShouldQueue
     /**
      * @var int
      */
-    public $backoff = 3;
-
-    /**
-     * @var int
-     */
     public $timeout = 60;
 
     /**

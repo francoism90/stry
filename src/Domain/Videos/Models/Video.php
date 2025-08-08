@@ -267,12 +267,11 @@ class Video extends Model implements HasMedia
         return $this->getMedia('captions');
     }
 
-    public function getVideoStreams(): Collection
+    public function getStreams(): Collection
     {
         return $this
             ->getClipCollection()
-            ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []))
-            ->filter(fn (array $stream) => data_get($stream, 'codec_type') === 'video');
+            ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
     }
 
     public function hasCaptions(): bool
@@ -281,12 +280,14 @@ class Video extends Model implements HasMedia
             return true;
         }
 
-        return (bool) data_get($this->getVideoStreams()->first(), 'closed_captions', false);
+        return (bool) $this->getStreams()
+            ->filter(fn (array $stream) => $stream['codec_type'] === 'subtitle' || data_get($stream, 'closed_captions', 0))
+            ->isNotEmpty();
     }
 
     public function durationInSeconds(): float
     {
-        return (float) data_get($this->getVideoStreams()->first(), 'duration', 0);
+        return (float) $this->getStreams()->max('duration') ?: 0.0;
     }
 
     protected function identifier(): Attribute

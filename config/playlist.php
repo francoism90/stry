@@ -81,14 +81,16 @@ return [
     ],
 
     /**
+     * This setting is used to configure the initial parameters that will be passed to the FFMpeg exporter.
+     * These parameters will be used to configure the transcoding process.
+     */
+    'initial_parameters' => [],
+
+    /**
      * This setting is used to configure the additional parameters that will be passed to the FFMpeg exporter.
      * These parameters will be used to configure the transcoding process.
      */
-    'additional_parameters' => [
-        '-preset', 'veryfast',
-        '-tune', 'zerolatency',
-        '-movflags', '+faststart',
-    ],
+    'additional_parameters' => [],
 
     /**
      * When this setting is true, the playlist will copy the video codec from the original video file.
