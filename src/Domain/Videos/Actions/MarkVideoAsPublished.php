@@ -9,7 +9,7 @@ use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
 use Illuminate\Support\Facades\DB;
 
-class MarkVideoAsVerified
+class MarkVideoAsPublished
 {
     public function handle(Video $video, Closure $next): void
     {
