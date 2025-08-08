@@ -21,7 +21,7 @@ class CreateVideoPlaylists
             ]);
 
             $items
-                ->filter(fn (array $attributes, string $key) => $video->hasMedia($key))
+                ->reject(fn (array $attributes, string $key) => $video->hasPlaylists($attributes['type']) || ! $video->hasMedia($key))
                 ->each(function (array $attributes, string $key) use ($video) {
                     $media = $video->getFirstMedia($key);
 

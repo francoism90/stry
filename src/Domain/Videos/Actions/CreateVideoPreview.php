@@ -17,7 +17,7 @@ class CreateVideoPreview
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if ($video->hasPlaylists('preview') || ! $video->hasMedia('clips')) {
+            if ($video->hasMedia('previews')) {
                 return $next($video);
             }
 
