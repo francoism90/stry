@@ -24,7 +24,6 @@ class CreateHlsPlaylist
             $ffmpeg = FFMpeg::fromDisk($disk)
                 ->open($path)
                 ->exportForHLS()
-                ->withoutPlaylistEndLine()
                 ->toDisk($playlist->getDisk())
                 ->setSegmentLength(Playlist::getSegmentLength())
                 ->setKeyFrameInterval(Playlist::getFrameInterval());

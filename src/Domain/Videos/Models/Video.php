@@ -145,7 +145,6 @@ class Video extends Model implements HasMedia
                 'video/quicktime',
                 'video/webm',
                 'video/x-m4v',
-                'video/x-matroska',
             ]);
 
         $this
@@ -170,7 +169,6 @@ class Video extends Model implements HasMedia
                 'video/quicktime',
                 'video/webm',
                 'video/x-m4v',
-                'video/x-matroska',
             ]);
     }
 
