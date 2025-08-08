@@ -20,7 +20,7 @@ defineProps<Props>()
     .autoPlay="true"
     class="default-video max-h-64 rounded-xl sm:max-h-96 lg:max-h-2/5"
   >
-    <media-provider></media-provider>
     <media-video-layout></media-video-layout>
+    <media-provider></media-provider>
   </media-player>
 </template>
