@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
+use Domain\Videos\Actions\CreateVideoPlaylists;
 use Domain\Videos\Actions\CreateVideoPreview;
 use Domain\Videos\Actions\MarkVideoAsPublished;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
-use Domain\Videos\Events\VideoHasBeenPublishedEvent;
-use Domain\Videos\Models\Video;
+use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Pipeline;
@@ -42,13 +42,14 @@ class ProcessVideo implements ShouldQueueAfterCommit
      */
     public $failOnTimeout = true;
 
-    public function handle(VideoHasBeenAddedEvent $event): void
+    public function handle(VideoHasBeenAddedEvent|VideoHasBeenViewedEvent $event): void
     {
         Pipeline::send($event->video)
             ->through([
                 CreateVideoPreview::class,
+                CreateVideoPlaylists::class,
                 MarkVideoAsPublished::class,
             ])
-            ->then(fn (Video $video) => VideoHasBeenPublishedEvent::dispatch($video));
+            ->thenReturn();
     }
 }

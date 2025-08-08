@@ -6,27 +6,33 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use FFMpeg\FFProbe\DataMapping\Stream;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
-class ParseMediaStreams
+class SetMediaStreams
 {
-    public function handle(Media $media): Collection
+    public function handle(Media $media): void
     {
         if (! Str::startsWith($media->mime_type, ['audio/', 'video/'])) {
-            return collect();
+            return;
         }
 
+        // Get the streams from the media file
         $streams = FFMpeg::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->getStreams();
 
+        // Parse the streams with only relevant keys
         $keys = $this->getStreamKeys();
 
-        return collect($streams)
+        $items = collect($streams)
             ->map(fn (Stream $stream) => collect($stream->all())->only($keys)->toArray())
             ->filter();
+
+        // Update the media item with the streams
+        $media
+            ->setCustomProperty('streams', $items->toArray())
+            ->saveOrFail();
     }
 
     protected function getStreamKeys(): array

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Media\Listeners;
 
-use Domain\Media\Actions\ParseMediaStreams;
+use Domain\Media\Actions\SetMediaStreams;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Pipeline;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
-class SetMediaStreams implements ShouldQueueAfterCommit
+class ProcessMedia implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
@@ -31,7 +32,7 @@ class SetMediaStreams implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 3;
+    public $timeout = 60 * 10;
 
     /**
      * @var bool
@@ -40,11 +41,10 @@ class SetMediaStreams implements ShouldQueueAfterCommit
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {
-        $streams = app(ParseMediaStreams::class)->handle($event->media);
-
-        if ($streams->isNotEmpty()) {
-            $event->media->setCustomProperty('streams', $streams->toArray());
-            $event->media->saveOrFail();
-        }
+        Pipeline::send($event->media)
+            ->through([
+                SetMediaStreams::class,
+            ])
+            ->thenReturn();
     }
 }

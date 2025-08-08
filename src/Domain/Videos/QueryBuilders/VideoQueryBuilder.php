@@ -13,8 +13,8 @@ class VideoQueryBuilder extends Builder
     {
         return $this
             ->verified()
-            ->whereNotNull('released_at')
-            ->where('released_at', '<=', now());
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
     public function verified(): self

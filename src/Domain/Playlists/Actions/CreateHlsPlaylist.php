@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Actions;
 
+use Domain\Playlists\Events\PlaylistHasBeenProcessedEvent;
 use Domain\Playlists\Jobs\SyncProgress;
 use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\DefaultVideo;
@@ -57,9 +58,10 @@ class CreateHlsPlaylist
 
                 // If bitrate is 0, we assume we want to copy the video and audio codecs
                 if ($videoCodec === 'copy' && $audioCodec === 'copy') {
-                    $ffmpeg->addFormat((new CopyVideoFormat)->setAdditionalParameters(
-                        Playlist::getAdditionalParameters()
-                    ));
+                    $ffmpeg->addFormat(
+                        (new CopyVideoFormat)
+                            ->setInitialParameters(Playlist::getInitialParameters())
+                            ->setAdditionalParameters(Playlist::getAdditionalParameters()));
 
                     return;
                 }
@@ -68,6 +70,7 @@ class CreateHlsPlaylist
                     ->setVideoCodec($videoCodec)
                     ->setAudioCodec($audioCodec)
                     ->setKiloBitrate($kiloBitrate)
+                    ->setInitialParameters(Playlist::getInitialParameters())
                     ->setAdditionalParameters(Playlist::getAdditionalParameters())
                 );
             });
@@ -76,7 +79,7 @@ class CreateHlsPlaylist
             $ffmpeg->save($playlist->getPath($playlist->file_name));
 
             // Mark the playlist as processed
-            app(MarkPlaylistAsVerified::class)->handle($playlist);
+            PlaylistHasBeenProcessedEvent::dispatch($playlist);
 
             return $playlist;
         });

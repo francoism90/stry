@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\QueryBuilders;
 
-use Domain\Playlists\Enums\PlaylistType;
+use ArrayAccess;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 class PlaylistQueryBuilder extends Builder
 {
@@ -22,9 +23,9 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', Verified::class);
     }
 
-    public function type(PlaylistType $type): self
+    public function type(ArrayAccess|array|string $type): self
     {
-        return $this->where('type', $type);
+        return $this->whereIn('type', Arr::wrap($type));
     }
 
     public function active(): self

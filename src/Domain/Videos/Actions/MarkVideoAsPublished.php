@@ -14,13 +14,17 @@ class MarkVideoAsPublished
     public function handle(Video $video, Closure $next): void
     {
         DB::transaction(function () use ($video, $next) {
-            // Set state to verified if it can transition
+            if (! $video->hasMedia('clips')) {
+                return $next($video);
+            }
+
             if ($video->state->canTransitionTo(Verified::class)) {
                 $video->state->transitionTo(Verified::class);
             }
 
-            // Touch the video to update the timestamps
-            $video->touch('published_at');
+            if ($video->published_at === null) {
+                $video->touch('published_at');
+            }
 
             return $next($video);
         });

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Playlists\Models;
 
 use Domain\Playlists\Collections\PlaylistCollection;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\PlaylistState;
@@ -70,7 +69,6 @@ class Playlist extends Model
     {
         return [
             'state' => PlaylistState::class,
-            'type' => PlaylistType::class,
             'progress' => AsArrayObject::class,
             'accessed_at' => 'datetime',
             'expires_at' => 'datetime',
@@ -107,8 +105,7 @@ class Playlist extends Model
     {
         return static::query()
             ->expired()
-            ->orWhere(fn ($query) => $query->stale())
-            ->take(50);
+            ->orWhere(fn ($query) => $query->stale());
     }
 
     /**
@@ -254,6 +251,11 @@ class Playlist extends Model
     public static function getStaleAfter(): ?int
     {
         return config('playlist.stale_after');
+    }
+
+    public static function getInitialParameters(): array
+    {
+        return config('playlist.initial_parameters', []);
     }
 
     public static function getAdditionalParameters(): array

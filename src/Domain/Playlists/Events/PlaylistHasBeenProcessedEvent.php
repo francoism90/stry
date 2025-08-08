@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Events;
+namespace Domain\Playlists\Events;
 
-use Domain\Videos\Models\Video;
+use Domain\Playlists\Models\Playlist;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VideoHasBeenPublishedEvent implements ShouldDispatchAfterCommit
+class PlaylistHasBeenProcessedEvent implements ShouldDispatchAfterCommit
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public function __construct(public Video $video) {}
+    public function __construct(public Playlist $playlist) {}
 }

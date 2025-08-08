@@ -7,7 +7,6 @@ namespace Domain\Videos\Models;
 use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Tags\Concerns\HasTags;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
@@ -319,7 +318,7 @@ class Video extends Model implements HasMedia
     protected function preview(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstPlaylist(PlaylistType::Preview)?->getUrl()
+            get: fn () => $this->getFirstPlaylist('preview')?->getUrl()
         )->shouldCache();
     }
 

@@ -6,8 +6,6 @@ namespace Domain\Videos\Actions;
 
 use Closure;
 use Domain\Media\Actions\CreateMediaSegments;
-use Domain\Media\Models\Media;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -19,25 +17,28 @@ class CreateVideoPreview
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if ($video->hasPlaylists(PlaylistType::Preview) || ! $video->hasMedia('clips')) {
-                return;
+            if ($video->hasPlaylists('preview') || ! $video->hasMedia('clips')) {
+                return $next($video);
             }
 
-            /** @var Media $media */
+            // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
+            // Generate media segments
             $paths = app(CreateMediaSegments::class)->handle($media);
 
+            // Create a sample video from the segments
             FFMpeg::fromDisk('cache')
                 ->open($paths)
                 ->export()
                 ->inFormat((new X264)->setKiloBitrate(1500))
                 ->concatWithTranscoding(hasAudio: false)
                 ->toDisk('cache')
-                ->save("{$media->uuid}_clip.mp4");
+                ->save("{$media->uuid}_sample.mp4");
 
+            // Add the sample video to the video model
             $video
-                ->addMediaFromDisk("{$media->uuid}_clip.mp4", 'cache')
+                ->addMediaFromDisk("{$media->uuid}_sample.mp4", 'cache')
                 ->usingFileName('preview.mp4')
                 ->toMediaCollection('previews');
 

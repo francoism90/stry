@@ -8,7 +8,7 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States\Verified;
 use Illuminate\Support\Facades\DB;
 
-class MarkPlaylistAsVerified
+class MarkPlaylistAsPublished
 {
     public function handle(Playlist $playlist): Playlist
     {

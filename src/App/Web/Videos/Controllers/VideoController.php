@@ -9,10 +9,9 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Api\Videos\Scopes\VideoListScope;
-use Domain\Playlists\Enums\PlaylistType;
-use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\UpdateVideoDetails;
+use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -63,12 +62,12 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        // Make sure the video has a playlist
-        app(CreateVideoPlaylist::class)->handle($video, PlaylistType::Clip);
+        // Dispatch video viewed event
+        VideoHasBeenViewedEvent::dispatch($video);
 
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
-            'playlist' => fn () => $video->getFirstPlaylist(PlaylistType::Clip)?->toResource(PlaylistResource::class),
+            'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
             'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
         ]);
     }
