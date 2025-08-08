@@ -12,9 +12,8 @@ class Video extends ImageGenerator
     public function supportedExtensions(): Collection
     {
         return collect([
-            'webm', 'mov', 'mkv', 'mp4', 'm4v',
-            'mkv', 'mk3d', 'ogv', 'ivf', 'movie',
-            'qt', 'avi', 'wmv', 'mpeg', 'mpg',
+            'mp4', 'm4v', 'webm', 'mov', 'mkv', 'mk3d',
+            'avi', 'wmv', 'ogv', 'mpeg', 'mpg', 'ivf',
         ]);
     }
 
