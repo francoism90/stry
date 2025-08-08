@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Actions;
 
-use Domain\Playlists\Events\PlaylistHasBeenProcessedEvent;
 use Domain\Playlists\Jobs\SyncProgress;
 use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\DefaultVideo;
@@ -79,7 +78,7 @@ class CreateHlsPlaylist
             $ffmpeg->save($playlist->getPath($playlist->file_name));
 
             // Mark the playlist as processed
-            PlaylistHasBeenProcessedEvent::dispatch($playlist);
+            app(MarkPlaylistAsProcessed::class)->handle($playlist);
 
             return $playlist;
         });
