@@ -9,6 +9,14 @@ use Illuminate\Database\Eloquent\Builder;
 
 class VideoQueryBuilder extends Builder
 {
+    public function published(): self
+    {
+        return $this
+            ->verified()
+            ->whereNotNull('released_at')
+            ->where('released_at', '<=', now());
+    }
+
     public function verified(): self
     {
         return $this->whereState('state', Verified::class);

@@ -18,6 +18,7 @@ class VideoListScope
     public function __invoke(VideoQueryBuilder $query): void
     {
         $query
+            ->published()
             ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags))
             ->when($this->list === null, fn ($query) => $query->inRandomOrder());
     }
