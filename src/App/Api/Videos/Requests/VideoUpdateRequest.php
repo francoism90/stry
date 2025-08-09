@@ -26,8 +26,10 @@ class VideoUpdateRequest extends FormRequest
             'snapshot' => ['nullable', 'numeric'],
             'tags' => ['nullable', 'array', 'max:10'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],
-            'summary' => ['nullable', 'string', 'max:1000'],
-            'released_at' => ['nullable', 'date_format:Y-m-d'],
+            'summary' => ['nullable', 'string', 'max:2048'],
+            'expires_at' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'published_at' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'released_at' => ['nullable', 'date_format:Y-m-d H:i:s'],
         ];
     }
 }

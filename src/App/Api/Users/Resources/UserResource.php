@@ -23,8 +23,8 @@ class UserResource extends JsonResource
             'email_verified' => $this->whenAppended('email_verified'),
             'permissions' => $this->whenLoaded('permissions', $this->getAllPermissions()->pluck('name')),
             'roles' => $this->whenLoaded('roles', $this->getRoleNames()),
-            'created' => $this->whenAppended('created_at'),
-            'updated' => $this->whenAppended('updated_at'),
+            'created_at' => $this->whenAppended('created_at'),
+            'updated_at' => $this->whenAppended('updated_at'),
         ];
     }
 }

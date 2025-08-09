@@ -38,6 +38,8 @@ const submit = async () =>
   >
     <FlashAlert />
 
+    {{ form.errors }}
+
     <UFormField
       label="Name"
       name="name"
@@ -102,11 +104,11 @@ const submit = async () =>
       <UFormField
         label="Released"
         name="released_at"
-        :error="form.errors.released"
+        :error="form.errors.released_at"
       >
         <UInput
-          v-model.trim="form.released"
-          placeholder="YYYY-MM-DD"
+          v-model.trim="form.released_at"
+          placeholder="YYYY-MM-DD HH:mm:ss"
           class="w-full"
         />
       </UFormField>
@@ -121,30 +123,33 @@ const submit = async () =>
         <UInput
           v-model.trim="form.snapshot"
           placeholder="1.00"
+          step="0.01"
+          :max="video.duration || 0"
+          type="number"
           class="w-full"
         />
       </UFormField>
 
       <UFormField
         label="Published"
-        name="published"
-        :error="form.errors.published"
+        name="published_at"
+        :error="form.errors.published_at"
       >
         <UInput
-          v-model.trim="form.published"
-          placeholder="YYYY-MM-DD"
+          v-model.trim="form.published_at"
+          placeholder="YYYY-MM-DD HH:mm:ss"
           class="w-full"
         />
       </UFormField>
 
       <UFormField
         label="Expires"
-        name="expires"
-        :error="form.errors.expires"
+        name="expires_at"
+        :error="form.errors.expires_at"
       >
         <UInput
-          v-model.trim="form.expires"
-          placeholder="YYYY-MM-DD"
+          v-model.trim="form.expires_at"
+          placeholder="YYYY-MM-DD HH:mm:ss"
           class="w-full"
         />
       </UFormField>

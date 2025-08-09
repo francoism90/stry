@@ -3,14 +3,14 @@ import type { PlayerSrc } from 'vidstack'
 
 export type Model = {
   id: string
-  created: string
-  updated: string
+  created_at: string
+  updated_at: string
 }
 
 export type User = Model & {
   name: string
   email: string
-  email_verified: string | null
+  email_verified_at: string | null
   avatar?: string | null
   roles?: string[]
   permissions?: string[]
@@ -36,7 +36,7 @@ export type Playlist = Model & {
   asset: PlayerSrc
   valid: boolean
   state: string
-  expires: string | null
+  expires_at: string | null
 }
 
 export type Video = Model & {
@@ -54,11 +54,11 @@ export type Video = Model & {
   duration: number | null
   timestamp: string | null
   snapshot: number | null
-  released: string | null
-  expires: string | null
-  published: string | null
-  state: string
+  released_at: string | null
   tags: Tag[] | null
+  state: string
+  expires_at: string | null
+  published_at: string | null
 }
 
 export type Videos = Omit<Paginator, 'data'> & {
