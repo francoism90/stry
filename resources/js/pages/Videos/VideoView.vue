@@ -31,7 +31,7 @@ const items = ref<NavigationMenuItem[]>([
 ])
 
 const details = ref<DetailListItem[]>([
-  { label: 'Created', value: useDateFormat(props.video.created, 'YYYY-MM-DD') },
+  { label: 'Created', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD') },
   { label: 'Duration', value: props.video.timestamp },
 ])
 

@@ -13,7 +13,7 @@ class GetVideoSuggestions
     public function handle(int $limit = 16): ResourceCollection
     {
         return Video::query()
-            ->published()
+            ->verified()
             ->inRandomOrder()
             ->take($limit)
             ->get()
