@@ -6,8 +6,8 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use FFMpeg\Coordinate\TimeCode;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\CopyVideoFormat;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Support\FFMpeg\Format\Video\X264;
 
 class CreateMediaSegments
 {
@@ -24,10 +24,9 @@ class CreateMediaSegments
 
             $ffmpeg
                 ->export()
-                ->inFormat((new X264)
+                ->inFormat((new CopyVideoFormat)
                     ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(2)])
                     ->setKiloBitrate(1500)
-                    ->setPasses(1)
                 )
                 ->toDisk('cache')
                 ->save($path);

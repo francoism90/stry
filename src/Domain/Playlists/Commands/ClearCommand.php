@@ -32,7 +32,7 @@ class ClearCommand extends Command implements Isolatable
         }
 
         Playlist::query()
-            ->when($this->option('type'), fn ($query, $type) => $query->where('type', $type))
+            ->when($this->option('type'), fn ($query, $type) => $query->type($type))
             ->lazyById(200, column: 'id')
             ->each->delete();
 
