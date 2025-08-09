@@ -23,7 +23,7 @@ class PerformConversionsJob extends BasePerformConversionsJob
     /**
      * @var int
      */
-    public $timeout = 60 * 10;
+    public $timeout = 60 * 20;
 
     /**
      * @var bool

@@ -89,11 +89,6 @@ class Video extends Model implements HasMedia
         'tags',
     ];
 
-    /**
-     * @var bool
-     */
-    public $registerMediaConversionsUsingModelInstance = true;
-
     protected static function newFactory(): VideoFactory
     {
         return VideoFactory::new();
@@ -169,18 +164,20 @@ class Video extends Model implements HasMedia
                 'video/webm',
                 'video/x-m4v',
             ]);
-    }
 
-    public function registerMediaConversions(?Media $media = null): void
-    {
         $this
-            ->addMediaConversion('thumbnail')
-            ->performOnCollections('clips')
-            ->extractVideoFrameAtSecond((float) $this->snapshot ?: 1)
+            ->addMediaCollection('thumbnail')
+            ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
+            ->singleFile()
             ->withResponsiveImages()
-            ->width(368)
-            ->height(232)
-            ->queued();
+            ->acceptsMimeTypes([
+                'image/avif',
+                'image/jpg',
+                'image/jpeg',
+                'image/png',
+                'image/webp',
+            ]);
     }
 
     /**
@@ -304,14 +301,14 @@ class Video extends Model implements HasMedia
     protected function thumbnail(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMediaUrl('clips', 'thumbnail')
+            get: fn () => $this->getFirstMediaUrl('thumbnail')
         )->shouldCache();
     }
 
     protected function srcset(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMedia('clips')?->getSrcset('thumbnail')
+            get: fn () => $this->getFirstMedia('thumbnail')?->getSrcset()
         )->shouldCache();
     }
 

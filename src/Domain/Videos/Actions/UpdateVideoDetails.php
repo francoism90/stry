@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Tags\Actions\SyncModelTags;
+use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +24,10 @@ class UpdateVideoDetails
             }
 
             if ($video->wasChanged('snapshot')) {
-                app(RegenerateVideoThumbnail::class)->execute($video);
+                $video->getFirstMedia('thumbnail')?->delete();
             }
+
+            VideoHasBeenUpdatedEvent::dispatch($video);
 
             return $video;
         });

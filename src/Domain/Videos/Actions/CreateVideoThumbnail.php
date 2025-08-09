@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Domain\Videos\Actions;
+
+use Closure;
+use Domain\Media\Actions\CreateMediaFrame;
+use Domain\Videos\Models\Video;
+use Illuminate\Support\Facades\DB;
+
+class CreateVideoThumbnail
+{
+    public function handle(Video $video, Closure $next): mixed
+    {
+        return DB::transaction(function () use ($video, $next) {
+            if (! $video->hasMedia('clips')) {
+                return $next($video);
+            }
+
+            // Get the first media item from the video
+            $media = $video->getClipCollection()->first();
+
+            // Create a sample video from the segments
+            $path = app(CreateMediaFrame::class)->handle($media, (float) $video->snapshot ?: 10);
+
+            // Add the sample video to the video model
+            $video
+                ->addMediaFromDisk($path, 'cache')
+                ->usingFileName('thumb.jpg')
+                ->toMediaCollection('thumbnail');
+
+            $video->saveOrFail();
+
+            return $next($video);
+        });
+    }
+}
