@@ -39,7 +39,7 @@ const link = computed(() => show.url(props.item.id))
         :srcset="item.srcset"
         :src="item.thumbnail"
         :alt="item.name"
-        class="h-52 w-full object-fill"
+        class="h-52 max-h-52 w-full object-fill"
         loading="lazy"
       />
 
@@ -53,6 +53,11 @@ const link = computed(() => show.url(props.item.id))
             <template v-if="tags.length">
               <dt class="sr-only">Tags</dt>
               <dd class="truncate">{{ tags.join(', ') }}</dd>
+            </template>
+
+            <template v-if="item.captions">
+              <dt class="sr-only">Captions</dt>
+              <dd class="truncate">CC</dd>
             </template>
           </dl>
         </div>

@@ -143,7 +143,7 @@ class Video extends Model implements HasMedia
 
         $this
             ->addMediaCollection('captions')
-            ->useDisk('media')
+            ->useDisk('conversions')
             ->storeConversionsOnDisk('conversions')
             ->acceptsMimeTypes([
                 'text/plain',

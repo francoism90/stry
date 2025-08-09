@@ -17,6 +17,13 @@ export type User = Model & {
   state: string
 }
 
+export type Media = Model & {
+  name: string
+  asset: string
+  mime_type: string
+  size: number
+}
+
 export type Tag = Model & {
   name: string
   description: string | null
@@ -48,6 +55,7 @@ export type Video = Model & {
   season: string | null
   episode: string | null
   part: string | null
+  captions: boolean | null
   thumbnail: string
   srcset: string
   preview: string

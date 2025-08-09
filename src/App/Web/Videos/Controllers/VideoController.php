@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
+use App\Api\Media\Resources\MediaResource;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
@@ -67,6 +68,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
+            'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
             'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
         ]);

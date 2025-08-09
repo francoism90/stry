@@ -38,8 +38,6 @@ const submit = async () =>
   >
     <FlashAlert />
 
-    {{ form.errors }}
-
     <UFormField
       label="Name"
       name="name"
@@ -58,7 +56,7 @@ const submit = async () =>
             size="sm"
             icon="i-lucide-wand-sparkles"
             aria-label="Format name"
-            @click="form.name = title(form.name)"
+            @click.prevent="form.name = title(form.name)"
           />
         </template>
       </UInput>
