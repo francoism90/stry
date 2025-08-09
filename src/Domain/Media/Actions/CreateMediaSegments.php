@@ -6,21 +6,20 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use FFMpeg\Coordinate\TimeCode;
+use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Support\FFMpeg\Format\Video\X264;
 
 class CreateMediaSegments
 {
-    public function handle(Media $media): array
+    public function handle(Media $media): Collection
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-        $items = [];
-
         $segments = collect($this->getSegments($ffmpeg->getDurationInSeconds()));
 
-        $segments->each(function (float $seconds, int $key) use ($ffmpeg, $media, &$items) {
-            $items[] = $path = "{$media->uuid}_segment_{$key}.mp4";
+        return $segments->map(function (float $seconds, int $key) use ($ffmpeg, $media) {
+            $path = "segments/{$media->uuid}/segment_{$key}.mp4";
 
             $ffmpeg
                 ->export()
@@ -31,9 +30,9 @@ class CreateMediaSegments
                 ->addFilter(['-vf', 'scale=1280:720,setdar=dar=16/9'])
                 ->toDisk('cache')
                 ->save($path);
-        });
 
-        return $items;
+            return $path;
+        });
     }
 
     protected function getSegments(int $duration, int $count = 10): array

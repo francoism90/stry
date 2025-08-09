@@ -16,7 +16,7 @@ class CreateMediaFrame
 
         $seconds = Number::clamp($seconds, 0, $ffmpeg->getDurationInSeconds());
 
-        $path = "{$media->uuid}_frame.jpg";
+        $path = "frames/{$media->uuid}/thumb.jpg";
 
         $ffmpeg
             ->open($media->getPathRelativeToRoot())

@@ -10,7 +10,7 @@ use Domain\Playlists\Jobs\ProcessPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 
-class CreateVideoPlaylists
+class GenerateVideoPlaylists
 {
     public function handle(Video $video, Closure $next): mixed
     {
@@ -23,6 +23,7 @@ class CreateVideoPlaylists
             $items
                 ->reject(fn (array $attributes, string $key) => $video->hasPlaylists($attributes['type']) || ! $video->hasMedia($key))
                 ->each(function (array $attributes, string $key) use ($video) {
+                    // Get the first media item for the given key
                     $media = $video->getFirstMedia($key);
 
                     // Create a new playlist for the media

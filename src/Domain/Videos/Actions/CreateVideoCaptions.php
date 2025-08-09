@@ -6,33 +6,35 @@ namespace Domain\Videos\Actions;
 
 use Closure;
 use Domain\Media\Actions\CleanupTemporaryCache;
-use Domain\Media\Actions\CreateMediaFrame;
+use Domain\Media\Actions\ExtractMediaCaptions;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 
-class CreateVideoThumbnail
+class CreateVideoCaptions
 {
-    public function handle(Video $video, Closure $next): mixed
+    public function handle(Video $video, ?Closure $next = null): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if ($video->hasMedia('thumbnail') || ! $video->hasMedia('clips')) {
+            if ($video->hasMedia('captions') || ! $video->hasMedia('clips')) {
                 return $next($video);
             }
 
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            // Create a sample video from the segments
-            $path = app(CreateMediaFrame::class)->handle($media, (float) $video->snapshot ?: 10);
+            // Generate media captions
+            $paths = app(ExtractMediaCaptions::class)->handle($media);
 
             // Add the sample video to the video model
-            $video
+            $paths->each(fn (string $path) => $video
                 ->addMediaFromDisk($path, 'cache')
-                ->toMediaCollection('thumbnail')
-                ->saveOrFail();
+                ->toMediaCollection('captions')
+            );
+
+            $video->saveOrFail();
 
             // Clean up temporary files
-            app(CleanupTemporaryCache::class)->handle($media, 'frames');
+            app(CleanupTemporaryCache::class)->handle($media, 'captions');
 
             return $next($video);
         });

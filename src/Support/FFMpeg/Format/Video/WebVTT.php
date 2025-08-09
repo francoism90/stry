@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Support\FFMpeg\Format\Text;
+namespace Support\FFMpeg\Format\Video;
 
 use FFMpeg\Format\Video\DefaultVideo;
 

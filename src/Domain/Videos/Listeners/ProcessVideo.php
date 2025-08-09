@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
-use Domain\Videos\Actions\CreateVideoPlaylists;
+use Domain\Videos\Actions\CreateVideoCaptions;
 use Domain\Videos\Actions\CreateVideoPreview;
 use Domain\Videos\Actions\CreateVideoThumbnail;
+use Domain\Videos\Actions\GenerateVideoPlaylists;
 use Domain\Videos\Actions\MarkVideoAsPublished;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
@@ -48,10 +49,11 @@ class ProcessVideo implements ShouldQueueAfterCommit
     {
         Pipeline::send($event->video)
             ->through([
+                CreateVideoCaptions::class,
                 CreateVideoThumbnail::class,
                 CreateVideoPreview::class,
-                CreateVideoPlaylists::class,
                 MarkVideoAsPublished::class,
+                GenerateVideoPlaylists::class,
             ])
             ->thenReturn();
     }
