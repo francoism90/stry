@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use DateTime;
 use Domain\Playlists\Actions\UpdatePlaylistActivity;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
@@ -73,10 +72,5 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueue
     public function uniqueId(): string
     {
         return (string) $this->playlist->getKey();
-    }
-
-    public function retryUntil(): DateTime
-    {
-        return now()->addMinutes(30);
     }
 }

@@ -25,6 +25,7 @@ class CreateMediaSegments
                 ->export()
                 ->inFormat((new X264)
                     ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(2)])
+                    ->setAdditionalParameters(['-reset_timestamps', '1', '-an'])
                     ->setKiloBitrate(1500)
                 )
                 ->addFilter(['-vf', 'scale=1280:720,setdar=dar=16/9'])
