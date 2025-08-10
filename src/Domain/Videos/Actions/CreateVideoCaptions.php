@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class CreateVideoCaptions
 {
-    public function handle(Video $video, ?Closure $next = null): mixed
+    public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if ($video->hasMedia('captions') || ! $video->hasMedia('clips')) {
+            if (! $video->hasCaptions() || ! $video->hasMedia('clips')) {
                 return $next($video);
             }
 
