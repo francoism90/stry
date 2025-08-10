@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Videos\Resources\VideoResource;
+use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -25,6 +26,8 @@ class VideoPlaylistController implements HasMiddleware
 
     public function index(Video $video): Response
     {
+        Gate::authorize('update', $video);
+
         return Inertia::render('Videos/VideoPlaylists', [
             'video' => fn () => $video->toResource(VideoResource::class),
             'playlists' => fn () => [],
@@ -43,5 +46,33 @@ class VideoPlaylistController implements HasMiddleware
         // return Inertia::render('Videos/VideoCreate', [
         //     //
         // ]);
+    }
+
+    public function show(Video $video, Playlist $playlist)
+    {
+        Gate::authorize('update', [$video, $playlist]);
+
+        //
+    }
+
+    public function edit(Video $video, Playlist $playlist)
+    {
+        Gate::authorize('update', [$video, $playlist]);
+
+        //
+    }
+
+    public function update(Request $request, Video $video, Playlist $playlist)
+    {
+        //
+    }
+
+    public function destroy(Video $video, Playlist $playlist)
+    {
+        Gate::authorize('delete', [$video, $playlist]);
+
+        // $playlist->delete();
+
+        // return redirect()->route('videos.index');
     }
 }
