@@ -6,6 +6,7 @@ namespace Domain\Playlists\QueryBuilders;
 
 use ArrayAccess;
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,6 +14,11 @@ use Illuminate\Support\Arr;
 
 class PlaylistQueryBuilder extends Builder
 {
+    public function failed(): self
+    {
+        return $this->whereState('state', Failed::class);
+    }
+
     public function pending(): self
     {
         return $this->whereState('state', Pending::class);
@@ -40,9 +46,7 @@ class PlaylistQueryBuilder extends Builder
     {
         return $this
             ->whereNotNull('expires_at')
-            ->whereNowOrPast('expires_at')
-            ->orderBy('expires_at')
-            ->orderBy('created_at');
+            ->whereNowOrPast('expires_at');
     }
 
     public function stale(): self

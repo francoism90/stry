@@ -33,8 +33,8 @@ trait InteractsWithPlaylists
     {
         return $this
             ->playlists()
-            ->active()
             ->when($type, fn ($query) => $query->type($type))
+            ->active()
             ->first();
     }
 
@@ -42,8 +42,9 @@ trait InteractsWithPlaylists
     {
         return $this
             ->playlists()
-            ->WhereNotState('state', 'failed')
             ->when($type, fn ($query) => $query->type($type))
+            ->whereNot(fn ($query) => $query->expired())
+            ->whereNot(fn ($query) => $query->failed())
             ->exists();
     }
 }
