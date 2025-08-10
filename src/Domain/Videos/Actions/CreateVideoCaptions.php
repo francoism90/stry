@@ -15,7 +15,7 @@ class CreateVideoCaptions
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            if (! $video->hasCaptions() || ! $video->hasMedia('clips')) {
+            if ($video->hasMedia('captions') || ! $video->hasCaptions()) {
                 return $next($video);
             }
 
