@@ -95,8 +95,12 @@ class TagController extends Controller implements HasMiddleware
         return back();
     }
 
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $tag);
+
+        $tag->delete();
+
+        return redirect()->route('tags.index');
     }
 }

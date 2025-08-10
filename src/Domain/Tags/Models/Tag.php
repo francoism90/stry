@@ -143,6 +143,7 @@ class Tag extends BaseTag implements HasMedia
             'id' => (int) $this->getScoutKey(),
             'name' => (string) $this->name,
             'description' => (string) $this->description,
+            'category' => (string) $this->category,
             'type' => (string) $this->type?->value,
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
@@ -154,10 +155,24 @@ class Tag extends BaseTag implements HasMedia
         ];
     }
 
+    public function category(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->type?->label(),
+        )->shouldCache();
+    }
+
     public function thumbnail(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->videos()->first()?->thumbnail,
+        )->shouldCache();
+    }
+
+    public function srcset(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->videos()->first()?->srcset,
         )->shouldCache();
     }
 

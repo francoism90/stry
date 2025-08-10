@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
+import TagDeleteModal from '@/components/Tag/TagDeleteModal.vue'
 import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import { useAppearance } from '@/composables/appearance'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -23,7 +24,6 @@ const form = useForm('put', update.url({ tag: props.tag.id }), props.tag)
 
 const submit = async () =>
   form.submit({
-    preserveState: true,
     preserveScroll: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
   })
@@ -55,7 +55,7 @@ const submit = async () =>
             size="sm"
             icon="i-lucide-wand-sparkles"
             aria-label="Format name"
-            @click="form.name = title(form.name)"
+            @click.prevent="form.name = title(form.name)"
           />
         </template>
       </UInput>
@@ -65,6 +65,7 @@ const submit = async () =>
       <UFormField
         label="Type"
         name="type"
+        required
         :error="form.errors.type"
       >
         <USelectMenu
@@ -90,12 +91,15 @@ const submit = async () =>
       />
     </UFormField>
 
-    <UButton
-      label="Save changes"
-      type="submit"
-      variant="soft"
-      class="self-end"
-      loading-auto
-    />
+    <div class="flex gap-2 self-end">
+      <TagDeleteModal :item="tag" />
+
+      <UButton
+        label="Save changes"
+        type="submit"
+        variant="soft"
+        loading-auto
+      />
+    </div>
   </UForm>
 </template>

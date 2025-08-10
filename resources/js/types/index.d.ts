@@ -27,6 +27,7 @@ export type Media = Model & {
 export type Tag = Model & {
   name: string
   description: string | null
+  category: string
   type: string
   thumbnail: string
   srcset: string

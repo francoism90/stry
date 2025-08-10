@@ -312,7 +312,7 @@ return [
                     'name',
                     'description',
                     'synonyms',
-                    'type',
+                    'category',
                 ],
 
                 'sortableAttributes' => [

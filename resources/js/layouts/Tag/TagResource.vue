@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 
 const items = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url({ tag: props.tag.id }) },
-  { label: 'General', to: edit.url({ tag: props.tag.id }) },
+  { label: 'Related', to: edit.url({ tag: props.tag.id }) },
 ])
 </script>
 

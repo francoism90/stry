@@ -22,7 +22,7 @@ defineProps<Props>()
       <h2>{{ item.name }}</h2>
       <dl class="details text-xs font-light tracking-tight text-neutral-300">
         <dt class="sr-only">Type</dt>
-        <dd>{{ item.type }}</dd>
+        <dd>{{ item.category }}</dd>
         <dt class="sr-only">Videos</dt>
         <dd>{{ item.videos }} videos</dd>
       </dl>
