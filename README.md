@@ -46,6 +46,7 @@ git https://github.com/francoism90/stry.git
 composer install
 php artisan storage:link
 php artisan key:generate
+php artisan wayfinder:generate
 php artisan google-fonts:fetch
 php artisan migrate --seed
 pnpm install && pnpm build

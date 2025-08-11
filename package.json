@@ -11,7 +11,7 @@
         "build": "vite build",
         "preview": "vite preview",
         "test:unit": "vitest",
-        "build-check": "run-p type-check \"build-only {@}\" --",
+        "build-check": "run-p type-check \"build {@}\" --",
         "type-check": "vue-tsc --build",
         "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
         "lint:eslint": "eslint . --fix",
@@ -19,7 +19,7 @@
         "format": "prettier --write resources/"
     },
     "dependencies": {
-        "@iconify-json/lucide": "^1.2.61",
+        "@iconify-json/lucide": "^1.2.62",
         "@inertiajs/vue3": "^2.0.17",
         "@laravel/echo-vue": "^2.2.0",
         "@nuxt/ui": "^3.3.0",
