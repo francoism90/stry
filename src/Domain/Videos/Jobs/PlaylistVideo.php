@@ -64,7 +64,7 @@ class PlaylistVideo implements ShouldQueue
     public function middleware(): array
     {
         return [
-            new WithoutOverlapping($this->video->getKey())->dontRelease(),
+            (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
         ];
     }
 }

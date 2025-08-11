@@ -47,6 +47,6 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob
 
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(30);
+        return now()->addHour();
     }
 }

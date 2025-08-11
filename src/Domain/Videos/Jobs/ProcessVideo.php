@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use DateTime;
 use Domain\Videos\Actions\CreateVideoCaptions;
 use Domain\Videos\Actions\CreateVideoPreview;
 use Domain\Videos\Actions\CreateVideoThumbnail;
@@ -25,11 +26,6 @@ class ProcessVideo implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -75,7 +71,12 @@ class ProcessVideo implements ShouldQueue
     public function middleware(): array
     {
         return [
-            new WithoutOverlapping($this->video->getKey())->dontRelease(),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
         ];
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addHour();
     }
 }

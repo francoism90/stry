@@ -63,7 +63,9 @@ class ImportVideo implements ShouldBeUnique, ShouldQueue
 
     public function middleware(): array
     {
-        return [(new WithoutOverlapping($this->uniqueId()))->expireAfter(180)];
+        return [
+            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
+        ];
     }
 
     public function uniqueId(): string

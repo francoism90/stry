@@ -8,7 +8,6 @@ use Domain\Playlists\Actions\UpdatePlaylistActivity;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,7 +15,7 @@ use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateActivity implements ShouldBeUnique, ShouldQueue
+class UpdateActivity implements ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -66,8 +65,8 @@ class UpdateActivity implements ShouldBeUnique, ShouldQueue
     public function middleware(): array
     {
         return [
+            (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
             (new Skip($this->playlist->accessed_at?->lt(now()->subMinutes(10)))),
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(300),
         ];
     }
 }

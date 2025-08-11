@@ -24,7 +24,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
         // Set last used activity
-        UpdateActivity::dispatch($playlist)->delay(90);
+        UpdateActivity::dispatch($playlist)->delay(60);
 
         return FFMpeg::dynamicHLSPlaylist()
             ->fromDisk($playlist->getDisk())
