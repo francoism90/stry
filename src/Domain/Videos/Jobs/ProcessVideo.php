@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use Domain\Users\Models\User;
-use Domain\Videos\Actions\CreateNewVideoByImport;
+use Domain\Videos\Actions\CreateVideoCaptions;
+use Domain\Videos\Actions\CreateVideoPreview;
+use Domain\Videos\Actions\CreateVideoThumbnail;
+use Domain\Videos\Actions\MarkVideoAsPublished;
+use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Pipeline;
 
-class ImportVideo implements ShouldBeUnique, ShouldQueue
+class ProcessVideo implements ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -49,25 +52,30 @@ class ImportVideo implements ShouldBeUnique, ShouldQueue
     public $deleteWhenMissingModels = true;
 
     public function __construct(
-        public User $user,
-        public string $disk,
-        public string $path,
+        public Video $video,
     ) {
         $this->onQueue('processing');
     }
 
     public function handle(): void
     {
-        app(CreateNewVideoByImport::class)->handle($this->user, $this->disk, $this->path);
+        Pipeline::send($this->video)
+            ->through([
+                CreateVideoCaptions::class,
+                CreateVideoThumbnail::class,
+                CreateVideoPreview::class,
+                MarkVideoAsPublished::class,
+            ])
+            ->thenReturn();
     }
 
+    /**
+     * @return array<int, object>
+     */
     public function middleware(): array
     {
-        return [(new WithoutOverlapping($this->uniqueId()))->expireAfter(180)];
-    }
-
-    public function uniqueId(): string
-    {
-        return hash('xxh128', implode(':', [$this->disk, $this->path]));
+        return [
+            new WithoutOverlapping($this->video->getKey())->dontRelease(),
+        ];
     }
 }

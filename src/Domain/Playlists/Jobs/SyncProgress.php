@@ -26,7 +26,7 @@ class SyncProgress implements ShouldQueue
     /**
      * @var int
      */
-    public $timeout = 60;
+    public $timeout = 60 * 5;
 
     /**
      * @var int
@@ -61,12 +61,12 @@ class SyncProgress implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
+            (new WithoutOverlapping($this->playlist->getKey()))->expireAfter(10),
         ];
     }
 
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(30);
+        return now()->addHour();
     }
 }

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Domain\Playlists\Jobs;
+namespace Domain\Videos\Jobs;
 
-use Domain\Playlists\Actions\CreateHlsPlaylist;
-use Domain\Playlists\Models\Playlist;
+use Domain\Videos\Actions\GenerateVideoPlaylists;
+use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
+class PlaylistVideo implements ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -48,20 +48,23 @@ class ProcessPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     public $deleteWhenMissingModels = true;
 
     public function __construct(
-        public Playlist $playlist,
-        public string $disk,
-        public string $path,
+        public Video $video,
     ) {
         $this->onQueue('processing');
     }
 
     public function handle(): void
     {
-        app(CreateHlsPlaylist::class)->handle($this->playlist, $this->disk, $this->path);
+        app(GenerateVideoPlaylists::class)->handle($this->video);
     }
 
-    public function uniqueId(): string
+    /**
+     * @return array<int, object>
+     */
+    public function middleware(): array
     {
-        return hash('xxh128', implode(':', [$this->disk, $this->path]));
+        return [
+            new WithoutOverlapping($this->video->getKey())->dontRelease(),
+        ];
     }
 }
