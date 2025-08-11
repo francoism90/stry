@@ -20,6 +20,7 @@ class VideoListScope
         $query
             ->verified()
             ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags))
-            ->when($this->list === null, fn ($query) => $query->inRandomOrder());
+            ->when($this->list === null, fn ($query) => $query->inRandomOrder())
+            ->when($this->list === 'newest', fn ($query) => $query->latest());
     }
 }
