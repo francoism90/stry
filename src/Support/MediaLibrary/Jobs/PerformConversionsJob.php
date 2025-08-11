@@ -41,12 +41,12 @@ class PerformConversionsJob extends BasePerformConversionsJob
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
         ];
     }
 
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(30);
+        return now()->addHour();
     }
 }

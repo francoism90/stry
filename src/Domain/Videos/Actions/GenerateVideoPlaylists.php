@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use Closure;
+use Domain\Playlists\Actions\CreateHlsPlaylist;
 use Domain\Playlists\Actions\CreateNewPlaylist;
-use Domain\Playlists\Jobs\ProcessPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 
 class GenerateVideoPlaylists
 {
-    public function handle(Video $video, Closure $next): mixed
+    public function handle(Video $video): mixed
     {
-        return DB::transaction(function () use ($video, $next) {
+        return DB::transaction(function () use ($video) {
+            // Default playlists that should be created for the video
             $items = collect([
                 'clips' => ['type' => 'clip'],
                 'previews' => ['type' => 'preview', 'expires_at' => null],
             ]);
 
+            // Create playlists for each item in the collection
             $items
                 ->reject(fn (array $attributes, string $key) => $video->hasPlaylists($attributes['type']) || ! $video->hasMedia($key))
                 ->each(function (array $attributes, string $key) use ($video) {
@@ -30,10 +31,8 @@ class GenerateVideoPlaylists
                     $playlist = app(CreateNewPlaylist::class)->handle($video, $attributes);
 
                     // Associate the media with the newly created playlist
-                    ProcessPlaylist::dispatch($playlist, $media->disk, $media->getPathRelativeToRoot());
+                    app(CreateHlsPlaylist::class)->handle($playlist, $media->disk, $media->getPathRelativeToRoot());
                 });
-
-            return $next($video);
         });
     }
 }
