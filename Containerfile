@@ -1,4 +1,4 @@
-FROM docker.io/library/php:8.4-cli AS base
+FROM docker.io/library/ubuntu:24.04 AS base
 
 ARG UID=1000
 ARG GID=$UID
@@ -15,43 +15,50 @@ ENV OCTANE_USER="docker"
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-RUN sed -i 's/^Components: main$/& contrib non-free/' /etc/apt/sources.list.d/debian.sources
+RUN echo "Acquire::http::Pipeline-Depth 0;" > /etc/apt/apt.conf.d/99custom && \
+    echo "Acquire::http::No-Cache true;" >> /etc/apt/apt.conf.d/99custom && \
+    echo "Acquire::BrokenProxy    true;" >> /etc/apt/apt.conf.d/99custom
 
-RUN cd /usr/local/src \
-    && apt-get update && apt-get upgrade -y \
+RUN apt-get update && apt-get upgrade -y \
     && mkdir -p /etc/apt/keyrings \
-    && apt-get install -y gnupg curl ca-certificates zip unzip tar git postgresql-common dnsutils fswatch \
-    && apt-get install -y libopenh264-7 libde265-0 libvpx7 libwebp7 libheif1 libavif15 libfdk-aac2 libmp3lame0 libass9 \
-    && apt-get install -y gifsicle jpegoptim optipng pngquant ffmpeg \
+    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git sqlite3 libcap2-bin libpng-dev python3 dnsutils librsvg2-bin fswatch ffmpeg postgresql-common \
+    && curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb8dc7e53946656efbce4c1dd71daeaab4ad4cab6' | gpg --dearmor | tee /etc/apt/keyrings/ppa_ondrej_php.gpg > /dev/null \
+    && echo "deb [signed-by=/etc/apt/keyrings/ppa_ondrej_php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu noble main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
-    && apt-get install -y nodejs \
+    && apt-get install -y gifsicle jpegoptim optipng pngquant \
+    && apt-get install -y php8.4-cli php8.4-dev \
+       php8.4-pgsql php8.4-sqlite3 php8.4-gd \
+       php8.4-curl php8.4-mongodb \
+       php8.4-imap php8.4-mysql php8.4-mbstring \
+       php8.4-xml php8.4-zip php8.4-bcmath php8.4-soap \
+       php8.4-intl php8.4-readline \
+       php8.4-ldap \
+       php8.4-msgpack php8.4-igbinary php8.4-redis php8.4-swoole \
+       php8.4-memcached php8.4-pcov php8.4-imagick php8.4-xdebug \
+    && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
     && curl -sLS https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o /usr/local/bin/mc \
     && chmod +x /usr/local/bin/mc \
+    && apt-get install -y nodejs \
     && npm install -g npm \
     && npm install -g pnpm \
-    && npm install -g svgo
+    && npm install -g svgo \
+    && apt-get -y autoremove \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
 
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
-RUN cp /usr/local/etc/php/php.ini-production ${PHP_INI_DIR}/php.ini \
-    && install-php-extensions @composer apcu bcmath bz2 calendar ev event exif \
-    pdo_mysql pdo_pgsql pgsql gettext imap inotify intl msgpack opcache pcntl pcov \
-    redis sockets swoole uv zip gd igbinary imagick
-
-COPY containers/runtimes/container-entrypoint.sh /usr/local/bin/container-entrypoint.sh
-COPY containers/runtimes/php-production.ini ${PHP_INI_DIR}/conf.d/99-user.ini
-
-RUN chmod +x /usr/local/bin/container-entrypoint.sh
-
+RUN userdel -r ubuntu
 RUN groupadd --force -g ${GID} docker \
     && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} docker
 
-RUN apt-get -y autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
+COPY containers/runtimes/container-entrypoint.sh /usr/local/bin/container-entrypoint.sh
+COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+RUN chmod +x /usr/local/bin/container-entrypoint.sh
 
 EXPOSE 5173
 EXPOSE 6001
@@ -63,8 +70,7 @@ FROM base as development
 
 ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
 
-COPY --from=base /usr/local/etc/php/php.ini-development ${PHP_INI_DIR}/php.ini
-COPY containers/runtimes/php-development.ini ${PHP_INI_DIR}/conf.d/99-user.ini
+COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 FROM base as production
 
