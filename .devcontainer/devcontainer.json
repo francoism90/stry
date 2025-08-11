@@ -5,13 +5,11 @@
     "containerEnv": {
         "HOME": "/home/docker"
     },
-    "runArgs": ["--entrypoint=/usr/bin/bash", "--tz=local", "--userns=keep-id", "--network=systemd-stry"],
+    "runArgs": ["--entrypoint=/usr/bin/bash", "--userns=keep-id", "--network=systemd-stry"],
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,consistency=cached"],
     "build": {
         "dockerfile": "./../Containerfile",
         "context": "./../",
-        "args": {
-            "--target": "development"
-        }
+        "target": "development"
     }
 }
