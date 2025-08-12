@@ -34,7 +34,7 @@ class ClearCommand extends Command implements Isolatable
         Playlist::query()
             ->when($this->option('type'), fn ($query, $type) => $query->type($type))
             ->lazyById(200, column: 'id')
-            ->each->delete();
+            ->each(fn (Playlist $playlist) => $playlist->delete());
 
         $this->components->info('All generated playlists have been cleared successfully.');
 
