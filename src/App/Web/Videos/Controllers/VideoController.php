@@ -63,8 +63,7 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        // Dispatch video viewed event
-        VideoHasBeenViewedEvent::dispatch($video);
+        VideoHasBeenViewedEvent::dispatchUnless($video->hasPlaylists('clip'), $video);
 
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),

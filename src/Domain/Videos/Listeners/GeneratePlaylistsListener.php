@@ -8,7 +8,7 @@ use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 
-class VideoViewedListener implements ShouldQueueAfterCommit
+class GeneratePlaylistsListener implements ShouldQueueAfterCommit
 {
     public function handle(VideoHasBeenViewedEvent $event): void
     {

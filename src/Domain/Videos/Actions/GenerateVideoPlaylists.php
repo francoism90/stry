@@ -14,13 +14,11 @@ class GenerateVideoPlaylists
     public function handle(Video $video): mixed
     {
         return DB::transaction(function () use ($video) {
-            // Default playlists that should be created for the video
             $items = collect([
                 'clips' => ['type' => 'clip'],
                 'previews' => ['type' => 'preview', 'expires_at' => null],
             ]);
 
-            // Create playlists for each item in the collection
             $items
                 ->reject(fn (array $attributes, string $key) => $video->hasPlaylists($attributes['type']) || ! $video->hasMedia($key))
                 ->each(function (array $attributes, string $key) use ($video) {
