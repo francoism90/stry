@@ -142,6 +142,11 @@ class Playlist extends Model
         return 'broadcasts';
     }
 
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
+    }
+
     public function getModel(): Model
     {
         return $this->playlistable;

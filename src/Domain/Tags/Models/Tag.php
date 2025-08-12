@@ -137,6 +137,11 @@ class Tag extends BaseTag implements HasMedia
         return 'broadcasts';
     }
 
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
+    }
+
     public function toSearchableArray(): array
     {
         return [

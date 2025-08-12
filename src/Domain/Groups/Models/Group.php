@@ -11,7 +11,6 @@ use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -106,22 +105,22 @@ class Group extends Model implements HasMedia, Sortable
      */
     public function broadcastOn(string $event): array
     {
-        if ($event === 'deleted') {
-            return [];
-        }
-
-        return [
-            new PrivateChannel('user.'.$this->user->getRouteKey()),
-            new PrivateChannel('group.'.$this->getRouteKey()),
-        ];
+        return [$this];
     }
 
-    public function broadcastAs(string $event): ?string
+    public function broadcastChannel(): string
     {
-        return str($event)
-            ->prepend('group.')
-            ->trim('.')
-            ->value();
+        return 'groups.'.$this->getRouteKey();
+    }
+
+    public function broadcastChannelRoute(): string
+    {
+        return 'groups.{group}';
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "group.{$event}";
     }
 
     public function broadcastWith(string $event): array
