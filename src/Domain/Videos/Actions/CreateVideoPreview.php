@@ -24,11 +24,11 @@ class CreateVideoPreview
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            // Set the path for the sample video
-            $path = "segments/{$media->uuid}/preview.mp4";
-
             // Generate media segments
             $paths = app(CreateMediaSegments::class)->handle($media);
+
+            // Set the path for the sample video
+            $path = "segments/{$media->uuid}/preview.mp4";
 
             // Create a sample video from the segments
             FFMpeg::fromDisk('cache')
@@ -42,6 +42,7 @@ class CreateVideoPreview
             // Add the sample video to the video model
             $video
                 ->addMediaFromDisk($path, 'cache')
+                ->preservingOriginal()
                 ->toMediaCollection('previews')
                 ->saveOrFail();
 

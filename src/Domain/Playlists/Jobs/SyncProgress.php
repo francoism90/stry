@@ -9,13 +9,14 @@ use Domain\Playlists\Actions\SyncPlaylistProgress;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncProgress implements ShouldQueue
+class SyncProgress implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -63,6 +64,11 @@ class SyncProgress implements ShouldQueue
         return [
             (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
         ];
+    }
+
+    public function uniqueId(): string
+    {
+        return (string) $this->playlist->getKey();
     }
 
     public function retryUntil(): DateTime
