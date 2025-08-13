@@ -213,6 +213,20 @@ class Playlist extends Model
         return filled($this->expires_at) ? $this->expires_at->isFuture() : true;
     }
 
+    public static function getVideoFormats(): Collection
+    {
+        return collect(config('playlist.video_formats', []))
+            ->filter(fn (string $format) => is_subclass_of($format, DefaultVideo::class))
+            ->map(fn (string $format) => app($format));
+    }
+
+    public static function getHlsFormats(): Collection
+    {
+        return collect(config('playlist.hls_formats', []))
+            ->map(fn (array $format) => fluent($format))
+            ->sortBy('bit_rate');
+    }
+
     public static function getSegmentLength(): int
     {
         return config('playlist.segment_length', 6);
@@ -231,20 +245,6 @@ class Playlist extends Model
     public static function getRotationKeyDisk(): string
     {
         return config('playlist.rotation_keys_disk', 'secrets');
-    }
-
-    public static function getVideoFormats(): Collection
-    {
-        return collect(config('playlist.video_formats', []))
-            ->filter(fn (string $format) => is_subclass_of($format, DefaultVideo::class))
-            ->map(fn (string $format) => app($format));
-    }
-
-    public static function getHlsFormats(): Collection
-    {
-        return collect(config('playlist.hls_formats', []))
-            ->map(fn (array $format) => fluent($format))
-            ->sortBy('bit_rate');
     }
 
     public static function getExpiresAfter(): ?Carbon
