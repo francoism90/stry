@@ -215,7 +215,7 @@ class Playlist extends Model
 
     public static function getSegmentLength(): int
     {
-        return config('playlist.segment_length', 10);
+        return config('playlist.segment_length', 6);
     }
 
     public static function getFrameInterval(): int
@@ -276,7 +276,7 @@ class Playlist extends Model
 
     public static function getRotationKeysSections(): int
     {
-        return config('playlist.rotation_keys_sections', 10);
+        return config('playlist.rotation_keys_sections', 5);
     }
 
     public static function copyVideoCodec(): bool
