@@ -10,7 +10,7 @@ use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 class VideoListScope
 {
     public function __construct(
-        public readonly Tag|array|null $tags = null,
+        public readonly Tag|array|string|null $tags = null,
         public readonly ?string $list = null,
         public readonly ?string $sort = null,
     ) {}
