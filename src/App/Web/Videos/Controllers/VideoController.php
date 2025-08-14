@@ -35,9 +35,11 @@ class VideoController extends Controller implements HasMiddleware
 
     public function index(VideoIndexRequest $request): Response
     {
+        Gate::authorize('viewAny', Video::class);
+
         $items = Video::query()
-            ->tap(new VideoListScope(list: $request->input('list'), sort: $request->input('sort')))
-            ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
+            ->tap(new VideoListScope($request->safe()->only(['sort', 'filter'])))
+            ->cursorPaginate(perPage: 24, cursor: (string) $request->safe()->input('page', ''))
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [
@@ -47,12 +49,12 @@ class VideoController extends Controller implements HasMiddleware
 
     public function store(Request $request)
     {
-        //
+        Gate::authorize('create', Video::class);
     }
 
     public function create()
     {
-        // Gate::authorize('create', Video::class);
+        Gate::authorize('create', Video::class);
 
         // return Inertia::render('Videos/VideoCreate', [
         //     //
@@ -84,7 +86,9 @@ class VideoController extends Controller implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): RedirectResponse
     {
-        app(UpdateVideoDetails::class)->handle($video, $request->validated());
+        Gate::authorize('update', $video);
+
+        app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
         flash()->success('Video updated successfully!');
 

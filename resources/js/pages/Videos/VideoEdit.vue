@@ -47,6 +47,7 @@ const submit = async () =>
       <UInput
         v-model.trim="form.name"
         autofocus
+        autocapitalize="words"
         class="w-full"
         :ui="{ trailing: 'pe-1' }"
       >

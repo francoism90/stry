@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Requests;
+namespace App\Api\Playlists\Requests;
 
-use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VideoIndexRequest extends FormRequest
+class PlaylistViewRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -20,9 +19,7 @@ class VideoIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string', 'min:1', 'max:255'],
-            'sort' => ['nullable', 'string', 'in:recent,ordered,longest,shortest'],
-            'list' => ['nullable', 'string', 'in:watching,newest'],
+            'time' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 }

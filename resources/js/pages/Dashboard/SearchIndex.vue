@@ -8,12 +8,12 @@ import VideoCollection from '@/layouts/Video/VideoCollection.vue'
 import type { Videos } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
+import { ref } from 'vue'
 
 interface Props {
-  search: string | null
-  sort: string | null
+  search?: string | null
+  sort?: string | null
   items?: Videos
 }
 
@@ -55,7 +55,6 @@ const submit = async () =>
         <UInput
           v-model.trim="form.search"
           placeholder="Title, description, tags..."
-          autofocus
           size="lg"
           class="w-full"
         />
@@ -63,7 +62,7 @@ const submit = async () =>
     </UForm>
 
     <PageFilters
-      v-if="items?.data?.length"
+      v-if="props.search?.length"
       :items="filters"
     />
   </PageSection>

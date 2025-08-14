@@ -36,6 +36,8 @@ class TagController extends Controller implements HasMiddleware
 
     public function index(TagIndexRequest $request): Response
     {
+        Gate::authorize('viewAny', Tag::class);
+
         $items = Tag::query()
             ->tap(new TagListScope(type: $request->input('type')))
             ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
@@ -88,6 +90,8 @@ class TagController extends Controller implements HasMiddleware
 
     public function update(TagUpdateRequest $request, Tag $tag): RedirectResponse
     {
+        Gate::authorize('update', $tag);
+
         app(UpdateTagDetails::class)->handle($tag, $request->validated());
 
         flash()->success('Tag updated successfully!');

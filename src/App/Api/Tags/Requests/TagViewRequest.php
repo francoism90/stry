@@ -10,6 +10,6 @@ class TagViewRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('view', $this->tag);
+        return true;
     }
 }

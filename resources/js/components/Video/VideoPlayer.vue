@@ -1,20 +1,40 @@
 <script setup lang="ts">
-import type { Media } from '@/types'
-import type { PlayerSrc } from 'vidstack'
+import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
+import type { Media, Playlist } from '@/types'
+import { useThrottleFn } from '@vueuse/core'
+import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
+import { computed, onMounted, ref } from 'vue'
 
 interface Props {
-  src?: PlayerSrc | null
+  playlist: Playlist | null
+  captions?: Media[] | null
   title?: string | null
   time?: number | null
-  captions?: Media[] | null
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+const player = ref<MediaPlayer | null>(null)
+
+const src = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
+const time = computed(() => props.time ?? 0)
+
+onMounted(() => {
+  player.value?.subscribe(({ currentTime }) => {
+    if (Number.isNaN(currentTime) || !props.playlist?.valid) {
+      return
+    }
+
+    useThrottleFn(() => PlaylistSessionController.url({ playlist: props.playlist?.id || '' }), 1000)
+
+    // console.log('Paused:', currentTime)
+  })
+})
 </script>
 
 <template>
   <media-player
+    ref="player"
     .src="src || undefined"
     .title="title || undefined"
     .clipStartTime="time || undefined"

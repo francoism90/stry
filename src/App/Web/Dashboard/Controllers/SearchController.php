@@ -11,6 +11,7 @@ use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -26,15 +27,17 @@ class SearchController extends Controller implements HasMiddleware
 
     public function __invoke(VideoIndexRequest $request): Response
     {
-        $items = Video::search($request->input('search', ''))
-            ->tap(new VideoFilterScope(sort: $request->input('sort')))
-            ->simplePaginate(perPage: 24, page: (int) $request->input('page', 1))
+        Gate::authorize('viewAny', Video::class);
+
+        $items = Video::search($request->safe()->input('search', ''))
+            ->tap(new VideoFilterScope(...$request->safe()->only(['sort'])))
+            ->simplePaginate(perPage: 24, page: (int) $request->safe()->input('page', 1))
             ->through(fn ($video) => VideoResource::make($video));
 
         return Inertia::render('Dashboard/SearchIndex', [
-            'search' => fn () => $request->input('search'),
-            'sort' => fn () => $request->input('sort'),
-            'items' => Inertia::defer(fn () => $request->filled('search') ? $items : [])->deepMerge()->matchOn('data.id'),
+            'search' => fn () => $request->safe()->input('search'),
+            'sort' => fn () => $request->safe()->input('sort'),
+            'items' => Inertia::defer(fn () => $request->safe()->filled('search') ? $items : [])->deepMerge()->matchOn('data.id'),
         ]);
     }
 }

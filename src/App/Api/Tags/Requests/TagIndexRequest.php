@@ -13,7 +13,7 @@ class TagIndexRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('viewAny', Tag::class);
+        return true;
     }
 
     /**
