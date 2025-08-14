@@ -21,6 +21,7 @@ class SyncCommand extends Command implements Isolatable
 
     public function handle(): void
     {
+        // This may be useful to force a fresh start of the indexes
         if ($this->option('delete')) {
             $this->call('scout:delete-all-indexes');
         }
@@ -34,7 +35,7 @@ class SyncCommand extends Command implements Isolatable
         if (count($indexes)) {
             foreach ($indexes as $model => $settings) {
                 if (class_exists($model)) {
-                    $this->call('scout:import', compact('model'));
+                    $this->call('scout:queue-import', compact('model'));
                 }
             }
         }
