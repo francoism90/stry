@@ -71,7 +71,7 @@ export default defineConfig({
         manualChunks: {
           http: ['axios'],
           broadcast: ['pusher-js', 'laravel-echo'],
-          play: ['vidstack'],
+          play: ['hls.js', 'vidstack'],
         },
       },
     },
