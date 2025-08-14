@@ -1,9 +1,9 @@
 import type { Paginator } from '@/types'
 import { usePage } from '@inertiajs/vue3'
-import { computed, readonly, ref, toValue, watchEffect } from 'vue'
+import { computed, readonly, shallowRef, toValue, watchEffect } from 'vue'
 
 export function usePagination() {
-  const state = ref<Paginator>()
+  const state = shallowRef<Paginator>()
 
   const currentPage = computed(() => state.value?.current_page || 1)
   const prevPage = computed(() => state.value?.prev_cursor || currentPage.value - 1)

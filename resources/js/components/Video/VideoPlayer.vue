@@ -1,45 +1,35 @@
 <script setup lang="ts">
-import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
-import type { Media, Playlist } from '@/types'
+import { usePlayer } from '@/composables/player'
 import { useThrottleFn } from '@vueuse/core'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
-import { computed, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, shallowRef } from 'vue'
 
-interface Props {
-  playlist: Playlist | null
-  captions?: Media[] | null
-  title?: string | null
-  time?: number | null
+const player = shallowRef<MediaPlayer>()
+
+const { src, captions, watchtime } = usePlayer()
+
+const listener = () => {
+  const debouncedRecord = useThrottleFn((time: number) => watchtime(time), 5000)
+
+  return player.value?.subscribe(({ source, currentTime }) => {
+    if (source && currentTime >= 0) {
+      debouncedRecord(currentTime)
+    }
+  })
 }
 
-const props = defineProps<Props>()
-const player = ref<MediaPlayer | null>(null)
-
-const src = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
-const time = computed(() => props.time ?? 0)
-
-onMounted(() => {
-  player.value?.subscribe(({ currentTime }) => {
-    if (Number.isNaN(currentTime) || !props.playlist?.valid) {
-      return
-    }
-
-    useThrottleFn(() => PlaylistSessionController.url({ playlist: props.playlist?.id || '' }), 1000)
-
-    // console.log('Paused:', currentTime)
-  })
-})
+onMounted(() => listener())
+onBeforeUnmount(() => listener())
 </script>
 
 <template>
   <media-player
     ref="player"
     .src="src || undefined"
-    .title="title || undefined"
-    .clipStartTime="time || undefined"
     .playsInline="true"
     .autoPlay="true"
+    crossOrigin="anonymous"
     class="default-video max-h-64 rounded-xl sm:max-h-96 lg:max-h-2/5"
   >
     <media-video-layout />
