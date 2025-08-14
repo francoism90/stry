@@ -15,6 +15,14 @@ const items = ref<NavigationMenuItem[][]>([
   ],
   [
     {
+      label: 'Videos',
+      icon: 'i-lucide-gallery-vertical-end',
+      to: '/videos',
+      ui: {
+        linkLabel: 'sr-only',
+      },
+    },
+    {
       label: 'Lists',
       icon: 'i-lucide-library',
       to: '/tags',
