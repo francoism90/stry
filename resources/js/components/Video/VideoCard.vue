@@ -64,7 +64,7 @@ const link = computed(() => show.url(props.item.id))
       </div>
 
       <div
-        v-if="preview"
+        v-if="preview && item.preview?.length"
         class="absolute inset-0 z-10 h-52 w-full group-hover:block"
       >
         <media-player

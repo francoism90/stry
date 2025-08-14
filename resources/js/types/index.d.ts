@@ -59,7 +59,7 @@ export type Video = Model & {
   captions: boolean | null
   thumbnail: string
   srcset: string
-  preview: string
+  preview: string | null
   duration: number | null
   timestamp: string | null
   snapshot: number | null
