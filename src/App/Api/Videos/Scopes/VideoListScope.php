@@ -7,7 +7,7 @@ namespace App\Api\Videos\Scopes;
 use Domain\Tags\Models\Tag;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
-class VideoListScope
+readonly class VideoListScope
 {
     public function __construct(
         public readonly Tag|array|string|null $tags = null,
@@ -19,7 +19,7 @@ class VideoListScope
     {
         $query
             ->verified()
-            ->when($this->tags, fn ($query, $tags) => $query->withAllTags($tags))
+            ->when($this->tags, fn ($query, $tags) => $query->withAllTagsOfAnyType($tags))
             ->when($this->list === null, fn ($query) => $query->inRandomOrder())
             ->when($this->list === 'newest', fn ($query) => $query->latest());
     }

@@ -6,7 +6,7 @@ namespace App\Api\Videos\Scopes;
 
 use Laravel\Scout\Builder;
 
-class VideoFilterScope
+readonly class VideoFilterScope
 {
     public function __construct(
         public readonly ?array $tags = null,
