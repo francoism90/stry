@@ -16,7 +16,7 @@ defineProps<Props>()
     :ui="{ body: '!p-0' }"
   >
     <Link
-      class="block p-4 sm:p-6"
+      class="block !p-4"
       :href="show.url(item.id)"
     >
       <h2>{{ item.name }}</h2>
