@@ -74,7 +74,7 @@ FROM builder as production
 
 ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
-COPY --from=builder /app /app
+COPY --from=base /app /app
 
 RUN chown -R ${OCTANE_USER}:${OCTANE_USER} /app
 
