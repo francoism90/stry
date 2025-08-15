@@ -23,6 +23,6 @@ class GetVideoStartTime
         // Find the video in the user viewed group
         $videoable = $group->videos()->find($video);
 
-        return round($videoable?->pivot->options->time ?: 0.0, 2);
+        return round($videoable?->pivot->options->time ?: 0, 2);
     }
 }
