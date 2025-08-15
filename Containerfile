@@ -79,6 +79,5 @@ COPY --from=base /app /app
 RUN chown -R ${OCTANE_USER}:${OCTANE_USER} /app
 
 RUN php artisan storage:link
-RUN pnpm build
 
 ENTRYPOINT ["container-entrypoint.sh"]
