@@ -34,25 +34,7 @@ cd ~/projects
 git https://github.com/francoism90/stry.git
 ```
 
-1. Setup [Podman Quadlet](docs/podman.md).
-
-1. Setup [MinIO](docs/minio.md).
-
-1. Open the project with VSCode and run it as a dev-container.
-
-1. Perform the following commands in the VSCode terminal:
-
-```bash
-composer install
-php artisan storage:link
-php artisan key:generate
-php artisan wayfinder:generate
-php artisan google-fonts:fetch
-php artisan migrate --seed
-pnpm install && pnpm build
-```
-
-1. HLS generating can be configured in `config/playlist.php` (such as formats to use) or by setting environment variables.
+1. Setup for [development](docs/development.md) or [production](docs/production.md).
 
 ## Usage
 

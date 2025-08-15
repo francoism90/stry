@@ -5,7 +5,7 @@ tags:
   - podman
   - quadlet
   - docker
-  - systemd
+  - devcontainer
 ---
 
 To learn more about Podman Quadlet, please consider reading the following resources first:
@@ -71,4 +71,26 @@ systemctl --user daemon-reload
 
 ```bash
 systemctl --user restart stry-minio stry-pgsql stry-redis
+```
+
+1. Setup [MinIO](minio.md).
+
+1. Open the project with VSCode and run it as a devcontainer.
+
+1. Perform the following commands in the VSCode terminal:
+
+```bash
+composer install
+php artisan storage:link
+php artisan key:generate
+php artisan google-fonts:fetch
+php artisan wayfinder:generate
+php artisan migrate --seed
+pnpm install
+```
+
+1. Run the vite watcher:
+
+```bash
+stry pnpm dev
 ```

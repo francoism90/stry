@@ -91,3 +91,19 @@ podman build -t stry:latest --target=production .
 ```bash
 systemctl --user restart stry-minio stry-pgsql stry-redis
 ```
+
+1. Setup [MinIO](minio.md).
+
+1. See [interaction](interaction.md) to setup management.
+
+1. Perform the following commands with:
+
+```bash
+stry a key:generate
+stry a google-fonts:fetch
+stry a wayfinder:generate
+stry a migrate --seed
+stry pnpm build
+```
+
+1. HLS generating can be configured in `config/playlist.php` (such as formats to use) or by setting environment variables.

@@ -2,10 +2,9 @@
 title: Interaction
 order: 4
 tags:
-  - stry
-  - managing
   - fish
   - shell
+  - management
 ---
 
 ## Interaction
