@@ -25,6 +25,8 @@ class MarkAsViewed
 
             // Add the video to the user viewed group
             $model->syncGroup($group, $attributes);
+
+            return $group;
         });
     }
 }
