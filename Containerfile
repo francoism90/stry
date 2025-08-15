@@ -67,8 +67,6 @@ EXPOSE 5173
 EXPOSE 6001
 EXPOSE 8080
 
-ENTRYPOINT ["container-entrypoint.sh"]
-
 FROM base as development
 
 ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
@@ -83,3 +81,5 @@ RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 
 RUN php artisan storage:link
 RUN pnpm install
+
+CMD ["bash"]
