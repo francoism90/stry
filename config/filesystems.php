@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => '/data/private',
             'serve' => true,
             'throw' => false,
             'report' => true,
@@ -49,7 +49,7 @@ return [
 
         'cache' => [
             'driver' => 'local',
-            'root' => storage_path('app/cache'),
+            'root' => '/data/cache',
             'serve' => false,
             'throw' => false,
             'report' => false,
@@ -57,7 +57,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => storage_path('app/media'),
+            'root' => '/data/media',
             'serve' => false,
             'throw' => false,
             'report' => false,
@@ -65,7 +65,7 @@ return [
 
         'secrets' => [
             'driver' => 'local',
-            'root' => storage_path('app/secrets'),
+            'root' => '/data/secrets',
             'serve' => false,
             'throw' => false,
             'report' => false,
@@ -73,7 +73,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => storage_path('app/import'),
+            'root' => '/data/import',
             'serve' => false,
             'throw' => true,
             'report' => true,
