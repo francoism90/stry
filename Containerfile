@@ -8,7 +8,6 @@ ARG POSTGRES_VERSION=17
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV OCTANE_USER="docker"
 
 WORKDIR /app
 
@@ -52,32 +51,24 @@ RUN apt-get update && apt-get upgrade -y \
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
 RUN userdel -r ubuntu
-RUN groupadd --force -g ${GID} ${OCTANE_USER} \
-    && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} ${OCTANE_USER}
+RUN groupadd --force -g ${GID} www-data \
+    && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} www-data
 
-COPY containers/runtimes/container-entrypoint.sh /usr/local/bin/container-entrypoint.sh
+COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
-RUN chmod +x /usr/local/bin/container-entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN composer install --prefer-dist --no-interaction --optimize-autoloader
+RUN pnpm install
 
 EXPOSE 5173
 EXPOSE 6001
 EXPOSE 8080
 
-FROM builder as base
+USER www-data
 
-COPY . /app
-
-RUN composer install --prefer-dist --no-interaction --optimize-autoloader
-RUN pnpm install
+ENTRYPOINT ["entrypoint.sh"]
 
 FROM builder as production
 
-ENV OCTANE_COMMAND="php -v"
-
 COPY --from=base /app /app
-
-RUN chown -R ${OCTANE_USER}:${OCTANE_USER} /app
-
-RUN php artisan storage:link
-
-ENTRYPOINT ["container-entrypoint.sh"]
