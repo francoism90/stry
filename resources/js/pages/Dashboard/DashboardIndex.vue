@@ -7,7 +7,9 @@ import type { Video } from '@/types'
 import { Deferred } from '@inertiajs/vue3'
 
 interface Props {
+  recommended?: Video[]
   recent?: Video[]
+  watching?: Video[]
 }
 
 defineProps<Props>()
@@ -15,7 +17,7 @@ defineProps<Props>()
 
 <template>
   <PageBody>
-    <Deferred :data="['recent']">
+    <Deferred :data="['recent', 'recommended', 'watching']">
       <template #fallback>
         <div class="sr-only">Loading sections...</div>
       </template>
@@ -23,14 +25,20 @@ defineProps<Props>()
       <PageSection class="gap-8">
         <VideoCarousel
           label="Made for You"
-          :items="recent"
+          :items="recommended"
           :actions="[{ label: 'Show All', href: index.url(), trailingIcon: 'i-lucide-chevron-right' }]"
         />
 
         <VideoCarousel
           label="Continue Watching"
-          :items="recent"
+          :items="watching"
           :actions="[{ label: 'Show All', href: index.url({ query: { list: 'watching' } }), trailingIcon: 'i-lucide-chevron-right' }]"
+        />
+
+        <VideoCarousel
+          label="New Releases"
+          :items="recent"
+          :actions="[{ label: 'Show All', href: index.url({ query: { list: 'newest' } }), trailingIcon: 'i-lucide-chevron-right' }]"
         />
       </PageSection>
     </Deferred>
