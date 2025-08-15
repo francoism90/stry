@@ -77,7 +77,7 @@ COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 FROM base as production
 
-COPY --chown=${UID}:${GID} . /app
+COPY --chown="${UID}:${GID}" . /app
 
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 
