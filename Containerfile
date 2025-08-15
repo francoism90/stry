@@ -1,4 +1,4 @@
-FROM docker.io/library/ubuntu:24.04 AS base
+FROM docker.io/library/ubuntu:24.04 AS builder
 
 ARG UID=1000
 ARG GID=$UID
@@ -6,17 +6,13 @@ ARG TZ=UTC
 ARG NODE_VERSION=22
 ARG POSTGRES_VERSION=17
 
-WORKDIR /app
-
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV OCTANE_USER="docker"
 
-RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+WORKDIR /app
 
-RUN mkdir -p /cache/{secrets,transcodes} && \
-    mkdir -p /data/{media,import}
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 RUN echo "Acquire::http::Pipeline-Depth 0;" > /etc/apt/apt.conf.d/99custom && \
     echo "Acquire::http::No-Cache true;" >> /etc/apt/apt.conf.d/99custom && \
@@ -67,19 +63,22 @@ EXPOSE 5173
 EXPOSE 6001
 EXPOSE 8080
 
-FROM base as development
+FROM builder as base
 
-ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
-
-COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
-
-FROM base as production
-
-COPY --chown=${OCTANE_USER}:${OCTANE_USER} . /app
+COPY . /app
 
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
-
-RUN php artisan storage:link
 RUN pnpm install
 
-CMD ["bash"]
+FROM builder as production
+
+ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080"
+
+COPY --from=builder /app /app
+
+RUN chown -R ${OCTANE_USER}:${OCTANE_USER} /app
+
+RUN php artisan storage:link
+RUN pnpm build
+
+ENTRYPOINT ["container-entrypoint.sh"]
