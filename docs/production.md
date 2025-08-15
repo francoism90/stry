@@ -33,13 +33,6 @@ mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
 ```
 
-1. To use a local data storage:
-
-```diff
--Volume=stry-data:/data:rw,Z,U
-+Volume=${DATA_PATH}:/data:rw,z,U
-```
-
 1. Adjust the environment configuration:
 
 ```bash
@@ -54,6 +47,13 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
+1. Build the production container image:
+
+```bash
+cd ~/projects/stry
+podman build -t stry:latest --target=production .
+```
+
 1. You may need to set a SELinux Policy file context on writeable paths:
 
 ```bash
@@ -65,13 +65,6 @@ sudo restorecon -R -v /var/home/user/data/stry
 
 ```bash
 systemctl --user daemon-reload
-```
-
-1. Build the container image:
-
-```bash
-cd ~/projects/stry
-podman build -t stry:latest --target=production .
 ```
 
 1. Make sure the minimal required dependencies have been created and running:

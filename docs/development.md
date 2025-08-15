@@ -33,13 +33,7 @@ mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
 ```
 
-1. Append the local volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
-
-```diff
-+Volume=${APP_PATH}:/app:rw,z,U
-```
-
-1. Build the container image:
+1. Build the development container image:
 
 ```bash
 cd ~/projects/stry
