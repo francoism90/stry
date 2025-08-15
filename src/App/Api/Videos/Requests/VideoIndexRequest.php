@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Requests;
 
-use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Http\FormRequest;
 
 class VideoIndexRequest extends FormRequest

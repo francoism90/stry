@@ -10,9 +10,8 @@ use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class PlaylistSessionController extends Controller implements HasMiddleware
 {
@@ -29,11 +28,6 @@ class PlaylistSessionController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        logger($request->safe()->input('time'));
-
-        // PlaylistHasBeenViewedEvent::dispatchIf(
-        //     ! $playlist->accessed_at->lessThan(now()->subMinutes(10)),
-        //     $playlist
-        // );
+        PlaylistHasBeenViewedEvent::dispatch($playlist, Auth::user(), $request->safe()->all());
     }
 }

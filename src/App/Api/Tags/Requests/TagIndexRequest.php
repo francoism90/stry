@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Api\Tags\Requests;
 
 use Domain\Tags\Enums\TagType;
-use Domain\Tags\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

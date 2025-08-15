@@ -62,7 +62,7 @@ const submit = async () =>
     </UForm>
 
     <PageFilters
-      v-if="props.search?.length"
+      v-if="search?.length"
       :items="filters"
     />
   </PageSection>
