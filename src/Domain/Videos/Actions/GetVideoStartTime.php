@@ -25,5 +25,4 @@ class GetVideoStartTime
 
         return round($videoable?->pivot->options->time ?: 0.0, 2);
     }
-
 }
