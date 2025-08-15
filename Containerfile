@@ -56,8 +56,8 @@ RUN apt-get update && apt-get upgrade -y \
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
 RUN userdel -r ubuntu
-RUN groupadd --force -g ${GID} docker \
-    && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} docker
+RUN groupadd --force -g ${GID} ${OCTANE_USER} \
+    && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} ${OCTANE_USER}
 
 COPY containers/runtimes/container-entrypoint.sh /usr/local/bin/container-entrypoint.sh
 COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
@@ -77,7 +77,7 @@ COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 FROM base as production
 
-COPY --chown=docker:docker . /app
+COPY --chown=${OCTANE_USER}:${OCTANE_USER} . /app
 
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 
