@@ -13,7 +13,6 @@ _ide_helper.php
 /.zed
 /bootstrap/cache/*.php
 /containers/systemd
-/cache
 /data
 /docs
 /node_modules
