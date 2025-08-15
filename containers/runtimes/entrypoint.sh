@@ -5,6 +5,7 @@ set -e
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
 APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
+NPM=${NPM:-"pmpm"}
 
 log() {
     local type="$1"
@@ -32,23 +33,31 @@ run_scheduler() {
     ${ARTISAN} schedule:work
 }
 
-fix_permissions() {
-    log "INFO" "Fixing permissions..."
-    chown -R www:data:www-data /app || log "WARNING" "Some permissions could not be set"
+set_permissions() {
+    log "INFO" "Set permissions..."
+    chown -R www:data:www-data /app
 }
 
 prepare_application() {
     log "INFO" "Preparing application..."
     ${ARTISAN} storage:link
     ${ARTISAN} migrate --force --seed
+    ${ARTISAN} google-fonts:fetch
+    ${ARTISAN} wayfinder:generate
+}
+
+build_application() {
+    log "INFO" "Building application..."
+    ${NPM} build
     ${ARTISAN} optimize
 }
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
     app)
-        fix_permissions
+        set_permissions
         prepare_application
+        build_application
         run_octane
         ;;
     horizon)

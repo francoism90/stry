@@ -58,6 +58,8 @@ COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+COPY . /app
+
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
 RUN pnpm install
 
@@ -69,6 +71,10 @@ USER www-data
 
 ENTRYPOINT ["entrypoint.sh"]
 
+FROM builder as development
+
+COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+
 FROM builder as production
 
-COPY --from=base /app /app
+COPY --from=builder /app /app
