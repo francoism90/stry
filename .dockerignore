@@ -27,8 +27,12 @@ _ide_helper.php
 /storage/pail
 /tests
 /vendor
+composer.lock
 Homestead.json
 Homestead.yaml
-Thumbs.db
 npm-debug.log
+package-lock.json
+pnpm-lock.yaml
+Thumbs.db
 yarn-error.log
+yarn.lock
