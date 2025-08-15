@@ -14,7 +14,7 @@ abstract class GroupState extends State
     public static function config(): StateConfig
     {
         return parent::config()
-            ->default(Pending::class)
+            ->default(Verified::class)
             ->allowAllTransitions();
     }
 }

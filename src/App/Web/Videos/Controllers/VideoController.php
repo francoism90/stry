@@ -11,6 +11,7 @@ use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Api\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\GetSimilarVideos;
+use Domain\Videos\Actions\GetVideoStartTime;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
@@ -19,6 +20,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,9 +37,11 @@ class VideoController extends Controller implements HasMiddleware
 
     public function index(VideoIndexRequest $request): Response
     {
+        Gate::authorize('viewAny', Video::class);
+
         $items = Video::query()
-            ->tap(new VideoListScope(list: $request->input('list'), sort: $request->input('sort')))
-            ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
+            ->tap(new VideoListScope(...$request->safe()->only(['list'])))
+            ->cursorPaginate(perPage: 24, cursor: (string) $request->safe()->input('page', ''))
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [
@@ -47,12 +51,12 @@ class VideoController extends Controller implements HasMiddleware
 
     public function store(Request $request)
     {
-        //
+        Gate::authorize('create', Video::class);
     }
 
     public function create()
     {
-        // Gate::authorize('create', Video::class);
+        Gate::authorize('create', Video::class);
 
         // return Inertia::render('Videos/VideoCreate', [
         //     //
@@ -69,6 +73,7 @@ class VideoController extends Controller implements HasMiddleware
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
+            'starts' => fn () => app(GetVideoStartTime::class)->handle($video, Auth::user()),
             'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
         ]);
     }
@@ -84,7 +89,9 @@ class VideoController extends Controller implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): RedirectResponse
     {
-        app(UpdateVideoDetails::class)->handle($video, $request->validated());
+        Gate::authorize('update', $video);
+
+        app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
         flash()->success('Video updated successfully!');
 

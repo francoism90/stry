@@ -20,6 +20,7 @@ class TagController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth:sanctum'),
             new Middleware('verified'),
             new Middleware('precognitive'),
         ];
@@ -29,8 +30,8 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Tag::class);
 
-        return Tag::search($request->input('search'))
-            ->tap(new TagFilterScope(sort: $request->input('sort')))
+        return Tag::search($request->safe()->input('search'))
+            ->tap(new TagFilterScope(...$request->safe()->only(['sort'])))
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }

@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Tags\Requests;
+namespace App\Api\Playlists\Requests;
 
-use Domain\Tags\Enums\TagType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class TagIndexRequest extends FormRequest
+class PlaylistViewRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -21,8 +19,7 @@ class TagIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string', 'max:255'],
-            'type' => ['nullable', 'string', Rule::enum(TagType::class)],
+            'time' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 }

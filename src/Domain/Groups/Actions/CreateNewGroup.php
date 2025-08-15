@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateNewGroup
 {
-    public function execute(Model $model, array $attributes): Group
+    public function handle(Model $model, array $attributes): Group
     {
         return DB::transaction(function () use ($model, $attributes) {
             $model = $model->groups()->firstOrCreate(

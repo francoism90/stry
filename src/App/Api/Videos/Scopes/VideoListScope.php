@@ -21,6 +21,7 @@ readonly class VideoListScope
             ->verified()
             ->when($this->tags, fn ($query, $tags) => $query->withAllTagsOfAnyType($tags))
             ->when($this->list === null, fn ($query) => $query->inRandomOrder())
+            ->when($this->list === 'watching', fn ($query) => $query->watching())
             ->when($this->list === 'newest', fn ($query) => $query->latest());
     }
 }

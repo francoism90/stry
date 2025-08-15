@@ -20,7 +20,7 @@ class UpdateVideoDetails
             );
 
             if (array_key_exists('tags', $attributes)) {
-                app(SyncModelTags::class)->handle($video, $attributes['tags']);
+                app(SyncModelTags::class)->handle($video, $attributes['tags'] ?? []);
             }
 
             if ($video->wasChanged('snapshot')) {

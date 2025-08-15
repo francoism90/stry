@@ -17,7 +17,7 @@ enum GroupType: string
             self::Favorite => __('Favorite'),
             self::Mixer => __('Mixer'),
             self::Saved => __('Saved'),
-            self::Viewed => __('History'),
+            self::Viewed => __('Watched'),
         };
     }
 }

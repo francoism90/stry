@@ -34,18 +34,18 @@ trait InteractsWithGroups
             ->withTimestamps();
     }
 
-    public function attachGroup(Group $model, ?array $data = null): static
+    public function syncGroup(Group $model, ?array $options = null): static
     {
-        return $this->attachGroups([$model], $data);
+        return $this->syncGroups([$model], $options);
     }
 
-    public function attachGroups(array|ArrayAccess|Collection $groups, ?array $data = null, bool $detach = false): static
+    public function syncGroups(array|ArrayAccess|Collection $groups, ?array $options = null, bool $detach = false): static
     {
         $groups = static::convertToGroups($groups);
 
         $this->groups()->syncWithPivotValues(
             ids: $groups->pluck('id')->toArray(),
-            values: ['options' => $data?->toArray(), 'updated_at' => now()],
+            values: ['options' => $options, 'updated_at' => now()],
             detaching: $detach,
         );
 
@@ -84,7 +84,7 @@ trait InteractsWithGroups
     public function scopeByGroup(Builder $query, ?GroupType $type = null): Builder
     {
         return $query->whereHas('groups', fn ($query) => $query
-            ->when($type, fn ($query) => $query->where('type', $type->value))
+            ->when($type, fn ($query) => $query->where('type', $type))
         );
     }
 }

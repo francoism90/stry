@@ -8,18 +8,15 @@ import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
-import type { DetailListItem, Media, Playlist, Video } from '@/types'
+import type { DetailListItem, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useDateFormat } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 interface Props {
   video: Video
-  playlist: Playlist | null
-  captions: Media[] | null
-  time?: number | null
   queue?: Video[] | null
 }
 
@@ -36,9 +33,6 @@ const details = ref<DetailListItem[]>([
   { label: 'Duration', value: props.video.timestamp },
 ])
 
-const src = computed(() => (props.playlist?.valid ? props.playlist.asset : ''))
-const time = computed(() => props.time ?? 0)
-
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
@@ -48,11 +42,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <Head :title="video.name" />
 
   <PageBody>
-    <VideoPlayer
-      :src="src"
-      :time="time"
-      :captions="captions"
-    />
+    <VideoPlayer />
 
     <PageSection class="gap-4 py-2">
       <PageColumns>

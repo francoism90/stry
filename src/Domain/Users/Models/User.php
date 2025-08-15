@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Users\Models;
 
 use Database\Factories\UserFactory;
+use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
@@ -30,6 +31,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use BroadcastsEvents;
     use HasApiTokens;
     use HasFactory;
+    use HasGroups;
     use HasRoles;
     use HasStates;
     use HasUlids;

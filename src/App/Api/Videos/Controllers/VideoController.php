@@ -18,6 +18,7 @@ class VideoController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth:sanctum'),
             new Middleware('verified'),
             new Middleware('precognitive'),
         ];

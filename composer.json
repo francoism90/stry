@@ -24,7 +24,7 @@
         "laravel/reverb": "^1.5.1",
         "laravel/sanctum": "^4.2.0",
         "laravel/scout": "^10.17.0",
-        "laravel/telescope": "^5.11.0",
+        "laravel/telescope": "^5.11.1",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.6",
         "league/flysystem-aws-s3-v3": "^3.29",
