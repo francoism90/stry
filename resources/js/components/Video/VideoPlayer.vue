@@ -3,19 +3,27 @@ import { usePlayer } from '@/composables/player'
 import { useThrottleFn } from '@vueuse/core'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
-import { onBeforeUnmount, onMounted, shallowRef } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 
 const player = shallowRef<MediaPlayer>()
+const seeked = ref(false)
 
-const { src, captions, watchtime } = usePlayer()
+const { src, captions, starts, watchtime } = usePlayer()
 
 const listener = () => {
   const debouncedRecord = useThrottleFn((time: number) => watchtime(time), 5000)
 
-  return player.value?.subscribe(({ source, currentTime }) => {
-    if (source && currentTime >= 0) {
+  return player.value?.subscribe(({ canSeek, currentTime }) => {
+    if (canSeek && !seeked.value) {
+      player.value!.currentTime = starts.value || 0
+      seeked.value = true
+    }
+
+    if (canSeek && currentTime >= 0) {
       debouncedRecord(currentTime)
     }
+
+    return () => player.value
   })
 }
 

@@ -21,9 +21,7 @@ class MarkAsViewed
             }
 
             // Ensure the viewed user group exists
-            $group = app(CreateNewGroup::class)->handle($user, [
-                'type' => GroupType::Viewed,
-            ]);
+            $group = app(CreateUserGroup::class)->handle($user, GroupType::Viewed);
 
             // Add the video to the user viewed group
             $model->syncGroup($group, $attributes);

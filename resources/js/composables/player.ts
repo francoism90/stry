@@ -7,7 +7,7 @@ import { computed, readonly, ref, shallowRef, toValue, watchEffect } from 'vue'
 export function usePlayer() {
   const state = shallowRef<Playlist | null>()
   const captions = shallowRef<Media[] | null>(null)
-  const time = ref<number | null>(null)
+  const starts = ref<number | null>(null)
 
   const ready = computed(() => state.value?.valid && state.value?.asset)
   const src = computed(() => (ready.value ? state.value?.asset : null))
@@ -17,7 +17,7 @@ export function usePlayer() {
   watchEffect(async () => {
     state.value = toValue(usePage().props.playlist as Playlist)
     captions.value = toValue(usePage().props.captions as Media[] | null)
-    time.value = toValue(usePage().props.time as number | null)
+    starts.value = toValue(usePage().props.starts as number | null)
   })
 
   return {
@@ -25,6 +25,7 @@ export function usePlayer() {
     captions,
     ready,
     src,
+    starts,
     watchtime,
   }
 }
