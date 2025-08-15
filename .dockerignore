@@ -23,11 +23,6 @@ _ide_helper.php
 /resources/js/routes
 /resources/js/wayfinder
 /storage/*.key
-/storage/app/cache
-/storage/app/import
-/storage/app/media
-/storage/app/private
-/storage/app/secrets
 /storage/pail
 /tests
 /vendor

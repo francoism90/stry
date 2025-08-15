@@ -29,7 +29,7 @@ class CreateMediaSegments
                     ->setKiloBitrate(1500)
                 )
                 ->addFilter(['-vf', 'scale=1280:720,setdar=dar=16/9'])
-                ->toDisk('cache')
+                ->toDisk('transcodes')
                 ->save($path);
 
             return $path;

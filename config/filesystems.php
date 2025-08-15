@@ -44,36 +44,36 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
-        'cache' => [
+        'transcodes' => [
             'driver' => 'local',
-            'root' => storage_path('app/cache'),
+            'root' => '/cache/transcodes',
             'serve' => false,
             'throw' => false,
-            'report' => false,
-        ],
-
-        'media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/media'),
-            'serve' => false,
-            'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
         'secrets' => [
             'driver' => 'local',
-            'root' => storage_path('app/secrets'),
+            'root' => '/cache/secrets',
             'serve' => false,
             'throw' => false,
-            'report' => false,
+            'report' => true,
+        ],
+
+        'media' => [
+            'driver' => 'local',
+            'root' => '/data/media',
+            'serve' => false,
+            'throw' => true,
+            'report' => true,
         ],
 
         'import' => [
             'driver' => 'local',
-            'root' => storage_path('app/import'),
+            'root' => '/data/import',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -90,7 +90,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
             'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
         'assets' => [
@@ -104,7 +104,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'public',
             'throw' => false,
-            'report' => false,
+            'report' => true,
             'options' => [
                 'CacheControl' => 'public, max-age=259200, immutable',
             ],
@@ -121,7 +121,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'public',
             'throw' => false,
-            'report' => false,
+            'report' => true,
             'options' => [
                 'CacheControl' => 'public, max-age=259200, immutable',
             ],
@@ -138,7 +138,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'public',
             'throw' => false,
-            'report' => false,
+            'report' => true,
             'options' => [
                 'CacheControl' => 'public, max-age=259200, immutable',
             ],

@@ -22,7 +22,7 @@ class CreateMediaFrame
             ->open($media->getPathRelativeToRoot())
             ->getFrameFromSeconds($seconds)
             ->export()
-            ->toDisk('cache')
+            ->toDisk('transcodes')
             ->save($path);
 
         return $path;

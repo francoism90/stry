@@ -27,7 +27,7 @@ class CreateVideoThumbnail
 
             // Add the sample video to the video model
             $video
-                ->addMediaFromDisk($path, 'cache')
+                ->addMediaFromDisk($path, 'transcodes')
                 ->toMediaCollection('thumbnail')
                 ->saveOrFail();
 

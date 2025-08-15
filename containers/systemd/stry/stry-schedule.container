@@ -9,7 +9,8 @@ AutoUpdate=local
 LogDriver=none
 Exec=php /app/artisan schedule:work
 UserNS=keep-id
-Volume=${APP_PATH}:/app:rw,z
+Volume=stry-cache:/cache:rw,z
+Volume=stry-data:/data:rw,z
 Network=stry.network
 
 [Service]

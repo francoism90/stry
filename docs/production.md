@@ -33,23 +33,11 @@ mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
 ```
 
-1. Replace the `APP_PATH` mount of `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`, with `DATA_PATH`:
+1. To use a local data storage:
 
 ```diff
--Volume=${APP_PATH}:/app:rw,z,U
-+Volume=${DATA_PATH}:/app/storage/app:rw,z,U
-```
-
-```diff
--Volume=${APP_PATH}:/app:rw,z
-+Volume=${DATA_PATH}:/app/storage/app:rw,z
-```
-
-If you want to use different paths, append:
-
-```diff
-+Volume=${MEDIA_PATH}:/app/storage/app/media:rw,z,U
-+Volume=${IMPORT_PATH}:/app/storage/app/import:rw,z,U
+-Volume=stry-data:/data:rw,Z,U
++Volume=${DATA_PATH}:/data:rw,z,U
 ```
 
 1. Adjust the environment configuration:

@@ -11,10 +11,10 @@ class CleanupTemporaryCache
 {
     public function handle(Media $media, string $path): void
     {
-        $path = "{$path}/{$media->uuid}";
+        $absolutePath = "{$path}/{$media->uuid}";
 
-        if (Storage::disk('cache')->directoryExists($path)) {
-            Storage::disk('cache')->deleteDirectory($path);
+        if (Storage::disk('transcodes')->directoryExists($absolutePath)) {
+            Storage::disk('transcodes')->deleteDirectory($absolutePath);
         }
     }
 }

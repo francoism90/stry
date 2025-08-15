@@ -10,7 +10,8 @@ LogDriver=none
 Exec=php /app/artisan horizon
 UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
-Volume=${APP_PATH}:/app:rw,z
+Volume=stry-cache:/cache:rw,z
+Volume=stry-data:/data:rw,z
 Network=stry.network
 
 [Service]
