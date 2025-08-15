@@ -1,0 +1,7 @@
+[Build]
+ImageTag=localhost/stry:prod
+SetWorkingDirectory=${APP_PATH}
+Target=${APP_TARGET}
+
+[Service]
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env

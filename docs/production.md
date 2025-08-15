@@ -47,13 +47,6 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
-1. Build the production container image:
-
-```bash
-cd ~/projects/stry
-podman build -t stry:latest --target=production .
-```
-
 1. You may need to set a SELinux Policy file context on writeable paths:
 
 ```bash
