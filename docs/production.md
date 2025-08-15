@@ -26,16 +26,68 @@ It's recommend running a rootless setup (this may already be setup by your distr
 
 ## Installation
 
-1. Build the Docker images:
+1. Setup the Quadlet containers:
+
+```bash
+mkdir -p ~/.config/containers/systemd
+cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
+```
+
+1. Replace the `APP_PATH` mount of `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`, with `DATA_PATH`:
+
+```diff
+-Volume=${APP_PATH}:/app:rw,z,U
++Volume=${DATA_PATH}:/app/storage/app:rw,z,U
+```
+
+```diff
+-Volume=${APP_PATH}:/app:rw,z
++Volume=${DATA_PATH}:/app/storage/app:rw,z
+```
+
+If you want to use different paths, append:
+
+```diff
++Volume=${MEDIA_PATH}:/app/storage/app/media:rw,z,U
++Volume=${IMPORT_PATH}:/app/storage/app/import:rw,z,U
+```
+
+1. Adjust the environment configuration:
+
+```bash
+cd ~/.config/containers/systemd/stry/config
+vi app.env postgres.env minio.env ..
+```
+
+1. Make sure the project environment are in sync:
+
+```bash
+cp ~/projects/stry/.env.example ~/projects/stry/.env
+vi ~/projects/stry/.env
+```
+
+1. You may need to set a SELinux Policy file context on writeable paths:
+
+```bash
+sudo semanage fcontext -a -t container_file_t '/var/home/user/data/stry(/.*)?'
+sudo restorecon -R -v /var/home/user/data/stry
+```
+
+1. Make sure to reload systemd on configuration changes:
+
+```bash
+systemctl --user daemon-reload
+```
+
+1. Build the container image:
 
 ```bash
 cd ~/projects/stry
 podman build -t stry:latest --target=production .
 ```
 
-1. Adjust the containers services, remove the `APP_PATH` mount:
+1. Make sure the minimal required dependencies have been created and running:
 
-```diff
--Volume=${APP_PATH}:/app:rw,z
--Volume=${APP_PATH}:/app:rw,z,U
+```bash
+systemctl --user restart stry-minio stry-pgsql stry-redis
 ```

@@ -11,7 +11,6 @@ Exec=php /app/artisan horizon
 UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
 Volume=${APP_PATH}:/app:rw,z
-Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 
 [Service]

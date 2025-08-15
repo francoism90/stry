@@ -10,7 +10,6 @@ LogDriver=none
 Exec=php /app/artisan reverb:start
 UserNS=keep-id
 Volume=${APP_PATH}:/app:rw,z
-Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001

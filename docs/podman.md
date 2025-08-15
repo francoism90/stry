@@ -26,18 +26,18 @@ It's recommend running a rootless setup (this may already be setup by your distr
 
 ## Installation
 
-1. Build the Docker images (use `--target=production` for production):
-
-```bash
-cd ~/projects/stry
-podman build -t stry:latest --target=development .
-```
-
-1. Setup the containers:
+1. Setup the Quadlet containers:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
+```
+
+1. Build the container image:
+
+```bash
+cd ~/projects/stry
+podman build -t stry:latest --target=development .
 ```
 
 1. Adjust the environment configuration:
