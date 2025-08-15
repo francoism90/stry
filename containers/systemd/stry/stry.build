@@ -1,7 +1,8 @@
 [Build]
-ImageTag=localhost/stry:prod
+ImageTag=localhost/stry:latest
+File=containers/Containerfile
 SetWorkingDirectory=${APP_PATH}
-Target=${APP_TARGET}
+Target=${APP_ENV}
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env

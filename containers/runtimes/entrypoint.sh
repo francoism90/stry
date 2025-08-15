@@ -3,6 +3,7 @@
 set -e
 
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
+APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
 
 log() {
