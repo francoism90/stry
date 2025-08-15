@@ -15,7 +15,7 @@ ExposeHostPort=9000
 
 [Service]
 TimeoutStartSec=90
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=multi-user.target

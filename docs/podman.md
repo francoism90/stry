@@ -37,7 +37,7 @@ podman build -t stry:latest --target=development .
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
+cp -r ~/projects/stry/containers/systemd/stry ~/.config/containers/systemd/
 ```
 
 1. Adjust the environment configuration:

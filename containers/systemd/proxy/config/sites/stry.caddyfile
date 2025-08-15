@@ -18,12 +18,10 @@ ws.stry.test {
 
 s3.stry.test {
     import tls
-    import compress
     reverse_proxy systemd-stry-minio:9000
 }
 
 mc.stry.test {
     import tls
-    import compress
     reverse_proxy systemd-stry-minio:8900
 }
