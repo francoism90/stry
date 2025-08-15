@@ -11,6 +11,7 @@ use Illuminate\Support\Number;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 
@@ -35,7 +36,7 @@ class CleanCommand extends Command implements Isolatable
         );
 
         if ($videos->isEmpty()) {
-            $this->components->info('No videos found for deletion');
+            info('No videos found for deletion');
 
             return;
         }
@@ -55,7 +56,7 @@ class CleanCommand extends Command implements Isolatable
                     return;
                 }
 
-                $this->components->info("deleting {$model->name} ({$model->getKey()})");
+                info("deleting {$model->name} ({$model->getKey()})");
 
                 $model->forceDelete();
             });
