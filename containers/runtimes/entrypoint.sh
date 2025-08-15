@@ -34,8 +34,8 @@ run_scheduler() {
 }
 
 set_permissions() {
-    log "INFO" "Set permissions..."
-    chown -R www:data:www-data /app
+    log "INFO" "Setting permissions..."
+    chown -R docker:docker /app
 }
 
 prepare_application() {
