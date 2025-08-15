@@ -72,7 +72,7 @@ RUN pnpm install
 
 FROM builder as production
 
-ENV OCTANE_COMMAND="php -d variables_order=EGPCS /app/artisan octane:start --server=swoole --host=0.0.0.0 --port=8080"
+ENV OCTANE_COMMAND="php -v"
 
 COPY --from=base /app /app
 
