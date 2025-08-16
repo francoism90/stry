@@ -10,7 +10,7 @@ Environment=CONTAINER_ROLE=scheduler
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
 User=${UID}
-Group=${UID}
+Group=${GID}
 Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
@@ -18,7 +18,3 @@ Network=stry.network
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 TimeoutStartSec=90
-Restart=always
-
-[Install]
-WantedBy=default.target

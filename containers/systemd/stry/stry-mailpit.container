@@ -13,9 +13,3 @@ Volume=stry-mailpit:/data:rw,Z,U
 Network=stry.network
 ExposeHostPort=1025
 ExposeHostPort=8025
-
-[Service]
-Restart=always
-
-[Install]
-WantedBy=default.target

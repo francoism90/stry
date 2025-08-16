@@ -11,7 +11,7 @@ Environment=APP_ENV=${APP_ENV}
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
 User=${UID}
-Group=${UID}
+Group=${GID}
 Volume=stry-cache:/cache:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
 Network=stry.network
@@ -22,7 +22,3 @@ ExposeHostPort=5173
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 TimeoutStartSec=300
-Restart=always
-
-[Install]
-WantedBy=default.target

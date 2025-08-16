@@ -12,7 +12,3 @@ ExposeHostPort=7700
 
 [Service]
 TimeoutStartSec=90
-Restart=always
-
-[Install]
-WantedBy=default.target
