@@ -5,7 +5,7 @@ set -e
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
 APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
-NPM=${NPM:-"pmpm"}
+NPM=${NPM:-"pnpm"}
 OCTANE_COMMAND="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 if [ "${APP_ENV}" = "development" ]; then
@@ -21,7 +21,7 @@ log() {
 build_application() {
     log "INFO" "Building application..."
     ${ARTISAN} storage:link
-    ${ARTISAN} migrate --seed
+    ${ARTISAN} migrate --seed --force
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
     ${NPM} build
