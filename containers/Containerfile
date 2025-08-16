@@ -64,29 +64,24 @@ EXPOSE 8080
 
 ENTRYPOINT ["entrypoint.sh"]
 
-FROM builder as stage
-
-WORKDIR /app
-
-COPY . /app
-
-RUN composer install --prefer-dist --no-interaction --optimize-autoloader
-RUN pnpm install
-
 FROM builder as development
 
 WORKDIR /app
 
-COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
-
 USER docker
+
+RUN composer install --prefer-dist --no-interaction --optimize-autoloader
+RUN pnpm install
 
 FROM builder as production
 
 WORKDIR /app
 
-COPY --from=stage /app /app
+COPY . /app
 
 RUN chown -R docker:docker /app
 
 USER docker
+
+RUN composer install --prefer-dist --no-interaction --optimize-autoloader
+RUN pnpm install

@@ -9,7 +9,7 @@ NPM=${NPM:-"pmpm"}
 OCTANE_COMMAND="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 if [ "${APP_ENV}" = "development" ]; then
-    ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
+    OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
 fi
 
 log() {
