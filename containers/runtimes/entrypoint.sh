@@ -18,17 +18,19 @@ log() {
     echo "[$type] $message"
 }
 
-build_application() {
-    log "INFO" "Building application..."
+prepare_application() {
+    log "INFO" "Preparing application..."
     ${ARTISAN} storage:link
     ${ARTISAN} migrate --seed --force
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
     ${NPM} build
+    ${ARTISAN} optimize
+    ${ARTISAN} scout:sync-index-settings
 }
 
 if [[ "${CONTAINER_ROLE}" = "app" && "${APP_ENV}" = "production" ]]; then
-    build_application
+    prepare_application
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
