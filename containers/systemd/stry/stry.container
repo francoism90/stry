@@ -5,8 +5,7 @@ After=stry-redis.service stry-pgsql.service stry-meilisearch.service stry-mailpi
 Wants=stry-reverb.service stry-queue.service stry-schedule.service
 
 [Container]
-Image=localhost/stry:latest
-AutoUpdate=local
+Image=stry.build
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
