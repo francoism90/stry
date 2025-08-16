@@ -58,23 +58,24 @@ COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-COPY --chown=docker:docker . /app
-
-RUN composer install --prefer-dist --no-interaction --optimize-autoloader
-RUN pnpm install
-
 EXPOSE 5173
 EXPOSE 6001
 EXPOSE 8080
-
-USER docker
 
 ENTRYPOINT ["entrypoint.sh"]
 
 FROM builder as development
 
+WORKDIR /app
+
 COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+
+USER docker
 
 FROM builder as production
 
-COPY --from=builder /app /app
+WORKDIR /app
+
+COPY --chown=docker:docker . /app
+
+USER docker
