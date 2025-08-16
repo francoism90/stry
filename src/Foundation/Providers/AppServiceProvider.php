@@ -22,6 +22,11 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->registerTelescope();
+    }
+
     public function boot(): void
     {
         $this->configureUrls();
@@ -30,6 +35,14 @@ class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureJsonResource();
         $this->configureMacros();
+    }
+
+    protected function registerTelescope(): void
+    {
+        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     protected function configureUrls(): void
