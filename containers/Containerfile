@@ -82,5 +82,5 @@ RUN chown -R docker:docker /app
 
 USER docker
 
-RUN composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
+RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 RUN pnpm install
