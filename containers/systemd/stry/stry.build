@@ -2,10 +2,8 @@
 Target=${APP_ENV}
 Environment=UID=${UID}
 Environment=GID=${GID}
-ImageTag=localhost/stry:latest
 File=containers/Containerfile
 SetWorkingDirectory=${APP_PATH}
-ForceRM=false
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
