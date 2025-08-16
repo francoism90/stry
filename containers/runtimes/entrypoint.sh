@@ -5,7 +5,6 @@ set -e
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
 APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
-COMPOSER=${COMPOSER:-"composer"}
 NPM=${NPM:-"pmpm"}
 OCTANE_COMMAND="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
@@ -19,15 +18,8 @@ log() {
     echo "[$type] $message"
 }
 
-set_permissions() {
-    log "INFO" "Setting permissions..."
-    chown -R docker:docker /app
-}
-
 prepare_application() {
     log "INFO" "Preparing application..."
-    ${COMPOSER} install --prefer-dist --no-interaction --optimize-autoloader
-    ${NPM} install
     ${ARTISAN} storage:link
     ${ARTISAN} migrate --force --seed
     ${ARTISAN} google-fonts:fetch
@@ -40,7 +32,6 @@ build_application() {
     ${ARTISAN} optimize
 }
 
-set_permissions
 prepare_application
 
 if [ "${APP_ENV}" = "production" ]; then
