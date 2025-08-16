@@ -39,7 +39,7 @@ mc admin info myminio
 mc admin user svcacct add myminio stry
 ```
 
-1. Update `AWS_ACCESS_KEY_ID` `AWS_SECRET_ACCESS_KEY` in `.env`.
+1. Set keys `AWS_ACCESS_KEY_ID` `AWS_SECRET_ACCESS_KEY` in `.env`.
 
 1. Create required buckets (add your own if required):
 
