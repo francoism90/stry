@@ -30,21 +30,20 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y gifsicle jpegoptim optipng pngquant \
     && apt-get install -y php8.4-cli php8.4-dev \
        php8.4-pgsql php8.4-sqlite3 php8.4-gd \
-       php8.4-curl php8.4-mongodb \
+       php8.4-curl php8.4-intl php8.4-readline \
        php8.4-imap php8.4-mysql php8.4-mbstring \
-       php8.4-xml php8.4-zip php8.4-bcmath php8.4-soap \
-       php8.4-intl php8.4-readline \
-       php8.4-ldap \
-       php8.4-msgpack php8.4-igbinary php8.4-redis php8.4-swoole \
-       php8.4-memcached php8.4-pcov php8.4-imagick php8.4-xdebug \
-    && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
+       php8.4-xml php8.4-zip php8.4-bcmath \
+       php8.4-soap php8.4-ldap php8.4-msgpack \
+       php8.4-memcached php8.4-redis php8.4-swoole \
+       php8.4-pcov  php8.4-igbinary php8.4-imagick \
+    && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
     && curl -sLS https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o /usr/local/bin/mc \
     && chmod +x /usr/local/bin/mc \
     && apt-get install -y nodejs \
     && npm install -g npm \
     && npm install -g pnpm \
     && npm install -g svgo \
-    && apt-get -y autoremove \
+    && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
 
@@ -55,10 +54,22 @@ RUN groupadd --force -g ${GID} docker \
     && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} docker
 
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5173
+FROM builder as production
+
+WORKDIR /app
+
+COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+COPY . /app
+
+RUN chown -R docker:docker /app
+
+USER docker
+
+RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+RUN pnpm install
+
 EXPOSE 6001
 EXPOSE 8080
 
@@ -72,15 +83,8 @@ COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 USER docker
 
-FROM builder as production
+EXPOSE 5173
+EXPOSE 6001
+EXPOSE 8080
 
-WORKDIR /app
-
-COPY . /app
-
-RUN chown -R docker:docker /app
-
-USER docker
-
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-RUN pnpm install
+ENTRYPOINT ["entrypoint.sh"]
