@@ -66,6 +66,8 @@ ENTRYPOINT ["entrypoint.sh"]
 
 FROM builder as stage
 
+WORKDIR /app
+
 COPY . /app
 
 RUN composer install --prefer-dist --no-interaction --optimize-autoloader
