@@ -6,31 +6,12 @@ CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
 APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
 NPM=${NPM:-"pmpm"}
+OCTANE_COMMAND="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 log() {
     local type="$1"
     local message="$2"
     echo "[$type] $message"
-}
-
-run_octane() {
-    log "INFO" "Starting Octane service..."
-    ${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080
-}
-
-run_horizon() {
-    log "INFO" "Starting Horizon service..."
-    ${ARTISAN} horizon
-}
-
-run_reverb() {
-    log "INFO" "Starting Reverb service..."
-    ${ARTISAN} reverb:start
-}
-
-run_scheduler() {
-    log "INFO" "Starting scheduler..."
-    ${ARTISAN} schedule:work
 }
 
 set_permissions() {
@@ -52,22 +33,31 @@ build_application() {
     ${ARTISAN} optimize
 }
 
+if [ "${APP_ENV}" = "development" ]; then
+    ENV OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
+else
+    set_permissions
+    prepare_application
+    build_application
+fi
+
 log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
     app)
-        set_permissions
-        prepare_application
-        build_application
-        run_octane
+        log "INFO" "Starting Octane service..."
+        ${OCTANE_COMMAND}
         ;;
     horizon)
-        run_horizon
+        log "INFO" "Starting Horizon service..."
+        ${ARTISAN} horizon
         ;;
     scheduler)
-        run_scheduler
+        log "INFO" "Starting scheduler..."
+        ${ARTISAN} schedule:work
         ;;
     reverb)
-        run_reverb
+        log "INFO" "Starting Reverb service..."
+        ${ARTISAN} reverb:start
         ;;
     *)
         log "ERROR" "Unknown container role: ${CONTAINER_ROLE}"
