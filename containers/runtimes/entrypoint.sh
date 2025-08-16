@@ -21,22 +21,9 @@ log() {
 prepare_application() {
     log "INFO" "Preparing application..."
     ${ARTISAN} storage:link
-    ${ARTISAN} migrate --force --seed
-    ${ARTISAN} google-fonts:fetch
-    ${ARTISAN} wayfinder:generate
-}
-
-build_application() {
-    log "INFO" "Building application..."
-    ${NPM} build
-    ${ARTISAN} optimize
 }
 
 prepare_application
-
-if [ "${APP_ENV}" = "production" ]; then
-    build_application
-fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
