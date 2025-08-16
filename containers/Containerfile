@@ -56,22 +56,20 @@ RUN groupadd --force -g ${GID} docker \
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+EXPOSE 5173
+EXPOSE 6001
+EXPOSE 8080
+
 FROM builder as production
 
 WORKDIR /app
 
 COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
-COPY --chown=docker:docker . /app
+COPY . /app
 RUN chown -R docker:docker /app
 
 USER docker
-
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-RUN pnpm install
-
-EXPOSE 6001
-EXPOSE 8080
 
 ENTRYPOINT ["entrypoint.sh"]
 
@@ -82,9 +80,5 @@ WORKDIR /app
 COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 USER docker
-
-EXPOSE 5173
-EXPOSE 6001
-EXPOSE 8080
 
 ENTRYPOINT ["entrypoint.sh"]

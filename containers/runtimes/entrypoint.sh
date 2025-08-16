@@ -5,11 +5,12 @@ set -e
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
 APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
+COMPOSER=${COMPOSER:-"composer"}
 NPM=${NPM:-"pnpm"}
-OCTANE_COMMAND="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
+OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 if [ "${APP_ENV}" = "development" ]; then
-    OCTANE_COMMAND="${OCTANE_COMMAND} --watch"
+    OCTANE="${OCTANE} --watch"
 fi
 
 log() {
@@ -20,10 +21,12 @@ log() {
 
 prepare_application() {
     log "INFO" "Preparing application..."
+    ${COMPOSER} install --prefer-dist --no-dev --optimize-autoloader --no-interaction
     ${ARTISAN} storage:link
     ${ARTISAN} migrate --seed --force
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
+    ${NPM} install
     ${NPM} build
     ${ARTISAN} optimize
     ${ARTISAN} scout:sync-index-settings
@@ -37,7 +40,7 @@ log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
     app)
         log "INFO" "Starting Octane service..."
-        exec ${OCTANE_COMMAND}
+        exec ${OCTANE}
         ;;
     horizon)
         log "INFO" "Starting Horizon service..."
