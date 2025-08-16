@@ -18,4 +18,4 @@ ExposeHostPort=8025
 Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

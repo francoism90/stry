@@ -81,7 +81,7 @@ FROM builder as production
 
 WORKDIR /app
 
-COPY --chown=docker:docker --from=builder /app /app
+COPY --from=builder /app /app
 
 RUN chown -R docker:docker /app
 

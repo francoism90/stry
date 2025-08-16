@@ -29,19 +29,19 @@ log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
     app)
         log "INFO" "Starting Octane service..."
-        ${OCTANE_COMMAND}
+        exec ${OCTANE_COMMAND}
         ;;
     horizon)
         log "INFO" "Starting Horizon service..."
-        ${ARTISAN} horizon
+        exec ${ARTISAN} horizon
         ;;
     scheduler)
         log "INFO" "Starting scheduler..."
-        ${ARTISAN} schedule:work
+        exec ${ARTISAN} schedule:work
         ;;
     reverb)
         log "INFO" "Starting Reverb service..."
-        ${ARTISAN} reverb:start
+        exec ${ARTISAN} reverb:start
         ;;
     *)
         log "ERROR" "Unknown container role: ${CONTAINER_ROLE}"
