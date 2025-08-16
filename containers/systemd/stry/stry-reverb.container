@@ -6,8 +6,9 @@ After=stry.service
 [Container]
 Image=localhost/stry:latest
 AutoUpdate=local
-LogDriver=none
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Environment=CONTAINER_ROLE=reverb
+LogDriver=none
 UserNS=keep-id
 Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z

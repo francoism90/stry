@@ -7,20 +7,18 @@ Wants=stry-reverb.service stry-queue.service stry-schedule.service
 [Container]
 Image=localhost/stry:latest
 AutoUpdate=local
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 LogDriver=none
-Environment=CONTAINER_ROLE=app
-UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
+UserNS=keep-id
 Volume=stry-cache:/cache:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
 Network=stry.network
-Network=proxy.network
 ExposeHostPort=8080
 ExposeHostPort=5173
 
 [Service]
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-TimeoutStartSec=900
+TimeoutStartSec=300
 Restart=always
 
 [Install]

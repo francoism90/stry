@@ -4,8 +4,8 @@ Description=PostgreSQL container
 [Container]
 Image=docker.io/library/postgres:latest
 AutoUpdate=registry
-LogDriver=none
 EnvironmentFile=%h/.config/containers/systemd/stry/config/postgres.env
+LogDriver=none
 ShmSize=100m
 Volume=stry-pgsql:/var/lib/postgresql/data:rw,Z,U
 Network=stry.network

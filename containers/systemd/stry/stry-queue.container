@@ -7,6 +7,7 @@ After=stry.service
 Image=localhost/stry:latest
 AutoUpdate=local
 LogDriver=none
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Environment=CONTAINER_ROLE=horizon
 UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
@@ -15,7 +16,6 @@ Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 
 [Service]
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 TimeoutStartSec=90
 Restart=always
 

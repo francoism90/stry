@@ -1,8 +1,10 @@
 [Build]
-ImageTag=localhost/stry:latest
-File=containers/Containerfile
-SetWorkingDirectory=${APP_PATH}
 Target=${APP_ENV}
+Environment=UID=${UID}
+Environment=GID=${GID}
+ImageTag=localhost/stry:latest
+SetWorkingDirectory=${APP_PATH}
+File=containers/Containerfile
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
