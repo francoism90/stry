@@ -4,18 +4,19 @@ Requires=stry.service
 After=stry.service
 
 [Container]
-Image=localhost/stry:latest
+Image=stry.build
 AutoUpdate=local
-LogDriver=none
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Environment=CONTAINER_ROLE=horizon
-UserNS=keep-id
+LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
+User=${UID}
+Group=${UID}
 Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 
 [Service]
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 TimeoutStartSec=90
 Restart=always
 

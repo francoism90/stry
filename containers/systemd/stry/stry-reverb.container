@@ -4,12 +4,13 @@ Requires=stry.service
 After=stry.service
 
 [Container]
-Image=localhost/stry:latest
+Image=stry.build
 AutoUpdate=local
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Environment=CONTAINER_ROLE=reverb
 LogDriver=none
-UserNS=keep-id
+AddDevice=/dev/dri/:/dev/dri/
+User=${UID}
+Group=${UID}
 Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
