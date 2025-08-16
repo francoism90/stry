@@ -7,7 +7,7 @@ After=stry.service
 Image=localhost/stry:latest
 AutoUpdate=local
 LogDriver=none
-Exec=php /app/artisan horizon
+Environment=CONTAINER_ROLE=horizon
 UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
 Volume=stry-cache:/cache:rw,z

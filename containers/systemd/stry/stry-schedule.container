@@ -7,7 +7,7 @@ After=stry.service
 Image=localhost/stry:latest
 AutoUpdate=local
 LogDriver=none
-Exec=php /app/artisan schedule:work
+Environment=CONTAINER_ROLE=scheduler
 UserNS=keep-id
 Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z

@@ -8,6 +8,7 @@ Wants=stry-reverb.service stry-queue.service stry-schedule.service
 Image=localhost/stry:latest
 AutoUpdate=local
 LogDriver=none
+Environment=CONTAINER_ROLE=app
 UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
 Volume=stry-cache:/cache:rw,z,U
