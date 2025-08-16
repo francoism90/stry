@@ -22,6 +22,7 @@ Stry uses the following stack:
 
 - Linux (Debian, Fedora, Arch, CentOS, Ubuntu, ..).
 - [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
+- `git`, `bash`, etc.
 
 ## Installation
 
@@ -55,7 +56,7 @@ php artisan db:seed --class=AdminSeeder
 The following services are only accessible when being logged in as *super-admin*:
 
 - <https://stry.test/horizon> - Laravel Horizon
-- <https://stry.test/telescope> - Laravel Telescope (disabled by default - only use on development)
+- <https://stry.test/telescope> - Laravel Telescope (only available on development)
 
 ## Upgrading
 

@@ -1,36 +1,16 @@
 # Upgrading
 
-> **TIP:** You may want to enable `podman-auto-update.timer` to automatically update containers daily.
+1. Enable the `podman-auto-update.timer`:
 
-1. Sync with the latest changes:
+```bash
+systemctl --user enable podman-auto-update.timer --now
+```
 
-```fish
+1. Sync project with latest changes:
+
+```bash
 cd ~/projects/stry
 git pull
 ```
 
-1. Rebuild containers (you may want to do this on weekly):
-
-```fish
-./bin/make-containers --no-cache
-```
-
-1. To update the application:
-
-```fish
-stry composer install
-stry pnpm install && stry pnpm build
-stry a app:update --assets
-```
-
-1. Restart the affected containers:
-
-```fish
-systemctl --user restart stry stry-queue stry-reverb stry-schedule
-```
-
-or
-
-```fish
-systemctl --user restart podman-auto-update.service
-```
+It should manage updates automatically, or use the `stry-build.service` to force a rebuild.
