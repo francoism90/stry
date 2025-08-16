@@ -27,7 +27,7 @@ build_application() {
     ${NPM} build
 }
 
-if [["${CONTAINER_ROLE}" = "app" ]] && [[ "${APP_ENV}" = "production" ]]; then
+if [["${CONTAINER_ROLE}" = "app" && "${APP_ENV}" = "production" ]]; then
     build_application
 fi
 
