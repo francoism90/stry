@@ -68,10 +68,9 @@ FROM builder as development
 
 WORKDIR /app
 
-USER docker
+COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
-RUN composer install --prefer-dist --no-interaction --optimize-autoloader
-RUN pnpm install
+USER docker
 
 FROM builder as production
 
@@ -83,5 +82,5 @@ RUN chown -R docker:docker /app
 
 USER docker
 
-RUN composer install --prefer-dist --no-interaction --optimize-autoloader
+RUN composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
 RUN pnpm install
