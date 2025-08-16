@@ -61,9 +61,9 @@ FROM builder as production
 WORKDIR /app
 
 COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
-COPY . /app
+COPY --chown=docker:docker . /app
 
-RUN chown -R docker:docker /app
+USER docker
 
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 RUN pnpm install
@@ -78,6 +78,8 @@ FROM builder as development
 WORKDIR /app
 
 COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+
+USER docker
 
 EXPOSE 5173
 EXPOSE 6001
