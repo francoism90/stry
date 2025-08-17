@@ -4,8 +4,8 @@ Description=Minio container
 [Container]
 Image=docker.io/minio/minio:latest
 AutoUpdate=registry
-LogDriver=none
 EnvironmentFile=%h/.config/containers/systemd/stry/config/minio.env
+LogDriver=none
 Exec=minio server /data --console-address ":8900"
 Volume=stry-minio:/data:rw,Z,U
 Network=stry.network
@@ -14,8 +14,4 @@ ExposeHostPort=8900
 ExposeHostPort=9000
 
 [Service]
-TimeoutStartSec=90
-Restart=unless-stopped
-
-[Install]
-WantedBy=multi-user.target
+TimeoutStartSec=300

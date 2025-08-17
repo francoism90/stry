@@ -1,23 +1,25 @@
 ---
 title: Proxy
-order: 3
+order: 4
 tags:
   - proxy
   - caddy
 ---
 
+## Introduction
+
+[Caddy](https://caddyserver.com/) is used for container proxying and running it locally, however you are free to use something else (i.e. traefik, nginx) and even host on a VPS.
+
 ## Configure Proxy
 
-[Caddy](https://caddyserver.com/) is used as proxy, however you are free to use something else (i.e. traefik, nginx).
-
-1. Setup the Podman containers:
+1. Setup the Caddy container:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/systemd/proxy ~/.config/containers/
+cp -r ~/projects/stry/containers/systemd/proxy ~/.config/containers/systemd/
 ```
 
-1. The given configuration assumes you want to use self-signed certificates:
+1. Configure the proxy:
 
 ```bash
 cd ~/.config/containers/systemd/proxy/config
@@ -27,12 +29,11 @@ vi Caddyfile sites/stry.caddy
 1. Start the proxy:
 
 ```bash
-systemctl --user enable podman.socket --now
 systemctl --user daemon-reload
-systemctl --user start proxy`
+systemctl --user restart proxy
 ```
 
-Make sure to append the following entries to your hosts (`/etc/hosts`) file:
+When running locally, make sure to append the following entries to your hosts-file (`/etc/hosts`):
 
 ```text
 127.0.0.1 stry.test ws.stry.test vite.stry.test s3.stry.test

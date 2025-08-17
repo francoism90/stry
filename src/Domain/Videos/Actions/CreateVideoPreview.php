@@ -31,17 +31,17 @@ class CreateVideoPreview
             $path = "segments/{$media->uuid}/preview.mp4";
 
             // Create a sample video from the segments
-            FFMpeg::fromDisk('cache')
+            FFMpeg::fromDisk('transcodes')
                 ->open($paths->toArray())
                 ->export()
                 ->inFormat((new X264)->setKiloBitrate(1500))
                 ->concatWithTranscoding(hasAudio: false)
-                ->toDisk('cache')
+                ->toDisk('transcodes')
                 ->save($path);
 
             // Add the sample video to the video model
             $video
-                ->addMediaFromDisk($path, 'cache')
+                ->addMediaFromDisk($path, 'transcodes')
                 ->preservingOriginal()
                 ->toMediaCollection('previews')
                 ->saveOrFail();

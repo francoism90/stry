@@ -350,6 +350,7 @@ return [
     |
     */
     'post_migrate' => [
+        'ide-helper:meta',
         'ide-helper:models --nowrite',
     ],
 

@@ -4,20 +4,18 @@ Requires=stry.service
 After=stry.service
 
 [Container]
-Image=localhost/stry:latest
+Image=stry.build
 AutoUpdate=local
+Environment=CONTAINER_ROLE=reverb
 LogDriver=none
-Exec=php /app/artisan reverb:start
+AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
-Volume=${APP_PATH}:/app:rw,z
+Volume=stry-cache:/cache:rw,z
+Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-TimeoutStartSec=90
-Restart=unless-stopped
-
-[Install]
-WantedBy=multi-user.target
+TimeoutStartSec=300

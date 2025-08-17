@@ -4,18 +4,16 @@ Requires=stry.service
 After=stry.service
 
 [Container]
-Image=localhost/stry:latest
+Image=stry.build
 AutoUpdate=local
+Environment=CONTAINER_ROLE=scheduler
 LogDriver=none
-Exec=php /app/artisan schedule:work
+AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
-Volume=${APP_PATH}:/app:rw,z
+Volume=stry-cache:/cache:rw,z
+Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-TimeoutStartSec=90
-Restart=unless-stopped
-
-[Install]
-WantedBy=multi-user.target
+TimeoutStartSec=300

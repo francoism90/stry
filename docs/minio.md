@@ -16,9 +16,7 @@ To learn more about MinIO, consider reading the following resources:
 ## Prerequisites
 
 - MinIO up-and-running
-- MinIO Client `mc` (included in container)
-
-> **TIP:** You may want to setup MinIO using the dev-container.
+- MinIO Client `mc` (included in devcontainer)
 
 ## Usage
 
@@ -41,7 +39,7 @@ mc admin info myminio
 mc admin user svcacct add myminio stry
 ```
 
-1. Update `AWS_ACCESS_KEY_ID` `AWS_SECRET_ACCESS_KEY` in `.env`.
+1. Set keys `AWS_ACCESS_KEY_ID` `AWS_SECRET_ACCESS_KEY` in `.env`.
 
 1. Create required buckets (add your own if required):
 
@@ -70,6 +68,7 @@ mc anonymous set download myminio/segments
 cd /tmp
 mc anonymous get-json myminio/assets > assets.json
 mc anonymous get-json myminio/conversions > conversions.json
+mc anonymous get-json myminio/segments > segments.json
 ```
 
 1. Remove the `"s3:ListBucket"` from the `Action` array in each `<bucket>.json` file:
@@ -77,6 +76,7 @@ mc anonymous get-json myminio/conversions > conversions.json
 ```bash
 vi assets.json
 vi conversions.json
+vi segments.json
 ```
 
 1. Update the bucket policy:
@@ -84,5 +84,6 @@ vi conversions.json
 ```bash
 mc anonymous set-json assets.json myminio/assets
 mc anonymous set-json conversions.json myminio/conversions
-rm -rf assets.json conversions.json
+mc anonymous set-json segments.json myminio/segments
+rm -rf assets.json conversions.json segments.json
 ```

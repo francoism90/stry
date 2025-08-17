@@ -22,10 +22,9 @@ Stry uses the following stack:
 
 - Linux (Debian, Fedora, Arch, CentOS, Ubuntu, ..).
 - [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
+- `git`, `bash`, etc.
 
 ## Installation
-
-### Clone repository
 
 1. Clone the repository, for example to `~/projects`:
 
@@ -34,29 +33,19 @@ cd ~/projects
 git https://github.com/francoism90/stry.git
 ```
 
-1. Setup [Podman Quadlet](docs/podman.md).
-
-1. Setup [MinIO](docs/minio.md).
-
-1. Open the project with VSCode and run it as a dev-container.
-
-1. Perform the following commands in the VSCode terminal:
+1. Setup a local data path, with SELinux container permissions:
 
 ```bash
-composer install
-php artisan storage:link
-php artisan key:generate
-php artisan wayfinder:generate
-php artisan google-fonts:fetch
-php artisan migrate --seed
-pnpm install && pnpm build
+mkdir -p /home/user/data/stry/{media,import}
+sudo semanage fcontext -a -t container_file_t '/home/user/data/stry(/.*)?'
+sudo restorecon -R -v /home/user/data/stry/
 ```
 
-1. HLS generating can be configured in `config/playlist.php` (such as formats to use) or by setting environment variables.
+1. Setup for [production](docs/production.md) or [development](docs/development.md).
 
 ## Usage
 
-To run the instance after following installation:
+To run the instance after following the installation:
 
 ```bash
 systemctl --user start stry proxy
@@ -73,8 +62,4 @@ php artisan db:seed --class=AdminSeeder
 The following services are only accessible when being logged in as *super-admin*:
 
 - <https://stry.test/horizon> - Laravel Horizon
-- <https://stry.test/telescope> - Laravel Telescope (disabled by default - only use on development)
-
-## Upgrading
-
-See [UPGRADING.md](UPGRADING.md)
+- <https://stry.test/telescope> - Laravel Telescope (only available on development)

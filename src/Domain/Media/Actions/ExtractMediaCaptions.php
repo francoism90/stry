@@ -25,7 +25,7 @@ class ExtractMediaCaptions
 
                 $ffmpeg
                     ->export()
-                    ->toDisk('cache')
+                    ->toDisk('transcodes')
                     ->inFormat(new WebVTT)
                     ->addFilter(['-map', "0:{$index}"])
                     ->save($path);

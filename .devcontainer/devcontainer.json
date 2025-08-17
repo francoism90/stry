@@ -8,8 +8,8 @@
     "runArgs": ["--entrypoint=/usr/bin/bash", "--userns=keep-id", "--network=systemd-stry"],
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,consistency=cached"],
     "build": {
-        "dockerfile": "./../Containerfile",
         "context": "./../",
+        "dockerfile": "./../containers/Containerfile",
         "target": "development"
     }
 }

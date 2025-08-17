@@ -5,12 +5,14 @@ After=stry-redis.service stry-pgsql.service stry-meilisearch.service stry-mailpi
 Wants=stry-reverb.service stry-queue.service stry-schedule.service
 
 [Container]
-Image=localhost/stry:latest
+Image=stry.build
 AutoUpdate=local
+Environment=APP_ENV=${APP_ENV}
 LogDriver=none
-UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
-Volume=${APP_PATH}:/app:rw,z,U
+UserNS=keep-id
+Volume=stry-cache:/cache:rw,z,U
+Volume=${DATA_PATH}:/data:rw,z,U
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=8080
@@ -19,7 +21,3 @@ ExposeHostPort=5173
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 TimeoutStartSec=900
-Restart=unless-stopped
-
-[Install]
-WantedBy=multi-user.target

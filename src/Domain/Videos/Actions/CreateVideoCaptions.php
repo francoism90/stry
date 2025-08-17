@@ -27,7 +27,7 @@ class CreateVideoCaptions
 
             // Add the sample video to the video model
             $paths->each(fn (string $path) => $video
-                ->addMediaFromDisk($path, 'cache')
+                ->addMediaFromDisk($path, 'transcodes')
                 ->toMediaCollection('captions')
             );
 

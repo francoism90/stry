@@ -1,10 +1,10 @@
 ---
 title: Podman Quadlet
-order: 1
+order: 3
 tags:
   - podman
   - quadlet
-  - docker
+  - compose
   - systemd
 ---
 
@@ -19,21 +19,14 @@ To learn more about Podman Quadlet, please consider reading the following resour
 - Linux (Debian, Fedora, CentOS, Arch, Ubuntu, ..).
 - [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
 
-It's recommend running a rootless setup (this may already be setup by your distro):
+This guide assumes a rootless setup (this may already be configured by your distro):
 
 - <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
 - <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
 ## Installation
 
-1. Build the Docker images (use `--target=production` for production):
-
-```bash
-cd ~/projects/stry
-podman build -t stry:latest --target=development .
-```
-
-1. Setup the containers:
+1. Setup the Quadlet containers:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
@@ -54,21 +47,19 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
-1. You may need to set a SELinux Policy file context on writeable paths:
-
-```bash
-sudo semanage fcontext -a -t container_file_t '/var/home/user/projects/stry/storage/app/import(/.*)?'
-sudo restorecon -R -v /var/home/user/projects/stry/storage/app/import
-```
-
-1. Make sure to reload systemd on configuration changes:
+1. Make sure to reload on configuration changes:
 
 ```bash
 systemctl --user daemon-reload
 ```
 
-1. Make sure the minimal required dependencies have been created and running:
+1. Setup [MinIO](minio.md).
+
+1. Rebuilt the container:
+
+> **NOTE**: The first start can take a significance of time. It will install the vendor packages, and run [storage-chown-by-maps](https://github.com/containers/podman/issues/13071).
+> It's important to not cancel this process, or increase the `timeout=*` value to a higher value if needed by the setup.
 
 ```bash
-systemctl --user restart stry-minio stry-pgsql stry-redis
+systemctl --user restart stry
 ```
