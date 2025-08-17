@@ -43,7 +43,7 @@ mkdir -p /home/user/data/stry/{media,import}
 
 ## Usage
 
-To run the instance after following installation:
+To run the instance after following the installation:
 
 ```bash
 systemctl --user start stry proxy
