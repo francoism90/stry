@@ -25,11 +25,9 @@ This allows global interacting with the app container, using the same logic as L
 stry help
 stry shell
 stry tinker
+stry artisan optimize
 stry a migrate
 stry a videos:import
-stry a videos:clean
-stry a tags:create
-stry a users:create
 ```
 
 To interact with the app container without the utility:
@@ -37,3 +35,17 @@ To interact with the app container without the utility:
 ```bash
 podman exec -it systemd-stry php artisan help
 ```
+
+## Commands
+
+See `stry help` for a complete overview:
+
+| Command | Description |
+|---|---|
+| `stry a users:create` | Creates a new user |
+| `stry a videos:import` | Import videos to an user |
+| `stry a videos:clean` | Remove soft-deleted videos from filesystem (!) |
+| `stry a tags:create` | Create a new tag |
+| `stry a tags:sort` | Sort tags alphabetically |
+| `stry a playlist:clear` | Remove generated HLS-playlist from filesystem |
+| `stry a scout:sync --delete` | Sync Scout (search) model indexes, useful on Meilisearch upgrades. |
