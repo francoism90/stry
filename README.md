@@ -6,7 +6,11 @@ Stry is a video on demand (VOD) media distribution system that allows users to a
 
 It uses the [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls) package, offering built-in HLS playlist generation with segment encryption and authorization.
 
-> **NOTE:** Stry is still in development, do not use on production.
+## Demo
+
+For WIP screenshots, please checkout: <https://github.com/francoism90/.github/tree/main/stry>
+
+A production demo is planned, but not yet available.
 
 ## Details
 
