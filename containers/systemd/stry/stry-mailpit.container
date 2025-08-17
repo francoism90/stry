@@ -14,3 +14,6 @@ Network=stry.network
 Network=proxy.network
 ExposeHostPort=1025
 ExposeHostPort=8025
+
+[Service]
+TimeoutStartSec=90
