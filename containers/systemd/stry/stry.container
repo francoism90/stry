@@ -10,8 +10,7 @@ AutoUpdate=local
 Environment=APP_ENV=${APP_ENV}
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
-User=${UID}
-Group=${GID}
+UserNS=keep-id
 Volume=stry-cache:/cache:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
 Network=stry.network

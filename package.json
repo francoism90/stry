@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@iconify-json/lucide": "^1.2.62",
-        "@inertiajs/vue3": "^2.1.1",
+        "@inertiajs/vue3": "^2.1.2",
         "@laravel/echo-vue": "^2.2.0",
         "@nuxt/ui": "^3.3.2",
         "@tailwindcss/vite": "^4.1.12",
@@ -55,7 +55,7 @@
         "jsdom": "^26.1.0",
         "laravel-vite-plugin": "^2.0.0",
         "npm-run-all2": "^8.0.4",
-        "oxlint": "^1.11.2",
+        "oxlint": "^1.12.0",
         "prettier": "3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.14",
         "pusher-js": "^8.4.0",

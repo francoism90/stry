@@ -4,11 +4,11 @@ Description=Meilisearch container
 [Container]
 Image=docker.io/getmeili/meilisearch:latest
 AutoUpdate=registry
-LogDriver=none
 EnvironmentFile=%h/.config/containers/systemd/stry/config/meilisearch.env
+LogDriver=none
 Volume=stry-meilisearch:/meili_data:rw,Z,U
 Network=stry.network
 ExposeHostPort=7700
 
 [Service]
-TimeoutStartSec=90
+TimeoutStartSec=300

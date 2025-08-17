@@ -22,17 +22,17 @@ log() {
 prepare_application() {
     log "INFO" "Preparing application..."
     ${COMPOSER} install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+    ${NPM} install
     ${ARTISAN} storage:link
     ${ARTISAN} migrate --seed --force
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
-    ${NPM} install
     ${NPM} build
     ${ARTISAN} optimize
     ${ARTISAN} scout:sync-index-settings
 }
 
-if [[ "${CONTAINER_ROLE}" = "app" && "${APP_ENV}" = "production" ]]; then
+if [ "${APP_ENV}" = "production" ]; then
     prepare_application
 fi
 

@@ -9,8 +9,7 @@ AutoUpdate=local
 Environment=CONTAINER_ROLE=reverb
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
-User=${UID}
-Group=${GID}
+UserNS=keep-id
 Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
@@ -19,4 +18,4 @@ ExposeHostPort=6001
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-TimeoutStartSec=90
+TimeoutStartSec=300
