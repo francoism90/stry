@@ -36,7 +36,7 @@ git https://github.com/francoism90/stry.git
 1. Setup a local data path:
 
 ```bash
-mkdir -p /home/user/data/stry
+mkdir -p /home/user/data/stry/{media,import}
 ```
 
 1. Setup for [production](docs/production.md) or [development](docs/development.md).
