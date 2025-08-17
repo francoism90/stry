@@ -10,8 +10,8 @@ Environment=CONTAINER_ROLE=horizon
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
-Volume=stry-cache:/cache:rw,z
 Volume=${DATA_PATH}:/data:rw,z
+Volume=stry-cache:/cache:rw,z
 Network=stry.network
 
 [Service]

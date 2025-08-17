@@ -24,13 +24,17 @@ git clone git@github.com:francoism90/stry.git
 
 1. Setup [Podman](podman.md).
 
-1. Change `APP_ENV` to `development`.
+1. Change `APP_ENV` to `development` in `~/.config/containers/systemd/stry/config/app.env`.
 
-1. Add the app bind mount to every container prefixed with `stry`:
+1. Add the app bind volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
 
 ```docker
 Volume=${APP_PATH}:/app:rw,z,U
+Volume=${DATA_PATH}:/data:rw,z,U
+Volume=stry-cache:/cache:rw,z,U
 ```
+
+**NOTE**: The volume `U` flag should only be used in `stry.container`.
 
 1. Open the cloned project with VSCode as a devcontainer.
 

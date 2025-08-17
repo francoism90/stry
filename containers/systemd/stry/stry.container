@@ -11,8 +11,8 @@ Environment=APP_ENV=${APP_ENV}
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
-Volume=stry-cache:/cache:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
+Volume=stry-cache:/cache:rw,z,U
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=8080
