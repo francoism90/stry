@@ -7,7 +7,6 @@ namespace Domain\Tags\Enums;
 enum TagType: string
 {
     case Genre = 'genre';
-    case Collection = 'collection';
     case Person = 'person';
     case Studio = 'studio';
     case Language = 'language';
@@ -16,7 +15,6 @@ enum TagType: string
     {
         return match ($this) {
             self::Genre => __('Genre'),
-            self::Collection => __('Collection'),
             self::Person => __('Person'),
             self::Studio => __('Studio'),
             self::Language => __('Language'),
