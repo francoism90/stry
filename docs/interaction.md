@@ -47,5 +47,5 @@ See `stry help` for a complete overview:
 | `stry a videos:clean` | Remove soft-deleted videos from filesystem (!) |
 | `stry a tags:create` | Create a new tag |
 | `stry a tags:sort` | Sort tags alphabetically |
-| `stry a playlist:clear` | Remove generated HLS-playlist from filesystem |
+| `stry a playlists:clear` | Remove generated HLS-playlist from filesystem |
 | `stry a scout:sync --delete` | Sync Scout (search) model indexes, useful on Meilisearch upgrades. |
