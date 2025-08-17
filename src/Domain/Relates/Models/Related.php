@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Relatable extends Model
+class Related extends Model
 {
     /**
      * @var array<int, string>
