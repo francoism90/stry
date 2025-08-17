@@ -6,7 +6,7 @@ namespace Domain\Tags\Models;
 
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Relates\Concerns\HasRelates;
+use Domain\Relates\Concerns\InteractsWithRelated;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
@@ -25,9 +25,9 @@ class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsEvents;
     use HasFactory;
-    use HasRelates;
     use HasUlids;
     use InteractsWithMedia;
+    use InteractsWithRelated;
     use InteractsWithUser;
     use Searchable;
 
@@ -184,7 +184,7 @@ class Tag extends BaseTag implements HasMedia
     public function synonyms(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagCollection::make($this->related)->translated(),
+            get: fn () => [],
         )->shouldCache();
     }
 }

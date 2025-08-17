@@ -6,21 +6,18 @@ namespace Domain\Relates\Models;
 
 use Domain\Relates\Collections\RelatedCollection;
 use Domain\Relates\QueryBuilders\RelatedQueryBuilder;
-use Domain\Relates\Scopes\ScoreScope;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-#[ScopedBy(ScoreScope::class)]
 class Relatable extends Model
 {
     /**
      * @var array<int, string>
      */
     protected $fillable = [
-        'relate_type',
-        'relate_id',
+        'relatable_type',
+        'relatable_id',
         'model_id',
         'model_type',
         'score',
@@ -47,21 +44,13 @@ class Relatable extends Model
         return new RelatedCollection($models);
     }
 
+    public function relatable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
     public function model(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    public function relate(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function getRelatedValues(): array
-    {
-        return [
-            'type' => $this->relate_type,
-            'id' => $this->relate_id,
-        ];
     }
 }
