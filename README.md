@@ -60,8 +60,10 @@ The instance should be available at <https://stry.test>.
 To seed an example super-admin user (only do this for testing!):
 
 ```bash
-php artisan db:seed --class=AdminSeeder
+stry a db:seed --class=AdminSeeder
 ```
+
+> **TIP**: See [interaction](docs/interaction.md] for using a Laravel Sail shell utility approach.
 
 The following services are only accessible when being logged in as *super-admin*:
 
