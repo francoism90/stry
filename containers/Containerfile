@@ -70,6 +70,9 @@ RUN chown -R docker:docker /app
 
 USER docker
 
+RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+RUN pnpm install
+
 ENTRYPOINT ["entrypoint.sh"]
 
 FROM builder as development
