@@ -41,8 +41,8 @@ git https://github.com/francoism90/stry.git
 
 ```bash
 mkdir -p /home/user/data/stry/{media,import}
-sudo semanage fcontext -a -t container_file_t '/home/user/data/stry(/.*)?'
-sudo restorecon -R -v /home/user/data/stry/
+sudo semanage fcontext -a -t container_file_t '/home/user/data/stry/import(/.*)?'
+sudo restorecon -R -v /home/user/data/stry/import
 ```
 
 - Setup for [production](docs/production.md) or [development](docs/development.md).
