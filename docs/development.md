@@ -53,3 +53,13 @@ pnpm install
 ```bash
 stry pnpm dev
 ```
+
+## IDE integration
+
+To offer better [IDE integration](https://github.com/barryvdh/laravel-ide-helper) with Laravel:
+
+```bash
+php artisan ide-helper:generate
+php artisan ide-helper:meta
+php artisan ide-helper:models --nowrite
+```
