@@ -30,7 +30,7 @@ This guide assumes a rootless setup (this may already be configured by your dist
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/systemd/
+cp -r ~/projects/stry/containers/systemd/stry ~/.config/containers/systemd/
 ```
 
 1. Adjust the environment configuration:
@@ -58,7 +58,7 @@ systemctl --user daemon-reload
 1. Rebuilt the container:
 
 > **NOTE**: The first start can take a significance of time. It will install the vendor packages, and run [storage-chown-by-maps](https://github.com/containers/podman/issues/13071).
-> It's important to not cancel this process, or increase the `timeout=300` value to a higher value if needed by the setup.
+> It's important to not cancel this process, or increase the `timeout=*` value to a higher value if needed by the setup.
 
 ```bash
 systemctl --user restart stry

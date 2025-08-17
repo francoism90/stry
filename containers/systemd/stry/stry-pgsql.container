@@ -12,4 +12,4 @@ Network=stry.network
 ExposeHostPort=5432
 
 [Service]
-TimeoutStartSec=180
+TimeoutStartSec=300
