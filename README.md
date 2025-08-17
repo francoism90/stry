@@ -33,10 +33,12 @@ cd ~/projects
 git https://github.com/francoism90/stry.git
 ```
 
-1. Setup a local data path:
+1. Setup a local data path, with SELinux container permissions:
 
 ```bash
 mkdir -p /home/user/data/stry/{media,import}
+sudo semanage fcontext -a -t container_file_t '/home/user/data/stry(/.*)?'
+sudo restorecon -R -v /home/user/data/stry/
 ```
 
 1. Setup for [production](docs/production.md) or [development](docs/development.md).
