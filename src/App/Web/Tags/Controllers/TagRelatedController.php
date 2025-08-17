@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
+use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
@@ -24,13 +25,17 @@ class TagRelatedController implements HasMiddleware
         ];
     }
 
-    public function index(Tag $tag): Response
+    public function index(Tag $tag, TagIndexRequest $request): Response
     {
         Gate::authorize('update', $tag);
 
+        $items = Tag::query()
+            ->cursorPaginate(perPage: 24, cursor: (string) $request->safe()->input('page', ''))
+            ->through(fn (Tag $tag) => TagResource::make($tag));
+
         return Inertia::render('Tags/TagRelated', [
             'tag' => fn () => $tag->toResource(TagResource::class),
-            'related' => fn () => [],
+            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
 
@@ -62,7 +67,7 @@ class TagRelatedController implements HasMiddleware
         //
     }
 
-    public function update(Request $request, Tag $tag, Related $related)
+    public function update(Request $request, Tag $tag)
     {
         //
     }

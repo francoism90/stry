@@ -9,7 +9,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const remove = () =>
+const remove = async () =>
   router.delete(destroy.url({ tag: props.item.id }), {
     onSuccess: () => router.visit('/'),
   })
@@ -39,14 +39,15 @@ const remove = () =>
         label="Cancel"
         color="neutral"
         variant="soft"
-        @click="close"
+        @click.prevent="close"
       />
 
       <UButton
         label="Delete tag"
         variant="soft"
         color="primary"
-        @click="remove"
+        loading-auto
+        @click.prevent="remove"
       />
     </template>
   </UModal>

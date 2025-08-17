@@ -39,8 +39,8 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         $items = Tag::query()
-            ->tap(new TagListScope(type: $request->input('type')))
-            ->cursorPaginate(perPage: 24, cursor: (string) $request->input('page', ''))
+            ->tap(new TagListScope(type: $request->safe()->input('type')))
+            ->cursorPaginate(perPage: 24, cursor: (string) $request->safe()->input('page', ''))
             ->through(fn (Tag $tag) => TagResource::make($tag));
 
         return Inertia::render('Tags/TagIndex', [
@@ -67,9 +67,9 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $tag);
 
-        $items = Video::search($request->input('search', ''))
-            ->tap(new VideoFilterScope(tags: [$tag->getKey()], sort: $request->input('sort')))
-            ->simplePaginate(perPage: 24, page: (int) $request->input('page', 1))
+        $items = Video::search($request->safe()->input('search', ''))
+            ->tap(new VideoFilterScope(tags: [$tag->getKey()], sort: $request->safe()->input('sort')))
+            ->simplePaginate(perPage: 24, page: (int) $request->safe()->input('page', 1))
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Tags/TagView', [
@@ -84,7 +84,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagEdit', [
             'types' => fn () => collect(TagType::cases())->forEnum(),
-            'tag' => fn () => $tag->toResource(TagResource::class),
+            'tag' => fn () => $tag->load('related')->toResource(TagResource::class),
         ]);
     }
 

@@ -17,7 +17,7 @@ class GetSimilarVideos
     {
         return collect([
             ...$this->phrases($video),
-            ...$this->tagged($video),
+            // ...$this->tagged($video),
             ...$this->random($video),
         ])->unique()->take($limit)->toResourceCollection(VideoResource::class);
     }

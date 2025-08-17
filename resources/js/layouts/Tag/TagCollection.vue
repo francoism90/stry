@@ -57,7 +57,8 @@ const fetch = () => router.get(usePage().props.location, { page: nextPage.value 
             <UButton
               label="Load more"
               variant="soft"
-              @click="fetch"
+              loading-auto
+              @click.prevent="fetch"
             />
           </div>
         </WhenVisible>

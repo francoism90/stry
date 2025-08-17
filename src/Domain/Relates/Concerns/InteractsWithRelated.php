@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Relates\Concerns;
 
-use Domain\Relates\Models\Relatable;
+use Domain\Relates\Models\Related;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,12 +20,12 @@ trait InteractsWithRelated
                 }
             }
 
-            $model->relatables()->cursor()->each(fn (Relatable $relatable) => $relatable->delete());
+            $model->related()->cursor()->each(fn (Related $related) => $related->delete());
         });
     }
 
-    public function relatables(): MorphMany
+    public function related(): MorphMany
     {
-        return $this->morphMany(Relatable::class, 'relatable')->chaperone();
+        return $this->morphMany(Related::class, 'relatable')->chaperone();
     }
 }
