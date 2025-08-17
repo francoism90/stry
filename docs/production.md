@@ -14,6 +14,15 @@ tags:
 
 ## Installation
 
+1. Clone project to a working directory (i.e. `~/projects`):
+
+```bash
+cd ~/projects
+git clone git@github.com:francoism90/stry.git
+```
+
 1. Setup [Podman](podman.md).
+
+1. Setup a [proxy](proxy.md).
 
 1. See [interaction](interaction.md) for management.

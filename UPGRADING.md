@@ -1,10 +1,6 @@
 # Upgrading
 
-1. Enable the `podman-auto-update.timer`:
-
-```bash
-systemctl --user enable podman-auto-update.timer --now
-```
+> **NOTE**: See <https://docs.podman.io/en/latest/markdown/podman-auto-update.1.html> for details.
 
 1. Sync project with latest changes:
 
@@ -13,4 +9,14 @@ cd ~/projects/stry
 git pull
 ```
 
-It should manage updates automatically, or use the `stry-build.service` to force a rebuild.
+1. Enable the `podman-auto-update.timer`:
+
+```bash
+systemctl --user enable podman-auto-update.timer --now
+```
+
+1. Restart the `stry.service` to force a rebuild:
+
+```bash
+systemctl --user restart stry
+```

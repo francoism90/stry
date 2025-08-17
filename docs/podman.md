@@ -19,7 +19,7 @@ To learn more about Podman Quadlet, please consider reading the following resour
 - Linux (Debian, Fedora, CentOS, Arch, Ubuntu, ..).
 - [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
 
-It's recommend running a rootless setup (this may already be setup by your distro):
+This guide assumes a rootless setup (this may already be configured by your distro):
 
 - <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
 - <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
@@ -30,7 +30,7 @@ It's recommend running a rootless setup (this may already be setup by your distr
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/
+cp -r ~/projects/stry/containers/systemd/sty ~/.config/containers/systemd/
 ```
 
 1. Adjust the environment configuration:
@@ -47,13 +47,6 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
-1. You may need to set a SELinux Policy file context on writeable paths:
-
-```bash
-sudo semanage fcontext -a -t container_file_t '/var/home/user/data/stry(/.*)?'
-sudo restorecon -R -v /var/home/user/data/stry
-```
-
 1. Make sure to reload on configuration changes:
 
 ```bash
@@ -61,8 +54,6 @@ systemctl --user daemon-reload
 ```
 
 1. Setup [MinIO](minio.md).
-
-1. Setup a [proxy](proxy.md).
 
 1. Rebuilt the container:
 

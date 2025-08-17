@@ -26,8 +26,6 @@ Stry uses the following stack:
 
 ## Installation
 
-### Clone repository
-
 1. Clone the repository, for example to `~/projects`:
 
 ```bash
@@ -35,7 +33,13 @@ cd ~/projects
 git https://github.com/francoism90/stry.git
 ```
 
-1. Setup for [development](docs/development.md) or [production](docs/production.md).
+1. Setup a local data path:
+
+```bash
+mkdir -p /home/user/data/stry
+```
+
+1. Setup for [production](docs/production.md) or [development](docs/development.md).
 
 ## Usage
 
@@ -57,7 +61,3 @@ The following services are only accessible when being logged in as *super-admin*
 
 - <https://stry.test/horizon> - Laravel Horizon
 - <https://stry.test/telescope> - Laravel Telescope (only available on development)
-
-## Upgrading
-
-See [UPGRADING.md](UPGRADING.md)
