@@ -12,7 +12,13 @@ export function usePlayer() {
   const ready = computed(() => state.value?.valid && state.value?.asset)
   const src = computed(() => (ready.value ? state.value?.asset : null))
 
-  const watchtime = async (time?: number | null) => http.post(PlaylistSessionController.url({ playlist: state.value?.id || '' }), { time })
+  const watchtime = async (time?: number | null) => {
+    if (!state.value || !time) {
+      return
+    }
+
+    await http.post(PlaylistSessionController.url({ playlist: state.value.id }), { time })
+  }
 
   watchEffect(async () => {
     state.value = toValue(usePage().props.playlist as Playlist)
