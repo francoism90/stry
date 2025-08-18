@@ -45,7 +45,7 @@ const remove = () =>
       <UButton
         label="Delete video"
         variant="soft"
-        color="primary"
+        color="error"
         loading-auto
         @click.prevent="remove"
       />

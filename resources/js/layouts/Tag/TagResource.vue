@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
-import { index } from '@/actions/App/Web/Tags/Controllers/TagRelatedController'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
@@ -16,10 +15,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const items = ref<NavigationMenuItem[]>([
-  { label: 'General', to: edit.url({ tag: props.tag.id }) },
-  { label: 'Related', to: index.url({ tag: props.tag.id }) },
-])
+const items = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url({ tag: props.tag.id }) }])
 </script>
 
 <template>

@@ -18,7 +18,7 @@ const remove = async () =>
 <template>
   <UModal
     :title="item.name"
-    :description="item.type"
+    :description="item.category"
     :ui="{ footer: 'justify-end' }"
   >
     <UButton
@@ -45,7 +45,7 @@ const remove = async () =>
       <UButton
         label="Delete tag"
         variant="soft"
-        color="primary"
+        color="error"
         loading-auto
         @click.prevent="remove"
       />
