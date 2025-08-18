@@ -14,7 +14,7 @@ defineProps<Props>()
 
 const { hasPages, nextPage } = usePagination()
 
-const fetch = () => router.get(usePage().props.location, { page: nextPage.value })
+const fetch = async () => router.get(usePage().props.path, { page: nextPage.value })
 </script>
 
 <template>
