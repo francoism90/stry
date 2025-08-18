@@ -39,8 +39,6 @@ const submit = async () =>
   >
     <FlashAlert />
 
-    {{ form.related }}
-
     <UFormField
       label="Name"
       name="name"
@@ -83,9 +81,9 @@ const submit = async () =>
       </UFormField>
 
       <UFormField
-        label="Tags"
-        name="tags"
-        :error="form.errors.tags"
+        label="Related"
+        name="related"
+        :error="form.errors.related"
       >
         <USelectMenu
           v-model="form.related as TagMenuItem[]"

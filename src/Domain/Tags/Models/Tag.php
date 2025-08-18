@@ -160,28 +160,28 @@ class Tag extends BaseTag implements HasMedia
         ];
     }
 
-    public function category(): Attribute
+    protected function category(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->type?->label(),
         )->shouldCache();
     }
 
-    public function thumbnail(): Attribute
+    protected function thumbnail(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->videos()->first()?->thumbnail,
         )->shouldCache();
     }
 
-    public function srcset(): Attribute
+    protected function srcset(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->videos()->first()?->srcset,
         )->shouldCache();
     }
 
-    public function synonyms(): Attribute
+    protected function synonyms(): Attribute
     {
         return Attribute::make(
             get: fn () => [],

@@ -6,7 +6,7 @@ namespace Domain\Relates\Concerns;
 
 use ArrayAccess;
 use Domain\Relates\Models\Related;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,35 +32,62 @@ trait InteractsWithRelated
         return $this->morphMany(Related::class, 'relatable')->chaperone();
     }
 
-    public function relates(): Collection
-    {
-        return $this->related
-            ->groupBy(fn (Related $related) => $this->getActualClassNameForMorph($related->relatable_type))
-            ->flatMap(fn (Collection $typeGroup, string $type) => $type::whereIn('id', $typeGroup->pluck('relatable_id'))->get());
-    }
-
-    public function relate(Model $model, array $attributes = []): Related
-    {
-        return Related::firstOrCreate([
-            'relatable_type' => $this->getMorphClass(),
-            'relatable_id' => $this->getKey(),
-            'model_type' => $model->getMorphClass(),
-            'model_id' => $model->getKey(),
-        ], ...$attributes);
-    }
-
     public function syncRelated(array|ArrayAccess|Collection $related = []): static
     {
-        $related = static::convertToRelated($related);
+        $items = $this->convertToRelated($related);
 
-        $related->each(fn (Model $model) => $this->relate($model));
+        // Detach models that are not in the new list
+        $this
+            ->getRelated()
+            ->filter(fn (Model $model) => ! $items->contains(fn (array $item) => $item['model_type'] === $model->getMorphClass() &&
+                $item['model_id'] === $model->getKey()
+            ))
+            ->each(fn (Model $model) => $this->detachRelated($model));
+
+        // Attach new models
+        $items->each(fn (array $values) => Related::firstOrCreate($values));
 
         return $this;
     }
 
-    public static function convertToRelated(array|ArrayAccess|Collection $values = []): Collection
+    public function attachRelated(Model $model): Related
     {
-        return collect($values)
-            ->filter(fn (mixed $value) => $value instanceof Model);
+        $related = $this->convertToRelated([$model])->first();
+
+        return Related::firstOrCreate($related);
+    }
+
+    public function detachRelated(Model $model): bool
+    {
+        $related = $this->convertToRelated([$model])->first();
+
+        return Related::firstWhere($related)->delete();
+    }
+
+    public function getRelated(): Collection
+    {
+        return $this
+            ->related
+            ->groupBy(fn (Related $related) => $this->getActualClassNameForMorph($related->model_type))
+            ->flatMap(fn (Collection $typeGroup, string $type) => $type::whereIn('id', $typeGroup->pluck('model_id'))->get());
+    }
+
+    public function convertToRelated(array|ArrayAccess|Collection $models = []): Collection
+    {
+        return collect($models)
+            ->filter(fn (mixed $model) => $model instanceof Model)
+            ->map(fn (Model $model) => [
+                'relatable_type' => $this->getMorphClass(),
+                'relatable_id' => $this->getKey(),
+                'model_type' => $model->getMorphClass(),
+                'model_id' => $model->getKey(),
+            ]);
+    }
+
+    protected function relates(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getRelated()
+        )->shouldCache();
     }
 }

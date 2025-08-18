@@ -84,7 +84,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagEdit', [
             'types' => fn () => collect(TagType::cases())->forEnum(),
-            'tag' => fn () => $tag->load('related')->toResource(TagResource::class),
+            'tag' => fn () => $tag->append('relates')->toResource(TagResource::class),
         ]);
     }
 

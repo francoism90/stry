@@ -9,7 +9,6 @@ use BackedEnum;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
-use Domain\Relates\Models\Relatable;
 use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
@@ -86,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureMacros(): void
     {
-        Builder::macro('fromOption', function (array|ArrayAccess $values = [], string $key = 'ulid') {
+        Builder::macro('fromOption', function (array|ArrayAccess|null $values = [], string $key = 'ulid') {
             /** @var Builder $this */
             return $this->whereIn($key, $values);
         });

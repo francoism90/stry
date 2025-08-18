@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Actions;
 
-use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +18,7 @@ class UpdateTagDetails
             );
 
             if (array_key_exists('related', $attributes)) {
-                $related = Tag::fromOption($attributes['related'])->get();
-
-                $model->syncRelated($related);
+                $model->syncRelated(Tag::fromOption($attributes['related'])->get());
             }
         });
     }
