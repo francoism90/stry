@@ -61,7 +61,7 @@ trait InteractsWithRelated
     {
         $related = $this->convertToRelated([$model])->first();
 
-        return Related::firstWhere($related)->delete();
+        return Related::firstWhere($related)?->delete();
     }
 
     public function getRelates(): Collection
