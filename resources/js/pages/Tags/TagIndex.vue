@@ -9,11 +9,11 @@ import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
+defineOptions({ layout: [DefaultLayout, TagCollection] })
+
 interface Props {
   types: NavigationMenuItem[]
 }
-
-defineOptions({ layout: [DefaultLayout, TagCollection] })
 
 const props = defineProps<Props>()
 
