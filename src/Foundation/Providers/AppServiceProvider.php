@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use ArrayAccess;
 use BackedEnum;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Relates\Models\Relatable;
+use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -61,7 +64,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'group' => Group::class,
             'media' => Media::class,
-            'relatable' => Relatable::class,
+            'related' => Related::class,
             'tag' => Tag::class,
             'playlist' => Playlist::class,
             'user' => User::class,
@@ -83,21 +86,17 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureMacros(): void
     {
+        Builder::macro('fromOption', function (array|ArrayAccess $values = [], string $key = 'ulid') {
+            /** @var Builder $this */
+            return $this->whereIn($key, $values);
+        });
+
         Collection::macro('forEnum', function () {
             /** @var Collection $this */
             return $this
                 ->map(fn (BackedEnum $item) => [
                     'value' => method_exists($item, 'value') ? $item->value() : $item->value,
                     'label' => method_exists($item, 'label') ? $item->label() : $item->name,
-                ]);
-        });
-
-        Collection::macro('forModel', function (string $label = 'name') {
-            /** @var Collection $this */
-            return $this
-                ->map(fn (Model $item) => [
-                    'value' => $item->getRouteKey(),
-                    'label' => $item->getAttribute($label),
                 ]);
         });
     }

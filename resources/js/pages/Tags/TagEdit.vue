@@ -39,6 +39,8 @@ const submit = async () =>
   >
     <FlashAlert />
 
+    {{ form.related }}
+
     <UFormField
       label="Name"
       name="name"
