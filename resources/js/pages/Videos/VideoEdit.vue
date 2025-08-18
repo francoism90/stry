@@ -12,6 +12,7 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 interface Props {
   video: Video
+  starts: number | null
 }
 
 defineOptions({ layout: [DefaultLayout, VideoResource] })
@@ -124,10 +125,21 @@ const submit = async () =>
           v-model.trim="form.snapshot"
           placeholder="1.00"
           step="0.01"
-          :max="video.duration || 0"
+          :max="video.duration || null"
           type="number"
           class="w-full"
-        />
+        >
+          <template #trailing>
+            <UButton
+              color="neutral"
+              variant="link"
+              size="sm"
+              icon="i-lucide-wand-sparkles"
+              aria-label="Format name"
+              @click.prevent="form.snapshot = starts ?? null"
+            />
+          </template>
+        </UInput>
       </UFormField>
 
       <UFormField

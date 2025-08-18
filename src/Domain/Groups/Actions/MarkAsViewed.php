@@ -22,7 +22,9 @@ class MarkAsViewed
             $group = app(CreateUserGroup::class)->handle($user, GroupType::Viewed);
 
             // Add the video to the user viewed group
-            $model->syncGroup($group, $attributes);
+            if ($group->updated_at->lessThan(now()->subSeconds(3))) {
+                $model->syncGroup($group, $attributes);
+            }
         });
     }
 }

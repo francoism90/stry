@@ -84,6 +84,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('Videos/VideoEdit', [
             'video' => fn () => $video->load('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
+            'starts' => fn () => app(GetVideoStartTime::class)->handle($video, Auth::user()),
         ]);
     }
 
