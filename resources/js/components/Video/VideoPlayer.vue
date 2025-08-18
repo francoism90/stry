@@ -38,7 +38,7 @@ onBeforeUnmount(() => listener())
     .playsInline="true"
     .autoPlay="true"
     crossOrigin="anonymous"
-    class="default-video max-h-64 rounded-xl sm:max-h-96 lg:max-h-2/5"
+    class="rounded-xl"
   >
     <media-video-layout />
     <media-provider>
