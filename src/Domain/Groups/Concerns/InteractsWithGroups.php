@@ -34,12 +34,12 @@ trait InteractsWithGroups
             ->withTimestamps();
     }
 
-    public function syncGroup(Group $model, ?array $options = null): static
+    public function syncGroup(Group $group, ?array $options = null): static
     {
-        return $this->syncGroups([$model], $options);
+        return $this->syncGroups([$group], $options);
     }
 
-    public function syncGroups(array|ArrayAccess|Collection $groups, ?array $options = null, bool $detach = false): static
+    public function syncGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
     {
         $groups = static::convertToGroups($groups);
 
@@ -57,7 +57,7 @@ trait InteractsWithGroups
         return $this->detachGroups([$group]);
     }
 
-    public function detachGroups(array|ArrayAccess|Collection $groups): static
+    public function detachGroups(array|ArrayAccess|Collection $groups = []): static
     {
         $items = static::convertToGroups($groups);
 
@@ -66,7 +66,7 @@ trait InteractsWithGroups
         return $this;
     }
 
-    public static function convertToGroups(array|ArrayAccess|Collection $values): Collection
+    public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection
     {
         return collect($values)
             ->map(fn (Group|int|string $value) => $value instanceof Group ? $value : Group::find($value))
@@ -81,7 +81,7 @@ trait InteractsWithGroups
             ->exists();
     }
 
-    public function scopeByGroup(Builder $query, ?GroupType $type = null): Builder
+    public function scopeWithGroup(Builder $query, ?GroupType $type = null): Builder
     {
         return $query->whereHas('groups', fn ($query) => $query
             ->when($type, fn ($query) => $query->where('type', $type))

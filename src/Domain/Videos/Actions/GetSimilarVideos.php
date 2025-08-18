@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Tags\Models\Tag;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -24,6 +23,7 @@ class GetSimilarVideos
 
     protected function phrases(Video $video): LazyCollection
     {
+        // Split the video name into words and filter out common words
         $query = str($video->name)
             ->title()
             ->matchAll('/[\p{L}\p{N}]+/u')
@@ -54,17 +54,11 @@ class GetSimilarVideos
 
     protected function tagged(Video $video): LazyCollection
     {
-        $relatables = $video->tags
-            ->loadMissing('relatables')
-            ->flatMap(fn (Tag $tag) => $tag->related)
-            ->unique()
-            ->all();
-
         return Video::query()
             ->verified()
             ->withAnyTagsOfAnyType([
                 ...$video->tags,
-                ...$relatables,
+                ...$video->tags->relates()->all(),
             ])
             ->whereKeyNot($video)
             ->inRandomOrder()

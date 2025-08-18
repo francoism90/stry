@@ -18,9 +18,7 @@ class UpdateTagDetails
             );
 
             if (array_key_exists('related', $attributes)) {
-                // $related = collect(data_get($attributes['related'], '*.id', []))->toModels();
-
-                // $model->syncRelated($related);
+                $model->syncRelated(Tag::fromOption($attributes['related'])->get());
             }
         });
     }

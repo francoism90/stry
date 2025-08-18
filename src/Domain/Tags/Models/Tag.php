@@ -6,7 +6,7 @@ namespace Domain\Tags\Models;
 
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Relates\Concerns\HasRelates;
+use Domain\Relates\Concerns\InteractsWithRelated;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
@@ -25,9 +25,9 @@ class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsEvents;
     use HasFactory;
-    use HasRelates;
     use HasUlids;
     use InteractsWithMedia;
+    use InteractsWithRelated;
     use InteractsWithUser;
     use Searchable;
 
@@ -152,7 +152,6 @@ class Tag extends BaseTag implements HasMedia
             'type' => (string) $this->type?->value,
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
-            'related' => (array) $this->relatables->modelKeys(),
             'order' => (int) $this->order_column,
             'count' => (int) $this->videos()->count(),
             'created_at' => (int) $this->created_at->getTimestamp(),
@@ -160,31 +159,31 @@ class Tag extends BaseTag implements HasMedia
         ];
     }
 
-    public function category(): Attribute
+    protected function category(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->type?->label(),
         )->shouldCache();
     }
 
-    public function thumbnail(): Attribute
+    protected function thumbnail(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->videos()->first()?->thumbnail,
         )->shouldCache();
     }
 
-    public function srcset(): Attribute
+    protected function srcset(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->videos()->first()?->srcset,
         )->shouldCache();
     }
 
-    public function synonyms(): Attribute
+    protected function synonyms(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagCollection::make($this->related)->translated(),
+            get: fn () => TagCollection::make($this->relates)->synonyms(),
         )->shouldCache();
     }
 }

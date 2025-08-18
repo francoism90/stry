@@ -41,7 +41,7 @@ class VideoController extends Controller implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): VideoResource
     {
-        $video = app(UpdateVideoDetails::class)->handle($video, $request->validated());
+        $video = app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
         return VideoResource::make($video);
     }

@@ -3,9 +3,10 @@ import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
 import TagDeleteModal from '@/components/Tag/TagDeleteModal.vue'
 import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import { useAppearance } from '@/composables/appearance'
+import { useTagInput } from '@/composables/taginput'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagResource from '@/layouts/Tag/TagResource.vue'
-import type { Tag } from '@/types'
+import type { Tag, TagMenuItem } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -19,6 +20,7 @@ defineOptions({ layout: [DefaultLayout, TagResource] })
 const props = defineProps<Props>()
 
 const { title } = useAppearance()
+const { data, query } = useTagInput(props.tag.related || [])
 
 const form = useForm('put', update.url({ tag: props.tag.id }), props.tag)
 
@@ -76,6 +78,30 @@ const submit = async () =>
           :items="types"
           class="w-full"
         />
+      </UFormField>
+
+      <UFormField
+        label="Related"
+        name="related"
+        :error="form.errors.related"
+      >
+        <USelectMenu
+          v-model="form.related as TagMenuItem[]"
+          :items="data as TagMenuItem[]"
+          label-key="name"
+          multiple
+          class="w-full"
+          placeholder="Related tags..."
+          @update:search-term="(value) => query({ search: value })"
+        >
+          <template #item-label="{ item }">
+            {{ item.name }}
+
+            <span class="text-muted">
+              {{ item.category }}
+            </span>
+          </template>
+        </USelectMenu>
       </UFormField>
     </div>
 

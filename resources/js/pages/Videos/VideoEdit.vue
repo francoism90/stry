@@ -166,13 +166,14 @@ const submit = async () =>
         label-key="name"
         multiple
         class="w-full"
+        placeholder="Search tags..."
         @update:search-term="(value) => query({ search: value })"
       >
         <template #item-label="{ item }">
           {{ item.name }}
 
           <span class="text-muted">
-            {{ item.type }}
+            {{ item.category }}
           </span>
         </template>
       </USelectMenu>

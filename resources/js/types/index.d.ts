@@ -32,6 +32,7 @@ export type Tag = Model & {
   thumbnail: string
   srcset: string
   videos?: number
+  related?: Tag[] | null
 }
 
 export type Tags = Omit<Paginator, 'data'> & {

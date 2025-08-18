@@ -7,7 +7,6 @@ namespace Domain\Videos\Models;
 use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
-use Domain\Tags\Concerns\HasTags;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithCache;
@@ -27,6 +26,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
+use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
 
 class Video extends Model implements HasMedia
@@ -242,8 +242,8 @@ class Video extends Model implements HasMedia
             'duration' => (float) $this->duration,
             'captions' => (bool) $this->captions,
             'adult' => (bool) $this->adult,
-            'tags' => (string) $this->tags_translated,
-            'relatables' => (string) $this->tags_related,
+            'tags' => (string) $this->tags->translated(),
+            'synonyms' => (string) $this->tags->synonyms(),
             'tagged' => (array) $this->tags->modelKeys(),
             'state' => (string) $this->state,
             'released_at' => (int) $this->released_at?->getTimestamp(),

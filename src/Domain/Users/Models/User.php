@@ -179,14 +179,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         ];
     }
 
-    public function avatar(): Attribute
+    protected function avatar(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getFirstMediaUrl('avatar')
         )->shouldCache();
     }
 
-    public function srcset(): Attribute
+    protected function srcset(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getFirstMedia('avatar')?->getSrcset()

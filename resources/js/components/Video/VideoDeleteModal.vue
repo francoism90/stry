@@ -39,14 +39,15 @@ const remove = () =>
         label="Cancel"
         color="neutral"
         variant="soft"
-        @click="close"
+        @click.prevent="close"
       />
 
       <UButton
         label="Delete video"
         variant="soft"
-        color="primary"
-        @click="remove"
+        color="error"
+        loading-auto
+        @click.prevent="remove"
       />
     </template>
   </UModal>
