@@ -15,8 +15,8 @@ class GenerateVideoPlaylists
     {
         return DB::transaction(function () use ($video) {
             $items = collect([
-                'previews' => ['type' => 'preview', 'expires_at' => null],
                 'clips' => ['type' => 'clip'],
+                'previews' => ['type' => 'preview', 'expires_at' => null],
             ]);
 
             $items
