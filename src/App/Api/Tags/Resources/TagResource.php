@@ -19,6 +19,7 @@ class TagResource extends JsonResource
             'id' => $this->getRouteKey(),
             'slug' => $this->slug,
             'name' => $this->name,
+            'description' => $this->description,
             'category' => $this->category,
             'type' => $this->type,
             'related' => TagResource::collection($this->whenAppended('relates')),

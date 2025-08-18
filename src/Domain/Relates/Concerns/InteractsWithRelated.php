@@ -38,7 +38,7 @@ trait InteractsWithRelated
 
         // Detach models that are not in the new list
         $this
-            ->getRelated()
+            ->getRelates()
             ->filter(fn (Model $model) => ! $items->contains(fn (array $item) => $item['model_type'] === $model->getMorphClass() &&
                 $item['model_id'] === $model->getKey()
             ))
@@ -64,9 +64,10 @@ trait InteractsWithRelated
         return Related::firstWhere($related)->delete();
     }
 
-    public function getRelated(): Collection
+    public function getRelates(): Collection
     {
         return $this
+            ->loadMissing('related')
             ->related
             ->groupBy(fn (Related $related) => $this->getActualClassNameForMorph($related->model_type))
             ->flatMap(fn (Collection $typeGroup, string $type) => $type::whereIn('id', $typeGroup->pluck('model_id'))->get());
@@ -87,7 +88,7 @@ trait InteractsWithRelated
     protected function relates(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getRelated()
+            get: fn () => $this->getRelates()
         )->shouldCache();
     }
 }

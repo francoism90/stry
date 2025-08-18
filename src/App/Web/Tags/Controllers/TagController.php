@@ -92,7 +92,7 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $tag);
 
-        app(UpdateTagDetails::class)->handle($tag, $request->validated());
+        app(UpdateTagDetails::class)->handle($tag, $request->safe()->all());
 
         flash()->success('Tag updated successfully!');
 

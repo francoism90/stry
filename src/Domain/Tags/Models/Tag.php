@@ -152,7 +152,6 @@ class Tag extends BaseTag implements HasMedia
             'type' => (string) $this->type?->value,
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
-            'related' => (array) $this->relatables->modelKeys(),
             'order' => (int) $this->order_column,
             'count' => (int) $this->videos()->count(),
             'created_at' => (int) $this->created_at->getTimestamp(),
@@ -184,7 +183,7 @@ class Tag extends BaseTag implements HasMedia
     protected function synonyms(): Attribute
     {
         return Attribute::make(
-            get: fn () => [],
+            get: fn () => TagCollection::make($this->relates)->synonyms(),
         )->shouldCache();
     }
 }
