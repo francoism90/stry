@@ -15,9 +15,9 @@ class VideoFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => fake()->sentence(),
-            'content' => fake()->paragraph(),
-            'summary' => fake()->sentence(),
+            'name' => ['en' => fake()->sentence()],
+            'content' => ['en' => fake()->paragraph()],
+            'summary' =>['en' => fake()->paragraph()],
             'published_at' => now(),
             'state' => Verified::class,
         ];

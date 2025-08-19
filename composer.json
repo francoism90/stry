@@ -48,7 +48,7 @@
         "laravel/telescope": "^5.11.2",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.8.2",
-        "pestphp/pest": "^3.8.2",
+        "pestphp/pest": "^3.8.3",
         "pestphp/pest-plugin-laravel": "^3.2.0"
     },
     "autoload": {

@@ -16,7 +16,9 @@ class TagListScope
     {
         $query
             ->withCount('videos')
-            ->when($this->type, fn ($query, $type) => $query->where('type', $type))
-            ->ordered();
+            ->when($this->type,
+                fn ($query, $type) => $query->where('type', $type)->ordered(),
+                fn ($query) => $query->inRandomOrder()
+            );
     }
 }

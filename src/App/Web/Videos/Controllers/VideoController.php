@@ -40,8 +40,8 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         $items = Video::query()
-            ->tap(new VideoListScope(...$request->safe()->only(['list', 'tags'])))
-            ->cursorPaginate(perPage: 24, cursorName: 'page', cursor: $request->safe()->input('page'))
+            ->tap(new VideoListScope(...$request->safe()->only(['list'])))
+            ->simplePaginate(perPage: 24, page: (int) $request->safe()->input('page', 1))
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Videos/VideoIndex', [
