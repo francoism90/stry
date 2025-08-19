@@ -39,7 +39,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         $items = Tag::query()
-            ->tap(new TagListScope(type: $request->safe()->input('type')))
+            ->tap(new TagListScope(...$request->safe()->only(['type'])))
             ->cursorPaginate(perPage: 32, cursorName: 'page', cursor: $request->safe()->input('page'))
             ->through(fn (Tag $tag) => TagResource::make($tag));
 
