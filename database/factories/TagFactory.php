@@ -13,7 +13,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->sentence()],
+            'name' => ['en' => fake()->word()],
             'type' => fake()->randomElement(TagType::cases()),
         ];
     }

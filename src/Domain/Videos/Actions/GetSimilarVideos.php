@@ -20,7 +20,7 @@ class GetSimilarVideos
         ])->loadMissing('tags')->unique('id')->take($limit);
     }
 
-    protected function phrases(Video $video)
+    protected function phrases(Video $video): LazyCollection
     {
         // Split the video name into words and filter out common words
         $query = str($video->name)
@@ -51,7 +51,7 @@ class GetSimilarVideos
             ->unique();
     }
 
-    protected function tagged(Video $video)
+    protected function tagged(Video $video): LazyCollection
     {
         return Video::query()
             ->verified()
@@ -65,7 +65,7 @@ class GetSimilarVideos
             ->cursor();
     }
 
-    protected function random(Video $video)
+    protected function random(Video $video): LazyCollection
     {
         return Video::query()
             ->verified()
