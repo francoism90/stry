@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use App\Api\Videos\Resources\VideoResource;
+use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\LazyCollection;
 
 class GetSimilarVideos
 {
-    public function handle(Video $video, int $limit = 16): ResourceCollection
+    public function handle(Video $video, int $limit = 16): VideoCollection
     {
-        return collect([
+        return VideoCollection::make([
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->unique()->take($limit)->toResourceCollection(VideoResource::class);
+        ])->loadMissing('tags')->unique('id')->take($limit);
     }
 
-    protected function phrases(Video $video): LazyCollection
+    protected function phrases(Video $video)
     {
         // Split the video name into words and filter out common words
         $query = str($video->name)
@@ -52,7 +51,7 @@ class GetSimilarVideos
             ->unique();
     }
 
-    protected function tagged(Video $video): LazyCollection
+    protected function tagged(Video $video)
     {
         return Video::query()
             ->verified()
@@ -66,7 +65,7 @@ class GetSimilarVideos
             ->cursor();
     }
 
-    protected function random(Video $video): LazyCollection
+    protected function random(Video $video)
     {
         return Video::query()
             ->verified()

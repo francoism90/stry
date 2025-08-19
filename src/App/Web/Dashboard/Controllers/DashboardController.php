@@ -38,6 +38,6 @@ class DashboardController extends Controller implements HasMiddleware
     {
         return Video::query()
             ->verified()
-            ->take(12);
+            ->take(16);
     }
 }

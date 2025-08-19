@@ -69,12 +69,17 @@ class VideoController extends Controller implements HasMiddleware
 
         VideoHasBeenViewedEvent::dispatchIf(! $video->hasPlaylists('clip'), $video);
 
+        // Load similar videos
+        $items = app(GetSimilarVideos::class)
+            ->handle($video->loadMissing('tags'))
+            ->toResourceCollection(VideoResource::class);
+
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
             'starts' => fn () => app(GetVideoStartTime::class)->handle($video, Auth::user()),
-            'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
+            'queue' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
 
