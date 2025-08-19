@@ -9,9 +9,9 @@ use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 readonly class VideoListScope
 {
     public function __construct(
-        public readonly ?string $tags = null,
         public readonly ?string $list = null,
         public readonly ?string $sort = null,
+        public readonly ?array $tags = null,
     ) {}
 
     public function __invoke(VideoQueryBuilder $query): void
