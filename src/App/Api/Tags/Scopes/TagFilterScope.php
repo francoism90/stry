@@ -16,6 +16,6 @@ class TagFilterScope
     public function __invoke(Builder $query): void
     {
         $query
-            ->when($this->sort === 'popularity', fn ($query) => $query->orderByDesc('count'));
+            ->when($this->sort === 'popularity', fn ($query) => $query->orderByDesc('videos'));
     }
 }
