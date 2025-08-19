@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Scopes;
 
-use Domain\Tags\Models\Tag;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
 readonly class VideoListScope
 {
     public function __construct(
-        public readonly Tag|array|string|null $tags = null,
+        public readonly ?string $tags = null,
         public readonly ?string $list = null,
         public readonly ?string $sort = null,
     ) {}
