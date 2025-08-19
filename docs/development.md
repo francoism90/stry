@@ -28,8 +28,8 @@ git clone git@github.com:francoism90/stry.git
 
 1. Add the app bind volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
 
-```docker
-Volume=${APP_PATH}:/app:rw,z,U
+```diff
++Volume=${APP_PATH}:/app:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
 Volume=stry-cache:/cache:rw,z,U
 ```
