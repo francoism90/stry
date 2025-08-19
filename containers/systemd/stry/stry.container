@@ -7,7 +7,6 @@ Wants=stry-queue.service stry-schedule.service stry-reverb.service
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=APP_ENV=${APP_ENV}
 LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
