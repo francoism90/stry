@@ -153,17 +153,10 @@ class Tag extends BaseTag implements HasMedia
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
             'order' => (int) $this->order_column,
-            'videos' => (int) $this->videos_count,
+            'videos' => (int) $this->videos()->count(),
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
-    }
-
-    protected function makeAllSearchableUsing(TagQueryBuilder $query): TagQueryBuilder
-    {
-        return $query
-            ->with('related')
-            ->withCount('videos');
     }
 
     protected function category(): Attribute
