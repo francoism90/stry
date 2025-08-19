@@ -21,8 +21,9 @@ class TagIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string', 'max:255'],
-            'type' => ['nullable', 'string', Rule::enum(TagType::class)],
+            'page' => ['sometimes', 'nullable'],
+            'search' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'type' => ['sometimes', 'nullable', 'string', Rule::enum(TagType::class)],
         ];
     }
 }

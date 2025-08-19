@@ -153,7 +153,7 @@ class Tag extends BaseTag implements HasMedia
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
             'order' => (int) $this->order_column,
-            'count' => (int) $this->videos()->count(),
+            'videos' => (int) $this->videos()->count(),
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];

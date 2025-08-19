@@ -24,7 +24,7 @@ git clone git@github.com:francoism90/stry.git
 
 1. Setup [Podman](podman.md).
 
-1. Change `APP_ENV` to `development` in `~/.config/containers/systemd/stry/config/app.env`.
+1. Change `CONTAINER_ENV` to `development` in `~/.config/containers/systemd/stry/config/app.env`.
 
 1. Add the app bind volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
 

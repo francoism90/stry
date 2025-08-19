@@ -14,7 +14,6 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
 
   const query = async (query?: QueryParams) => {
     const { data } = await http.get<Tags>(index.url({ query }))
-
     state.value = toValue(data)
   }
 

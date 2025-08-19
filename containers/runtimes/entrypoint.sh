@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
+CONTAINER_ENV=${CONTAINER_ENV:-'production'}
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
-APP_ENV=${APP_ENV:-'production'}
 ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
 NPM=${NPM:-"pnpm"}
 OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
-if [ "${APP_ENV}" = "development" ]; then
+if [ "${CONTAINER_ENV}" = "development" ]; then
     OCTANE="${OCTANE} --watch"
 fi
 
@@ -28,7 +28,7 @@ prepare_application() {
     ${ARTISAN} scout:sync-index-settings
 }
 
-if [ "${APP_ENV}" = "production" ]; then
+if [ "${CONTAINER_ENV}" = "production" ]; then
     prepare_application
 fi
 
