@@ -19,6 +19,7 @@ class VideoIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'page' => ['nullable', 'string'],
             'search' => ['nullable', 'string', 'min:1', 'max:255'],
             'sort' => ['nullable', 'string', 'in:recent,ordered,longest,shortest'],
             'list' => ['nullable', 'string', 'in:watching,newest'],

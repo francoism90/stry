@@ -7,7 +7,7 @@ ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
 NPM=${NPM:-"pnpm"}
 OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
-if [ "${APP_ENV}" = "development" ]; then
+if [ "${APP_ENV}" = "local" ]; then
     OCTANE="${OCTANE} --watch"
 fi
 
