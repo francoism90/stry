@@ -40,7 +40,7 @@ class TagController extends Controller implements HasMiddleware
 
         $items = Tag::query()
             ->tap(new TagListScope(type: $request->safe()->input('type')))
-            ->cursorPaginate(perPage: 32, cursor: $request->safe()->input('page'))
+            ->cursorPaginate(perPage: 32, cursorName: 'page', cursor: $request->safe()->input('page'))
             ->through(fn (Tag $tag) => TagResource::make($tag));
 
         return Inertia::render('Tags/TagIndex', [
