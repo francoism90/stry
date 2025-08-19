@@ -26,3 +26,11 @@ git clone git@github.com:francoism90/stry.git
 1. Setup a [proxy](proxy.md).
 
 1. See [interaction](interaction.md) for management.
+
+## Tips
+
+You may need to limit the [resources](https://docs.podman.io/en/v4.6.0/markdown/podman-update.1.html#cpus-number) available for a container, this can be done realtime:
+
+```bash
+podman update systemd-stry-queue --cpus=5
+```
