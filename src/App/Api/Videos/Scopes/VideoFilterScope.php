@@ -9,8 +9,8 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
-        public readonly ?array $tags = null,
         public readonly ?string $sort = null,
+        public readonly ?array $tags = null,
     ) {}
 
     public function __invoke(Builder $query): void
