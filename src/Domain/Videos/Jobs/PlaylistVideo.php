@@ -50,7 +50,9 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function __construct(
         public Video $video,
-    ) {}
+    ) {
+        $this->onQueue('processing');
+    }
 
     public function handle(): void
     {

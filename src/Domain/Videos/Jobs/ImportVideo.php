@@ -52,7 +52,9 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         public User $user,
         public string $disk,
         public string $path,
-    ) {}
+    ) {
+        $this->onQueue('processing');
+    }
 
     public function handle(): void
     {
