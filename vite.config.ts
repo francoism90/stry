@@ -12,14 +12,13 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const host = new URL(env.VITE_APP_URL)?.hostname || 'stry.test'
 
   return {
     server: {
       host: '0.0.0.0',
       port: 5173,
       strictPort: true,
-      hmr: { host: `vite.${host}`, clientPort: 443, protocol: 'wss' },
+      hmr: { host: env.VITE_HMR_URL, clientPort: 443, protocol: 'wss' },
     },
     resolve: {
       alias: {
