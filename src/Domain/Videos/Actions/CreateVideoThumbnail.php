@@ -23,7 +23,7 @@ class CreateVideoThumbnail
             $media = $video->getClipCollection()->first();
 
             // Create a sample video from the segments
-            $path = app(CreateMediaFrame::class)->handle($media, (float) $video->snapshot ?: 10);
+            $path = app(CreateMediaFrame::class)->handle($media, floatval($video->snapshot ?? null));
 
             // Add the sample video to the video model
             $video
