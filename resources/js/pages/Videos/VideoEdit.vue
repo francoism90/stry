@@ -123,7 +123,7 @@ const submit = async () =>
       >
         <UInput
           v-model.trim="form.snapshot"
-          placeholder="1.00"
+          placeholder="3.00"
           step="0.01"
           :max="video.duration || null"
           type="number"
