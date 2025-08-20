@@ -38,7 +38,7 @@ onBeforeUnmount(() => listener())
       v-if="!src"
       class="grid min-h-52 w-full place-items-center rounded-xl bg-neutral-800 md:min-h-96"
     >
-      <span class="text-muted">Waiting for video to load...</span>
+      <span class="text-muted">Waiting for video to be ready...</span>
     </div>
 
     <media-player
