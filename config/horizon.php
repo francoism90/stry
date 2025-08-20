@@ -194,7 +194,7 @@ return [
             'memory' => 128,
             'tries' => 1,
             'timeout' => 60 * 60,
-            'nice' => 0,
+            'nice' => 1,
         ],
 
         'supervisor-2' => [
@@ -208,7 +208,7 @@ return [
             'memory' => 128,
             'tries' => 1,
             'timeout' => 60 * 60,
-            'nice' => 0,
+            'nice' => 2,
         ],
 
         'supervisor-3' => [
