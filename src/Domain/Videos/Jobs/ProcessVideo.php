@@ -83,6 +83,6 @@ class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function retryUntil(): DateTime
     {
-        return now()->addHour();
+        return now()->addHours(4);
     }
 }
