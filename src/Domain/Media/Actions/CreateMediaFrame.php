@@ -10,13 +10,13 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateMediaFrame
 {
-    public function handle(Media $media, float $seconds = 0): string
+    public function handle(Media $media, ?float $seconds = 0.0): string
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
         $duration = $ffmpeg->getDurationInSeconds();
 
-        $seconds = $seconds > 0 ? $seconds : $duration / 2;
+        $seconds = $seconds > 0.0 ? $seconds : $duration / 2;
 
         $frame = Number::clamp($seconds, 0, $duration);
 
