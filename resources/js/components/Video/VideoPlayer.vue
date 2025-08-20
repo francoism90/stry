@@ -4,6 +4,7 @@ import { useThrottleFn } from '@vueuse/core'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
 import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import PageSection from '../Ui/PageSection.vue'
 
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
@@ -32,23 +33,32 @@ onBeforeUnmount(() => listener())
 </script>
 
 <template>
-  <media-player
-    ref="player"
-    .src="src || undefined"
-    .playsInline="true"
-    .autoPlay="true"
-    crossOrigin="anonymous"
-    class="rounded-xl"
-  >
-    <media-video-layout />
-    <media-provider>
-      <track
-        v-for="caption in captions"
-        :key="caption.id"
-        :src="caption.asset"
-        :label="caption.name || 'undefined'"
-        kind="captions"
-      />
-    </media-provider>
-  </media-player>
+  <PageSection>
+    <div
+      v-if="!src"
+      class="grid min-h-52 w-full place-items-center rounded-xl bg-neutral-800 md:min-h-96"
+    >
+      <span class="text-muted">Waiting for video to load...</span>
+    </div>
+
+    <media-player
+      ref="player"
+      .src="src || undefined"
+      .playsInline="true"
+      .autoPlay="true"
+      crossOrigin="anonymous"
+      class="rounded-xl"
+    >
+      <media-video-layout />
+      <media-provider>
+        <track
+          v-for="caption in captions"
+          :key="caption.id"
+          :src="caption.asset"
+          :label="caption.name || 'undefined'"
+          kind="captions"
+        />
+      </media-provider>
+    </media-player>
+  </PageSection>
 </template>
