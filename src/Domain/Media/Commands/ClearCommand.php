@@ -23,7 +23,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $description = 'Clear all temporary cache files';
+    protected $description = 'Clear all transcode files';
 
     public function handle(): ?int
     {
