@@ -63,17 +63,22 @@ EXPOSE 5173
 EXPOSE 6001
 EXPOSE 8080
 
+FROM builder as stage
+
+COPY . /app
+
+WORKDIR /app
+
+RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+RUN pnpm install --frozen-lockfile --prefer-offline
+
 FROM builder as production
 
 WORKDIR /app
 
-COPY . /app
+COPY --from=stage /app /app
+
 RUN chown -R docker:docker /app
-
-USER docker
-
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-RUN pnpm install
 
 ENTRYPOINT ["entrypoint.sh"]
 
