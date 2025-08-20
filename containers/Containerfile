@@ -80,6 +80,8 @@ COPY --from=stage /app /app
 
 RUN chown -R docker:docker /app
 
+USER docker
+
 ENTRYPOINT ["entrypoint.sh"]
 
 FROM builder as development
