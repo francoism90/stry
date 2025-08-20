@@ -55,11 +55,12 @@ $app = Application::configure(basePath: $basePath)
         base_path('src/Domain/*/Listeners'),
     ])
     ->withCommands([
+        \Domain\Media\Commands\ClearCommand::class,
         \Domain\Playlists\Commands\ClearCommand::class,
         \Domain\Tags\Commands\CreateCommand::class,
         \Domain\Tags\Commands\SortCommand::class,
         \Domain\Users\Commands\CreateCommand::class,
-        \Domain\Videos\Commands\CleanCommand::class,
+        \Domain\Videos\Commands\ClearCommand::class,
         \Domain\Videos\Commands\ImportCommand::class,
         \Support\Scout\Commands\SyncCommand::class,
     ])

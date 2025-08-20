@@ -8,9 +8,9 @@ use Domain\Playlists\Models\Playlist;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
-use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'playlists:clear')]
+use function Laravel\Prompts\info;
+
 class ClearCommand extends Command implements Isolatable
 {
     use ConfirmableTrait;
@@ -36,7 +36,7 @@ class ClearCommand extends Command implements Isolatable
             ->lazyById(200, column: 'id')
             ->each(fn (Playlist $playlist) => $playlist->delete());
 
-        $this->components->info('All generated playlists have been cleared successfully.');
+        info('All generated playlists have been cleared successfully.');
 
         return 0;
     }

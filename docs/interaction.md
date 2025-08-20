@@ -44,7 +44,7 @@ See `stry help` for a complete overview:
 |---|---|
 | `stry a users:create` | Creates a new user |
 | `stry a videos:import` | Import videos to an user |
-| `stry a videos:clean` | Remove soft-deleted videos from filesystem (!) |
+| `stry a videos:clear` | Remove soft-deleted videos from filesystem (!) |
 | `stry a tags:create` | Create a new tag |
 | `stry a tags:sort` | Sort tags alphabetically |
 | `stry a playlists:clear` | Remove generated HLS-playlist from filesystem |

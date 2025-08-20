@@ -8,20 +8,18 @@ use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Number;
-use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 
-#[AsCommand(name: 'videos:clean')]
-class CleanCommand extends Command implements Isolatable
+class ClearCommand extends Command implements Isolatable
 {
     /**
      * @var string
      */
-    protected $signature = 'videos:clean';
+    protected $signature = 'videos:clear';
 
     /**
      * @var string
