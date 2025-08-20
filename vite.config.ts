@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       port: 5173,
       strictPort: true,
-      hmr: { host: env.VITE_HMR_URL, clientPort: 443, protocol: 'wss' },
+      hmr: { host: env.VITE_HMR_HOST, clientPort: 443, protocol: 'wss' },
     },
     resolve: {
       alias: {
