@@ -9,6 +9,8 @@ use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\Storage;
 
+use function Laravel\Prompts\info;
+
 class ClearCommand extends Command implements Isolatable
 {
     use ConfirmableTrait;
@@ -33,6 +35,8 @@ class ClearCommand extends Command implements Isolatable
             if (! Storage::disk('transcodes')->directoryExists($path)) {
                 continue;
             }
+
+            info("Deleting directory {$path}...");
 
             Storage::disk('transcodes')->deleteDirectory($path);
         }
