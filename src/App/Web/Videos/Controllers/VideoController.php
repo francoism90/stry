@@ -67,7 +67,7 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        VideoHasBeenViewedEvent::dispatchIf(! $video->hasPlaylists('clip'), $video);
+        VideoHasBeenViewedEvent::dispatchIf(! $video->hasPlaylists('clip') || ! $video->hasPlaylists('preview'), $video);
 
         // Load similar videos
         $items = app(GetSimilarVideos::class)
