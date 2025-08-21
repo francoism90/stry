@@ -20,7 +20,7 @@ class GroupPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
     public function view(User $user, Group $group): bool

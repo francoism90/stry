@@ -109,7 +109,7 @@ class Group extends Model implements HasMedia, Sortable
      */
     public function broadcastOn(string $event): array
     {
-        return [$this];
+        return [$this, $this->user];
     }
 
     public function broadcastChannel(): string
