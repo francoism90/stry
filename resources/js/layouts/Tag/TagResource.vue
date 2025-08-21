@@ -8,7 +8,8 @@ import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import type { Tag } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
@@ -25,6 +26,8 @@ const details = ref<NavigationMenuItem[]>([
 
 const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.tag.id) }])
 const tabs = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url(props.tag.id) }])
+
+useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload())
 </script>
 
 <template>

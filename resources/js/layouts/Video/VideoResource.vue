@@ -9,7 +9,8 @@ import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import type { Video } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useDateFormat } from '@vueuse/core'
 import { ref } from 'vue'
@@ -31,6 +32,10 @@ const tabs = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url(props.video.id) },
   { label: 'Playlists', to: index.url({ video: props.video.id }) },
 ])
+
+useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload())
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload())
 </script>
 
 <template>
