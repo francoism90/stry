@@ -34,7 +34,6 @@ const tabs = ref<NavigationMenuItem[]>([
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload())
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload())
 </script>
 
