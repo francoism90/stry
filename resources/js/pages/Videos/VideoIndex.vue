@@ -23,6 +23,6 @@ const filters = ref<NavigationMenuItem[]>([
 
   <PageSection>
     <PageFeature title="Videos" />
-    <PageFilters :items="filters" />
+    <PageFilters :filters />
   </PageSection>
 </template>

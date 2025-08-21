@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { edit, show } from '@/actions/App/Web/Tags/Controllers/TagController'
+import PageActions from '@/components/Ui/PageActions.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
+import PageColumns from '@/components/Ui/PageColumns.vue'
+import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
@@ -15,7 +18,13 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const items = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url({ tag: props.tag.id }) }])
+const details = ref<NavigationMenuItem[]>([
+  { label: 'Type', value: props.tag.category },
+  { label: 'Videos', value: props.tag.videos + ' videos' },
+])
+
+const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.tag.id) }])
+const tabs = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url(props.tag.id) }])
 </script>
 
 <template>
@@ -23,8 +32,18 @@ const items = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url({ tag:
 
   <PageBody>
     <PageSection>
-      <PageFeature :title="tag.name" />
-      <PageNavigation :items />
+      <PageColumns>
+        <template #left>
+          <PageFeature :title="tag.name" />
+          <PageDetails :details />
+        </template>
+
+        <template #right>
+          <PageActions :actions />
+        </template>
+      </PageColumns>
+
+      <PageNavigation :tabs />
     </PageSection>
 
     <slot />

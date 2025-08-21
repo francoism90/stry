@@ -63,7 +63,7 @@ const submit = async () =>
 
     <PageFilters
       v-if="search?.length"
-      :items="filters"
+      :filters
     />
   </PageSection>
 </template>

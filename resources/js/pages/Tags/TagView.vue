@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit, show } from '@/actions/App/Web/Tags/Controllers/TagController'
+import PageActions from '@/components/Ui/PageActions.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
@@ -7,7 +8,7 @@ import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
-import type { DetailListItem, Tag } from '@/types'
+import type { Tag } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
@@ -21,9 +22,9 @@ defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
 const props = defineProps<Props>()
 
-const items = ref<NavigationMenuItem[]>([{ label: 'Edit', icon: 'i-lucide-clipboard-pen', to: edit.url(props.tag.id) }])
+const actions = ref<NavigationMenuItem[]>([{ label: 'Edit', icon: 'i-lucide-clipboard-pen', to: edit.url(props.tag.id) }])
 
-const details = ref<DetailListItem[]>([
+const details = ref<NavigationMenuItem[]>([
   { label: 'Type', value: props.tag.category },
   { label: 'Videos', value: props.tag.videos + ' videos' },
 ])
@@ -45,23 +46,14 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
     <PageColumns>
       <template #left>
         <PageFeature :title="tag.name" />
-        <PageDetails :items="details" />
+        <PageDetails :details />
       </template>
 
       <template #right>
-        <UNavigationMenu
-          :items="items"
-          :ui="{
-            root: 'size-full items-center overflow-x-auto',
-            list: 'inline-flex size-full items-center gap-2',
-            link: 'rounded-full bg-neutral-800/40',
-            linkLeadingIcon: 'size-3.5',
-            linkLabel: 'text-xs text-neutral-400',
-          }"
-        />
+        <PageActions :actions />
       </template>
     </PageColumns>
 
-    <PageFilters :items="filters" />
+    <PageFilters :filters />
   </PageSection>
 </template>

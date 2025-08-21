@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import PageActions from '@/components/Ui/PageActions.vue'
 import PageBadge from '@/components/Ui/PageBadge.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
@@ -8,7 +9,7 @@ import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
-import type { DetailListItem, Video } from '@/types'
+import type { Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
@@ -22,15 +23,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const items = ref<NavigationMenuItem[]>([
-  { label: '0', icon: 'i-lucide-thumbs-up', to: '/search' },
+const actions = ref<NavigationMenuItem[]>([
+  { label: '0', icon: 'i-lucide-thumbs-up', to: '/tags' },
   { label: 'Edit', icon: 'i-lucide-clipboard-pen', to: edit.url(props.video.id) },
-  { label: 'Save', icon: 'i-lucide-bookmark', to: '/lists' },
+  { label: 'Save', icon: 'i-lucide-bookmark', to: '/tags' },
 ])
 
-const details = ref<DetailListItem[]>([
-  { label: 'Created', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD') },
-  { label: 'Duration', value: props.video.timestamp },
+const details = ref<NavigationMenuItem[]>([
+  { label: 'Created', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD HH:mm:ss').value },
+  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
@@ -48,21 +49,12 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
       <PageColumns>
         <template #left>
           <PageFeature :title="video.name" />
-          <PageDetails :items="details" />
+          <PageDetails :details />
           <PageBadge :items="video.tags" />
         </template>
 
         <template #right>
-          <UNavigationMenu
-            :items="items"
-            :ui="{
-              root: 'size-full items-center overflow-x-auto',
-              list: 'inline-flex size-full items-center gap-2',
-              link: 'rounded-full bg-neutral-800/40',
-              linkLeadingIcon: 'size-3.5',
-              linkLabel: 'text-xs text-neutral-400',
-            }"
-          />
+          <PageActions :actions />
         </template>
       </PageColumns>
 

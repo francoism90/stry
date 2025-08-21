@@ -2,7 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
-  items: NavigationMenuItem[]
+  tabs: NavigationMenuItem[] | undefined
 }
 
 defineProps<Props>()
@@ -10,7 +10,7 @@ defineProps<Props>()
 
 <template>
   <UNavigationMenu
-    :items="items"
+    :items="tabs"
     variant="link"
     highlight
     highlight-color="primary"

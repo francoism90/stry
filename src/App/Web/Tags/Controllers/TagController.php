@@ -73,7 +73,7 @@ class TagController extends Controller implements HasMiddleware
             ->through(fn (Video $video) => VideoResource::make($video));
 
         return Inertia::render('Tags/TagView', [
-            'tag' => fn () => TagResource::make($tag->loadCount('videos')),
+            'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
             'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
@@ -83,8 +83,8 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('update', $tag);
 
         return Inertia::render('Tags/TagEdit', [
+            'tag' => fn () => $tag->loadCount('videos')->append('relates')->toResource(TagResource::class),
             'types' => fn () => collect(TagType::cases())->forEnum(),
-            'tag' => fn () => $tag->append('relates')->toResource(TagResource::class),
         ]);
     }
 

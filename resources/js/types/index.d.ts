@@ -89,12 +89,3 @@ export type Paginator = {
   next_cursor: string | null
   prev_cursor: string | null
 }
-
-export type DetailListItem = {
-  label: string
-  value?: unknown
-  description?: string
-  icon?: string
-  hidden?: boolean
-  to?: string
-}

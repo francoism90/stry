@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
         ssr: 'resources/js/ssr.ts',
         refresh: true,
       }),
-      wayfinder(),
+      wayfinder({ routes: false }),
       vue({
         template: {
           compilerOptions: {

@@ -31,6 +31,6 @@ const filters = ref<NavigationMenuItem[]>([
 
   <PageSection>
     <PageFeature title="Lists" />
-    <PageFilters :items="filters" />
+    <PageFilters :filters />
   </PageSection>
 </template>
