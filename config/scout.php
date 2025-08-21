@@ -320,7 +320,7 @@ return [
                     'type',
                     'adult',
                     'order',
-                    'count',
+                    'videos',
                     'created_at',
                     'updated_at',
                 ],
