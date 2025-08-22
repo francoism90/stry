@@ -6,19 +6,19 @@ namespace Domain\Tags\Enums;
 
 enum TagType: string
 {
-    case Genre = 'genre';
     case Serie = 'serie';
-    case Person = 'person';
     case Studio = 'studio';
+    case Genre = 'genre';
+    case Person = 'person';
     case Language = 'language';
 
     public function label(): string
     {
         return match ($this) {
-            self::Genre => __('Genre'),
             self::Serie => __('Serie'),
-            self::Person => __('Person'),
             self::Studio => __('Studio'),
+            self::Genre => __('Genre'),
+            self::Person => __('Person'),
             self::Language => __('Language'),
         };
     }
