@@ -20,7 +20,7 @@ class GetVideoStartTime
         // Ensure the user viewed group exists
         $group = app(CreateUserGroup::class)->handle($user, GroupType::Viewed);
 
-        // Find the video in the user viewed group
+        // Find the video in the user viewed group (if exists)
         $videoable = $group->videos()->find($video);
 
         return round($videoable?->pivot?->options?->time ?: 0, 2);

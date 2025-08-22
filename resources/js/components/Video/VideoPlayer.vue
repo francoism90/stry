@@ -20,7 +20,7 @@ const listener = () => {
       seeked.value = true
     }
 
-    if (seeked.value && currentTime > 0) {
+    if (seeked.value && currentTime > 0 && starts.value !== currentTime) {
       debouncedRecord(currentTime)
     }
 

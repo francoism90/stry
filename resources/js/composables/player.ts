@@ -7,7 +7,7 @@ import { computed, readonly } from 'vue'
 export function usePlayer() {
   const state = computed(() => usePage().props.playlist as Playlist | null)
   const captions = computed(() => usePage().props.captions as Media[] | null)
-  const starts = computed(() => usePage().props.starts as number | null)
+  const starts = computed(() => usePage().props.starts as number)
 
   const ready = computed(() => state.value?.valid && state.value?.asset)
   const src = computed(() => (ready.value ? state.value?.asset : null))
