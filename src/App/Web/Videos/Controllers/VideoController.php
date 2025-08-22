@@ -11,7 +11,7 @@ use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Api\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\GetSimilarVideos;
-use Domain\Videos\Actions\GetVideoStartTime;
+use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
@@ -20,7 +20,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -81,7 +80,7 @@ class VideoController extends Controller implements HasMiddleware
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
-            'starts' => fn () => app(GetVideoStartTime::class)->handle($video, Auth::user()),
+            'progress' => fn () => app(GetVideoProgress::class)->handle($video),
             'queue' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
@@ -92,7 +91,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('Videos/VideoEdit', [
             'video' => fn () => $video->loadMissing('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
-            'starts' => fn () => app(GetVideoStartTime::class)->handle($video, Auth::user()),
+            'progress' => fn () => app(GetVideoProgress::class)->handle($video),
         ]);
     }
 

@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Listeners;
 
-use Domain\Groups\Actions\MarkAsViewed;
+use Domain\Playlists\Actions\MarkPlaylistAsViewed;
 use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class PlaylistSessionListener implements ShouldQueueAfterCommit
+class PlaylistSessionListener implements ShouldQueue
 {
     use InteractsWithQueue;
+
+    /**
+     * @var string
+     */
+    public $queue = 'broadcasts';
 
     /**
      * @var int
@@ -36,12 +40,6 @@ class PlaylistSessionListener implements ShouldQueueAfterCommit
 
     public function handle(PlaylistHasBeenViewedEvent $event): void
     {
-        $model = $event->playlist->getModel();
-
-        if (! $model instanceof Model) {
-            return;
-        }
-
-        app(MarkAsViewed::class)->handle($model, $event->user, $event->attributes);
+        app(MarkPlaylistAsViewed::class)->handle($event->playlist, $event->user, $event->attributes);
     }
 }

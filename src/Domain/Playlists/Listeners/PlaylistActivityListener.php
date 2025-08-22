@@ -6,12 +6,17 @@ namespace Domain\Playlists\Listeners;
 
 use Domain\Playlists\Actions\UpdatePlaylistActivity;
 use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class PlaylistActivityListener implements ShouldQueueAfterCommit
+class PlaylistActivityListener implements ShouldQueue
 {
     use InteractsWithQueue;
+
+    /**
+     * @var string
+     */
+    public $queue = 'broadcasts';
 
     /**
      * @var int

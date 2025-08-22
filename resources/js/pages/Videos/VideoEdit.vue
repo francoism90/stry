@@ -12,7 +12,7 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 interface Props {
   video: Video
-  starts: number | null
+  progress: number | null
 }
 
 defineOptions({ layout: [DefaultLayout, VideoResource] })
@@ -136,7 +136,7 @@ const submit = async () =>
               size="sm"
               icon="i-lucide-wand-sparkles"
               aria-label="Format name"
-              @click.prevent="form.snapshot = starts ?? null"
+              @click.prevent="form.snapshot = progress ?? null"
             />
           </template>
         </UInput>

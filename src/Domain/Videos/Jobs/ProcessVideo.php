@@ -8,7 +8,7 @@ use DateTime;
 use Domain\Videos\Actions\CreateVideoCaptions;
 use Domain\Videos\Actions\CreateVideoPreview;
 use Domain\Videos\Actions\CreateVideoThumbnail;
-use Domain\Videos\Actions\MarkVideoAsPublished;
+use Domain\Videos\Actions\MarkVideoAsVerified;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -31,7 +31,7 @@ class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 4;
+    public $timeout = 60 * 60 * 8;
 
     /**
      * @var int
@@ -61,7 +61,7 @@ class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
                 CreateVideoCaptions::class,
                 CreateVideoThumbnail::class,
                 CreateVideoPreview::class,
-                MarkVideoAsPublished::class,
+                MarkVideoAsVerified::class,
             ])
             ->thenReturn();
     }

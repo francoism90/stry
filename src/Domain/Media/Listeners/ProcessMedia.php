@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Domain\Media\Listeners;
 
 use Domain\Media\Actions\SetMediaStreams;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
-class ProcessMedia implements ShouldQueueAfterCommit
+class ProcessMedia implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -32,7 +32,7 @@ class ProcessMedia implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 20;
+    public $timeout = 60 * 30;
 
     /**
      * @var bool
