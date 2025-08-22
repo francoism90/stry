@@ -175,6 +175,7 @@ const submit = async () =>
       <USelectMenu
         v-model="form.tags as TagMenuItem[]"
         :items="data as TagMenuItem[]"
+        :ignore-filter="true"
         label-key="name"
         multiple
         class="w-full"
