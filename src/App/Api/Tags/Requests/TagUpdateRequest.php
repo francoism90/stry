@@ -23,9 +23,9 @@ class TagUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', Rule::enum(TagType::class)],
-            'related' => ['sometimes', 'nullable', 'array', 'max:10'],
+            'related' => ['sometimes', 'nullable', 'array', 'max:15'],
             'related.*.id' => ['required', 'string', 'exists:tags,ulid'],
-            'description' => ['nullable', 'string', 'max:1000'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:4096'],
         ];
     }
 }

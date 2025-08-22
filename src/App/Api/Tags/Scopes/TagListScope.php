@@ -6,7 +6,7 @@ namespace App\Api\Tags\Scopes;
 
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 
-class TagListScope
+readonly class TagListScope
 {
     public function __construct(
         public readonly ?string $type = null,

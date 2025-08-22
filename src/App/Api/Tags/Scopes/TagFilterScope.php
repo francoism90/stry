@@ -6,7 +6,7 @@ namespace App\Api\Tags\Scopes;
 
 use Laravel\Scout\Builder;
 
-class TagFilterScope
+readonly class TagFilterScope
 {
     public function __construct(
         public readonly ?string $sort = null,

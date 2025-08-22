@@ -8,21 +8,25 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
   const state = shallowRef<Tags>()
   const items = shallowRef<Tag[]>([])
 
-  const data = computed(() => filter([...items.value, ...(state.value?.data || [])]))
+  const data = computed(() => mergeDeep([...items.value, ...(state.value?.data || [])]))
 
-  const filter = (values: Tag[]) => values.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
+  const mergeDeep = (values: Tag[]) => values.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
 
   const query = async (query?: QueryParams) => {
+    if (!query) {
+      query = { sort: 'popularity', page: 1 }
+    }
+
     const { data } = await http.get<Tags>(index.url({ query }))
     state.value = toValue(data)
   }
 
   watchEffect(async () => {
-    if (!state.value) {
-      await query({ sort: 'popularity' })
-    }
-
     items.value = toValue(selected || [])
+
+    if (!state.value) {
+      await query()
+    }
   })
 
   return {
