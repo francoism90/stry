@@ -40,8 +40,11 @@ class PlaylistSessionListener implements ShouldQueueAfterCommit
 
     public function handle(PlaylistHasBeenViewedEvent $event): void
     {
-        // Get the model from the playlist
         $model = $event->playlist->getModel();
+
+        if (! $model) {
+            return;
+        }
 
         app(MarkAsViewed::class)->handle($model, $event->user, $event->attributes);
     }
