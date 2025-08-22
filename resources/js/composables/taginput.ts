@@ -24,7 +24,7 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
   watchEffect(async () => {
     items.value = toValue(selected || [])
 
-    if (!data.value) {
+    if (!data.value?.length) {
       await query()
     }
   })
