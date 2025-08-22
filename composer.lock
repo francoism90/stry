@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf7bec88a58ea1123f743c9b19fee5e1",
+    "content-hash": "5d70876337505fa699d2dd32b0428dca",
     "packages": [
         {
             "name": "amphp/amp",
@@ -870,16 +870,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.1",
+            "version": "3.356.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ba92ad336ab18052a51b1294e1b1e75df601eb13"
+                "reference": "d4c61078d5f371c9a8a844946e96e12d6fa18080"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ba92ad336ab18052a51b1294e1b1e75df601eb13",
-                "reference": "ba92ad336ab18052a51b1294e1b1e75df601eb13",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d4c61078d5f371c9a8a844946e96e12d6fa18080",
+                "reference": "d4c61078d5f371c9a8a844946e96e12d6fa18080",
                 "shasum": ""
             },
             "require": {
@@ -961,9 +961,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.2"
             },
-            "time": "2025-08-20T18:11:31+00:00"
+            "time": "2025-08-21T18:09:26+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3608,16 +3608,16 @@
         },
         {
             "name": "laravel/wayfinder",
-            "version": "v0.1.8",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/wayfinder.git",
-                "reference": "0a2270cfe234293c9e0d99f99d35a6a92fb5a6e6"
+                "reference": "bee8ac32ed76b3a4fb9cdae7cf95081f1b6dc2e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/wayfinder/zipball/0a2270cfe234293c9e0d99f99d35a6a92fb5a6e6",
-                "reference": "0a2270cfe234293c9e0d99f99d35a6a92fb5a6e6",
+                "url": "https://api.github.com/repos/laravel/wayfinder/zipball/bee8ac32ed76b3a4fb9cdae7cf95081f1b6dc2e2",
+                "reference": "bee8ac32ed76b3a4fb9cdae7cf95081f1b6dc2e2",
                 "shasum": ""
             },
             "require": {
@@ -3666,7 +3666,7 @@
                 "issues": "https://github.com/laravel/wayfinder/issues",
                 "source": "https://github.com/laravel/wayfinder"
             },
-            "time": "2025-08-20T00:38:49+00:00"
+            "time": "2025-08-21T16:56:32+00:00"
         },
         {
             "name": "league/commonmark",

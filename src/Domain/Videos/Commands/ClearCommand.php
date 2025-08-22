@@ -34,7 +34,7 @@ class ClearCommand extends Command implements Isolatable
         );
 
         if ($videos->isEmpty()) {
-            info('No videos found for deletion');
+            info('No videos found for deletion.');
 
             return;
         }

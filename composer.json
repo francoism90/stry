@@ -25,7 +25,7 @@
         "laravel/sanctum": "^4.2.0",
         "laravel/scout": "^10.18.0",
         "laravel/tinker": "^2.10.1",
-        "laravel/wayfinder": "^0.1.8",
+        "laravel/wayfinder": "^0.1.9",
         "league/flysystem-aws-s3-v3": "^3.29",
         "meilisearch/meilisearch-php": "^1.15.0",
         "pbmedia/laravel-ffmpeg": "^8.7.1",

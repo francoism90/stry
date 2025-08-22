@@ -6,15 +6,15 @@ namespace Domain\Playlists\Commands;
 
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\spin;
+use function Laravel\Prompts\table;
 
 class ClearCommand extends Command implements Isolatable
 {
-    use ConfirmableTrait;
-
     /**
      * @var string
      */
@@ -25,19 +25,36 @@ class ClearCommand extends Command implements Isolatable
      */
     protected $description = 'Clear all generated playlists';
 
-    public function handle(): ?int
+    public function handle(): void
     {
-        if (! $this->confirmToProceed()) {
-            return 1;
+        $playlists = spin(
+            message: 'Retrieving playlists...',
+            callback: fn () => Playlist::type($this->option('type'))->lazy()
+        );
+
+        if ($playlists->isEmpty()) {
+            info('No playlists found.');
+
+            return;
         }
 
-        Playlist::query()
-            ->when($this->option('type'), fn ($query, $type) => $query->type($type))
-            ->lazyById(200, column: 'id')
-            ->each(fn (Playlist $playlist) => $playlist->delete());
+        table(
+            headers: ['ID', 'Disk', 'Type', 'Model Type', 'Model ID'],
+            rows: $playlists->map(fn (Playlist $playlist) => [
+                $playlist->getKey(),
+                $playlist->disk,
+                $playlist->type,
+                $playlist->playlistable_type,
+                $playlist->playlistable_id,
+            ])->all()
+        );
 
-        info('All generated playlists have been cleared successfully.');
+        if (confirm('Are you sure you want to delete these playlists?')) {
+            $playlists->each(function (Playlist $model) {
+                info("deleting {$model->type} ({$model->getKey()})");
 
-        return 0;
+                $model->delete();
+            });
+        }
     }
 }
