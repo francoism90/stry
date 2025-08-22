@@ -14,7 +14,6 @@ export type User = Model & {
   avatar?: string | null
   roles?: string[]
   permissions?: string[]
-  state: string
 }
 
 export type Media = Model & {
@@ -86,6 +85,6 @@ export type Paginator = {
   first_page_url: string | null
   next_page_url: string | null
   prev_page_url: string | null
-  next_cursor: string | null
-  prev_cursor: string | null
+  next_cursor?: string | null
+  prev_cursor?: string | null
 }

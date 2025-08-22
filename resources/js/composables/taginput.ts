@@ -18,7 +18,8 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
     }
 
     const { data } = await http.get<Tags>(index.url({ query }))
-    state.value = data
+
+    state.value = Object.assign(state.value || {}, data)
   }
 
   watchEffect(async () => {

@@ -186,6 +186,20 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
+    protected function assigneddRoles(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getRoleNames()
+        )->shouldCache();
+    }
+
+    protected function assignedPermissions(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getAllPermissions()->pluck('name')
+        )->shouldCache();
+    }
+
     protected function srcset(): Attribute
     {
         return Attribute::make(
