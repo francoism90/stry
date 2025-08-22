@@ -14,11 +14,6 @@ class PlaylistActivityListener implements ShouldQueueAfterCommit
     use InteractsWithQueue;
 
     /**
-     * @var string|null
-     */
-    public $queue = 'processing';
-
-    /**
      * @var int
      */
     public $tries = 1;
@@ -26,7 +21,7 @@ class PlaylistActivityListener implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 3;
+    public $timeout = 60 * 5;
 
     /**
      * @var int

@@ -47,9 +47,7 @@ class SyncProgress implements ShouldBeUnique, ShouldQueue
     public function __construct(
         public Playlist $playlist,
         public array $attributes = [],
-    ) {
-        $this->onQueue('processing');
-    }
+    ) {}
 
     public function handle(): void
     {
@@ -62,7 +60,7 @@ class SyncProgress implements ShouldBeUnique, ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
         ];
     }
 
@@ -73,6 +71,6 @@ class SyncProgress implements ShouldBeUnique, ShouldQueue
 
     public function retryUntil(): DateTime
     {
-        return now()->addHour();
+        return now()->addMinutes(30);
     }
 }

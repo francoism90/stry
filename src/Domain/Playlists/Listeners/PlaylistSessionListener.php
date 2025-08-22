@@ -7,16 +7,12 @@ namespace Domain\Playlists\Listeners;
 use Domain\Groups\Actions\MarkAsViewed;
 use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\InteractsWithQueue;
 
 class PlaylistSessionListener implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
-
-    /**
-     * @var string|null
-     */
-    public $queue = 'processing';
 
     /**
      * @var int
@@ -26,7 +22,7 @@ class PlaylistSessionListener implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 3;
+    public $timeout = 60 * 5;
 
     /**
      * @var int
@@ -42,7 +38,7 @@ class PlaylistSessionListener implements ShouldQueueAfterCommit
     {
         $model = $event->playlist->getModel();
 
-        if (! $model) {
+        if (! $model instanceof Model) {
             return;
         }
 
