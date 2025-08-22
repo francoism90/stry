@@ -18,7 +18,7 @@ class CreateMediaFrame
 
         $seconds = $seconds > 1 ? $seconds : $duration / 2;
 
-        $frame = Number::clamp($seconds, 1, $duration);
+        $frame = Number::clamp($seconds, 0, $duration);
 
         $path = "frames/{$media->uuid}/thumb.jpg";
 
