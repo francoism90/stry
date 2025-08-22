@@ -29,7 +29,7 @@ trait HasGroups
 
     public function findOrCreateGroup(GroupType $type): Group
     {
-        return $this->group()->firstOrCreate([
+        return $this->groups()->firstOrCreate([
             'type' => $type,
         ]);
     }
