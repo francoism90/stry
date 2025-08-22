@@ -186,7 +186,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
-    protected function assigneddRoles(): Attribute
+    protected function assignedRoles(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getRoleNames()
