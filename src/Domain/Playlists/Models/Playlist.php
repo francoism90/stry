@@ -147,7 +147,7 @@ class Playlist extends Model
         return true;
     }
 
-    public function getModel(): Model
+    public function getModel(): ?Model
     {
         return $this->playlistable;
     }
