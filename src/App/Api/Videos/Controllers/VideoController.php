@@ -12,6 +12,7 @@ use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
 class VideoController extends Controller implements HasMiddleware
 {
@@ -41,6 +42,8 @@ class VideoController extends Controller implements HasMiddleware
 
     public function update(VideoUpdateRequest $request, Video $video): VideoResource
     {
+        Gate::authorize('update', $video);
+
         $video = app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
         return VideoResource::make($video);

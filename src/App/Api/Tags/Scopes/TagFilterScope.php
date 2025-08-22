@@ -9,7 +9,6 @@ use Laravel\Scout\Builder;
 class TagFilterScope
 {
     public function __construct(
-        public readonly ?array $tags = null,
         public readonly ?string $sort = null,
     ) {}
 
