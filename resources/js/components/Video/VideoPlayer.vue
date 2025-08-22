@@ -9,10 +9,10 @@ import PageSection from '../Ui/PageSection.vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { src, captions, starts, watchtime } = usePlayer()
+const { src, captions, starts, record } = usePlayer()
 
 const listener = () => {
-  const debouncedRecord = useThrottleFn((time: number) => watchtime(time), 3500)
+  const debouncedRecord = useThrottleFn((time: number | null) => record(time), 3500)
 
   return player.value?.subscribe(({ canSeek, currentTime }) => {
     if (canSeek && !seeked.value) {
@@ -20,7 +20,7 @@ const listener = () => {
       seeked.value = true
     }
 
-    if (currentTime >= 0) {
+    if (seeked.value && currentTime > 0) {
       debouncedRecord(currentTime)
     }
 
