@@ -20,9 +20,10 @@ class VideoResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->name,
-            'titles' => $this->whenAppended('titles'),
-            'content' => $this->whenAppended('content'),
+            'title' => $this->title,
             'summary' => $this->summary,
+            'content' => $this->whenAppended('content'),
+            'titles' => $this->whenAppended('titles'),
             'season' => $this->season,
             'episode' => $this->episode,
             'part' => $this->part,

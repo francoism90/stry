@@ -17,7 +17,7 @@ const remove = () =>
 
 <template>
   <UModal
-    :title="item.name"
+    :title="item.title"
     :description="item.summary || 'No description available.'"
     :ui="{ footer: 'justify-end' }"
   >

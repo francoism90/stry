@@ -38,13 +38,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 </script>
 
 <template>
-  <Head :title="video.name" />
+  <Head :title="video.title" />
 
   <PageBody>
     <PageSection>
       <PageColumns>
         <template #left>
-          <PageFeature :title="video.name" />
+          <PageFeature :title="video.title" />
           <PageDetails :details />
         </template>
 

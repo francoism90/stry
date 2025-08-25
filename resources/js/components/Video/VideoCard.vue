@@ -38,14 +38,14 @@ const link = computed(() => show.url(props.item.id))
       <img
         :srcset="item.srcset"
         :src="item.thumbnail"
-        :alt="item.name"
+        :alt="item.title"
         class="h-52 max-h-52 w-full object-fill"
         loading="lazy"
       />
 
       <div class="absolute inset-x-4 bottom-4 z-10 block group-hover:hidden">
         <div class="grid content-end gap-0.5">
-          <h2 class="line-clamp-2 text-sm leading-tight font-medium tracking-tight text-neutral-100">{{ item.name }}</h2>
+          <h2 class="line-clamp-2 text-sm leading-tight font-medium tracking-tight text-neutral-100">{{ item.title }}</h2>
           <dl class="details text-xs font-light tracking-tight text-neutral-100">
             <dt class="sr-only">Duration</dt>
             <dd>{{ item.timestamp }}</dd>

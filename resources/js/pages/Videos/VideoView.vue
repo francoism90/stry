@@ -40,7 +40,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 </script>
 
 <template>
-  <Head :title="video.name" />
+  <Head :title="video.title" />
 
   <PageBody>
     <VideoPlayer />
@@ -48,7 +48,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     <PageSection class="gap-4 py-2">
       <PageColumns>
         <template #left>
-          <PageFeature :title="video.name" />
+          <PageFeature :title="video.title" />
           <PageDetails :details />
           <PageBadge :items="video.tags" />
         </template>

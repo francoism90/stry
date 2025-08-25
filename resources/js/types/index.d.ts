@@ -50,6 +50,7 @@ export type Playlist = Model & {
 export type Video = Model & {
   user?: User
   name: string
+  title: string
   titles?: string[] | null
   content?: string | null
   summary: string | null
