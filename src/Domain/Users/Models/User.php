@@ -174,6 +174,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'id' => (int) $this->getScoutKey(),
             'name' => (string) $this->name,
             'email' => (string) $this->email,
+            'email_verified_at' => (int) $this->email_verified_at?->getTimestamp(),
             'created' => (int) $this->created_at->getTimestamp(),
             'updated' => (int) $this->updated_at->getTimestamp(),
         ];

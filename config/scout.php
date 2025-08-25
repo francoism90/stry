@@ -143,6 +143,7 @@ return [
                 'filterableAttributes' => [
                     'id',
                     'state',
+                    'email_verified_at',
                     'created_at',
                     'updated_at',
                     '__soft_deleted',
@@ -157,6 +158,7 @@ return [
                     'name',
                     'email',
                     'state',
+                    'email_verified_at',
                     'created_at',
                     'updated_at',
                 ],
@@ -165,7 +167,6 @@ return [
             Group::class => [
                 'filterableAttributes' => [
                     'id',
-                    'kind',
                     'type',
                     'state',
                     'created_at',
@@ -181,9 +182,9 @@ return [
                 'sortableAttributes' => [
                     'id',
                     'name',
-                    'kind',
                     'type',
                     'state',
+                    'order',
                     'created_at',
                     'updated_at',
                 ],
@@ -196,7 +197,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 100000,
+                    'maxTotalHits' => 180000,
                 ],
             ],
 
@@ -211,6 +212,7 @@ return [
                     'captions',
                     'tagged',
                     'state',
+                    'released_at',
                     'created_at',
                     'updated_at',
                     '__soft_deleted',
@@ -293,7 +295,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 100000,
+                    'maxTotalHits' => 180000,
                 ],
             ],
 
@@ -373,7 +375,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 100000,
+                    'maxTotalHits' => 180000,
                 ],
             ],
         ],
