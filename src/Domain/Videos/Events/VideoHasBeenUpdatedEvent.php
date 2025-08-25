@@ -6,11 +6,10 @@ namespace Domain\Videos\Events;
 
 use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VideoHasBeenUpdatedEvent implements ShouldDispatchAfterCommit
+class VideoHasBeenUpdatedEvent
 {
     use Dispatchable;
     use InteractsWithSockets;

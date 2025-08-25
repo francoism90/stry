@@ -213,11 +213,6 @@ class Video extends Model implements HasMedia
         return 'broadcasts';
     }
 
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
     public function isValid(): bool
     {
         if (! $this->state->equals(Verified::class)) {
