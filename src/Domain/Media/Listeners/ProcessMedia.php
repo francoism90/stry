@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Domain\Media\Listeners;
 
 use Domain\Media\Actions\SetMediaStreams;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
-class ProcessMedia implements ShouldQueue
+class ProcessMedia implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
