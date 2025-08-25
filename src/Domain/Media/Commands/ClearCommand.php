@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Media\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,8 +12,6 @@ use function Laravel\Prompts\info;
 
 class ClearCommand extends Command implements Isolatable
 {
-    use ConfirmableTrait;
-
     /**
      * @var string
      */
@@ -25,12 +22,8 @@ class ClearCommand extends Command implements Isolatable
      */
     protected $description = 'Clear all transcode files';
 
-    public function handle(): ?int
+    public function handle(): void
     {
-        if (! $this->confirmToProceed()) {
-            return 1;
-        }
-
         foreach ($this->getPaths() as $path) {
             if (! Storage::disk('transcodes')->directoryExists($path)) {
                 continue;
@@ -40,8 +33,6 @@ class ClearCommand extends Command implements Isolatable
 
             Storage::disk('transcodes')->deleteDirectory($path);
         }
-
-        return 0;
     }
 
     protected function getPaths(): array
