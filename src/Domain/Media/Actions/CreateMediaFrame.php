@@ -16,7 +16,7 @@ class CreateMediaFrame
 
         $duration = $ffmpeg->getDurationInSeconds();
 
-        $seconds = $seconds > 1 ? $seconds : $duration / 2;
+        $seconds = $seconds > 0 ? $seconds : $duration / 2;
 
         $frame = Number::clamp($seconds, 0, $duration);
 
