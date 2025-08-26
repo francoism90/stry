@@ -6,6 +6,7 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
@@ -34,18 +35,11 @@ class Media extends BaseMedia
         'user_id',
     ];
 
-    /**
-     * @var array<int, string>
-     */
-    protected $with = [
-        'model',
-    ];
-
     protected function casts(): array
     {
         return [
-            'manipulations' => 'json',
-            'custom_properties' => 'json',
+            'manipulations' => AsArrayObject::class,
+            'custom_properties' => AsArrayObject::class,
             'generated_conversions' => 'array',
             'responsive_images' => 'array',
         ];
