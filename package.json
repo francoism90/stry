@@ -29,7 +29,7 @@
         "hls.js": "^1.6.11",
         "laravel-echo": "^2.2.0",
         "laravel-precognition-vue-inertia": "^0.7.2",
-        "laravel-vite-plugin": "^2.0.0",
+        "laravel-vite-plugin": "^2.0.1",
         "pusher-js": "^8.4.0",
         "tailwindcss": "^4.1.12",
         "typescript": "~5.9.2",

@@ -39,8 +39,8 @@ importers:
         specifier: ^0.7.2
         version: 0.7.2(@inertiajs/vue3@2.1.2(vue@3.5.20(typescript@5.9.2)))(vue@3.5.20(typescript@5.9.2))
       laravel-vite-plugin:
-        specifier: ^2.0.0
-        version: 2.0.0(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1))
+        specifier: ^2.0.1
+        version: 2.0.1(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1))
       pusher-js:
         specifier: ^8.4.0
         version: 8.4.0
@@ -2380,8 +2380,8 @@ packages:
   laravel-precognition@0.7.2:
     resolution: {integrity: sha512-N3zKmkcwlE3f7MwbEUET9apMppYhkSI3ApIw4ICN+rqA131NmSL7o4Myoa/DsgeuRYzZvrgI6cQlbk47WaHy0Q==}
 
-  laravel-vite-plugin@2.0.0:
-    resolution: {integrity: sha512-pnaKHInJgiWpG/g+LmaISHl7D/1s5wnOXnrGiBdt4NOs+tYZRw0v/ZANELGX2/dGgHyEzO+iZ6x4idpoK04z/Q==}
+  laravel-vite-plugin@2.0.1:
+    resolution: {integrity: sha512-zQuvzWfUKQu9oNVi1o0RZAJCwhGsdhx4NEOyrVQwJHaWDseGP9tl7XUPLY2T8Cj6+IrZ6lmyxlR1KC8unf3RLA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -6049,7 +6049,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  laravel-vite-plugin@2.0.0(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)):
+  laravel-vite-plugin@2.0.1(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)):
     dependencies:
       picocolors: 1.1.1
       vite: 7.1.3(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)

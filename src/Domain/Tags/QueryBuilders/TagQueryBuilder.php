@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Domain\Tags\QueryBuilders;
 
 use ArrayAccess;
-use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Database\Eloquent\Builder;
 
 class TagQueryBuilder extends Builder
 {
-    public function fromOption(array|ArrayAccess $values = []): TagCollection
+    public function fromOption(array|ArrayAccess $values = []): self
     {
-        return $this->whereIn('ulid', $values)->get();
+        return $this->whereIn('ulid', $values);
     }
 
     public function type(TagType|string $value): self

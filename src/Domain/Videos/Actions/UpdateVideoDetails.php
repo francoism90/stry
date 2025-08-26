@@ -20,7 +20,7 @@ class UpdateVideoDetails
             );
 
             if (array_key_exists('tags', $attributes)) {
-                $video->syncTags(Tag::fromOption($attributes['tags'])->toArray());
+                $video->syncTags(Tag::fromOption($attributes['tags'] ?? [])->get());
             }
 
             if ($video->wasChanged('snapshot') && $video->hasMedia('thumbnail')) {

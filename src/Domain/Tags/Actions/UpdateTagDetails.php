@@ -18,7 +18,7 @@ class UpdateTagDetails
             );
 
             if (array_key_exists('related', $attributes)) {
-                $tag->syncRelated(Tag::fromOption($attributes['related'])->toArray());
+                $tag->syncRelated(Tag::fromOption($attributes['related'] ?? [])->get());
             }
 
             return $tag;
