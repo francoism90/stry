@@ -4,7 +4,7 @@ import type { Video } from '@/types'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
-  label: string
+  label?: string
   items?: Video[] | null
   actions?: NavigationMenuItem[]
 }
@@ -18,12 +18,13 @@ defineProps<Props>()
     class="flex flex-col gap-1"
   >
     <div class="flex items-center justify-between gap-2">
-      <h2 class="font-serif text-lg font-semibold tracking-tight">{{ label }}</h2>
+      <h2 class="font-serif text-lg font-semibold tracking-tight">
+        {{ label }}
+      </h2>
 
       <UNavigationMenu
-        v-if="actions?.length"
-        variant="link"
         :items="actions"
+        variant="link"
         :ui="{
           root: 'items-center gap-2',
           list: 'inline-flex size-full items-center gap-4',

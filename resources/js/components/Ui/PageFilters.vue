@@ -2,7 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
-  filters: NavigationMenuItem[] | undefined
+  filters?: NavigationMenuItem[]
 }
 
 defineProps<Props>()

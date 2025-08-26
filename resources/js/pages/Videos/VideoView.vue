@@ -50,7 +50,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         <template #left>
           <PageFeature :title="video.title" />
           <PageDetails :details />
-          <PageBadge :items="video.tags" />
+          <PageBadge :badges="video.tags" />
         </template>
 
         <template #right>

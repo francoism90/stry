@@ -3,7 +3,7 @@ import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 
 interface Props {
-  items: Tag[] | null | undefined
+  badges?: Tag[] | null
 }
 
 defineProps<Props>()
@@ -11,11 +11,11 @@ defineProps<Props>()
 
 <template>
   <div
-    v-if="items?.length"
+    v-if="badges?.length"
     class="flex flex-wrap gap-1 py-2"
   >
     <ULink
-      v-for="item in items"
+      v-for="item in badges"
       :key="item.id"
       :to="show.url(item.id)"
       class="block"
