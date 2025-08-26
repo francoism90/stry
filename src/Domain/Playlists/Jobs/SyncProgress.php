@@ -7,16 +7,16 @@ namespace Domain\Playlists\Jobs;
 use DateTime;
 use Domain\Playlists\Actions\SyncPlaylistProgress;
 use Domain\Playlists\Models\Playlist;
+use Domain\Users\Models\User;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncProgress implements ShouldBeUnique, ShouldQueue
+class SyncProgress implements ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -46,12 +46,13 @@ class SyncProgress implements ShouldBeUnique, ShouldQueue
 
     public function __construct(
         public Playlist $playlist,
-        public array $attributes = [],
+        public ?User $user = null,
+        public ?array $attributes = null,
     ) {}
 
     public function handle(): void
     {
-        app(SyncPlaylistProgress::class)->handle($this->playlist, $this->attributes);
+        app(SyncPlaylistProgress::class)->handle($this->playlist, $this->user, $this->attributes);
     }
 
     /**
@@ -62,11 +63,6 @@ class SyncProgress implements ShouldBeUnique, ShouldQueue
         return [
             (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
         ];
-    }
-
-    public function uniqueId(): string
-    {
-        return (string) $this->playlist->getKey();
     }
 
     public function retryUntil(): DateTime

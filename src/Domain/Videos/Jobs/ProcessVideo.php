@@ -13,14 +13,13 @@ use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Pipeline;
 
-class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class ProcessVideo implements ShouldBeUnique
 {
     use Batchable;
     use Dispatchable;
