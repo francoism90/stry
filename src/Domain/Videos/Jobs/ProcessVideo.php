@@ -12,14 +12,13 @@ use Domain\Videos\Actions\MarkVideoAsVerified;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Pipeline;
 
-class ProcessVideo implements ShouldBeUnique
+class ProcessVideo
 {
     use Batchable;
     use Dispatchable;
@@ -73,11 +72,6 @@ class ProcessVideo implements ShouldBeUnique
         return [
             (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
         ];
-    }
-
-    public function uniqueId(): string
-    {
-        return (string) $this->video->getKey();
     }
 
     public function retryUntil(): DateTime
