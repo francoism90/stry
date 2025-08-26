@@ -27,6 +27,7 @@ stry shell
 stry tinker
 stry artisan optimize
 stry a migrate
+stry a horizon:forget --all
 stry a videos:import
 ```
 
