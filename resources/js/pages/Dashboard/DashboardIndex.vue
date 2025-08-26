@@ -17,7 +17,7 @@ defineProps<Props>()
 
 <template>
   <PageBody>
-    <Deferred :data="['recent', 'recommended', 'watching']">
+    <Deferred :data="['recommended', 'recent', 'watching']">
       <template #fallback>
         <div class="sr-only">Loading sections...</div>
       </template>

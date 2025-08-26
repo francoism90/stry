@@ -30,7 +30,7 @@ const actions = ref<NavigationMenuItem[]>([
 ])
 
 const details = ref<NavigationMenuItem[]>([
-  { label: 'Created', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD HH:mm:ss').value },
+  { label: 'Added', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD').value },
   { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
 ])
 

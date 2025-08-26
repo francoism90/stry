@@ -22,7 +22,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const details = ref<NavigationMenuItem[]>([
-  { label: 'Created', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD HH:mm:ss').value },
+  { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
   { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
 ])
 
