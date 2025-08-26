@@ -6,7 +6,6 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
@@ -38,8 +37,8 @@ class Media extends BaseMedia
     protected function casts(): array
     {
         return [
-            'manipulations' => AsArrayObject::class,
-            'custom_properties' => AsArrayObject::class,
+            'manipulations' => 'array',
+            'custom_properties' => 'json',
             'generated_conversions' => 'array',
             'responsive_images' => 'array',
         ];
