@@ -18,7 +18,7 @@ class EventServiceProvider extends ServiceProvider
 
     protected function configureEventAutoDiscovery(): void
     {
-        DiscoverEvents::guessClassNamesUsing(function (SplFileInfo $file, $basePath) {
+        DiscoverEvents::guessClassNamesUsing(function (SplFileInfo $file): string {
             $class = trim(Str::replaceFirst(base_path('src'), '', $file->getRealPath()), DIRECTORY_SEPARATOR);
 
             return ucfirst(Str::camel(str_replace(
