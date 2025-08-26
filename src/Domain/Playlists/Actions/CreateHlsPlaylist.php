@@ -14,7 +14,7 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateHlsPlaylist
 {
-    public function handle(Playlist $playlist, string $disk, string $path): Playlist
+    public function handle(Playlist $playlist, string $disk, string $path): mixed
     {
         return DB::transaction(function () use ($playlist, $disk, $path) {
             // Make sure there is enough space available on the disk

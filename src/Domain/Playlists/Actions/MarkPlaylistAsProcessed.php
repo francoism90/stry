@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class MarkPlaylistAsProcessed
 {
-    public function handle(Playlist $playlist): Playlist
+    public function handle(Playlist $playlist): mixed
     {
         return DB::transaction(function () use ($playlist) {
             // Set state to verified if it can transition

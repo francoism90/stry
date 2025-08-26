@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateTagDetails
 {
-    public function handle(Tag $model, array $attributes): void
+    public function handle(Tag $tag, array $attributes = []): mixed
     {
-        DB::transaction(function () use ($model, $attributes) {
-            $model->updateOrFail(
-                Arr::only($attributes, $model->getFillable())
+        return DB::transaction(function () use ($tag, $attributes) {
+            $tag->updateOrFail(
+                Arr::only($attributes, $tag->getFillable())
             );
 
             if (array_key_exists('related', $attributes)) {
-                $model->syncRelated(Tag::fromOption($attributes['related'])->get());
+                $tag->syncRelated(Tag::fromOption($attributes['related'])->toArray());
             }
+
+            return $tag;
         });
     }
 }

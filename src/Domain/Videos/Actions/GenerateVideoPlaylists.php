@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Playlists\Actions\CreateHlsPlaylist;
-use Domain\Playlists\Actions\CreateNewPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +25,7 @@ class GenerateVideoPlaylists
                     $media = $video->getFirstMedia($key);
 
                     // Create a new playlist for the media
-                    $playlist = app(CreateNewPlaylist::class)->handle($video, $attributes);
+                    $playlist = $video->createPlaylist($attributes);
 
                     // Associate the media with the newly created playlist
                     app(CreateHlsPlaylist::class)->handle($playlist, $media->disk, $media->getPathRelativeToRoot());

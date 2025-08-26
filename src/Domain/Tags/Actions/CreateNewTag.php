@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class CreateNewTag
 {
-    public function handle(array $attributes): Tag
+    public function handle(array $attributes): mixed
     {
         return DB::transaction(function () use ($attributes) {
-            $attributes['type'] = TagType::from($attributes['type'])?->value;
+            // Ensure the type is a valid enum value
+            $attributes['type'] = TagType::from($attributes['type'])->value;
 
             $model = Tag::findOrCreate(
                 $attributes['name'],

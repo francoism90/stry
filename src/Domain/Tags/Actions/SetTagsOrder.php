@@ -6,19 +6,22 @@ namespace Domain\Tags\Actions;
 
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
 class SetTagsOrder
 {
-    public function handle(): void
+    public function handle(): mixed
     {
-        $items = collect();
+        return DB::transaction(function () {
+            $items = collect();
 
-        foreach (TagType::cases() as $type) {
-            $items = $items->merge($this->getTags($type));
-        }
+            foreach (TagType::cases() as $type) {
+                $items = $items->merge($this->getTags($type));
+            }
 
-        Tag::setNewOrder($items->pluck('id')->all());
+            Tag::setNewOrder($items->pluck('id')->all());
+        });
     }
 
     protected function getTags(TagType $value): LazyCollection

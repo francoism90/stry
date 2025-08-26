@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdatePlaylistActivity
 {
-    public function handle(Playlist $playlist): Playlist
+    public function handle(Playlist $playlist): mixed
     {
         return DB::transaction(function () use ($playlist) {
             // Mark the playlist as accessed

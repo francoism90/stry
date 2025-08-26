@@ -29,6 +29,18 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
+    public function createPlaylist(array $attributes = []): Playlist
+    {
+        return $this->playlists()->create([
+            'file_name' => 'index.m3u8',
+            'disk' => Playlist::getTranscodeDisk(),
+            'secret_disk' => Playlist::getRotationKeyDisk(),
+            'expires_at' => Playlist::getExpiresAfter(),
+            'accessed_at' => now(),
+            ...$attributes,
+        ]);
+    }
+
     public function getFirstPlaylist(...$type): ?Playlist
     {
         return $this

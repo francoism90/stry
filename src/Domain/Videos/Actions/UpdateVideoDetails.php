@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use Domain\Tags\Actions\SyncModelTags;
+use Domain\Tags\Models\Tag;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Arr;
@@ -20,11 +20,11 @@ class UpdateVideoDetails
             );
 
             if (array_key_exists('tags', $attributes)) {
-                app(SyncModelTags::class)->handle($video, $attributes['tags'] ?? []);
+                $video->syncTags(Tag::fromOption($attributes['tags'])->toArray());
             }
 
-            if ($video->wasChanged('snapshot')) {
-                $video->getFirstMedia('thumbnail')?->delete();
+            if ($video->wasChanged('snapshot') && $video->hasMedia('thumbnail')) {
+                $video->getFirstMedia('thumbnail')->delete();
             }
 
             VideoHasBeenUpdatedEvent::dispatch($video);

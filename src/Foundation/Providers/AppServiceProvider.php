@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
-use ArrayAccess;
 use BackedEnum;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
@@ -13,7 +12,6 @@ use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -85,11 +83,6 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureMacros(): void
     {
-        Builder::macro('fromOption', function (array|ArrayAccess|null $values = [], string $key = 'ulid') {
-            /** @var Builder $this */
-            return $this->whereIn($key, $values);
-        });
-
         Collection::macro('forEnum', function () {
             /** @var Collection $this */
             return $this

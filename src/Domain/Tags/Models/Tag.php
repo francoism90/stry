@@ -82,11 +82,6 @@ class Tag extends BaseTag implements HasMedia
         return 'ulid';
     }
 
-    public function videos(): MorphToMany
-    {
-        return $this->morphedByMany(Video::class, 'taggable');
-    }
-
     public function registerMediaCollections(): void
     {
         $this
@@ -102,6 +97,11 @@ class Tag extends BaseTag implements HasMedia
                 'image/png',
                 'image/webp',
             ]);
+    }
+
+    public function videos(): MorphToMany
+    {
+        return $this->morphedByMany(Video::class, 'taggable');
     }
 
     /**
