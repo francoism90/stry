@@ -11,7 +11,7 @@ import type { Tag } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 interface Props {
   tag: Tag
@@ -19,13 +19,13 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const details = ref<NavigationMenuItem[]>([
+const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.tag.id) }])
+const tabs = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url(props.tag.id) }])
+
+const details = computed<NavigationMenuItem[]>(() => [
   { label: 'Type', value: props.tag.category },
   { label: 'Videos', value: props.tag.videos + ' videos' },
 ])
-
-const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.tag.id) }])
-const tabs = ref<NavigationMenuItem[]>([{ label: 'General', to: edit.url(props.tag.id) }])
 
 useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload())
 </script>

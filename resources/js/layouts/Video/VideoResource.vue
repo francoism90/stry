@@ -13,7 +13,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useDateFormat } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 interface Props {
   video: Video
@@ -21,16 +21,16 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const details = ref<NavigationMenuItem[]>([
-  { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
-  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
-])
-
 const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.video.id) }])
 
 const tabs = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url(props.video.id) },
   { label: 'Playlists', to: index.url({ video: props.video.id }) },
+])
+
+const details = computed<NavigationMenuItem[]>(() => [
+  { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
+  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())

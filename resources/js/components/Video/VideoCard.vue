@@ -12,9 +12,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const preview = ref<boolean>(false)
-
 const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) || [])
-const link = computed(() => show.url(props.item.id))
 </script>
 
 <template>
@@ -27,7 +25,7 @@ const link = computed(() => show.url(props.item.id))
   >
     <Link
       class="block"
-      :href="link"
+      :href="show.url(props.item.id)"
       @mouseenter.prevent="preview = true"
       @mouseleave.prevent="preview = false"
       @touchstart.passive="preview = true"
