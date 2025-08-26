@@ -51,7 +51,7 @@ class ClearCommand extends Command implements Isolatable
 
         if (confirm('Are you sure you want to delete these playlists?')) {
             $playlists->each(function (Playlist $model) {
-                info("deleting {$model->type} ({$model->getKey()})");
+                info("deleting playlist type {$model->type} ({$model->getKey()})");
 
                 $model->delete();
             });
