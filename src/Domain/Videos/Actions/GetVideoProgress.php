@@ -25,6 +25,9 @@ class GetVideoProgress
         // Check if the video is in the viewed group
         $record = $group->videos()->find($video);
 
-        return round($record?->pivot?->options?->time ?: 0, 2);
+        // Find the progress record for the video
+        $progress = data_get($record?->pivot?->options, 'time');
+
+        return round(floatval($progress ?: 0), 2);
     }
 }
