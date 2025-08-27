@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
-use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
+use Domain\Playlists\Jobs\AccessedPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -23,7 +23,8 @@ class PlaylistManifestController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        PlaylistHasBeenViewedEvent::dispatchIf(
+        // Mark the playlist as accessed
+        AccessedPlaylist::dispatchIf(
             ! $playlist->accessed_at->lessThan(now()->subMinutes(10)),
             $playlist
         );

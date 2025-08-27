@@ -4,25 +4,29 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use DateTime;
-use Domain\Playlists\Actions\SyncPlaylistProgress;
+use Domain\Playlists\Actions\MarkPlaylistAsViewed;
 use Domain\Playlists\Models\Playlist;
-use Domain\Users\Models\User;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncProgress implements ShouldQueue
+class AccessedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
+    /**
+     * @var int
+     */
+    public $tries = 1;
 
     /**
      * @var int
@@ -46,13 +50,11 @@ class SyncProgress implements ShouldQueue
 
     public function __construct(
         public Playlist $playlist,
-        public ?User $user = null,
-        public ?array $attributes = null,
     ) {}
 
     public function handle(): void
     {
-        app(SyncPlaylistProgress::class)->handle($this->playlist, $this->user, $this->attributes);
+        app(MarkPlaylistAsViewed::class)->handle($this->playlist);
     }
 
     /**
@@ -61,12 +63,12 @@ class SyncProgress implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
+            (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
         ];
     }
 
-    public function retryUntil(): DateTime
+    public function uniqueId(): string
     {
-        return now()->addMinutes(30);
+        return (string) $this->playlist->getKey();
     }
 }

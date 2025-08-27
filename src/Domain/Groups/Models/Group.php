@@ -137,6 +137,11 @@ class Group extends Model implements HasMedia, Sortable
         return 'broadcasts';
     }
 
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
+    }
+
     public function buildSortQuery(): Builder
     {
         return static::query()

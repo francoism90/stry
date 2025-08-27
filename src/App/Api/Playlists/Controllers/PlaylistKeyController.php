@@ -21,6 +21,8 @@ class PlaylistKeyController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        return $playlist->getSecretFilesystem()->response($playlist->getPath($path));
+        $path = $playlist->getPath($path);
+
+        return $playlist->getSecretFilesystem()->response($path);
     }
 }

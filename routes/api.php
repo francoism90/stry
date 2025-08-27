@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Api\Authentication\Controllers\HomeController;
 use App\Api\Playlists\Controllers\PlaylistKeyController;
 use App\Api\Playlists\Controllers\PlaylistManifestController;
-use App\Api\Playlists\Controllers\PlaylistSessionController;
+use App\Api\Playlists\Controllers\PlaylistProgressController;
 use App\Api\Tags\Controllers\TagController;
 use App\Api\Videos\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +24,6 @@ Route::name('api.')->prefix('v1')->group(function () {
     Route::name('playlists.')->prefix('play')->group(function () {
         Route::get('/{playlist}/key/{path}', PlaylistKeyController::class)->name('key');
         Route::get('/{playlist}/playlist/{path}', PlaylistManifestController::class)->name('playlist');
-        Route::post('/{playlist}/session', PlaylistSessionController::class)->name('session');
+        Route::post('/{playlist}/progress', PlaylistProgressController::class)->name('progress');
     });
 });

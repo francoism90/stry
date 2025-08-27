@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Tags\Models\Tag;
-use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
+use Domain\Videos\Jobs\ProcessVideo;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +27,8 @@ class UpdateVideoDetails
                 $video->getFirstMedia('thumbnail')->delete();
             }
 
-            VideoHasBeenUpdatedEvent::dispatch($video);
+            // Regenerate the video
+            ProcessVideo::dispatch($video);
 
             return $video;
         });

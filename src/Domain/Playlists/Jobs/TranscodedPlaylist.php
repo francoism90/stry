@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use Domain\Playlists\Actions\UpdatePlaylistActivity;
+use DateTime;
+use Domain\Playlists\Actions\SetPlaylistTranscode;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncActivity implements ShouldBeUnique, ShouldQueue
+class TranscodedPlaylist implements ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -50,11 +45,12 @@ class SyncActivity implements ShouldBeUnique, ShouldQueue
 
     public function __construct(
         public Playlist $playlist,
+        public array $attributes = [],
     ) {}
 
     public function handle(): void
     {
-        app(UpdatePlaylistActivity::class)->handle($this->playlist);
+        app(SetPlaylistTranscode::class)->handle($this->playlist, $this->attributes);
     }
 
     /**
@@ -63,12 +59,12 @@ class SyncActivity implements ShouldBeUnique, ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
+            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
         ];
     }
 
-    public function uniqueId(): string
+    public function retryUntil(): DateTime
     {
-        return (string) $this->playlist->getKey();
+        return now()->addMinutes(30);
     }
 }

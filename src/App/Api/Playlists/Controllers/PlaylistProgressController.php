@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistViewRequest;
-use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
+use Domain\Playlists\Jobs\RecordPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-class PlaylistSessionController extends Controller implements HasMiddleware
+class PlaylistProgressController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -28,6 +28,9 @@ class PlaylistSessionController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        PlaylistHasBeenViewedEvent::dispatch($playlist, Auth::user(), $request->safe()->all());
+        // Only dispatch if we have progress data to sync
+        RecordPlaylist::dispatchIf($request->safe()->filled('progress'),
+            $playlist, Auth::user(), $request->safe()->all()
+        );
     }
 }

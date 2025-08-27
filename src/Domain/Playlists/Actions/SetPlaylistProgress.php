@@ -9,7 +9,7 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class SyncPlaylistProgress
+class SetPlaylistProgress
 {
     public function handle(Playlist $playlist, ?User $user = null, ?array $attributes = null): mixed
     {

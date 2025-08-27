@@ -7,7 +7,7 @@ namespace Domain\Playlists\Actions;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Support\Facades\DB;
 
-class SyncPlaylistTranscoding
+class SetPlaylistTranscode
 {
     public function handle(Playlist $playlist, array $attributes = []): mixed
     {

@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Domain\Playlists\Jobs;
 
 use DateTime;
-use Domain\Playlists\Actions\SyncPlaylistTranscoding;
+use Domain\Playlists\Actions\SetPlaylistProgress;
 use Domain\Playlists\Models\Playlist;
+use Domain\Users\Models\User;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncTranscoding implements ShouldQueue
+class RecordPlaylist implements ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -45,12 +46,13 @@ class SyncTranscoding implements ShouldQueue
 
     public function __construct(
         public Playlist $playlist,
-        public array $attributes = [],
+        public ?User $user = null,
+        public ?array $attributes = null,
     ) {}
 
     public function handle(): void
     {
-        app(SyncPlaylistTranscoding::class)->handle($this->playlist, $this->attributes);
+        app(SetPlaylistProgress::class)->handle($this->playlist, $this->user, $this->attributes);
     }
 
     /**

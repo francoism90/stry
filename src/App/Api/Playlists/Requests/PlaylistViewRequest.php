@@ -19,7 +19,7 @@ class PlaylistViewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'time' => ['nullable', 'numeric', 'min:0'],
+            'time' => ['sometimes', 'nullable', 'numeric', 'min:0'],
         ];
     }
 }
