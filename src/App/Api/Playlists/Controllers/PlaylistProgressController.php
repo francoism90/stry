@@ -29,7 +29,7 @@ class PlaylistProgressController extends Controller implements HasMiddleware
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
         // Only dispatch if we have progress data to sync
-        RecordPlaylist::dispatchIf($request->safe()->filled('progress'),
+        RecordPlaylist::dispatchIf($request->safe()->filled('time'),
             $playlist, Auth::user(), $request->safe()->all()
         );
     }
