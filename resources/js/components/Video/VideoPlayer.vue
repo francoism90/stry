@@ -21,7 +21,7 @@ const listener = () => {
     }
 
     if (started && seeked.value) {
-      debouncedRecord(currentTime)
+      debouncedRecord(Math.round(currentTime * 100) / 100)
     }
 
     return () => player.value
