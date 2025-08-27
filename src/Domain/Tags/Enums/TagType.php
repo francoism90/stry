@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Enums;
 
-enum TagType: string
+use Domain\Shared\Contracts\Enumerable;
+
+enum TagType: string implements Enumerable
 {
     case Serie = 'serie';
     case Studio = 'studio';

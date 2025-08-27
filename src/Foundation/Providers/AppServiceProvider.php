@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
-use BackedEnum;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Relates\Models\Related;
+use Domain\Shared\Contracts\Enumerable;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -30,11 +30,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureUrls();
+        $this->configureMacros();
         $this->configureModels();
         $this->configureMorphMap();
         $this->configureCommands();
         $this->configureJsonResource();
-        $this->configureMacros();
     }
 
     protected function registerTelescope(): void
@@ -85,11 +85,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Collection::macro('forEnum', function () {
             /** @var Collection $this */
-            return $this
-                ->map(fn (BackedEnum $item) => [
-                    'value' => method_exists($item, 'value') ? $item->value() : $item->value,
-                    'label' => method_exists($item, 'label') ? $item->label() : $item->name,
-                ]);
+            return $this->map(fn (Enumerable $item) => [
+                'value' => $item->value,
+                'label' => $item->label(),
+            ]);
         });
     }
 }
