@@ -114,7 +114,7 @@ class Playlist extends Model
      */
     public function broadcastOn(string $event): array
     {
-        return [$this, $this->getModel()];
+        return array_filter([$this, $this->getModel()]);
     }
 
     public function broadcastChannel(): string
