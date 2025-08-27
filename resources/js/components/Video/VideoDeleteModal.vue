@@ -11,7 +11,7 @@ const props = defineProps<Props>()
 
 const remove = () =>
   router.delete(destroy.url({ video: props.item.id }), {
-    onSuccess: () => router.visit('/'),
+    onSuccess: () => router.visit('/videos'),
   })
 </script>
 

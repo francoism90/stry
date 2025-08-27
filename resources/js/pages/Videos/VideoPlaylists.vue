@@ -14,5 +14,5 @@ defineProps<Props>()
 </script>
 
 <template>
-  <PageSection>playlists</PageSection>
+  <PageSection>TODO</PageSection>
 </template>
