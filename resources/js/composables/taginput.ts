@@ -2,11 +2,11 @@ import { index } from '@/actions/App/Api/Tags/Controllers/TagController'
 import type { Tag, Tags } from '@/types'
 import { http } from '@/utils/http'
 import { type QueryParams } from '@/wayfinder'
-import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
+import { computed, readonly, shallowRef, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
 export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
-  const state = ref<Tags>()
-  const items = ref<Tag[]>([])
+  const state = shallowRef<Tags>()
+  const items = shallowRef<Tag[]>([])
 
   const data = computed(() => mergeDeep([...items.value, ...(state.value?.data || [])]))
 

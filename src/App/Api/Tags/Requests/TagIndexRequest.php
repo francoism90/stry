@@ -23,6 +23,7 @@ class TagIndexRequest extends FormRequest
         return [
             'page' => ['sometimes', 'nullable', 'numeric'],
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'sort' => ['sometimes', 'nullable', 'string', 'in:popularity,ordered,alphabetical'],
             'type' => ['sometimes', 'nullable', 'string', Rule::enum(TagType::class)],
         ];
     }
