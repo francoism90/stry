@@ -13,7 +13,7 @@ use App\Api\Videos\Scopes\VideoListScope;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Events\VideoHasBeenViewedEvent;
+use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -66,12 +66,13 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        VideoHasBeenViewedEvent::dispatchIf(
-            ! $video->hasPlaylists('clip') || ! $video->hasPlaylists('preview'),
+        // Generate video playlists if they don't exist
+        PlaylistVideo::dispatchIf(
+            ! $video->hasPlaylist('clip') || ! $video->hasPlaylist('preview'),
             $video
         );
 
-        // Load similar videos
+        // Find similar looking videos
         $items = app(GetSimilarVideos::class)
             ->handle($video->loadMissing('tags'))
             ->toResourceCollection(VideoResource::class);

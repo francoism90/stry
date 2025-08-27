@@ -70,7 +70,7 @@ class ProcessVideo
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(10),
         ];
     }
 

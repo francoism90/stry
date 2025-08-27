@@ -19,7 +19,7 @@ class GenerateVideoPlaylists
             ]);
 
             $items
-                ->reject(fn (array $attributes, string $key) => $video->hasPlaylists($attributes['type']) || ! $video->hasMedia($key))
+                ->reject(fn (array $attributes, string $key) => $video->hasPlaylist($attributes['type']) || ! $video->hasMedia($key))
                 ->each(function (array $attributes, string $key) use ($video) {
                     // Get the first media item for the given key
                     $media = $video->getFirstMedia($key);

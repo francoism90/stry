@@ -41,7 +41,7 @@ trait InteractsWithPlaylists
         ]);
     }
 
-    public function getFirstPlaylist(...$type): ?Playlist
+    public function getFirstPlaylist(?string $type = null): ?Playlist
     {
         return $this
             ->playlists()
@@ -50,7 +50,7 @@ trait InteractsWithPlaylists
             ->first();
     }
 
-    public function hasPlaylists(...$type): bool
+    public function hasPlaylist(?string $type = null): bool
     {
         return $this
             ->playlists()

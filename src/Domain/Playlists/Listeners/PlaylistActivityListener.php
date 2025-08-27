@@ -21,7 +21,7 @@ class PlaylistActivityListener implements ShouldQueue
     /**
      * @var int
      */
-    public $timeout = 60 * 5;
+    public $timeout = 60 * 10;
 
     /**
      * @var int
