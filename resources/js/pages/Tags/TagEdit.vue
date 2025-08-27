@@ -93,7 +93,7 @@ const submit = async () =>
           multiple
           class="w-full"
           placeholder="Related tags..."
-          @update:search-term="(value) => query({ search: value })"
+          @update:search-term="(value: string) => query({ search: value })"
         >
           <template #item-label="{ item }">
             {{ item.name }}
