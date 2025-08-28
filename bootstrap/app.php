@@ -55,7 +55,6 @@ $app = Application::configure(basePath: $basePath)
         base_path('src/Domain/*/Listeners'),
     ])
     ->withCommands([
-        \Domain\Media\Commands\ClearCommand::class,
         \Domain\Playlists\Commands\ClearCommand::class,
         \Domain\Tags\Commands\CreateCommand::class,
         \Domain\Tags\Commands\SortCommand::class,

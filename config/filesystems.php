@@ -47,14 +47,6 @@ return [
             'report' => true,
         ],
 
-        'transcodes' => [
-            'driver' => 'local',
-            'root' => '/cache/transcodes',
-            'serve' => false,
-            'throw' => false,
-            'report' => true,
-        ],
-
         'secrets' => [
             'driver' => 'local',
             'root' => '/cache/secrets',

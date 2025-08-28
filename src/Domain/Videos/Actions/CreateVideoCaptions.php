@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Closure;
-use Domain\Media\Actions\CleanupTemporaryCache;
-use Domain\Media\Actions\ExtractMediaCaptions;
 use Domain\Videos\Models\Video;
+use FFMpeg\FFProbe\DataMapping\Stream;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Support\FFMpeg\Format\Video\WebVTT;
 
 class CreateVideoCaptions
 {
@@ -22,19 +25,35 @@ class CreateVideoCaptions
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            // Generate media captions
-            $paths = app(ExtractMediaCaptions::class)->handle($media);
+            // Initialize FFMpeg
+            $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-            // Add the sample video to the video model
-            $paths->each(fn (string $path) => $video
-                ->addMediaFromDisk($path, 'transcodes')
-                ->toMediaCollection('captions')
-            );
+            $temporaryDirectory = TemporaryDirectory::make();
 
-            $video->saveOrFail();
+            Collection::make($ffmpeg->getStreams())
+                ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')
+                ->each(function (Stream $stream) use ($temporaryDirectory, $ffmpeg, $video) {
+                    $index = $stream->get('index', 0);
+                    $language = data_get($stream->get('tags', []), 'language', 'und');
+                    $path = $temporaryDirectory->path("{$index}-{$language}.vtt");
+
+                    // Export the caption stream to a WebVTT file
+                    $ffmpeg
+                        ->export()
+                        ->inFormat(new WebVTT)
+                        ->addFilter(['-map', "0:{$index}"])
+                        ->save($path);
+
+                    // Add the caption file to the video model
+                    $video
+                        ->addMedia($path)
+                        ->preservingOriginal()
+                        ->toMediaCollection('captions')
+                        ->saveOrFail();
+                });
 
             // Clean up temporary files
-            app(CleanupTemporaryCache::class)->handle($media, 'captions');
+            $temporaryDirectory->delete();
 
             return $next($video);
         });
