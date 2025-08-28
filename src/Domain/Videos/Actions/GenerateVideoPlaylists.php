@@ -6,14 +6,15 @@ namespace Domain\Videos\Actions;
 
 use Domain\Playlists\Actions\CreateHlsPlaylist;
 use Domain\Videos\Models\Video;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class GenerateVideoPlaylists
 {
-    public function handle(Video $video): mixed
+    public function handle(Video $video): Collection
     {
         return DB::transaction(function () use ($video) {
-            $items = collect([
+            $items = Collection::make([
                 'clips' => ['type' => 'clip'],
                 'previews' => ['type' => 'preview', 'expires_at' => null],
             ]);
@@ -30,6 +31,8 @@ class GenerateVideoPlaylists
                     // Associate the media with the newly created playlist
                     app(CreateHlsPlaylist::class)->handle($playlist, $media->disk, $media->getPathRelativeToRoot());
                 });
+
+            return $items;
         });
     }
 }

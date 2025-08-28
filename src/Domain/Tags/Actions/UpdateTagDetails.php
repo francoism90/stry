@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateTagDetails
 {
-    public function handle(Tag $tag, array $attributes = []): mixed
+    public function handle(Tag $tag, array $attributes = []): Tag
     {
         return DB::transaction(function () use ($tag, $attributes) {
             $tag->updateOrFail(

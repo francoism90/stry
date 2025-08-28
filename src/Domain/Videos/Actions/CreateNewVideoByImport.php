@@ -12,7 +12,7 @@ use SplFileInfo;
 
 class CreateNewVideoByImport
 {
-    public function handle(User $user, string $disk, string $path): mixed
+    public function handle(User $user, string $disk, string $path): Video
     {
         return DB::transaction(function () use ($user, $disk, $path) {
             $file = new SplFileInfo($path);

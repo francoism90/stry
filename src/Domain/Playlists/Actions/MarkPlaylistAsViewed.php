@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class MarkPlaylistAsViewed
 {
-    public function handle(Playlist $playlist): mixed
+    public function handle(Playlist $playlist): Playlist
     {
         return DB::transaction(function () use ($playlist) {
             $playlist->touchQuietly('accessed_at');
