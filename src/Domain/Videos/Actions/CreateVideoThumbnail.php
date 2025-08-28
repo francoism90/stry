@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Closure;
-use Domain\Media\Actions\CleanupTemporaryCache;
 use Domain\Media\Actions\CreateMediaFrame;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\DB;
@@ -23,16 +22,17 @@ class CreateVideoThumbnail
             $media = $video->getClipCollection()->first();
 
             // Create a sample video from the segments
-            $path = app(CreateMediaFrame::class)->handle($media, floatval($video->snapshot ?? null));
+            $conversion = app(CreateMediaFrame::class)->handle($media, floatval($video->snapshot ?? 0));
 
             // Add the sample video to the video model
             $video
-                ->addMediaFromDisk($path, 'transcodes')
+                ->addMediaFromDisk($conversion->path('frame.jpg'), 'transcodes')
+                ->preservingOriginal()
                 ->toMediaCollection('thumbnail')
                 ->saveOrFail();
 
             // Clean up temporary files
-            app(CleanupTemporaryCache::class)->handle($media, 'frames');
+            $conversion->delete();
 
             return $next($video);
         });

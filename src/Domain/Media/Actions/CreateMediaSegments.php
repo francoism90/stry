@@ -8,35 +8,48 @@ use Domain\Media\Models\Media;
 use FFMpeg\Coordinate\TimeCode;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Support\FFMpeg\Format\Video\X264;
 
 class CreateMediaSegments
 {
-    public function handle(Media $media): Collection
+    public function handle(Media $media): TemporaryDirectory
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-        $segments = collect($this->getSegments($ffmpeg->getDurationInSeconds()));
+        $temporaryDirectory = TemporaryDirectory::make('transcodes');
 
-        return $segments->map(function (float $seconds, int $key) use ($ffmpeg, $media) {
-            $path = "segments/{$media->uuid}/segment_{$key}.mp4";
+        // Export each segment to a temporary file
+        $segments = $this->getSegments($ffmpeg->getDurationInSeconds())->map(function (float $seconds, int $key) use ($temporaryDirectory, $ffmpeg) {
+            $path = $temporaryDirectory->path("segment_{$key}.mp4");
 
             $ffmpeg
                 ->export()
+                ->toDisk('transcodes')
                 ->inFormat((new X264)
                     ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(2)])
                     ->setAdditionalParameters(['-reset_timestamps', '1', '-an'])
                     ->setKiloBitrate(1500)
                 )
                 ->addFilter(['-vf', 'scale=1280:720,setdar=dar=16/9'])
-                ->toDisk('transcodes')
                 ->save($path);
 
             return $path;
         });
+
+        // Create a sample video from the segments
+        FFMpeg::fromDisk('transcodes')
+            ->open($segments->toArray())
+            ->export()
+            ->inFormat((new X264)->setKiloBitrate(1500))
+            ->concatWithTranscoding(hasAudio: false)
+            ->toDisk('transcodes')
+            ->save($temporaryDirectory->path('sample.mp4'));
+
+        return $temporaryDirectory;
     }
 
-    protected function getSegments(int $duration, int $count = 10): array
+    protected function getSegments(int|float $duration, int $count = 8): Collection
     {
         $segments = range(0, $duration, $duration / $count);
 
@@ -48,6 +61,6 @@ class CreateMediaSegments
         $items->shift();
         $items->pop();
 
-        return $items->toArray();
+        return $items;
     }
 }

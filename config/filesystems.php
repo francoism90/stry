@@ -49,7 +49,7 @@ return [
 
         'transcodes' => [
             'driver' => 'local',
-            'root' => '/cache/transcodes',
+            'root' => sys_get_temp_dir(),
             'serve' => false,
             'throw' => false,
             'report' => true,

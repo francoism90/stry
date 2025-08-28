@@ -7,12 +7,15 @@ namespace Domain\Media\Actions;
 use Domain\Media\Models\Media;
 use Illuminate\Support\Number;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class CreateMediaFrame
 {
-    public function handle(Media $media, ?float $seconds = 0): string
+    public function handle(Media $media, float $seconds = 0): TemporaryDirectory
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
+
+        $temporaryDirectory = TemporaryDirectory::make('transcodes');
 
         $duration = $ffmpeg->getDurationInSeconds();
 
@@ -20,15 +23,12 @@ class CreateMediaFrame
 
         $frame = Number::clamp($seconds, 0, $duration);
 
-        $path = "frames/{$media->uuid}/thumb.jpg";
-
         $ffmpeg
-            ->open($media->getPathRelativeToRoot())
             ->getFrameFromSeconds(round($frame, 2))
             ->export()
             ->toDisk('transcodes')
-            ->save($path);
+            ->save($temporaryDirectory->path('frame.jpg'));
 
-        return $path;
+        return $temporaryDirectory;
     }
 }
