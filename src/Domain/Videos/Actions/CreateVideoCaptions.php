@@ -28,7 +28,7 @@ class CreateVideoCaptions
             // Initialize FFMpeg
             $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-            $temporaryDirectory = TemporaryDirectory::make();
+            $temporaryDirectory = TemporaryDirectory::make('transcodes');
 
             Collection::make($ffmpeg->getStreams())
                 ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')

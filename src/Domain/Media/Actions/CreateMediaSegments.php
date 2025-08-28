@@ -17,12 +17,10 @@ class CreateMediaSegments
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-        $temporaryDirectory = TemporaryDirectory::make();
-
-        $segments = $this->getSegments($ffmpeg->getDurationInSeconds());
+        $temporaryDirectory = TemporaryDirectory::make('transcodes');
 
         // Export each segment to a temporary file
-        $segments->map(function (float $seconds, int $key) use ($temporaryDirectory, $ffmpeg) {
+        $segments = $this->getSegments($ffmpeg->getDurationInSeconds())->map(function (float $seconds, int $key) use ($temporaryDirectory, $ffmpeg) {
             $path = $temporaryDirectory->path("segment_{$key}.mp4");
 
             $ffmpeg
@@ -40,11 +38,12 @@ class CreateMediaSegments
         });
 
         // Create a sample video from the segments
-        FFMpeg::open($segments->toArray())
+        FFMpeg::fromDisk('transcodes')
+            ->open($segments->toArray())
             ->export()
-            ->toDisk('transcodes')
             ->inFormat((new X264)->setKiloBitrate(1500))
             ->concatWithTranscoding(hasAudio: false)
+            ->toDisk('transcodes')
             ->save($temporaryDirectory->path('sample.mp4'));
 
         return $temporaryDirectory;

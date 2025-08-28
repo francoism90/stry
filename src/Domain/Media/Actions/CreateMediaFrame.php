@@ -15,7 +15,7 @@ class CreateMediaFrame
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-        $temporaryDirectory = TemporaryDirectory::make();
+        $temporaryDirectory = TemporaryDirectory::make('transcodes');
 
         $duration = $ffmpeg->getDurationInSeconds();
 
@@ -28,8 +28,6 @@ class CreateMediaFrame
             ->export()
             ->toDisk('transcodes')
             ->save($temporaryDirectory->path('frame.jpg'));
-
-        logger($temporaryDirectory->path('frame.jpg'));
 
         return $temporaryDirectory;
     }
