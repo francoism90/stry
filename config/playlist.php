@@ -37,7 +37,7 @@ return [
         'auth:sanctum',
         'signed',
         'subscribed',
-        'cache:private;max_age=3600;immutable',
+        'cache:private;max_age=259200;immutable',
     ],
 
     /**

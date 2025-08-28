@@ -12,7 +12,6 @@ ShmSize=512m
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
-Volume=stry-cache:/cache:rw,z
 Network=stry.network
 
 [Service]

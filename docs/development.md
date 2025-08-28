@@ -31,7 +31,6 @@ git clone git@github.com:francoism90/stry.git
 ```diff
 +Volume=${APP_PATH}:/app:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
-Volume=stry-cache:/cache:rw,z,U
 ```
 
 **NOTE**: The volume `U` flag should only be used in `stry.container`.
