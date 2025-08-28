@@ -24,10 +24,12 @@ class CreateMediaFrame
         $frame = Number::clamp($seconds, 0, $duration);
 
         $ffmpeg
-            ->open($media->getPathRelativeToRoot())
             ->getFrameFromSeconds(round($frame, 2))
             ->export()
+            ->toDisk('transcodes')
             ->save($temporaryDirectory->path('frame.jpg'));
+
+        logger($temporaryDirectory->path('frame.jpg'));
 
         return $temporaryDirectory;
     }

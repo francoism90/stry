@@ -47,6 +47,14 @@ return [
             'report' => true,
         ],
 
+        'transcodes' => [
+            'driver' => 'local',
+            'root' => sys_get_temp_dir(),
+            'serve' => false,
+            'throw' => false,
+            'report' => true,
+        ],
+
         'secrets' => [
             'driver' => 'local',
             'root' => '/cache/secrets',

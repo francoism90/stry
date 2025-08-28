@@ -26,7 +26,7 @@ class CreateVideoPreview
 
             // Add the sample video to the video model
             $video
-                ->addMedia($conversion->path('sample.mp4'))
+                ->addMediaFromDisk($conversion->path('sample.mp4'), 'transcodes')
                 ->preservingOriginal()
                 ->toMediaCollection('previews')
                 ->saveOrFail();

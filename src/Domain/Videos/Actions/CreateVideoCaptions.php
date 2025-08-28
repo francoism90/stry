@@ -40,13 +40,14 @@ class CreateVideoCaptions
                     // Export the caption stream to a WebVTT file
                     $ffmpeg
                         ->export()
+                        ->toDisk('transcodes')
                         ->inFormat(new WebVTT)
                         ->addFilter(['-map', "0:{$index}"])
                         ->save($path);
 
                     // Add the caption file to the video model
                     $video
-                        ->addMedia($path)
+                        ->addMediaFromDisk($path, 'transcodes')
                         ->preservingOriginal()
                         ->toMediaCollection('captions')
                         ->saveOrFail();

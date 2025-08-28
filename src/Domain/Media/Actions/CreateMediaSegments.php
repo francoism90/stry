@@ -27,6 +27,7 @@ class CreateMediaSegments
 
             $ffmpeg
                 ->export()
+                ->toDisk('transcodes')
                 ->inFormat((new X264)
                     ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(2)])
                     ->setAdditionalParameters(['-reset_timestamps', '1', '-an'])
@@ -41,6 +42,7 @@ class CreateMediaSegments
         // Create a sample video from the segments
         FFMpeg::open($segments->toArray())
             ->export()
+            ->toDisk('transcodes')
             ->inFormat((new X264)->setKiloBitrate(1500))
             ->concatWithTranscoding(hasAudio: false)
             ->save($temporaryDirectory->path('sample.mp4'));
