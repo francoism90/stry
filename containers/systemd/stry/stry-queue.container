@@ -8,6 +8,7 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=horizon
 LogDriver=none
+ShmSize=512m
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
