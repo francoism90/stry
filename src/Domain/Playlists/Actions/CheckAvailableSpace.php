@@ -37,7 +37,7 @@ class CheckAvailableSpace
     {
         $absolutePath = $adapter->path('');
 
-        $freeSpace = ceil(disk_free_space($absolutePath) ?: 0);
+        $freeSpace = round(disk_free_space($absolutePath) ?: 0);
 
         throw_if($limit > 0 && ($limit > $freeSpace), DiskUsageException::exceededLimit($absolutePath, $freeSpace));
     }
