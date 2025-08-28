@@ -8,10 +8,8 @@ use Domain\Playlists\Models\Playlist;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
-use function Laravel\Prompts\table;
 
 class ClearCommand extends Command implements Isolatable
 {
@@ -23,7 +21,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $description = 'Clear all generated playlists';
+    protected $description = 'Clear generated playlists';
 
     public function handle(): void
     {
@@ -38,23 +36,10 @@ class ClearCommand extends Command implements Isolatable
             return;
         }
 
-        table(
-            headers: ['ID', 'Disk', 'Type', 'Model Type', 'Model ID'],
-            rows: $playlists->map(fn (Playlist $playlist) => [
-                $playlist->getKey(),
-                $playlist->disk,
-                $playlist->type,
-                $playlist->playlistable_type,
-                $playlist->playlistable_id,
-            ])->all()
-        );
+        $playlists->each(function (Playlist $model) {
+            info("deleting playlist with type {$model->type} ({$model->getKey()})");
 
-        if (confirm('Are you sure you want to delete these playlists?')) {
-            $playlists->each(function (Playlist $model) {
-                info("deleting playlist type {$model->type} ({$model->getKey()})");
-
-                $model->delete();
-            });
-        }
+            $model->delete();
+        });
     }
 }
