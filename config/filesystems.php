@@ -55,14 +55,6 @@ return [
             'report' => true,
         ],
 
-        'secrets' => [
-            'driver' => 'local',
-            'root' => '/cache/secrets',
-            'serve' => false,
-            'throw' => false,
-            'report' => true,
-        ],
-
         'media' => [
             'driver' => 'local',
             'root' => '/data/media',
@@ -137,6 +129,23 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'public',
+            'throw' => false,
+            'report' => true,
+            'options' => [
+                'CacheControl' => 'public, max-age=259200, immutable',
+            ],
+        ],
+
+        'secrets' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => 'secrets',
+            'url' => env('AWS_URL').'/secrets',
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'private',
             'throw' => false,
             'report' => true,
             'options' => [

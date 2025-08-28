@@ -48,6 +48,7 @@ mc mb myminio/local
 mc mb myminio/assets
 mc mb myminio/conversions
 mc mb myminio/segments
+mc mb myminio/secrets
 ```
 
 1. Set anonymous `download` permissions on required buckets:
