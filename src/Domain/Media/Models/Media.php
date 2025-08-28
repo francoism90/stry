@@ -14,6 +14,9 @@ class Media extends BaseMedia
      * @var array<int, string>
      */
     protected $fillable = [
+        'model_id',
+        'model_type',
+        'uuid',
         'name',
         'file_name',
         'mime_type',
@@ -25,13 +28,7 @@ class Media extends BaseMedia
         'custom_properties',
         'generated_conversions',
         'responsive_images',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'user_id',
+        'order_column',
     ];
 
     protected function casts(): array

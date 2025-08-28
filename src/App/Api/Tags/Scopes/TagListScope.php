@@ -17,8 +17,8 @@ readonly class TagListScope
         $query
             ->withCount('videos')
             ->when($this->type,
-                fn ($query, $type) => $query->where('type', $type)->ordered(),
-                fn ($query) => $query->inRandomOrder()
+                fn (TagQueryBuilder $query, string $type) => $query->type($type)->ordered(),
+                fn (TagQueryBuilder $query) => $query->inRandomOrder()
             );
     }
 }

@@ -11,9 +11,9 @@ use Illuminate\Support\LazyCollection;
 
 class SetTagsOrder
 {
-    public function handle(): mixed
+    public function handle(): void
     {
-        return DB::transaction(function () {
+        DB::transaction(function () {
             $items = collect();
 
             foreach (TagType::cases() as $type) {

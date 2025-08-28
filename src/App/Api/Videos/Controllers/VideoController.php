@@ -10,6 +10,7 @@ use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -25,19 +26,25 @@ class VideoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(): Response
     {
-        //
+        Gate::authorize('viewAny', Video::class);
+
+        return response()->noContent();
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        Gate::authorize('create', Video::class);
+
+        return response()->noContent();
     }
 
-    public function show(string $id)
+    public function show(Video $video): Response
     {
-        //
+        Gate::authorize('view', $video);
+
+        return response()->noContent();
     }
 
     public function update(VideoUpdateRequest $request, Video $video): VideoResource
@@ -49,8 +56,10 @@ class VideoController extends Controller implements HasMiddleware
         return VideoResource::make($video);
     }
 
-    public function destroy(string $id)
+    public function destroy(Video $video): Response
     {
-        //
+        Gate::authorize('delete', $video);
+
+        return response()->noContent();
     }
 }

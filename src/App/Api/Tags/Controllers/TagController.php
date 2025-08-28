@@ -10,6 +10,7 @@ use App\Api\Tags\Scopes\TagFilterScope;
 use Domain\Tags\Models\Tag;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -36,27 +37,31 @@ class TagController extends Controller implements HasMiddleware
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        Gate::authorize('create', Tag::class);
+
+        return response()->noContent();
     }
 
-    public function show(string $id)
+    public function show(Tag $tag): Response
     {
-        //
+        Gate::authorize('view', $tag);
+
+        return response()->noContent();
     }
 
-    public function update(Request $request, Tag $tag): TagResource
+    public function update(Tag $tag): Response
     {
         Gate::authorize('update', $tag);
 
-        // $tag = app(UpdateTagDetails::class)->handle($tag, $request->validated());
-
-        return TagResource::make($tag);
+        return response()->noContent();
     }
 
-    public function destroy(string $id)
+    public function destroy(Tag $tag): Response
     {
-        //
+        Gate::authorize('delete', $tag);
+
+        return response()->noContent();
     }
 }

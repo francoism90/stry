@@ -8,6 +8,7 @@ use Domain\Playlists\Jobs\AccessedPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
@@ -25,7 +26,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
 
         // Mark the playlist as accessed
         AccessedPlaylist::dispatchIf(
-            ! $playlist->accessed_at->lessThan(now()->subMinutes(10)),
+            ! Carbon::parse($playlist->accessed_at)->lessThan(now()->subMinutes(10)),
             $playlist
         );
 

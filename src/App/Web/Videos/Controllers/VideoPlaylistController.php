@@ -34,45 +34,41 @@ class VideoPlaylistController implements HasMiddleware
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        abort(404);
     }
 
-    public function create()
+    public function create(): Response
     {
-        // Gate::authorize('create', Video::class);
-
-        // return Inertia::render('Videos/VideoCreate', [
-        //     //
-        // ]);
+        abort(404);
     }
 
-    public function show(Video $video, Playlist $playlist)
+    public function show(Video $video, Playlist $playlist): Response
     {
         Gate::authorize('update', [$video, $playlist]);
 
-        //
+        abort(404);
     }
 
-    public function edit(Video $video, Playlist $playlist)
+    public function edit(Video $video, Playlist $playlist): Response
     {
         Gate::authorize('update', [$video, $playlist]);
 
-        //
+        abort(404);
     }
 
-    public function update(Request $request, Video $video, Playlist $playlist)
+    public function update(Request $request, Video $video, Playlist $playlist): Response
     {
-        //
+        Gate::authorize('update', [$video, $playlist]);
+
+        abort(404);
     }
 
-    public function destroy(Video $video, Playlist $playlist)
+    public function destroy(Video $video, Playlist $playlist): Response
     {
         Gate::authorize('delete', [$video, $playlist]);
 
-        // $playlist->delete();
-
-        // return redirect()->route('videos.index');
+        abort(404);
     }
 }
