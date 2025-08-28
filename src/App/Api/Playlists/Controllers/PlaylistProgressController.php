@@ -20,7 +20,7 @@ class PlaylistProgressController extends Controller implements HasMiddleware
         return [
             new Middleware('auth:sanctum'),
             new Middleware('verified'),
-            new Middleware('precognitive'),
+            new Middleware('subscribed'),
         ];
     }
 
