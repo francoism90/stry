@@ -15,6 +15,6 @@ readonly class TagFilterScope
     public function __invoke(Builder $query): void
     {
         $query
-            ->when($this->sort === 'popularity', fn ($query) => $query->orderByDesc('videos'));
+            ->when($this->sort === 'popularity', fn (Builder $query) => $query->orderByDesc('videos'));
     }
 }

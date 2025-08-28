@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateVideoDetails
 {
-    public function handle(Video $video, array $attributes): void
+    public function handle(Video $video, array $attributes): Video
     {
-        DB::transaction(function () use ($video, $attributes) {
+        return DB::transaction(function () use ($video, $attributes) {
             $video->updateOrFail(
                 Arr::only($attributes, $video->getFillable())
             );

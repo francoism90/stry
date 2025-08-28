@@ -7,18 +7,11 @@ namespace Domain\Videos\Actions;
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
-use Illuminate\Support\Facades\Auth;
 
 class GetVideoProgress
 {
-    public function handle(Video $video): float
+    public function handle(Video $video, User $user): float
     {
-        $user = Auth::user();
-
-        if (! $user instanceof User) {
-            return 0;
-        }
-
         // Ensure the user has a viewed group
         $group = $user->findOrCreateGroup(GroupType::Viewed);
 

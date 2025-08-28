@@ -62,7 +62,7 @@ class VideoController extends Controller implements HasMiddleware
         // ]);
     }
 
-    public function show(Video $video): Response
+    public function show(Video $video, Request $request): Response
     {
         Gate::authorize('view', $video);
 
@@ -81,18 +81,18 @@ class VideoController extends Controller implements HasMiddleware
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
-            'progress' => fn () => app(GetVideoProgress::class)->handle($video),
+            'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
             'queue' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
         ]);
     }
 
-    public function edit(Video $video): Response
+    public function edit(Video $video, Request $request): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
             'video' => fn () => $video->loadMissing('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
-            'progress' => fn () => app(GetVideoProgress::class)->handle($video),
+            'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
         ]);
     }
 

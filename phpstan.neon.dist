@@ -1,0 +1,14 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+    level: 5
+    checkModelProperties: true
+    checkOctaneCompatibility: true
+    checkUnusedViews: true
+    checkAuthCallsWhenInRequestScope: true
+    checkConfigTypes: true
+    paths:
+        - src/
+        - tests/

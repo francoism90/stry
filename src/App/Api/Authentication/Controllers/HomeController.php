@@ -21,8 +21,8 @@ class HomeController extends Controller implements HasMiddleware
     public function __invoke(): JsonResponse
     {
         return response()->json([
-            'success' => true,
-            'message' => __('Welcome to the API.'),
+            'status' => 'ok',
+            'message' => 'Welcome to the API',
         ]);
     }
 }

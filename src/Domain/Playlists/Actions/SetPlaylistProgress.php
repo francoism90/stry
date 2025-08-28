@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class SetPlaylistProgress
 {
-    public function handle(Playlist $playlist, ?User $user = null, ?array $attributes = null): mixed
+    public function handle(Playlist $playlist, User $user, ?array $attributes = null): Playlist
     {
         return DB::transaction(function () use ($playlist, $user, $attributes) {
-            if (! $user || ! $model = $playlist->getModel()) {
-                return;
+            if (! $model = $playlist->getModel()) {
+                return $playlist;
             }
 
             // Ensure the user has a viewed group
@@ -23,6 +23,8 @@ class SetPlaylistProgress
 
             // Update with the playlist attributes
             $model->syncGroup($group, $attributes);
+
+            return $playlist;
         });
     }
 }

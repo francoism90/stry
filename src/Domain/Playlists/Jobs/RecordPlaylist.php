@@ -46,7 +46,7 @@ class RecordPlaylist implements ShouldQueueAfterCommit
 
     public function __construct(
         public Playlist $playlist,
-        public ?User $user = null,
+        public User $user,
         public ?array $attributes = null,
     ) {}
 

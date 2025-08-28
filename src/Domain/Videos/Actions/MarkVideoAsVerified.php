@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class MarkVideoAsVerified
 {
-    public function handle(Video $video, Closure $next): void
+    public function handle(Video $video, Closure $next): mixed
     {
-        DB::transaction(function () use ($video, $next) {
+        return DB::transaction(function () use ($video, $next) {
             if ($video->state->canTransitionTo(Verified::class)) {
                 $video->state->transitionTo(Verified::class);
             }
