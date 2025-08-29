@@ -8,7 +8,6 @@ use Database\Factories\UserFactory;
 use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Collections\UserCollection;
-use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
@@ -35,7 +34,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasRoles;
     use HasStates;
     use HasUlids;
-    use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithVideos;
     use Notifiable;
@@ -175,6 +173,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'name' => (string) $this->name,
             'email' => (string) $this->email,
             'email_verified_at' => (int) $this->email_verified_at?->getTimestamp(),
+            'state' => (string) $this->state,
             'created' => (int) $this->created_at->getTimestamp(),
             'updated' => (int) $this->updated_at->getTimestamp(),
         ];

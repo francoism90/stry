@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Actions;
 
-use Domain\Playlists\Jobs\ProcessPlaylist;
 use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Support\Facades\DB;

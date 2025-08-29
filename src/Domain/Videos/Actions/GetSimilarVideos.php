@@ -26,20 +26,22 @@ class GetSimilarVideos
         $query = str($video->name)
             ->title()
             ->matchAll('/[\p{L}\p{N}]+/u')
-            ->reject(fn (string $word) => in_array(mb_strtolower($word), ['and', 'a', 'or']))
-            ->take(7)
+            ->reject(fn (string $word = '') => str($word)->contains(['and', 'a', 'or'], true))
+            ->take(6)
             ->merge([$video->identifier])
             ->filter()
             ->unique();
 
         $items = LazyCollection::make(function () use ($query) {
             // e.g. foo bar 1, foo bar, foo
-            for ($i = $query->count(); $i >= 1; $i--) {
+            $words = $query->count();
+
+            for ($i = $words; $i > 0; $i--) {
                 $phrase = (string) $query->take($i)->implode(' ');
 
                 yield Video::search($phrase)
                     ->where('state', Verified::$name)
-                    ->take(7)
+                    ->take(8)
                     ->cursor();
             }
         });

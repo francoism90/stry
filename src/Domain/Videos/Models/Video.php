@@ -9,7 +9,6 @@ use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
-use Domain\Videos\Concerns\InteractsWithCache;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
@@ -37,7 +36,6 @@ class Video extends Model implements HasMedia
     use HasTags;
     use HasTranslations;
     use HasUlids;
-    use InteractsWithCache;
     use InteractsWithGroups;
     use InteractsWithMedia;
     use InteractsWithPlaylists;
