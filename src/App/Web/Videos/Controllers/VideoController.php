@@ -48,18 +48,18 @@ class VideoController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         Gate::authorize('create', Video::class);
+
+        abort(404);
     }
 
-    public function create()
+    public function create(): Response
     {
         Gate::authorize('create', Video::class);
 
-        // return Inertia::render('Videos/VideoCreate', [
-        //     //
-        // ]);
+        abort(404);
     }
 
     public function show(Video $video, Request $request): Response
@@ -72,17 +72,12 @@ class VideoController extends Controller implements HasMiddleware
             $video
         );
 
-        // Find similar looking videos
-        $items = app(GetSimilarVideos::class)
-            ->handle($video->loadMissing('tags'))
-            ->toResourceCollection(VideoResource::class);
-
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
             'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
-            'queue' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
+            'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
         ]);
     }
 
@@ -91,7 +86,7 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
-            'video' => fn () => $video->loadMissing('tags')->append(['content', 'titles'])->toResource(VideoResource::class),
+            'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
             'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
         ]);
     }
