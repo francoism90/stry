@@ -12,7 +12,7 @@ class SetPlaylistTranscode
     public function handle(Playlist $playlist, array $attributes = []): mixed
     {
         return DB::transaction(function () use ($playlist, $attributes) {
-            $playlist->updateQuietly(['progress' => $attributes]);
+            $playlist->updateOrFail(['progress' => $attributes]);
 
             return $playlist;
         });
