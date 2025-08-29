@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Actions;
 
-use Domain\Playlists\Jobs\TranscodedPlaylist;
+use Domain\Playlists\Jobs\ProcessPlaylist;
 use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Support\Facades\DB;
@@ -37,10 +37,10 @@ class CreateHlsPlaylist
             }
 
             // Monitor progress of the transcoding
-            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => TranscodedPlaylist::dispatch(
+            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => ProcessPlaylist::dispatch(
                 playlist: $playlist,
-                attributes: compact('percentage', 'remaining', 'rate'),
-            ));
+                attributes: ['progress' => compact('percentage', 'remaining', 'rate')],
+            )->beforeCommit());
 
             // Find the video format for the given media file
             $video = app(GetVideoFormat::class)->handle($disk, $path);

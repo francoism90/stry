@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Support\MediaLibrary\Jobs;
 
 use DateTime;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Spatie\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob as BaseGenerateResponsiveImagesJob;
 
-class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob
+class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implements ShouldQueueAfterCommit
 {
     /**
      * @var int

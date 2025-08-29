@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Domain\Playlists\Jobs;
 
 use DateTime;
-use Domain\Playlists\Actions\SetPlaylistTranscode;
+use Domain\Playlists\Actions\UpdatePlaylistDetails;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class TranscodedPlaylist implements ShouldQueueAfterCommit
+class ProcessPlaylist implements ShouldQueue
 {
     use Batchable;
     use Dispatchable;
@@ -50,7 +50,7 @@ class TranscodedPlaylist implements ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(SetPlaylistTranscode::class)->handle($this->playlist, $this->attributes);
+        app(UpdatePlaylistDetails::class)->handle($this->playlist, $this->attributes);
     }
 
     /**

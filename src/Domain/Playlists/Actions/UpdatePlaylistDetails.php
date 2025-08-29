@@ -7,12 +7,12 @@ namespace Domain\Playlists\Actions;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Support\Facades\DB;
 
-class SetPlaylistTranscode
+class UpdatePlaylistDetails
 {
     public function handle(Playlist $playlist, array $attributes = []): mixed
     {
         return DB::transaction(function () use ($playlist, $attributes) {
-            $playlist->updateOrFail(['progress' => $attributes]);
+            $playlist->updateOrFail($attributes);
 
             return $playlist;
         });

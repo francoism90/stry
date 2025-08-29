@@ -15,7 +15,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class AccessedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
+class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;

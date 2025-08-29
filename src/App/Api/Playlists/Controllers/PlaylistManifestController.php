@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
-use Domain\Playlists\Jobs\AccessedPlaylist;
+use Domain\Playlists\Jobs\ViewedPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -24,7 +24,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
         // Mark the playlist as accessed
-        AccessedPlaylist::dispatchIf(
+        ViewedPlaylist::dispatchIf(
             ! $playlist->accessed_at->lessThan(now()->subMinutes(10)),
             $playlist
         );
