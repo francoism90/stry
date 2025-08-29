@@ -19,7 +19,7 @@ class GetSimilarVideos
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->unique('id')->take($limit)->toResourceCollection(VideoResource::class);
+        ])->unique('id')->loadMissing('tags')->take($limit)->toResourceCollection(VideoResource::class);
     }
 
     protected function phrases(Video $video): LazyCollection
