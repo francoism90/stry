@@ -31,7 +31,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 4;
+    public $timeout = 60 * 60 * 8;
 
     /**
      * @var int

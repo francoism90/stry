@@ -37,10 +37,10 @@ class CreateHlsPlaylist
             }
 
             // Monitor progress of the transcoding
-            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => ProcessPlaylist::dispatch(
+            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => app(UpdatePlaylistDetails::class)->handle(
                 playlist: $playlist,
                 attributes: ['progress' => compact('percentage', 'remaining', 'rate')],
-            )->beforeCommit());
+            ));
 
             // Find the video format for the given media file
             $video = app(GetVideoFormat::class)->handle($disk, $path);
