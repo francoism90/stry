@@ -204,6 +204,11 @@ class Playlist extends Model
         return $this->getUrlResolver($this->file_name);
     }
 
+    public function getPercentage(): float
+    {
+        return floor(data_get($this->progress, 'percentage', 0));
+    }
+
     public function isValid(): bool
     {
         if (! $this->state->equals(Verified::class)) {

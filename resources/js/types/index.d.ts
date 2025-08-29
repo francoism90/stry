@@ -43,6 +43,7 @@ export type TagMenuItem = Tag & SelectMenuItem
 export type Playlist = Model & {
   asset: PlayerSrc
   valid: boolean
+  percent: number | null
   state: string
   expires_at: string | null
 }
