@@ -15,11 +15,17 @@ class GetSimilarVideos
 {
     public function handle(Video $video, int $limit = 20): ResourceCollection
     {
-        return VideoCollection::make([
+        $items = VideoCollection::make([
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->unique('id')->loadMissing('tags')->take($limit)->toResourceCollection(VideoResource::class);
+        ]);
+
+        return $items
+            ->unique('id')
+            ->take($limit)
+            ->loadMissing('tags')
+            ->toResourceCollection(VideoResource::class);
     }
 
     protected function phrases(Video $video): LazyCollection
