@@ -1,20 +1,20 @@
-# Stry
+# stry
 
 ## Introduction
 
-Stry is a video on demand (VOD) media distribution system that allows users to access to videos, television shows and movies.
+stry is a video-on-demand (VOD) media distribution system that allows users to access to videos, television shows and movies.
 
-It uses the [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls) package, offering built-in HLS playlist generation with segment encryption and authorization.
+It uses the [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls) package, offering built-in HLS playlist generation with bitrate support, segment encryption and authorization.
 
 ## Demo
 
 For WIP screenshots, please checkout: <https://github.com/francoism90/.github/tree/main/stry>
 
-A production demo is planned, but not yet available.
+A hosted demo is planned, but not yet available.
 
 ## Details
 
-Stry uses the following stack:
+It's build around the following stack:
 
 - [Laravel 12.x](https://laravel.com/)
 - [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)
