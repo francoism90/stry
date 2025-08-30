@@ -16,7 +16,7 @@ To learn more about MinIO, consider reading the following resources:
 ## Prerequisites
 
 - MinIO up-and-running
-- MinIO Client `mc` (included in devcontainer)
+- MinIO Client `mc` (included in base-container)
 
 ## Usage
 
@@ -26,20 +26,20 @@ To learn more about MinIO, consider reading the following resources:
 systemctl --user start stry-minio
 ```
 
-1. Setup connection using the generated access keys:
+1. Setup connection using the generated credentials of `minio.env`:
 
 ```bash
-mc alias set myminio http://systemd-stry-minio:9000 <username>
+mc alias set myminio http://systemd-stry-minio:9000 <MINIO_ROOT_USER>
 mc admin info myminio
 ```
 
 1. Generate admin credentials:
 
 ```bash
-mc admin user svcacct add myminio stry
+mc admin user svcacct add myminio <MINIO_ROOT_USER>
 ```
 
-1. Set keys `AWS_ACCESS_KEY_ID` `AWS_SECRET_ACCESS_KEY` in `.env`.
+1. Set both values of `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in `.env`.
 
 1. Create required buckets (add your own if required):
 
@@ -61,7 +61,7 @@ mc anonymous set download myminio/segments
 
 ## Disable bucket listing
 
-> **NOTE:** Disabling bucket listing is optional, but highly recommended on production.
+> **NOTE**: Disabling bucket listing is optional, but highly recommended on production.
 
 1. Export current bucket permissions:
 

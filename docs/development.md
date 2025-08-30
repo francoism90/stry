@@ -1,10 +1,11 @@
 ---
-title: Podman Quadlet
+title: Development
 order: 2
 tags:
   - vscode
   - podman
   - devcontainer
+  - boost
 ---
 
 ## Prerequisites
@@ -12,6 +13,7 @@ tags:
 - Linux (Debian, Fedora, CentOS, Arch, Ubuntu, ..)
 - [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
 - [VSCode](https://code.visualstudio.com/) with [Podman extension](https://github.com/jorchube/devcontainer-definitions).
+- [GitHub Copilot](https://github.com/features/copilot) (optional)
 
 ## Installation
 
@@ -22,18 +24,18 @@ cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-1. Setup [Podman](podman.md).
+1. Setup [Podman Quadlet](podman.md).
 
 1. Change `CONTAINER_ENV` to `development` in `~/.config/containers/systemd/stry/config/app.env`.
 
-1. Add the app bind volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
+1. Add the `app` volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
 
 ```diff
 +Volume=${APP_PATH}:/app:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
 ```
 
-**NOTE**: The volume `U` flag should only be used in `stry.container`.
+**NOTE**: The volume `U` flag should only be appended in `stry.container`.
 
 1. Open the cloned project with VSCode as a devcontainer.
 
@@ -51,7 +53,7 @@ pnpm install
 
 1. Setup a [proxy](proxy.md).
 
-1. Run the vite watcher:
+1. Run the Vite watcher:
 
 ```bash
 stry pnpm dev

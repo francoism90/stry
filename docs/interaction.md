@@ -1,6 +1,6 @@
 ---
 title: Interaction
-order: 4
+order: 5
 tags:
   - fish
   - shell
@@ -11,7 +11,7 @@ tags:
 
 Stry provides a shell utility, which is a copy of [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail) with adjustments made for usage with Podman Quadlet.
 
-> **TIP**: It can be used on production and development environments.
+> **TIP**: The utility can be used with production and development environments.
 
 To install, create a shell `alias`, e.g. when using [fish-shell](https://fishshell.com/docs/current/cmds/alias.html):
 
