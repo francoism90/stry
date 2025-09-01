@@ -34,8 +34,8 @@ return [
      * You can add or remove middleware as needed.
      */
     'middleware' => [
-        'auth:sanctum',
         'signed',
+        'auth:sanctum',
         'subscribed',
         'cache:private;max_age=259200;immutable',
     ],

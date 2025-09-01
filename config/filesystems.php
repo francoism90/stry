@@ -59,7 +59,7 @@ return [
             'driver' => 'local',
             'root' => '/data/media',
             'serve' => false,
-            'throw' => true,
+            'throw' => false,
             'report' => true,
         ],
 
