@@ -82,6 +82,7 @@ export default defineConfig(({ mode }) => {
           short_name: 'stry',
           description: 'A streaming platform built with Laravel and Vue',
           theme_color: '#ad46ff',
+          background_color: '#1b1718',
           categories: ['videos', 'streaming', 'vod'],
           display_override: ['standalone', 'minimal-ui'],
           display: 'standalone',
