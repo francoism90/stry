@@ -8,6 +8,15 @@
     }
 }
 
+(cors) {
+	@origin header Origin {args[0]}
+    header @origin Access-Control-Allow-Origin "{args[0]}"
+    header @origin Access-Control-Allow-Credentials "true"
+    header @origin Access-Control-Allow-Methods "OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE"
+    header @origin Access-Control-Allow-Headers "Accept,Authorization,Content-Type,Origin,X-Requested-With"
+    header @origin Access-Control-Max-Age "1728000"
+}
+
 (pwa) {
 	header Service-Worker-Allowed "/"
 }
