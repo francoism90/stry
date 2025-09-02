@@ -90,9 +90,35 @@ export default defineConfig(({ mode }) => {
           scope: '/',
           start_url: '/',
           id: '/',
+          icons: [
+            {
+              src: '/storage/images/android-chrome-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: '/storage/images/android-chrome-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+          screenshots: [
+            {
+              src: '/storage/images/android-chrome-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              form_factor: 'narrow',
+            },
+            {
+              src: '/storage/images/android-chrome-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              form_factor: 'wide',
+            },
+          ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+          globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
           cleanupOutdatedCaches: true,
           clientsClaim: true,
           navigateFallback: null,
