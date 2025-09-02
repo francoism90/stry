@@ -70,9 +70,9 @@ export default defineConfig(({ mode }) => {
       }),
       VitePWA({
         strategies: 'injectManifest',
-        buildBase: '/',
+        buildBase: '/build/',
         srcDir: 'resources/js',
-        outDir: 'public',
+        outDir: 'public/build',
         filename: 'sw.ts',
         registerType: 'autoUpdate',
         injectRegister: false,
@@ -87,6 +87,8 @@ export default defineConfig(({ mode }) => {
           globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
           cleanupOutdatedCaches: true,
           clientsClaim: true,
+          navigateFallback: null,
+          navigateFallbackDenylist: [/\/[api]+\/.*/],
         },
         devOptions: {
           enabled: env.NODE_ENV === 'development',
