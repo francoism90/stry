@@ -71,6 +71,8 @@ export default defineConfig(({ mode }) => {
       VitePWA({
         strategies: 'generateSW',
         buildBase: '/build/',
+        scope: '/',
+        base: '/',
         srcDir: 'resources/js',
         outDir: 'public/build',
         registerType: 'autoUpdate',
@@ -84,16 +86,16 @@ export default defineConfig(({ mode }) => {
           display_override: ['standalone', 'minimal-ui'],
           display: 'standalone',
           orientation: 'natural',
-          id: '/',
           scope: '/',
           start_url: '/',
+          id: '/',
         },
         workbox: {
           globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
           cleanupOutdatedCaches: true,
           clientsClaim: true,
-          navigateFallback: null,
-          navigateFallbackDenylist: [/\/[api]+\/.*/],
+          navigateFallback: '/',
+          navigateFallbackDenylist: [/^\/api/],
         },
         devOptions: {
           enabled: env.NODE_ENV === 'development',

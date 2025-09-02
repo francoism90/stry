@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="color-scheme" content="dark">
+<link rel="manifest" href="{{ asset('build/manifest.webmanifest') }}">
 @vite('resources/js/app.ts')
 @inertiaHead
 @googlefonts
