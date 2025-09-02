@@ -7,6 +7,7 @@ import laravel from 'laravel-vite-plugin'
 import { fileURLToPath, URL } from 'node:url'
 import { vite as vidstack } from 'vidstack/plugins'
 import { defineConfig, loadEnv } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
@@ -65,6 +66,32 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
+        },
+      }),
+      VitePWA({
+        strategies: 'injectManifest',
+        buildBase: '/',
+        srcDir: 'resources/js',
+        outDir: 'public',
+        filename: 'sw.ts',
+        registerType: 'autoUpdate',
+        injectRegister: false,
+        manifest: {
+          name: 'stry',
+          short_name: 'stry',
+          description: 'A streaming platform built with Laravel and Vue',
+          theme_color: '#ad46ff',
+          categories: ['videos', 'streaming', 'vod'],
+        },
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+        },
+        devOptions: {
+          enabled: env.NODE_ENV === 'development',
+          suppressWarnings: true,
+          type: 'module',
         },
       }),
     ],
