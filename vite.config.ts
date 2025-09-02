@@ -94,11 +94,11 @@ export default defineConfig(({ mode }) => {
           globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
           cleanupOutdatedCaches: true,
           clientsClaim: true,
-          navigateFallback: '/',
+          navigateFallback: null,
           navigateFallbackDenylist: [/^\/api/],
         },
         devOptions: {
-          enabled: env.NODE_ENV === 'development',
+          enabled: false,
           suppressWarnings: true,
           type: 'module',
         },
