@@ -84,7 +84,7 @@ export default defineConfig(({ mode }) => {
           theme_color: '#ad46ff',
           background_color: '#1b1718',
           categories: ['videos', 'streaming', 'vod'],
-          display_override: ['standalone', 'minimal-ui'],
+          display_override: ['fullscreen', 'minimal-ui'],
           display: 'standalone',
           orientation: 'natural',
           scope: '/',
