@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Dashboard\Responses;
+namespace App\Web\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Collections\VideoCollection;

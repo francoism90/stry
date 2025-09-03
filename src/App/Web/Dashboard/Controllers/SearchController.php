@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Web\Dashboard\Responses\VideoScoutCollection;
+use App\Web\Videos\Responses\VideoScoutCollection;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;

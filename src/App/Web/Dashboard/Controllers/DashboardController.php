@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use App\Web\Dashboard\Responses\VideoQueryCollection;
+use App\Web\Videos\Responses\VideoQueryCollection;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
