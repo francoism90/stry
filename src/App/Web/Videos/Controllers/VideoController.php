@@ -43,7 +43,6 @@ class VideoController extends Controller implements HasMiddleware
             'items' => Inertia::defer(fn () => new VideoQueryCollection(
                 type: $request->safe()->input('list'),
                 page: (int) $request->safe()->input('page', 1),
-                perPage: 24,
             ))->deepMerge()->matchOn('data.id'),
         ]);
     }

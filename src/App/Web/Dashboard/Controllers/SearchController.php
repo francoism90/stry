@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Api\Videos\Resources\VideoResource;
-use App\Api\Videos\Scopes\VideoFilterScope;
+use App\Web\Dashboard\Responses\VideoScoutCollection;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -29,15 +28,14 @@ class SearchController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        $items = Video::search($request->safe()->input('search', ''))
-            ->tap(new VideoFilterScope(...$request->safe()->only(['sort'])))
-            ->simplePaginate(perPage: 24, page: (int) $request->safe()->input('page', 1))
-            ->through(fn ($video) => VideoResource::make($video));
-
         return Inertia::render('Dashboard/SearchIndex', [
             'search' => fn () => $request->safe()->input('search'),
             'sort' => fn () => $request->safe()->input('sort'),
-            'items' => Inertia::defer(fn () => $request->safe()->filled('search') ? $items : [])->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::defer(fn () => new VideoScoutCollection(
+                query: $request->safe()->input('search'),
+                sort: $request->safe()->input('sort'),
+                page: (int) $request->safe()->input('page', 1),
+            ))->deepMerge()->matchOn('data.id'),
         ]);
     }
 }

@@ -15,8 +15,8 @@ readonly class VideoQueryCollection implements ProvidesInertiaProperty
     public function __construct(
         protected readonly ?string $type = null,
         protected readonly ?int $limit = null,
-        protected readonly ?int $page = null,
-        protected readonly ?int $perPage = 16,
+        protected readonly ?int $page = 1,
+        protected readonly ?int $perPage = 24,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
