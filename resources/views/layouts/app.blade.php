@@ -7,6 +7,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="color-scheme" content="dark">
 <link rel="manifest" href="{{ asset('build/manifest.webmanifest') }}">
+<link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" />
+<link rel="preconnect" href="https://api.iconify.design" />
 @vite('resources/js/app.ts')
 @inertiaHead
 @googlefonts
