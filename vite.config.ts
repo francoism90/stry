@@ -69,14 +69,13 @@ export default defineConfig(({ mode }) => {
         },
       }),
       VitePWA({
-        strategies: 'generateSW',
+        registerType: 'autoUpdate',
+        injectRegister: false,
         buildBase: '/build/',
         scope: '/',
         base: '/',
         srcDir: 'resources/js',
         outDir: 'public/build',
-        registerType: 'autoUpdate',
-        injectRegister: 'auto',
         manifest: {
           name: 'stry',
           short_name: 'stry',
@@ -126,6 +125,7 @@ export default defineConfig(({ mode }) => {
         },
         devOptions: {
           enabled: false,
+          navigateFallback: undefined,
           suppressWarnings: true,
           type: 'module',
         },
