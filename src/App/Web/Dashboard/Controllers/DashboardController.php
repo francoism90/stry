@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use App\Web\Dashboard\Responses\VideoResourceCollection;
+use App\Web\Dashboard\Responses\VideoQueryCollection;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -27,9 +27,9 @@ class DashboardController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Dashboard/DashboardIndex', [
-            'recommended' => Inertia::defer(fn () => new VideoResourceCollection(limit: 16), 'sections')->deepMerge()->matchOn('data.id'),
-            'recent' => Inertia::defer(fn () => new VideoResourceCollection(type: 'newest', limit: 16), 'sections')->deepMerge()->matchOn('data.id'),
-            'watching' => Inertia::defer(fn () => new VideoResourceCollection(type: 'watching', limit: 16), 'sections')->deepMerge()->matchOn('data.id'),
+            'recommended' => Inertia::defer(fn () => new VideoQueryCollection(limit: 16), 'sections')->deepMerge()->matchOn('data.id'),
+            'recent' => Inertia::defer(fn () => new VideoQueryCollection(type: 'newest', limit: 16), 'sections')->deepMerge()->matchOn('data.id'),
+            'watching' => Inertia::defer(fn () => new VideoQueryCollection(type: 'watching', limit: 16), 'sections')->deepMerge()->matchOn('data.id'),
         ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Dashboard\Responses\VideoQueryCollection;
 use App\Web\Dashboard\Responses\VideoResourceCollection;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\GetVideoProgress;
@@ -39,7 +40,7 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Videos/VideoIndex', [
-            'items' => Inertia::defer(fn () => new VideoResourceCollection(
+            'items' => Inertia::defer(fn () => new VideoQueryCollection(
                 type: $request->safe()->input('list'),
                 page: (int) $request->safe()->input('page', 1),
                 perPage: 24,
@@ -76,7 +77,7 @@ class VideoController extends Controller implements HasMiddleware
             'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
             'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
             'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
-            'queue' => Inertia::defer(fn () => app(GetSimilarVideos::class)->handle($video))->deepMerge()->matchOn('data.id'),
+            'queue' => Inertia::defer(fn () => new VideoResourceCollection(items: app(GetSimilarVideos::class)->handle($video)))->deepMerge()->matchOn('data.id'),
         ]);
     }
 

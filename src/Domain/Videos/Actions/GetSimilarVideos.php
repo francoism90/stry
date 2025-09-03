@@ -4,28 +4,20 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\LazyCollection;
 
 class GetSimilarVideos
 {
-    public function handle(Video $video, int $limit = 20): ResourceCollection
+    public function handle(Video $video, int $limit = 20): VideoCollection
     {
-        $items = VideoCollection::make([
+        return VideoCollection::make([
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ]);
-
-        return $items
-            ->unique('id')
-            ->take($limit)
-            ->loadMissing('tags')
-            ->toResourceCollection(VideoResource::class);
+        ])->unique('id')->take($limit);
     }
 
     protected function phrases(Video $video): LazyCollection
