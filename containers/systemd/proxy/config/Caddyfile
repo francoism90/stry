@@ -17,6 +17,10 @@
     header @origin Access-Control-Max-Age "1728000"
 }
 
+(pwa) {
+	header Service-Worker-Allowed "/"
+}
+
 (tls) {
     tls internal
 }

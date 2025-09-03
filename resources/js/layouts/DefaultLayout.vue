@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
@@ -52,6 +53,8 @@ const items = ref<NavigationMenuItem[][]>([
 
 <template>
   <UApp>
+    <ServiceWorker />
+
     <div class="relative flex h-dvh min-h-dvh flex-col overflow-x-hidden">
       <header class="sticky inset-x-0 top-0 z-30 flex h-18 min-h-18 border-b border-default bg-default">
         <UContainer>
