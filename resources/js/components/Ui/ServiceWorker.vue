@@ -9,9 +9,8 @@ const title = computed(() => (offlineReady.value ? 'App ready to work offline' :
 </script>
 
 <template>
-  <UContainer>
+  <UContainer v-if="needRefresh">
     <UAlert
-      v-if="needRefresh"
       :title="title"
       color="neutral"
       variant="soft"
