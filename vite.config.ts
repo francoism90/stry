@@ -79,10 +79,10 @@ export default defineConfig(({ mode }) => {
         manifest: {
           name: 'stry',
           short_name: 'stry',
-          description: 'A streaming platform built with Laravel and Vue',
+          description: 'A streaming platform built with Laravel and Inertia.js',
           theme_color: '#ad46ff',
           background_color: '#1b1718',
-          categories: ['videos', 'streaming', 'vod'],
+          categories: ['video', 'streaming', 'series', 'movies', 'entertainment'],
           display_override: ['fullscreen', 'minimal-ui'],
           display: 'standalone',
           orientation: 'natural',
