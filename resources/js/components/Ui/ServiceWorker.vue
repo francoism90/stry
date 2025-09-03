@@ -11,7 +11,7 @@ const title = computed(() => (offlineReady.value ? 'App ready to work offline' :
 <template>
   <UContainer>
     <UAlert
-      v-if="offlineReady || needRefresh"
+      v-if="needRefresh"
       :title="title"
       color="neutral"
       variant="soft"
@@ -19,7 +19,6 @@ const title = computed(() => (offlineReady.value ? 'App ready to work offline' :
     >
       <template #description>
         <UButton
-          v-if="needRefresh"
           label="Reload"
           size="xs"
           @click="updateServiceWorker()"
