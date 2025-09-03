@@ -9,7 +9,7 @@ use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Api\Videos\Scopes\VideoListScope;
+use App\Web\Dashboard\Responses\VideoResourceCollection;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Actions\UpdateVideoDetails;
@@ -38,13 +38,12 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        $items = Video::query()
-            ->tap(new VideoListScope(...$request->safe()->only(['list'])))
-            ->simplePaginate(perPage: 24, page: (int) $request->safe()->input('page', 1))
-            ->through(fn (Video $video) => VideoResource::make($video));
-
         return Inertia::render('Videos/VideoIndex', [
-            'items' => Inertia::defer(fn () => $items)->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::defer(fn () => new VideoResourceCollection(
+                type: $request->safe()->input('list'),
+                page: (int) $request->safe()->input('page', 1),
+                perPage: 24,
+            ))->deepMerge()->matchOn('data.id'),
         ]);
     }
 
