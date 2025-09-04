@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c65708de17ddf39e973e502e242f6a67",
+    "content-hash": "727f2124f18bade37c992de9e465ee7f",
     "packages": [
         {
             "name": "amphp/amp",
@@ -870,16 +870,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.9",
+            "version": "3.356.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "42e1ac9cbb06b98ead34e32bd565f262161b77ab"
+                "reference": "646530c3dcd5cbf485d5c608787e7e83d6e53c3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/42e1ac9cbb06b98ead34e32bd565f262161b77ab",
-                "reference": "42e1ac9cbb06b98ead34e32bd565f262161b77ab",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/646530c3dcd5cbf485d5c608787e7e83d6e53c3c",
+                "reference": "646530c3dcd5cbf485d5c608787e7e83d6e53c3c",
                 "shasum": ""
             },
             "require": {
@@ -961,9 +961,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.10"
             },
-            "time": "2025-09-02T18:03:41+00:00"
+            "time": "2025-09-03T18:08:55+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2808,16 +2808,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.27.1",
+            "version": "v12.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "168844fe531baaa11db00f7902fd0116d46d3bdd"
+                "reference": "aa2e8af4c7e84e83a857d5171cf784c7720da4e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/168844fe531baaa11db00f7902fd0116d46d3bdd",
-                "reference": "168844fe531baaa11db00f7902fd0116d46d3bdd",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/aa2e8af4c7e84e83a857d5171cf784c7720da4e6",
+                "reference": "aa2e8af4c7e84e83a857d5171cf784c7720da4e6",
                 "shasum": ""
             },
             "require": {
@@ -2895,6 +2895,7 @@
                 "illuminate/filesystem": "self.version",
                 "illuminate/hashing": "self.version",
                 "illuminate/http": "self.version",
+                "illuminate/json-schema": "self.version",
                 "illuminate/log": "self.version",
                 "illuminate/macroable": "self.version",
                 "illuminate/mail": "self.version",
@@ -2927,7 +2928,8 @@
                 "league/flysystem-read-only": "^3.25.1",
                 "league/flysystem-sftp-v3": "^3.25.1",
                 "mockery/mockery": "^1.6.10",
-                "orchestra/testbench-core": "^10.6.3",
+                "opis/json-schema": "^2.4.1",
+                "orchestra/testbench-core": "^10.6.5",
                 "pda/pheanstalk": "^5.0.6|^7.0.0",
                 "php-http/discovery": "^1.15",
                 "phpstan/phpstan": "^2.0",
@@ -3021,7 +3023,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-09-02T23:59:38+00:00"
+            "time": "2025-09-03T17:04:36+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -11996,16 +11998,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v1.0.21",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "149986e8e346ca435befa6bb92f51bbf09063772"
+                "reference": "f4e0b4b2ce01b12b8de3318afc8f2ad55b3fa38b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/149986e8e346ca435befa6bb92f51bbf09063772",
-                "reference": "149986e8e346ca435befa6bb92f51bbf09063772",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/f4e0b4b2ce01b12b8de3318afc8f2ad55b3fa38b",
+                "reference": "f4e0b4b2ce01b12b8de3318afc8f2ad55b3fa38b",
                 "shasum": ""
             },
             "require": {
@@ -12016,7 +12018,7 @@
                 "illuminate/support": "^10.0|^11.0|^12.0",
                 "laravel/mcp": "^0.1.1",
                 "laravel/prompts": "^0.1.9|^0.3",
-                "laravel/roster": "^0.2.4",
+                "laravel/roster": "^0.2.5",
                 "php": "^8.1"
             },
             "require-dev": {
@@ -12057,7 +12059,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2025-09-03T08:23:46+00:00"
+            "time": "2025-09-04T07:35:13+00:00"
         },
         {
             "name": "laravel/envoy",
@@ -12336,16 +12338,16 @@
         },
         {
             "name": "laravel/roster",
-            "version": "v0.2.5",
+            "version": "v0.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/roster.git",
-                "reference": "0252fa419733c61b3ebeba8e4e2b9ad2a63f3a17"
+                "reference": "5615acdf860c5a5c61d04aba44f2d3312550c514"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/roster/zipball/0252fa419733c61b3ebeba8e4e2b9ad2a63f3a17",
-                "reference": "0252fa419733c61b3ebeba8e4e2b9ad2a63f3a17",
+                "url": "https://api.github.com/repos/laravel/roster/zipball/5615acdf860c5a5c61d04aba44f2d3312550c514",
+                "reference": "5615acdf860c5a5c61d04aba44f2d3312550c514",
                 "shasum": ""
             },
             "require": {
@@ -12393,7 +12395,7 @@
                 "issues": "https://github.com/laravel/roster/issues",
                 "source": "https://github.com/laravel/roster"
             },
-            "time": "2025-08-29T07:47:42+00:00"
+            "time": "2025-09-04T07:31:39+00:00"
         },
         {
             "name": "laravel/telescope",
