@@ -45,5 +45,5 @@ When running locally, make sure to append the following entries to your hosts-fi
 1. Copy the generated Caddy CA, and import into your browsers certificate trust keychain:
 
 ```bash
-podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/Downloads/proxy.crt
+podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/proxy.crt
 ```

@@ -1,6 +1,6 @@
 ---
 title: MinIO
-order: 2
+order: 3
 tags:
   - minio
   - s3

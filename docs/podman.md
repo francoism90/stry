@@ -47,6 +47,12 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
+1. Make sure the data directory exists as defined in `app.env`:
+
+```bash
+mkdir -p /home/user/data/stry
+```
+
 1. Reload the container configurations on changes:
 
 ```bash
