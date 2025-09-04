@@ -12,7 +12,6 @@
         "esbenp.prettier-vscode",
         "laravel.vscode-laravel",
         "oxc.oxc-vscode",
-        "stylelint.vscode-stylelint",
         "Vue.volar"
     ]
 }
