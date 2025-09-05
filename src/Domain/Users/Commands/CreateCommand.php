@@ -8,6 +8,7 @@ use Domain\Users\Actions\CreateNewUser;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\text;
 
@@ -40,8 +41,8 @@ class CreateCommand extends Command implements Isolatable
             required: true,
         );
 
-        app(CreateNewUser::class)->create(compact('name', 'email', 'password'));
+        $user = app(CreateNewUser::class)->create(compact('name', 'email', 'password'));
 
-        $this->components->info('User has been created successfully.');
+        info("User has been created successfully ({$user->email}).");
     }
 }

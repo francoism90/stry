@@ -8,6 +8,8 @@ use Domain\Tags\Actions\SetTagsOrder;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
+use function Laravel\Prompts\info;
+
 class SortCommand extends Command implements Isolatable
 {
     /**
@@ -24,6 +26,6 @@ class SortCommand extends Command implements Isolatable
     {
         app(SetTagsOrder::class)->handle();
 
-        $this->components->info('Tags have been sorted successfully.');
+        info('Tags have been sorted successfully.');
     }
 }

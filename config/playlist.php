@@ -127,6 +127,6 @@ return [
      * This setting is used to define the required free disk space for the rotation keys.
      * The value is in bytes, and it will be used to limit the size of the rotation keys storage.
      */
-    'rotation_keys_disk_size' => (int) env('PLAYLIST_ROTATION_DISK_SIZE', 1073741824 * 2), // 2 GB
+    'rotation_keys_disk_size' => (int) env('PLAYLIST_ROTATION_DISK_SIZE', 1073741824 * 1), // 1 GB
 
 ];

@@ -49,14 +49,14 @@ class ClearCommand extends Command implements Isolatable
         );
 
         if (confirm('Are you sure you want to delete these videos?')) {
-            $videos->each(function (Video $model) {
-                if (! $model->trashed()) {
+            $videos->each(function (Video $video) {
+                if (! $video->trashed()) {
                     return;
                 }
 
-                info("deleting {$model->name} ({$model->getKey()})");
+                info("deleting {$video->name} ({$video->getKey()})");
 
-                $model->forceDelete();
+                $video->forceDelete();
             });
         }
     }
