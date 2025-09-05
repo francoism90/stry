@@ -19,13 +19,13 @@ log() {
 
 prepare_application() {
     log "INFO" "Preparing application..."
+    ${ARTISAN} optimize
     ${ARTISAN} storage:link
     ${ARTISAN} migrate --seed --force
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
-    ${NPM} build
-    ${ARTISAN} optimize
     ${ARTISAN} scout:sync-index-settings
+    ${NPM} build
 }
 
 if [ "${CONTAINER_ENV}" = "production" ]; then
