@@ -45,9 +45,9 @@ Volume=${DATA_PATH}:/data:rw,z,U
 composer install
 php artisan storage:link
 php artisan key:generate
+php artisan migrate --seed
 php artisan google-fonts:fetch
 php artisan wayfinder:generate
-php artisan migrate --seed
 pnpm install
 ```
 
@@ -68,3 +68,10 @@ php artisan ide-helper:generate
 php artisan ide-helper:meta
 php artisan ide-helper:models --nowrite
 ```
+
+To use [Laravel Boost](https://boost.laravel.com/installed):
+
+1. Open the Command Palette (Cmd+Shift+P or Ctrl+Shift+P)
+1. Press enter on "MCP: List Servers"
+1. Arrow to laravel-boost and press enter
+1. Choose 'Start server' and you're good to go!
