@@ -17,7 +17,6 @@ _ide_helper.php
 .idea
 .pnpm-store
 .vscode
-.styleci.yml
 .zed
 bootstrap/cache/*.php
 containers/systemd
