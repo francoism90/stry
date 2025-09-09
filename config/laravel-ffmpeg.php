@@ -12,7 +12,7 @@ return [
         'binaries' => env('FFPROBE_PATH', 'ffprobe'),
     ],
 
-    'timeout' => 60 * 60 * 8, // 8 hours
+    'timeout' => 60 * 60 * 4, // 4 hours
 
     'log_channel' => env('LOG_CHANNEL', 'stack'),
 
