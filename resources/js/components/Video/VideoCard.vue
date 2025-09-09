@@ -39,7 +39,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
         :alt="item.title"
         class="h-52 max-h-52 w-full object-fill"
         loading="lazy"
-        sizes="1px"
+        sizes="(max-width: 720px) 400px, 50vw"
       />
 
       <div class="absolute inset-x-4 bottom-4 z-10 block group-hover:hidden">
