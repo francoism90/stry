@@ -64,7 +64,7 @@ export type Video = Model & {
   preview: string | null
   duration: number | null
   timestamp: string | null
-  snapshot: number | null
+  snapshot: number | string | null
   released_at: string | null
   tags: Tag[] | null
   state: string
