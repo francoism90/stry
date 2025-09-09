@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fca6778376d571ec96e0d80b6a45dd89",
+    "content-hash": "c17cb64d3f0ae1fab33938bb79a7bbcd",
     "packages": [
         {
             "name": "amphp/amp",
@@ -870,16 +870,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.12",
+            "version": "3.356.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0068088fed44e2bed3a2e82f2c7a0bb9e356b3c3"
+                "reference": "ec28d17cc940a4f996638050ab95dcc2a07f1a6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0068088fed44e2bed3a2e82f2c7a0bb9e356b3c3",
-                "reference": "0068088fed44e2bed3a2e82f2c7a0bb9e356b3c3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ec28d17cc940a4f996638050ab95dcc2a07f1a6b",
+                "reference": "ec28d17cc940a4f996638050ab95dcc2a07f1a6b",
                 "shasum": ""
             },
             "require": {
@@ -961,9 +961,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.12"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.13"
             },
-            "time": "2025-09-05T18:10:41+00:00"
+            "time": "2025-09-08T18:37:19+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3610,16 +3610,16 @@
         },
         {
             "name": "laravel/wayfinder",
-            "version": "v0.1.11",
+            "version": "v0.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/wayfinder.git",
-                "reference": "240f984fd8f48144e51dbe9efd2ec29d0b2aa075"
+                "reference": "08285225df7f8a094789ad8f384ac6bad6712ff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/wayfinder/zipball/240f984fd8f48144e51dbe9efd2ec29d0b2aa075",
-                "reference": "240f984fd8f48144e51dbe9efd2ec29d0b2aa075",
+                "url": "https://api.github.com/repos/laravel/wayfinder/zipball/08285225df7f8a094789ad8f384ac6bad6712ff6",
+                "reference": "08285225df7f8a094789ad8f384ac6bad6712ff6",
                 "shasum": ""
             },
             "require": {
@@ -3627,7 +3627,8 @@
                 "illuminate/filesystem": "^11.0|^12.0",
                 "illuminate/routing": "^11.0|^12.0",
                 "illuminate/support": "^11.0|^12.0",
-                "php": "^8.2"
+                "php": "^8.2",
+                "phpstan/phpdoc-parser": "^2.3"
             },
             "require-dev": {
                 "laravel/pint": "^1.21",
@@ -3668,7 +3669,7 @@
                 "issues": "https://github.com/laravel/wayfinder/issues",
                 "source": "https://github.com/laravel/wayfinder"
             },
-            "time": "2025-09-02T16:25:15+00:00"
+            "time": "2025-09-08T17:03:10+00:00"
         },
         {
             "name": "league/commonmark",
@@ -5471,6 +5472,53 @@
             "time": "2025-08-21T11:53:16+00:00"
         },
         {
+            "name": "phpstan/phpdoc-parser",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpdoc-parser.git",
+                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/1e0cd5370df5dd2e556a36b9c62f62e555870495",
+                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^2.0",
+                "nikic/php-parser": "^5.3.0",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^9.6",
+                "symfony/process": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\PhpDocParser\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPDoc parser with support for nullable, intersection and generic types",
+            "support": {
+                "issues": "https://github.com/phpstan/phpdoc-parser/issues",
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.0"
+            },
+            "time": "2025-08-30T15:50:23+00:00"
+        },
+        {
             "name": "pragmarx/google2fa",
             "version": "v8.0.3",
             "source": {
@@ -7246,16 +7294,16 @@
         },
         {
             "name": "spatie/laravel-google-fonts",
-            "version": "1.4.3",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-google-fonts.git",
-                "reference": "ff8081eb68bbc53e0f3af1d6472b4a4217ca5407"
+                "reference": "f37fc6100912bcfeac6a503692745b2dee258aa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/ff8081eb68bbc53e0f3af1d6472b4a4217ca5407",
-                "reference": "ff8081eb68bbc53e0f3af1d6472b4a4217ca5407",
+                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/f37fc6100912bcfeac6a503692745b2dee258aa5",
+                "reference": "f37fc6100912bcfeac6a503692745b2dee258aa5",
                 "shasum": ""
             },
             "require": {
@@ -7316,7 +7364,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-google-fonts/issues",
-                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.4.3"
+                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.4.4"
             },
             "funding": [
                 {
@@ -7324,7 +7372,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-08T07:58:05+00:00"
+            "time": "2025-09-08T07:47:12+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -13462,53 +13510,6 @@
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.10.0"
             },
             "time": "2024-11-09T15:12:26+00:00"
-        },
-        {
-            "name": "phpstan/phpdoc-parser",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/1e0cd5370df5dd2e556a36b9c62f62e555870495",
-                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4 || ^8.0"
-            },
-            "require-dev": {
-                "doctrine/annotations": "^2.0",
-                "nikic/php-parser": "^5.3.0",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^9.6",
-                "symfony/process": "^5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\PhpDocParser\\": [
-                        "src/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "support": {
-                "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.0"
-            },
-            "time": "2025-08-30T15:50:23+00:00"
         },
         {
             "name": "phpstan/phpstan",
