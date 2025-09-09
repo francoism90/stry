@@ -74,6 +74,7 @@ const submit = async () =>
         <UInput
           v-model.trim="form.episode"
           placeholder="1"
+          autocapitalize="characters"
           class="w-full"
         />
       </UFormField>
@@ -86,6 +87,7 @@ const submit = async () =>
         <UInput
           v-model.trim="form.season"
           placeholder="1"
+          autocapitalize="characters"
           class="w-full"
         />
       </UFormField>
@@ -98,6 +100,7 @@ const submit = async () =>
         <UInput
           v-model.trim="form.part"
           placeholder="1"
+          autocapitalize="characters"
           class="w-full"
         />
       </UFormField>
@@ -125,6 +128,7 @@ const submit = async () =>
           v-model.trim="form.snapshot"
           placeholder="3.00"
           step="0.01"
+          min="0"
           :max="video.duration || null"
           type="number"
           class="w-full"

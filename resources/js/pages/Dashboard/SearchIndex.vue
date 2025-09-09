@@ -57,6 +57,7 @@ const submit = async () =>
           placeholder="Title, description, tags..."
           size="lg"
           class="w-full"
+          autofocus
         />
       </UFormField>
     </UForm>
