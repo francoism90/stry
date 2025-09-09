@@ -126,11 +126,11 @@ const submit = async () =>
       >
         <UInput
           v-model.trim="form.snapshot"
+          type="number"
           placeholder="3.00"
           step="0.01"
           min="0"
           :max="video.duration || null"
-          type="number"
           class="w-full"
         >
           <template #trailing>

@@ -54,6 +54,7 @@ const submit = async () =>
       >
         <UInput
           v-model.trim="form.search"
+          type="search"
           placeholder="Title, description, tags..."
           size="lg"
           class="w-full"
