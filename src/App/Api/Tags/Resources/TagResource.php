@@ -17,7 +17,6 @@ class TagResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
-            'slug' => $this->slug,
             'name' => $this->name,
             'description' => $this->description,
             'category' => $this->category,
