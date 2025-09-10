@@ -34,7 +34,7 @@ class VideoResource extends JsonResource
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
             'snapshot' => $this->snapshot,
-            'state' => $this->state,
+            'state' => $this->state->label(),
             'expires_at' => $this->expires_at?->format('Y-m-d H:i:s'),
             'published_at' => $this->published_at?->format('Y-m-d H:i:s'),
             'released_at' => $this->released_at?->format('Y-m-d H:i:s'),

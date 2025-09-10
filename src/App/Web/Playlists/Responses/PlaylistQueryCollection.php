@@ -7,13 +7,14 @@ namespace App\Web\Playlists\Responses;
 use App\Api\Playlists\Resources\PlaylistResource;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
+use Illuminate\Database\Eloquent\Model;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
 readonly class PlaylistQueryCollection implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected readonly ?string $type = null,
+        protected readonly Model $model,
         protected readonly ?int $limit = null,
         protected readonly ?int $page = 1,
         protected readonly ?int $perPage = 24,
@@ -21,10 +22,8 @@ readonly class PlaylistQueryCollection implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return Playlist::query()
-            ->when($this->type === null, fn (PlaylistQueryBuilder $query) => $query->inRandomOrder())
-            ->when($this->type === 'newest', fn (PlaylistQueryBuilder $query) => $query->latest())
-            ->when($this->type === 'watching', fn (PlaylistQueryBuilder $query) => $query->watching())
+        return $this->model->playlists()
+            ->ordered()
             ->when($this->limit,
                 fn (PlaylistQueryBuilder $query, int $limit) => $query
                     ->take($limit)

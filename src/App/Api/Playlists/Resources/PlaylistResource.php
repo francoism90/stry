@@ -20,9 +20,10 @@ class PlaylistResource extends JsonResource
             'asset' => $this->getUrl(),
             'valid' => $this->isValid(),
             'percent' => $this->getPercentage(),
-            'state' => $this->state,
+            'state' => $this->state->label(),
             'expires_at' => $this->expires_at,
              $this->mergeWhen($request->user()->isAdmin(), [
+                'type' => $this->type,
                 'accessed_at' => $this->accessed_at,
                 'transcoded_at' => $this->transcoded_at,
                 'created_at' => $this->created_at,

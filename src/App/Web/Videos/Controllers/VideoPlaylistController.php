@@ -33,7 +33,7 @@ class VideoPlaylistController implements HasMiddleware
         return Inertia::render('Videos/VideoPlaylists', [
             'video' => fn () => $video->toResource(VideoResource::class),
             'items' => Inertia::defer(fn () => new PlaylistQueryCollection(
-                type: $request->safe()->input('list'),
+                model: $video,
                 page: (int) $request->safe()->input('page', 1),
             ))->deepMerge()->matchOn('data.id'),
         ]);
