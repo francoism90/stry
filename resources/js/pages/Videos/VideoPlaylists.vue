@@ -15,5 +15,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <PageSection>TODO</PageSection>
+  <PageSection>
+    {{ items }}
+  </PageSection>
 </template>
