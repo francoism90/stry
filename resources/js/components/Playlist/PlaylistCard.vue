@@ -2,7 +2,7 @@
 import type { Playlist } from '@/types'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
-import PageDetails from '../Ui/PageDetails.vue'
+import PageDetails from '@/components/Ui/PageDetails.vue'
 
 interface Props {
   item: Playlist
