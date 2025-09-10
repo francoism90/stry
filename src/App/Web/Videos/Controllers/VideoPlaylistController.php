@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
+use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Playlists\Responses\PlaylistQueryCollection;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
@@ -24,13 +26,16 @@ class VideoPlaylistController implements HasMiddleware
         ];
     }
 
-    public function index(Video $video): Response
+    public function index(Video $video, PlaylistIndexRequest $request): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoPlaylists', [
             'video' => fn () => $video->toResource(VideoResource::class),
-            'playlists' => fn () => [],
+            'items' => Inertia::defer(fn () => new PlaylistQueryCollection(
+                model: $video,
+                page: (int) $request->safe()->input('page', 1),
+            ))->deepMerge()->matchOn('data.id'),
         ]);
     }
 

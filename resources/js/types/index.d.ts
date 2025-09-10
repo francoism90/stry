@@ -40,14 +40,6 @@ export type Tags = Omit<Paginator, 'data'> & {
 
 export type TagMenuItem = Tag & SelectMenuItem
 
-export type Playlist = Model & {
-  asset: PlayerSrc
-  valid: boolean
-  percent: number | null
-  state: string
-  expires_at: string | null
-}
-
 export type Video = Model & {
   user?: User
   name: string
@@ -74,6 +66,21 @@ export type Video = Model & {
 
 export type Videos = Omit<Paginator, 'data'> & {
   data: Video[] | null
+}
+
+export type Playlist = Model & {
+  asset: PlayerSrc | null
+  valid: boolean
+  percent: number | null
+  type: string | null
+  state: string
+  accessed_at: string | null
+  expires_at: string | null
+  transcoded_at: string | null
+}
+
+export type Playlists = Omit<Paginator, 'data'> & {
+  data: Playlist[] | null
 }
 
 export type Paginator = {
