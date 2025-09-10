@@ -105,7 +105,7 @@ return [
 
     'history' => [
 
-        'encrypt' => (bool) env('APP_ENV', 'production') === 'production',
+        'encrypt' => (bool) env('APP_ENV') === 'production',
 
     ],
 

@@ -14,7 +14,7 @@ return [
 
     'timeout' => 60 * 60 * 4, // 4 hours
 
-    'log_channel' => env('LOG_CHANNEL', 'stack'),
+    'log_channel' => env('FFMPEG_LOG_CHANNEL', env('APP_ENV') === 'production' ? 'null' : ENV('LOG_CHANNEL', 'stack')),
 
     'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', sys_get_temp_dir()),
 

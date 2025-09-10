@@ -67,7 +67,7 @@ return [
      * A lower frame interval will result in more keyframes, which can improve seeking performance,
      * but will also increase the file size.
      */
-    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 48),
+    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 60),
 
     /**
      * This setting is used to configure the video formats that will be used for transcoding.
@@ -84,13 +84,19 @@ return [
      * This setting is used to configure the initial parameters that will be passed to the FFMpeg exporter.
      * These parameters will be used to configure the transcoding process.
      */
-    'initial_parameters' => [],
+    'initial_parameters' => [
+        // '-compression_level', '1',
+        // '-hwaccel', 'vaapi',
+        // '-hwaccel_device', '/dev/dri/renderD128',
+    ],
 
     /**
      * This setting is used to configure the additional parameters that will be passed to the FFMpeg exporter.
      * These parameters will be used to configure the transcoding process.
      */
-    'additional_parameters' => [],
+    'additional_parameters' => [
+        '-force_key_frames:v', 'expr:gte(t,n_forced*2.000)',
+    ],
 
     /**
      * When this setting is true, the playlist will copy the video codec from the original video file.

@@ -45,7 +45,7 @@ class CreateHlsPlaylist
             $video = app(GetVideoFormat::class)->handle($disk, $path);
 
             // Add formats to the ffmpeg exporter
-            Playlist::getHlsFormats()->each(function (Fluent $preset) use ($ffmpeg, $video) {
+            Playlist::getHlsFormats()->each(function (Fluent $preset) use (&$ffmpeg, $video) {
                 /** @var DefaultVideo $format */
                 $format = $preset->get('format', $video->get('format'));
 

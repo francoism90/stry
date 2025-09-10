@@ -239,7 +239,7 @@ class Playlist extends Model
 
     public static function getFrameInterval(): int
     {
-        return config('playlist.frame_interval', 48);
+        return config('playlist.frame_interval', 60);
     }
 
     public static function getTranscodeDisk(): string
