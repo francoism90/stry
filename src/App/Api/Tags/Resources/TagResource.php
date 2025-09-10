@@ -22,6 +22,7 @@ class TagResource extends JsonResource
             'description' => $this->description,
             'category' => $this->category,
             'type' => $this->type,
+            'adult' => $this->adult,
             'related' => TagResource::collection($this->whenAppended('relates')),
             'videos' => $this->whenCounted('videos'),
             'created_at' => $this->created_at,
