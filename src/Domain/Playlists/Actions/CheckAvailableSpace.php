@@ -28,17 +28,17 @@ class CheckAvailableSpace
 
     protected function checkFreeSpace(FilesystemAdapter $adapter, int $limit = 0): void
     {
-        if ($adapter instanceof LocalFilesystemAdapter) {
+        if ($limit > 0 && $adapter instanceof LocalFilesystemAdapter) {
             $this->checkLocalFreeSpace($adapter, $limit);
         }
     }
 
-    protected function checkLocalFreeSpace(LocalFilesystemAdapter $adapter, int $limit = 0): void
+    protected function checkLocalFreeSpace(LocalFilesystemAdapter $adapter, int $limit): void
     {
         $absolutePath = $adapter->path('');
 
         $freeSpace = round(disk_free_space($absolutePath) ?: 0);
 
-        throw_if($limit > 0 && ($limit > $freeSpace), DiskUsageException::exceededLimit($absolutePath, $freeSpace));
+        throw_if($limit > $freeSpace, DiskUsageException::exceededLimit($absolutePath, $freeSpace));
     }
 }
