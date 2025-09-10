@@ -81,21 +81,13 @@ return [
     ],
 
     /**
-     * This setting is used to configure the initial parameters that will be passed to the FFMpeg exporter.
-     * These parameters will be used to configure the transcoding process.
-     */
-    'initial_parameters' => [
-        // '-compression_level', '1',
-        // '-hwaccel', 'vaapi',
-        // '-hwaccel_device', '/dev/dri/renderD128',
-    ],
-
-    /**
      * This setting is used to configure the additional parameters that will be passed to the FFMpeg exporter.
      * These parameters will be used to configure the transcoding process.
      */
     'additional_parameters' => [
         '-force_key_frames:v', 'expr:gte(t,n_forced*2.000)',
+        '-preset', 'veryfast',
+        '-tune', 'zerolatency',
     ],
 
     /**

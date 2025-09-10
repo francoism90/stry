@@ -264,11 +264,6 @@ class Playlist extends Model
         return config('playlist.stale_after');
     }
 
-    public static function getInitialParameters(): array
-    {
-        return config('playlist.initial_parameters', []);
-    }
-
     public static function getAdditionalParameters(): array
     {
         return config('playlist.additional_parameters', []);
