@@ -179,6 +179,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         ];
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->hasAnyRole('admin', 'super-admin');
+    }
+
     protected function avatar(): Attribute
     {
         return Attribute::make(

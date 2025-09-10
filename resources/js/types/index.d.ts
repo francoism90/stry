@@ -76,6 +76,21 @@ export type Videos = Omit<Paginator, 'data'> & {
   data: Video[] | null
 }
 
+export type Playlist = Model & {
+  asset: string
+  valid: boolean
+  percent: number | null
+  type: string | null
+  state: string
+  accessed_at: string | null
+  expires_at: string | null
+  transcoded_at: string | null
+}
+
+export type Playlists = Omit<Paginator, 'data'> & {
+  data: Playlist[] | null
+}
+
 export type Paginator = {
   data: Model[] | null
   per_page: number | null

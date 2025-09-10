@@ -26,7 +26,7 @@
         "@tailwindcss/vite": "^4.1.13",
         "@vueuse/core": "^13.9.0",
         "axios": "^1.11.0",
-        "hls.js": "^1.6.11",
+        "hls.js": "^1.6.12",
         "laravel-echo": "^2.2.0",
         "laravel-precognition-vue-inertia": "^0.7.2",
         "laravel-vite-plugin": "^2.0.1",
