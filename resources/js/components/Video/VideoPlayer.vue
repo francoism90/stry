@@ -9,18 +9,18 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { src, captions, progress, record } = usePlayer()
+const { state, src, captions, progress, record } = usePlayer()
 
 const listener = () => {
   const debouncedRecord = useThrottleFn((time: number | null) => record(time), 3500)
 
-  return player.value?.subscribe(({ canSeek, currentTime, started }) => {
-    if (canSeek && !seeked.value) {
+  return player.value?.subscribe(({ canSeek, currentTime }) => {
+    if (!seeked.value && canSeek) {
       player.value!.currentTime = progress.value || 0
       seeked.value = true
     }
 
-    if (started && seeked.value) {
+    if (seeked.value && currentTime > 0) {
       debouncedRecord(Math.round(currentTime * 100) / 100)
     }
 
@@ -38,7 +38,7 @@ onBeforeUnmount(() => listener())
       v-if="!src"
       class="grid min-h-52 w-full place-items-center rounded-xl bg-neutral-800 md:min-h-96"
     >
-      <span class="text-muted">Please wait while we prepare the video...</span>
+      <span class="text-muted">Please wait while we prepare the video ({{ state?.percent || 0 }}%)...</span>
     </div>
 
     <media-player
