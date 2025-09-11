@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use DateTime;
 use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
@@ -24,6 +23,11 @@ class TrackPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
+    /**
+     * @var int
+     */
+    public $tries = 1;
 
     /**
      * @var int
@@ -68,10 +72,5 @@ class TrackPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     public function uniqueId(): string
     {
         return (string) $this->playlist->getKey();
-    }
-
-    public function retryUntil(): DateTime
-    {
-        return now()->addDay();
     }
 }
