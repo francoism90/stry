@@ -18,7 +18,7 @@ class SyncVideoProgress
             // Update the video progress
             Cache::put($this->getCacheKey($video, $user), round($seconds, 2), now()->addDay());
 
-            // Set video analytics
+            // Video analytics tracking
             TrackVideo::dispatch($video, $user, ['time' => $seconds]);
 
             return $video;
