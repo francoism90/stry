@@ -12,7 +12,7 @@ const seeked = ref(false)
 const { state, src, captions, progress, record } = usePlayer()
 
 const listener = () => {
-  const debouncedRecord = useThrottleFn((time: number | null) => record(time), 3500)
+  const debouncedRecord = useThrottleFn((time: number | null) => record(time), 2500)
 
   return player.value?.subscribe(({ canSeek, currentTime }) => {
     if (!seeked.value && canSeek) {
@@ -20,7 +20,7 @@ const listener = () => {
       seeked.value = true
     }
 
-    if (seeked.value && currentTime > 0) {
+    if (seeked.value && currentTime) {
       debouncedRecord(Math.round(currentTime * 100) / 100)
     }
 

@@ -7,7 +7,7 @@ namespace Domain\Playlists\Actions;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Support\Facades\DB;
 
-class MarkPlaylistAsViewed
+class MarkPlaylistAsAccessed
 {
     public function handle(Playlist $playlist): Playlist
     {

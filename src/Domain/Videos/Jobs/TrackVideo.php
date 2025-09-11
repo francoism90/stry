@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Domain\Playlists\Jobs;
+namespace Domain\Videos\Jobs;
 
 use DateTime;
-use Domain\Playlists\Actions\SetPlaylistProgress;
-use Domain\Playlists\Models\Playlist;
 use Domain\Users\Models\User;
+use Domain\Videos\Actions\MarkVideoAsViewed;
+use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
-class RecordPlaylist implements ShouldQueueAfterCommit
+class TrackVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -27,7 +29,7 @@ class RecordPlaylist implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 5;
+    public $timeout = 60 * 10;
 
     /**
      * @var int
@@ -45,14 +47,14 @@ class RecordPlaylist implements ShouldQueueAfterCommit
     public $deleteWhenMissingModels = true;
 
     public function __construct(
-        public Playlist $playlist,
+        public Video $video,
         public User $user,
         public ?array $attributes = null,
     ) {}
 
     public function handle(): void
     {
-        app(SetPlaylistProgress::class)->handle($this->playlist, $this->user, $this->attributes);
+        app(MarkVideoAsViewed::class)->handle($this->video, $this->user, $this->attributes);
     }
 
     /**
@@ -61,12 +63,13 @@ class RecordPlaylist implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
+            (new RateLimited)->allow(1)->everySeconds(10)->releaseAfterSeconds(5),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
         ];
     }
 
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(30);
+        return now()->addDay();
     }
 }

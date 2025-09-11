@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "294faab6b894156ff617ca5c141f5a04",
+    "content-hash": "175a507a672b741288f79f91fef7ddab",
     "packages": [
         {
             "name": "amphp/amp",
@@ -815,6 +815,54 @@
             "time": "2024-08-03T19:31:26+00:00"
         },
         {
+            "name": "artisansdk/ratelimiter",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/artisansdk/ratelimiter.git",
+                "reference": "c77f6342e781a83b06902c6b7f87abb6c57d0c0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/artisansdk/ratelimiter/zipball/c77f6342e781a83b06902c6b7f87abb6c57d0c0e",
+                "reference": "c77f6342e781a83b06902c6b7f87abb6c57d0c0e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "~10.0|~11.0|~12.0",
+                "nesbot/carbon": "~2.0|~3.0",
+                "php": ">=8.1",
+                "symfony/http-kernel": "~6.0|~7.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "~2.9",
+                "laravel/pint": "~1.0",
+                "pestphp/pest": "~2.34|~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ArtisanSdk\\RateLimiter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel LaBarge",
+                    "email": "daniel@artisanmade.io"
+                }
+            ],
+            "description": "A leaky bucket rate limiter and corresponding middleware with route-level granularity compatible with Laravel.",
+            "support": {
+                "issues": "https://github.com/artisansdk/ratelimiter/issues",
+                "source": "https://github.com/artisansdk/ratelimiter/tree/1.1.1"
+            },
+            "time": "2025-02-24T16:46:39+00:00"
+        },
+        {
             "name": "aws/aws-crt-php",
             "version": "v1.2.7",
             "source": {
@@ -870,16 +918,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.14",
+            "version": "3.356.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "54013c2919ba3f5e1ffb88001a14705129b76415"
+                "reference": "ee8e1516b950e33c617ac17d6352ec5421253cff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/54013c2919ba3f5e1ffb88001a14705129b76415",
-                "reference": "54013c2919ba3f5e1ffb88001a14705129b76415",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ee8e1516b950e33c617ac17d6352ec5421253cff",
+                "reference": "ee8e1516b950e33c617ac17d6352ec5421253cff",
                 "shasum": ""
             },
             "require": {
@@ -961,9 +1009,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.14"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.15"
             },
-            "time": "2025-09-09T18:07:13+00:00"
+            "time": "2025-09-10T18:05:36+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -7705,6 +7753,69 @@
             "time": "2025-07-23T16:08:05+00:00"
         },
         {
+            "name": "spatie/laravel-rate-limited-job-middleware",
+            "version": "2.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-rate-limited-job-middleware.git",
+                "reference": "69806e7e586d3ad07c6bd09658abdbf7fbd6508a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-rate-limited-job-middleware/zipball/69806e7e586d3ad07c6bd09658abdbf7fbd6508a",
+                "reference": "69806e7e586d3ad07c6bd09658abdbf7fbd6508a",
+                "shasum": ""
+            },
+            "require": {
+                "artisansdk/ratelimiter": "^1.1",
+                "illuminate/cache": "^10.0|^11.0|^12.0",
+                "illuminate/redis": "^10.0|^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4.1",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "pestphp/pest": "^2.34|^3.7",
+                "spatie/pest-plugin-test-time": "^1.0|^2.0",
+                "symfony/var-dumper": "^6.0|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\RateLimitedMiddleware\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A middleware that can rate limit jobs",
+            "homepage": "https://github.com/spatie/laravel-rate-limited-job-middleware",
+            "keywords": [
+                "laravel-rate-limited-job-middleware",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-rate-limited-job-middleware/issues",
+                "source": "https://github.com/spatie/laravel-rate-limited-job-middleware/tree/2.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-08-19T07:00:17+00:00"
+        },
+        {
             "name": "spatie/laravel-responsecache",
             "version": "7.7.2",
             "source": {
@@ -11958,16 +12069,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v3.7.0",
+            "version": "v3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "6b7d28a2762a4b69f0f064e1e5b7358af11f04e4"
+                "reference": "2e653fd19585a825e283b42f38378b21ae481cc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/6b7d28a2762a4b69f0f064e1e5b7358af11f04e4",
-                "reference": "6b7d28a2762a4b69f0f064e1e5b7358af11f04e4",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/2e653fd19585a825e283b42f38378b21ae481cc7",
+                "reference": "2e653fd19585a825e283b42f38378b21ae481cc7",
                 "shasum": ""
             },
             "require": {
@@ -11981,7 +12092,7 @@
                 "illuminate/pipeline": "^11.44.2 || ^12.4.1",
                 "illuminate/support": "^11.44.2 || ^12.4.1",
                 "php": "^8.2",
-                "phpstan/phpstan": "^2.1.11"
+                "phpstan/phpstan": "^2.1.23"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^13",
@@ -12035,7 +12146,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v3.7.0"
+                "source": "https://github.com/larastan/larastan/tree/v3.7.1"
             },
             "funding": [
                 {
@@ -12043,7 +12154,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-09T15:17:27+00:00"
+            "time": "2025-09-10T19:42:11+00:00"
         },
         {
             "name": "laravel/boost",
@@ -12759,39 +12870,39 @@
         },
         {
             "name": "pestphp/pest",
-            "version": "v4.0.4",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest.git",
-                "reference": "47fb1d77631d608022cc7af96cac90ac741c8394"
+                "reference": "b7406938ac9e8d08cf96f031922b0502a8523268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest/zipball/47fb1d77631d608022cc7af96cac90ac741c8394",
-                "reference": "47fb1d77631d608022cc7af96cac90ac741c8394",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/b7406938ac9e8d08cf96f031922b0502a8523268",
+                "reference": "b7406938ac9e8d08cf96f031922b0502a8523268",
                 "shasum": ""
             },
             "require": {
-                "brianium/paratest": "^7.11.2",
+                "brianium/paratest": "^7.12.0",
                 "nunomaduro/collision": "^8.8.2",
                 "nunomaduro/termwind": "^2.3.1",
                 "pestphp/pest-plugin": "^4.0.0",
                 "pestphp/pest-plugin-arch": "^4.0.0",
                 "pestphp/pest-plugin-mutate": "^4.0.1",
-                "pestphp/pest-plugin-profanity": "^4.0.1",
+                "pestphp/pest-plugin-profanity": "^4.1.0",
                 "php": "^8.3.0",
-                "phpunit/phpunit": "^12.3.7",
-                "symfony/process": "^7.3.0"
+                "phpunit/phpunit": "^12.3.8",
+                "symfony/process": "^7.3.3"
             },
             "conflict": {
                 "filp/whoops": "<2.18.3",
-                "phpunit/phpunit": ">12.3.7",
+                "phpunit/phpunit": ">12.3.8",
                 "sebastian/exporter": "<7.0.0",
                 "webmozart/assert": "<1.11.0"
             },
             "require-dev": {
                 "pestphp/pest-dev-tools": "^4.0.0",
-                "pestphp/pest-plugin-browser": "^4.0.2",
+                "pestphp/pest-plugin-browser": "^4.1.0",
                 "pestphp/pest-plugin-type-coverage": "^4.0.2",
                 "psy/psysh": "^0.12.10"
             },
@@ -12859,7 +12970,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest/issues",
-                "source": "https://github.com/pestphp/pest/tree/v4.0.4"
+                "source": "https://github.com/pestphp/pest/tree/v4.1.0"
             },
             "funding": [
                 {
@@ -12871,7 +12982,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-28T18:19:42+00:00"
+            "time": "2025-09-10T13:41:09+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
@@ -13514,16 +13625,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.22",
+            "version": "2.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "41600c8379eb5aee63e9413fe9e97273e25d57e4"
+                "reference": "a34502adbbd5c2366b5a97679848a5ace4f6f2f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/41600c8379eb5aee63e9413fe9e97273e25d57e4",
-                "reference": "41600c8379eb5aee63e9413fe9e97273e25d57e4",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a34502adbbd5c2366b5a97679848a5ace4f6f2f5",
+                "reference": "a34502adbbd5c2366b5a97679848a5ace4f6f2f5",
                 "shasum": ""
             },
             "require": {
@@ -13568,20 +13679,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-04T19:17:37+00:00"
+            "time": "2025-09-10T11:42:22+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "12.3.6",
+            "version": "12.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "da2cdaff87220fa641e7652364281b736e4347e0"
+                "reference": "bbede0f5593dad37af3be6a6f8e6ae1885e8a0a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/da2cdaff87220fa641e7652364281b736e4347e0",
-                "reference": "da2cdaff87220fa641e7652364281b736e4347e0",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/bbede0f5593dad37af3be6a6f8e6ae1885e8a0a9",
+                "reference": "bbede0f5593dad37af3be6a6f8e6ae1885e8a0a9",
                 "shasum": ""
             },
             "require": {
@@ -13637,7 +13748,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.3.6"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.3.7"
             },
             "funding": [
                 {
@@ -13657,7 +13768,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-02T05:23:14+00:00"
+            "time": "2025-09-10T09:59:06+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -13906,16 +14017,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.3.7",
+            "version": "12.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b8fa997c49682979ad6bfaa0d7fb25f54954965e"
+                "reference": "9d68c1b41fc21aac106c71cde4669fe7b99fca10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b8fa997c49682979ad6bfaa0d7fb25f54954965e",
-                "reference": "b8fa997c49682979ad6bfaa0d7fb25f54954965e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9d68c1b41fc21aac106c71cde4669fe7b99fca10",
+                "reference": "9d68c1b41fc21aac106c71cde4669fe7b99fca10",
                 "shasum": ""
             },
             "require": {
@@ -13929,7 +14040,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.3",
-                "phpunit/php-code-coverage": "^12.3.3",
+                "phpunit/php-code-coverage": "^12.3.6",
                 "phpunit/php-file-iterator": "^6.0.0",
                 "phpunit/php-invoker": "^6.0.0",
                 "phpunit/php-text-template": "^5.0.0",
@@ -13939,7 +14050,7 @@
                 "sebastian/diff": "^7.0.0",
                 "sebastian/environment": "^8.0.3",
                 "sebastian/exporter": "^7.0.0",
-                "sebastian/global-state": "^8.0.0",
+                "sebastian/global-state": "^8.0.2",
                 "sebastian/object-enumerator": "^7.0.0",
                 "sebastian/type": "^6.0.3",
                 "sebastian/version": "^6.0.0",
@@ -13983,7 +14094,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.3.7"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.3.8"
             },
             "funding": [
                 {
@@ -14007,7 +14118,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-28T05:15:46+00:00"
+            "time": "2025-09-03T06:25:17+00:00"
         },
         {
             "name": "sebastian/cli-parser",

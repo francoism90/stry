@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use Domain\Playlists\Actions\MarkPlaylistAsViewed;
+use DateTime;
+use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -14,8 +15,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
-class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
+class TrackPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -26,12 +28,7 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 1;
-
-    /**
-     * @var int
-     */
-    public $timeout = 60 * 5;
+    public $timeout = 60 * 10;
 
     /**
      * @var int
@@ -54,7 +51,7 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(MarkPlaylistAsViewed::class)->handle($this->playlist);
+        app(MarkPlaylistAsAccessed::class)->handle($this->playlist);
     }
 
     /**
@@ -63,6 +60,7 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
+            (new RateLimited)->allow(1)->everySeconds(60)->releaseAfterOneMinute(),
             (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
         ];
     }
@@ -70,5 +68,10 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     public function uniqueId(): string
     {
         return (string) $this->playlist->getKey();
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addDay();
     }
 }
