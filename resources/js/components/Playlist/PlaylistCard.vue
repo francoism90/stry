@@ -1,28 +1,23 @@
 <script setup lang="ts">
 import type { Playlist } from '@/types'
-import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
-import PageDetails from '@/components/Ui/PageDetails.vue'
 
 interface Props {
   item: Playlist
 }
 
-const props = defineProps<Props>()
-
-const details = computed<NavigationMenuItem[]>(() => [
-  { label: 'Percentage', value: props.item.percent?.toFixed(2) ?? '0.00' },
-  { label: 'State', value: props.item.state ?? 'N/A' },
-  { label: 'Expires At', value: props.item.expires_at ?? 'N/A' },
-])
+defineProps<Props>()
 </script>
 
 <template>
   <UCard variant="soft">
-    <template #header>
-      <h2 class="text-sm text-muted capitalize">{{ item.type }}</h2>
-    </template>
-
-    <PageDetails :details />
+    <h2>{{ item.type }}</h2>
+    <dl class="details text-xs font-light tracking-tight text-neutral-300">
+      <dt class="sr-only">Percentage</dt>
+      <dd>{{ item.percent?.toFixed(2) ?? '0.00' }}%</dd>
+      <dt class="sr-only">State</dt>
+      <dd>{{ item.state ?? 'N/A' }}</dd>
+      <dt class="sr-only">Expires</dt>
+      <dd>{{ item.expires_at ?? 'N/A' }}</dd>
+    </dl>
   </UCard>
 </template>
