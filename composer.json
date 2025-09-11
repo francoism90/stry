@@ -1,4 +1,5 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "francoism90/stry",
     "type": "project",
     "description": "A streaming platform built with Laravel and Inertia.js.",
