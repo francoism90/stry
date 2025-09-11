@@ -10,7 +10,10 @@ defineProps<Props>()
 
 <template>
   <UCard variant="soft">
-    <h2>{{ item.type }}</h2>
+    <template #header>
+      <h2 class="text-sm capitalize">{{ item.type }}</h2>
+    </template>
+
     <dl class="details text-xs font-light tracking-tight text-neutral-300">
       <dt class="sr-only">Percentage</dt>
       <dd>{{ item.percent?.toFixed(2) ?? '0.00' }}%</dd>
