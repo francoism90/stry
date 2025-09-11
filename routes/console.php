@@ -25,10 +25,12 @@ Schedule::command(SnapshotCommand::class)
 
 Schedule::command(PruneExpired::class, ['--hours=24'])
     ->dailyAt('01:30')
+    ->environments('development')
     ->runInBackground();
 
 Schedule::command(PruneCommand::class)
     ->dailyAt('02:00')
+    ->environments('development')
     ->runInBackground();
 
 Schedule::command(PruneModels::class, [
