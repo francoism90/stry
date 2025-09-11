@@ -193,7 +193,7 @@ return [
             'maxJobs' => 0,
             'memory' => 128,
             'tries' => 1,
-            'timeout' => 60 * 60,
+            'timeout' => 60 * 60 * 24,
             'nice' => 2,
         ],
 
@@ -207,7 +207,7 @@ return [
             'maxJobs' => 0,
             'memory' => 128,
             'tries' => 1,
-            'timeout' => 60 * 60,
+            'timeout' => 60 * 60 * 24,
             'nice' => 1,
         ],
 
@@ -221,7 +221,7 @@ return [
             'maxJobs' => 0,
             'memory' => 512,
             'tries' => 1,
-            'timeout' => 60 * 60 * 4,
+            'timeout' => 60 * 60 * 24,
             'nice' => 3,
         ],
     ],
