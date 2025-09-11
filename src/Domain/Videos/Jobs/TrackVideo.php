@@ -10,7 +10,6 @@ use Domain\Videos\Actions\MarkVideoAsViewed;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,7 +17,7 @@ use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Spatie\RateLimitedMiddleware\RateLimited;
 
-class TrackVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class TrackVideo implements ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
