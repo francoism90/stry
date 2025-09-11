@@ -65,7 +65,7 @@ class TrackPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     {
         return [
             (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
-            (new RateLimited)->allow(1)->everySeconds(60)->releaseAfterOneMinute(),
+            (new RateLimited)->allow(1)->everySeconds(30)->releaseAfterOneMinute(),
         ];
     }
 

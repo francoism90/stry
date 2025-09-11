@@ -62,8 +62,8 @@ class TrackVideo implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
-            (new RateLimited)->allow(1)->everySeconds(60)->releaseAfterOneMinute(),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(10),
+            (new RateLimited)->allow(1)->everySeconds(30)->releaseAfterOneMinute(),
         ];
     }
 

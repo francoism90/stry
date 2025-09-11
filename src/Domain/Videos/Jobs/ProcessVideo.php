@@ -72,7 +72,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(10),
             (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
         ];
     }
