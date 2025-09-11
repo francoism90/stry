@@ -20,7 +20,7 @@ const listener = () => {
       seeked.value = true
     }
 
-    if (seeked.value && currentTime) {
+    if (seeked.value && currentTime > 0) {
       debouncedRecord(Math.round(currentTime * 100) / 100)
     }
 
