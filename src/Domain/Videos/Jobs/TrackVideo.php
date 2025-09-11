@@ -63,7 +63,7 @@ class TrackVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new RateLimited)->allow(1)->everySeconds(10)->releaseAfterSeconds(5),
+            (new RateLimited)->allow(1)->everySeconds(60)->releaseAfterOneMinute(),
             (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
         ];
     }
