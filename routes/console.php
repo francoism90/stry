@@ -24,19 +24,21 @@ Schedule::command(SnapshotCommand::class)
     ->runInBackground();
 
 Schedule::command(PruneExpired::class, ['--hours=24'])
-    ->dailyAt('01:30')
     ->environments('development')
+    ->withoutOverlapping()
+    ->dailyAt('01:30')
     ->runInBackground();
 
 Schedule::command(PruneCommand::class)
-    ->dailyAt('02:00')
     ->environments('development')
+    ->withoutOverlapping()
+    ->dailyAt('02:00')
     ->runInBackground();
 
 Schedule::command(PruneModels::class, [
     '--model' => [
         Playlist::class,
-    ],
-])
-    ->hourly()
+    ]])
+    ->withoutOverlapping()
+    ->dailyAt('02:30')
     ->runInBackground();
