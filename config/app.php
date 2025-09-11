@@ -167,7 +167,14 @@ return [
         // Package Service Providers...
     ])->merge([
         // Application Service Providers...
-        // App\Providers\AppServiceProvider::class,
+        Foundation\Providers\AppServiceProvider::class,
+        Foundation\Providers\AuthServiceProvider::class,
+        Foundation\Providers\BroadcastServiceProvider::class,
+        Foundation\Providers\EventServiceProvider::class,
+        Foundation\Providers\FortifyServiceProvider::class,
+        Foundation\Providers\HorizonServiceProvider::class,
+        Foundation\Providers\RouteServiceProvider::class,
+        Foundation\Providers\ViewServiceProvider::class,
     ])->merge([
         // Added Service Providers (Do not remove this line)...
     ])->toArray(),
