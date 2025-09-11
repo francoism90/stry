@@ -1,4 +1,4 @@
-import PlaylistProgressController from '@/actions/App/Api/Playlists/Controllers/PlaylistProgressController'
+import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import type { Media, Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
@@ -14,7 +14,7 @@ export function usePlayer() {
 
   const record = async (time: number | null) => {
     if (state.value?.id) {
-      await http.post(PlaylistProgressController.url(state.value.id), { time })
+      await http.post(PlaylistSessionController.url(state.value.id), { time })
     }
   }
 
