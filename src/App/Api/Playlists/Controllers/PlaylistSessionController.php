@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistViewRequest;
-use Domain\Playlists\Jobs\RecordPlaylist;
 use Domain\Playlists\Models\Playlist;
+use Domain\Videos\Actions\SyncVideoProgress;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PlaylistProgressController extends Controller implements HasMiddleware
+class PlaylistSessionController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -28,10 +29,13 @@ class PlaylistProgressController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
-        // Only dispatch if we have progress data to sync
-        RecordPlaylist::dispatchIf($request->safe()->filled('time'),
-            $playlist, $request->user(), $request->safe()->all()
-        );
+        if ($playlist->getModel() instanceof Video) {
+            app(SyncVideoProgress::class)->handle(
+                video: $playlist->getModel(),
+                user: $request->user(),
+                seconds: $request->safe()->input('time', 0)
+            );
+        }
 
         return response()->noContent();
     }

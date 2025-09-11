@@ -18,6 +18,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Pipeline;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
 class ProcessVideo implements ShouldQueueAfterCommit
 {
@@ -71,12 +72,13 @@ class ProcessVideo implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
+            (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
         ];
     }
 
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(30);
+        return now()->addDay();
     }
 }

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Jobs;
 
-use DateTime;
-use Domain\Playlists\Actions\SetPlaylistProgress;
+use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Models\Playlist;
-use Domain\Users\Models\User;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
-class RecordPlaylist implements ShouldQueueAfterCommit
+class TrackPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -27,7 +27,12 @@ class RecordPlaylist implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 5;
+    public $tries = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60 * 10;
 
     /**
      * @var int
@@ -46,13 +51,11 @@ class RecordPlaylist implements ShouldQueueAfterCommit
 
     public function __construct(
         public Playlist $playlist,
-        public User $user,
-        public ?array $attributes = null,
     ) {}
 
     public function handle(): void
     {
-        app(SetPlaylistProgress::class)->handle($this->playlist, $this->user, $this->attributes);
+        app(MarkPlaylistAsAccessed::class)->handle($this->playlist);
     }
 
     /**
@@ -61,12 +64,13 @@ class RecordPlaylist implements ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->releaseAfter(5),
+            (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
+            (new RateLimited)->allow(1)->everySeconds(60)->releaseAfterOneMinute(),
         ];
     }
 
-    public function retryUntil(): DateTime
+    public function uniqueId(): string
     {
-        return now()->addMinutes(30);
+        return (string) $this->playlist->getKey();
     }
 }

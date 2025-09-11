@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Domain\Playlists\Jobs;
+namespace Domain\Videos\Jobs;
 
-use Domain\Playlists\Actions\MarkPlaylistAsViewed;
-use Domain\Playlists\Models\Playlist;
+use DateTime;
+use Domain\Users\Models\User;
+use Domain\Videos\Actions\MarkVideoAsViewed;
+use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
-class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
+class TrackVideo implements ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -26,12 +28,7 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 1;
-
-    /**
-     * @var int
-     */
-    public $timeout = 60 * 5;
+    public $timeout = 60 * 10;
 
     /**
      * @var int
@@ -49,12 +46,14 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     public $deleteWhenMissingModels = true;
 
     public function __construct(
-        public Playlist $playlist,
+        public Video $video,
+        public User $user,
+        public ?array $attributes = null,
     ) {}
 
     public function handle(): void
     {
-        app(MarkPlaylistAsViewed::class)->handle($this->playlist);
+        app(MarkVideoAsViewed::class)->handle($this->video, $this->user, $this->attributes);
     }
 
     /**
@@ -63,12 +62,13 @@ class ViewedPlaylist implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->playlist->getKey()))->dontRelease(),
+            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(30),
+            (new RateLimited)->allow(1)->everySeconds(60)->releaseAfterOneMinute(),
         ];
     }
 
-    public function uniqueId(): string
+    public function retryUntil(): DateTime
     {
-        return (string) $this->playlist->getKey();
+        return now()->addDay();
     }
 }

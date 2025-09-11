@@ -12,7 +12,7 @@ const seeked = ref(false)
 const { state, src, captions, progress, record } = usePlayer()
 
 const listener = () => {
-  const debouncedRecord = useThrottleFn((time: number | null) => record(time), 3500)
+  const debouncedRecord = useThrottleFn((time: number | null) => record(time), 2500)
 
   return player.value?.subscribe(({ canSeek, currentTime }) => {
     if (!seeked.value && canSeek) {
