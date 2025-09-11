@@ -25,7 +25,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
 
         // Mark the playlist as accessed
         TrackPlaylist::dispatchIf(
-            $playlist->accessed_at?->greaterThan(now()->subMinutes(10)),
+            ! $playlist->accessed_at?->lessThan(now()->subMinutes(10)),
             $playlist
         );
 
