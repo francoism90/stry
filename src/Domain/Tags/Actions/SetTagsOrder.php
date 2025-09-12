@@ -24,10 +24,10 @@ class SetTagsOrder
         });
     }
 
-    protected function getTags(TagType $value): LazyCollection
+    protected function getTags(TagType $type): LazyCollection
     {
         return Tag::query()
-            ->type($value)
+            ->type($type)
             ->cursor()
             ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE);
     }
