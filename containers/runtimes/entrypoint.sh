@@ -35,23 +35,23 @@ fi
 log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
     app)
-        log "INFO" "Starting Octane service..."
+        log "INFO" "Starting Octane..."
         exec ${OCTANE}
         ;;
     ssr)
-        log "INFO" "Starting SSR service..."
+        log "INFO" "Starting SSR..."
         exec ${ARTISAN} inertia:start-ssr
         ;;
     horizon)
-        log "INFO" "Starting Horizon service..."
+        log "INFO" "Starting Horizon..."
         exec ${ARTISAN} horizon
         ;;
     scheduler)
-        log "INFO" "Starting scheduler..."
+        log "INFO" "Starting Scheduler..."
         exec ${ARTISAN} schedule:work
         ;;
     reverb)
-        log "INFO" "Starting Reverb service..."
+        log "INFO" "Starting Reverb..."
         exec ${ARTISAN} reverb:start
         ;;
     *)
