@@ -918,16 +918,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.16",
+            "version": "3.356.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1b7a3277801e5179a4ee931397c69f30d29001c2"
+                "reference": "d0357fbe2535bb7d832e594a4ff2ff8da29d229c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1b7a3277801e5179a4ee931397c69f30d29001c2",
-                "reference": "1b7a3277801e5179a4ee931397c69f30d29001c2",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d0357fbe2535bb7d832e594a4ff2ff8da29d229c",
+                "reference": "d0357fbe2535bb7d832e594a4ff2ff8da29d229c",
                 "shasum": ""
             },
             "require": {
@@ -940,7 +940,7 @@
                 "guzzlehttp/psr7": "^2.4.5",
                 "mtdowling/jmespath.php": "^2.8.0",
                 "php": ">=8.1",
-                "psr/http-message": "^2.0"
+                "psr/http-message": "^1.0 || ^2.0"
             },
             "require-dev": {
                 "andrewsville/php-token-reflection": "^1.4",
@@ -1009,9 +1009,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.16"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.17"
             },
-            "time": "2025-09-11T18:06:11+00:00"
+            "time": "2025-09-12T18:07:37+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -13625,16 +13625,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.24",
+            "version": "2.1.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "5a9f28e9ec3fe8b1b7cbd42b3935a66b569f2ff2"
+                "reference": "4087d28bd252895874e174d65e26b2c202ed893a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5a9f28e9ec3fe8b1b7cbd42b3935a66b569f2ff2",
-                "reference": "5a9f28e9ec3fe8b1b7cbd42b3935a66b569f2ff2",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4087d28bd252895874e174d65e26b2c202ed893a",
+                "reference": "4087d28bd252895874e174d65e26b2c202ed893a",
                 "shasum": ""
             },
             "require": {
@@ -13679,7 +13679,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-12T07:54:24+00:00"
+            "time": "2025-09-12T14:26:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -14122,16 +14122,16 @@
         },
         {
             "name": "sebastian/cli-parser",
-            "version": "4.0.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/cli-parser.git",
-                "reference": "6d584c727d9114bcdc14c86711cd1cad51778e7c"
+                "reference": "90f41072d220e5c40df6e8635f5dafba2d9d4d04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/6d584c727d9114bcdc14c86711cd1cad51778e7c",
-                "reference": "6d584c727d9114bcdc14c86711cd1cad51778e7c",
+                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/90f41072d220e5c40df6e8635f5dafba2d9d4d04",
+                "reference": "90f41072d220e5c40df6e8635f5dafba2d9d4d04",
                 "shasum": ""
             },
             "require": {
@@ -14143,7 +14143,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.0-dev"
+                    "dev-main": "4.2-dev"
                 }
             },
             "autoload": {
@@ -14167,15 +14167,27 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/cli-parser/issues",
                 "security": "https://github.com/sebastianbergmann/cli-parser/security/policy",
-                "source": "https://github.com/sebastianbergmann/cli-parser/tree/4.0.0"
+                "source": "https://github.com/sebastianbergmann/cli-parser/tree/4.2.0"
             },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
                     "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/cli-parser",
+                    "type": "tidelift"
                 }
             ],
-            "time": "2025-02-07T04:53:50+00:00"
+            "time": "2025-09-14T09:36:45+00:00"
         },
         {
             "name": "sebastian/comparator",
