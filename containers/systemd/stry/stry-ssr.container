@@ -1,0 +1,19 @@
+[Unit]
+Description=Server-side Rendering (SSR) container
+Requires=stry.service
+After=stry.service
+
+[Container]
+Image=stry.build
+AutoUpdate=local
+Environment=CONTAINER_ROLE=ssr
+LogDriver=none
+UserNS=keep-id
+Volume=${DATA_PATH}:/data:rw,z
+Network=stry.network
+Network=proxy.network
+ExposeHostPort=13714
+
+[Service]
+EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
+TimeoutStartSec=900
