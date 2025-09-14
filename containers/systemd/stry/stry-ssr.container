@@ -11,7 +11,6 @@ LogDriver=none
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
-Network=proxy.network
 ExposeHostPort=13714
 
 [Service]
