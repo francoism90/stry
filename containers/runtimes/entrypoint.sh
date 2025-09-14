@@ -25,7 +25,7 @@ prepare_application() {
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
     ${ARTISAN} scout:sync-index-settings
-    ${NPM} build
+    ${NPM} build:ssr
 }
 
 if [ "${CONTAINER_ENV}" = "production" ]; then
@@ -37,6 +37,10 @@ case ${CONTAINER_ROLE} in
     app)
         log "INFO" "Starting Octane service..."
         exec ${OCTANE}
+        ;;
+    ssr)
+        log "INFO" "Starting SSR service..."
+        exec ${ARTISAN} inertia:start-ssr
         ;;
     horizon)
         log "INFO" "Starting Horizon service..."

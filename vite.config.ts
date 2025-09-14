@@ -131,16 +131,5 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            http: ['axios'],
-            broadcast: ['pusher-js', 'laravel-echo'],
-            play: ['hls.js', 'vidstack'],
-          },
-        },
-      },
-    },
   }
 })
