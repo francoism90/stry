@@ -37,6 +37,8 @@ Volume=${DATA_PATH}:/data:rw,z,U
 
 **NOTE**: The volume `U` flag should only be appended in `stry.container`.
 
+1. Remove `Wants=` `stry-ssr.service` from any container file. This cannot be used on development.
+
 1. Open the cloned project with VSCode as a devcontainer.
 
 1. Perform the following commands in the VSCode terminal:

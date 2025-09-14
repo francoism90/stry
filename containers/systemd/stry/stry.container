@@ -2,7 +2,7 @@
 Description=Stry container
 Requires=stry-redis.service stry-pgsql.service stry-meilisearch.service stry-mailpit.service stry-minio.service
 After=stry-redis.service stry-pgsql.service stry-meilisearch.service stry-mailpit.service stry-minio.service
-Wants=stry-reverb.service stry-queue.service stry-schedule.service
+Wants=stry-reverb.service stry-queue.service stry-schedule.service stry-ssr.service
 
 [Container]
 Image=stry.build
