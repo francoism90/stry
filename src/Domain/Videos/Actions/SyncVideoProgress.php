@@ -21,7 +21,7 @@ class SyncVideoProgress
             // Video analytics tracking
             TrackVideo::dispatchIf(
                 Cache::missing($cacheKey),
-                compact('video', 'user', 'attributes')
+                $video, $user, $attributes
             );
 
             // Sync user video progress
