@@ -25,7 +25,7 @@ class SyncVideoProgress
             );
 
             // Sync user video progress
-            Cache::put($cacheKey, $attributes, now()->addHours(4));
+            Cache::put($cacheKey, $attributes, now()->addDay());
 
             return $video;
         });
