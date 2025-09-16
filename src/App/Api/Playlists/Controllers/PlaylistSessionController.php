@@ -33,7 +33,7 @@ class PlaylistSessionController extends Controller implements HasMiddleware
             app(SyncVideoProgress::class)->handle(
                 video: $playlist->getModel(),
                 user: $request->user(),
-                seconds: $request->safe()->input('time', 0)
+                attributes: $request->safe()->only('time')
             );
         }
 

@@ -12,14 +12,20 @@ use Illuminate\Support\Facades\DB;
 
 class SyncVideoProgress
 {
-    public function handle(Video $video, User $user, float $seconds = 0): Video
+    public function handle(Video $video, User $user, ?array $attributes = null): Video
     {
-        return DB::transaction(function () use ($video, $user, $seconds) {
-            // Update the video progress
-            Cache::put($this->getCacheKey($video, $user), round($seconds, 2), now()->addDay());
+        return DB::transaction(function () use ($video, $user, $attributes) {
+            // Generate a unique cache key
+            $cacheKey = $this->getCacheKey($video, $user);
 
             // Video analytics tracking
-            TrackVideo::dispatch($video, $user, ['time' => $seconds]);
+            TrackVideo::dispatchIf(
+                Cache::missing($cacheKey),
+                compact('video', 'user', 'attributes')
+            );
+
+            // Sync user video progress
+            Cache::put($cacheKey, $attributes, now()->addHours(4));
 
             return $video;
         });

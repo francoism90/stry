@@ -13,7 +13,9 @@ class GetVideoProgress
 {
     public function handle(Video $video, User $user): float
     {
-        return (float) Cache::remember($this->getCacheKey($video, $user), now()->addDay(), function () use ($video, $user) {
+        $cacheKey = $this->getCacheKey($video, $user);
+
+        return (float) Cache::remember($cacheKey, now()->addHours(4), function () use ($video, $user) {
             // Ensure the user has a viewed group
             $group = $user->findOrCreateGroup(GroupType::Viewed);
 
@@ -21,9 +23,9 @@ class GetVideoProgress
             $record = $group->videos()->find($video);
 
             // Get the progress record for the video
-            $progress = data_get($record?->pivot?->options, 'time');
+            $progress = data_get($record?->pivot?->options ?? [], 'time');
 
-            return (float) $progress ?: 0;
+            return round($progress ?: 0, 2);
         });
     }
 
