@@ -197,7 +197,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 180000,
+                    'maxTotalHits' => 320000,
                 ],
             ],
 
@@ -280,8 +280,8 @@ return [
 
                 'rankingRules' => [
                     'sort',
-                    'words',
                     'attribute',
+                    'words',
                     'typo',
                     'proximity',
                     'exactness',
@@ -295,7 +295,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 180000,
+                    'maxTotalHits' => 320000,
                 ],
             ],
 
@@ -360,8 +360,8 @@ return [
 
                 'rankingRules' => [
                     'sort',
-                    'words',
                     'attribute',
+                    'words',
                     'typo',
                     'proximity',
                     'exactness',
@@ -375,7 +375,7 @@ return [
                 ],
 
                 'pagination' => [
-                    'maxTotalHits' => 180000,
+                    'maxTotalHits' => 320000,
                 ],
             ],
         ],
