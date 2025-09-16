@@ -55,8 +55,7 @@ trait InteractsWithPlaylists
         return $this
             ->playlists()
             ->when($type, fn ($query) => $query->type($type))
-            ->whereNot(fn ($query) => $query->expired())
-            ->whereNot(fn ($query) => $query->failed())
+            ->active()
             ->exists();
     }
 }
