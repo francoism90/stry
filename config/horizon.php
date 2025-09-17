@@ -73,6 +73,7 @@ return [
     'middleware' => [
         'web',
         'auth.basic',
+        'role:super-admin',
     ],
 
     /*
