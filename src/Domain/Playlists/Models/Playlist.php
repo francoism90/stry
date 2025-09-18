@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use League\Flysystem\WhitespacePathNormalizer;
@@ -142,7 +143,7 @@ class Playlist extends Model
         return 'broadcasts';
     }
 
-    public function broadcastAfterCommit()
+    public function broadcastAfterCommit(): bool
     {
         return true;
     }
@@ -220,72 +221,72 @@ class Playlist extends Model
 
     public static function getVideoFormats(): Collection
     {
-        return collect(config('playlist.video_formats', []))
+        return Config::collection('playlist.video_formats', [])
             ->filter(fn (string $format) => is_subclass_of($format, DefaultVideo::class))
             ->map(fn (string $format) => app($format));
     }
 
     public static function getHlsFormats(): Collection
     {
-        return collect(config('playlist.hls_formats', []))
+        return Config::collection('playlist.hls_formats', [])
             ->map(fn (array $format) => fluent($format))
             ->sortBy('bit_rate');
     }
 
     public static function getSegmentLength(): int
     {
-        return config('playlist.segment_length', 6);
+        return Config::integer('playlist.segment_length', 6);
     }
 
     public static function getFrameInterval(): int
     {
-        return config('playlist.frame_interval', 60);
+        return Config::integer('playlist.frame_interval', 60);
     }
 
     public static function getTranscodeDisk(): string
     {
-        return config('playlist.disk_name', 'segments');
+        return Config::string('playlist.disk_name', 'segments');
     }
 
     public static function getRotationKeyDisk(): string
     {
-        return config('playlist.rotation_keys_disk', 'secrets');
+        return Config::string('playlist.rotation_keys_disk', 'secrets');
     }
 
     public static function getExpiresAfter(): ?Carbon
     {
-        $expires = config('playlist.expires_after');
+        $expires = Config::integer('playlist.expires_after');
 
-        return $expires === null ? null : Carbon::now()->addSeconds($expires);
+        return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getStaleAfter(): ?int
+    public static function getStaleAfter(): int
     {
-        return config('playlist.stale_after');
+        return Config::integer('playlist.stale_after', 0);
     }
 
     public static function getAdditionalParameters(): array
     {
-        return config('playlist.additional_parameters', []);
+        return Config::array('playlist.additional_parameters', []);
     }
 
     public static function shouldUseRotationKeys(): bool
     {
-        return config('playlist.rotation_keys', true);
+        return Config::boolean('playlist.rotation_keys', true);
     }
 
     public static function getRotationKeysSections(): int
     {
-        return config('playlist.rotation_keys_sections', 5);
+        return Config::integer('playlist.rotation_keys_sections', 5);
     }
 
     public static function copyVideoCodec(): bool
     {
-        return config('playlist.copy_video_codec', true);
+        return Config::boolean('playlist.copy_video_codec', true);
     }
 
     public static function copyAudioCodec(): bool
     {
-        return config('playlist.copy_audio_codec', true);
+        return Config::boolean('playlist.copy_audio_codec', true);
     }
 }

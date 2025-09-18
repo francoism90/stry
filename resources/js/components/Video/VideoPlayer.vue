@@ -11,22 +11,21 @@ const seeked = ref(false)
 
 const { state, src, captions, progress, record } = usePlayer()
 
-const listener = () => {
-  const debouncedRecord = useThrottleFn((time: number | null) => record(time), 2500)
+const sessionHandler = useThrottleFn((time: number | null) => record(time), 2500)
 
-  return player.value?.subscribe(({ canSeek, currentTime }) => {
+const listener = () =>
+  player.value?.subscribe(({ canSeek, currentTime }) => {
     if (!seeked.value && canSeek) {
       player.value!.currentTime = progress.value || 0
       seeked.value = true
     }
 
-    if (seeked.value && currentTime > 0) {
-      debouncedRecord(Math.round(currentTime * 100) / 100)
+    if (seeked.value && currentTime !== undefined) {
+      sessionHandler(Math.round(currentTime * 100) / 100)
     }
 
     return () => player.value
   })
-}
 
 onMounted(() => listener())
 onBeforeUnmount(() => listener())
@@ -38,7 +37,7 @@ onBeforeUnmount(() => listener())
       v-if="!src"
       class="grid min-h-52 w-full place-items-center rounded-xl bg-neutral-800 md:min-h-96"
     >
-      <span class="text-muted">Please wait while we prepare the video ({{ state?.percent || 0 }}%)...</span>
+      <span class="text-muted">Please wait while we prepare the video...</span>
     </div>
 
     <media-player

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdatePlaylistDetails
 {
-    public function handle(Playlist $playlist, array $attributes = []): mixed
+    public function handle(Playlist $playlist, array $attributes = []): Playlist
     {
         return DB::transaction(function () use ($playlist, $attributes) {
             $playlist->updateOrFail($attributes);

@@ -8,6 +8,7 @@ use Domain\Playlists\Jobs\TrackPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
 use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
@@ -16,7 +17,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return config('playlist.middleware', []);
+        return Config::array('playlist.middleware'. []);
     }
 
     public function __invoke(Playlist $playlist, string $path): DynamicHLSPlaylist

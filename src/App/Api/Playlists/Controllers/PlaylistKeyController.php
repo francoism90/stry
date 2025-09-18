@@ -7,6 +7,7 @@ namespace App\Api\Playlists\Controllers;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -14,7 +15,7 @@ class PlaylistKeyController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return config('playlist.middleware', []);
+        return Config::array('playlist.middleware', []);
     }
 
     public function __invoke(Playlist $playlist, string $path): StreamedResponse

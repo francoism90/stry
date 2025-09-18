@@ -27,17 +27,17 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', Verified::class);
     }
 
+    public function valid(): self
+    {
+        return $this
+            ->whereNot(fn ($query) => $query->failed())
+            ->whereNot(fn ($query) => $query->expired())
+            ->ordered();
+    }
+
     public function type(string $type): self
     {
         return $this->where('type', $type);
-    }
-
-    public function active(): self
-    {
-        return $this
-            ->whereNot(fn ($query) => $query->expired())
-            ->whereNot(fn ($query) => $query->failed())
-            ->ordered();
     }
 
     public function expired(): self
@@ -49,12 +49,14 @@ class PlaylistQueryBuilder extends Builder
 
     public function stale(): self
     {
-        return $this->when(Playlist::getStaleAfter(), fn ($query, int $staleAfter = 0) => $query
+        $staleAfter = Playlist::getStaleAfter();
+
+        return $this->when($staleAfter > 0, fn ($query) => $query
             ->whereNotNull('accessed_at')
             ->whereNotNull('expires_at')
             ->where('accessed_at', '<=', now()->subSeconds($staleAfter))
             ->orderBy('accessed_at')
-            ->orderBy('created_at')
+            ->oldest()
         );
     }
 

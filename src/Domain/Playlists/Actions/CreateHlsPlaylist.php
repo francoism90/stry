@@ -35,12 +35,6 @@ class CreateHlsPlaylist
                 $ffmpeg->withRotatingEncryptionKey(fn (string $filename, string $contents) => $secrets->put($playlist->getPath($filename), $contents), $segmentsPerKey);
             }
 
-            // Monitor progress of the transcoding
-            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => app(UpdatePlaylistDetails::class)->handle(
-                playlist: $playlist,
-                attributes: ['progress' => compact('percentage', 'remaining', 'rate')],
-            ));
-
             // Find the video format for the given media file
             $video = app(GetVideoFormat::class)->handle($disk, $path);
 
@@ -70,6 +64,12 @@ class CreateHlsPlaylist
                     ->setAdditionalParameters(Playlist::getAdditionalParameters())
                 );
             });
+
+            // Monitor progress of the transcoding
+            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => app(UpdatePlaylistDetails::class)->handle(
+                playlist: $playlist,
+                attributes: ['progress' => compact('percentage', 'remaining', 'rate')],
+            ));
 
             // Run the transcoding process
             $ffmpeg->save($playlist->getPath($playlist->file_name));
