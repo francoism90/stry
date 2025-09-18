@@ -38,13 +38,6 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
           />
         </div>
 
-        <div
-          v-else
-          class="py-4 text-center text-sm text-gray-500 dark:text-gray-400"
-        >
-          No items found.
-        </div>
-
         <WhenVisible
           :always="hasPages"
           :buffer="200"
