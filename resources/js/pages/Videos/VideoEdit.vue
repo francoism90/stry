@@ -183,7 +183,7 @@ const submit = async () =>
         label-key="name"
         multiple
         class="w-full"
-        placeholder="Search tags..."
+        placeholder="Add tags"
         @update:search-term="(value: string) => query({ search: value })"
       >
         <template #item-label="{ item }">
