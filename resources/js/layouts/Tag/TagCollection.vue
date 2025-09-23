@@ -26,7 +26,7 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
 
       <UPageGrid
         v-if="items?.data?.length"
-        class="gap-4 py-2"
+        class="gap-4"
       >
         <TagCard
           v-for="item in items.data"

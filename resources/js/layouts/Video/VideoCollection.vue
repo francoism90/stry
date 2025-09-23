@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
 import { usePagination } from '@/composables/pagination'
 import type { Videos } from '@/types'
@@ -25,43 +24,41 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
         <div class="sr-only">Loading items...</div>
       </template>
 
-      <PageSection>
-        <UPageGrid
-          v-if="items?.data?.length"
-          class="gap-4 py-2"
+      <UPageGrid
+        v-if="items?.data?.length"
+        class="gap-4"
+      >
+        <VideoCard
+          v-for="item in items.data"
+          :key="item.id"
+          :item
+        />
+      </UPageGrid>
+
+      <WhenVisible
+        :always="hasPages"
+        :buffer="200"
+        :params="{
+          only: ['items'],
+          data: hasPages ? { page: nextPage } : {},
+        }"
+      >
+        <template #fallback>
+          <div class="sr-only">Loading more...</div>
+        </template>
+
+        <div
+          v-if="hasPages"
+          class="flex h-12 w-full items-center justify-center"
         >
-          <VideoCard
-            v-for="item in items.data"
-            :key="item.id"
-            :item
+          <UButton
+            label="Load more"
+            variant="soft"
+            loading-auto
+            @click.prevent="fetch"
           />
-        </UPageGrid>
-
-        <WhenVisible
-          :always="hasPages"
-          :buffer="200"
-          :params="{
-            only: ['items'],
-            data: hasPages ? { page: nextPage } : {},
-          }"
-        >
-          <template #fallback>
-            <div class="sr-only">Loading more...</div>
-          </template>
-
-          <div
-            v-if="hasPages"
-            class="flex h-12 w-full items-center justify-center"
-          >
-            <UButton
-              label="Load more"
-              variant="soft"
-              loading-auto
-              @click.prevent="fetch"
-            />
-          </div>
-        </WhenVisible>
-      </PageSection>
+        </div>
+      </WhenVisible>
     </Deferred>
   </UPageBody>
 </template>
