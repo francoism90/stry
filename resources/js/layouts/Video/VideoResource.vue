@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
-import PageActions from '@/components/Ui/PageActions.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
-import PageColumns from '@/components/Ui/PageColumns.vue'
-import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import type { Video } from '@/types'
@@ -20,17 +17,14 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.video.id) }])
+const links = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.video.id) }])
 
 const tabs = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url(props.video.id) },
   { label: 'Playlists', to: index.url({ video: props.video.id }) },
 ])
 
-const details = computed<NavigationMenuItem[]>(() => [
-  { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
-  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
-])
+const details = computed(() => [useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value, props.video.timestamp ?? 'N/A'].filter(Boolean).join(' • '))
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload())
@@ -41,16 +35,12 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 
   <PageBody>
     <PageSection>
-      <PageColumns>
-        <template #left>
-          <UPageFeature :title="video.title" />
-          <PageDetails :details />
-        </template>
-
-        <template #right>
-          <PageActions :actions />
-        </template>
-      </PageColumns>
+      <UPageHeader
+        :ui="{ root: 'border-0 py-0 text-sm tracking-tight text-neutral-300', title: 'text-sm sm:text-xl', description: 'mt-0 text-sm' }"
+        :title="video.title"
+        :description="details"
+        :links="links"
+      />
 
       <PageNavigation :tabs />
     </PageSection>
