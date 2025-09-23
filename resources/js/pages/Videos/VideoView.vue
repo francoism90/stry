@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import PageActions from '@/components/Ui/PageActions.vue'
-import PageBadge from '@/components/Ui/PageBadge.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
+import PageTags from '@/components/Ui/PageTags.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
 import type { Video } from '@/types'
@@ -48,7 +48,8 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
             :title="video.title"
             :description="details"
           />
-          <PageBadge :badges="video.tags" />
+
+          <PageTags :badges="video.tags" />
         </template>
 
         <template #right>
