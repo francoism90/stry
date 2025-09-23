@@ -5,7 +5,6 @@ import PageBadge from '@/components/Ui/PageBadge.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
-import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
@@ -48,7 +47,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     <PageSection class="gap-4 py-2">
       <PageColumns>
         <template #left>
-          <PageFeature :title="video.title" />
+          <UPageFeature :title="video.title" />
           <PageDetails :details />
           <PageBadge :badges="video.tags" />
         </template>

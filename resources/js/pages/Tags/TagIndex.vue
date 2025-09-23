@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { index } from '@/actions/App/Web/Tags/Controllers/TagController'
-import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -30,7 +29,7 @@ const filters = ref<NavigationMenuItem[]>([
   <Head title="Lists" />
 
   <PageSection>
-    <PageFeature title="Lists" />
+    <UPageFeature title="Lists" />
     <PageFilters :filters />
   </PageSection>
 </template>

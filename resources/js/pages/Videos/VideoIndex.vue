@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -22,7 +21,7 @@ const filters = ref<NavigationMenuItem[]>([
   <Head title="Videos" />
 
   <PageSection>
-    <PageFeature title="Videos" />
+    <UPageFeature title="Videos" />
     <PageFilters :filters />
   </PageSection>
 </template>

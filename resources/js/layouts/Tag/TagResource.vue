@@ -4,7 +4,6 @@ import PageActions from '@/components/Ui/PageActions.vue'
 import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
-import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import type { Tag } from '@/types'
@@ -37,7 +36,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload())
     <PageSection>
       <PageColumns>
         <template #left>
-          <PageFeature :title="tag.name" />
+          <UPageFeature :title="tag.name" />
           <PageDetails :details />
         </template>
 
