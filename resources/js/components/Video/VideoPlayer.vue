@@ -9,7 +9,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { state, src, captions, progress, record } = usePlayer()
+const { src, captions, progress, record } = usePlayer()
 
 const sessionHandler = useThrottleFn((time: number | null) => record(time), 2500)
 

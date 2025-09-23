@@ -2,12 +2,10 @@
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import PageActions from '@/components/Ui/PageActions.vue'
-import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
-import PageSection from '@/components/Ui/PageSection.vue'
 import type { Video } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -30,7 +28,7 @@ const tabs = ref<NavigationMenuItem[]>([
 
 const details = computed<NavigationMenuItem[]>(() => [
   { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
-  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
+  { label: 'Duration', value: props.video.timestamp ?? 'N/A' },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())
@@ -40,22 +38,20 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <PageBody>
-    <PageSection>
-      <PageColumns>
-        <template #left>
-          <PageFeature :title="video.title" />
-          <PageDetails :details />
-        </template>
+  <UPageBody>
+    <PageColumns>
+      <template #left>
+        <PageFeature :title="video.title" />
+        <PageDetails :details />
+      </template>
 
-        <template #right>
-          <PageActions :actions />
-        </template>
-      </PageColumns>
+      <template #right>
+        <PageActions :actions />
+      </template>
+    </PageColumns>
 
-      <PageNavigation :tabs />
-    </PageSection>
+    <PageNavigation :tabs />
 
     <slot />
-  </PageBody>
+  </UPageBody>
 </template>

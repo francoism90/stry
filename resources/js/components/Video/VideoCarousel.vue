@@ -4,9 +4,9 @@ import type { Video } from '@/types'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 interface Props {
-  label?: string
+  label: string
+  actions?: NavigationMenuItem[] | undefined
   items?: Video[] | null
-  actions?: NavigationMenuItem[]
 }
 
 defineProps<Props>()

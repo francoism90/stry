@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import PageActions from '@/components/Ui/PageActions.vue'
-import PageBadge from '@/components/Ui/PageBadge.vue'
-import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
+import PageTags from '@/components/Ui/PageTags.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
 import type { Video } from '@/types'
@@ -31,7 +30,7 @@ const actions = ref<NavigationMenuItem[]>([
 
 const details = ref<NavigationMenuItem[]>([
   { label: 'Added', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD').value },
-  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
+  { label: 'Duration', value: props.video.timestamp ?? 'N/A' },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
@@ -42,15 +41,15 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <PageBody>
+  <UPageBody>
     <VideoPlayer />
 
     <PageSection class="gap-4 py-2">
       <PageColumns>
         <template #left>
           <PageFeature :title="video.title" />
-          <PageDetails :details />
-          <PageBadge :badges="video.tags" />
+          <PageDetails :details="details" />
+          <PageTags :items="video.tags" />
         </template>
 
         <template #right>
@@ -69,5 +68,5 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         />
       </Deferred>
     </PageSection>
-  </PageBody>
+  </UPageBody>
 </template>

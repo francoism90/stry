@@ -12,8 +12,8 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref } from 'vue'
 
 interface Props {
-  search?: string | null
-  sort?: string | null
+  search?: string | undefined
+  sort?: string | undefined
   items?: Videos
 }
 
@@ -30,7 +30,7 @@ const filters = ref<NavigationMenuItem[]>([
 
 const form = useForm('get', SearchController.url(), { search: props.search || '', sort: props.sort || '' })
 
-const submit = async () =>
+const onSubmit = async () =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
@@ -45,7 +45,7 @@ const submit = async () =>
 
     <UForm
       :state="form"
-      @submit.prevent="submit"
+      @submit="onSubmit"
       class="flex flex-col gap-4 pt-2"
     >
       <UFormField
@@ -53,7 +53,8 @@ const submit = async () =>
         :error="form.errors.search"
       >
         <UInput
-          v-model.trim="form.search"
+          v-model="form.search"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           type="search"
           placeholder="Title, description, tags..."
           size="lg"

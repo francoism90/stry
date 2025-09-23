@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import PageBody from '@/components/Ui/PageBody.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import type { Video } from '@/types'
@@ -16,7 +15,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <PageBody>
+  <UPageBody>
     <Deferred :data="['recommended', 'recent', 'watching']">
       <template #fallback>
         <div class="sr-only">Loading sections...</div>
@@ -42,5 +41,5 @@ defineProps<Props>()
         />
       </PageSection>
     </Deferred>
-  </PageBody>
+  </UPageBody>
 </template>
