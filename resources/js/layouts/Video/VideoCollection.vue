@@ -27,16 +27,16 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
       </template>
 
       <PageSection>
-        <div
+        <UPageGrid
           v-if="items?.data?.length"
-          class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3"
+          class="gap-4 py-2"
         >
           <VideoCard
             v-for="item in items.data"
             :key="item.id"
             :item
           />
-        </div>
+        </UPageGrid>
 
         <WhenVisible
           :always="hasPages"
