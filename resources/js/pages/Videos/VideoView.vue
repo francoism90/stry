@@ -2,7 +2,6 @@
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import PageActions from '@/components/Ui/PageActions.vue'
 import PageBadge from '@/components/Ui/PageBadge.vue'
-import PageBody from '@/components/Ui/PageBody.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
@@ -41,7 +40,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <PageBody>
+  <UPageBody>
     <VideoPlayer />
 
     <PageSection class="gap-4 py-2">
@@ -68,5 +67,5 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         />
       </Deferred>
     </PageSection>
-  </PageBody>
+  </UPageBody>
 </template>

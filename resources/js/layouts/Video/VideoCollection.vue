@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import PageBody from '@/components/Ui/PageBody.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCard from '@/components/Video/VideoCard.vue'
 import { usePagination } from '@/composables/pagination'
@@ -18,7 +17,7 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
 </script>
 
 <template>
-  <PageBody>
+  <UPageBody>
     <slot />
 
     <Deferred data="items">
@@ -64,5 +63,5 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
         </WhenVisible>
       </PageSection>
     </Deferred>
-  </PageBody>
+  </UPageBody>
 </template>

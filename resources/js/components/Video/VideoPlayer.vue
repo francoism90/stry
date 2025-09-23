@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import PageSection from '@/components/Ui/PageSection.vue'
 import { usePlayer } from '@/composables/player'
 import { useThrottleFn } from '@vueuse/core'
 import type { MediaPlayer } from 'vidstack'
@@ -32,34 +31,32 @@ onBeforeUnmount(() => listener())
 </script>
 
 <template>
-  <PageSection>
-    <div
-      v-if="!src"
-      class="grid min-h-52 w-full place-items-center rounded-xl bg-neutral-800 md:min-h-96"
-    >
-      <span class="text-muted">Please wait while we prepare the video...</span>
-    </div>
+  <div
+    v-if="!src"
+    class="grid min-h-52 w-full place-items-center rounded-xl bg-neutral-800 md:min-h-96"
+  >
+    <span class="text-muted">Please wait while we prepare the video...</span>
+  </div>
 
-    <media-player
-      ref="player"
-      .src="src || undefined"
-      .autoPlay="true"
-      .playsInline="true"
-      crossOrigin="anonymous"
-      class="rounded-xl"
-    >
-      <media-video-layout />
-      <media-provider>
-        <template v-if="captions?.length">
-          <track
-            v-for="caption in captions"
-            :key="caption.id"
-            :src="caption.asset"
-            :label="caption.name || 'undefined'"
-            kind="captions"
-          />
-        </template>
-      </media-provider>
-    </media-player>
-  </PageSection>
+  <media-player
+    ref="player"
+    .src="src || undefined"
+    .autoPlay="true"
+    .playsInline="true"
+    crossOrigin="anonymous"
+    class="rounded-xl"
+  >
+    <media-video-layout />
+    <media-provider>
+      <template v-if="captions?.length">
+        <track
+          v-for="caption in captions"
+          :key="caption.id"
+          :src="caption.asset"
+          :label="caption.name || 'undefined'"
+          kind="captions"
+        />
+      </template>
+    </media-provider>
+  </media-player>
 </template>
