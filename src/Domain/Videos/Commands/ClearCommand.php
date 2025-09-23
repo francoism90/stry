@@ -24,7 +24,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $description = 'Delete all trashed videos';
+    protected $description = 'Force delete all trashed videos';
 
     public function handle(): void
     {
@@ -48,13 +48,13 @@ class ClearCommand extends Command implements Isolatable
             ])->all()
         );
 
-        if (confirm('Are you sure you want to delete these videos?')) {
+        if (confirm('Are you sure you want to force-delete these videos?')) {
             $videos->each(function (Video $video) {
                 if (! $video->trashed()) {
                     return;
                 }
 
-                info("deleting {$video->name} ({$video->getKey()})");
+                info("deleting video `{$video->name}` ({$video->getKey()})");
 
                 $video->forceDelete();
             });
