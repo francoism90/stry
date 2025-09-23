@@ -74,6 +74,19 @@ const onSubmit = async () =>
         />
       </UFormField>
 
+      <UFormField
+        name="remember"
+        required
+        :error="form.errors.remember"
+      >
+        <UCheckbox
+          v-model="form.remember"
+          :model-modifiers="{ nullable: true }"
+          id="remember"
+          label="Remember me"
+        />
+      </UFormField>
+
       <UButton
         type="submit"
         color="primary"
