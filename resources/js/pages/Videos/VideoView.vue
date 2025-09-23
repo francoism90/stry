@@ -3,7 +3,6 @@ import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import PageActions from '@/components/Ui/PageActions.vue'
 import PageBadge from '@/components/Ui/PageBadge.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
-import PageDetails from '@/components/Ui/PageDetails.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import VideoCarousel from '@/components/Video/VideoCarousel.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
@@ -12,7 +11,7 @@ import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useDateFormat } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 interface Props {
   video: Video
@@ -27,10 +26,9 @@ const actions = ref<NavigationMenuItem[]>([
   { label: 'Save', icon: 'i-lucide-bookmark', to: '/tags' },
 ])
 
-const details = ref<NavigationMenuItem[]>([
-  { label: 'Added', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD').value },
-  { label: 'Duration', value: props.video.timestamp ?? 'Unknown' },
-])
+const details = computed(() =>
+  [useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value, props.video.timestamp ?? 'N/A'].filter(Boolean).join(' • '),
+)
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
@@ -46,8 +44,10 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     <PageSection class="gap-4 py-2">
       <PageColumns>
         <template #left>
-          <UPageFeature :title="video.title" />
-          <PageDetails :details />
+          <UPageFeature
+            :title="video.title"
+            :description="details"
+          />
           <PageBadge :badges="video.tags" />
         </template>
 
