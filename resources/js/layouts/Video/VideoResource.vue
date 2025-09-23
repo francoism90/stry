@@ -22,7 +22,9 @@ const tabs = ref<NavigationMenuItem[]>([
   { label: 'Playlists', to: index.url({ video: props.video.id }) },
 ])
 
-const details = computed(() => [useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value, props.video.timestamp ?? 'N/A'].filter(Boolean).join(' • '))
+const details = computed(() =>
+  [useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value, props.video.timestamp ?? 'N/A'].filter(Boolean).join(' • '),
+)
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload())
@@ -33,7 +35,11 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 
   <UPageBody>
     <UPageHeader
-      :ui="{ root: 'border-0 py-0 text-sm tracking-tight text-neutral-300', title: 'text-sm sm:text-xl', description: 'mt-0 text-sm' }"
+      :ui="{
+        root: 'border-0 py-0',
+        title: 'text-sm leading-tight tracking-tight text-neutral-300 sm:text-xl',
+        description: 'mt-2 text-sm',
+      }"
       :title="video.title"
       :description="details"
       :links="links"

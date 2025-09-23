@@ -26,7 +26,11 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload())
 
   <UPageBody>
     <UPageHeader
-      :ui="{ root: 'border-0 py-0 text-sm tracking-tight text-neutral-300', title: 'text-sm sm:text-xl', description: 'mt-0 text-sm' }"
+      :ui="{
+        root: 'border-0 py-0',
+        title: 'text-sm leading-tight tracking-tight text-neutral-300 sm:text-xl',
+        description: 'mt-2 text-sm',
+      }"
       :title="tag.name"
       :description="details"
       :links="links"
