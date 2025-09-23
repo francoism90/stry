@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import { Head, router } from '@inertiajs/vue3'
 </script>
@@ -8,7 +9,7 @@ import { Head, router } from '@inertiajs/vue3'
 
   <UPageBody>
     <PageSection class="gap-4">
-      <UPageFeature title="Profile" />
+      <PageFeature title="Profile" />
 
       <UButton
         label="Logout"

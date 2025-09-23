@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SearchController from '@/actions/App/Web/Dashboard/Controllers/SearchController'
+import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -40,7 +41,7 @@ const onSubmit = async () =>
   <Head title="Search" />
 
   <PageSection>
-    <UPageFeature title="Search" />
+    <PageFeature title="Search" />
 
     <UForm
       :state="form"

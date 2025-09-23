@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
+import PageActions from '@/components/Ui/PageActions.vue'
+import PageColumns from '@/components/Ui/PageColumns.vue'
+import PageDetails from '@/components/Ui/PageDetails.vue'
+import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
 import type { Video } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
@@ -15,16 +19,17 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const links = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.video.id) }])
+const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file', to: show.url(props.video.id) }])
 
 const tabs = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url(props.video.id) },
   { label: 'Playlists', to: index.url({ video: props.video.id }) },
 ])
 
-const details = computed(() =>
-  [useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value, props.video.timestamp ?? 'N/A'].filter(Boolean).join(' • '),
-)
+const details = computed<NavigationMenuItem[]>(() => [
+  { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
+  { label: 'Duration', value: props.video.timestamp ?? 'N/A' },
+])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload())
@@ -34,16 +39,16 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <Head :title="video.title" />
 
   <UPageBody>
-    <UPageHeader
-      :ui="{
-        root: 'border-0 py-0',
-        title: 'text-sm leading-tight tracking-tight text-neutral-300 sm:text-xl',
-        description: 'mt-2 text-sm',
-      }"
-      :title="video.title"
-      :description="details"
-      :links="links"
-    />
+    <PageColumns>
+      <template #left>
+        <PageFeature :title="video.title" />
+        <PageDetails :details />
+      </template>
+
+      <template #right>
+        <PageActions :actions />
+      </template>
+    </PageColumns>
 
     <PageNavigation :tabs />
 

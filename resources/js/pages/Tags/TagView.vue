@@ -3,6 +3,7 @@ import { edit, show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import PageActions from '@/components/Ui/PageActions.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
+import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -44,7 +45,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
   <PageSection>
     <PageColumns>
       <template #left>
-        <UPageFeature :title="tag.name" />
+        <PageFeature :title="tag.name" />
         <PageDetails :details />
       </template>
 
