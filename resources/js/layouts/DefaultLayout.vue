@@ -7,9 +7,12 @@ import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
   <UApp>
     <ServiceWorker />
 
-    <UMain class="contain-inline-size contain-layout contain-paint contain-style">
+    <UMain>
       <AppHeader />
-      <slot />
+
+      <div class="contain-inline-size contain-layout contain-paint contain-style">
+        <slot />
+      </div>
     </UMain>
   </UApp>
 </template>
