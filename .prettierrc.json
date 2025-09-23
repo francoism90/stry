@@ -3,7 +3,7 @@
     "plugins": ["prettier-plugin-tailwindcss"],
     "semi": false,
     "singleQuote": true,
-    "printWidth": 160,
+    "printWidth": 140,
     "singleAttributePerLine": true,
     "tailwindAttributes": ["class", "className", "ui", ":ui"],
     "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],

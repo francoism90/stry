@@ -58,6 +58,9 @@ export default defineConfig(({ mode }) => {
             secondary: 'gray',
             neutral: 'zinc',
           },
+          pageBody: {
+            base: 'mt-4 space-y-3 pb-24',
+          },
           container: {
             base: 'max-w-6xl',
           },

@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
-import PageBody from '@/components/Ui/PageBody.vue'
 import PageNavigation from '@/components/Ui/PageNavigation.vue'
-import PageSection from '@/components/Ui/PageSection.vue'
 import type { Video } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -33,18 +31,16 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <PageBody>
-    <PageSection>
-      <UPageHeader
-        :ui="{ root: 'border-0 py-0 text-sm tracking-tight text-neutral-300', title: 'text-sm sm:text-xl', description: 'mt-0 text-sm' }"
-        :title="video.title"
-        :description="details"
-        :links="links"
-      />
+  <UPageBody>
+    <UPageHeader
+      :ui="{ root: 'border-0 py-0 text-sm tracking-tight text-neutral-300', title: 'text-sm sm:text-xl', description: 'mt-0 text-sm' }"
+      :title="video.title"
+      :description="details"
+      :links="links"
+    />
 
-      <PageNavigation :tabs />
-    </PageSection>
+    <PageNavigation :tabs />
 
     <slot />
-  </PageBody>
+  </UPageBody>
 </template>

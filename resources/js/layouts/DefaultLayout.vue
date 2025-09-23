@@ -10,9 +10,9 @@ import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
     <UMain>
       <AppHeader />
 
-      <div class="contain-inline-size contain-layout contain-paint contain-style">
+      <UContainer class="contain-inline-size contain-layout contain-paint contain-style">
         <slot />
-      </div>
+      </UContainer>
     </UMain>
   </UApp>
 </template>
