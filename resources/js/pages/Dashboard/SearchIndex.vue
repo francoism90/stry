@@ -12,8 +12,8 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref } from 'vue'
 
 interface Props {
-  search?: string | null
-  sort?: string | null
+  search?: string | undefined
+  sort?: string | undefined
   items?: Videos
 }
 
