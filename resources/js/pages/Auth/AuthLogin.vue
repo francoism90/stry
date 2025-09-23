@@ -17,7 +17,7 @@ const form = useForm('post', props.action, {
   remember: false,
 })
 
-const submit = async () =>
+const onSubmit = async () =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => form.reset('password'),
@@ -35,7 +35,7 @@ const submit = async () =>
 
     <UForm
       :state="form"
-      @submit.prevent="submit"
+      @submit="onSubmit"
       class="flex flex-col gap-6"
     >
       <UFormField
@@ -45,13 +45,14 @@ const submit = async () =>
         :error="form.errors.email"
       >
         <UInput
+          v-model="form.email"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           type="email"
           required
           autofocus
           autocomplete="email"
           placeholder="email@example.com"
           size="lg"
-          v-model.trim="form.email"
         />
       </UFormField>
 
@@ -62,13 +63,14 @@ const submit = async () =>
         :error="form.errors.password"
       >
         <UInput
+          v-model="form.password"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           id="password"
           type="password"
           required
           autocomplete="current-password"
           placeholder="Password"
           size="lg"
-          v-model.trim="form.password"
         />
       </UFormField>
 

@@ -24,7 +24,7 @@ const { data, query } = useTagInput(props.tag.related || [])
 
 const form = useForm('put', update.url({ tag: props.tag.id }), props.tag)
 
-const submit = async () =>
+const onSubmit = async () =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
@@ -34,7 +34,7 @@ const submit = async () =>
 <template>
   <UForm
     :state="form"
-    @submit.prevent="submit"
+    @submit="onSubmit"
     class="flex flex-col gap-4 pt-6"
   >
     <FlashAlert />
@@ -46,7 +46,8 @@ const submit = async () =>
       :error="form.errors.name"
     >
       <UInput
-        v-model.trim="form.name"
+        v-model="form.name"
+        :model-modifiers="{ nullable: true, string: true, trim: true }"
         autofocus
         autocapitalize="words"
         class="w-full"

@@ -24,7 +24,7 @@ const { title } = useAppearance()
 
 const form = useForm('put', update.url({ video: props.video.id }), props.video)
 
-const submit = async () =>
+const onSubmit = async () =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
@@ -34,7 +34,7 @@ const submit = async () =>
 <template>
   <UForm
     :state="form"
-    @submit.prevent="submit"
+    @submit="onSubmit"
     class="flex flex-col gap-4 py-4"
   >
     <FlashAlert />
@@ -46,7 +46,8 @@ const submit = async () =>
       :error="form.errors.name"
     >
       <UInput
-        v-model.trim="form.name"
+        v-model="form.name"
+        :model-modifiers="{ string: true, trim: true }"
         autofocus
         autocapitalize="words"
         class="w-full"
@@ -72,7 +73,8 @@ const submit = async () =>
         :error="form.errors.episode"
       >
         <UInput
-          v-model.trim="form.episode"
+          v-model="form.episode"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="1"
           autocapitalize="characters"
           class="w-full"
@@ -85,7 +87,8 @@ const submit = async () =>
         :error="form.errors.season"
       >
         <UInput
-          v-model.trim="form.season"
+          v-model="form.season"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="1"
           autocapitalize="characters"
           class="w-full"
@@ -98,7 +101,8 @@ const submit = async () =>
         :error="form.errors.part"
       >
         <UInput
-          v-model.trim="form.part"
+          v-model="form.part"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="1"
           autocapitalize="characters"
           class="w-full"
@@ -111,7 +115,8 @@ const submit = async () =>
         :error="form.errors.released_at"
       >
         <UInput
-          v-model.trim="form.released_at"
+          v-model="form.released_at"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="YYYY-MM-DD HH:mm:ss"
           class="w-full"
         />
@@ -125,7 +130,8 @@ const submit = async () =>
         :error="form.errors.snapshot"
       >
         <UInput
-          v-model.trim="form.snapshot"
+          v-model="form.snapshot"
+          :model-modifiers="{ nullable: true, number: true, trim: true }"
           type="number"
           placeholder="3.00"
           step="0.01"
@@ -152,7 +158,8 @@ const submit = async () =>
         :error="form.errors.published_at"
       >
         <UInput
-          v-model.trim="form.published_at"
+          v-model="form.published_at"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="YYYY-MM-DD HH:mm:ss"
           class="w-full"
         />
@@ -164,7 +171,8 @@ const submit = async () =>
         :error="form.errors.expires_at"
       >
         <UInput
-          v-model.trim="form.expires_at"
+          v-model="form.expires_at"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="YYYY-MM-DD HH:mm:ss"
           class="w-full"
         />
@@ -178,6 +186,7 @@ const submit = async () =>
     >
       <USelectMenu
         v-model="form.tags as TagMenuItem[]"
+        :model-modifiers="{ nullable: true }"
         :items="data as TagMenuItem[]"
         :ignore-filter="true"
         label-key="name"
@@ -203,6 +212,7 @@ const submit = async () =>
     >
       <UTextarea
         v-model="form.summary"
+        :model-modifiers="{ nullable: true, string: true, trim: true }"
         class="w-full"
         :ui="{
           base: 'h-32',
