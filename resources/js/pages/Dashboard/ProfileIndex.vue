@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageSection from '@/components/Ui/PageSection.vue'
 import { Head, router } from '@inertiajs/vue3'
 </script>
 
@@ -6,13 +7,15 @@ import { Head, router } from '@inertiajs/vue3'
   <Head title="Profile" />
 
   <UPageBody>
-    <UPageFeature title="Profile" />
+    <PageSection class="gap-4">
+      <UPageFeature title="Profile" />
 
-    <UButton
-      label="Logout"
-      class="w-fit"
-      variant="soft"
-      @click="() => router.post('/logout')"
-    />
+      <UButton
+        label="Logout"
+        class="w-fit"
+        variant="soft"
+        @click="() => router.post('/logout')"
+      />
+    </PageSection>
   </UPageBody>
 </template>
