@@ -41,9 +41,9 @@ class ClearCommand extends Command implements Isolatable
         table(
             headers: ['ID', 'Type', 'State'],
             rows: $playlists->map(fn (Playlist $playlist) => [
-                $playlist->getKey(),
-                $playlist->type,
-                $playlist->state,
+                (string) $playlist->getKey(),
+                (string) $playlist->type,
+                (string) $playlist->state,
             ])->all()
         );
 

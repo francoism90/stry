@@ -42,8 +42,8 @@ class ClearCommand extends Command implements Isolatable
         table(
             headers: ['ID', 'Name', 'File Size'],
             rows: $videos->map(fn (Video $video) => [
-                $video->getKey(),
-                $video->name,
+                (string) $video->getKey(),
+                (string) $video->name,
                 Number::fileSize($video->file_size),
             ])->all()
         );
