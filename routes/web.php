@@ -7,6 +7,7 @@ use App\Web\Dashboard\Controllers\ProfileController;
 use App\Web\Dashboard\Controllers\SearchController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Videos\Controllers\VideoController;
+use App\Web\Videos\Controllers\VideoMediaController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,5 @@ Route::resource('tags', TagController::class);
 
 // Videos
 Route::resource('videos', VideoController::class);
+Route::resource('videos.media', VideoMediaController::class);
 Route::resource('videos.playlists', VideoPlaylistController::class);
