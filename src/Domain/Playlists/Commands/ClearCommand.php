@@ -47,7 +47,7 @@ class ClearCommand extends Command implements Isolatable
             ])->all()
         );
 
-        if (confirm('Are you sure you want to delete these videos?')) {
+        if (confirm('Are you sure you want to delete these playlists?')) {
             $playlists->each(function (Playlist $playlist) {
                 info("deleting playlist `{$playlist->type}` ({$playlist->getKey()})");
 
