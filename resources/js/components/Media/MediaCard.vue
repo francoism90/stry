@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Playlist } from '@/types'
+import type { Media } from '@/types';
 
 interface Props {
-  item: Playlist
+  item: Media
 }
 
 defineProps<Props>()
@@ -12,16 +12,14 @@ defineProps<Props>()
   <UPageCard
     variant="soft"
     :ui="{ container: 'gap-x-4 gap-y-2 p-3 sm:p-4', title: 'line-clamp-1 text-sm capitalize' }"
-    :title="item.type"
+    :title="item.name"
   >
     <template #description>
       <dl class="details text-xs font-light tracking-tight text-neutral-300">
-        <dt class="sr-only">Percentage</dt>
-        <dd>{{ item.percent?.toFixed(2) ?? '0.00' }}%</dd>
-        <dt class="sr-only">State</dt>
-        <dd>{{ item.state }}</dd>
-        <dt class="sr-only">Expires</dt>
-        <dd>{{ item.expires_at ?? 'N/A' }}</dd>
+        <dt class="sr-only">File Name</dt>
+        <dd>{{ item.file_name }}</dd>
+        <dt class="sr-only">File Size</dt>
+        <dd>{{ item.file_size }}</dd>
       </dl>
     </template>
   </UPageCard>

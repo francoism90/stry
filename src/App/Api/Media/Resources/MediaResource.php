@@ -18,9 +18,10 @@ class MediaResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->name,
-            'asset' => $this->getUrl(),
+            'file_name' => $this->file_name,
+            'file_size' => $this->human_readable_size,
             'mime_type' => $this->mime_type,
-            'size' => $this->size,
+            'asset' => $this->getUrl(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

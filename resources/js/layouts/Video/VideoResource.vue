@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import { index } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
+import { index as media } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
+import { index as playlists } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import PageActions from '@/components/Ui/PageActions.vue'
 import PageColumns from '@/components/Ui/PageColumns.vue'
 import PageDetails from '@/components/Ui/PageDetails.vue'
@@ -23,7 +24,8 @@ const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file
 
 const tabs = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url(props.video.id) },
-  { label: 'Playlists', to: index.url({ video: props.video.id }) },
+  { label: 'Playlists', to: playlists.url({ video: props.video.id }) },
+  { label: 'Media', to: media.url({ video: props.video.id }) },
 ])
 
 const details = computed<NavigationMenuItem[]>(() => [

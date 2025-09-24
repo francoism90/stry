@@ -18,9 +18,10 @@ export type User = Model & {
 
 export type Media = Model & {
   name: string
-  asset: string
+  file_name: string
+  file_size: string
   mime_type: string
-  size: number
+  asset: string
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
@@ -76,7 +77,7 @@ export type Playlist = Model & {
   asset: PlayerSrc | null
   valid: boolean
   percent: number | null
-  type: string | null
+  type: string
   state: string
   accessed_at: string | null
   expires_at: string | null
