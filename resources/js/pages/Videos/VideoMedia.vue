@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import VideoCard from '@/components/Video/VideoCard.vue'
+import PlaylistCard from '@/components/Playlist/PlaylistCard.vue'
+import PageSection from '@/components/Ui/PageSection.vue'
 import { usePagination } from '@/composables/pagination'
-import type { VideoCollection } from '@/types'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import ResourceLayout from '@/layouts/Video/VideoResource.vue'
+import type { MediaCollection, Video } from '@/types'
 import { Deferred, router, usePage, WhenVisible } from '@inertiajs/vue3'
 
 interface Props {
-  items?: VideoCollection
+  video: Video
+  items?: MediaCollection
 }
+
+defineOptions({ layout: [DefaultLayout, ResourceLayout] })
 
 defineProps<Props>()
 
@@ -16,19 +22,17 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
 </script>
 
 <template>
-  <UPageBody>
-    <slot />
+  <Deferred data="items">
+    <template #fallback>
+      <div class="sr-only">Loading items...</div>
+    </template>
 
-    <Deferred data="items">
-      <template #fallback>
-        <div class="sr-only">Loading items...</div>
-      </template>
-
+    <PageSection class="pt-2">
       <UPageGrid
         v-if="items?.data?.length"
         class="gap-4"
       >
-        <VideoCard
+        <PlaylistCard
           v-for="item in items.data"
           :key="item.id"
           :item
@@ -59,6 +63,6 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
           />
         </div>
       </WhenVisible>
-    </Deferred>
-  </UPageBody>
+    </PageSection>
+  </Deferred>
 </template>

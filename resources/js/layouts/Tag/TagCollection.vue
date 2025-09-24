@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import TagCard from '@/components/Tag/TagCard.vue'
 import { usePagination } from '@/composables/pagination'
-import type { Tags } from '@/types'
+import type { TagCollection } from '@/types'
 import { Deferred, router, usePage, WhenVisible } from '@inertiajs/vue3'
 
 interface Props {
-  items?: Tags
+  items?: TagCollection
 }
 
 defineProps<Props>()

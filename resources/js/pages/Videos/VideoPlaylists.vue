@@ -4,12 +4,12 @@ import PageSection from '@/components/Ui/PageSection.vue'
 import { usePagination } from '@/composables/pagination'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import ResourceLayout from '@/layouts/Video/VideoResource.vue'
-import type { Playlists, Video } from '@/types'
+import type { PlaylistCollection, Video } from '@/types'
 import { Deferred, router, usePage, WhenVisible } from '@inertiajs/vue3'
 
 interface Props {
   video: Video
-  items?: Playlists
+  items?: PlaylistCollection
 }
 
 defineOptions({ layout: [DefaultLayout, ResourceLayout] })
@@ -28,16 +28,16 @@ const fetch = async () => router.get(usePage().props.path, { page: nextPage.valu
     </template>
 
     <PageSection class="pt-2">
-      <div
+      <UPageGrid
         v-if="items?.data?.length"
-        class="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2 md:grid-cols-3"
+        class="gap-4"
       >
         <PlaylistCard
           v-for="item in items.data"
           :key="item.id"
           :item
         />
-      </div>
+      </UPageGrid>
 
       <WhenVisible
         :always="hasPages"

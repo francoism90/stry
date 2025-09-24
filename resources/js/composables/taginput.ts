@@ -1,11 +1,11 @@
 import { index } from '@/actions/App/Api/Tags/Controllers/TagController'
-import type { Tag, Tags } from '@/types'
+import type { Tag, TagCollection } from '@/types'
 import { http } from '@/utils/http'
 import { type QueryParams } from '@/wayfinder'
 import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
 export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
-  const state = ref<Tags>()
+  const state = ref<TagCollection>()
   const items = ref<Tag[]>([])
 
   const data = computed(() => mergeDeep([...items.value, ...(state.value?.data || [])]))
@@ -17,7 +17,7 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
       query = { sort: 'popularity', page: 1 }
     }
 
-    const { data } = await http.get<Tags>(index.url({ query }))
+    const { data } = await http.get<TagCollection>(index.url({ query }))
 
     state.value = Object.assign(state.value || {}, data)
   }
