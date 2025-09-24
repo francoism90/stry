@@ -23,6 +23,10 @@ export type Media = Model & {
   size: number
 }
 
+export type MediaCollection = Omit<Paginator, 'data'> & {
+  data: Media[] | null
+}
+
 export type Tag = Model & {
   name: string
   description: string | null
@@ -34,7 +38,7 @@ export type Tag = Model & {
   related?: Tag[] | null
 }
 
-export type Tags = Omit<Paginator, 'data'> & {
+export type TagCollection = Omit<Paginator, 'data'> & {
   data: Tag[] | null
 }
 
@@ -64,7 +68,7 @@ export type Video = Model & {
   published_at: string | null
 }
 
-export type Videos = Omit<Paginator, 'data'> & {
+export type VideoCollection = Omit<Paginator, 'data'> & {
   data: Video[] | null
 }
 
@@ -79,7 +83,7 @@ export type Playlist = Model & {
   transcoded_at: string | null
 }
 
-export type Playlists = Omit<Paginator, 'data'> & {
+export type PlaylistCollection = Omit<Paginator, 'data'> & {
   data: Playlist[] | null
 }
 

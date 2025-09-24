@@ -15,7 +15,7 @@ defineProps<Props>()
     highlight
     highlight-color="primary"
     :ui="{
-      root: 'size-full items-center overflow-x-auto border-b border-default',
+      root: 'border-defaul mb-4 size-full items-center overflow-x-auto border-b',
       list: 'gap-4',
       link: 'px-0 text-neutral-400 after:inset-x-0',
     }"
