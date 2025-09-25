@@ -28,10 +28,6 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
   data: Media[] | null
 }
 
-export type MediaCollection = Omit<Paginator, 'data'> & {
-  data: Media[] | null
-}
-
 export type Tag = Model & {
   name: string
   description: string | null

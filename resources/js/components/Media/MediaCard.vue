@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Media } from '@/types';
+import type { Media } from '@/types'
 
 interface Props {
   item: Media
@@ -16,8 +16,8 @@ defineProps<Props>()
   >
     <template #description>
       <dl class="details text-xs font-light tracking-tight text-neutral-300">
-        <dt class="sr-only">File Name</dt>
-        <dd>{{ item.file_name }}</dd>
+        <dt class="sr-only">Mime Type</dt>
+        <dd>{{ item.mime_type }}</dd>
         <dt class="sr-only">File Size</dt>
         <dd>{{ item.file_size }}</dd>
       </dl>

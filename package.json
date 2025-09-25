@@ -19,7 +19,7 @@
         "format": "prettier --write resources/"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^2.1.10",
+        "@inertiajs/vue3": "^2.1.11",
         "@laravel/echo-vue": "^2.2.3",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@nuxt/ui": "^4.0.0",
@@ -33,7 +33,7 @@
         "pusher-js": "^8.4.0",
         "tailwindcss": "^4.1.13",
         "vidstack": "^1.12.13",
-        "vue": "^3.5.21"
+        "vue": "^3.5.22"
     },
     "devDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
@@ -50,12 +50,12 @@
         "chokidar": "^4.0.3",
         "concurrently": "^9.2.1",
         "eslint": "^9.36.0",
-        "eslint-plugin-oxlint": "^1.17.0",
+        "eslint-plugin-oxlint": "^1.18.0",
         "eslint-plugin-vue": "^10.5.0",
         "jiti": "^2.6.0",
         "jsdom": "^27.0.0",
         "npm-run-all2": "^8.0.4",
-        "oxlint": "^1.17.0",
+        "oxlint": "^1.18.0",
         "prettier": "3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.14",
         "typescript": "^5.9.2",

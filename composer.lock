@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df79e738fe5beb480dbd318ca2a386c4",
+    "content-hash": "8c762ed30f05250b8d8ed562565b8ff4",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -110,16 +110,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.24",
+            "version": "3.356.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d897c1345496af3440b8d8a5979d5f47cce6c433"
+                "reference": "d78bd3b221890aac679ec3b6cb5abcb01fd42699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d897c1345496af3440b8d8a5979d5f47cce6c433",
-                "reference": "d897c1345496af3440b8d8a5979d5f47cce6c433",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d78bd3b221890aac679ec3b6cb5abcb01fd42699",
+                "reference": "d78bd3b221890aac679ec3b6cb5abcb01fd42699",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.24"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.25"
             },
-            "time": "2025-09-23T18:08:42+00:00"
+            "time": "2025-09-24T18:08:25+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1723,16 +1723,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v2.0.6",
+            "version": "v2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "6d0afc3237c370036de4a703927b17a4e7b83298"
+                "reference": "a08aea5a16fed187dcf815c9037b62cc544ab809"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/6d0afc3237c370036de4a703927b17a4e7b83298",
-                "reference": "6d0afc3237c370036de4a703927b17a4e7b83298",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/a08aea5a16fed187dcf815c9037b62cc544ab809",
+                "reference": "a08aea5a16fed187dcf815c9037b62cc544ab809",
                 "shasum": ""
             },
             "require": {
@@ -1787,9 +1787,9 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.6"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.7"
             },
-            "time": "2025-08-26T06:17:48+00:00"
+            "time": "2025-09-24T16:49:48+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -4146,16 +4146,16 @@
         },
         {
             "name": "paragonie/constant_time_encoding",
-            "version": "v3.1.2",
+            "version": "v3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "5bd79e0e88e8757f23e757bcedd1e37fa818cf68"
+                "reference": "d5b01a39b3415c2cd581d3bd3a3575c1ebbd8e77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/5bd79e0e88e8757f23e757bcedd1e37fa818cf68",
-                "reference": "5bd79e0e88e8757f23e757bcedd1e37fa818cf68",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/d5b01a39b3415c2cd581d3bd3a3575c1ebbd8e77",
+                "reference": "d5b01a39b3415c2cd581d3bd3a3575c1ebbd8e77",
                 "shasum": ""
             },
             "require": {
@@ -4211,7 +4211,7 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2025-09-24T01:22:14+00:00"
+            "time": "2025-09-24T15:06:41+00:00"
         },
         {
             "name": "paragonie/sodium_compat",
@@ -6264,16 +6264,16 @@
         },
         {
             "name": "spatie/image",
-            "version": "3.8.5",
+            "version": "3.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/image.git",
-                "reference": "a63f60b7387ebeacab463e79a95deb7ffed75430"
+                "reference": "0872c5968a7f044fe1e960c26433e54ceaede696"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/image/zipball/a63f60b7387ebeacab463e79a95deb7ffed75430",
-                "reference": "a63f60b7387ebeacab463e79a95deb7ffed75430",
+                "url": "https://api.github.com/repos/spatie/image/zipball/0872c5968a7f044fe1e960c26433e54ceaede696",
+                "reference": "0872c5968a7f044fe1e960c26433e54ceaede696",
                 "shasum": ""
             },
             "require": {
@@ -6321,7 +6321,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/image/tree/3.8.5"
+                "source": "https://github.com/spatie/image/tree/3.8.6"
             },
             "funding": [
                 {
@@ -6333,7 +6333,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-27T12:44:55+00:00"
+            "time": "2025-09-25T12:06:17+00:00"
         },
         {
             "name": "spatie/image-optimizer",
@@ -11480,16 +11480,16 @@
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.2.0",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "56fade6882756d5828cc90b86611d29616c2d754"
+                "reference": "0ecf0c04b20e5946ae080e8d67984d5c555174b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/56fade6882756d5828cc90b86611d29616c2d754",
-                "reference": "56fade6882756d5828cc90b86611d29616c2d754",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/0ecf0c04b20e5946ae080e8d67984d5c555174b0",
+                "reference": "0ecf0c04b20e5946ae080e8d67984d5c555174b0",
                 "shasum": ""
             },
             "require": {
@@ -11549,7 +11549,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2025-09-18T12:58:47+00:00"
+            "time": "2025-09-24T15:48:16+00:00"
         },
         {
             "name": "laravel/pail",
@@ -12825,16 +12825,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.28",
+            "version": "2.1.29",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "578fa296a166605d97b94091f724f1257185d278"
+                "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
+                "reference": "git"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/578fa296a166605d97b94091f724f1257185d278",
-                "reference": "578fa296a166605d97b94091f724f1257185d278",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
+                "reference": "d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
                 "shasum": ""
             },
             "require": {
@@ -12879,20 +12879,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-19T08:58:49+00:00"
+            "time": "2025-09-25T06:58:18+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "12.3.8",
+            "version": "12.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "99e692c6a84708211f7536ba322bbbaef57ac7fc"
+                "reference": "67e8aed88f93d0e6e1cb7effe1a2dfc2fee6022c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/99e692c6a84708211f7536ba322bbbaef57ac7fc",
-                "reference": "99e692c6a84708211f7536ba322bbbaef57ac7fc",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/67e8aed88f93d0e6e1cb7effe1a2dfc2fee6022c",
+                "reference": "67e8aed88f93d0e6e1cb7effe1a2dfc2fee6022c",
                 "shasum": ""
             },
             "require": {
@@ -12919,7 +12919,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "12.3.x-dev"
+                    "dev-main": "12.4.x-dev"
                 }
             },
             "autoload": {
@@ -12948,7 +12948,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.3.8"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.4.0"
             },
             "funding": [
                 {
@@ -12968,7 +12968,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-17T11:31:43+00:00"
+            "time": "2025-09-24T13:44:41+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
