@@ -25,7 +25,7 @@ prepare_application() {
     ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
     ${ARTISAN} scout:sync-index-settings
-    ${NPM} build:ssr
+    ${NPM} build && ${NPM} build:ssr
 }
 
 if [ "${CONTAINER_ENV}" = "production" ]; then
