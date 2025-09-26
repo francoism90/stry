@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Web\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Collections\VideoCollection;
-use Illuminate\Support\Collection;
+use Domain\Videos\Actions\GetSimilarVideos;
+use Domain\Videos\Models\Video;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class VideoResourceCollection implements ProvidesInertiaProperty
+readonly class VideoSimilarCollection implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected readonly Collection|array|null $items = null,
+        protected readonly Video $video,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return VideoCollection::make($this->items)
+        return app(GetSimilarVideos::class)->handle($this->video)
             ->loadMissing('tags')
             ->toResourceCollection(VideoResource::class);
     }

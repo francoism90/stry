@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Media\Resources\MediaResource;
-use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Responses\VideoResourceCollection;
-use Domain\Videos\Actions\GetSimilarVideos;
+use App\Web\Videos\Responses\VideoCaptionCollection;
+use App\Web\Videos\Responses\VideoPlaylistClip;
+use App\Web\Videos\Responses\VideoProgress;
+use App\Web\Videos\Responses\VideoSimilarCollection;
 use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
@@ -72,10 +72,10 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
-            'captions' => fn () => $video->getCaptionCollection()?->toResourceCollection(MediaResource::class),
-            'playlist' => fn () => $video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class),
-            'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
-            'queue' => Inertia::defer(fn () => new VideoResourceCollection(items: app(GetSimilarVideos::class)->handle($video)))->deepMerge()->matchOn('data.id'),
+            'captions' => fn () => new VideoCaptionCollection($video),
+            'playlist' => fn () => new VideoPlaylistClip($video),
+            'progress' => fn () => new VideoProgress($video, $request->user()),
+            'queue' => Inertia::defer(fn () => new VideoSimilarCollection($video))->deepMerge()->matchOn('data.id'),
         ]);
     }
 
@@ -84,7 +84,7 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
-            'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
+            'video' => fn () => new VideoRes,
             'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
         ]);
     }
