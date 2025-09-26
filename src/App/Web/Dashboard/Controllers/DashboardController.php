@@ -27,7 +27,7 @@ class DashboardController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Dashboard/DashboardIndex', [
-            'recommended' => Inertia::defer(fn () => new VideoSectionCollection(type: 'random'), 'sections')->deepMerge()->matchOn('data.id'),
+            'recommended' => Inertia::defer(fn () => new VideoSectionCollection, 'sections')->deepMerge()->matchOn('data.id'),
             'recent' => Inertia::defer(fn () => new VideoSectionCollection(type: 'newest'), 'sections')->deepMerge()->matchOn('data.id'),
             'watching' => Inertia::defer(fn () => new VideoSectionCollection(type: 'watching'), 'sections')->deepMerge()->matchOn('data.id'),
         ]);
