@@ -7,6 +7,7 @@ namespace App\Api\Tags\Controllers;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
+use Domain\Tags\Scopes\TagSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,7 +15,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Scout\Builder;
 
 class TagController extends Controller implements HasMiddleware
 {
@@ -31,9 +31,9 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Tag::class);
 
-        return Tag::search($request->safe()->input('search', '*'))
-            ->when($request->safe()->input('sort') === 'popularity', fn (Builder $query) => $query->orderByDesc('videos'))
-            ->simplePaginate(perPage: 16, page: (int) $request->safe()->input('page', 1))
+        return Tag::search($request->safe()->input('search'))
+            ->tap(new TagSearchScope(type: $request->safe()->input('type')))
+            ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }
 

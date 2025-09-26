@@ -16,7 +16,7 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.10.0",
         "http-interop/http-factory-guzzle": "^1.2",
-        "inertiajs/inertia-laravel": "^2.0.7",
+        "inertiajs/inertia-laravel": "^2.0.9",
         "laravel/fortify": "^1.30.0",
         "laravel/framework": "^12.31.1",
         "laravel/horizon": "^5.34.0",

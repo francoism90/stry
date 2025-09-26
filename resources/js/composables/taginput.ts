@@ -13,10 +13,6 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
   const mergeDeep = (values: Tag[]) => values.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
 
   const query = async (query?: QueryParams) => {
-    if (!query) {
-      query = { sort: 'popularity', page: 1 }
-    }
-
     const { data } = await http.get<TagCollection>(index.url({ query }))
 
     state.value = Object.assign(state.value || {}, data)
@@ -25,9 +21,7 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
   watchEffect(async () => {
     items.value = toValue(selected || [])
 
-    if (!state.value) {
-      await query()
-    }
+    await query()
   })
 
   return {

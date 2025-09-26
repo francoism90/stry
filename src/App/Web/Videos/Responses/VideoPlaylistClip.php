@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Playlists\Responses;
+namespace App\Web\Videos\Responses;
 
 use App\Api\Playlists\Resources\PlaylistResource;
-use Illuminate\Support\Collection;
+use Domain\Videos\Models\Video;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class PlaylistResourceCollection implements ProvidesInertiaProperty
+readonly class VideoPlaylistClip implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected readonly Collection|array|null $items = null,
+        protected readonly Video $video,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return PlaylistResource::make($this->items);
+        return $this->video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class);
     }
 }

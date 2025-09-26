@@ -18,8 +18,6 @@ class PlaylistIndexRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'page' => ['sometimes', 'nullable', 'numeric'],
-        ];
+        return [];
     }
 }

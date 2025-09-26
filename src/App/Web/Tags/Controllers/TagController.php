@@ -8,17 +8,19 @@ use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Web\Tags\Responses\TagQueryCollection;
-use App\Web\Videos\Responses\VideoScoutCollection;
+use App\Api\Videos\Resources\VideoResource;
+use App\Web\Tags\Responses\TagTypeCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
+use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -39,10 +41,9 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagIndex', [
             'types' => fn () => collect(TagType::cases())->forEnum(),
-            'items' => Inertia::defer(fn () => new TagQueryCollection(
-                type: $request->safe()->input('type'),
-                page: (int) $request->safe()->input('page', 1),
-            ))->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::scroll(fn () => TagResource::collection(Tag::query()
+                ->tap(new TagFilterScope(type: $request->safe()->input('type')))
+                ->simplePaginate(32))),
         ]);
     }
 
@@ -62,12 +63,9 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
-            'items' => Inertia::defer(fn () => new VideoScoutCollection(
-                query: $request->safe()->input('search', '*'),
-                tags: Arr::wrap($tag->getKey()),
-                sort: $request->safe()->input('sort'),
-                page: (int) $request->safe()->input('page', 1),
-            ))->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search('*')
+                ->tap(new VideoSearchScope(tags: [$tag->getKey()], sort: $request->safe()->input('sort')))
+                ->simplePaginate(24))),
         ]);
     }
 
@@ -77,7 +75,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagEdit', [
             'tag' => fn () => $tag->loadCount('videos')->append('relates')->toResource(TagResource::class),
-            'types' => fn () => collect(TagType::cases())->forEnum(),
+            'types' => fn () => new TagTypeCollection,
         ]);
     }
 
