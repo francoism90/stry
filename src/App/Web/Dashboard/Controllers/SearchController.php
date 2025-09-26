@@ -34,7 +34,7 @@ class SearchController extends Controller implements HasMiddleware
             'search' => fn () => $request->safe()->input('search'),
             'sort' => fn () => $request->safe()->input('sort'),
             'items' => Inertia::scroll(fn () =>  VideoResource::collection(Video::search($request->safe()->input('search'))
-                ->tap(new VideoSearchScope(query: $request->safe()->input('query'), sort: $request->safe()->input('sort')))
+                ->tap(new VideoSearchScope(sort: $request->safe()->input('sort')))
                 ->simplePaginate(24))),
         ]);
     }
