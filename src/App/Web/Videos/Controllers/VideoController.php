@@ -11,7 +11,6 @@ use App\Web\Videos\Responses\VideoCaptionCollection;
 use App\Web\Videos\Responses\VideoPlaylistClip;
 use App\Web\Videos\Responses\VideoProgress;
 use App\Web\Videos\Responses\VideoSimilarCollection;
-use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
@@ -84,8 +83,8 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
-            'video' => fn () => new VideoRes,
-            'progress' => fn () => app(GetVideoProgress::class)->handle($video, $request->user()),
+            'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
+            'progress' => fn () => new VideoProgress($video, $request->user()),
         ]);
     }
 
