@@ -17,8 +17,6 @@ readonly class VideoCaptionCollection implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return $this->video
-            ?->getCaptionCollection()
-            ?->toResourceCollection(MediaResource::class);
+        return MediaResource::collection($this->video->getCaptionCollection());
     }
 }
