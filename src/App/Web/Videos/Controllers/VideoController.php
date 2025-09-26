@@ -9,13 +9,13 @@ use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Responses\VideoQueryCollection;
 use App\Web\Videos\Responses\VideoResourceCollection;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,10 +40,9 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Videos/VideoIndex', [
-            'items' => Inertia::defer(fn () => new VideoQueryCollection(
-                type: $request->safe()->input('list'),
-                page: (int) $request->safe()->input('page', 1),
-            ))->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::query()
+                ->tap(new VideoFilterScope(type: $request->safe()->input('list')))
+                ->simplePaginate(24))),
         ]);
     }
 

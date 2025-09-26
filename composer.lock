@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c762ed30f05250b8d8ed562565b8ff4",
+    "content-hash": "95e7655bc0322cb48156b4adc0bb3cf5",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -110,16 +110,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.25",
+            "version": "3.356.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d78bd3b221890aac679ec3b6cb5abcb01fd42699"
+                "reference": "98d100ee08eb5340148cc6010c0443eb346a8486"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d78bd3b221890aac679ec3b6cb5abcb01fd42699",
-                "reference": "d78bd3b221890aac679ec3b6cb5abcb01fd42699",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/98d100ee08eb5340148cc6010c0443eb346a8486",
+                "reference": "98d100ee08eb5340148cc6010c0443eb346a8486",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.25"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.26"
             },
-            "time": "2025-09-24T18:08:25+00:00"
+            "time": "2025-09-25T18:07:59+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1723,16 +1723,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v2.0.7",
+            "version": "v2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "a08aea5a16fed187dcf815c9037b62cc544ab809"
+                "reference": "e2ab960c6e02cb374f0ec89b5681df144bb256e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/a08aea5a16fed187dcf815c9037b62cc544ab809",
-                "reference": "a08aea5a16fed187dcf815c9037b62cc544ab809",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/e2ab960c6e02cb374f0ec89b5681df144bb256e9",
+                "reference": "e2ab960c6e02cb374f0ec89b5681df144bb256e9",
                 "shasum": ""
             },
             "require": {
@@ -1787,9 +1787,9 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.7"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.8"
             },
-            "time": "2025-09-24T16:49:48+00:00"
+            "time": "2025-09-26T15:12:11+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
