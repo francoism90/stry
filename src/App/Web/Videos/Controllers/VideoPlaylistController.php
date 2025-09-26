@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
+use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Playlists\Responses\PlaylistQueryCollection;
 use Domain\Playlists\Models\Playlist;
@@ -32,10 +33,7 @@ class VideoPlaylistController implements HasMiddleware
 
         return Inertia::render('Videos/VideoPlaylists', [
             'video' => fn () => $video->toResource(VideoResource::class),
-            'items' => Inertia::defer(fn () => new PlaylistQueryCollection(
-                model: $video,
-                page: (int) $request->safe()->input('page', 1),
-            ))->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::scroll(fn () => PlaylistResource::collection($video->playlists()->simplePaginate(24))),
         ]);
     }
 

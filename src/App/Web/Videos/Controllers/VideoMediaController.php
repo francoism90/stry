@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Media\Requests\MediaIndexRequest;
+use App\Api\Media\Resources\MediaResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Media\Responses\MediaQueryCollection;
 use Domain\Media\Models\Media;
@@ -32,10 +33,7 @@ class VideoMediaController implements HasMiddleware
 
         return Inertia::render('Videos/VideoMedia', [
             'video' => fn () => $video->toResource(VideoResource::class),
-            'items' => Inertia::defer(fn () => new MediaQueryCollection(
-                model: $video,
-                page: (int) $request->safe()->input('page', 1),
-            ))->deepMerge()->matchOn('data.id'),
+            'items' => Inertia::scroll(fn () => MediaResource::collection($video->media()->simplePaginate(24))),
         ]);
     }
 
