@@ -7,7 +7,6 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Playlists\Responses\PlaylistQueryCollection;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;

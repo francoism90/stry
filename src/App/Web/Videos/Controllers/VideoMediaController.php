@@ -7,7 +7,6 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Media\Responses\MediaQueryCollection;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;

@@ -5,7 +5,6 @@ import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
-import type { Videos } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -14,7 +13,6 @@ import { ref } from 'vue'
 interface Props {
   search?: string | undefined
   sort?: string | undefined
-  items?: Videos
 }
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
