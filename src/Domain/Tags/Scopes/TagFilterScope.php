@@ -19,6 +19,6 @@ class TagFilterScope
             ->when($this->type,
                 fn (TagQueryBuilder $query, string $type) => $query->type($type)->ordered(),
                 fn (TagQueryBuilder $query) => $query->inRandomOrder()
-        );
+            );
     }
 }

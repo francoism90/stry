@@ -6,7 +6,6 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Responses\VideoScoutCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
@@ -33,7 +32,7 @@ class SearchController extends Controller implements HasMiddleware
         return Inertia::render('Dashboard/SearchIndex', [
             'search' => fn () => $request->safe()->input('search'),
             'sort' => fn () => $request->safe()->input('sort'),
-            'items' => Inertia::scroll(fn () =>  VideoResource::collection(Video::search($request->safe()->input('search'))
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
                 ->tap(new VideoSearchScope(sort: $request->safe()->input('sort')))
                 ->simplePaginate(24))),
         ]);

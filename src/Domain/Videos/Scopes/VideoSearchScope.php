@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
-use Domain\Tags\Models\Tag;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Illuminate\Contracts\Support\Arrayable;
 use Laravel\Scout\Builder;

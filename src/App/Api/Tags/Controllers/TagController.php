@@ -15,7 +15,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Scout\Builder;
 
 class TagController extends Controller implements HasMiddleware
 {

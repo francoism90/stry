@@ -10,7 +10,6 @@ use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagTypeCollection;
-use App\Web\Videos\Responses\VideoScoutCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
@@ -22,7 +21,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -65,7 +63,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
-            'items' => Inertia::scroll(fn () =>  VideoResource::collection(Video::search('*')
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search('*')
                 ->tap(new VideoSearchScope(tags: [$tag->getKey()], sort: $request->safe()->input('sort')))
                 ->simplePaginate(24))),
         ]);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use App\Web\Videos\Responses\VideoQueryCollection;
 use App\Web\Videos\Responses\VideoSectionCollection;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
