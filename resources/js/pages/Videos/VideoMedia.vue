@@ -16,7 +16,7 @@ defineProps<Props>()
 
 <template>
   <InfiniteScroll data="items">
-    <UPageGrid class="gap-4">
+    <UPageGrid class="gap-3">
       <MediaCard
         v-for="item in items.data"
         :key="item.id"

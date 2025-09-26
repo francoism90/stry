@@ -17,7 +17,7 @@ class VideoFilterScope
         $query
             ->verified()
             ->with(['media', 'playlists', 'tags'])
-            ->when($this->type === null, fn (VideoQueryBuilder $query) => $query->inRandomOrder())
+            ->when($this->type === 'random', fn (VideoQueryBuilder $query) => $query->inRandomOrder())
             ->when($this->type === 'newest', fn (VideoQueryBuilder $query) => $query->latest())
             ->when($this->type === 'watching', fn (VideoQueryBuilder $query) => $query->watching());
     }
