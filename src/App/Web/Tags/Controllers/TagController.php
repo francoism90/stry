@@ -65,7 +65,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
-            'items' => Inertia::scroll(fn () =>  VideoResource::collection(Video::search('')
+            'items' => Inertia::scroll(fn () =>  VideoResource::collection(Video::search('*')
                 ->tap(new VideoSearchScope(tags: [$tag->getKey()], sort: $request->safe()->input('sort')))
                 ->simplePaginate(24))),
         ]);
