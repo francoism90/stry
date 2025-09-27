@@ -16,9 +16,13 @@ defineProps<Props>()
 
     <InfiniteScroll
       data="items"
+      items-element="#page-grid"
       :buffer="200"
     >
-      <UPageGrid class="gap-4">
+      <UPageGrid
+        id="page-grid"
+        class="gap-4"
+      >
         <VideoCard
           v-for="item in items.data"
           :key="item.id"
