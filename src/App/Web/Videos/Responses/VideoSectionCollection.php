@@ -14,8 +14,8 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoSectionCollection implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected readonly ?string $type = null,
-        protected readonly ?int $limit = 16,
+        protected ?string $type = null,
+        protected ?int $limit = 16,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed

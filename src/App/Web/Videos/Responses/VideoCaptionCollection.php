@@ -12,7 +12,7 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoCaptionCollection implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected readonly Video $video,
+        protected Video $video,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed

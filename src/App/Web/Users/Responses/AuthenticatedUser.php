@@ -13,7 +13,7 @@ use Inertia\ProvidesInertiaProperty;
 readonly class AuthenticatedUser implements ProvidesInertiaProperty
 {
     public function __construct(
-        #[CurrentUser] protected readonly ?User $user = null,
+        #[CurrentUser] protected ?User $user = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed

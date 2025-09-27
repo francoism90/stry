@@ -13,8 +13,8 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoProgress implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected readonly Video $video,
-        protected readonly User $user,
+        protected Video $video,
+        protected User $user,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed

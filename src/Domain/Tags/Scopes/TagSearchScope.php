@@ -9,7 +9,7 @@ use Laravel\Scout\Builder;
 class TagSearchScope
 {
     public function __construct(
-        protected readonly ?string $type = null,
+        protected ?string $type = null,
     ) {}
 
     public function __invoke(Builder $query): void

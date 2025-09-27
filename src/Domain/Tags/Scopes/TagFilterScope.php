@@ -9,7 +9,7 @@ use Domain\Tags\QueryBuilders\TagQueryBuilder;
 class TagFilterScope
 {
     public function __construct(
-        protected readonly ?string $type = null,
+        protected ?string $type = null,
     ) {}
 
     public function __invoke(TagQueryBuilder $query): void

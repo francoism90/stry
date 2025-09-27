@@ -11,8 +11,8 @@ use Laravel\Scout\Builder;
 class VideoSearchScope
 {
     public function __construct(
-        protected readonly ?string $sort = null,
-        protected readonly Arrayable|array|null $tags = null,
+        protected ?string $sort = null,
+        protected Arrayable|array|null $tags = null,
     ) {}
 
     public function __invoke(Builder $query): void

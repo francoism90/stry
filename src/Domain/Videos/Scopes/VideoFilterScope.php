@@ -9,7 +9,7 @@ use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 class VideoFilterScope
 {
     public function __construct(
-        protected readonly ?string $type = null,
+        protected ?string $type = null,
     ) {}
 
     public function __invoke(VideoQueryBuilder $query): void
