@@ -30,7 +30,7 @@ const form = useForm('get', SearchController.url(), { search: props.search || ''
 
 const onSubmit = async () =>
   form.submit({
-    preserveScroll: true,
+    preserveState: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
   })
 </script>

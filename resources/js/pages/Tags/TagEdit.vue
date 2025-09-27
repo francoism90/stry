@@ -26,7 +26,7 @@ const form = useForm('put', update.url({ tag: props.tag.id }), props.tag)
 
 const onSubmit = async () =>
   form.submit({
-    preserveScroll: true,
+    preserveState: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
   })
 </script>

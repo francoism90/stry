@@ -19,7 +19,7 @@ const form = useForm('post', props.action, {
 
 const onSubmit = async () =>
   form.submit({
-    preserveScroll: true,
+    preserveState: true,
     onSuccess: () => form.reset('password'),
   })
 </script>
