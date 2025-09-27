@@ -14,7 +14,10 @@ defineProps<Props>()
   <UPageBody>
     <slot />
 
-    <InfiniteScroll data="items">
+    <InfiniteScroll
+      data="items"
+      :buffer="200"
+    >
       <UPageGrid class="gap-4">
         <TagCard
           v-for="item in items.data"

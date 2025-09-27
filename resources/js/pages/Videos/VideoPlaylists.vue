@@ -3,6 +3,7 @@ import PlaylistCard from '@/components/Playlist/PlaylistCard.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import ResourceLayout from '@/layouts/Video/VideoResource.vue'
 import type { PlaylistCollection, Video } from '@/types'
+import { InfiniteScroll } from '@inertiajs/vue3'
 
 interface Props {
   video: Video
@@ -15,7 +16,10 @@ defineProps<Props>()
 </script>
 
 <template>
-  <InfiniteScroll data="items">
+  <InfiniteScroll
+    data="items"
+    :buffer="200"
+  >
     <UPageGrid class="gap-3">
       <PlaylistCard
         v-for="item in items.data"
