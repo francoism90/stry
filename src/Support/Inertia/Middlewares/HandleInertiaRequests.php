@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Api\Users\Resources\UserResource;
+use App\Web\Users\Responses\AuthenticatedUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Traits\Conditionable;
 use Inertia\Middleware;
@@ -34,8 +34,8 @@ class HandleInertiaRequests extends Middleware
             'root' => fn () => $request->root(),
             'path' => fn () => $request->getPathInfo(),
             'query' => fn () => $request->query(),
-            'flash' => fn () => $this->when($request->hasSession(), fn () => $request->session()->get('laravel_flash_message')),
-            'auth.user' => fn () => $this->when($request->user(), fn () => UserResource::make($request->user()->loadMissing('permissions', 'roles'))),
+            'flash' => fn () => $request->session()->get('laravel_flash_message'),
+            'auth.user' => fn () => new AuthenticatedUser,
         ]);
     }
 
