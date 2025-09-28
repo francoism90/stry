@@ -20,7 +20,7 @@ class VideoIndexRequest extends FormRequest
     {
         return [
             'search' => ['sometimes', 'nullable', 'string', 'min:1', 'max:255'],
-            'sort' => ['sometimes', 'nullable', 'string', 'in:recent,ordered,longest,shortest'],
+            'sort' => ['sometimes', 'nullable', 'string', 'in:newest,oldest,ordered,longest,shortest'],
             'list' => ['sometimes', 'nullable', 'string', 'in:watching,newest'],
             'tags' => ['sometimes', 'nullable', 'array', 'max:5'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],

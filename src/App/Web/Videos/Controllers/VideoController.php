@@ -39,6 +39,7 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Videos/VideoIndex', [
+            'list' => $request->safe()->input('list'),
             'items' => Inertia::scroll(fn () => VideoResource::collection(Video::query()
                 ->tap(new VideoFilterScope(type: $request->safe()->input('list')))
                 ->simplePaginate(24))),

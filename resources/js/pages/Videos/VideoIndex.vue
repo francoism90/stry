@@ -9,12 +9,18 @@ import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
+interface Props {
+  list: string | null
+}
+
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
+const props = defineProps<Props>()
+
 const filters = ref<NavigationMenuItem[]>([
-  { label: 'All', to: index.url(), exact: true },
-  { label: 'Watched', to: index.url({ query: { list: 'watching' } }) },
-  { label: 'Newest', to: index.url({ query: { list: 'newest' } }) },
+  { label: 'All', to: index.url(), active: props.list === null },
+  { label: 'Watched', to: index.url({ query: { list: 'watching' } }), active: props.list === 'watching' },
+  { label: 'Newest', to: index.url({ query: { list: 'newest' } }), active: props.list === 'newest' },
 ])
 </script>
 

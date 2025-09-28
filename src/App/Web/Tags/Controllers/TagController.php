@@ -40,6 +40,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Inertia::render('Tags/TagIndex', [
+            'type' => $request->safe()->input('type'),
             'types' => fn () => collect(TagType::cases())->forEnum(),
             'items' => Inertia::scroll(fn () => TagResource::collection(Tag::query()
                 ->tap(new TagFilterScope(type: $request->safe()->input('type')))

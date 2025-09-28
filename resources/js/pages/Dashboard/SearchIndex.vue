@@ -11,8 +11,8 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref } from 'vue'
 
 interface Props {
-  search?: string | undefined
-  sort?: string | undefined
+  search: string | null
+  sort: string | null
 }
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
@@ -20,17 +20,18 @@ defineOptions({ layout: [DefaultLayout, VideoCollection] })
 const props = defineProps<Props>()
 
 const filters = ref<NavigationMenuItem[]>([
-  { label: 'Relevant', to: SearchController.url({ mergeQuery: { sort: '' } }), exact: true },
-  { label: 'Ordered', to: SearchController.url({ mergeQuery: { sort: 'ordered' } }) },
-  { label: 'Longest', to: SearchController.url({ mergeQuery: { sort: 'longest' } }) },
-  { label: 'Shortest', to: SearchController.url({ mergeQuery: { sort: 'shortest' } }) },
+  { label: 'Relevant', to: SearchController.url({ mergeQuery: { sort: null } }), active: props.sort === null },
+  { label: 'Newest', to: SearchController.url({ mergeQuery: { sort: 'newest' } }), active: props.sort === 'newest' },
+  { label: 'Oldest', to: SearchController.url({ mergeQuery: { sort: 'oldest' } }), active: props.sort === 'oldest' },
+  { label: 'Ordered', to: SearchController.url({ mergeQuery: { sort: 'ordered' } }), active: props.sort === 'ordered' },
+  { label: 'Longest', to: SearchController.url({ mergeQuery: { sort: 'longest' } }), active: props.sort === 'longest' },
+  { label: 'Shortest', to: SearchController.url({ mergeQuery: { sort: 'shortest' } }), active: props.sort === 'shortest' },
 ])
 
 const form = useForm('get', SearchController.url(), { search: props.search || '', sort: props.sort || '' })
 
 const onSubmit = async () =>
   form.submit({
-    preserveState: true,
     onSuccess: () => router.reload({ except: ['flash'] }),
   })
 </script>

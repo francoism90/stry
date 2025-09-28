@@ -12,16 +12,18 @@ import { ref } from 'vue'
 defineOptions({ layout: [DefaultLayout, TagCollection] })
 
 interface Props {
+  type: string | null
   types: NavigationMenuItem[]
 }
 
 const props = defineProps<Props>()
 
 const filters = ref<NavigationMenuItem[]>([
-  { label: 'All', to: index.url(), exact: true },
+  { label: 'All', to: index.url(), active: props.type === null },
   ...props.types.map((type) => ({
     label: type.label,
     to: index.url({ query: { type: type.value } }),
+    active: props.type === type.value,
   })),
 ])
 </script>
