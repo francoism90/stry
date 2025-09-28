@@ -7,7 +7,7 @@ AutoUpdate=registry
 EnvironmentFile=%h/.config/containers/systemd/stry/config/postgres.env
 LogDriver=none
 ShmSize=512m
-Volume=stry-pgsql:/var/lib/postgresql/data:rw,Z,U
+Volume=stry-pgsql:/var/lib/postgresql:rw,Z,U
 Network=stry.network
 ExposeHostPort=5432
 
