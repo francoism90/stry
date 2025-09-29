@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
-import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagCollection from '@/layouts/Tag/TagCollection.vue'
 import { Head } from '@inertiajs/vue3'
@@ -18,13 +16,12 @@ defineProps<Props>()
 </script>
 
 <template>
-  <Head title="Lists" />
+  <Head title="Tags" />
 
-  <PageSection>
-    <PageFeature title="Lists" />
-    <PageFilters
-      :items="types"
-      :active="type"
-    />
-  </PageSection>
+  <PageFilters
+    title="Filter Tags"
+    headline="Tags"
+    :items="types"
+    :active="type"
+  />
 </template>

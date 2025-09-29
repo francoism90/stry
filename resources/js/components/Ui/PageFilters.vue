@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { RadioGroupItem } from '@nuxt/ui'
-import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 interface Props {
-  items: RadioGroupItem[] | undefined
-  active: string | undefined
+  title?: string | undefined
+  description?: string | undefined
+  headline?: string | undefined
+  items?: RadioGroupItem[] | undefined
+  active?: string | undefined
 }
 
 const props = defineProps<Props>()
@@ -20,25 +22,35 @@ const onSubmit = async () =>
     replace: true,
     reset: ['items'],
   })
-
-watchDebounced(
-  () => form.type,
-  () => onSubmit(),
-  { debounce: 300, maxWait: 1000 },
-)
 </script>
 
 <template>
-  <div>
-    <URadioGroup
-      v-model="form.type"
-      orientation="horizontal"
-      variant="card"
-      :items="items"
-      :ui="{
-        root: 'size-full items-center overflow-x-auto',
-      }"
-    />
-    {{ form.type || 'No filter selected' }}
-  </div>
+  <UPageHeader
+    :title
+    :description
+    :headline
+    :ui="{
+      root: 'py-4',
+      wrapper: 'gap-3',
+      headline: 'mb-0',
+      title: 'line-clamp-2 font-serif text-lg font-semibold tracking-tight sm:text-xl',
+    }"
+  >
+    <template #links>
+      <URadioGroup
+        v-model="form.type"
+        orientation="horizontal"
+        variant="card"
+        indicator="hidden"
+        size="xs"
+        @update:modelValue="onSubmit"
+        :items="items"
+        :ui="{
+          root: 'flex size-full items-center overflow-x-auto',
+          fieldset: 'gap-1.5',
+          item: 'rounded-md py-1.5',
+        }"
+      />
+    </template>
+  </UPageHeader>
 </template>
