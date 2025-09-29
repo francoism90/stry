@@ -53,7 +53,7 @@ watchDebounced(
     :description
     :headline
     :ui="{
-      root: 'py-4',
+      root: 'pt-0 pb-4',
       wrapper: 'gap-2',
       headline: 'mb-0',
       title: 'line-clamp-2 font-serif text-lg font-semibold tracking-tight sm:text-xl',
@@ -74,7 +74,7 @@ watchDebounced(
         <USelect
           v-if="types?.length"
           v-model="form.type"
-          placeholder="All Types"
+          placeholder="All"
           class="w-36"
           value-key="value"
           :items="types"

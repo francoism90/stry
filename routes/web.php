@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Web\Dashboard\Controllers\DashboardController;
 use App\Web\Dashboard\Controllers\ProfileController;
-use App\Web\Dashboard\Controllers\SearchController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoMediaController;
@@ -16,9 +15,6 @@ Route::get('/', DashboardController::class)->name('home');
 
 // Profile
 Route::get('/profile', ProfileController::class)->name('profile');
-
-// Search
-Route::get('/search', SearchController::class)->name('search');
 
 // Tags
 Route::resource('tags', TagController::class);

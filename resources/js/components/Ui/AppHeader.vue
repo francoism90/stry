@@ -21,14 +21,6 @@ const items = computed<NavigationMenuItem[]>(() => [
     },
   },
   {
-    label: 'Search',
-    icon: 'i-lucide-search',
-    to: '/search',
-    ui: {
-      linkLabel: 'sr-only',
-    },
-  },
-  {
     label: 'Profile',
     icon: 'i-lucide-user',
     to: '/profile',

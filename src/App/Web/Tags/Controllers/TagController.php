@@ -11,7 +11,6 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagTypeCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
-use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
 use Domain\Videos\Models\Video;
@@ -41,7 +40,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagIndex', [
             'type' => $request->safe()->input('type'),
-            'types' => fn () => collect(TagType::cases())->forEnum(),
+            'types' => fn () => new TagTypeCollection,
             'items' => Inertia::scroll(fn () => TagResource::collection(Tag::query()
                 ->tap(new TagFilterScope(type: $request->safe()->input('type')))
                 ->simplePaginate(48))),
@@ -64,8 +63,11 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
-            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search('*')
-                ->tap(new VideoSearchScope(tags: [$tag->getKey()], sort: $request->safe()->input('sort')))
+            'search' => $request->safe()->input('search'),
+            'type' => $request->safe()->input('type'),
+            'types' => fn () => new TagTypeCollection,
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search', '*'))
+                ->tap(new VideoSearchScope(tags: [$tag->getKey()], type: $request->safe()->input('type')))
                 ->simplePaginate(24))),
         ]);
     }

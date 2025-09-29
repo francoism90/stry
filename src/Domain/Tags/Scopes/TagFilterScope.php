@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Scopes;
 
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 
 class TagFilterScope
 {
     public function __construct(
-        protected ?string $type = null,
+        protected TagType|string|null $type = null,
     ) {}
 
     public function __invoke(TagQueryBuilder $query): void
@@ -17,7 +18,7 @@ class TagFilterScope
         $query
             ->withCount('videos')
             ->when($this->type,
-                fn (TagQueryBuilder $query, string $type) => $query->type($type)->ordered(),
+                fn (TagQueryBuilder $query, TagType|string $type) => $query->type($type)->ordered(),
                 fn (TagQueryBuilder $query) => $query->inRandomOrder()
             );
     }
