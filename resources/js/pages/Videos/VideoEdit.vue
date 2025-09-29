@@ -23,11 +23,12 @@ const { title } = useAppearance()
 
 const form = useForm('put', update.url({ video: props.video.id }), props.video)
 
-const onSubmit = async () =>
+const onSubmit = async () => {
   form.submit({
     preserveState: true,
     replace: true,
   })
+}
 </script>
 
 <template>

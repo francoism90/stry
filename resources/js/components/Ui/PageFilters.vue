@@ -74,10 +74,10 @@ watchDebounced(
         <USelect
           v-if="types?.length"
           v-model="form.type"
-          placeholder="Filter by type"
-          class="w-36"
           value-key="value"
           :items="types"
+          placeholder="Filter by type"
+          class="w-36"
           @update:modelValue="onSubmit"
         />
 

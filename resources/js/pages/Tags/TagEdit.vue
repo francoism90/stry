@@ -23,11 +23,12 @@ const { data, query } = useTagInput(props.tag.related || [])
 
 const form = useForm('put', update.url({ tag: props.tag.id }), props.tag)
 
-const onSubmit = async () =>
+const onSubmit = async () => {
   form.submit({
     preserveState: true,
     replace: true,
   })
+}
 </script>
 
 <template>
