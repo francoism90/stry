@@ -21,7 +21,7 @@ defineProps<Props>()
     >
       <UPageGrid
         id="page-grid"
-        class="gap-4"
+        class="gap-4 py-2"
       >
         <TagCard
           v-for="item in items.data"

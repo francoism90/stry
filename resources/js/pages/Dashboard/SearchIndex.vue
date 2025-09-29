@@ -1,42 +1,30 @@
 <script setup lang="ts">
-import SearchController from '@/actions/App/Web/Dashboard/Controllers/SearchController'
 import PageFeature from '@/components/Ui/PageFeature.vue'
 import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
 import { Head } from '@inertiajs/vue3'
-import type { NavigationMenuItem } from '@nuxt/ui'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import type { RadioGroupItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
 interface Props {
-  search: string | null
-  sort: string | null
+  search: string | undefined
+  sort: string | undefined
 }
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
-const filters = ref<NavigationMenuItem[]>([
-  { label: 'Relevant', to: SearchController.url({ mergeQuery: { sort: null } }), active: props.sort === null },
-  { label: 'Newest', to: SearchController.url({ mergeQuery: { sort: 'newest' } }), active: props.sort === 'newest' },
-  { label: 'Oldest', to: SearchController.url({ mergeQuery: { sort: 'oldest' } }), active: props.sort === 'oldest' },
-  { label: 'Ordered', to: SearchController.url({ mergeQuery: { sort: 'ordered' } }), active: props.sort === 'ordered' },
-  { label: 'Longest', to: SearchController.url({ mergeQuery: { sort: 'longest' } }), active: props.sort === 'longest' },
-  { label: 'Shortest', to: SearchController.url({ mergeQuery: { sort: 'shortest' } }), active: props.sort === 'shortest' },
+const filters = ref<RadioGroupItem[]>([
+  { label: 'Relevant', value: '' },
+  { label: 'Newest', value: 'newest' },
+  { label: 'Oldest', value: 'oldest' },
+  { label: 'Ordered', value: 'ordered' },
+  { label: 'Longest', value: 'longest' },
+  { label: 'Shortest', value: 'shortest' },
 ])
-
-const form = useForm('get', SearchController.url(), { search: props.search || '', sort: props.sort || '' })
-
-const onSubmit = async () =>
-  form.submit({
-    preserveState: true,
-    replace: true,
-    only: ['items', 'search', 'sort'],
-    reset: ['items'],
-  })
 </script>
 
 <template>

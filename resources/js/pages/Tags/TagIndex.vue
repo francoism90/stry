@@ -21,7 +21,7 @@ defineProps<Props>()
   <PageFilters
     title="Filter Tags"
     headline="Tags"
-    :items="types"
-    :active="type"
+    :types="types"
+    :type="type"
   />
 </template>
