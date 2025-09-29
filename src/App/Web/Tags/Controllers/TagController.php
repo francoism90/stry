@@ -44,7 +44,7 @@ class TagController extends Controller implements HasMiddleware
             'types' => fn () => collect(TagType::cases())->forEnum(),
             'items' => Inertia::scroll(fn () => TagResource::collection(Tag::query()
                 ->tap(new TagFilterScope(type: $request->safe()->input('type')))
-                ->simplePaginate(32))),
+                ->simplePaginate(48))),
         ]);
     }
 
