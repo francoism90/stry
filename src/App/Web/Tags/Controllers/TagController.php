@@ -10,6 +10,7 @@ use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagTypeCollection;
+use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagSearchScope;
@@ -66,7 +67,7 @@ class TagController extends Controller implements HasMiddleware
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
             'search' => $request->safe()->input('search'),
             'type' => $request->safe()->input('type'),
-            'types' => fn () => new TagTypeCollection,
+            'types' => fn () => new VideoTypeCollection,
             'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
                 ->tap(new VideoSearchScope(tags: [$tag->getKey()], type: $request->safe()->input('type')))
                 ->simplePaginate(24))),
