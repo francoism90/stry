@@ -9,17 +9,17 @@ use Domain\Shared\Contracts\Enumerable;
 enum VideoType: string implements Enumerable
 {
     case Newest = 'newest';
+    case Ordered = 'ordered';
     case Longest = 'longest';
     case Shortest = 'shortest';
-    case Watching = 'watching';
 
     public function label(): string
     {
         return match ($this) {
             self::Newest => __('Newest'),
+            self::Ordered => __('Ordered'),
             self::Longest => __('Longest'),
             self::Shortest => __('Shortest'),
-            self::Watching => __('Watching'),
         };
     }
 
