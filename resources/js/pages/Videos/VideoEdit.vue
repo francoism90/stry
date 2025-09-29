@@ -7,7 +7,6 @@ import { useTagInput } from '@/composables/taginput'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoResource from '@/layouts/Video/VideoResource.vue'
 import type { TagMenuItem, Video } from '@/types'
-import { router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 interface Props {
@@ -27,7 +26,7 @@ const form = useForm('put', update.url({ video: props.video.id }), props.video)
 const onSubmit = async () =>
   form.submit({
     preserveState: true,
-    onSuccess: () => router.reload({ except: ['flash'] }),
+    replace: true,
   })
 </script>
 

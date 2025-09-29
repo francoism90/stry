@@ -5,7 +5,7 @@ import PageFilters from '@/components/Ui/PageFilters.vue'
 import PageSection from '@/components/Ui/PageSection.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoCollection from '@/layouts/Video/VideoCollection.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref } from 'vue'
@@ -32,7 +32,10 @@ const form = useForm('get', SearchController.url(), { search: props.search || ''
 
 const onSubmit = async () =>
   form.submit({
-    onSuccess: () => router.reload({ except: ['flash'] }),
+    preserveState: true,
+    replace: true,
+    only: ['items', 'search', 'sort'],
+    reset: ['items'],
   })
 </script>
 
