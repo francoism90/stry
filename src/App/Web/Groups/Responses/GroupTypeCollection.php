@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Responses;
+namespace App\Web\Groups\Responses;
 
-use Domain\Videos\Enums\VideoType;
+use Domain\Groups\Enums\GroupType;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class VideoTypeCollection implements ProvidesInertiaProperty
+readonly class GroupTypeCollection implements ProvidesInertiaProperty
 {
     public function toInertiaProperty(PropertyContext $context): mixed
     {
         return [
             ['value' => null, 'label' => __('All')],
-            ...VideoType::options(),
+            ...GroupType::options(),
         ];
     }
 }

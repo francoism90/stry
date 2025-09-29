@@ -22,4 +22,12 @@ enum GroupType: string implements Enumerable
             self::Viewed => __('Watched'),
         };
     }
+
+    public static function options(): array
+    {
+        return array_map(fn (self $type) => [
+            'value' => $type->value,
+            'label' => $type->label(),
+        ], self::cases());
+    }
 }

@@ -12,6 +12,9 @@ readonly class TagTypeCollection implements ProvidesInertiaProperty
 {
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return TagType::options();
+        return [
+            ['value' => null, 'label' => __('All')],
+            ...TagType::options(),
+        ];
     }
 }
