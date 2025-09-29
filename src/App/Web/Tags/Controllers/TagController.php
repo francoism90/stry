@@ -12,7 +12,6 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagTypeCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagFilterScope;
 use Domain\Tags\Scopes\TagSearchScope;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSearchScope;
@@ -40,6 +39,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Inertia::render('Tags/TagIndex', [
+            'search' => $request->safe()->input('search'),
             'type' => $request->safe()->input('type'),
             'types' => fn () => new TagTypeCollection,
             'items' => Inertia::scroll(fn () => TagResource::collection(Tag::search($request->safe()->input('search'))

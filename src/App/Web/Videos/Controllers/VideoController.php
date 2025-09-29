@@ -15,7 +15,6 @@ use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
 use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
