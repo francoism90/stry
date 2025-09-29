@@ -13,6 +13,7 @@ use App\Web\Tags\Responses\TagTypeCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Tags\Scopes\TagSearchScope;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
@@ -42,7 +43,7 @@ class TagController extends Controller implements HasMiddleware
             'type' => $request->safe()->input('type'),
             'types' => fn () => new TagTypeCollection,
             'items' => Inertia::scroll(fn () => TagResource::collection(Tag::search($request->safe()->input('search'))
-                ->tap(new TagFilterScope(type: $request->safe()->input('type')))
+                ->tap(new TagSearchScope(type: $request->safe()->input('type')))
                 ->simplePaginate(48))),
         ]);
     }
