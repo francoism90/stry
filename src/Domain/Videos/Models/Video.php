@@ -228,25 +228,23 @@ class Video extends Model implements HasMedia
     public function toSearchableArray(): array
     {
         return [
-            'id' => (int) $this->getScoutKey(),
-            'identifier' => (string) $this->identifier,
-            'name' => (string) $this->name,
+            'id' => (string) $this->getScoutKey(),
             'title' => (string) $this->title,
-            'season' => (string) str($this->season)->ltrim('0'),
-            'episode' => (string) str($this->episode)->ltrim('0'),
-            'part' => (string) str($this->part)->ltrim('0'),
-            'content' => (string) $this->content,
-            'summary' => (string) $this->summary,
-            'duration' => (float) $this->duration,
-            'captions' => (bool) $this->captions,
-            'adult' => (bool) $this->adult,
-            'tags' => (string) $this->tags->translated(),
-            'synonyms' => (string) $this->tags->synonyms(),
-            'tagged' => (array) $this->tags->modelKeys(),
-            'state' => (string) $this->state,
-            'released_at' => (int) $this->released_at?->getTimestamp(),
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            // 'season' => (string) str($this->season)->ltrim('0'),
+            // 'episode' => (string) str($this->episode)->ltrim('0'),
+            // 'part' => (string) str($this->part)->ltrim('0'),
+            // 'content' => (string) $this->content,
+            // 'summary' => (string) $this->summary,
+            // 'duration' => (float) $this->duration,
+            // 'captions' => (bool) $this->captions,
+            // 'adult' => (bool) $this->adult,
+            // 'tags' => (string) $this->tags->translated(),
+            // 'synonyms' => (string) $this->tags->synonyms(),
+            // 'tagged' => (array) $this->tags->modelKeys(),
+            // 'state' => (string) $this->state,
+            // 'released_at' => (int) $this->released_at?->getTimestamp(),
+            'created_at' => (int) $this->created_at->timestamp,
+            'updated_at' => (int) $this->updated_at->timestamp,
         ];
     }
 
@@ -290,14 +288,14 @@ class Video extends Model implements HasMedia
     protected function identifier(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode('-', array_filter([$this->season, $this->episode, $this->part]))
+            get: fn () => implode('-', array_filter([$this->season, $this->episode]))
         )->shouldCache();
     }
 
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode(' - ', array_filter([$this->name, $this->part]))
+            get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part]))
         )->shouldCache();
     }
 
