@@ -7,8 +7,11 @@ namespace Support\Scout\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\warning;
 
 class SyncCommand extends Command implements Isolatable
 {
@@ -24,30 +27,22 @@ class SyncCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        // Sync index models
-        $indexes = $this->getIndexes();
+        $indexes = Config::collection('scout.typesense.model-settings');
 
-        if (count($indexes)) {
-            foreach ($indexes as $model => $settings) {
-                if (class_exists($model)) {
-                    if ($this->option('flush')) {
-                        info("Flushing existing records for model: {$model}");
-
-                        $this->call('scout:flush', compact('model'));
-                    }
-
-                    info("Syncing records for model: {$model}");
-
-                    $this->call('scout:queue-import', compact('model'));
-                }
-            }
+        if ($indexes->isEmpty()) {
+            info('No indexes configured to sync');
         }
 
-        info('Indexes have been synced successfully.');
-    }
+        $indexes->each(function (array $settings, string $model) {
+            if ($this->option('flush')) {
+                info("Flushing existing records for model: {$model}");
 
-    protected function getIndexes(): array
-    {
-        return (array) config('scout.typesense.model-settings', []);
+                $this->call('scout:flush', compact('model'));
+            }
+
+            info("Syncing records for model: {$model}");
+
+            $this->call('scout:queue-import', compact('model'));
+        });
     }
 }
