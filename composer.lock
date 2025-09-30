@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc23fcfac645a8f5e251ba8d8b2e2edf",
+    "content-hash": "15dbcd4b6821458479e3914cf0dbd23c",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -2012,16 +2012,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.32.3",
+            "version": "v12.32.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "101f7d1ef000f68ccef15a2529d3e99b0c49a14a"
+                "reference": "e6938116a43f48f7b9a336691926b5cebd1b6954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/101f7d1ef000f68ccef15a2529d3e99b0c49a14a",
-                "reference": "101f7d1ef000f68ccef15a2529d3e99b0c49a14a",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/e6938116a43f48f7b9a336691926b5cebd1b6954",
+                "reference": "e6938116a43f48f7b9a336691926b5cebd1b6954",
                 "shasum": ""
             },
             "require": {
@@ -2227,7 +2227,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-09-30T15:38:34+00:00"
+            "time": "2025-09-30T17:22:19+00:00"
         },
         {
             "name": "laravel/horizon",
