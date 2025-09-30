@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
-use Carbon\CarbonImmutable;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
@@ -15,7 +14,6 @@ use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -32,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
         $this->configureUrls();
         $this->configureModels();
         $this->configureMorphMap();
-        $this->configureDates();
         $this->configureCommands();
         $this->configureJsonResource();
     }
@@ -67,11 +64,6 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'video' => Video::class,
         ]);
-    }
-
-    protected function configureDates(): void
-    {
-        Date::use(CarbonImmutable::class);
     }
 
     protected function configureCommands(): void
