@@ -6,12 +6,9 @@ namespace Support\Scout\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
 use function Laravel\Prompts\info;
-use function Laravel\Prompts\warning;
 
 class SyncCommand extends Command implements Isolatable
 {
