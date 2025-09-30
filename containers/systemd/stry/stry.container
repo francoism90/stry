@@ -1,7 +1,7 @@
 [Unit]
 Description=Stry container
-Requires=stry-redis.service stry-pgsql.service stry-meilisearch.service stry-mailpit.service stry-minio.service
-After=stry-redis.service stry-pgsql.service stry-meilisearch.service stry-mailpit.service stry-minio.service
+Requires=stry-redis.service stry-pgsql.service stry-mailpit.service stry-minio.service stry-typesense.service
+After=stry-redis.service stry-pgsql.service stry-mailpit.service stry-minio.service stry-typesense.service
 Wants=stry-reverb.service stry-queue.service stry-schedule.service stry-ssr.service
 
 [Container]
