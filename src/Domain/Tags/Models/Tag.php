@@ -59,6 +59,9 @@ class Tag extends BaseTag implements HasMedia
     {
         return [
             'type' => TagType::class,
+            'adult' => 'boolean',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
         ];
     }
 

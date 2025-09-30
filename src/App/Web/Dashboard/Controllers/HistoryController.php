@@ -6,11 +6,8 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
-use Domain\Videos\Scopes\VideoSearchScope;
-use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
