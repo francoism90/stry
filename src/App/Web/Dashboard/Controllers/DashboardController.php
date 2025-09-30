@@ -28,8 +28,8 @@ class DashboardController extends Controller implements HasMiddleware
 
         return Inertia::render('Dashboard/DashboardIndex', [
             'recommended' => Inertia::defer(fn () => new VideoSectionCollection, 'sections')->deepMerge()->matchOn('data.id'),
-            'newest' => Inertia::defer(fn () => new VideoSectionCollection(type: 'newest'), 'sections')->deepMerge()->matchOn('data.id'),
             'watching' => Inertia::defer(fn () => new VideoSectionCollection(type: 'watching'), 'sections')->deepMerge()->matchOn('data.id'),
+            'newest' => Inertia::defer(fn () => new VideoSectionCollection(type: 'newest'), 'sections')->deepMerge()->matchOn('data.id'),
         ]);
     }
 }

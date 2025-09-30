@@ -32,6 +32,12 @@ defineProps<Props>()
           :items="watching"
           :actions="[{ label: 'Show All', to: '/history', trailingIcon: 'i-lucide-chevron-right' }]"
         />
+
+        <VideoCarousel
+          label="New Releases"
+          :items="newest"
+          :actions="[{ label: 'Show All', to: '/videos?type=newest', trailingIcon: 'i-lucide-chevron-right' }]"
+        />
       </PageSection>
     </Deferred>
   </UPageBody>
