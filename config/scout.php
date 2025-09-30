@@ -197,10 +197,12 @@ return [
                         [
                             'name' => 'name',
                             'type' => 'string',
+                            'sort' => true,
                         ],
                         [
                             'name' => 'title',
                             'type' => 'string',
+                            'sort' => true,
                         ],
                         [
                             'name' => 'created_at',

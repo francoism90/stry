@@ -25,6 +25,7 @@ class VideoSearchScope
             ->when($this->type === 'oldest', fn (Builder $query) => $query->oldest())
             ->when($this->type === 'ordered', fn (Builder $query) => $query->orderBy('name'))
             ->when($this->type === 'longest', fn (Builder $query) => $query->orderByDesc('duration'))
-            ->when($this->type === 'shortest', fn (Builder $query) => $query->orderBy('duration'));
+            ->when($this->type === 'shortest', fn (Builder $query) => $query->orderBy('duration'))
+            ->unless($query->query, fn (Builder $query) => $query->orderBy('_rand()'));
     }
 }
