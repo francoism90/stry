@@ -195,6 +195,10 @@ return [
                             'type' => 'string',
                         ],
                         [
+                            'name' => 'name',
+                            'type' => 'string',
+                        ],
+                        [
                             'name' => 'title',
                             'type' => 'string',
                         ],
@@ -217,7 +221,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name'
+                    'query_by' => 'title, name',
                 ],
             ],
 

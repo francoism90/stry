@@ -6,6 +6,7 @@ namespace Support\Scout\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Database\Eloquent\Model;
 
 use function Laravel\Prompts\info;
 
@@ -14,7 +15,7 @@ class SyncCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'scout:sync';
+    protected $signature = 'scout:sync {--flush}';
 
     /**
      * @var string
@@ -29,7 +30,13 @@ class SyncCommand extends Command implements Isolatable
         if (count($indexes)) {
             foreach ($indexes as $model => $settings) {
                 if (class_exists($model)) {
-                    info("Importing records for model: {$model}");
+                    if ($this->option('flush')) {
+                        info("Flushing existing records for model: {$model}");
+
+                        $this->call('scout:flush', compact('model'));
+                    }
+
+                    info("Syncing records for model: {$model}");
 
                     $this->call('scout:queue-import', compact('model'));
                 }
