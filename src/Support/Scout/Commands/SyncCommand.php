@@ -6,6 +6,7 @@ namespace Support\Scout\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Facades\Config;
 
 use function Laravel\Prompts\info;
 
@@ -14,7 +15,7 @@ class SyncCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'scout:sync {--delete}';
+    protected $signature = 'scout:sync {--flush}';
 
     /**
      * @var string
@@ -23,36 +24,22 @@ class SyncCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        // This may be useful to force a fresh start of the indexes
-        if ($this->option('delete')) {
-            info('Deleting all existing indexes...');
+        $indexes = Config::collection('scout.typesense.model-settings');
 
-            $this->call('scout:delete-all-indexes');
+        if ($indexes->isEmpty()) {
+            info('No indexes configured to sync');
         }
 
-        // Sync index settings
-        $this->call('scout:sync-index-settings');
+        $indexes->each(function (array $settings, string $model) {
+            if ($this->option('flush')) {
+                info("Flushing existing records for model: {$model}");
 
-        // Sync index models
-        $indexes = $this->getIndexes();
-
-        if (count($indexes)) {
-            foreach ($indexes as $model => $settings) {
-                if (class_exists($model)) {
-                    info("Importing records for model: {$model}");
-
-                    $this->call('scout:queue-import', compact('model'));
-                }
+                $this->call('scout:flush', compact('model'));
             }
-        }
 
-        info('Indexes have been synced successfully.');
-    }
+            info("Syncing records for model: {$model}");
 
-    protected function getIndexes(): array
-    {
-        $driver = config('scout.driver');
-
-        return (array) config('scout.'.$driver.'.index-settings', []);
+            $this->call('scout:queue-import', compact('model'));
+        });
     }
 }

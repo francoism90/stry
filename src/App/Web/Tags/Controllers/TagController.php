@@ -10,10 +10,10 @@ use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagTypeCollection;
+use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Tags\Actions\UpdateTagDetails;
-use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Tags\Scopes\TagSearchScope;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
@@ -40,11 +40,13 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Inertia::render('Tags/TagIndex', [
+            'search' => $request->safe()->input('search'),
             'type' => $request->safe()->input('type'),
-            'types' => fn () => collect(TagType::cases())->forEnum(),
-            'items' => Inertia::scroll(fn () => TagResource::collection(Tag::query()
-                ->tap(new TagFilterScope(type: $request->safe()->input('type')))
-                ->simplePaginate(32))),
+            'types' => fn () => new TagTypeCollection,
+            'items' => Inertia::scroll(fn () => TagResource::collection(Tag::search($request->safe()->input('search'))
+                ->tap(new TagSearchScope(type: $request->safe()->input('type')))
+                ->simplePaginate(48)
+            )),
         ]);
     }
 
@@ -64,8 +66,11 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
-            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search('*')
-                ->tap(new VideoSearchScope(tags: [$tag->getKey()], sort: $request->safe()->input('sort')))
+            'search' => $request->safe()->input('search'),
+            'type' => $request->safe()->input('type'),
+            'types' => fn () => new VideoTypeCollection,
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
+                ->tap(new VideoSearchScope(tags: [$tag->getKey()], type: $request->safe()->input('type')))
                 ->simplePaginate(24))),
         ]);
     }

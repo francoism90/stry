@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use Carbon\CarbonImmutable;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Relates\Models\Related;
-use Domain\Shared\Contracts\Enumerable;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -30,9 +30,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureUrls();
-        $this->configureMacros();
         $this->configureModels();
         $this->configureMorphMap();
+        $this->configureDates();
         $this->configureCommands();
         $this->configureJsonResource();
     }
@@ -69,6 +69,11 @@ class AppServiceProvider extends ServiceProvider
         ]);
     }
 
+    protected function configureDates(): void
+    {
+        Date::use(CarbonImmutable::class);
+    }
+
     protected function configureCommands(): void
     {
         DB::prohibitDestructiveCommands(
@@ -79,16 +84,5 @@ class AppServiceProvider extends ServiceProvider
     protected function configureJsonResource(): void
     {
         JsonResource::withoutWrapping();
-    }
-
-    protected function configureMacros(): void
-    {
-        Collection::macro('forEnum', function () {
-            /** @var Collection $this */
-            return $this->map(fn (Enumerable $item) => [
-                'value' => $item->value,
-                'label' => $item->label(),
-            ]);
-        });
     }
 }

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Responses;
+namespace App\Web\Groups\Responses;
 
-use Domain\Tags\Enums\TagType;
+use Domain\Groups\Enums\GroupType;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class TagTypeCollection implements ProvidesInertiaProperty
+readonly class GroupTypeCollection implements ProvidesInertiaProperty
 {
     public function toInertiaProperty(PropertyContext $context): mixed
     {
         return [
             ['value' => null, 'label' => __('All')],
-            ...TagType::options(),
+            ...GroupType::options(),
         ];
     }
 }

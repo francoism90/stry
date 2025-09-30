@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Domain\Groups\Enums;
+namespace Domain\Videos\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum GroupType: string implements Enumerable
+enum VideoType: string implements Enumerable
 {
-    case Favorite = 'favorite';
-    case Mixer = 'mixer';
-    case Saved = 'saved';
-    case Viewed = 'viewed';
+    case Newest = 'newest';
+    case Ordered = 'ordered';
+    case Longest = 'longest';
+    case Shortest = 'shortest';
 
     public function label(): string
     {
         return match ($this) {
-            self::Favorite => __('Favorite'),
-            self::Mixer => __('Mixer'),
-            self::Saved => __('Saved'),
-            self::Viewed => __('Watched'),
+            self::Newest => __('Newest'),
+            self::Ordered => __('Ordered'),
+            self::Longest => __('Longest'),
+            self::Shortest => __('Shortest'),
         };
     }
 

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Responses;
+namespace App\Web\Videos\Responses;
 
-use Domain\Tags\Enums\TagType;
+use Domain\Videos\Enums\VideoType;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class TagTypeCollection implements ProvidesInertiaProperty
+readonly class VideoTypeCollection implements ProvidesInertiaProperty
 {
     public function toInertiaProperty(PropertyContext $context): mixed
     {
         return [
             ['value' => null, 'label' => __('All')],
-            ...TagType::options(),
+            ...VideoType::options(),
         ];
     }
 }

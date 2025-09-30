@@ -7,15 +7,14 @@ namespace App\Web\Dashboard\Controllers;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoSearchScope;
-use Foundation\Http\Controllers\Controller;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class SearchController extends Controller implements HasMiddleware
+class HistoryController implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -29,12 +28,12 @@ class SearchController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        return Inertia::render('Dashboard/SearchIndex', [
-            'search' => fn () => $request->safe()->input('search'),
-            'sort' => fn () => $request->safe()->input('sort'),
-            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
-                ->tap(new VideoSearchScope(sort: $request->safe()->input('sort')))
-                ->simplePaginate(24))),
+        return Inertia::render('Dashboard/HistoryIndex', [
+            'search' => $request->safe()->input('search'),
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::query()
+                ->tap(new VideoFilterScope(type: 'watching'))
+                ->simplePaginate(24)
+            )),
         ]);
     }
 }

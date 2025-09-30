@@ -11,10 +11,11 @@ use App\Web\Videos\Responses\VideoCaptionCollection;
 use App\Web\Videos\Responses\VideoPlaylistClip;
 use App\Web\Videos\Responses\VideoProgress;
 use App\Web\Videos\Responses\VideoSimilarCollection;
+use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,10 +40,13 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Videos/VideoIndex', [
-            'list' => $request->safe()->input('list'),
-            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::query()
-                ->tap(new VideoFilterScope(type: $request->safe()->input('list')))
-                ->simplePaginate(24))),
+            'search' => $request->safe()->input('search'),
+            'type' => $request->safe()->input('type'),
+            'types' => fn () => new VideoTypeCollection,
+            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
+                ->tap(new VideoSearchScope(type: $request->safe()->input('type')))
+                ->simplePaginate(24)
+            )),
         ]);
     }
 

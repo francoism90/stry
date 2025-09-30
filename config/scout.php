@@ -1,6 +1,5 @@
 <?php
 
-use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -21,7 +20,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'algolia'),
+    'driver' => env('SCOUT_DRIVER', 'collection'),
 
     /*
     |--------------------------------------------------------------------------
@@ -120,6 +119,12 @@ return [
     'algolia' => [
         'id' => env('ALGOLIA_APP_ID', ''),
         'secret' => env('ALGOLIA_SECRET', ''),
+        'index-settings' => [
+            // 'users' => [
+            //     'searchableAttributes' => ['id', 'name', 'email'],
+            //     'attributesForFaceting'=> ['filterOnly(email)'],
+            // ],
+        ],
     ],
 
     /*
@@ -137,247 +142,11 @@ return [
 
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-        'key' => env('MEILISEARCH_KEY', null),
+        'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
-            User::class => [
-                'filterableAttributes' => [
-                    'id',
-                    'state',
-                    'email_verified_at',
-                    'created_at',
-                    'updated_at',
-                    '__soft_deleted',
-                ],
-
-                'searchableAttributes' => [
-                    'name',
-                    'email',
-                ],
-
-                'sortableAttributes' => [
-                    'name',
-                    'email',
-                    'state',
-                    'email_verified_at',
-                    'created_at',
-                    'updated_at',
-                ],
-            ],
-
-            Group::class => [
-                'filterableAttributes' => [
-                    'id',
-                    'type',
-                    'state',
-                    'created_at',
-                    'updated_at',
-                    '__soft_deleted',
-                ],
-
-                'searchableAttributes' => [
-                    'name',
-                    'content',
-                ],
-
-                'sortableAttributes' => [
-                    'id',
-                    'name',
-                    'type',
-                    'state',
-                    'order',
-                    'created_at',
-                    'updated_at',
-                ],
-
-                'typoTolerance' => [
-                    'minWordSizeForTypos' => [
-                        'oneTypo' => 3,
-                        'twoTypos' => 5,
-                    ],
-                ],
-
-                'pagination' => [
-                    'maxTotalHits' => 500000,
-                ],
-            ],
-
-            Video::class => [
-                'filterableAttributes' => [
-                    'id',
-                    'identifier',
-                    'season',
-                    'episode',
-                    'part',
-                    'adult',
-                    'captions',
-                    'tagged',
-                    'state',
-                    'released_at',
-                    'created_at',
-                    'updated_at',
-                    '__soft_deleted',
-                ],
-
-                'searchableAttributes' => [
-                    'title',
-                    'name',
-                    'identifier',
-                    'season',
-                    'episode',
-                    'part',
-                    'tags',
-                    'synonyms',
-                    'content',
-                    'summary',
-                ],
-
-                'sortableAttributes' => [
-                    'id',
-                    'name',
-                    'identifier',
-                    'title',
-                    'season',
-                    'episode',
-                    'part',
-                    'released',
-                    'duration',
-                    'state',
-                    'released_at',
-                    'created_at',
-                    'updated_at',
-                ],
-
-                'synonyms' => [
-                    '0' => ['00', '000'],
-                    '1' => ['01', '001'],
-                    '2' => ['02', '002'],
-                    '3' => ['03', '003'],
-                    '4' => ['04', '004'],
-                    '5' => ['05', '005'],
-                    '6' => ['06', '006'],
-                    '7' => ['07', '007'],
-                    '8' => ['08', '008'],
-                    '9' => ['09', '009'],
-                    '&' => ['and'],
-                    '@' => ['at'],
-                    '#' => ['hash', 'hashtag', 'tag'],
-                ],
-
-                'stopWords' => [
-                    '.',
-                    ',',
-                    '-',
-                    '_',
-                    '-',
-                    '|',
-                    '&',
-                    '/',
-                    '(',
-                    ')',
-                    '[',
-                    ']',
-                ],
-
-                'rankingRules' => [
-                    'sort',
-                    'attribute',
-                    'words',
-                    'typo',
-                    'proximity',
-                    'exactness',
-                ],
-
-                'typoTolerance' => [
-                    'minWordSizeForTypos' => [
-                        'oneTypo' => 3,
-                        'twoTypos' => 5,
-                    ],
-                ],
-
-                'pagination' => [
-                    'maxTotalHits' => 500000,
-                ],
-            ],
-
-            Tag::class => [
-                'filterableAttributes' => [
-                    'id',
-                    'type',
-                    'adult',
-                    'created_at',
-                    'updated_at',
-                    '__soft_deleted',
-                ],
-
-                'searchableAttributes' => [
-                    'name',
-                    'description',
-                    'synonyms',
-                    'category',
-                ],
-
-                'sortableAttributes' => [
-                    'id',
-                    'name',
-                    'type',
-                    'adult',
-                    'order',
-                    'videos',
-                    'created_at',
-                    'updated_at',
-                ],
-
-                'synonyms' => [
-                    '0' => ['00', '000'],
-                    '1' => ['01', '001'],
-                    '2' => ['02', '002'],
-                    '3' => ['03', '003'],
-                    '4' => ['04', '004'],
-                    '5' => ['05', '005'],
-                    '6' => ['06', '006'],
-                    '7' => ['07', '007'],
-                    '8' => ['08', '008'],
-                    '9' => ['09', '009'],
-                    '&' => ['and'],
-                    '@' => ['at'],
-                    '#' => ['hash', 'hashtag', 'tag'],
-                ],
-
-                'stopWords' => [
-                    '.',
-                    ',',
-                    '-',
-                    '_',
-                    '-',
-                    '|',
-                    '&',
-                    '/',
-                    '(',
-                    ')',
-                    '[',
-                    ']',
-                ],
-
-                'rankingRules' => [
-                    'sort',
-                    'attribute',
-                    'words',
-                    'typo',
-                    'proximity',
-                    'exactness',
-                ],
-
-                'typoTolerance' => [
-                    'minWordSizeForTypos' => [
-                        'oneTypo' => 3,
-                        'twoTypos' => 5,
-                    ],
-                ],
-
-                'pagination' => [
-                    'maxTotalHits' => 500000,
-                ],
-            ],
+            // 'users' => [
+            //     'filterableAttributes'=> ['id', 'name', 'email'],
+            // ],
         ],
     ],
 
@@ -393,9 +162,9 @@ return [
     */
 
     'typesense' => [
+
         'client-settings' => [
             'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
-
             'nodes' => [
                 [
                     'host' => env('TYPESENSE_HOST', 'localhost'),
@@ -404,43 +173,228 @@ return [
                     'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
                 ],
             ],
-
             'nearest_node' => [
                 'host' => env('TYPESENSE_HOST', 'localhost'),
                 'port' => env('TYPESENSE_PORT', '8108'),
                 'path' => env('TYPESENSE_PATH', ''),
                 'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
             ],
-
             'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
             'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
             'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
             'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
 
+        // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
+
         'model-settings' => [
-            // User::class => [
-            //     'collection-schema' => [
-            //         'fields' => [
-            //             [
-            //                 'name' => 'id',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'name',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'created_at',
-            //                 'type' => 'int64',
-            //             ],
-            //         ],
-            //         'default_sorting_field' => 'created_at',
-            //     ],
-            //     'search-parameters' => [
-            //         'query_by' => 'name'
-            //     ],
-            // ],
+
+            User::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'email',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'email_verified_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'created_at',
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'title, name',
+                ],
+            ],
+
+            Tag::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'description',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'category',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'type',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'synonyms',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'adult',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'order',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'videos',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'order',
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'name, description, synonyms, category',
+                ],
+            ],
+
+            Video::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'title',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'content',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'summary',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'duration',
+                            'type' => 'float',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'captions',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'adult',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'tags',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'synonyms',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'tagged',
+                            'type' => 'int64[]',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'released_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'created_at',
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'title, name, summary, content, tags, synonyms',
+                ],
+            ],
+
         ],
     ],
 

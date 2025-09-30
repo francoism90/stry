@@ -1,0 +1,14 @@
+[Unit]
+Description=Typesense container
+
+[Container]
+Image=docker.io/typesense/typesense:29.0
+AutoUpdate=registry
+EnvironmentFile=%h/.config/containers/systemd/stry/config/typesense.env
+LogDriver=none
+Volume=stry-typesense:/typesense-data:rw,Z,U
+Network=stry.network
+ExposeHostPort=8108
+
+[Service]
+TimeoutStartSec=90

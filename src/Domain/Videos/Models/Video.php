@@ -97,9 +97,13 @@ class Video extends Model implements HasMedia
         return [
             'state' => VideoState::class,
             'snapshot' => 'decimal:2',
+            'adult' => 'boolean',
             'expires_at' => 'datetime',
             'published_at' => 'datetime',
             'released_at' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
     }
 
@@ -228,13 +232,9 @@ class Video extends Model implements HasMedia
     public function toSearchableArray(): array
     {
         return [
-            'id' => (int) $this->getScoutKey(),
-            'identifier' => (string) $this->identifier,
+            'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
             'title' => (string) $this->title,
-            'season' => (string) str($this->season)->ltrim('0'),
-            'episode' => (string) str($this->episode)->ltrim('0'),
-            'part' => (string) str($this->part)->ltrim('0'),
             'content' => (string) $this->content,
             'summary' => (string) $this->summary,
             'duration' => (float) $this->duration,
@@ -290,14 +290,14 @@ class Video extends Model implements HasMedia
     protected function identifier(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode('-', array_filter([$this->season, $this->episode, $this->part]))
+            get: fn () => implode('-', array_filter([$this->season, $this->episode]))
         )->shouldCache();
     }
 
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode(' - ', array_filter([$this->name, $this->part]))
+            get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part]))
         )->shouldCache();
     }
 
