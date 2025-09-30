@@ -78,7 +78,7 @@ watchDebounced(
 
         <UInput
           v-model="form.search"
-          class="w-60"
+          class="w-52 sm:w-64"
           placeholder="Search..."
         />
 
@@ -88,7 +88,7 @@ watchDebounced(
           value-key="value"
           :items="types"
           placeholder="Filter by type"
-          class="w-36"
+          class="w-32"
           @update:modelValue="onSubmit"
         />
       </UForm>
