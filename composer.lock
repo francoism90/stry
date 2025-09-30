@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8acc8ef25e728ef9a23bb7efc9cb776f",
+    "content-hash": "dc23fcfac645a8f5e251ba8d8b2e2edf",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -2012,16 +2012,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.32.1",
+            "version": "v12.32.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "d41e4ba47706ec85bda85fe9362515592871cd21"
+                "reference": "101f7d1ef000f68ccef15a2529d3e99b0c49a14a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/d41e4ba47706ec85bda85fe9362515592871cd21",
-                "reference": "d41e4ba47706ec85bda85fe9362515592871cd21",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/101f7d1ef000f68ccef15a2529d3e99b0c49a14a",
+                "reference": "101f7d1ef000f68ccef15a2529d3e99b0c49a14a",
                 "shasum": ""
             },
             "require": {
@@ -2227,7 +2227,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-09-30T12:22:56+00:00"
+            "time": "2025-09-30T15:38:34+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -4358,16 +4358,16 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v2.3.0",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "693f6fe5b09173981458f7a9dd0a18b90f8947da"
+                "reference": "4a2ab4341bc5802e1db1f761a9eab15fbb34f967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/693f6fe5b09173981458f7a9dd0a18b90f8947da",
-                "reference": "693f6fe5b09173981458f7a9dd0a18b90f8947da",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/4a2ab4341bc5802e1db1f761a9eab15fbb34f967",
+                "reference": "4a2ab4341bc5802e1db1f761a9eab15fbb34f967",
                 "shasum": ""
             },
             "require": {
@@ -4393,9 +4393,6 @@
                 "files": [
                     "autoload.php"
                 ],
-                "psr-0": {
-                    "ParagonIE_Sodium_": "src"
-                },
                 "psr-4": {
                     "ParagonIE\\Sodium\\": "namespaced/"
                 }
@@ -4451,9 +4448,9 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v2.3.0"
+                "source": "https://github.com/paragonie/sodium_compat/tree/v2.3.1"
             },
-            "time": "2025-09-30T07:27:45+00:00"
+            "time": "2025-09-30T15:08:52+00:00"
         },
         {
             "name": "pbmedia/laravel-ffmpeg",
