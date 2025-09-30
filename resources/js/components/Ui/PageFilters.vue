@@ -65,6 +65,15 @@ watchDebounced(
         :state="form"
         @submit="onSubmit"
       >
+        <UButton
+          v-if="form.type || form.search || form.sort"
+          variant="outline"
+          icon="i-lucide-delete"
+          size="sm"
+          class="px-2"
+          @click="onReset"
+        />
+
         <UInput
           v-model="form.search"
           class="w-60"
@@ -79,15 +88,6 @@ watchDebounced(
           placeholder="Filter by type"
           class="w-36"
           @update:modelValue="onSubmit"
-        />
-
-        <UButton
-          v-if="form.type || form.search || form.sort"
-          variant="outline"
-          icon="i-lucide-delete"
-          size="sm"
-          class="px-2"
-          @click="onReset"
         />
       </UForm>
     </template>
