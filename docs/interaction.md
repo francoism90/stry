@@ -31,10 +31,11 @@ stry a horizon:forget --all
 stry a videos:import
 ```
 
-To interact with the app container without the utility:
+To interact with containers without the utility:
 
 ```bash
 podman exec -it systemd-stry php artisan help
+podman exec -it systemd-stry-queue /bin/bash
 ```
 
 ## Commands
