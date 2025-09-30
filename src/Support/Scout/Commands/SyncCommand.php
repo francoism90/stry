@@ -14,7 +14,7 @@ class SyncCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'scout:sync {--delete}';
+    protected $signature = 'scout:sync';
 
     /**
      * @var string
@@ -23,16 +23,6 @@ class SyncCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        // This may be useful to force a fresh start of the indexes
-        if ($this->option('delete')) {
-            info('Deleting all existing indexes...');
-
-            $this->call('scout:delete-all-indexes');
-        }
-
-        // Sync index settings
-        $this->call('scout:sync-index-settings');
-
         // Sync index models
         $indexes = $this->getIndexes();
 
@@ -51,8 +41,6 @@ class SyncCommand extends Command implements Isolatable
 
     protected function getIndexes(): array
     {
-        $driver = config('scout.driver');
-
-        return (array) config('scout.'.$driver.'.index-settings', []);
+        return (array) config('scout.typesense.model-settings', []);
     }
 }
