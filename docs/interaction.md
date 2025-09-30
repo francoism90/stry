@@ -49,4 +49,4 @@ See `stry help` for a complete overview:
 | `stry a tags:create` | Create a new tag |
 | `stry a tags:sort` | Sort tags alphabetically |
 | `stry a playlists:clear` | Remove generated HLS-playlist from filesystem |
-| `stry a scout:sync --delete` | Sync Scout (search) model indexes, useful on Meilisearch upgrades. |
+| `stry a scout:sync --flush` | Sync searchable model indexes. |
