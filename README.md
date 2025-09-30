@@ -18,9 +18,9 @@ It's build around the following stack:
 
 - [Laravel 12.x](https://laravel.com/)
 - [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)
-- [PostgreSQL 17.x](https://www.postgresql.org/)
+- [PostgreSQL 18.x](https://www.postgresql.org/)
 - [Podman 5.x](https://podman.io/)
-- [Meilisearch 1.x](https://www.meilisearch.com/)
+- [Typesense 29.x](https://typesense.org/)
 
 ## Prerequisites
 
@@ -49,7 +49,7 @@ sudo restorecon -R -v /home/user/data/stry/import
 
 ## Usage
 
-To run the instance after following the installation:
+To run the instance after install:
 
 ```bash
 systemctl --user start stry proxy
