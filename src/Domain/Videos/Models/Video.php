@@ -244,9 +244,9 @@ class Video extends Model implements HasMedia
             'synonyms' => (string) $this->tags->synonyms(),
             'tagged' => (array) $this->tags->modelKeys(),
             'state' => (string) $this->state,
-            'released_at' => $this->released_at?->getTimestamp(),
-            'created_at' => $this->created_at->getTimestamp(),
-            'updated_at' => $this->updated_at->getTimestamp(),
+            'released_at' => (int) $this->released_at?->getTimestamp(),
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
     }
 

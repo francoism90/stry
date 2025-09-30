@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Scout\Searchable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -38,7 +37,6 @@ class Group extends Model implements HasMedia, Sortable
     use InteractsWithUser;
     use Notifiable;
     use Prunable;
-    use Searchable;
     use SoftDeletes;
     use SortableTrait;
 
@@ -154,21 +152,6 @@ class Group extends Model implements HasMedia, Sortable
         return static::query()
             ->mixer()
             ->where('created_at', '<=', now()->subDay());
-    }
-
-    public function toSearchableArray(): array
-    {
-        return [
-            'id' => $this->getScoutKey(),
-            'name' => (string) $this->name,
-            'content' => (string) $this->content,
-            'type' => (string) $this->type->value,
-            'order' => (int) $this->order_column,
-            'options' => (array) $this->options,
-            'state' => (string) $this->state,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
-        ];
     }
 
     protected function title(): Attribute
