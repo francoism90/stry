@@ -229,7 +229,6 @@ return [
                             'name' => '__soft_deleted',
                             'type' => 'int64',
                             'optional' => true,
-                            'sort' => true,
                         ],
                     ],
 
@@ -287,10 +286,6 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'state',
-                            'type' => 'string',
-                        ],
-                        [
                             'name' => 'created_at',
                             'type' => 'int64',
                             'sort' => true,
@@ -302,7 +297,7 @@ return [
                         ],
                     ],
 
-                    'default_sorting_field' => 'created_at',
+                    'default_sorting_field' => 'order',
                 ],
 
                 'search-parameters' => [
@@ -389,7 +384,6 @@ return [
                             'name' => '__soft_deleted',
                             'type' => 'int64',
                             'optional' => true,
-                            'sort' => true,
                         ],
                     ],
 
