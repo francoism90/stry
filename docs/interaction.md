@@ -44,10 +44,10 @@ See `stry help` for a complete overview:
 
 | Command | Description |
 |---|---|
-| `stry a users:create` | Creates a new user |
-| `stry a videos:import` | Import videos to an user |
-| `stry a videos:clear` | Remove soft-deleted videos from filesystem (!) |
-| `stry a tags:create` | Create a new tag |
-| `stry a tags:sort` | Sort tags alphabetically |
-| `stry a playlists:clear` | Remove generated HLS-playlist from filesystem |
+| `stry a users:create` | Creates a new user. |
+| `stry a videos:import` | Import videos for an user. |
+| `stry a videos:clear` | Remove(!) soft-deleted videos from filesystem. |
+| `stry a tags:create` | Create a new tag. |
+| `stry a tags:sort` | Sort tags alphabetically, based on type. |
+| `stry a playlists:clear` | Remove generated HLS-playlist from filesystem. |
 | `stry a scout:sync --flush` | Sync searchable model indexes. |
