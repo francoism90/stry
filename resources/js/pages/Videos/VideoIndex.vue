@@ -19,7 +19,7 @@ defineProps<Props>()
   <Head title="Videos" />
 
   <PageFilters
-    title="Filter Videos"
+    title="Library"
     headline="Videos"
     :types="types"
     :type="type"
