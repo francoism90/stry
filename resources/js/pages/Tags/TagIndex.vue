@@ -19,7 +19,7 @@ defineProps<Props>()
   <Head title="Tags" />
 
   <PageFilters
-    title="Tagged Items"
+    title="Overview"
     headline="Tags"
     :types="types"
     :type="type"
