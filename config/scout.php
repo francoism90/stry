@@ -205,17 +205,68 @@ return [
                             'sort' => true,
                         ],
                         [
+                            'name' => 'content',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'summary',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'duration',
+                            'type' => 'float',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'captions',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'adult',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'tags',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'synonyms',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'tagged',
+                            'type' => 'int32[]',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'released_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'created_at',
                             'type' => 'int64',
+                            'sort' => true,
                         ],
                         [
                             'name' => 'updated_at',
                             'type' => 'int64',
+                            'sort' => true,
                         ],
                         [
                             'name' => '__soft_deleted',
                             'type' => 'int32',
                             'optional' => true,
+                            'sort' => true,
                         ],
                     ],
 
