@@ -18,7 +18,7 @@ class TagSearchScope
     {
         $query
             ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
-            ->unless($query->query, fn (Builder $query) => $query->orderByDesc('videos'))
-            ->when($this->type, fn (Builder $query, TagType|string $type) => $query->where('type', $type));
+            ->when($this->type, fn (Builder $query, TagType|string $type) => $query->where('type', $type))
+            ->unless($query->query, fn (Builder $query) => $query->orderByDesc('videos'));
     }
 }
