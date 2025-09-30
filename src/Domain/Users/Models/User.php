@@ -169,13 +169,13 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function toSearchableArray(): array
     {
         return [
-            'id' => (int) $this->getScoutKey(),
+            'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
             'email' => (string) $this->email,
-            'email_verified_at' => (int) $this->email_verified_at?->getTimestamp(),
+            'email_verified_at' => (int) $this->email_verified_at?->timestamp,
             'state' => (string) $this->state,
-            'created' => (int) $this->created_at->getTimestamp(),
-            'updated' => (int) $this->updated_at->getTimestamp(),
+            'created' => (int) $this->created_at->timestamp,
+            'updated' => (int) $this->updated_at->timestamp,
         ];
     }
 

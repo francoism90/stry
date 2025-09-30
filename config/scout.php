@@ -1,5 +1,7 @@
 <?php
 
+use Domain\Tags\Models\Tag;
+use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 
 return [
@@ -187,6 +189,127 @@ return [
 
         'model-settings' => [
 
+            User::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'email',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'email_verified_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'created_at',
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'title, name',
+                ],
+            ],
+
+            Tag::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'description',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'category',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'type',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'synonyms',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'adult',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'order',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'videos',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'created_at',
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'name, description, synonyms, category',
+                ],
+            ],
+
             Video::class => [
                 'collection-schema' => [
                     'fields' => [
@@ -239,7 +362,7 @@ return [
                         ],
                         [
                             'name' => 'tagged',
-                            'type' => 'int32[]',
+                            'type' => 'int64[]',
                             'optional' => true,
                         ],
                         [
@@ -264,7 +387,7 @@ return [
                         ],
                         [
                             'name' => '__soft_deleted',
-                            'type' => 'int32',
+                            'type' => 'int64',
                             'optional' => true,
                             'sort' => true,
                         ],
@@ -274,7 +397,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'title, name',
+                    'query_by' => 'title, name, summary, content, tags, synonyms',
                 ],
             ],
 

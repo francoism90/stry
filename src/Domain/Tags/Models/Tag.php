@@ -145,7 +145,7 @@ class Tag extends BaseTag implements HasMedia
     public function toSearchableArray(): array
     {
         return [
-            'id' => (int) $this->getScoutKey(),
+            'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
             'description' => (string) $this->description,
             'category' => (string) $this->category,
