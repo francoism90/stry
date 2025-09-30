@@ -45,7 +45,8 @@ class VideoController extends Controller implements HasMiddleware
             'types' => fn () => new VideoTypeCollection,
             'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
                 ->tap(new VideoSearchScope(type: $request->safe()->input('type')))
-                ->simplePaginate(24))),
+                ->simplePaginate(24)
+            )),
         ]);
     }
 

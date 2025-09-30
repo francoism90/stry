@@ -11,6 +11,8 @@ interface Props {
   sort?: string | undefined
   types?: SelectItem[] | undefined
   type?: string | undefined
+  sortable?: boolean | undefined
+  searchable?: boolean | undefined
 }
 
 const props = defineProps<Props>()
