@@ -40,11 +40,11 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Inertia::render('Tags/TagIndex', [
+            'filter' => $request->safe()->input('filter'),
             'search' => $request->safe()->input('search'),
-            'type' => $request->safe()->input('type'),
-            'types' => fn () => new TagTypeCollection,
+            'filters' => fn () => new TagTypeCollection,
             'items' => Inertia::scroll(fn () => TagResource::collection(Tag::search($request->safe()->input('search'))
-                ->tap(new TagSearchScope(type: $request->safe()->input('type')))
+                ->tap(new TagSearchScope(type: $request->safe()->input('filter')))
                 ->simplePaginate(48)
             )),
         ]);
@@ -67,10 +67,10 @@ class TagController extends Controller implements HasMiddleware
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
             'search' => $request->safe()->input('search'),
-            'type' => $request->safe()->input('type'),
-            'types' => fn () => new VideoTypeCollection,
+            'filter' => $request->safe()->input('filter'),
+            'filters' => fn () => new VideoTypeCollection,
             'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
-                ->tap(new VideoSearchScope(tags: [$tag->getKey()], type: $request->safe()->input('type')))
+                ->tap(new VideoSearchScope(tags: [$tag->getKey()], type: $request->safe()->input('filter')))
                 ->simplePaginate(24))),
         ]);
     }

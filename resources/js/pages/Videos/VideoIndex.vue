@@ -6,8 +6,8 @@ import { Head } from '@inertiajs/vue3'
 import type { RadioGroupItem } from '@nuxt/ui'
 
 interface Props {
-  type: string | undefined
-  types: RadioGroupItem[]
+  filter: string | undefined
+  filters: RadioGroupItem[]
 }
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
@@ -21,7 +21,7 @@ defineProps<Props>()
   <PageFilters
     title="Library"
     headline="Videos"
-    :types="types"
-    :type="type"
+    :filters
+    :filter
   />
 </template>

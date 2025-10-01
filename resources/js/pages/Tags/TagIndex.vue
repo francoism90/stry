@@ -8,8 +8,8 @@ import type { RadioGroupItem } from '@nuxt/ui'
 defineOptions({ layout: [DefaultLayout, TagCollection] })
 
 interface Props {
-  type: string | undefined
-  types: RadioGroupItem[]
+  filter: string | undefined
+  filters: RadioGroupItem[]
 }
 
 defineProps<Props>()
@@ -21,7 +21,7 @@ defineProps<Props>()
   <PageFilters
     title="Overview"
     headline="Tags"
-    :types="types"
-    :type="type"
+    :filters
+    :filter
   />
 </template>

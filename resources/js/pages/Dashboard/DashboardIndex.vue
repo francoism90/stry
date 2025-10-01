@@ -36,7 +36,7 @@ defineProps<Props>()
         <VideoCarousel
           label="New Releases"
           :items="newest"
-          :actions="[{ label: 'Show All', to: '/videos?type=newest', trailingIcon: 'i-lucide-chevron-right' }]"
+          :actions="[{ label: 'Show All', to: '/videos?filter=newest', trailingIcon: 'i-lucide-chevron-right' }]"
         />
       </PageSection>
     </Deferred>

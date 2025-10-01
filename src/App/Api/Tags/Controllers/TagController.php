@@ -32,7 +32,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Tag::search($request->safe()->input('search'))
-            ->tap(new TagSearchScope(type: $request->safe()->input('type')))
+            ->tap(new TagSearchScope(type: $request->safe()->input('filter')))
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }

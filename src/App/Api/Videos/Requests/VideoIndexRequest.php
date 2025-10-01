@@ -21,8 +21,8 @@ class VideoIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'filter' => ['sometimes', 'nullable', 'string', Rule::enum(VideoType::class)],
             'search' => ['sometimes', 'nullable', 'string', 'min:1', 'max:255'],
-            'type' => ['sometimes', 'nullable', 'string', Rule::enum(VideoType::class)],
             'tags' => ['sometimes', 'nullable', 'array', 'max:5'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],
         ];

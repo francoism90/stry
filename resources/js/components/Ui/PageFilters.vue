@@ -8,26 +8,21 @@ interface Props {
   description?: string | undefined
   headline?: string | undefined
   search?: string | undefined
-  sort?: string | undefined
-  types?: SelectItem[] | undefined
-  type?: string | undefined
-  sortable?: boolean | undefined
-  searchable?: boolean | undefined
+  filter?: string | undefined
+  filters?: SelectItem[] | undefined
 }
 
 const props = defineProps<Props>()
 
 const form = useForm('get', '', {
-  search: props.search || null,
-  sort: props.sort || null,
-  type: null,
+  filter: props.filter,
+  search: props.search,
 })
 
 const onReset = () => {
   form.defaults({
-    search: '',
-    sort: null,
-    type: null,
+    filter: undefined,
+    search: undefined,
   })
 
   form.resetAndClearErrors()
@@ -37,7 +32,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'sort', 'type'],
+    only: ['items', 'search', 'type'],
     reset: ['items'],
   })
 }
@@ -68,7 +63,7 @@ watchDebounced(
         @submit="onSubmit"
       >
         <UButton
-          v-if="form.type || form.search || form.sort"
+          v-if="form.filter || form.search"
           variant="outline"
           icon="i-lucide-delete"
           size="sm"
@@ -83,10 +78,10 @@ watchDebounced(
         />
 
         <USelect
-          v-if="types?.length"
-          v-model="form.type"
+          v-if="filters?.length"
+          v-model="form.filter"
           value-key="value"
-          :items="types"
+          :items="filters"
           placeholder="Filter by type"
           class="w-32"
           @update:modelValue="onSubmit"
