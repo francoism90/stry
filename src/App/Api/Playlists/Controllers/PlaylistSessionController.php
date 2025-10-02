@@ -29,6 +29,9 @@ class PlaylistSessionController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
+        // Ensure the playlist is still valid
+        abort_unless($playlist->isValid(), 404);
+
         if ($playlist->getModel() instanceof Video) {
             app(SyncVideoProgress::class)->handle(
                 video: $playlist->getModel(),

@@ -24,6 +24,9 @@ class PlaylistManifestController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
+        // Ensure the playlist is still valid
+        abort_unless($playlist->isValid(), 404);
+
         // Mark the playlist as accessed
         TrackPlaylist::dispatchIf(
             ! $playlist->accessed_at?->lessThan(now()->subMinutes(10)),

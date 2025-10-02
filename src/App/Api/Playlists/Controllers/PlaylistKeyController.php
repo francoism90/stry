@@ -22,6 +22,9 @@ class PlaylistKeyController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
+        // Ensure the playlist is still valid
+        abort_unless($playlist->isValid(), 404);
+
         $path = $playlist->getPath($path);
 
         return $playlist->getSecretFilesystem()->response($path);
