@@ -17,7 +17,7 @@
         "guzzlehttp/guzzle": "^7.10.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^2.0.10",
-        "laravel/fortify": "^1.31.0",
+        "laravel/fortify": "^1.31.1",
         "laravel/framework": "^12.32.5",
         "laravel/horizon": "^5.34.0",
         "laravel/octane": "^2.12.3",
