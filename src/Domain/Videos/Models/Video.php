@@ -187,7 +187,7 @@ class Video extends Model implements HasMedia
      */
     public function broadcastOn(string $event): array
     {
-        return [$this, $this->user];
+        return array_filter([$this, $this->user]);
     }
 
     public function broadcastChannel(): string
@@ -290,14 +290,14 @@ class Video extends Model implements HasMedia
     protected function identifier(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode('-', array_filter([$this->season, $this->episode]))
+            get: fn () => array_filter([$this->season, $this->episode])
         )->shouldCache();
     }
 
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part]))
+            get: fn () => implode(' | ', array_filter([$this->identifier, $this->name, $this->part]))
         )->shouldCache();
     }
 
