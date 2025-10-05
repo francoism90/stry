@@ -27,7 +27,7 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', Verified::class);
     }
 
-    public function valid(): self
+    public function active(): self
     {
         return $this
             ->whereNot(fn ($query) => $query->failed())

@@ -46,7 +46,7 @@ trait InteractsWithPlaylists
         return $this
             ->playlists()
             ->when($type, fn ($query) => $query->type($type))
-            ->valid()
+            ->active()
             ->first();
     }
 
@@ -55,7 +55,7 @@ trait InteractsWithPlaylists
         return $this
             ->playlists()
             ->when($type, fn ($query) => $query->type($type))
-            ->valid()
+            ->active()
             ->exists();
     }
 }
