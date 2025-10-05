@@ -85,7 +85,7 @@ return [
      * These parameters will be used to configure the transcoding process.
      */
     'additional_parameters' => [
-        '-force_key_frames:v', 'expr:gte(t,n_forced*2.000)',
+        // '-force_key_frames:v', 'expr:gte(t,n_forced*2.000)',
         '-preset', 'veryfast',
         '-tune', 'zerolatency',
     ],
