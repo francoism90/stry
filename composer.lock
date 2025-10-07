@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2012b34cbb88195f0c87017bc8731d4d",
+    "content-hash": "a704cf68f279db1bdee9e3cabc5dd1a1",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -2231,16 +2231,16 @@
         },
         {
             "name": "laravel/horizon",
-            "version": "v5.35.0",
+            "version": "v5.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "fc4904aa5016fd9c6ba9e78ebf2bb54bc73090d8"
+                "reference": "c110ff6ed494b57beb6b4102a92bb4bf896bb774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/fc4904aa5016fd9c6ba9e78ebf2bb54bc73090d8",
-                "reference": "fc4904aa5016fd9c6ba9e78ebf2bb54bc73090d8",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/c110ff6ed494b57beb6b4102a92bb4bf896bb774",
+                "reference": "c110ff6ed494b57beb6b4102a92bb4bf896bb774",
                 "shasum": ""
             },
             "require": {
@@ -2305,9 +2305,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/horizon/issues",
-                "source": "https://github.com/laravel/horizon/tree/v5.35.0"
+                "source": "https://github.com/laravel/horizon/tree/v5.34.0"
             },
-            "time": "2025-10-04T23:36:40+00:00"
+            "time": "2025-09-12T15:15:45+00:00"
         },
         {
             "name": "laravel/octane",
