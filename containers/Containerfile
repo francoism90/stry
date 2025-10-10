@@ -2,12 +2,13 @@ FROM docker.io/library/ubuntu:latest AS builder
 
 ARG UID=1000
 ARG GID=$UID
-ARG TZ=UTC
 ARG NODE_VERSION=22
 ARG POSTGRES_VERSION=17
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=${TZ}
+ENV TZ=UTC
+ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
+ENV NPM="pnpm"
 
 WORKDIR /app
 
@@ -82,6 +83,10 @@ RUN chown -R docker:docker /app
 
 USER docker
 
+RUN ${ARTISAN} storage:link
+RUN ${ARTISAN} wayfinder:generate
+RUN ${NPM} build && ${NPM} build:ssr
+
 ENTRYPOINT ["entrypoint.sh"]
 
 FROM builder as development
@@ -91,5 +96,7 @@ WORKDIR /app
 COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 USER docker
+
+RUN ${ARTISAN} storage:link
 
 ENTRYPOINT ["entrypoint.sh"]
