@@ -17,9 +17,14 @@ log() {
 
 prepare_application() {
     log "INFO" "Preparing application..."
-    ${ARTISAN} migrate --seed --force
-    ${ARTISAN} scout:sync-index-settings
-    ${ARTISAN} google-fonts:fetch
+
+    if [ "${CONTAINER_ROLE}" = "app" ]; then
+        log "DEBUG" "Migrating application..."
+        ${ARTISAN} migrate --seed --force
+        ${ARTISAN} scout:sync-index-settings
+        ${ARTISAN} google-fonts:fetch
+    fi
+
     ${ARTISAN} optimize
 }
 
