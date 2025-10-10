@@ -3,8 +3,6 @@ set -e
 
 CONTAINER_ENV=${CONTAINER_ENV:-'production'}
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
-ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
-NPM=${NPM:-"pnpm"}
 OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 if [ "${CONTAINER_ENV}" = "development" ]; then
