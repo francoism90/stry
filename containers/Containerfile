@@ -71,7 +71,9 @@ COPY . /app
 WORKDIR /app
 
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-RUN pnpm install --frozen-lockfile
+RUN ${NPM} install --frozen-lockfile
+RUN ${NPM} build && ${NPM} build:ssr
+RUN ${NPM} prune --prod
 
 FROM builder as production
 
@@ -85,8 +87,6 @@ USER docker
 
 RUN ${ARTISAN} storage:link
 RUN ${ARTISAN} wayfinder:generate
-RUN ${NPM} build && ${NPM} build:ssr
-RUN ${NPM} prune --prod
 
 ENTRYPOINT ["entrypoint.sh"]
 
