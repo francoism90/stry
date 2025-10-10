@@ -21,7 +21,7 @@ prepare_application() {
     ${ARTISAN} google-fonts:fetch
 }
 
-if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
+if [[ "${CONTAINER_ENV}" = "production" && "${CONTAINER_ROLE}" = "app" ]]; then
     prepare_application
 fi
 
