@@ -21,6 +21,7 @@ _ide_helper.php
 bootstrap/cache/*.php
 containers/systemd
 docs
+dist
 node_modules
 public/build
 public/hot

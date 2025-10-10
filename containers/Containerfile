@@ -2,12 +2,15 @@ FROM docker.io/library/ubuntu:latest AS builder
 
 ARG UID=1000
 ARG GID=$UID
-ARG TZ=UTC
 ARG NODE_VERSION=22
 ARG POSTGRES_VERSION=17
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=${TZ}
+ENV TZ=UTC
+ENV PNPM_HOME="/pnpm"
+ENV PATH="${PNPM_HOME}:${PATH}"
+ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
+ENV NPM="pnpm"
 
 WORKDIR /app
 
@@ -41,14 +44,15 @@ RUN apt-get update && apt-get upgrade -y \
     && curl -sLS https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o /usr/local/bin/mc \
     && chmod +x /usr/local/bin/mc \
     && apt-get install -y nodejs \
-    && npm install -g npm \
-    && npm install -g pnpm \
-    && npm install -g svgo \
+    && npm install -g npm@latest \
+    && npm install -g corepack@latest \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
+
+RUN corepack enable pnpm
 
 RUN userdel -r ubuntu
 RUN groupadd --force -g ${GID} docker \
@@ -70,7 +74,9 @@ COPY . /app
 WORKDIR /app
 
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-RUN pnpm install --frozen-lockfile
+RUN ${NPM} install --frozen-lockfile
+RUN ${NPM} build && ${NPM} build:ssr
+RUN ${NPM} prune --prod
 
 FROM builder as production
 
@@ -81,6 +87,9 @@ COPY --from=stage /app /app
 RUN chown -R docker:docker /app
 
 USER docker
+
+RUN ${ARTISAN} optimize
+RUN ${ARTISAN} storage:link
 
 ENTRYPOINT ["entrypoint.sh"]
 

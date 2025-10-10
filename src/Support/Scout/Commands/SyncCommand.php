@@ -20,7 +20,7 @@ class SyncCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $description = 'Sync Scout indexes';
+    protected $description = 'Sync Typesense indexes';
 
     public function handle(): void
     {
@@ -37,7 +37,7 @@ class SyncCommand extends Command implements Isolatable
                 $this->call('scout:flush', compact('model'));
             }
 
-            info("Syncing records for model: {$model}");
+            info("Importing records for model: {$model}");
 
             $this->call('scout:queue-import', compact('model'));
         });

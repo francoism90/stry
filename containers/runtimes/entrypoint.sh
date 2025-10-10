@@ -3,8 +3,6 @@ set -e
 
 CONTAINER_ENV=${CONTAINER_ENV:-'production'}
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
-ARTISAN=${ARTISAN:-"php -d variables_order=EGPCS /app/artisan"}
-NPM=${NPM:-"pnpm"}
 OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 if [ "${CONTAINER_ENV}" = "development" ]; then
@@ -19,16 +17,11 @@ log() {
 
 prepare_application() {
     log "INFO" "Preparing application..."
-    ${ARTISAN} optimize
-    ${ARTISAN} storage:link
     ${ARTISAN} migrate --seed --force
-    ${ARTISAN} wayfinder:generate
     ${ARTISAN} google-fonts:fetch
-    ${ARTISAN} scout:sync-index-settings
-    ${NPM} build && ${NPM} build:ssr
 }
 
-if [ "${CONTAINER_ENV}" = "production" ]; then
+if [[ "${CONTAINER_ENV}" = "production" && "${CONTAINER_ROLE}" = "app" ]]; then
     prepare_application
 fi
 
