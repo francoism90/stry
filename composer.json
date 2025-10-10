@@ -28,7 +28,6 @@
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.12",
         "league/flysystem-aws-s3-v3": "^3.29",
-        "meilisearch/meilisearch-php": "^1.16.1",
         "pbmedia/laravel-ffmpeg": "^8.7.1",
         "pusher/pusher-php-server": "^7.2.7",
         "spatie/laravel-flash": "^1.10.1",
