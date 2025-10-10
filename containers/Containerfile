@@ -89,7 +89,6 @@ RUN chown -R docker:docker /app
 USER docker
 
 RUN ${ARTISAN} storage:link
-RUN ${ARTISAN} wayfinder:generate
 
 ENTRYPOINT ["entrypoint.sh"]
 
@@ -100,7 +99,5 @@ WORKDIR /app
 COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 USER docker
-
-RUN ${ARTISAN} storage:link
 
 ENTRYPOINT ["entrypoint.sh"]
