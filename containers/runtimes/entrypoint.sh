@@ -17,15 +17,11 @@ log() {
 
 prepare_application() {
     log "INFO" "Preparing application..."
-
-    if [ "${CONTAINER_ROLE}" = "app" ]; then
-        log "DEBUG" "Migrating application..."
-        ${ARTISAN} migrate --seed --force
-        ${ARTISAN} google-fonts:fetch
-    fi
+    ${ARTISAN} migrate --seed --force
+    ${ARTISAN} google-fonts:fetch
 }
 
-if [ "${CONTAINER_ENV}" = "production" ]; then
+if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     prepare_application
 fi
 
