@@ -19,7 +19,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
   <UCard
     variant="solid"
     :ui="{
-      root: 'group h-52 max-h-52 min-h-52 rounded-xl bg-transparent',
+      root: 'group h-56 max-h-56 min-h-56 rounded-xl bg-transparent',
       body: 'relative !p-0',
     }"
   >
@@ -37,7 +37,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
         :srcset="item.srcset"
         :src="item.thumbnail"
         :alt="item.title"
-        class="h-52 max-h-52 w-full object-fill"
+        class="h-56 max-h-56 w-full object-fill"
         loading="lazy"
         sizes="(max-width: 720px) 400px, 50vw"
       />
@@ -64,7 +64,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
 
       <div
         v-if="preview && item.preview?.length"
-        class="absolute inset-0 z-10 h-52 w-full group-hover:block"
+        class="absolute inset-0 z-10 h-56 w-full group-hover:block"
       >
         <media-player
           .src="item.preview"
@@ -73,7 +73,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
           .autoPlay="true"
           .muted="true"
           .loop="true"
-          class="default-video h-52 max-h-52"
+          class="default-video h-56 max-h-56"
         >
           <media-provider />
         </media-player>
