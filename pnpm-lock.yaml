@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@inertiajs/vue3':
-        specifier: ^2.2.7
-        version: 2.2.7(vue@3.5.22(typescript@5.9.3))
+        specifier: ^2.2.8
+        version: 2.2.8(vue@3.5.22(typescript@5.9.3))
       '@laravel/echo-vue':
         specifier: ^2.2.4
         version: 2.2.4(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.22(typescript@5.9.3))
@@ -19,7 +19,7 @@ importers:
         version: 0.1.7
       '@nuxt/ui':
         specifier: ^4.0.1
-        version: 4.0.1(@babel/parser@7.28.4)(@inertiajs/vue3@2.2.7(vue@3.5.22(typescript@5.9.3)))(axios@1.12.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)
+        version: 4.0.1(@babel/parser@7.28.4)(@inertiajs/vue3@2.2.8(vue@3.5.22(typescript@5.9.3)))(axios@1.12.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)
       '@tailwindcss/vite':
         specifier: ^4.1.14
         version: 4.1.14(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0))
@@ -37,7 +37,7 @@ importers:
         version: 2.2.4(pusher-js@8.4.0)(socket.io-client@4.8.1)
       laravel-precognition-vue-inertia:
         specifier: ^0.7.2
-        version: 0.7.2(@inertiajs/vue3@2.2.7(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+        version: 0.7.2(@inertiajs/vue3@2.2.8(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       laravel-vite-plugin:
         specifier: ^2.0.1
         version: 2.0.1(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0))
@@ -923,12 +923,6 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@esbuild/win32-ia32@0.25.10':
-    resolution: {integrity: sha512-QHPDbKkrGO8/cz9LKVnJU22HOi4pxZnZhhA2HYHez5Pz4JeffhDjf85E57Oyco163GnzNCVkZK0b/n4Y0UHcSw==}
-    engines: {node: '>=18'}
-    cpu: [ia32]
-    os: [win32]
-
   '@esbuild/win32-x64@0.25.10':
     resolution: {integrity: sha512-9KpxSVFCu0iK1owoez6aC/s/EdUQLDN3adTxGCqxMVhrPDj6bt5dbrHDXUuq+Bs2vATFBBrQS5vdQ/Ed2P+nbw==}
     engines: {node: '>=18'}
@@ -1120,11 +1114,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@inertiajs/core@2.2.7':
-    resolution: {integrity: sha512-0qU/2zdeO6veUD28MENfvwXzOl8SOY5IZgsfRObOUBl/+DHdNWdKLHSx6gAJsNN3OSl4zpb+eankX0rkNRHh+Q==}
+  '@inertiajs/core@2.2.8':
+    resolution: {integrity: sha512-sN6ArjsDajohctU7j17lsnSk5j3otDDSuR0JgtJxUftNcV3mv51XTKm/IHM3zdHYhq4rpvgHlr9epUqp7tMnxQ==}
 
-  '@inertiajs/vue3@2.2.7':
-    resolution: {integrity: sha512-0DIcU5jKjiLh9B5KXffNmsl4V5Ci6VMmdYp/B06Ss6LfIRI6zqm68C2tcqig2EJALY7cZzqnsf4ULuSoJhUydw==}
+  '@inertiajs/vue3@2.2.8':
+    resolution: {integrity: sha512-/UuXIsreUF/bMnzYtv/faYJeQGJ2W1AnJhQCtMpJiSUZS9bhZuM3DWspJfdKsL9G7BV9LaVVm+Z+uER8SEZQDg==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -2344,8 +2338,8 @@ packages:
     resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
     engines: {node: '>=12.13'}
 
-  core-js-compat@3.45.1:
-    resolution: {integrity: sha512-tqTt5T4PzsMIZ430XGviK4vzYSoeNJ6CXODi6c/voxOT6IZqBht5/EKaSNnYiEjjRYxjVz7DQIsOsY0XNi8PIA==}
+  core-js-compat@3.46.0:
+    resolution: {integrity: sha512-p9hObIIEENxSV8xIu+V68JjSeARg6UVMG5mR+JEUguG3sI6MsiS1njz2jHmyJDvA+8jX/sytkBHup6kxhM9law==}
 
   cross-fetch@3.2.0:
     resolution: {integrity: sha512-Q+xVJLoGOeIMXZmbUK4HYk+69cQH6LudR0Vu/pRm2YlU/hDV9CiS0gKUMaWY5f2NeUH9C1nV3bsTlCo0FsTV1Q==}
@@ -5613,7 +5607,7 @@ snapshots:
       babel-plugin-polyfill-corejs2: 0.4.14(@babel/core@7.28.4)
       babel-plugin-polyfill-corejs3: 0.13.0(@babel/core@7.28.4)
       babel-plugin-polyfill-regenerator: 0.6.5(@babel/core@7.28.4)
-      core-js-compat: 3.45.1
+      core-js-compat: 3.46.0
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -5773,9 +5767,6 @@ snapshots:
     optional: true
 
   '@esbuild/win32-arm64@0.25.10':
-    optional: true
-
-  '@esbuild/win32-ia32@0.25.10':
     optional: true
 
   '@esbuild/win32-x64@0.25.10':
@@ -5957,7 +5948,7 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@inertiajs/core@2.2.7':
+  '@inertiajs/core@2.2.8':
     dependencies:
       '@types/lodash-es': 4.17.12
       axios: 1.12.2
@@ -5966,9 +5957,9 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@inertiajs/vue3@2.2.7(vue@3.5.22(typescript@5.9.3))':
+  '@inertiajs/vue3@2.2.8(vue@3.5.22(typescript@5.9.3))':
     dependencies:
-      '@inertiajs/core': 2.2.7
+      '@inertiajs/core': 2.2.8
       '@types/lodash-es': 4.17.12
       lodash-es: 4.17.21
       vue: 3.5.22(typescript@5.9.3)
@@ -6188,7 +6179,7 @@ snapshots:
       std-env: 3.9.0
       ufo: 1.6.1
 
-  '@nuxt/ui@4.0.1(@babel/parser@7.28.4)(@inertiajs/vue3@2.2.7(vue@3.5.22(typescript@5.9.3)))(axios@1.12.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)':
+  '@nuxt/ui@4.0.1(@babel/parser@7.28.4)(@inertiajs/vue3@2.2.8(vue@3.5.22(typescript@5.9.3)))(axios@1.12.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)':
     dependencies:
       '@ai-sdk/vue': 2.0.60(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)
       '@iconify/vue': 5.0.0(vue@3.5.22(typescript@5.9.3))
@@ -6237,7 +6228,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.5.1(typescript@5.9.3)(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       vue-component-type-helpers: 3.1.1
     optionalDependencies:
-      '@inertiajs/vue3': 2.2.7(vue@3.5.22(typescript@5.9.3))
+      '@inertiajs/vue3': 2.2.8(vue@3.5.22(typescript@5.9.3))
       zod: 4.1.11
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -7171,7 +7162,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.4
       '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.28.4)
-      core-js-compat: 3.45.1
+      core-js-compat: 3.46.0
     transitivePeerDependencies:
       - supports-color
 
@@ -7380,7 +7371,7 @@ snapshots:
     dependencies:
       is-what: 4.1.16
 
-  core-js-compat@3.45.1:
+  core-js-compat@3.46.0:
     dependencies:
       browserslist: 4.26.3
 
@@ -7699,7 +7690,6 @@ snapshots:
       '@esbuild/openharmony-arm64': 0.25.10
       '@esbuild/sunos-x64': 0.25.10
       '@esbuild/win32-arm64': 0.25.10
-      '@esbuild/win32-ia32': 0.25.10
       '@esbuild/win32-x64': 0.25.10
 
   escalade@3.2.0: {}
@@ -8421,9 +8411,9 @@ snapshots:
       pusher-js: 8.4.0
       socket.io-client: 4.8.1
 
-  laravel-precognition-vue-inertia@0.7.2(@inertiajs/vue3@2.2.7(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
+  laravel-precognition-vue-inertia@0.7.2(@inertiajs/vue3@2.2.8(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
     dependencies:
-      '@inertiajs/vue3': 2.2.7(vue@3.5.22(typescript@5.9.3))
+      '@inertiajs/vue3': 2.2.8(vue@3.5.22(typescript@5.9.3))
       laravel-precognition: 0.7.2
       laravel-precognition-vue: 0.7.2(vue@3.5.22(typescript@5.9.3))
       vue: 3.5.22(typescript@5.9.3)
