@@ -82,7 +82,7 @@ watchDebounced(
           v-model="form.filter"
           value-key="value"
           :items="filters"
-          placeholder="Filter"
+          placeholder="Filter by"
           class="w-32 sm:w-36"
           @update:modelValue="onSubmit"
         />
