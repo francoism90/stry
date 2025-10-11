@@ -34,7 +34,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 <template>
   <UHeader
     :toggle="false"
-    class="sticky inset-x-0 top-0 z-30 flex h-18 min-h-18 border-b border-default bg-default"
+    class="sticky inset-x-0 top-0 z-30 flex h-16 min-h-16 border-b border-default bg-default"
   >
     <template #title>
       <AppLogo />
