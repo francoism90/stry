@@ -38,7 +38,7 @@ const items = ref<NavigationMenuItem[]>([
         :ui="{
           list: 'flex items-center gap-4',
           link: 'px-0',
-          linkLabel: 'hidden sm:inline',
+          linkLabel: 'hidden text-xs sm:inline-flex',
         }"
       />
     </template>
