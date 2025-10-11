@@ -32,7 +32,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'type'],
+    only: ['items', 'filter', 'search'],
     reset: ['items'],
   })
 }
@@ -82,8 +82,8 @@ watchDebounced(
           v-model="form.filter"
           value-key="value"
           :items="filters"
-          placeholder="Filter by type"
-          class="w-36 text-muted"
+          placeholder="Filter"
+          class="w-32 sm:w-36"
           @update:modelValue="onSubmit"
         />
       </UForm>
