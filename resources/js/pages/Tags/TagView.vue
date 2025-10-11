@@ -9,8 +9,8 @@ import type { RadioGroupItem } from '@nuxt/ui'
 
 interface Props {
   tag: Tag
-  type: string | undefined
-  types: RadioGroupItem[]
+  filter: string | undefined
+  filters: RadioGroupItem[]
 }
 
 defineOptions({ layout: [DefaultLayout, VideoCollection] })
@@ -26,7 +26,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
   <PageFilters
     :title="tag.name"
     headline="Tags"
-    :types="types"
-    :type="type"
+    :filters
+    :filter
   />
 </template>
