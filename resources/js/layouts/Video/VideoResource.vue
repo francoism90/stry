@@ -24,8 +24,8 @@ const actions = ref<NavigationMenuItem[]>([{ label: 'View', icon: 'i-lucide-file
 
 const tabs = ref<NavigationMenuItem[]>([
   { label: 'General', to: edit.url(props.video.id) },
-  { label: 'Playlists', to: playlists.url({ video: props.video.id }) },
   { label: 'Media', to: media.url({ video: props.video.id }) },
+  { label: 'Playlists', to: playlists.url({ video: props.video.id }) },
 ])
 
 const details = computed<NavigationMenuItem[]>(() => [
