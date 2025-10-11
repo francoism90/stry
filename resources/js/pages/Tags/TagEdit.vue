@@ -35,7 +35,7 @@ const onSubmit = async () => {
   <UForm
     :state="form"
     @submit="onSubmit"
-    class="flex flex-col gap-4 pt-6"
+    class="flex flex-col gap-4"
   >
     <FlashAlert />
 
@@ -47,7 +47,7 @@ const onSubmit = async () => {
     >
       <UInput
         v-model="form.name"
-        :model-modifiers="{ nullable: true, string: true, trim: true }"
+        :model-modifiers="{ string: true, trim: true }"
         autofocus
         autocapitalize="words"
         class="w-full"
@@ -114,8 +114,9 @@ const onSubmit = async () => {
     >
       <UTextarea
         v-model="form.description"
-        class="w-full"
+        :model-modifiers="{ nullable: true, string: true, trim: true }"
         :ui="{
+          root: 'w-full',
           base: 'h-32',
         }"
       />

@@ -213,8 +213,8 @@ const onSubmit = async () => {
       <UTextarea
         v-model="form.summary"
         :model-modifiers="{ nullable: true, string: true, trim: true }"
-        class="w-full"
         :ui="{
+          root: 'w-full',
           base: 'h-32',
         }"
       />
