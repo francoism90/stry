@@ -13,7 +13,7 @@ readonly class VideoTypeCollection implements ProvidesInertiaProperty
     public function toInertiaProperty(PropertyContext $context): mixed
     {
         return [
-            ['value' => null, 'label' => __('All')],
+            ['value' => null, 'label' => __('Default')],
             ...VideoType::options(),
         ];
     }
