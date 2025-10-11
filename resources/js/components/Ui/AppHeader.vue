@@ -1,32 +1,23 @@
 <script lang="ts" setup>
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import { ref } from 'vue'
 
-const items = computed<NavigationMenuItem[]>(() => [
+const items = ref<NavigationMenuItem[]>([
   {
     label: 'Videos',
     icon: 'i-lucide-gallery-vertical-end',
     to: '/videos',
-    ui: {
-      linkLabel: 'sr-only',
-    },
   },
   {
-    label: 'Lists',
+    label: 'Tags',
     icon: 'i-lucide-library',
     to: '/tags',
-    ui: {
-      linkLabel: 'sr-only',
-    },
   },
   {
     label: 'Profile',
     icon: 'i-lucide-user',
     to: '/profile',
-    ui: {
-      linkLabel: 'sr-only',
-    },
   },
 ])
 </script>
@@ -45,9 +36,9 @@ const items = computed<NavigationMenuItem[]>(() => [
         variant="link"
         :items="items"
         :ui="{
-          list: 'inline-flex items-center gap-4',
+          list: 'flex items-center gap-4',
           link: 'px-0',
-          linkTrailingIcon: 'hidden',
+          linkLabel: 'hidden sm:inline',
         }"
       />
     </template>
