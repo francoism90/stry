@@ -83,7 +83,7 @@ watchDebounced(
           value-key="value"
           :items="filters"
           placeholder="Filter by type"
-          class="w-32"
+          class="w-36 text-muted"
           @update:modelValue="onSubmit"
         />
       </UForm>
