@@ -38,8 +38,10 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
         :src="item.thumbnail"
         :alt="item.title"
         class="h-56 max-h-56 w-full object-fill"
-        loading="lazy"
-        sizes="(max-width: 720px) 400px, 50vw"
+        sizes="(min-width: 1366px) 916px, (min-width: 1536px) 1030px, 100vw"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
       />
 
       <div class="absolute inset-x-4 bottom-4 z-10 block group-hover:hidden">

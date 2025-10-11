@@ -6,16 +6,19 @@ import { ref } from 'vue'
 const items = ref<NavigationMenuItem[]>([
   {
     label: 'Videos',
+    title: 'Videos',
     icon: 'i-lucide-gallery-vertical-end',
     to: '/videos',
   },
   {
     label: 'Tags',
+    title: 'Tags',
     icon: 'i-lucide-library',
     to: '/tags',
   },
   {
     label: 'Profile',
+    title: 'Profile',
     icon: 'i-lucide-user',
     to: '/profile',
   },

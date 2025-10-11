@@ -65,6 +65,7 @@ watchDebounced(
         <UButton
           v-if="form.filter || form.search"
           variant="outline"
+          title="Reset filters"
           icon="i-lucide-delete"
           size="sm"
           class="px-2"
