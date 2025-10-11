@@ -40,7 +40,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
         class="h-56 max-h-56 w-full object-fill"
         sizes="(min-width: 1366px) 916px, (min-width: 1536px) 1030px, 100vw"
         fetchpriority="high"
-        loading="eager"
+        loading="lazy"
         decoding="async"
       />
 
