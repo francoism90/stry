@@ -24,10 +24,9 @@ class CreateVideoThumbnail
             // Create a sample video from the segments
             $conversion = app(CreateMediaFrame::class)->handle($media, floatval($video->snapshot ?? 0));
 
-            // Add the sample video to the video model
+            // Add the generated frame as a thumbnail
             $video
-                ->addMediaFromDisk($conversion->path('frame.jpg'), 'transcodes')
-                ->preservingOriginal()
+                ->addMediaFromDisk($conversion->path('frame.webp'), 'transcodes')
                 ->toMediaCollection('thumbnail')
                 ->saveOrFail();
 

@@ -27,7 +27,7 @@ class CreateMediaFrame
             ->getFrameFromSeconds(round($frame, 2))
             ->export()
             ->toDisk('transcodes')
-            ->save($temporaryDirectory->path('frame.jpg'));
+            ->save($temporaryDirectory->path('frame.webp'));
 
         return $temporaryDirectory;
     }

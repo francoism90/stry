@@ -45,10 +45,9 @@ class CreateVideoCaptions
                         ->addFilter(['-map', "0:{$index}"])
                         ->save($path);
 
-                    // Add the caption file to the video model
+                    // Add the caption file to the video
                     $video
                         ->addMediaFromDisk($path, 'transcodes')
-                        ->preservingOriginal()
                         ->toMediaCollection('captions')
                         ->saveOrFail();
                 });

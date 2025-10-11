@@ -24,10 +24,9 @@ class CreateVideoPreview
             // Generate media segments
             $conversion = app(CreateMediaSegments::class)->handle($media);
 
-            // Add the sample video to the video model
+            // Add the preview video to the video
             $video
                 ->addMediaFromDisk($conversion->path('sample.mp4'), 'transcodes')
-                ->preservingOriginal()
                 ->toMediaCollection('previews')
                 ->saveOrFail();
 
