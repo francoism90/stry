@@ -44,11 +44,11 @@ class CreateHlsPlaylist
                 /** @var DefaultVideo $format */
                 $format = $preset->get('format', $video->get('format', X264::class));
 
-                $videoBitrate = $preset->get('kilo_bitrate', $format->getKiloBitrate());
-                $audioBitrate = $preset->get('audio_bitrate', $format->getAudioKiloBitrate());
-
                 $videoCodec = $video->get('copy_video', false) ? 'copy' : $preset->get('video_codec', $format->getVideoCodec());
                 $audioCodec = $video->get('copy_audio', false) ? 'copy' : $preset->get('audio_codec', $format->getAudioCodec());
+
+                $videoBitrate = $preset->get('kilo_bitrate', $format->getKiloBitrate());
+                $audioBitrate = $preset->get('audio_bitrate', $format->getAudioKiloBitrate());
 
                 // If both audio and video codecs are set to copy, use the CopyVideoFormat
                 if ($videoCodec === 'copy' && $audioCodec === 'copy') {
@@ -62,8 +62,8 @@ class CreateHlsPlaylist
                 $ffmpeg->addFormat($format
                     ->setVideoCodec($videoCodec)
                     ->setAudioCodec($audioCodec)
-                    ->setKiloBitrate($videoBitrate)
-                    ->setAudioKiloBitrate($audioBitrate)
+                    ->setKiloBitrate($videoCodec === 'copy' ? 0 : $videoBitrate)
+                    ->setAudioKiloBitrate($audioCodec === 'copy' ? 128 : $audioBitrate)
                     ->setAdditionalParameters(Playlist::getAdditionalParameters())
                 );
             });
