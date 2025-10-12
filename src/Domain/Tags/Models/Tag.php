@@ -95,9 +95,12 @@ class Tag extends BaseTag implements HasMedia
             ->withResponsiveImages()
             ->acceptsMimeTypes([
                 'image/avif',
-                'image/jpg',
+                'image/gif',
                 'image/jpeg',
+                'image/jpg',
                 'image/png',
+                'image/svg+xml',
+                'image/tiff',
                 'image/webp',
             ]);
     }

@@ -135,12 +135,21 @@ class Video extends Model implements HasMedia
             ->storeConversionsOnDisk('conversions')
             ->acceptsMimeTypes([
                 'video/av1',
+                'video/avi',
+                'video/mkv',
                 'video/mp4',
                 'video/mp4v-es',
+                'video/mpeg',
                 'video/ogg',
                 'video/quicktime',
                 'video/webm',
+                'video/x-flv',
                 'video/x-m4v',
+                'video/x-matroska',
+                'video/x-mpeg',
+                'video/x-ms-asf',
+                'video/x-ms-wmv',
+                'video/x-msvideo',
             ]);
 
         $this
@@ -148,7 +157,13 @@ class Video extends Model implements HasMedia
             ->useDisk('conversions')
             ->storeConversionsOnDisk('conversions')
             ->acceptsMimeTypes([
+                'application/octet-stream',
+                'application/x-subrip',
+                'application/x-subtitle',
+                'application/x-subviewer',
+                'application/x-webvtt',
                 'text/plain',
+                'text/srt',
                 'text/vtt',
             ]);
 
@@ -159,12 +174,21 @@ class Video extends Model implements HasMedia
             ->singleFile()
             ->acceptsMimeTypes([
                 'video/av1',
+                'video/avi',
+                'video/mkv',
                 'video/mp4',
                 'video/mp4v-es',
+                'video/mpeg',
                 'video/ogg',
                 'video/quicktime',
                 'video/webm',
+                'video/x-flv',
                 'video/x-m4v',
+                'video/x-matroska',
+                'video/x-mpeg',
+                'video/x-ms-asf',
+                'video/x-ms-wmv',
+                'video/x-msvideo',
             ]);
 
         $this
@@ -175,9 +199,12 @@ class Video extends Model implements HasMedia
             ->withResponsiveImages()
             ->acceptsMimeTypes([
                 'image/avif',
-                'image/jpg',
+                'image/gif',
                 'image/jpeg',
+                'image/jpg',
                 'image/png',
+                'image/svg+xml',
+                'image/tiff',
                 'image/webp',
             ]);
     }
