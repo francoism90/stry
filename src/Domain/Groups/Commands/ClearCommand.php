@@ -43,7 +43,7 @@ class ClearCommand extends Command implements Isolatable
         $group = $user->findOrCreateGroup($type);
 
         spin(
-            message: 'Detaching video...',
+            message: 'Detaching videos of group...',
             callback: fn () => $group->videos()->detach()
         );
     }
