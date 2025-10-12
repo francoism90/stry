@@ -59,7 +59,7 @@ class ImportCommand extends Command implements Isolatable
             placeholder: 'e.g. administrator@example.com',
             options: fn (string $value) => strlen($value) > 0
                 ? User::whereLike('email', "%{$value}%")->pluck('email', 'id')->all()
-                : []
+                : User::limit(10)->pluck('email', 'id')->all(),
         );
 
         $user = User::findOrFail($user);

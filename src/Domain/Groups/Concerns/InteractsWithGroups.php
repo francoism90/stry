@@ -73,6 +73,14 @@ trait InteractsWithGroups
             ->filter();
     }
 
+    public function getGroup(?GroupType $type = null): ?Group
+    {
+        return $this
+            ->groups()
+            ->when($type, fn ($query) => $query->where('type', $type))
+            ->first();
+    }
+
     public function hasGroup(?GroupType $type = null): bool
     {
         return $this
@@ -81,7 +89,7 @@ trait InteractsWithGroups
             ->exists();
     }
 
-    public function scopeWithGroup(Builder $query, ?GroupType $type = null): Builder
+    public function scopeWhereGroup(Builder $query, ?GroupType $type = null): Builder
     {
         return $query->whereHas('groups', fn ($query) => $query
             ->when($type, fn ($query) => $query->where('type', $type))
