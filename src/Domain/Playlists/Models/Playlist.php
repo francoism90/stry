@@ -25,6 +25,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Fluent;
 use League\Flysystem\WhitespacePathNormalizer;
 use Spatie\ModelStates\HasStates;
 
@@ -229,8 +230,8 @@ class Playlist extends Model
     public static function getHlsFormats(): Collection
     {
         return Config::collection('playlist.hls_formats', [])
-            ->map(fn (array $format) => fluent($format))
-            ->sortBy('bit_rate');
+            ->map(fn (array $format) => Fluent::make($format))
+            ->sortBy('kilo_bitrate');
     }
 
     public static function getSegmentLength(): int

@@ -43,10 +43,10 @@ return [
     /**
      * This setting is used to configure the HLS formats that will be used for the playlist.
      * You can define multiple formats with different bit rates.
-     * A bitrate of 0 means that the format will try to use the copy-format (preventing transcoding).
+     * At least one format must be defined.
      */
     'hls_formats' => [
-        ['name' => 'copy', 'kilo_bitrate' => 0],
+        ['name' => 'default', 'kilo_bitrate' => 6000],
         // ['name' => 'low', 'kilo_bitrate' => 500],
         // ['name' => 'mid', 'kilo_bitrate' => 3000],
         // ['name' => 'high', 'kilo_bitrate' => 6000],
@@ -73,6 +73,7 @@ return [
      * This setting is used to configure the video formats that will be used for transcoding.
      * The order of the formats will determine the priority of transcoding.
      * The first format in the list will be used as the fallback format for transcoding.
+     * At least one format must be defined.
      */
     'video_formats' => [
         \Support\FFMpeg\Format\Video\X264::class,
@@ -93,17 +94,21 @@ return [
     /**
      * When this setting is true, the playlist will copy the video codec from the original video file.
      * This is useful for cases where the original video file is already in a compatible video codec.
+     * It can also improve performance by avoiding the need to transcode the video.
      */
     'copy_video_codec' => (bool) env('PLAYLIST_COPY_VIDEO_CODEC', true),
 
     /**
      * When this setting is true, the playlist will copy the audio codec from the original audio file.
      * This is useful for cases where the original video file is already in a compatible audio codec.
+     * It can also improve performance by avoiding the need to transcode the audio.
      */
     'copy_audio_codec' => (bool) env('PLAYLIST_COPY_AUDIO_CODEC', true),
 
     /**
      * This setting is used to enable or disable the rotation keys (encryption) for playlists.
+     * When enabled, the playlist segments will be encrypted using AES-128 encryption.
+     * This can help to protect the content from unauthorized access.
      */
     'rotation_keys' => (bool) env('PLAYLIST_ROTATION_KEYS', true),
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\CopyVideoFormat;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Support\FFMpeg\Format\Video\X264;
 
 class CreateHlsPlaylist
 {
@@ -41,14 +42,15 @@ class CreateHlsPlaylist
             // Add formats to the ffmpeg exporter
             Playlist::getHlsFormats()->each(function (Fluent $preset) use (&$ffmpeg, $video) {
                 /** @var DefaultVideo $format */
-                $format = $preset->get('format', $video->get('format'));
+                $format = $preset->get('format', $video->get('format', X264::class));
 
-                $kiloBitrate = $preset->get('kilo_bitrate', $format->getKiloBitrate());
+                $videoBitrate = $preset->get('kilo_bitrate', $format->getKiloBitrate());
+                $audioBitrate = $preset->get('audio_bitrate', $format->getAudioKiloBitrate());
 
-                $videoCodec = $video->get('copy_video') && $kiloBitrate === 0 ? 'copy' : $preset->get('video_codec', $format->getVideoCodec());
-                $audioCodec = $video->get('copy_audio') ? 'copy' : $preset->get('audio_codec', $format->getAudioCodec());
+                $videoCodec = $video->get('copy_video', false) ? 'copy' : $preset->get('video_codec', $format->getVideoCodec());
+                $audioCodec = $video->get('copy_audio', false) ? 'copy' : $preset->get('audio_codec', $format->getAudioCodec());
 
-                // If bitrate is 0, we assume we want to copy the video and audio codecs
+                // If both audio and video codecs are set to copy, use the CopyVideoFormat
                 if ($videoCodec === 'copy' && $audioCodec === 'copy') {
                     $ffmpeg->addFormat((new CopyVideoFormat)->setAdditionalParameters(
                         Playlist::getAdditionalParameters()
@@ -60,7 +62,8 @@ class CreateHlsPlaylist
                 $ffmpeg->addFormat($format
                     ->setVideoCodec($videoCodec)
                     ->setAudioCodec($audioCodec)
-                    ->setKiloBitrate($kiloBitrate)
+                    ->setKiloBitrate($videoBitrate)
+                    ->setAudioKiloBitrate($audioBitrate)
                     ->setAdditionalParameters(Playlist::getAdditionalParameters())
                 );
             });
