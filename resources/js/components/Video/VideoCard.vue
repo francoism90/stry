@@ -39,9 +39,9 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
         :alt="item.title"
         class="h-56 max-h-56 w-full object-fill"
         sizes="(min-width: 1366px) 916px, (min-width: 1536px) 1030px, 100vw"
-        fetchpriority="high"
         loading="lazy"
         decoding="async"
+        fetchpriority="high"
       />
 
       <div class="absolute inset-x-4 bottom-4 z-10 block group-hover:hidden">
@@ -58,7 +58,7 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
 
             <template v-if="item.captions">
               <dt class="sr-only">Captions</dt>
-              <dd class="truncate">CC</dd>
+              <dd>CC</dd>
             </template>
           </dl>
         </div>
