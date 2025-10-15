@@ -9,6 +9,6 @@ const { title, color } = useFlash()
     v-if="title"
     :title="title as string"
     :color="color"
-    class="sr-only"
+    :ui="{ root: 'sr-only' }"
   />
 </template>
