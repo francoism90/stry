@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import VideoDeleteModal from '@/components/Video/VideoDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
@@ -37,8 +36,6 @@ const onSubmit = async () => {
     @submit="onSubmit"
     class="flex flex-col gap-4"
   >
-    <FlashAlert />
-
     <UFormField
       label="Name"
       name="name"

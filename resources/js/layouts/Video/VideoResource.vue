@@ -31,6 +31,7 @@ const tabs = ref<NavigationMenuItem[]>([
 const details = computed<NavigationMenuItem[]>(() => [
   { label: 'Updated', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
   { label: 'Duration', value: props.video.timestamp ?? 'N/A' },
+  { label: 'Uploader', value: props.video.user?.name ?? 'N/A' },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload())

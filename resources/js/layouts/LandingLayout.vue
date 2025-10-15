@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
@@ -15,6 +16,7 @@ import { Head } from '@inertiajs/vue3'
 
   <UApp>
     <ServiceWorker />
+    <FlashAlert />
 
     <slot />
   </UApp>

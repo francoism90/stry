@@ -1,5 +1,6 @@
 import type { User } from '@/types'
 import type { Page } from '@inertiajs/core'
+import type { ToastProps } from '@nuxt/ui'
 
 declare module '@inertiajs/core' {
   interface PageProps {
@@ -10,9 +11,9 @@ declare module '@inertiajs/core' {
     readonly path: string
     readonly query: string
     readonly flash: {
-      message: string
-      class: string
-      level: 'success' | 'info' | 'warning' | 'error' | 'neutral' | 'primary' | 'secondary'
+      message: ToastProps['title']
+      class: ToastProps['color']
+      level: 'info' | 'success' | 'warning' | 'error' | 'neutral'
     }
     readonly auth: {
       user: User | undefined

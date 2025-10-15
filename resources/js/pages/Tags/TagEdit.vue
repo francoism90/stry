@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
 import TagDeleteModal from '@/components/Tag/TagDeleteModal.vue'
-import FlashAlert from '@/components/Ui/FlashAlert.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -37,8 +36,6 @@ const onSubmit = async () => {
     @submit="onSubmit"
     class="flex flex-col gap-4"
   >
-    <FlashAlert />
-
     <UFormField
       label="Name"
       name="name"
