@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useFlash } from '@/composables/flash'
 
-const { title } = useFlash()
+const { title, color } = useFlash()
 </script>
 
 <template>
-  <div
+  <UAlert
     v-if="title"
+    :title="title as string"
+    :color="color"
     class="sr-only"
-  >
-    {{ title }}
-  </div>
+  />
 </template>

@@ -8,7 +8,7 @@ export function useFlash() {
   const level = computed(() => usePage().props.flash?.level)
   const color = computed(() => usePage().props.flash?.class)
 
-  const show = () => {
+  const dispatch = () => {
     if (!title.value) {
       return
     }
@@ -19,12 +19,11 @@ export function useFlash() {
     })
   }
 
-  watch(title, () => show())
+  watch(title, () => dispatch())
 
   return {
     title,
     level,
     color,
-    show,
   }
 }
