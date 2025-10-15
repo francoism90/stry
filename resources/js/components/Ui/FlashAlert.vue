@@ -5,10 +5,13 @@ const { title, color } = useFlash()
 </script>
 
 <template>
-  <UAlert
+  <div
     v-if="title"
-    :title="title as string"
-    :color="color"
-    :ui="{ root: 'sr-only' }"
-  />
+    class="sr-only"
+  >
+    <UAlert
+      :title="title as string"
+      :color="color"
+    />
+  </div>
 </template>
