@@ -9,7 +9,7 @@ declare module '@inertiajs/core' {
     readonly location: string
     readonly root: string
     readonly path: string
-    readonly query: string
+    readonly query: string | null
     readonly flash: {
       message: string | undefined
       class: ToastProps['color'] | undefined
