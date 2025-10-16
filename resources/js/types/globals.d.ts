@@ -11,9 +11,9 @@ declare module '@inertiajs/core' {
     readonly path: string
     readonly query: string
     readonly flash: {
-      message: ToastProps['title']
-      class: ToastProps['color']
-      level: 'info' | 'success' | 'warning' | 'error' | 'neutral'
+      message: string | undefined
+      class: ToastProps['color'] | undefined
+      level: 'info' | 'success' | 'warning' | 'error' | 'neutral' | undefined
     }
     readonly auth: {
       user: User | undefined

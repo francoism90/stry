@@ -10,7 +10,7 @@ const { title, color } = useFlash()
     class="sr-only"
   >
     <UAlert
-      :title="title as string"
+      :title="title"
       :color="color"
     />
   </div>
