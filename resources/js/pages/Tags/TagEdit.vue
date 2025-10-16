@@ -17,15 +17,21 @@ defineOptions({ layout: [DefaultLayout, TagResource] })
 
 const props = defineProps<Props>()
 
-const { title } = useAppearance()
 const { data, query } = useTagInput(props.tag.related || [])
+const { title } = useAppearance()
+const toast = useToast()
 
 const form = useForm('put', update.url({ tag: props.tag.id }), props.tag)
 
 const onSubmit = async () => {
-  form.submit({
+  await form.submit({
     preserveState: true,
     replace: true,
+  })
+
+  toast.add({
+    title: 'Tag updated!',
+    description: 'Your changes have been saved successfully.',
   })
 }
 </script>

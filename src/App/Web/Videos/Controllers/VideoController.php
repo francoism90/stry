@@ -99,8 +99,6 @@ class VideoController extends Controller implements HasMiddleware
 
         app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
-        flash()->success('Video updated successfully!');
-
         return back();
     }
 

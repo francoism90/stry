@@ -1,4 +1,4 @@
-import type { SelectMenuItem } from '@nuxt/ui'
+import type { AvatarProps, SelectMenuItem } from '@nuxt/ui'
 import type { PlayerSrc } from 'vidstack'
 
 export type Model = {
@@ -10,8 +10,8 @@ export type Model = {
 export type User = Model & {
   name: string
   email: string
-  email_verified_at: string | null
-  avatar?: string | null
+  email_verified_at?: string | null
+  avatar?: AvatarProps['src'] | null
   roles?: string[]
   permissions?: string[]
 }
@@ -21,7 +21,7 @@ export type Media = Model & {
   file_name: string
   file_size: string
   mime_type: string
-  asset: string
+  asset: string | undefined
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
@@ -33,8 +33,8 @@ export type Tag = Model & {
   description: string | null
   category: string
   type: string
-  thumbnail: string
-  srcset: string
+  thumbnail: AvatarProps['src'] | undefined
+  srcset: string | undefined
   videos?: number
   related?: Tag[] | null
 }
@@ -56,8 +56,8 @@ export type Video = Model & {
   episode: string | null
   part: string | null
   captions: boolean | null
-  thumbnail: string
-  srcset: string
+  thumbnail: AvatarProps['src'] | undefined
+  srcset: string | undefined
   preview: string | null
   duration: number | null
   timestamp: string | null
@@ -79,8 +79,8 @@ export type Playlist = Model & {
   percent: number | null
   type: string
   state: string
-  accessed_at: string | null
-  expires_at: string | null
+  accessed_at?: string | null
+  expires_at?: string | null
   transcoded_at: string | null
 }
 

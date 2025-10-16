@@ -19,13 +19,19 @@ const props = defineProps<Props>()
 
 const { data, query } = useTagInput(props.video.tags || [])
 const { title } = useAppearance()
+const toast = useToast()
 
 const form = useForm('put', update.url({ video: props.video.id }), props.video)
 
 const onSubmit = async () => {
-  form.submit({
+  await form.submit({
     preserveState: true,
     replace: true,
+  })
+
+  toast.add({
+    title: 'Video updated!',
+    description: 'Your changes have been saved successfully.',
   })
 }
 </script>

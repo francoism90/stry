@@ -29,13 +29,8 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'app' => fn () => config('app.name', 'Laravel'),
-            'locale' => fn () => app()->currentLocale(),
-            'location' => fn () => $request->url(),
-            'root' => fn () => $request->root(),
-            'path' => fn () => $request->getPathInfo(),
-            'query' => fn () => $request->query(),
-            'flash' => fn () => $request->session()->get('laravel_flash_message'),
-            'auth.user' => fn () => new AuthenticatedUser,
+            'locale' => fn () => $request->getLocale(),
+            'auth' => fn () => new AuthenticatedUser,
         ]);
     }
 

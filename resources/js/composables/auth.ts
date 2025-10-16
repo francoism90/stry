@@ -2,7 +2,7 @@ import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useAuth() {
-  const user = computed(() => usePage().props.auth.user)
+  const user = computed(() => usePage().props.auth)
 
   const hasRole = (key: string) => user.value?.roles?.includes(key) ?? false
   const hasPermission = (key: string) => user.value?.permissions?.includes(key) ?? false

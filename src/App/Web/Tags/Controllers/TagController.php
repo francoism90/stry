@@ -91,8 +91,6 @@ class TagController extends Controller implements HasMiddleware
 
         app(UpdateTagDetails::class)->handle($tag, $request->safe()->all());
 
-        flash()->success('Tag updated successfully!');
-
         return back();
     }
 

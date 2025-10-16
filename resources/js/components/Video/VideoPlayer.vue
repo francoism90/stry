@@ -55,7 +55,7 @@ onBeforeUnmount(() => listener())
             v-for="caption in captions"
             :key="caption.id"
             :src="caption.asset"
-            :label="caption.name || 'undefined'"
+            :label="caption.name"
             kind="captions"
           />
         </template>
