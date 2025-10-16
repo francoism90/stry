@@ -247,13 +247,14 @@ class Video extends Model implements HasMedia
         return true;
     }
 
-    public function isValid(): bool
+    public function isExpired(): bool
     {
-        if (! $this->state->equals(Verified::class)) {
-            return false;
-        }
+        return filled($this->expires_at) && $this->expires_at->isPast();
+    }
 
-        return filled($this->expires_at) ? $this->expires_at->isFuture() : true;
+    public function isProcessed(): bool
+    {
+        return $this->state->equals(Verified::class);
     }
 
     public function toSearchableArray(): array

@@ -25,7 +25,7 @@ class VideoPolicy
 
     public function view(User $user, Video $video): bool
     {
-        return $video->isValid();
+        return $video->isProcessed();
     }
 
     public function create(User $user): bool
