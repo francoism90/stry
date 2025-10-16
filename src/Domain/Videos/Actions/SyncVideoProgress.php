@@ -15,16 +15,16 @@ class SyncVideoProgress
     public function handle(Video $video, User $user, ?array $attributes = null): Video
     {
         return DB::transaction(function () use ($video, $user, $attributes) {
-            // Generate a unique cache key
+            // This will be used to throttle video progress tracking
             $cacheKey = $this->getCacheKey($video, $user);
 
-            // Video analytics tracking
+            // Dispatch the job to track video progress if not recently dispatched
             TrackVideo::dispatchIf(
                 Cache::missing($cacheKey),
                 $video, $user, $attributes
             );
 
-            // Sync user video progress
+            // Cache the attributes for 24 hours to prevent multiple job dispatches
             Cache::put($cacheKey, $attributes, now()->addDay());
 
             return $video;
