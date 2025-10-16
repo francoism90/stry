@@ -7,19 +7,17 @@ namespace App\Api\Users\Middlewares;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\URL;
 
 class EnsureUserHasSubscription
 {
     public function handle(Request $request, Closure $next, ?string $redirectToRoute = null): mixed
     {
-        // TODO: check if user has a subscription
-        if ($request->user()) {
+        if ($request->user() && $request->user()->hasValidSubscription()) {
             return $next($request);
         }
 
         return $request->expectsJson()
             ? abort(403, 'Your subscription plan is expired.')
-            : Redirect::guest(URL::route($redirectToRoute ?: 'subscription.notice'));
+            : Redirect::route($redirectToRoute ?: 'subscription.notice');
     }
 }
