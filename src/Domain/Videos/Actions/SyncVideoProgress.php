@@ -17,7 +17,7 @@ class SyncVideoProgress
             // This will be used to throttle video viewed tracking
             $cacheKey = $this->getCacheKey($video, $user);
 
-            // Mark the video as viewed only if it hasn't been recently processed
+            // Mark the video as viewed if not recently tracked
             if (Cache::missing($cacheKey)) {
                 app(MarkVideoAsViewed::class)->handle($video, $user, $attributes);
             }
