@@ -26,10 +26,10 @@ class UpdateVideoDetails
                 $video->syncTags(Tag::fromOption($attributes['tags'] ?? [])->get());
             }
 
-            // Regenerate thumbnails if snapshot changed
+            // Regenerate thumbs if snapshot changed
             if ($video->wasChanged('snapshot')) {
                 Artisan::call('media-library:regenerate', [
-                    '--only' => 'thumbnail',
+                    '--only' => 'thumb',
                     '--ids' => $video->getClipCollection()->modelKeys(),
                 ]);
             }

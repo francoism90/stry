@@ -28,7 +28,7 @@ class VideoResource extends JsonResource
             'episode' => $this->episode,
             'part' => $this->part,
             'captions' => $this->captions,
-            'thumbnail' => $this->thumbnail,
+            'thumb' => $this->thumb,
             'srcset' => $this->srcset,
             'preview' => $this->preview,
             'duration' => $this->duration,

@@ -88,7 +88,7 @@ class Tag extends BaseTag implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('thumbnail')
+            ->addMediaCollection('thumb')
             ->useDisk('conversions')
             ->storeConversionsOnDisk('conversions')
             ->singleFile()
@@ -169,20 +169,6 @@ class Tag extends BaseTag implements HasMedia
     {
         return Attribute::make(
             get: fn () => $this->type?->label(),
-        )->shouldCache();
-    }
-
-    protected function thumbnail(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->videos()->first()?->thumbnail,
-        )->shouldCache();
-    }
-
-    protected function srcset(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->videos()->first()?->srcset,
         )->shouldCache();
     }
 
