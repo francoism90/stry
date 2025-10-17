@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Domain\Playlists\QueryBuilders;
 
 use ArrayAccess;
-use Illuminate\Support\Arr;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 class PlaylistQueryBuilder extends Builder
 {

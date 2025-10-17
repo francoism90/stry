@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Events;
+namespace Domain\Playlists\Events;
 
+use Domain\Playlists\Models\Playlist;
 use Domain\Users\Models\User;
-use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VideoHasBeenViewedEvent
+class PlaylistHasBeenViewedEvent
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
     public function __construct(
-        public Video $video,
+        public Playlist $playlist,
         public ?User $user = null,
-        public int|float|null $progress = null,
+        public ?array $attributes = null,
     ) {}
 }

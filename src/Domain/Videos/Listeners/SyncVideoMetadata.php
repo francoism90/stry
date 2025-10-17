@@ -15,7 +15,7 @@ use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\RateLimitedMiddleware\RateLimited;
 
-class ProcessVideo implements ShouldQueueAfterCommit
+class SyncVideoMetadata implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 

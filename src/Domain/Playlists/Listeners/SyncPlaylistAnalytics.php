@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Listeners;
+namespace Domain\Playlists\Listeners;
 
-use Domain\Videos\Actions\GenerateVideoClipPlaylist;
-use Domain\Videos\Actions\GenerateVideoPreviewPlaylist;
-use Domain\Videos\Events\VideoHasBeenViewedEvent;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
+use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
-class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class SyncPlaylistAnalytics implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
@@ -35,7 +34,7 @@ class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 8;
+    public $timeout = 60 * 60;
 
     /**
      * @var bool
@@ -47,12 +46,11 @@ class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
      */
     public $deleteWhenMissingModels = true;
 
-    public function handle(VideoHasBeenViewedEvent $event): void
+    public function handle(PlaylistHasBeenViewedEvent $event): void
     {
-        Pipeline::send($event->video)
+        Pipeline::send($event->playlist)
             ->through([
-                GenerateVideoClipPlaylist::class,
-                GenerateVideoPreviewPlaylist::class,
+                MarkPlaylistAsAccessed::class,
             ])
             ->thenReturn();
     }
@@ -60,10 +58,11 @@ class ProcessVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @return array<int, object>
      */
-    public function middleware(VideoHasBeenViewedEvent $event): array
+    public function middleware(PlaylistHasBeenViewedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->video->getKey()))->dontRelease(),
+            (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
+            (new WithoutOverlapping($event->playlist->getKey()))->releaseAfter(30),
         ];
     }
 }

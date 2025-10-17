@@ -9,7 +9,7 @@ use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Support\Fluent;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
-class GetVideoFormat
+class GetSuitableVideoFormat
 {
     public function handle(string $disk, string $path): Fluent
     {
