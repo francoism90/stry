@@ -33,11 +33,11 @@ class PlaylistSessionController extends Controller implements HasMiddleware
         abort_if($playlist->isExpired(), 410);
 
         if ($playlist->getModel() instanceof Video) {
-            app(SyncVideoProgress::class)->handle(
+            defer(fn () => app(SyncVideoProgress::class)->handle(
                 video: $playlist->getModel(),
                 user: $request->user(),
                 attributes: $request->safe()->only('time')
-            );
+            ));
         }
 
         return response()->noContent();
