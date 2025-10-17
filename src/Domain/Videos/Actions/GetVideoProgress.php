@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class GetVideoProgress
 {
-    public function handle(Video $video, User $user): float
+    public function handle(Video $video, User $user): int|float
     {
         // Find by cache first
         $cacheKey = $this->getCacheKey($video, $user);

@@ -208,7 +208,7 @@ class Playlist extends Model
 
     public function getPercentage(): float
     {
-        return floor(data_get($this->progress, 'percentage', 0));
+        return round(data_get($this->progress, 'percentage', 0));
     }
 
     public function isExpired(): bool

@@ -70,7 +70,7 @@ class CreateHlsPlaylist
             });
 
             // Monitor progress of the transcoding
-            $ffmpeg->onProgress(fn (?float $percentage = null, ?float $remaining = null, ?float $rate = null) => $playlist->updateQuietly([
+            $ffmpeg->onProgress(fn (int|float $percentage, int|float $remaining, int|float $rate) => $playlist->updateQuietly([
                 'progress' => compact('percentage', 'remaining', 'rate'),
             ]));
 
