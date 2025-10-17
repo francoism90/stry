@@ -15,7 +15,7 @@ class ExtractVideoCaptions
     {
         return DB::transaction(function () use ($video, $next) {
             // If the video already has captions or has no clips, skip processing
-            if ($video->hasMedia('captions') || ! $video->hasCaptions()) {
+            if ($video->hasMedia('captions') || ! $video->hasMedia('clips')) {
                 return $next($video);
             }
 
