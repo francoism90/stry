@@ -60,7 +60,7 @@ class ProcessMedia implements ShouldQueueAfterCommit
     public function middleware(MediaHasBeenAddedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->media->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($event->media->getKey()))->releaseAfter(30),
         ];
     }
 }

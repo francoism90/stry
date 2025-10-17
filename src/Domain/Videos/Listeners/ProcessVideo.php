@@ -67,7 +67,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     {
         return [
             (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
-            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(30),
         ];
     }
 }
