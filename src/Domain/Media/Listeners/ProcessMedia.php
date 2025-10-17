@@ -7,6 +7,7 @@ namespace Domain\Media\Listeners;
 use Domain\Media\Actions\SetMediaStreams;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
@@ -32,12 +33,17 @@ class ProcessMedia implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 20;
+    public $timeout = 60 * 60;
 
     /**
      * @var bool
      */
     public $failOnTimeout = true;
+
+    /**
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {
@@ -46,5 +52,15 @@ class ProcessMedia implements ShouldQueueAfterCommit
                 SetMediaStreams::class,
             ])
             ->thenReturn();
+    }
+
+    /**
+     * @return array<int, object>
+     */
+    public function middleware(MediaHasBeenAddedEvent $event): array
+    {
+        return [
+            (new WithoutOverlapping($event->media->getKey()))->releaseAfter(10),
+        ];
     }
 }

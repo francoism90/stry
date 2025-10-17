@@ -11,9 +11,9 @@ use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\RateLimitedMiddleware\RateLimited;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 class ProcessVideo implements ShouldQueueAfterCommit
 {

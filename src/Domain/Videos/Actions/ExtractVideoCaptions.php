@@ -26,11 +26,10 @@ class ExtractVideoCaptions
             $conversion = app(ExtractMediaCaptions::class)->handle($media);
 
             // Add the caption media to the video
-            $conversion->each(fn (string $path) =>
-                $video
-                    ->addMediaFromDisk($path, 'transcodes')
-                    ->toMediaCollection('captions')
-                    ->saveOrFail()
+            $conversion->each(fn (string $path) => $video
+                ->addMediaFromDisk($path, 'transcodes')
+                ->toMediaCollection('captions')
+                ->saveOrFail()
             );
 
             return $next($video);

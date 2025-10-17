@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
+use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use FFMpeg\FFProbe\DataMapping\Stream;
 use Support\FFMpeg\Format\Video\WebVTT;
 
 class ExtractMediaCaptions
