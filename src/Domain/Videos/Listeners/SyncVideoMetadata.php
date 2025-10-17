@@ -53,8 +53,8 @@ class SyncVideoMetadata implements ShouldQueueAfterCommit
     {
         Pipeline::send($event->video)
             ->through([
-                ExtractVideoCaptions::class,
                 CreateVideoPreview::class,
+                ExtractVideoCaptions::class,
                 MarkVideoAsVerified::class,
             ])
             ->thenReturn();
