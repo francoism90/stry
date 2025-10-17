@@ -14,6 +14,7 @@ class CreateVideoPreview
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
+            // If the video already has a preview or has no clips, skip processing
             if ($video->hasMedia('previews') || ! $video->hasMedia('clips')) {
                 return $next($video);
             }
@@ -21,17 +22,14 @@ class CreateVideoPreview
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            // Generate media segments
+            // Create media segments for the preview
             $conversion = app(CreateMediaSegments::class)->handle($media);
 
-            // Add the preview video to the video
+            // Add the preview media to the video
             $video
-                ->addMediaFromDisk($conversion->path('sample.mp4'), 'transcodes')
+                ->addMediaFromDisk($conversion, 'transcodes')
                 ->toMediaCollection('previews')
                 ->saveOrFail();
-
-            // Clean up temporary files
-            $conversion->delete();
 
             return $next($video);
         });

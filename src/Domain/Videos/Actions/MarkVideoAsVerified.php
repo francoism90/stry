@@ -14,13 +14,15 @@ class MarkVideoAsVerified
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
-            // Transition the video state to verified if possible
+            // Transition the video state if possible
             if ($video->state->canTransitionTo(Verified::class)) {
                 $video->state->transitionTo(Verified::class);
             }
 
-            // Update the published_at timestamp to the current time
-            $video->touch('published_at');
+            // Set the published_at timestamp if not already set
+            if (blank($video->published_at)) {
+                $video->touch('published_at');
+            }
 
             return $next($video);
         });

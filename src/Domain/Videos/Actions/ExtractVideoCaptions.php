@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Closure;
+use Domain\Media\Actions\ExtractMediaCaptions;
 use Domain\Videos\Models\Video;
-use FFMpeg\FFProbe\DataMapping\Stream;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Support\FFMpeg\Format\Video\WebVTT;
 
 class ExtractVideoCaptions
 {
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
+            // If the video already has captions or has no clips, skip processing
             if ($video->hasMedia('captions') || ! $video->hasCaptions()) {
                 return $next($video);
             }
@@ -24,30 +22,16 @@ class ExtractVideoCaptions
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
-            // Initialize FFMpeg
-            $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
+            // Extract captions from the media
+            $conversion = app(ExtractMediaCaptions::class)->handle($media);
 
-            Collection::make($ffmpeg->getStreams())
-                ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')
-                ->each(function (Stream $stream) use ($ffmpeg, $media, $video) {
-                    $index = $stream->get('index', 0);
-                    $language = data_get($stream->get('tags', []), 'language', 'und');
-                    $path = "{$media->uuid}_{$index}_{$language}.vtt";
-
-                    // Export the caption stream to a WebVTT file
-                    $ffmpeg
-                        ->export()
-                        ->toDisk('transcodes')
-                        ->inFormat(new WebVTT)
-                        ->addFilter(['-map', "0:{$index}"])
-                        ->save($path);
-
-                    // Add the caption file to the video
-                    $video
-                        ->addMediaFromDisk($path, 'transcodes')
-                        ->toMediaCollection('captions')
-                        ->saveOrFail();
-                });
+            // Add the caption media to the video
+            $conversion->each(fn (string $path) =>
+                $video
+                    ->addMediaFromDisk($path, 'transcodes')
+                    ->toMediaCollection('captions')
+                    ->saveOrFail()
+            );
 
             return $next($video);
         });
