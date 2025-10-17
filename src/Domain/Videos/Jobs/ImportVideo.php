@@ -61,6 +61,9 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         app(CreateNewVideoByImport::class)->handle($this->user, $this->disk, $this->path);
     }
 
+    /**
+     * @return array<int, object>
+     */
     public function middleware(): array
     {
         return [

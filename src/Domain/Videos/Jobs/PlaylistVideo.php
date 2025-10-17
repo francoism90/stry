@@ -66,6 +66,9 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
             ->thenReturn();
     }
 
+    /**
+     * @return array<int, object>
+     */
     public function middleware(): array
     {
         return [
