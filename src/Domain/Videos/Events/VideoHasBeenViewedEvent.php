@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Events;
 
+use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -17,5 +18,7 @@ class VideoHasBeenViewedEvent
 
     public function __construct(
         public Video $video,
+        public ?User $user = null,
+        public ?array $attributes = null,
     ) {}
 }

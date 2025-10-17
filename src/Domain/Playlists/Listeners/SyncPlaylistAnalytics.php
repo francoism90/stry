@@ -6,13 +6,13 @@ namespace Domain\Playlists\Listeners;
 
 use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
-use Spatie\RateLimitedMiddleware\RateLimited;
 
-class SyncPlaylistAnalytics implements ShouldQueueAfterCommit
+class SyncPlaylistAnalytics implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
@@ -61,7 +61,6 @@ class SyncPlaylistAnalytics implements ShouldQueueAfterCommit
     public function middleware(PlaylistHasBeenViewedEvent $event): array
     {
         return [
-            (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
             (new WithoutOverlapping($event->playlist->getKey()))->releaseAfter(30),
         ];
     }

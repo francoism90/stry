@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistViewRequest;
-use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
 use Domain\Playlists\Models\Playlist;
+use Domain\Videos\Events\VideoHasBeenViewedEvent;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -33,7 +34,13 @@ class PlaylistSessionController extends Controller implements HasMiddleware
         abort_if($playlist->isExpired(), 410);
 
         // Dispatch the viewed event
-        PlaylistHasBeenViewedEvent::dispatch($playlist, $request->user(), $request->safe()->only(['time']));
+        $model = $playlist->getModel();
+
+        VideoHasBeenViewedEvent::dispatchIf($model instanceof Video,
+            $model,
+            $request->user(),
+            $request->safe()->only(['time'])
+        );
 
         return response()->noContent();
     }

@@ -2,24 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Listeners;
+namespace Domain\Videos\Jobs;
 
 use Domain\Videos\Actions\GenerateVideoClipPlaylist;
 use Domain\Videos\Actions\GenerateVideoPreviewPlaylist;
-use Domain\Videos\Events\VideoHasBeenViewedEvent;
+use Domain\Videos\Models\Video;
+use Illuminate\Bus\Batchable;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Pipeline;
 
-class CreateVideoPlaylists implements ShouldQueueAfterCommit
+class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 {
+    use Batchable;
+    use Dispatchable;
     use InteractsWithQueue;
-
-    /**
-     * @var string|null
-     */
-    public $queue = 'processing';
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var int
@@ -29,12 +33,12 @@ class CreateVideoPlaylists implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $maxExceptions = 1;
+    public $timeout = 60 * 60 * 4;
 
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 8;
+    public $maxExceptions = 1;
 
     /**
      * @var bool
@@ -46,9 +50,15 @@ class CreateVideoPlaylists implements ShouldQueueAfterCommit
      */
     public $deleteWhenMissingModels = true;
 
-    public function handle(VideoHasBeenViewedEvent $event): void
+    public function __construct(
+        public Video $video,
+    ) {
+        $this->onQueue('processing');
+    }
+
+    public function handle(): void
     {
-        Pipeline::send($event->video)
+        Pipeline::send($this->video)
             ->through([
                 GenerateVideoClipPlaylist::class,
                 GenerateVideoPreviewPlaylist::class,
@@ -56,13 +66,10 @@ class CreateVideoPlaylists implements ShouldQueueAfterCommit
             ->thenReturn();
     }
 
-    /**
-     * @return array<int, object>
-     */
-    public function middleware(VideoHasBeenViewedEvent $event): array
+    public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($event->video->getKey()))->dontRelease(),
+            (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
         ];
     }
 }
