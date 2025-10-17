@@ -221,6 +221,13 @@ class Playlist extends Model
         return $this->state->equals(Verified::class);
     }
 
+    public function isRecentlyAccessed(): bool
+    {
+        return filled($this->accessed_at) && $this->accessed_at->greaterThanOrEqualTo(
+            Config::get('playlist.recent_activity', now()->subMinutes(10))
+        );
+    }
+
     public static function getVideoFormats(): Collection
     {
         return Config::collection('playlist.video_formats', [])

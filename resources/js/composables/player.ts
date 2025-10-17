@@ -13,8 +13,8 @@ export function usePlayer() {
   const src = computed(() => (ready.value ? state.value?.asset : null))
 
   const record = async (time: number | null) => {
-    if (state.value?.id) {
-      await http.post(PlaylistSessionController.url(state.value.id), { time })
+    if (state.value && state.value.id) {
+      return http.post(PlaylistSessionController.url(state.value.id), { time })
     }
   }
 

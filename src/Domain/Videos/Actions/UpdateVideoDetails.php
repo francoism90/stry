@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateVideoDetails
 {
-    public function handle(Video $video, array $attributes): Video
+    public function handle(Video $video, array $attributes): mixed
     {
         return DB::transaction(function () use ($video, $attributes) {
             $video->updateOrFail(
@@ -29,8 +29,6 @@ class UpdateVideoDetails
 
             // Regenerate the video
             ProcessVideo::dispatch($video);
-
-            return $video;
         });
     }
 }

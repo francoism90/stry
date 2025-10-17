@@ -17,14 +17,14 @@ class SetTagsOrder
             $items = collect();
 
             foreach (TagType::cases() as $type) {
-                $items = $items->merge($this->getTags($type));
+                $items = $items->merge($this->getCollection($type));
             }
 
             Tag::setNewOrder($items->pluck('id')->all());
         });
     }
 
-    protected function getTags(TagType $type): LazyCollection
+    protected function getCollection(TagType $type): LazyCollection
     {
         return Tag::query()
             ->type($type)

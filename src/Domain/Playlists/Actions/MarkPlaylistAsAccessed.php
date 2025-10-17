@@ -9,12 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class MarkPlaylistAsAccessed
 {
-    public function handle(Playlist $playlist): Playlist
+    public function handle(Playlist $playlist): mixed
     {
         return DB::transaction(function () use ($playlist) {
             $playlist->touchQuietly('accessed_at');
-
-            return $playlist;
         });
     }
 }

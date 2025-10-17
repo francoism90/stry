@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
-use Domain\Playlists\Jobs\TrackPlaylist;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -26,12 +25,6 @@ class PlaylistManifestController extends Controller implements HasMiddleware
 
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
-
-        // Mark the playlist as accessed
-        TrackPlaylist::dispatchIf(
-            ! $playlist->accessed_at?->lessThan(now()->subMinutes(10)),
-            $playlist
-        );
 
         return FFMpeg::dynamicHLSPlaylist()
             ->fromDisk($playlist->getDisk())

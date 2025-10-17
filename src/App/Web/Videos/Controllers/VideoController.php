@@ -97,7 +97,7 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
-        defer(fn () => app(UpdateVideoDetails::class)->handle($video, $request->safe()->all()));
+        app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
         return back();
     }

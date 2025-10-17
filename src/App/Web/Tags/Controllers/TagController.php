@@ -89,7 +89,7 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $tag);
 
-        defer(fn () => app(UpdateTagDetails::class)->handle($tag, $request->safe()->all()));
+        app(UpdateTagDetails::class)->handle($tag, $request->safe()->all());
 
         return back();
     }

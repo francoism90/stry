@@ -5,29 +5,25 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Users\Models\User;
-use Domain\Videos\Jobs\TrackVideo;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class SyncVideoProgress
 {
-    public function handle(Video $video, User $user, ?array $attributes = null): Video
+    public function handle(Video $video, User $user, ?array $attributes = null): mixed
     {
         return DB::transaction(function () use ($video, $user, $attributes) {
-            // This will be used to throttle video progress tracking
+            // This will be used to throttle video viewed tracking
             $cacheKey = $this->getCacheKey($video, $user);
 
-            // Dispatch the job to track video progress if not recently dispatched
-            TrackVideo::dispatchIf(
-                Cache::missing($cacheKey),
-                $video, $user, $attributes
-            );
+            // Mark the video as viewed only if it hasn't been recently processed
+            if (Cache::missing($cacheKey)) {
+                app(MarkVideoAsViewed::class)->handle($video, $user, $attributes);
+            }
 
-            // Cache the attributes for 24 hours to prevent multiple job dispatches
-            Cache::put($cacheKey, $attributes, now()->addDay());
-
-            return $video;
+            // Cache the progress to avoid excessive updates
+            Cache::put($cacheKey, $attributes, now()->addMinutes(30));
         });
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistViewRequest;
+use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Actions\SyncVideoProgress;
 use Domain\Videos\Models\Video;
@@ -32,12 +33,18 @@ class PlaylistSessionController extends Controller implements HasMiddleware
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
 
+        // Mark the playlist as accessed
+        if (! $playlist->isRecentlyAccessed()) {
+            app(MarkPlaylistAsAccessed::class)->handle($playlist);
+        }
+
+        // Track user playlist activity
         if ($playlist->getModel() instanceof Video) {
-            defer(fn () => app(SyncVideoProgress::class)->handle(
+            app(SyncVideoProgress::class)->handle(
                 video: $playlist->getModel(),
                 user: $request->user(),
                 attributes: $request->safe()->only('time')
-            ));
+            );
         }
 
         return response()->noContent();

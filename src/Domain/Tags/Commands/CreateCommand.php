@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Commands;
 
-use Domain\Tags\Actions\CreateNewTag;
 use Domain\Tags\Enums\TagType;
+use Domain\Tags\Models\Tag;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
@@ -37,8 +38,8 @@ class CreateCommand extends Command implements Isolatable
             required: true,
         );
 
-        app(CreateNewTag::class)->handle(compact('name', 'type'));
+        $tag = Tag::findOrCreate($name, $type);
 
-        $this->components->info('Tag has been created successfully.');
+        info("Tag `{$tag->name}` has been created successfully.");
     }
 }

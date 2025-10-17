@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class MarkVideoAsViewed
 {
-    public function handle(Video $video, User $user, ?array $attributes = null): Video
+    public function handle(Video $video, User $user, ?array $attributes = null): mixed
     {
         return DB::transaction(function () use ($video, $user, $attributes) {
             // Ensure the user has a viewed group
@@ -19,8 +19,6 @@ class MarkVideoAsViewed
 
             // Update with the video attributes
             $video->syncGroup($group, $attributes);
-
-            return $video;
         });
     }
 }

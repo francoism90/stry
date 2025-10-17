@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateTagDetails
 {
-    public function handle(Tag $tag, array $attributes = []): Tag
+    public function handle(Tag $tag, array $attributes = []): mixed
     {
         return DB::transaction(function () use ($tag, $attributes) {
             $tag->updateOrFail(
@@ -20,8 +20,6 @@ class UpdateTagDetails
             if (array_key_exists('related', $attributes)) {
                 $tag->syncRelated(Tag::fromOption($attributes['related'] ?? [])->get());
             }
-
-            return $tag;
         });
     }
 }
