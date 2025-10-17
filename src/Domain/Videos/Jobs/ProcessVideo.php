@@ -6,7 +6,6 @@ namespace Domain\Videos\Jobs;
 
 use DateTime;
 use Domain\Videos\Actions\CreateVideoPreview;
-use Domain\Videos\Actions\CreateVideoThumbnail;
 use Domain\Videos\Actions\ExtractVideoCaptions;
 use Domain\Videos\Actions\MarkVideoAsVerified;
 use Domain\Videos\Models\Video;
@@ -59,7 +58,6 @@ class ProcessVideo implements ShouldQueueAfterCommit
         Pipeline::send($this->video)
             ->through([
                 ExtractVideoCaptions::class,
-                CreateVideoThumbnail::class,
                 CreateVideoPreview::class,
                 MarkVideoAsVerified::class,
             ])

@@ -18,12 +18,12 @@ class SetMediaStreams
             return $next($media);
         }
 
-        // Get the streams from the media file
+        // Parse the media streams
         $streams = FFMpeg::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->getStreams();
 
-        // Parse the streams with only relevant keys
+        // Map the streams to only include relevant keys
         $keys = $this->getStreamKeys();
 
         $items = collect($streams)

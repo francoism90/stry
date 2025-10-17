@@ -10,7 +10,6 @@ use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Support\FFMpeg\Format\Video\WebVTT;
 
 class ExtractVideoCaptions
@@ -28,14 +27,12 @@ class ExtractVideoCaptions
             // Initialize FFMpeg
             $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-            $temporaryDirectory = TemporaryDirectory::make('transcodes');
-
             Collection::make($ffmpeg->getStreams())
                 ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')
-                ->each(function (Stream $stream) use ($temporaryDirectory, $ffmpeg, $video) {
+                ->each(function (Stream $stream) use ($ffmpeg, $media, $video) {
                     $index = $stream->get('index', 0);
                     $language = data_get($stream->get('tags', []), 'language', 'und');
-                    $path = $temporaryDirectory->path("{$index}-{$language}.vtt");
+                    $path = "{$media->uuid}_{$index}_{$language}.vtt";
 
                     // Export the caption stream to a WebVTT file
                     $ffmpeg
@@ -51,9 +48,6 @@ class ExtractVideoCaptions
                         ->toMediaCollection('captions')
                         ->saveOrFail();
                 });
-
-            // Clean up temporary files
-            $temporaryDirectory->delete();
 
             return $next($video);
         });
