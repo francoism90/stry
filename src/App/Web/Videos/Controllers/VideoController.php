@@ -13,7 +13,7 @@ use App\Web\Videos\Responses\VideoProgress;
 use App\Web\Videos\Responses\VideoSimilarCollection;
 use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Jobs\PlaylistVideo;
+use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
@@ -69,8 +69,8 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('view', $video);
 
         // Generate video playlists if they don't exist
-        PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist('clip') || ! $video->hasPlaylist('preview'),
+        VideoHasBeenViewedEvent::dispatchIf(
+            ! $video->hasPlaylist('clip', 'preview'),
             $video
         );
 

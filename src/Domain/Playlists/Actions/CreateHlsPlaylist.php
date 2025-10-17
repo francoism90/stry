@@ -59,6 +59,7 @@ class CreateHlsPlaylist
                     return;
                 }
 
+                // Add the format with the specified codecs and bitrates
                 $ffmpeg->addFormat($format
                     ->setVideoCodec($videoCodec)
                     ->setAudioCodec($audioCodec)

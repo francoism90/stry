@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\QueryBuilders;
 
+use ArrayAccess;
+use Illuminate\Support\Arr;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
@@ -35,9 +37,9 @@ class PlaylistQueryBuilder extends Builder
             ->ordered();
     }
 
-    public function type(string $type): self
+    public function type(ArrayAccess|array|string $type): self
     {
-        return $this->where('type', $type);
+        return $this->whereIn('type', Arr::wrap($type));
     }
 
     public function expired(): self
