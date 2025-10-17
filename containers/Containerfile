@@ -24,8 +24,9 @@ RUN apt-get update && apt-get upgrade -y \
     && mkdir -p /etc/apt/keyrings \
     && apt-get install -y --no-install-recommends \
        gnupg curl ca-certificates zip unzip git ssh-client libcap2-bin python3 dnsutils fswatch sqlite3 postgresql-common \
-       libavif-bin librsvg2-bin webp libass9 libmp3lame0 libfaac0 libfdk-aac2 libtheora-bin libjpeg-turbo8 opus-tools \
-       svt-av1 libvorbis0a libvorbisenc2 libvpx9 x264 x265 libva-drm2 libva2 gifsicle jpegoptim optipng pngquant ffmpeg \
+       libavif-bin librsvg2-bin libjpeg-turbo8 webp gifsicle jpegoptim optipng pngquant \
+       libass9 libmp3lame0 libfaac0 libfdk-aac2 libtheora-bin libvorbis0a libvorbisenc2 opus-tools \
+       svt-av1 libvpx9 x264 x265 libva-drm2 libva2 ffmpeg \
     && curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb8dc7e53946656efbce4c1dd71daeaab4ad4cab6' | gpg --dearmor | tee /etc/apt/keyrings/ppa_ondrej_php.gpg > /dev/null \
     && echo "deb [signed-by=/etc/apt/keyrings/ppa_ondrej_php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu noble main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
