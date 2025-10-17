@@ -23,7 +23,7 @@ defineProps<Props>()
   >
     <UPageGrid
       id="page-grid"
-      class="gap-3"
+      class="gap-4"
     >
       <MediaCard
         v-for="item in items.data"

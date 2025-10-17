@@ -20,7 +20,7 @@ const listener = () =>
       seeked.value = true
     }
 
-    if (seeked.value && currentTime !== undefined) {
+    if (seeked.value && currentTime > 0) {
       sessionHandler(Math.round(currentTime * 100) / 100)
     }
 
