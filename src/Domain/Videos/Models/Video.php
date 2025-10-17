@@ -203,7 +203,7 @@ class Video extends Model implements HasMedia
         $this
             ->addMediaConversion('thumbnail')
             ->performOnCollections('clips')
-            ->fit(Fit::Stretch, 450, 150)
+            ->fit(Fit::Stretch, 1280, 720)
             ->sharpen(10)
             ->format('webp')
             ->withResponsiveImages()

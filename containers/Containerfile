@@ -104,7 +104,4 @@ COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 USER docker
 
-RUN composer install --no-interaction
-RUN ${NPM} install --frozen-lockfile
-
 ENTRYPOINT ["entrypoint.sh"]

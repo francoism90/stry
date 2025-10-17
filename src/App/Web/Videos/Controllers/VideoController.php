@@ -70,7 +70,7 @@ class VideoController extends Controller implements HasMiddleware
 
         // Generate video playlists if they don't exist
         PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist('clip', 'preview'),
+            ! $video->hasPlaylist('clip') || ! $video->hasPlaylist('preview'),
             $video
         );
 
