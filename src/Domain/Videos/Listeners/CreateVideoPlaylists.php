@@ -7,13 +7,12 @@ namespace Domain\Videos\Listeners;
 use Domain\Videos\Actions\GenerateVideoClipPlaylist;
 use Domain\Videos\Actions\GenerateVideoPreviewPlaylist;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
 
-class CreateVideoPlaylists implements ShouldBeUnique, ShouldQueueAfterCommit
+class CreateVideoPlaylists implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
