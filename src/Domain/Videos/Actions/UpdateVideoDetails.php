@@ -26,8 +26,8 @@ class UpdateVideoDetails
 
             if ($video->wasChanged('snapshot') && $video->hasMedia('thumbnail')) {
                 Artisan::call('media-library:regenerate', [
-                    'ids' => $video->getClipCollection()->modelKeys(),
-                    'only' => 'thumbnail',
+                    '--only' => 'thumbnail',
+                    '--ids' => $video->getClipCollection()->modelKeys(),
                 ]);
             }
 

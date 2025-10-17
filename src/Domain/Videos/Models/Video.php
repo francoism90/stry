@@ -74,18 +74,18 @@ class Video extends Model implements HasMedia
     /**
      * @var array<int, string>
      */
-    protected $translatable = [
-        'name',
-        'titles',
-        'content',
-        'summary',
+    protected $with = [
+        'tags',
     ];
 
     /**
      * @var array<int, string>
      */
-    protected $with = [
-        'tags',
+    protected $translatable = [
+        'name',
+        'titles',
+        'content',
+        'summary',
     ];
 
     /**
@@ -206,7 +206,8 @@ class Video extends Model implements HasMedia
             ->withResponsiveImages()
             ->fit(Fit::Stretch, 450, 150)
             ->sharpen(10)
-            ->extractVideoFrameAtSecond($this->snapshot ?? 0.0);
+            ->format('webp')
+            ->extractVideoFrameAtSecond((float) $this->snapshot ?? 0.0);
     }
 
     /**
@@ -332,14 +333,14 @@ class Video extends Model implements HasMedia
     protected function thumbnail(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMediaUrl('thumbnail')
+            get: fn () => $this->getFirstMediaUrl('clips', 'thumbnail')
         )->shouldCache();
     }
 
     protected function srcset(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMedia('thumbnail')?->getSrcset()
+            get: fn () => $this->getFirstMedia('clips')?->getSrcset('thumbnail')
         )->shouldCache();
     }
 
