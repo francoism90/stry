@@ -37,8 +37,6 @@ class SyncCommand extends Command implements Isolatable
                 $this->call('scout:flush', compact('model'));
             }
 
-            info("Importing records for model: {$model}");
-
             $this->call('scout:queue-import', compact('model'));
         });
     }

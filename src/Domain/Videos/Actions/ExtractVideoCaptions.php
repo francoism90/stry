@@ -13,7 +13,7 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Support\FFMpeg\Format\Video\WebVTT;
 
-class CreateVideoCaptions
+class ExtractVideoCaptions
 {
     public function handle(Video $video, Closure $next): mixed
     {
