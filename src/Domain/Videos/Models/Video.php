@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -86,6 +87,11 @@ class Video extends Model implements HasMedia
     protected $with = [
         'tags',
     ];
+
+    /**
+     * @var bool
+     */
+    public $registerMediaConversionsUsingModelInstance = true;
 
     protected static function newFactory(): VideoFactory
     {
@@ -190,23 +196,17 @@ class Video extends Model implements HasMedia
                 'video/x-ms-wmv',
                 'video/x-msvideo',
             ]);
+    }
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
         $this
-            ->addMediaCollection('thumbnail')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->singleFile()
+            ->addMediaConversion('thumbnail')
+            ->performOnCollections('clips')
             ->withResponsiveImages()
-            ->acceptsMimeTypes([
-                'image/avif',
-                'image/gif',
-                'image/jpeg',
-                'image/jpg',
-                'image/png',
-                'image/svg+xml',
-                'image/tiff',
-                'image/webp',
-            ]);
+            ->fit(Fit::Stretch, 450, 150)
+            ->sharpen(10)
+            ->extractVideoFrameAtSecond($this->snapshot ?? 0.0);
     }
 
     /**
