@@ -38,7 +38,6 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
         :src="item.thumbnail"
         :alt="item.title"
         class="h-56 max-h-56 w-full object-fill"
-        sizes="(min-width: 1366px) 916px, (min-width: 1536px) 1030px, 100vw"
         loading="lazy"
         decoding="async"
         fetchpriority="high"
