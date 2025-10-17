@@ -15,4 +15,4 @@ ExposeHostPort=13714
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-TimeoutStartSec=300
+TimeoutStartSec=180
