@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Listeners;
+namespace Domain\Playlists\Listeners;
 
-use Domain\Media\Actions\SetMediaStreams;
+use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
+use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
-use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
-class ProcessMedia implements ShouldQueueAfterCommit
+class SyncPlaylistAnalytics implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
@@ -45,11 +46,11 @@ class ProcessMedia implements ShouldQueueAfterCommit
      */
     public $deleteWhenMissingModels = true;
 
-    public function handle(MediaHasBeenAddedEvent $event): void
+    public function handle(PlaylistHasBeenViewedEvent $event): void
     {
-        Pipeline::send($event->media)
+        Pipeline::send($event->playlist)
             ->through([
-                SetMediaStreams::class,
+                MarkPlaylistAsAccessed::class,
             ])
             ->thenReturn();
     }
@@ -57,10 +58,10 @@ class ProcessMedia implements ShouldQueueAfterCommit
     /**
      * @return array<int, object>
      */
-    public function middleware(MediaHasBeenAddedEvent $event): array
+    public function middleware(PlaylistHasBeenViewedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->media->getKey()))->releaseAfter(30),
+            (new WithoutOverlapping($event->playlist->getKey()))->releaseAfter(30),
         ];
     }
 }

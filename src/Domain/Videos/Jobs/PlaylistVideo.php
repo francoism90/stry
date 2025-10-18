@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use Domain\Videos\Actions\GenerateVideoPlaylists;
+use Domain\Videos\Actions\GenerateVideoClipPlaylist;
+use Domain\Videos\Actions\GenerateVideoPreviewPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Pipeline;
 
 class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 {
@@ -56,7 +58,12 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(GenerateVideoPlaylists::class)->handle($this->video);
+        Pipeline::send($this->video)
+            ->through([
+                GenerateVideoClipPlaylist::class,
+                GenerateVideoPreviewPlaylist::class,
+            ])
+            ->thenReturn();
     }
 
     /**
@@ -67,10 +74,5 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         return [
             (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
         ];
-    }
-
-    public function uniqueId(): string
-    {
-        return (string) $this->video->getKey();
     }
 }

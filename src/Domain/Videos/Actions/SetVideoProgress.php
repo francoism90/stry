@@ -9,7 +9,7 @@ use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class SyncVideoProgress
+class SetVideoProgress
 {
     public function handle(Video $video, User $user, ?array $attributes = null): mixed
     {

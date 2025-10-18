@@ -55,7 +55,8 @@ RUN apt-get update && apt-get upgrade -y \
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
-RUN corepack enable pnpm
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
 
 RUN userdel -r ubuntu
 RUN groupadd --force -g ${GID} docker \

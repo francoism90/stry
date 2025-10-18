@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
+use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -25,6 +26,12 @@ class PlaylistManifestController extends Controller implements HasMiddleware
 
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
+
+        // Dispatch the viewed event
+        PlaylistHasBeenViewedEvent::dispatchIf(
+            ! $playlist->isRecentlyAccessed(),
+            $playlist,
+        );
 
         return FFMpeg::dynamicHLSPlaylist()
             ->fromDisk($playlist->getDisk())

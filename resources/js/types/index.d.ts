@@ -33,7 +33,6 @@ export type Tag = Model & {
   description: string | null
   category: string
   type: string
-  thumbnail: AvatarProps['src'] | undefined
   srcset: string | undefined
   videos?: number
   related?: Tag[] | null
@@ -56,7 +55,7 @@ export type Video = Model & {
   episode: string | null
   part: string | null
   captions: boolean | null
-  thumbnail: AvatarProps['src'] | undefined
+  thumb: AvatarProps['src'] | undefined
   srcset: string | undefined
   preview: string | null
   duration: number | null

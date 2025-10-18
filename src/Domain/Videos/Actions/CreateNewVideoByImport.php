@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Users\Models\User;
-use Domain\Videos\Jobs\ProcessVideo;
-use Domain\Videos\Models\Video;
+use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use SplFileInfo;
 
 class CreateNewVideoByImport
@@ -15,20 +15,24 @@ class CreateNewVideoByImport
     public function handle(User $user, string $disk, string $path): mixed
     {
         return DB::transaction(function () use ($user, $disk, $path) {
-            $file = new SplFileInfo($path);
+            // Parse the file info
+            $fileInfo = new SplFileInfo($path);
 
-            /** @var Video $video */
+            // Get the file name without extension
+            $fileName = $fileInfo->getBasename(".{$fileInfo->getExtension()}");
+
+            // Create the video record
             $video = $user->videos()->create([
-                'name' => $file->getBasename(".{$file->getExtension()}"),
+                'name' => Str::headline($fileName),
             ]);
 
+            // Attach the video clip
             $video
                 ->addMediaFromDisk($path, $disk)
-                ->withResponsiveImages()
                 ->toMediaCollection('clips');
 
-            // Process the video
-            ProcessVideo::dispatch($video);
+            // Dispatch the added event
+            VideoHasBeenAddedEvent::dispatch($video);
         });
     }
 }

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Tags\Models\Tag;
-use Domain\Videos\Jobs\ProcessVideo;
+use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 class UpdateVideoDetails
@@ -15,20 +16,26 @@ class UpdateVideoDetails
     public function handle(Video $video, array $attributes): mixed
     {
         return DB::transaction(function () use ($video, $attributes) {
+            // Update the video attributes
             $video->updateOrFail(
                 Arr::only($attributes, $video->getFillable())
             );
 
+            // Sync tags if provided
             if (array_key_exists('tags', $attributes)) {
                 $video->syncTags(Tag::fromOption($attributes['tags'] ?? [])->get());
             }
 
-            if ($video->wasChanged('snapshot') && $video->hasMedia('thumbnail')) {
-                $video->getFirstMedia('thumbnail')->delete();
+            // Regenerate thumbs if snapshot changed
+            if ($video->wasChanged('snapshot')) {
+                Artisan::call('media-library:regenerate', [
+                    '--only' => 'thumb',
+                    '--ids' => $video->getClipCollection()->modelKeys(),
+                ]);
             }
 
-            // Regenerate the video
-            ProcessVideo::dispatch($video);
+            // Dispatch the update event
+            VideoHasBeenUpdatedEvent::dispatch($video);
         });
     }
 }

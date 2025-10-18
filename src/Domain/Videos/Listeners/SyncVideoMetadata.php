@@ -2,41 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Jobs;
+namespace Domain\Videos\Listeners;
 
-use DateTime;
-use Domain\Videos\Actions\CreateVideoCaptions;
 use Domain\Videos\Actions\CreateVideoPreview;
-use Domain\Videos\Actions\CreateVideoThumbnail;
+use Domain\Videos\Actions\ExtractVideoCaptions;
 use Domain\Videos\Actions\MarkVideoAsVerified;
-use Domain\Videos\Models\Video;
-use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
+use Domain\Videos\Events\VideoHasBeenAddedEvent;
+use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\RateLimitedMiddleware\RateLimited;
 
-class ProcessVideo implements ShouldQueueAfterCommit
+class SyncVideoMetadata implements ShouldQueueAfterCommit
 {
-    use Batchable;
-    use Dispatchable;
     use InteractsWithQueue;
-    use Queueable;
-    use SerializesModels;
+
+    /**
+     * @var string|null
+     */
+    public $queue = 'processing';
 
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 4;
+    public $tries = 1;
 
     /**
      * @var int
      */
     public $maxExceptions = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60 * 60;
 
     /**
      * @var bool
@@ -48,19 +49,12 @@ class ProcessVideo implements ShouldQueueAfterCommit
      */
     public $deleteWhenMissingModels = true;
 
-    public function __construct(
-        public Video $video,
-    ) {
-        $this->onQueue('processing');
-    }
-
-    public function handle(): void
+    public function handle(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): void
     {
-        Pipeline::send($this->video)
+        Pipeline::send($event->video)
             ->through([
-                CreateVideoCaptions::class,
-                CreateVideoThumbnail::class,
                 CreateVideoPreview::class,
+                ExtractVideoCaptions::class,
                 MarkVideoAsVerified::class,
             ])
             ->thenReturn();
@@ -69,16 +63,11 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @return array<int, object>
      */
-    public function middleware(): array
+    public function middleware(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): array
     {
         return [
             (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
-            (new WithoutOverlapping($this->video->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(30),
         ];
-    }
-
-    public function retryUntil(): DateTime
-    {
-        return now()->addDay();
     }
 }

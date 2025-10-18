@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -73,6 +74,13 @@ class Video extends Model implements HasMedia
     /**
      * @var array<int, string>
      */
+    protected $with = [
+        'tags',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
     protected $translatable = [
         'name',
         'titles',
@@ -81,11 +89,9 @@ class Video extends Model implements HasMedia
     ];
 
     /**
-     * @var array<int, string>
+     * @var bool
      */
-    protected $with = [
-        'tags',
-    ];
+    public $registerMediaConversionsUsingModelInstance = true;
 
     protected static function newFactory(): VideoFactory
     {
@@ -190,23 +196,18 @@ class Video extends Model implements HasMedia
                 'video/x-ms-wmv',
                 'video/x-msvideo',
             ]);
+    }
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
         $this
-            ->addMediaCollection('thumbnail')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->singleFile()
+            ->addMediaConversion('thumb')
+            ->performOnCollections('clips')
+            ->fit(Fit::Stretch, 1280, 720)
+            ->sharpen(10)
+            ->format('avif')
             ->withResponsiveImages()
-            ->acceptsMimeTypes([
-                'image/avif',
-                'image/gif',
-                'image/jpeg',
-                'image/jpg',
-                'image/png',
-                'image/svg+xml',
-                'image/tiff',
-                'image/webp',
-            ]);
+            ->extractVideoFrameAtSecond((float) $this->snapshot ?? 0.0);
     }
 
     /**
@@ -329,17 +330,17 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
-    protected function thumbnail(): Attribute
+    protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMediaUrl('thumbnail')
+            get: fn () => $this->getFirstMediaUrl('clips', 'thumb')
         )->shouldCache();
     }
 
     protected function srcset(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMedia('thumbnail')?->getSrcset()
+            get: fn () => $this->getFirstMedia('clips')?->getSrcset('thumb')
         )->shouldCache();
     }
 

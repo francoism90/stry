@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Concerns;
 
+use ArrayAccess;
+use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -41,21 +43,22 @@ trait InteractsWithPlaylists
         ]);
     }
 
-    public function getFirstPlaylist(?string $type = null): ?Playlist
+    public function getPlaylists(ArrayAccess|array|string $type): PlaylistCollection
     {
         return $this
             ->playlists()
-            ->when($type, fn ($query) => $query->type($type))
+            ->type($type)
             ->active()
-            ->first();
+            ->get();
     }
 
-    public function hasPlaylist(?string $type = null): bool
+    public function getFirstPlaylist(ArrayAccess|array|string $type): ?Playlist
     {
-        return $this
-            ->playlists()
-            ->when($type, fn ($query) => $query->type($type))
-            ->active()
-            ->exists();
+        return $this->getPlaylists($type)->first();
+    }
+
+    public function hasPlaylist(ArrayAccess|array|string $type): bool
+    {
+        return $this->getPlaylists($type)->isNotEmpty();
     }
 }

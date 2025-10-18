@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Domain\Playlists\Events;
+namespace Domain\Videos\Events;
 
-use Domain\Playlists\Models\Playlist;
+use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PlaylistHasBeenViewedEvent
+class VideoHasBeenUpdatedEvent
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
     public function __construct(
-        public Playlist $playlist,
+        public Video $video,
     ) {}
 }

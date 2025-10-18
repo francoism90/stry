@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistViewRequest;
-use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Models\Playlist;
-use Domain\Videos\Actions\SyncVideoProgress;
+use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -28,24 +27,20 @@ class PlaylistSessionController extends Controller implements HasMiddleware
 
     public function __invoke(Playlist $playlist, PlaylistViewRequest $request): Response
     {
+        // Authorize the user to view the playlist
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
 
-        // Mark the playlist as accessed
-        if (! $playlist->isRecentlyAccessed()) {
-            app(MarkPlaylistAsAccessed::class)->handle($playlist);
-        }
+        // Dispatch the viewed event
+        $model = $playlist->getModel();
 
-        // Track user playlist activity
-        if ($playlist->getModel() instanceof Video) {
-            app(SyncVideoProgress::class)->handle(
-                video: $playlist->getModel(),
-                user: $request->user(),
-                attributes: $request->safe()->only('time')
-            );
-        }
+        VideoHasBeenViewedEvent::dispatchIf($model instanceof Video,
+            $model,
+            $request->user(),
+            $request->safe()->only(['time'])
+        );
 
         return response()->noContent();
     }
