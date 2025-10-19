@@ -46,6 +46,10 @@ if [ ! -f "database/database.sqlite" ]; then
     touch database/database.sqlite
 fi
 
+# Ensure caches are invalid
+log "INFO" "Flush the application cache..."
+${ARTISAN} cache:clear
+
 # Ensure database is up to date
 log "INFO" "Running any pending migrations..."
 ${ARTISAN} migrate --seed --force
