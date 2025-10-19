@@ -16,7 +16,7 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 
 RUN echo "Acquire::http::Pipeline-Depth 0;" > /etc/apt/apt.conf.d/99custom && \
     echo "Acquire::http::No-Cache true;" >> /etc/apt/apt.conf.d/99custom && \
-    echo "Acquire::BrokenProxy    true;" >> /etc/apt/apt.conf.d/99custom
+    echo "Acquire::BrokenProxy true;" >> /etc/apt/apt.conf.d/99custom
 
 RUN apt-get update && apt-get upgrade -y \
     && mkdir -p /etc/apt/keyrings \
@@ -60,7 +60,7 @@ RUN userdel -r ubuntu
 RUN groupadd --force -g ${GID} docker \
     && useradd -ms /bin/bash --no-user-group -g ${GID} -u ${UID} docker
 
-COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
@@ -82,9 +82,11 @@ RUN pnpm prune --prod
 
 FROM builder as production
 
+COPY containers/runtimes/php-production.ini /etc/php/8.4/cli/conf.d/99-xx.ini
+
 WORKDIR /app
 
-COPY --from=stage /app /app
+COPY --from=stage --chown=docker:docker /app /app
 
 RUN chown -R docker:docker /app
 
@@ -95,8 +97,6 @@ ENTRYPOINT ["entrypoint.sh"]
 FROM builder as development
 
 WORKDIR /app
-
-COPY containers/runtimes/php-development.ini /etc/php/8.4/cli/conf.d/99-xx.ini
 
 USER docker
 

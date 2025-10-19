@@ -12,10 +12,7 @@ log() {
     echo "[$type] $message"
 }
 
-# Prepare application
-log "INFO" "Preparing application..."
-
-# Watch for changes on development
+# Set watch on development
 if [ "${CONTAINER_ENV}" = "development" ]; then
     log "INFO" "Listen for application changes..."
     OCTANE="${OCTANE} --watch"
@@ -46,28 +43,29 @@ if [ ! -f "database/database.sqlite" ]; then
     touch database/database.sqlite
 fi
 
-# Ensure caches are invalid
-log "INFO" "Flush the application cache..."
-${ARTISAN} cache:clear
-
-# Ensure database is up to date
-log "INFO" "Running any pending migrations..."
-${ARTISAN} migrate --seed --force
-
-# Set up symbolic links
-log "INFO" "Creating symbolic links..."
-${ARTISAN} storage:link
-
-# Set up assets
+# Set up application
 if [ "${CONTAINER_ROLE}" = "app" ]; then
+    # Ensure caches are invalid
+    log "INFO" "Flush the application cache..."
+    ${ARTISAN} cache:clear
+
+    # Set up symbolic links
+    log "INFO" "Creating symbolic links..."
+    ${ARTISAN} storage:link
+
+    # Ensure database is up to date
+    log "INFO" "Running any pending migrations..."
+    ${ARTISAN} migrate --seed --force
+
+    # Ensure assets are fetched
     log "INFO" "Fetching Google Fonts..."
     ${ARTISAN} google-fonts:fetch
-fi
 
-# Optimize application
-if [ "${CONTAINER_ENV}" = "production" ]; then
-    log "INFO" "Optimizing application..."
-    ${ARTISAN} optimize
+    # Optimize application
+    if [ "${CONTAINER_ENV}" = "production" ]; then
+        log "INFO" "Optimizing application..."
+        ${ARTISAN} optimize
+    fi
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
