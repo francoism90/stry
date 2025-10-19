@@ -9,8 +9,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
-ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
-ENV NPM="pnpm"
 
 WORKDIR /app
 
@@ -78,9 +76,9 @@ COPY . /app
 WORKDIR /app
 
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-RUN ${NPM} install --frozen-lockfile
-RUN ${NPM} build && ${NPM} build:ssr
-RUN ${NPM} prune --prod
+RUN pnpm install --frozen-lockfile
+RUN pnpm build && pnpm build:ssr
+RUN pnpm prune --prod
 
 FROM builder as production
 
@@ -91,9 +89,6 @@ COPY --from=stage /app /app
 RUN chown -R docker:docker /app
 
 USER docker
-
-RUN ${ARTISAN} optimize
-RUN ${ARTISAN} storage:link
 
 ENTRYPOINT ["entrypoint.sh"]
 

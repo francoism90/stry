@@ -16,7 +16,6 @@ _ide_helper.php
 /.pnpm-store
 /.vscode
 /.zed
-/auth.json
 /bootstrap/ssr
 /node_modules
 /public/build
@@ -29,6 +28,7 @@ _ide_helper.php
 /storage/*.key
 /storage/pail
 /vendor
+auth.json
 auto-imports.d.ts
 components.d.ts
 Homestead.json
