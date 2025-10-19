@@ -1,7 +1,7 @@
 [Unit]
 Description=Reverb container
-Requires=stry.service
-After=stry.service
+After=stry.container
+Requires=stry.container
 
 [Container]
 Image=stry.build

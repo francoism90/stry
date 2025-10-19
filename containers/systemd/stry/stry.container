@@ -1,8 +1,8 @@
 [Unit]
 Description=Stry container
-Requires=stry-redis.service stry-pgsql.service stry-mailpit.service stry-minio.service stry-typesense.service
-After=stry-redis.service stry-pgsql.service stry-mailpit.service stry-minio.service stry-typesense.service
-Wants=stry-reverb.service stry-queue.service stry-schedule.service stry-ssr.service
+Requires=stry-redis.container stry-pgsql.container stry-mailpit.container stry-minio.container stry-typesense.container
+After=stry-redis.container stry-pgsql.container stry-mailpit.container stry-minio.container stry-typesense.container
+Wants=stry-reverb.container stry-queue.container stry-schedule.container stry-ssr.container
 
 [Container]
 Image=stry.build

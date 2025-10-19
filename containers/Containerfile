@@ -9,6 +9,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
+ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
+ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 WORKDIR /app
 
@@ -91,6 +93,9 @@ COPY --from=stage --chown=docker:docker /app /app
 RUN chown -R docker:docker /app
 
 USER docker
+
+RUN ${ARTISAN} optimize
+RUN ${ARTISAN} storage:link
 
 ENTRYPOINT ["entrypoint.sh"]
 

@@ -3,8 +3,6 @@ set -e
 
 CONTAINER_ENV=${CONTAINER_ENV:-'production'}
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
-ARTISAN="php -d variables_order=EGPCS /app/artisan"
-OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 
 log() {
     local type="$1"
@@ -44,15 +42,7 @@ if [ ! -f "database/database.sqlite" ]; then
 fi
 
 # Set up application
-if [ "${CONTAINER_ROLE}" = "app" ]; then
-    # Ensure caches are invalid
-    log "INFO" "Flush the application cache..."
-    ${ARTISAN} cache:clear
-
-    # Set up symbolic links
-    log "INFO" "Creating symbolic links..."
-    ${ARTISAN} storage:link
-
+if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     # Ensure database is up to date
     log "INFO" "Running any pending migrations..."
     ${ARTISAN} migrate --seed --force
@@ -60,12 +50,6 @@ if [ "${CONTAINER_ROLE}" = "app" ]; then
     # Ensure assets are fetched
     log "INFO" "Fetching Google Fonts..."
     ${ARTISAN} google-fonts:fetch
-
-    # Optimize application
-    if [ "${CONTAINER_ENV}" = "production" ]; then
-        log "INFO" "Optimizing application..."
-        ${ARTISAN} optimize
-    fi
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
