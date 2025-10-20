@@ -34,6 +34,7 @@ class UpdateVideoDetails
                 // Call the media library regeneration command
                 Artisan::call('media-library:regenerate', [
                     '--ids' => $mediaIds,
+                    '--force' => true,
                 ]);
             }
 
