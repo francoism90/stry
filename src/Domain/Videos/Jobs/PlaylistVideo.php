@@ -75,4 +75,9 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
             (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
         ];
     }
+
+    public function uniqueId(): string
+    {
+        return hash('xxh128', implode(':', ['playlist', $this->video->getKey()]));
+    }
 }

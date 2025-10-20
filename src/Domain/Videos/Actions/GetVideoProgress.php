@@ -32,6 +32,6 @@ class GetVideoProgress
 
     protected function getCacheKey(Video $video, User $user): string
     {
-        return hash('xxh128', implode(':', ['progress', $video->getKey(), $user->getKey()]));
+        return hash('xxh128', implode(':', ['playable', $video->getKey(), $user->getKey()]));
     }
 }

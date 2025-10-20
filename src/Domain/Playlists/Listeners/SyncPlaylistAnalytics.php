@@ -6,13 +6,12 @@ namespace Domain\Playlists\Listeners;
 
 use Domain\Playlists\Actions\MarkPlaylistAsAccessed;
 use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
 
-class SyncPlaylistAnalytics implements ShouldBeUnique, ShouldQueueAfterCommit
+class SyncPlaylistAnalytics implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
