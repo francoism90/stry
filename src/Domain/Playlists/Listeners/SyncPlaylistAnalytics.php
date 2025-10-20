@@ -16,11 +16,6 @@ class SyncPlaylistAnalytics implements ShouldQueueAfterCommit
     use InteractsWithQueue;
 
     /**
-     * @var string|null
-     */
-    public $queue = 'processing';
-
-    /**
      * @var int
      */
     public $tries = 1;
