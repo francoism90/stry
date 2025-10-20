@@ -52,3 +52,4 @@ See `stry help` for a complete overview:
 | `stry a playlists:clear` | Remove generated HLS-playlist from filesystem. |
 | `stry a groups:clear` | Detach all videos from groups of a given type. |
 | `stry a scout:sync --flush` | Sync searchable model indexes. |
+| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing conversions (thumbs) |
