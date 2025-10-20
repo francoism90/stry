@@ -8,6 +8,7 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=scheduler
 LogDriver=none
+Tmpfs=/tmp
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z

@@ -8,6 +8,7 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
 LogDriver=none
+Tmpfs=/tmp
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
