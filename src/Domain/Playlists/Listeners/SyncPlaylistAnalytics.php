@@ -61,7 +61,7 @@ class SyncPlaylistAnalytics implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(PlaylistHasBeenViewedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->playlist->getKey()))->releaseAfter(30),
+            (new WithoutOverlapping($event->playlist->getKey()))->dontRelease(),
         ];
     }
 }
