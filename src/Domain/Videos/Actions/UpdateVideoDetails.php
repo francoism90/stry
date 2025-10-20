@@ -27,10 +27,13 @@ class UpdateVideoDetails
             }
 
             // Regenerate thumbs if snapshot changed
-            if ($video->wasChanged('snapshot')) {
+            if ($video->wasChanged('snapshot') && $video->hasMedia('clips')) {
+                // Get all media IDs associated with the video's clips
+                $mediaIds = implode(',', $video->getClipCollection()->modelKeys());
+
+                // Call the media library regeneration command
                 Artisan::call('media-library:regenerate', [
-                    '--only' => 'thumb',
-                    '--ids' => $video->getClipCollection()->modelKeys(),
+                    '--ids' => $mediaIds,
                 ]);
             }
 
