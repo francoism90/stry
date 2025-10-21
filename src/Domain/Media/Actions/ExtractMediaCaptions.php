@@ -19,9 +19,9 @@ class ExtractMediaCaptions
             $media->getPathRelativeToRoot()
         );
 
-        return Collection::make($ffmpeg->getStreams())
+        $items = Collection::make($ffmpeg->getStreams())
             ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')
-            ->map(function (Stream $stream) use ($ffmpeg, $media) {
+            ->map(function (Stream $stream) use (&$ffmpeg, $media) {
                 $index = $stream->get('index', 0);
                 $language = data_get($stream->get('tags', []), 'language', 'und');
                 $path = "{$media->uuid}_{$index}_{$language}.vtt";
@@ -36,5 +36,10 @@ class ExtractMediaCaptions
 
                 return $path;
             });
+
+        // Cleanup temporary files used during extraction
+        $ffmpeg->cleanupTemporaryFiles();
+
+        return $items;
     }
 }

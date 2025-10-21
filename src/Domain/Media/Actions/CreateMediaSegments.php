@@ -16,19 +16,14 @@ class CreateMediaSegments
 {
     public function handle(Media $media): string
     {
-        // Initialize FFMpeg
-        $ffmpeg = FFMpeg::fromDisk($media->disk)->open(
-            $media->getPathRelativeToRoot()
-        );
-
         // Define output path
         $path = "{$media->uuid}_sample.mp4";
 
         // Export each segment to a temporary file
-        $segments = $this->generateSegments($ffmpeg, $media);
+        $segments = $this->generateSegments($media);
 
-        // Concatenate segments into a single video
-        FFMpeg::fromDisk('transcodes')
+        /** @var MediaOpener $ffmpeg */
+        $ffmpeg = FFMpeg::fromDisk('transcodes')
             ->open($segments->toArray())
             ->export()
             ->inFormat((new X264)->setKiloBitrate(1500))
@@ -36,25 +31,36 @@ class CreateMediaSegments
             ->toDisk('transcodes')
             ->save($path);
 
+        // Cleanup temporary files used during segment generation
+        $ffmpeg->cleanupTemporaryFiles();
+
         // Clean up temporary segment files
         $segments->each(fn (string $segment) => Storage::disk('transcodes')->delete($segment));
 
         return $path;
     }
 
-    protected function generateSegments(MediaOpener $ffmpeg, Media $media): Collection
+    protected function generateSegments(Media $media): Collection
     {
+        // Initialize FFMpeg
+        $ffmpeg = FFMpeg::fromDisk($media->disk)->open(
+            $media->getPathRelativeToRoot()
+        );
+
+        // Determine segment start times
         $segments = $this->getSegmentKeys($ffmpeg->getDurationInSeconds());
 
-        return $segments->map(function (int|float $seconds, int $key) use ($ffmpeg, $media) {
+        // Generate each segment
+        $items = $segments->map(function (int|float $seconds, int $key) use (&$ffmpeg, $media) {
             // Define segment file name
             $segment = "{$media->uuid}_segment_{$key}.mp4";
 
+            // Export segment
             $ffmpeg
                 ->export()
                 ->toDisk('transcodes')
                 ->inFormat((new X264)
-                    ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(2)])
+                    ->setInitialParameters(['-ss', TimeCode::fromSeconds($seconds), '-t', TimeCode::fromSeconds(1.5)])
                     ->setAdditionalParameters(['-reset_timestamps', '1', '-an'])
                     ->setKiloBitrate(1500)
                 )
@@ -63,6 +69,11 @@ class CreateMediaSegments
 
             return $segment;
         });
+
+        // Cleanup temporary files used during segment generation
+        $ffmpeg->cleanupTemporaryFiles();
+
+        return $items;
     }
 
     protected function getSegmentKeys(int|float $duration, int $count = 8): Collection
