@@ -19,7 +19,7 @@
         "format": "prettier --write resources/"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^2.2.8",
+        "@inertiajs/vue3": "^2.2.9",
         "@laravel/echo-vue": "^2.2.4",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@nuxt/ui": "^4.0.1",
@@ -28,7 +28,7 @@
         "axios": "^1.12.2",
         "hls.js": "^1.6.13",
         "laravel-echo": "^2.2.4",
-        "laravel-precognition-vue-inertia": "^0.7.2",
+        "laravel-precognition-vue-inertia": "^0.7.3",
         "laravel-vite-plugin": "^2.0.1",
         "pusher-js": "^8.4.0",
         "tailwindcss": "^4.1.15",
