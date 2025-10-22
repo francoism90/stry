@@ -171,7 +171,7 @@ return [
      * The path where to store temporary files while performing image conversions.
      * If set to null, storage_path('media-library/temp') will be used.
      */
-    'temporary_directory_path' => env('MEDIA_CONVERSION_PATH', '/dev/shm'),
+    'temporary_directory_path' => env('MEDIA_CONVERSION_PATH', sys_get_temp_dir()),
 
     /*
      * The engine that should perform the image conversions.
