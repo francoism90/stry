@@ -15,7 +15,7 @@ class SetVideoProgress
     {
         return DB::transaction(function () use ($video, $user, $attributes) {
             // This will be used to throttle video viewed tracking
-            $cacheKey = $this->getCacheKey($video, $user);
+            $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
 
             // Mark the video as viewed if not recently tracked
             if (Cache::missing($cacheKey)) {
@@ -25,10 +25,5 @@ class SetVideoProgress
             // Cache the progress to avoid excessive updates
             Cache::put($cacheKey, $attributes, now()->addMinutes(30));
         });
-    }
-
-    protected function getCacheKey(Video $video, User $user): string
-    {
-        return hash('xxh128', implode(':', ['playable', $video->getKey(), $user->getKey()]));
     }
 }

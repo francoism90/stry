@@ -207,7 +207,7 @@ class Video extends Model implements HasMedia
             ->sharpen(10)
             ->format('avif')
             ->withResponsiveImages()
-            ->extractVideoFrameAtSecond((float) $this->snapshot ?? 0.0);
+            ->extractVideoFrameAtSecond((float) $this->snapshot ?? round($this->duration / 2));
     }
 
     /**
@@ -313,7 +313,7 @@ class Video extends Model implements HasMedia
 
     public function durationInSeconds(): float
     {
-        return (float) $this->getStreams()->max('duration') ?: 0.0;
+        return (float) $this->getStreams()?->max('duration') ?: 0.0;
     }
 
     protected function identifier(): Attribute

@@ -14,7 +14,7 @@ class GetVideoProgress
     public function handle(Video $video, User $user): int|float
     {
         // Find by cache first
-        $cacheKey = $this->getCacheKey($video, $user);
+        $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
 
         if (Cache::has($cacheKey)) {
             return round(data_get(Cache::get($cacheKey, []), 'time') ?: 0, 2);
@@ -28,10 +28,5 @@ class GetVideoProgress
 
         // Get the progress record for the video
         return round(data_get($record?->pivot?->options ?? [], 'time') ?: 0, 2);
-    }
-
-    protected function getCacheKey(Video $video, User $user): string
-    {
-        return hash('xxh128', implode(':', ['playable', $video->getKey(), $user->getKey()]));
     }
 }

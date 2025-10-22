@@ -189,6 +189,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasAnyRole('admin', 'super-admin');
     }
 
+    public function getCacheKey(string $suffix): string
+    {
+        return hash('xxh128', "user:{$this->getKey()}:{$suffix}");
+    }
+
     protected function avatar(): Attribute
     {
         return Attribute::make(

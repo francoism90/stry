@@ -26,8 +26,8 @@ class UpdateVideoDetails
                 $video->syncTags(Tag::fromOption($attributes['tags'] ?? [])->get());
             }
 
-            // Regenerate thumbs if snapshot changed
-            if ($video->wasChanged('snapshot') && $video->hasMedia('clips')) {
+            // Regenerate media conversions if snapshot changed or thumb conversion is missing
+            if ($video->wasChanged('snapshot') || ! $video->getFirstMedia('clips')->hasGeneratedConversion('thumb')) {
                 // Get all media IDs associated with the video's clips
                 $mediaIds = implode(',', $video->getClipCollection()->modelKeys());
 

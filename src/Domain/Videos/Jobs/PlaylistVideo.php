@@ -78,6 +78,6 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function uniqueId(): string
     {
-        return hash('xxh128', implode(':', ['playlist', $this->video->getKey()]));
+        return hash('xxh128', "playlist:{$this->video->getKey()}");
     }
 }
