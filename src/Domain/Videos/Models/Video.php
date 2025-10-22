@@ -207,7 +207,7 @@ class Video extends Model implements HasMedia
             ->sharpen(10)
             ->format('avif')
             ->withResponsiveImages()
-            ->extractVideoFrameAtSecond((float) $this->snapshot ?? round($this->duration / 2));
+            ->extractVideoFrameAtSecond((float) $this->snapshot ?: round($this->duration / 2));
     }
 
     /**
@@ -307,13 +307,13 @@ class Video extends Model implements HasMedia
         }
 
         return (bool) $this->getStreams()
-            ->filter(fn (array $stream) => $stream['codec_type'] === 'subtitle' || data_get($stream, 'closed_captions', 0))
+            ->filter(fn (array $stream) => $stream['codec_type'] === 'subtitle' || data_get($stream, 'closed_captions'))
             ->isNotEmpty();
     }
 
     public function durationInSeconds(): float
     {
-        return (float) $this->getStreams()?->max('duration') ?: 0.0;
+        return (float) $this->getStreams()->max('duration') ?: 0.0;
     }
 
     protected function identifier(): Attribute
