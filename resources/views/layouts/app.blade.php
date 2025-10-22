@@ -12,9 +12,6 @@
 <link rel="preconnect" href="https://api.iconify.design" crossorigin="anonymous">
 @vite('resources/js/app.ts')
 @inertiaHead
-@googlefonts
-@googlefonts('serif')
-@googlefonts('code')
 </head>
 
 <body class="antialiased">

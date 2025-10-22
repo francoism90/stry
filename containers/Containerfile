@@ -44,6 +44,7 @@ RUN apt-get update && apt-get upgrade -y \
        php8.4-gd php8.4-igbinary php8.4-imagick \
     && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
     && curl -sLS https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o /usr/local/bin/mc \
+    && curl -sLS https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip | unzip awscliv2.zip && ./aws/install \
     && chmod +x /usr/local/bin/mc \
     && apt-get install -y nodejs \
     && npm install -g npm@latest \
