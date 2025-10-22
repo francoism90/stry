@@ -2,7 +2,7 @@ import type { User } from '@/types'
 import type { Page } from '@inertiajs/core'
 
 declare module '@inertiajs/core' {
-  interface PageProps {
+  export interface PageProps {
     readonly app: string
     readonly locale: string
     readonly auth: User | undefined

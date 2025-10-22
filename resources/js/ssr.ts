@@ -1,7 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import { configureEcho } from '@laravel/echo-vue'
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createSSRApp, h, type DefineComponent } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 
@@ -17,17 +16,19 @@ configureEcho({
   enabledTransports: ['ws', 'wss'],
 })
 
-createServer(
-  (page) =>
-    createInertiaApp({
-      page,
-      render: renderToString,
-      title: (title) => (title ? `${title} - ${appName}` : appName),
-      resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
-      setup: ({ App, props, plugin }) => createSSRApp({ render: () => h(App, props) }).use(plugin),
-      progress: {
-        color: '#ad46ff',
-      },
-    }),
-  { cluster: true },
+createServer((page) =>
+  createInertiaApp({
+    page,
+    render: renderToString,
+    title: (title) => (title ? `${title} - ${appName}` : appName),
+    resolve: (name) => {
+      const pages = import.meta.glob('./pages/**/*.vue', { eager: true })
+      return pages[`./pages/${name}.vue`] as DefineComponent
+    },
+    setup({ App, props, plugin }) {
+      return createSSRApp({
+        render: () => h(App, props),
+      }).use(plugin)
+    },
+  }),
 )
