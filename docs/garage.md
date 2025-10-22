@@ -44,19 +44,20 @@ mc admin user svcacct add myminio <MINIO_ROOT_USER>
 1. Create required buckets (add your own if required):
 
 ```bash
-mc mb myminio/local
-mc mb myminio/assets
-mc mb myminio/conversions
-mc mb myminio/segments
+podman exec -ti systemd-stry-garage /garage bucket create local
+podman exec -ti systemd-stry-garage /garage bucket create assets
+podman exec -ti systemd-stry-garage /garage bucket create conversions
+podman exec -ti systemd-stry-garage /garage bucket create segments
 mc mb myminio/secrets
 ```
 
 1. Set anonymous `download` permissions on required buckets:
 
 ```bash
-mc anonymous set download myminio/assets
-mc anonymous set download myminio/conversions
-mc anonymous set download myminio/segments
+podman exec -ti systemd-stry-garage /garage bucket allow --read --write --owner --key laravel-app-key local
+podman exec -ti systemd-stry-garage /garage bucket allow --read --write --owner --key laravel-app-key assets
+podman exec -ti systemd-stry-garage /garage bucket allow --read --write --owner --key laravel-app-key conversions
+podman exec -ti systemd-stry-garage /garage bucket allow --read --write --owner --key laravel-app-key segments
 ```
 
 ## Disable bucket listing
