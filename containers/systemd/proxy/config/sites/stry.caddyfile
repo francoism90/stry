@@ -19,10 +19,10 @@ ws.stry.test {
 
 s3.stry.test {
     import tls
-    reverse_proxy systemd-stry-minio:9000
+    reverse_proxy systemd-stry-garage:3900
 }
 
-mc.stry.test {
+gc.stry.test {
     import tls
-    reverse_proxy systemd-stry-minio:8900
+    reverse_proxy systemd-stry-garage:3903
 }

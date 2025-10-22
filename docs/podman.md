@@ -37,7 +37,7 @@ cp -r ~/projects/stry/containers/systemd/stry ~/.config/containers/systemd/
 
 ```bash
 cd ~/.config/containers/systemd/stry/config
-vi app.env postgres.env minio.env ..
+vi app.env postgres.env typesense.env ..
 ```
 
 1. Make sure the project environment are in sync:
@@ -59,7 +59,7 @@ mkdir -p /home/user/data/stry
 systemctl --user daemon-reload
 ```
 
-1. Setup [MinIO](minio.md).
+1. Setup [Garage](garage.md).
 
 1. Rebuilt the containers:
 

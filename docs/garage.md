@@ -1,8 +1,8 @@
 ---
-title: MinIO
+title: Garage
 order: 3
 tags:
-  - minio
+  - garage
   - s3
   - storage
   - assets
