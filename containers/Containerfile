@@ -42,11 +42,12 @@ RUN apt-get update && apt-get upgrade -y \
         php8.4-memcached php8.4-redis php8.4-swoole \
         php8.4-gd php8.4-igbinary php8.4-imagick \
     && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
+    && curl -sLS https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o /usr/local/bin/mc \
+    && chmod +x /usr/local/bin/mc \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
     && \. "$HOME/.nvm/nvm.sh" && nvm install ${NODE_VERSION} \
     && npm install -g corepack@latest \
     && npm install -g svgo@latest \
-    && python -m pip install --user awscli \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
