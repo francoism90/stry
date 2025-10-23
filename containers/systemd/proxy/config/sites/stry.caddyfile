@@ -21,3 +21,8 @@ s3.stry.test {
     import tls
     reverse_proxy systemd-stry-rustfs:9000
 }
+
+fs.stry.test {
+    import tls
+    reverse_proxy systemd-stry-rustfs:9001
+}
