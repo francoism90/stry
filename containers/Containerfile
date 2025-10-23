@@ -2,7 +2,7 @@ FROM docker.io/library/ubuntu:latest AS builder
 
 ARG UID=1000
 ARG GID=$UID
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=17
 
 ENV DEBIAN_FRONTEND=noninteractive
