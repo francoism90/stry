@@ -1,8 +1,8 @@
 [Unit]
 Description=Stry container
-Requires=stry-redis.container stry-pgsql.container stry-mailpit.container stry-garage.container stry-typesense.container
-After=stry-redis.container stry-pgsql.container stry-mailpit.container stry-garage.container stry-typesense.container
-Wants=stry-reverb.container stry-queue.container stry-schedule.container stry-ssr.container
+Requires=stry-redis.container stry-pgsql.container stry-rustfs.container stry-typesense.container
+After=stry-redis.container stry-pgsql.container stry-rustfs.container stry-typesense.container
+Wants=stry-mailpit.container stry-reverb.container stry-queue.container stry-schedule.container
 
 [Container]
 Image=stry.build
@@ -19,4 +19,4 @@ ExposeHostPort=5173
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
-TimeoutStartSec=900
+TimeoutStartSec=300
