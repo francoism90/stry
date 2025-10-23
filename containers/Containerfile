@@ -46,6 +46,7 @@ RUN apt-get update && apt-get upgrade -y \
     && chmod +x /usr/local/bin/mc \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
     && \. "$HOME/.nvm/nvm.sh" && nvm install ${NODE_VERSION} \
+    && npm install -g npm@latest \
     && npm install -g corepack@latest \
     && npm install -g svgo@latest \
     && apt-get autoremove -y \
