@@ -42,7 +42,7 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
         ];
     }
 
