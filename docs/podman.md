@@ -59,9 +59,9 @@ mkdir -p /home/user/data/stry
 systemctl --user daemon-reload
 ```
 
-1. Setup [Garage](garage.md).
+1. Setup [S3 object-storage](s3.md).
 
-1. Rebuilt the containers:
+1. Rebuild the containers:
 
 > **NOTE**: The first start can take a significance of time. It will install the vendor packages, and run [storage-chown-by-maps](https://github.com/containers/podman/issues/13071).
 > It's important to not cancel this process, or increase the `timeout=*` value to a higher value if needed by the setup.
