@@ -37,7 +37,7 @@ cp -r ~/projects/stry/containers/systemd/stry ~/.config/containers/systemd/
 
 ```bash
 cd ~/.config/containers/systemd/stry/config
-vi app.env postgres.env minio.env ..
+vi app.env postgres.env typesense.env ..
 ```
 
 1. Make sure the project environment are in sync:
@@ -59,9 +59,9 @@ mkdir -p /home/user/data/stry
 systemctl --user daemon-reload
 ```
 
-1. Setup [MinIO](minio.md).
+1. Setup [S3 object-storage](s3.md).
 
-1. Rebuilt the containers:
+1. Rebuild the containers:
 
 > **NOTE**: The first start can take a significance of time. It will install the vendor packages, and run [storage-chown-by-maps](https://github.com/containers/podman/issues/13071).
 > It's important to not cancel this process, or increase the `timeout=*` value to a higher value if needed by the setup.

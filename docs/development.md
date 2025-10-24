@@ -49,7 +49,6 @@ php artisan storage:link
 php artisan key:generate
 php artisan migrate --seed
 php artisan google-fonts:fetch
-php artisan wayfinder:generate
 pnpm install
 ```
 

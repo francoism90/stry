@@ -11,4 +11,5 @@ Network=stry.network
 ExposeHostPort=6379
 
 [Service]
+Restart=always
 TimeoutStartSec=300
