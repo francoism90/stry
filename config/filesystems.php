@@ -101,18 +101,18 @@ return [
         'conversions' => [
             'driver' => 'scoped',
             'disk' => 's3',
-            'prefix' => 'assets',
+            'prefix' => 'conversions',
             'visibility' => 'public',
-            'throw' => true,
+            'throw' => false,
             'report' => true,
         ],
 
         'segments' => [
             'driver' => 'scoped',
             'disk' => 's3',
-            'prefix' => 'conversions',
+            'prefix' => 'segments',
             'visibility' => 'public',
-            'throw' => true,
+            'throw' => false,
             'report' => true,
         ],
 
@@ -121,7 +121,7 @@ return [
             'disk' => 's3',
             'prefix' => 'secrets',
             'visibility' => 'private',
-            'throw' => true,
+            'throw' => false,
             'report' => true,
         ],
 
