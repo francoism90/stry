@@ -188,18 +188,12 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        // Make sure key is included in the path
-        $path = $this->getPath($path);
-
-        return $this->getFilesystem()->temporaryUrl($path, now()->addDay());
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addDay());
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        // Make sure key is included in the path
-        $path = $this->getPath($path);
-
-        return $this->getSecretFilesystem()->temporaryUrl($path, now()->addDay());
+        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addDay());
     }
 
     public function getUrlResolver(?string $path = null): string
