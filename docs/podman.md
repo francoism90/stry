@@ -54,10 +54,17 @@ vi ~/projects/stry/.env
 
 ### Storage
 
-1. Make sure the data path (`DATA_PATH`) exists as defined in`app.env`:
+1. Make sure the data and import paths exists as defined in `app.env`:
 
 ```bash
-mkdir -p /home/user/data/stry
+mkdir -p /home/user/data/stry/{media,import}
+```
+
+1. When using SELinux, make sure to setup permissions:
+
+```bash
+sudo semanage fcontext -a -t container_file_t '/home/user/data/stry/import(/.*)?'
+sudo restorecon -R -v /home/user/data/stry/import
 ```
 
 1. Reload the container configurations on changes:
