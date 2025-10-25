@@ -61,7 +61,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         Pipeline::send($this->video)
             ->through([
                 GenerateVideoClipPlaylist::class,
-                // GenerateVideoPreviewPlaylist::class,
+                GenerateVideoPreviewPlaylist::class,
             ])
             ->thenReturn();
     }
