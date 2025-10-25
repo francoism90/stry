@@ -158,6 +158,11 @@ class Tag extends BaseTag implements HasMedia
         return true;
     }
 
+    public function makeSearchableUsing(TagCollection $models): TagCollection
+    {
+        return $models->loadMissing($this->with);
+    }
+
     public function toSearchableArray(): array
     {
         return [

@@ -258,6 +258,11 @@ class Video extends Model implements HasMedia
         return $this->state->equals(Verified::class);
     }
 
+    public function makeSearchableUsing(VideoCollection $models): VideoCollection
+    {
+        return $models->loadMissing($this->with);
+    }
+
     public function toSearchableArray(): array
     {
         return [

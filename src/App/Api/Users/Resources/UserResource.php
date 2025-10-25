@@ -17,8 +17,8 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
-            'avatar' => $this->avatar,
-            'name' => $this->name,
+            'name' => $this->whenAppended('name'),
+            'avatar' => $this->whenAppended('avatar'),
             $this->mergeWhen($request->user()?->can('update', $this), [
                 'email' => $this->whenAppended('email'),
                 'email_verified' => $this->whenAppended('email_verified'),

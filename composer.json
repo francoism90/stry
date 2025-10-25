@@ -45,7 +45,7 @@
         "barryvdh/laravel-ide-helper": "^3.6",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.7.2",
-        "laravel/boost": "^1.5.0",
+        "laravel/boost": "^1.5.1",
         "laravel/envoy": "^2.10.2",
         "laravel/pail": "^1.2.3",
         "laravel/pint": "^1.25.1",

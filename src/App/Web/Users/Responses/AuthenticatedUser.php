@@ -18,10 +18,13 @@ readonly class AuthenticatedUser implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        if (! $user = $this->user) {
+        if (! $this->user) {
             return null;
         }
 
-        return UserResource::make($user->loadMissing('permissions', 'roles'));
+        return UserResource::make($this->user
+            ->loadMissing('permissions', 'roles')
+            ->append('name')
+        );
     }
 }
