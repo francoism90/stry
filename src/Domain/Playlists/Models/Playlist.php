@@ -191,7 +191,7 @@ class Playlist extends Model
         // Make sure key is included in the path
         $path = $this->getPath($path);
 
-        return $this->getFilesystem()->temporaryUrl($path, now()->addMinutes(20));
+        return $this->getFilesystem()->temporaryUrl($path, now()->addDay());
     }
 
     public function getKeyUrlResolver(string $path): string
@@ -199,7 +199,7 @@ class Playlist extends Model
         // Make sure key is included in the path
         $path = $this->getPath($path);
 
-        return $this->getSecretFilesystem()->temporaryUrl($path, now()->addMinutes(20));
+        return $this->getSecretFilesystem()->temporaryUrl($path, now()->addDay());
     }
 
     public function getUrlResolver(?string $path = null): string

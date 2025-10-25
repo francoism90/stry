@@ -197,7 +197,7 @@ class Tag extends BaseTag implements HasMedia
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'avatar', 'thumb'))
+            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar', 'thumb'))
         )->shouldCache();
     }
 }
