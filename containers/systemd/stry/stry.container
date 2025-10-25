@@ -1,7 +1,7 @@
 [Unit]
 Description=Stry container
-Requires=stry-redis.container stry-pgsql.container stry-rustfs.container stry-typesense.container
-After=stry-redis.container stry-pgsql.container stry-rustfs.container stry-typesense.container
+After=stry-redis.container stry-pgsql.container stry-garage.container stry-typesense.container
+Requires=stry-redis.container stry-pgsql.container stry-garage.container stry-typesense.container
 Wants=stry-mailpit.container stry-reverb.container stry-queue.container stry-schedule.container
 
 [Container]
