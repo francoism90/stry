@@ -14,7 +14,7 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     /**
      * @var int
      */
-    public $tries = 1;
+    public $tries = 3;
 
     /**
      * @var int
@@ -42,7 +42,7 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
+            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(10),
         ];
     }
 
