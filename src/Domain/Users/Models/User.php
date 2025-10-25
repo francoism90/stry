@@ -22,7 +22,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -116,11 +118,22 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->withResponsiveImages()
             ->acceptsMimeTypes([
                 'image/avif',
-                'image/jpg',
+                'image/gif',
                 'image/jpeg',
+                'image/jpg',
                 'image/png',
+                'image/svg+xml',
+                'image/tiff',
                 'image/webp',
             ]);
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('thumb')
+            ->fit(Fit::Stretch, 1280, 720)
+            ->sharpen(10);
     }
 
     /**
@@ -197,7 +210,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMediaUrl('avatar')
+            get: fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar')
         )->shouldCache();
     }
 
@@ -212,13 +225,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return Attribute::make(
             get: fn () => $this->getAllPermissions()->pluck('name')
-        )->shouldCache();
-    }
-
-    protected function srcset(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->getFirstMedia('avatar')?->getSrcset()
         )->shouldCache();
     }
 }

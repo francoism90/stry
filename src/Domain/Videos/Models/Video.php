@@ -333,14 +333,7 @@ class Video extends Model implements HasMedia
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstTemporaryUrl(now()->addHour(), 'clips', 'thumb')
-        )->shouldCache();
-    }
-
-    protected function srcset(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => null
+            get: fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb')
         )->shouldCache();
     }
 

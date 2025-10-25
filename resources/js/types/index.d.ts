@@ -11,9 +11,9 @@ export type User = Model & {
   name: string
   email: string
   email_verified_at?: string | null
-  avatar?: AvatarProps['src'] | null
   roles?: string[]
   permissions?: string[]
+  thumb?: AvatarProps['src'] | null
 }
 
 export type Media = Model & {
@@ -33,9 +33,9 @@ export type Tag = Model & {
   description: string | null
   category: string
   type: string
-  srcset: string | undefined
   videos?: number
   related?: Tag[] | null
+  thumb?: AvatarProps['src'] | null
 }
 
 export type TagCollection = Omit<Paginator, 'data'> & {
@@ -56,7 +56,6 @@ export type Video = Model & {
   part: string | null
   captions: boolean | null
   thumb: AvatarProps['src'] | undefined
-  srcset: string | undefined
   preview: string | null
   duration: number | null
   timestamp: string | null
