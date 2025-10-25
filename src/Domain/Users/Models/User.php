@@ -210,7 +210,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar')
+            get: fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'avatar')
         )->shouldCache();
     }
 
