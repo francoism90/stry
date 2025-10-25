@@ -17,11 +17,10 @@ export type User = Model & {
 }
 
 export type Media = Model & {
-  name: string
-  file_name: string
-  file_size: string
-  mime_type: string
   asset: string | undefined
+  name: string
+  mime_type: string
+  file_size: string
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {

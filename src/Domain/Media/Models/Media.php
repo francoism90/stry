@@ -6,6 +6,7 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
@@ -61,5 +62,12 @@ class Media extends BaseMedia
     public function getRouteKeyName(): string
     {
         return 'uuid';
+    }
+
+    protected function asset(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => rescue(fn () => $this->getTemporaryUrl(now()->addDay())),
+        )->shouldCache();
     }
 }
