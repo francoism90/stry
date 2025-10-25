@@ -51,7 +51,7 @@ return [
             'driver' => 'local',
             'root' => sys_get_temp_dir(),
             'serve' => false,
-            'throw' => true,
+            'throw' => false,
             'report' => true,
         ],
 
@@ -59,7 +59,7 @@ return [
             'driver' => 'local',
             'root' => '/data/media',
             'serve' => false,
-            'throw' => true,
+            'throw' => false,
             'report' => true,
         ],
 
@@ -85,33 +85,16 @@ return [
             'report' => false,
         ],
 
-        'assets' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => 'assets',
-            'url' => env('AWS_URL').'/assets',
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-            'options' => [
-                'CacheControl' => 'public, max-age=259200, immutable',
-            ],
-        ],
-
         'conversions' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => 'conversions',
-            'url' => env('AWS_URL').'/conversions',
+            'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
+            'visibility' => 'private',
             'throw' => false,
             'report' => false,
             'options' => [
@@ -128,7 +111,7 @@ return [
             'url' => env('AWS_URL').'/segments',
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
+            'visibility' => 'private',
             'throw' => false,
             'report' => false,
             'options' => [
