@@ -14,27 +14,21 @@ tags:
 
 ## Installation
 
-1. Clone project to a working directory (i.e. `~/projects`):
+### Setup project
+
+Clone project to a working directory (i.e. `~/projects`):
 
 ```bash
 cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-1. Setup [Podman Quadlet](podman.md).
+### Podman
 
-1. Setup a [proxy](proxy.md).
+See [Podman Quadlet](podman.md) guide for details.
 
-1. See [interaction](interaction.md) for management.
+### Proxy
 
-1. See [configuration](configuration.md) for customizing.
+A proxy is required to interact with the container services.
 
-## Tips
-
-### Resource limiting
-
-You may need to limit the [resources](https://docs.podman.io/en/latest/markdown/podman-update.1.html#cpus-number) available for a container, this can be done realtime or by adding `PodmanArgs=--cpus=5` to the desired container file:
-
-```bash
-podman update systemd-stry-queue --cpus=5
-```
+See the [proxy](proxy.md) guide for details.

@@ -6,6 +6,7 @@ tags:
   - podman
   - devcontainer
   - boost
+  - ai
 ---
 
 ## Prerequisites
@@ -17,18 +18,22 @@ tags:
 
 ## Installation
 
-1. Clone project to a working directory (i.e. `~/projects`):
+### Setup project
+
+Clone project to a working directory (i.e. `~/projects`):
 
 ```bash
 cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-1. Setup [Podman Quadlet](podman.md).
+### Podman
+
+See [Podman Quadlet](podman.md) guide for details, and setup with the following adjustments:
 
 1. Change `CONTAINER_ENV` to `development` in `~/.config/containers/systemd/stry/config/app.env`.
 
-1. Add the `app` volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container`:
+1. Append the `app` volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container` containers:
 
 ```diff
 +Volume=${APP_PATH}:/app:rw,z,U
@@ -37,9 +42,11 @@ Volume=${DATA_PATH}:/data:rw,z,U
 
 **NOTE**: The volume `U` flag should only be appended in `stry.container`.
 
-1. Remove `Wants=` `stry-ssr.service` from any container file. This cannot be used on development.
+1. Remove `Wants=` `stry-ssr.container` from the same container files.
 
-1. Open the cloned project with VSCode as a devcontainer.
+### Using devcontainer
+
+Open the cloned project with VSCode as a devcontainer.
 
 1. Perform the following commands in the VSCode terminal:
 
@@ -52,9 +59,13 @@ php artisan google-fonts:fetch
 pnpm install
 ```
 
-1. Setup a [proxy](proxy.md).
+### Setup proxy
 
-1. Run the Vite watcher:
+Follow the [proxy](proxy.md) guide for more information.
+
+### Using watchers
+
+Run the Vite watcher:
 
 ```bash
 stry pnpm dev
@@ -69,6 +80,8 @@ php artisan ide-helper:generate
 php artisan ide-helper:meta
 php artisan ide-helper:models --nowrite
 ```
+
+## Laravel Boost
 
 To use [Laravel Boost](https://boost.laravel.com/installed):
 

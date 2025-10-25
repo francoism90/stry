@@ -18,7 +18,7 @@ class PlaylistKeyController extends Controller implements HasMiddleware
         return Config::array('playlist.middleware', []);
     }
 
-    public function __invoke(Playlist $playlist, string $path): StreamedResponse
+    public function __invoke(Playlist $playlist, string $path): string
     {
         Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
@@ -27,6 +27,6 @@ class PlaylistKeyController extends Controller implements HasMiddleware
 
         $path = $playlist->getPath($path);
 
-        return $playlist->getSecretFilesystem()->response($path);
+        return $playlist->getSecretFilesystem()->temporaryUrl($path, now()->addDay());
     }
 }

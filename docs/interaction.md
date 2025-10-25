@@ -20,6 +20,8 @@ To install, create a shell `alias`, e.g. when using [fish-shell](https://fishshe
 alias --save stry '~/projects/stry/bin/quadlet'
 ```
 
+## Usage
+
 This allows global interacting with Podman containers, using the same logic as Laravel Sail:
 
 ```fish
@@ -33,6 +35,8 @@ stry a videos:import
 stry redis flushall
 stry garage bucket list
 ```
+
+## Podman usage
 
 To interact with containers without the alias:
 

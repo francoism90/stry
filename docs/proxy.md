@@ -12,6 +12,8 @@ tags:
 
 ## Configure Proxy
 
+### Containers
+
 1. Setup the Caddy container:
 
 ```bash
@@ -26,12 +28,18 @@ cd ~/.config/containers/systemd/proxy/config
 vi Caddyfile sites/stry.caddy
 ```
 
-1. Start the proxy:
+## Usage
+
+To start the proxy:
 
 ```bash
 systemctl --user daemon-reload
 systemctl --user restart proxy
 ```
+
+## DNS
+
+> **TIP**: You may want to use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) when using a homelab, and rewrite `stry.test` & `*.stry.test` requests to your server instead.
 
 When running locally, make sure to append the following entries to your hosts-file (`/etc/hosts`):
 
@@ -40,10 +48,12 @@ When running locally, make sure to append the following entries to your hosts-fi
 ::1 stry.test ws.stry.test vite.stry.test s3.stry.test mc.stry.test
 ```
 
-> **TIP**: You may want to use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) when using a homelab, and rewrite `stry.test` & `*.stry.test` requests to your server instead.
+## Self-signed certificate
 
-1. Copy the generated Caddy CA, and import into your browsers certificate trust keychain:
+To make it appear as trusted, export the generated Caddy CA:
 
 ```bash
 podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/proxy.crt
 ```
+
+Finally, import the Caddy CA into your browsers certificate trust keychain.
