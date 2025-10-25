@@ -333,14 +333,14 @@ class Video extends Model implements HasMedia
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb')
+            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false)
         )->shouldCache();
     }
 
     protected function preview(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstPlaylist('preview')?->getUrl()
+            get: fn () => rescue(fn () => $this->getFirstPlaylist('preview')?->getUrl(), report: false)
         )->shouldCache();
     }
 

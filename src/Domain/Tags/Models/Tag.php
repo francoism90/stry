@@ -188,4 +188,11 @@ class Tag extends BaseTag implements HasMedia
             get: fn () => TagCollection::make($this->relates)->synonyms(),
         )->shouldCache();
     }
+
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => rescue($this->getFirstTemporaryUrl(now()->addWeek(), 'avatar', 'thumb'), report: false)
+        )->shouldCache();
+    }
 }
