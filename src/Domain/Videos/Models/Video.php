@@ -361,7 +361,7 @@ class Video extends Model implements HasMedia
     protected function timestamp(): Attribute
     {
         return Attribute::make(
-            get: fn () => duration($this->duration)
+            get: fn () => duration($this->durationInSeconds())
         )->shouldCache();
     }
 
