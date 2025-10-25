@@ -51,7 +51,7 @@ return [
             'driver' => 'local',
             'root' => env('TRANSCODES_PATH', sys_get_temp_dir()),
             'serve' => false,
-            'throw' => false,
+            'throw' => true,
             'report' => true,
         ],
 
@@ -59,7 +59,7 @@ return [
             'driver' => 'local',
             'root' => env('MEDIA_PATH', '/data/media'),
             'serve' => false,
-            'throw' => false,
+            'throw' => true,
             'report' => true,
         ],
 
@@ -76,7 +76,7 @@ return [
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => 'local',
+            'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'temporary_url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
