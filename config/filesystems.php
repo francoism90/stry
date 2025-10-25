@@ -49,7 +49,7 @@ return [
 
         'transcodes' => [
             'driver' => 'local',
-            'root' => sys_get_temp_dir(),
+            'root' => env('TRANSCODES_PATH', sys_get_temp_dir()),
             'serve' => false,
             'throw' => false,
             'report' => true,
@@ -57,7 +57,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => '/data/media',
+            'root' => env('MEDIA_PATH', '/data/media'),
             'serve' => false,
             'throw' => false,
             'report' => true,
@@ -65,7 +65,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => '/data/import',
+            'root' => env('IMPORT_PATH', '/data/import'),
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -76,13 +76,14 @@ return [
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
+            'bucket' => 'local',
             'url' => env('AWS_URL'),
+            'temporary_url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
             'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
         'conversions' => [
@@ -109,14 +110,15 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => 'segments',
-            'url' => env('AWS_URL').'/segments',
+            'url' => env('AWS_URL'),
+            'temporary_url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=259200, immutable',
+                'CacheControl' => 'private, max-age=259200, immutable',
             ],
         ],
 
@@ -126,14 +128,15 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => 'secrets',
-            'url' => env('AWS_URL').'/secrets',
+            'url' => env('AWS_URL'),
+            'temporary_url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=259200, immutable',
+                'CacheControl' => 'private, max-age=259200, immutable',
             ],
         ],
 
