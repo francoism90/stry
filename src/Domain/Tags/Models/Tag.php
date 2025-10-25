@@ -18,7 +18,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Scout\Searchable;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\Tag as BaseTag;
 
 class Tag extends BaseTag implements HasMedia
@@ -88,7 +90,7 @@ class Tag extends BaseTag implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('thumb')
+            ->addMediaCollection('avatar')
             ->useDisk('conversions')
             ->storeConversionsOnDisk('conversions')
             ->singleFile()
@@ -103,6 +105,14 @@ class Tag extends BaseTag implements HasMedia
                 'image/tiff',
                 'image/webp',
             ]);
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('thumb')
+            ->fit(Fit::Stretch, 1280, 720)
+            ->sharpen(10);
     }
 
     public function videos(): MorphToMany

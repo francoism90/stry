@@ -6,6 +6,8 @@ stry is a video-on-demand (VOD) media distribution system that allows users to a
 
 It uses the [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls) package, offering built-in HLS playlist generation with bitrate support, segment encryption and authorization.
 
+This is a personal project, that can be either use personally or as a reference guide for building your own streaming platform.
+
 ## Demo
 
 For WIP screenshots, please checkout: <https://github.com/francoism90/.github/tree/main/stry>
@@ -28,24 +30,11 @@ It's build around the following stack:
 - [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
 - `git`, `bash`, etc.
 
-## Installation
+## Documentation
 
-- Clone the repository, for example to `~/projects`:
+A documentation site is still in the works, however most things are documented as markdown inside `docs` folder of this repo.
 
-```bash
-cd ~/projects
-git https://github.com/francoism90/stry.git
-```
-
-- Setup a local data path, with SELinux container permissions:
-
-```bash
-mkdir -p /home/user/data/stry/{media,import}
-sudo semanage fcontext -a -t container_file_t '/home/user/data/stry/import(/.*)?'
-sudo restorecon -R -v /home/user/data/stry/import
-```
-
-- Setup for [production](docs/production.md) or [development](docs/development.md).
+Quick start by choosing between [production](docs/production.md) or [development](docs/development.md).
 
 ## Usage
 

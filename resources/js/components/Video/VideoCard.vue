@@ -31,10 +31,9 @@ const tags = computed(() => props.item.tags?.slice(0, 4).map((tag) => tag.name) 
       @touchstart.passive="preview = true"
       @touchend.passive="preview = false"
     >
-      <div class="absolute inset-0 z-0 size-full bg-gradient-to-t from-neutral-900/70 to-transparent" />
+      <div class="absolute inset-0 z-0 size-full bg-linear-to-t from-neutral-900/70 to-transparent" />
 
       <img
-        :srcset="item.srcset"
         :src="item.thumb"
         :alt="item.title"
         class="h-56 max-h-56 w-full object-fill"

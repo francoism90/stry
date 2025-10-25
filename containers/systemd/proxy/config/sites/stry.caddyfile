@@ -19,10 +19,12 @@ ws.stry.test {
 
 s3.stry.test {
     import tls
-    reverse_proxy systemd-stry-rustfs:9000
+    import compress
+    reverse_proxy systemd-stry-garage:3900
 }
 
-fs.stry.test {
+web.stry.test {
     import tls
-    reverse_proxy systemd-stry-rustfs:9001
+    import compress
+    reverse_proxy systemd-stry-garage:3902
 }

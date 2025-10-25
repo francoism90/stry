@@ -394,6 +394,30 @@ elif [ "$1" == "psql" ]; then
         container_is_not_running
     fi
 
+# Initiate a Redis CLI terminal session within the "redis" container...
+elif [ "$1" == "redis" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(systemd-stry-redis redis-cli)
+    else
+        container_is_not_running
+    fi
+
+# Initiate a Garage CLI terminal session within the "garage" container...
+elif [ "$1" == "garage" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=(systemd-stry-garage /garage)
+    else
+        container_is_not_running
+    fi
+
 # Initiate a Bash shell within the application container...
 elif [ "$1" == "shell" ] || [ "$1" == "bash" ]; then
     shift 1
@@ -414,18 +438,6 @@ elif [ "$1" == "root-shell" ] || [ "$1" == "root-bash" ]; then
         ARGS+=(exec -u root)
         [ ! -t 0 ] && ARGS+=(-T)
         ARGS+=("$APP_SERVICE" sh "$@")
-    else
-        container_is_not_running
-    fi
-
-# Initiate a Redis CLI terminal session within the "redis" container...
-elif [ "$1" == "redis" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=(systemd-stry-redis sh)
     else
         container_is_not_running
     fi

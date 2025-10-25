@@ -1,0 +1,18 @@
+{
+    "CORSRules": [
+        {
+            "AllowedOrigins": ["https://stry.test"],
+            "AllowedHeaders": ["*"],
+            "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+            "MaxAgeSeconds": 3000,
+            "ExposeHeaders": ["x-amz-server-side-encryption"]
+        },
+        {
+            "AllowedOrigins": ["*"],
+            "AllowedHeaders": ["Authorization"],
+            "AllowedMethods": ["GET"],
+            "MaxAgeSeconds": 3000,
+            "ExposeHeaders": ["Content-Range", "Range"]
+        }
+    ]
+}
