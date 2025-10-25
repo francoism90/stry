@@ -4,7 +4,7 @@ Description=Garage container
 [Container]
 Image=docker.io/dxflrs/garage:v2.1.0
 AutoUpdate=registry
-#LogDriver=none
+LogDriver=none
 Volume=%h/.config/containers/systemd/stry/config/garage.toml:/etc/garage.toml:rw,Z,U
 Volume=stry-garage-meta:/var/lib/garage/meta:rw,Z,U
 Volume=stry-garage-data:/var/lib/garage/data:rw,Z,U
