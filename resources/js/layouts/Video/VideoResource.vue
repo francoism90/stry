@@ -29,7 +29,6 @@ const tabs = ref<NavigationMenuItem[]>([
 ])
 
 const details = computed<NavigationMenuItem[]>(() => [
-  { label: 'Added By', value: props.video.user?.name ?? 'N/A' },
   { label: 'Updated At', value: useDateFormat(props.video.updated_at, 'YYYY-MM-DD HH:mm:ss').value },
   { label: 'Duration', value: props.video.timestamp ?? 'N/A' },
 ])
