@@ -11,10 +11,6 @@ class SyncPlaylistProgress
 {
     public function handle(VideoHasBeenViewedEvent $event): void
     {
-        app(SetVideoProgress::class)->handle(
-            video: $event->video,
-            user: $event->user,
-            attributes: $event->attributes,
-        );
+        app(SetVideoProgress::class)->handle($event->video, $event->user, $event->attributes);
     }
 }

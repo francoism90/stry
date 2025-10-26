@@ -13,20 +13,27 @@ class GetVideoProgress
 {
     public function handle(Video $video, User $user): int|float
     {
-        // Find by cache first
+        // Generate a unique cache key for the user's video progress
         $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
 
-        if (Cache::has($cacheKey)) {
-            return round(data_get(Cache::get($cacheKey, []), 'time') ?: 0, 2);
+        // Get the existing progress record
+        $current = Cache::get($cacheKey, 0);
+
+        // Return the cached progress if it exists
+        if ($current > 0) {
+            return round($current, 2);
         }
 
-        // Ensure the user has a viewed group
+        // If not cached, try to retrieve from the database
         $group = $user->findOrCreateGroup(GroupType::Viewed);
 
         // Find the video in the viewed group
         $record = $group->videos()->find($video);
 
-        // Get the progress record for the video
-        return round(data_get($record?->pivot?->options ?? [], 'time') ?: 0, 2);
+        // Extract the progress time from the pivot options
+        $current = data_get($record?->pivot?->options ?? [], 'time', 0);
+
+        // Return the progress rounded to two decimal places
+        return round($current, 2);
     }
 }
