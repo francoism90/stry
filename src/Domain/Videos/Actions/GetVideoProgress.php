@@ -34,6 +34,6 @@ class GetVideoProgress
         $current = data_get($record?->pivot?->options ?? [], 'time', 0);
 
         // Return the progress rounded to two decimal places
-        return round($current, 2);
+        return round($current ?: 0, 2);
     }
 }
