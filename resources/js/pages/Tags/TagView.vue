@@ -25,7 +25,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
 
   <PageFilters
     :title="tag.name"
-    headline="Tags"
+    :headline="tag.type"
     :filters
     :filter
   />
