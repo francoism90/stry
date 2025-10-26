@@ -17,7 +17,7 @@ class GetVideoProgress
         $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
 
         // Get the existing progress record
-        $current = Cache::get($cacheKey, 0);
+        $current = (float) Cache::get($cacheKey, 0);
 
         // Return the cached progress if it exists
         if ($current > 0) {

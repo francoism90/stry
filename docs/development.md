@@ -46,9 +46,9 @@ Volume=${DATA_PATH}:/data:rw,z,U
 
 ### Using devcontainer
 
-Open the cloned project with VSCode as a devcontainer.
+Open the cloned project with VSCode as a devcontainer (recommended) or enter the main container using `podman exec -ti systemd-stry /bin/bash`.
 
-1. Perform the following commands in the VSCode terminal:
+1. Perform the following commands:
 
 ```bash
 composer install

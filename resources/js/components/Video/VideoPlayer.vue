@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PageSection from '@/components/Ui/PageSection.vue'
 import { usePlayer } from '@/composables/player'
-import { useThrottleFn } from '@vueuse/core'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
 import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
@@ -9,19 +8,19 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { src, captions, progress, record } = usePlayer()
-
-const sessionHandler = useThrottleFn((time: number | null) => record(time), 2500)
+const { src, captions, progress, store } = usePlayer()
 
 const listener = () =>
   player.value?.subscribe(({ canSeek, currentTime }) => {
+    // Seek to the stored progress time only once
     if (!seeked.value && canSeek) {
       player.value!.currentTime = progress.value || 0
       seeked.value = true
     }
 
+    // Store the current time periodically
     if (seeked.value && currentTime > 0) {
-      sessionHandler(Math.round(currentTime * 100) / 100)
+      store(currentTime)
     }
 
     return () => player.value

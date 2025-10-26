@@ -18,7 +18,7 @@ class SetVideoProgress
             $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
 
             // Extract the progress time from attributes
-            $time = data_get($attributes, 'time', 0);
+            $time = (float) data_get($attributes, 'time', 0);
 
             // If cache is missing and time is greater than 0, mark the video as viewed
             if (Cache::missing($cacheKey) && $time > 0) {

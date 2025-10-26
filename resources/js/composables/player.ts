@@ -2,6 +2,7 @@ import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/P
 import type { Media, Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
+import { useThrottleFn } from '@vueuse/core'
 import { computed, readonly } from 'vue'
 
 export function usePlayer() {
@@ -12,11 +13,15 @@ export function usePlayer() {
   const ready = computed(() => state.value?.valid && state.value?.asset)
   const src = computed(() => (ready.value ? state.value?.asset : null))
 
-  const record = async (time: number | null) => {
-    if (state.value && state.value.id) {
-      return http.post(PlaylistSessionController.url(state.value.id), { time })
+  const store = useThrottleFn(async (value: number) => {
+    // Round to 2 decimal places
+    const time = Math.round(value * 100) / 100
+
+    // Only store if changed
+    if (state.value && progress.value !== time) {
+      await http.post(PlaylistSessionController.url(state.value.id), { time })
     }
-  }
+  }, 2500)
 
   return {
     state: readonly(state),
@@ -24,6 +29,6 @@ export function usePlayer() {
     ready,
     src,
     progress,
-    record,
+    store,
   }
 }
