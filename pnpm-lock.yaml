@@ -19,7 +19,7 @@ importers:
         version: 0.1.7
       '@nuxt/ui':
         specifier: ^4.1.0
-        version: 4.1.0(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.11(vue@3.5.22(typescript@5.9.3)))(axios@1.12.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)
+        version: 4.1.0(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.11(vue@3.5.22(typescript@5.9.3)))(axios@1.13.0)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)
       '@tailwindcss/vite':
         specifier: ^4.1.16
         version: 4.1.16(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))
@@ -27,8 +27,8 @@ importers:
         specifier: ^13.9.0
         version: 13.9.0(vue@3.5.22(typescript@5.9.3))
       axios:
-        specifier: ^1.12.2
-        version: 1.12.2
+        specifier: ^1.13.0
+        version: 1.13.0
       hls.js:
         specifier: ^1.6.13
         version: 1.6.13
@@ -2130,8 +2130,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.12.2:
-    resolution: {integrity: sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==}
+  axios@1.13.0:
+    resolution: {integrity: sha512-zt40Pz4zcRXra9CVV31KeyofwiNvAbJ5B6YPz9pMJ+yOSLikvPT4Yi5LjfgjRa9CawVYBaD1JQzIVcIvBejKeA==}
 
   babel-plugin-polyfill-corejs2@0.4.14:
     resolution: {integrity: sha512-Co2Y9wX854ts6U8gAAPXfn0GmAyctHuK8n0Yhfjd6t30g7yvKjspvvOo9yG+z52PZRgFErt7Ka2pYnXCjLKEpg==}
@@ -5847,7 +5847,7 @@ snapshots:
   '@inertiajs/core@2.2.11':
     dependencies:
       '@types/lodash-es': 4.17.12
-      axios: 1.12.2
+      axios: 1.13.0
       lodash-es: 4.17.21
       qs: 6.14.0
     transitivePeerDependencies:
@@ -6067,7 +6067,7 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 3.10.0
 
-  '@nuxt/ui@4.1.0(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.11(vue@3.5.22(typescript@5.9.3)))(axios@1.12.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)':
+  '@nuxt/ui@4.1.0(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.11(vue@3.5.22(typescript@5.9.3)))(axios@1.13.0)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)':
     dependencies:
       '@ai-sdk/vue': 2.0.80(vue@3.5.22(typescript@5.9.3))(zod@4.1.11)
       '@iconify/vue': 5.0.0(vue@3.5.22(typescript@5.9.3))
@@ -6085,7 +6085,7 @@ snapshots:
       '@tanstack/vue-virtual': 3.13.12(vue@3.5.22(typescript@5.9.3))
       '@unhead/vue': 2.0.19(vue@3.5.22(typescript@5.9.3))
       '@vueuse/core': 13.9.0(vue@3.5.22(typescript@5.9.3))
-      '@vueuse/integrations': 13.9.0(axios@1.12.2)(change-case@5.4.4)(fuse.js@7.1.0)(vue@3.5.22(typescript@5.9.3))
+      '@vueuse/integrations': 13.9.0(axios@1.13.0)(change-case@5.4.4)(fuse.js@7.1.0)(vue@3.5.22(typescript@5.9.3))
       colortranslator: 5.0.0
       consola: 3.4.2
       defu: 6.1.4
@@ -6902,13 +6902,13 @@ snapshots:
       '@vueuse/shared': 13.9.0(vue@3.5.22(typescript@5.9.3))
       vue: 3.5.22(typescript@5.9.3)
 
-  '@vueuse/integrations@13.9.0(axios@1.12.2)(change-case@5.4.4)(fuse.js@7.1.0)(vue@3.5.22(typescript@5.9.3))':
+  '@vueuse/integrations@13.9.0(axios@1.13.0)(change-case@5.4.4)(fuse.js@7.1.0)(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       '@vueuse/core': 13.9.0(vue@3.5.22(typescript@5.9.3))
       '@vueuse/shared': 13.9.0(vue@3.5.22(typescript@5.9.3))
       vue: 3.5.22(typescript@5.9.3)
     optionalDependencies:
-      axios: 1.12.2
+      axios: 1.13.0
       change-case: 5.4.4
       fuse.js: 7.1.0
 
@@ -7021,7 +7021,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@1.12.2:
+  axios@1.13.0:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
@@ -8249,7 +8249,7 @@ snapshots:
 
   laravel-precognition@0.7.3:
     dependencies:
-      axios: 1.12.2
+      axios: 1.13.0
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - debug
