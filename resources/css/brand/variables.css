@@ -4,4 +4,5 @@
   --ui-secondary: var(--ui-color-secondary-300);
   --ui-border-accented: var(--ui-color-neutral-800);
   --ui-divider-symbol: '·';
+  --ui-container: var(--container-5xl);
 }

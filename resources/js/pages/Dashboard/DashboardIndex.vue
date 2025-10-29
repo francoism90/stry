@@ -9,5 +9,11 @@ defineOptions({ layout: [DefaultLayout, DashboardLayout] })
 <template>
   <Head title="Library" />
 
-  <div>foo</div>
+  <UPage>
+    <UPageBody>
+      <UContainer>
+        <UPageHeader title="Library" />
+      </UContainer>
+    </UPageBody>
+  </UPage>
 </template>
