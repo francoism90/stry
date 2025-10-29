@@ -11,7 +11,7 @@ const items: NavigationMenuItem[] = [
   {
     label: 'Library',
     to: '/library',
-    icon: 'i-lucide-book',
+    icon: 'i-lucide-library',
   },
   {
     label: 'Profile',
@@ -22,7 +22,10 @@ const items: NavigationMenuItem[] = [
 </script>
 
 <template>
-  <UDashboardNavbar :toggle="false">
+  <UDashboardNavbar
+    :toggle="false"
+    :ui="{ root: 'mx-auto w-full max-w-(--ui-container) bg-default' }"
+  >
     <template #left>
       <ULink to="/">
         <AppLogo />
