@@ -14,9 +14,10 @@ use Illuminate\Contracts\Container\ContextualAttribute;
 #[Attribute(Attribute::TARGET_PARAMETER)]
 class QueryParameter implements ContextualAttribute
 {
-    public function __construct(public string $parameter)
-    {
-    }
+    public function __construct(
+        public string $parameter,
+        public mixed $default = null,
+    ) {}
 
     /**
      * Resolve the query parameter from the request.
@@ -27,6 +28,6 @@ class QueryParameter implements ContextualAttribute
      */
     public static function resolve(self $attribute, Container $container): mixed
     {
-        return $container->make('request')->safe()->query($attribute->parameter);
+        return $container->make('request')->query($attribute->parameter, $attribute->default);
     }
 }
