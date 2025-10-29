@@ -64,7 +64,7 @@ export default defineConfig(({ mode }) => {
           pageHeader: {
             slots: {
               root: 'border-0 py-2',
-              title: 'font-serif text-xl font-semibold sm:text-2xl',
+              title: 'font-serif text-xl font-bold sm:text-2xl',
             },
           },
         },
