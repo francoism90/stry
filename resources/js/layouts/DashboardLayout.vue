@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import DashboardFooter from '@/components/Dashboard/DashboardFooter.vue'
+import DashboardNavigation from '@/components/Dashboard/DashboardNavigation.vue'
 </script>
 
 <template>
   <UDashboardGroup>
     <UDashboardPanel id="dashboard">
-      <template #body>
-        <slot />
+      <template #header>
+        <DashboardNavigation />
       </template>
 
-      <template #footer>
-        <DashboardFooter />
+      <template #body>
+        <slot />
       </template>
     </UDashboardPanel>
   </UDashboardGroup>
