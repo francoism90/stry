@@ -1,44 +1,13 @@
 <script setup lang="ts">
-import PageSection from '@/components/Ui/PageSection.vue'
-import VideoCarousel from '@/components/Video/VideoCarousel.vue'
-import type { Video } from '@/types'
-import { Deferred } from '@inertiajs/vue3'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import { Head } from '@inertiajs/vue3'
 
-interface Props {
-  recommended?: Video[]
-  newest?: Video[]
-  watching?: Video[]
-}
-
-defineProps<Props>()
+defineOptions({ layout: [DefaultLayout, DashboardLayout] })
 </script>
 
 <template>
-  <UPageBody>
-    <Deferred :data="['recommended', 'newest', 'watching']">
-      <template #fallback>
-        <div class="sr-only">Loading sections...</div>
-      </template>
+  <Head title="Library" />
 
-      <PageSection class="gap-8">
-        <VideoCarousel
-          label="Made for You"
-          :items="recommended"
-          :actions="[{ label: 'Show All', to: '/videos', trailingIcon: 'i-lucide-chevron-right' }]"
-        />
-
-        <VideoCarousel
-          label="Continue Watching"
-          :items="watching"
-          :actions="[{ label: 'Show All', to: '/history', trailingIcon: 'i-lucide-chevron-right' }]"
-        />
-
-        <VideoCarousel
-          label="New Releases"
-          :items="newest"
-          :actions="[{ label: 'Show All', to: '/videos?filter=newest', trailingIcon: 'i-lucide-chevron-right' }]"
-        />
-      </PageSection>
-    </Deferred>
-  </UPageBody>
+  <div>foo</div>
 </template>

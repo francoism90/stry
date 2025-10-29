@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import AppHeader from '@/components/Ui/AppHeader.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
@@ -15,9 +14,8 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <UApp>
-    <ServiceWorker />
-    <AppHeader />
     <UMain>
+      <ServiceWorker />
       <slot />
     </UMain>
   </UApp>
