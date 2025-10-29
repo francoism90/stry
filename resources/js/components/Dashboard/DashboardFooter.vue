@@ -29,7 +29,7 @@ const items: NavigationMenuItem[] = [
   <UFooter :ui="{ root: 'border-t border-default bg-default', container: 'py-0 lg:py-0', center: 'my-0', left: 'mt-0' }">
     <UNavigationMenu
       :items="items"
-      :ui="{ list: 'gap-6', link: 'flex-col' }"
+      :ui="{ list: 'gap-3 lg:gap-6', link: 'flex-col' }"
       variant="link"
     />
   </UFooter>
