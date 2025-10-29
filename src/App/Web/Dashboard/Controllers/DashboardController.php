@@ -27,12 +27,11 @@ class DashboardController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(VideoIndexRequest $request, VideoCollectionProperty $items): Response
+    public function __invoke(VideoCollectionProperty $items): Response
     {
         Gate::authorize('viewAny', Video::class);
 
-        return Inertia::render('Dashboard/DashboardIndex', [
-            'items' => $items
-        ]);
+        return Inertia::render('Dashboard/DashboardIndex')
+            ->with($items);
     }
 }

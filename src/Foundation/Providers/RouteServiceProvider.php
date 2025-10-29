@@ -8,6 +8,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+        $this->configureConstraints();
     }
 
     protected function configureRateLimiting(): void
@@ -32,5 +34,10 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('none', function (Request $request) {
             return Limit::none();
         });
+    }
+
+    protected function configureConstraints(): void
+    {
+        Route::pattern('search', '[A-Za-z0-9-_]+');
     }
 }

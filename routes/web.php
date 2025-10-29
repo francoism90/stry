@@ -12,7 +12,7 @@ use App\Web\Videos\Controllers\VideoPlaylistController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard
-Route::get('/{filter?}', DashboardController::class)->name('home');
+Route::get('/', DashboardController::class)->name('home');
 
 // // Profile
 // Route::get('/profile', ProfileController::class)->name('profile');
