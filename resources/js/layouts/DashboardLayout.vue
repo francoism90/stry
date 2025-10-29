@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import DashboardFooter from '@/components/Dashboard/DashboardFooter.vue'
+</script>
 
 <template>
   <UDashboardGroup>
@@ -12,10 +14,16 @@
             <UDashboardSearchButton />
           </template>
         </UDashboardNavbar>
+
+        <UDashboardToolbar />
       </template>
 
       <template #body>
         <slot />
+      </template>
+
+      <template #footer>
+        <DashboardFooter />
       </template>
     </UDashboardPanel>
   </UDashboardGroup>
