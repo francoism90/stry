@@ -27,6 +27,6 @@ class QueryParameter implements ContextualAttribute
      */
     public static function resolve(self $attribute, Container $container): mixed
     {
-        return $container->make('request')->query($attribute->parameter);
+        return $container->make('request')->safe()->query($attribute->parameter);
     }
 }
