@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PageFilters from '@/components/Ui/PageFilters.vue'
+import PageHeader from '@/components/Ui/PageHeader.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagCollection from '@/layouts/Tag/TagCollection.vue'
 import { Head } from '@inertiajs/vue3'
@@ -18,7 +18,7 @@ defineProps<Props>()
 <template>
   <Head title="Tags" />
 
-  <PageFilters
+  <PageHeader
     title="Overview"
     headline="Tags"
     :filters

@@ -32,9 +32,9 @@ export type Tag = Model & {
   description: string | null
   category: string
   type: string
-  videos?: number
-  related?: Tag[] | null
   thumb?: AvatarProps['src'] | null
+  related?: Tag[] | null
+  videos?: number
 }
 
 export type TagCollection = Omit<Paginator, 'data'> & {

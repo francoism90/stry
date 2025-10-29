@@ -58,15 +58,27 @@ export default defineConfig(({ mode }) => {
             secondary: 'gray',
             neutral: 'zinc',
           },
-          pageBody: {
-            base: 'mt-6 space-y-2 pb-16',
-          },
           container: {
             base: 'max-w-6xl',
           },
           input: {
             slots: {
               root: 'w-full',
+            },
+          },
+          button: {
+            slots: {
+              // base: 'bg-neutral-800/40 hover:bg-neutral-800/60',
+            },
+          },
+          pageBody: {
+            base: 'mt-6 space-y-2 pb-16',
+          },
+          pageHeader: {
+            slots: {
+              root: 'pt-0 pb-4',
+              headline: 'mb-0',
+              title: 'line-clamp-2 font-serif text-lg font-semibold tracking-tight sm:text-xl',
             },
           },
         },

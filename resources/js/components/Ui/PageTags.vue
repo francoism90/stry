@@ -3,14 +3,14 @@ import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 
 interface Props {
-  items: Tag[] | null
+  items?: Tag[] | null
 }
 
 defineProps<Props>()
 </script>
 
 <template>
-  <div
+  <nav
     v-if="items?.length"
     class="flex flex-wrap gap-1 py-2"
   >
@@ -25,5 +25,5 @@ defineProps<Props>()
         variant="soft"
       />
     </ULink>
-  </div>
+  </nav>
 </template>

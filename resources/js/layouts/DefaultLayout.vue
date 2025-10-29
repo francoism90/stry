@@ -16,13 +16,9 @@ import { Head } from '@inertiajs/vue3'
 
   <UApp>
     <ServiceWorker />
-
+    <AppHeader />
     <UMain>
-      <AppHeader />
-
-      <UContainer class="contain-inline-size contain-layout contain-paint contain-style">
-        <slot />
-      </UContainer>
+      <slot />
     </UMain>
   </UApp>
 </template>
