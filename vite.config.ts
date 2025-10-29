@@ -67,6 +67,16 @@ export default defineConfig(({ mode }) => {
               title: 'font-serif text-xl font-bold sm:text-2xl',
             },
           },
+          dashboardPanel: {
+            slots: {
+              body: 'pt-4 sm:pt-4',
+            },
+          },
+          dashboardToolbar: {
+            slots: {
+              root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
+            },
+          },
         },
       }),
       VitePWA({

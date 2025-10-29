@@ -12,16 +12,16 @@ use App\Web\Videos\Controllers\VideoPlaylistController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard
-Route::get('/', DashboardController::class)->name('home');
+Route::get('/{filter?}', DashboardController::class)->name('home');
 
-// Profile
-Route::get('/profile', ProfileController::class)->name('profile');
-Route::get('/history', HistoryController::class)->name('history');
+// // Profile
+// Route::get('/profile', ProfileController::class)->name('profile');
+// Route::get('/history', HistoryController::class)->name('history');
 
-// Tags
-Route::resource('tags', TagController::class);
+// // Tags
+// Route::resource('tags', TagController::class);
 
-// Videos
-Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class);
-Route::resource('videos.playlists', VideoPlaylistController::class);
+// // Videos
+// Route::resource('videos', VideoController::class);
+// Route::resource('videos.media', VideoMediaController::class);
+// Route::resource('videos.playlists', VideoPlaylistController::class);

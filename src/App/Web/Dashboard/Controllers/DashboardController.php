@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
+use App\Api\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Resources\VideoResource;
+use App\Web\Videos\Responses\VideoCollectionProperty;
+use App\Web\Videos\Responses\VideoFilterProperty;
 use App\Web\Videos\Responses\VideoSectionCollection;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -22,14 +27,12 @@ class DashboardController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(): Response
+    public function __invoke(VideoIndexRequest $request, VideoCollectionProperty $items): Response
     {
         Gate::authorize('viewAny', Video::class);
 
         return Inertia::render('Dashboard/DashboardIndex', [
-            'recommended' => Inertia::defer(fn () => new VideoSectionCollection, 'sections')->deepMerge()->matchOn('data.id'),
-            'watching' => Inertia::defer(fn () => new VideoSectionCollection(type: 'watching'), 'sections')->deepMerge()->matchOn('data.id'),
-            'newest' => Inertia::defer(fn () => new VideoSectionCollection(type: 'newest'), 'sections')->deepMerge()->matchOn('data.id'),
+            'items' => $items
         ]);
     }
 }

@@ -6,7 +6,7 @@ namespace Domain\Videos\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum VideoType: string implements Enumerable
+enum VideoOrder: string implements Enumerable
 {
     case Newest = 'newest';
     case Ordered = 'ordered';
