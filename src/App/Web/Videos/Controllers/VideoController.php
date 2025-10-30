@@ -35,35 +35,6 @@ class VideoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(VideoIndexRequest $request): Response
-    {
-        Gate::authorize('viewAny', Video::class);
-
-        return Inertia::render('Videos/VideoIndex', [
-            'search' => $request->safe()->input('search'),
-            'filter' => $request->safe()->input('filter'),
-            'filters' => fn () => new VideoTypeCollection,
-            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
-                ->tap(new VideoSearchScope(type: $request->safe()->input('filter')))
-                ->simplePaginate(24)
-            )),
-        ]);
-    }
-
-    public function store(Request $request): Response
-    {
-        Gate::authorize('create', Video::class);
-
-        abort(404);
-    }
-
-    public function create(): Response
-    {
-        Gate::authorize('create', Video::class);
-
-        abort(404);
-    }
-
     public function show(Video $video, Request $request): Response
     {
         Gate::authorize('view', $video);

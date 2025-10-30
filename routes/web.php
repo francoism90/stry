@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Route;
 // Dashboard
 Route::get('/', DashboardController::class)->name('home');
 
-// // Profile
+// Profile
 // Route::get('/profile', ProfileController::class)->name('profile');
 // Route::get('/history', HistoryController::class)->name('history');
 
-// // Tags
-// Route::resource('tags', TagController::class);
+// Tags
+Route::resource('tags', TagController::class)->except('create', 'store');
 
-// // Videos
-// Route::resource('videos', VideoController::class);
+// Videos
+Route::resource('videos', VideoController::class)->except('index', 'create', 'store');
 // Route::resource('videos.media', VideoMediaController::class);
 // Route::resource('videos.playlists', VideoPlaylistController::class);

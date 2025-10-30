@@ -6,6 +6,7 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Shared\Responses\CollectionFilters;
 use App\Web\Videos\Responses\VideoCollectionProperty;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
@@ -24,10 +25,11 @@ class DashboardController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
-    public function __invoke(VideoIndexRequest $request, VideoCollectionProperty $collection): Response
+    public function __invoke(VideoIndexRequest $request, CollectionFilters $filters): Response
     {
         Gate::authorize('viewAny', Video::class);
 
@@ -38,7 +40,7 @@ class DashboardController extends Controller implements HasMiddleware
         return Inertia::render('Dashboard/DashboardIndex', [
             'orders' => fn () => VideoOrder::options(),
             'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
-            $collection,
+            $filters,
         ]);
     }
 }

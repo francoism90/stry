@@ -50,16 +50,6 @@ class TagController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function store(Request $request): Response
-    {
-        abort(404);
-    }
-
-    public function create(): Response
-    {
-        abort(404);
-    }
-
     public function show(Tag $tag, VideoIndexRequest $request): Response
     {
         Gate::authorize('view', $tag);
