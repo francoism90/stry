@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import DashboardNavigation from '@/components/Dashboard/DashboardNavigation.vue'
+import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue'
 </script>
 
 <template>
   <UDashboardGroup>
     <UDashboardPanel id="dashboard">
       <template #header>
-        <DashboardNavigation />
+        <DashboardNavbar />
       </template>
 
       <template #body>
