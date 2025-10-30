@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoCollectionProperty;
-use App\Web\Videos\Responses\VideoFilterProperty;
-use App\Web\Videos\Responses\VideoSectionCollection;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -27,7 +23,7 @@ class DashboardController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(VideoCollectionProperty $items): Response
+    public function __invoke(VideoIndexRequest $request, VideoCollectionProperty $items): Response
     {
         Gate::authorize('viewAny', Video::class);
 

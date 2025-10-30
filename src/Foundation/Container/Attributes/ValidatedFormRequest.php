@@ -18,10 +18,6 @@ class ValidatedFormRequest implements ContextualAttribute
 
     /**
      * Resolve the query parameter from the request.
-     *
-     * @param  self  $attribute
-     * @param  \Illuminate\Contracts\Container\Container  $container
-     * @return mixed
      */
     public static function resolve(self $attribute, Container $container): mixed
     {
