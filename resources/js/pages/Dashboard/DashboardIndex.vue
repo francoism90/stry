@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
-import VideoCard from '@/components/Video/VideoCard.vue'
+import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { VideoCollection } from '@/types'
@@ -28,16 +28,7 @@ defineProps<Props>()
           items-element="#page-grid"
           :buffer="200"
         >
-          <UBlogPosts
-            id="page-grid"
-            orientation="vertical"
-          >
-            <VideoCard
-              v-for="(item, index) in items.data"
-              :key="index"
-              :item="item"
-            />
-          </UBlogPosts>
+          <VideoPosts :items="items" />
         </InfiniteScroll>
       </UContainer>
     </UPageBody>

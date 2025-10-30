@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoCard from '@/components/Video/VideoCard.vue'
+import VideoCard from '@/components/Video/VideoPost.vue'
 import type { VideoCollection } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectItem } from '@nuxt/ui'

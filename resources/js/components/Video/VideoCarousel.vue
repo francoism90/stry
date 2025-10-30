@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoCard from '@/components/Video/VideoCard.vue'
+import VideoCard from '@/components/Video/VideoPost.vue'
 import type { Video } from '@/types'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
