@@ -6,8 +6,8 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 const { order, search, orders } = useCollection()
 
 const form = useForm('get', '', {
-  order: order.value,
-  search: search.value,
+  order: order.value || 'recommended',
+  search: search.value || '',
 })
 
 const onSubmit = () => {

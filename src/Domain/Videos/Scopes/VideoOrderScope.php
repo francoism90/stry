@@ -20,7 +20,8 @@ class VideoOrderScope
             ->when($this->hasOrder(VideoOrder::Ordered), fn ($query) => $query->orderBy('name'))
             ->when($this->hasOrder(VideoOrder::Longest), fn ($query) => $query->orderByDesc('duration'))
             ->when($this->hasOrder(VideoOrder::Shortest), fn ($query) => $query->orderBy('duration'))
-            ->when($this->hasOrder(VideoOrder::Recommended), fn ($query) => $query->orderBy('_rand()'));
+            ->when($this->hasOrder(VideoOrder::Recommended), fn ($query) => $query->orderBy('_rand()'))
+            ->unless($this->getOrder(), fn ($query) => $query->orderBy('_rand()'));
     }
 
     protected function hasOrder(VideoOrder $value): bool
