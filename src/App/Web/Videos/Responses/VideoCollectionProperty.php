@@ -24,7 +24,7 @@ class VideoCollectionProperty implements ProvidesInertiaProperties
     public function __construct(
         #[CurrentUser] protected ?User $user = null,
         #[RouteParameter('search')] protected ?string $search = null,
-        #[FormRequest(VideoIndexRequest::class)] protected mixed $request,
+        #[ValidatedFormRequest(VideoIndexRequest::class)] protected array $request,
     ) { }
 
     public function toInertiaProperties(RenderContext $context): array

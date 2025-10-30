@@ -12,7 +12,7 @@ use Illuminate\Contracts\Container\ContextualAttribute;
  * Injects a query parameter from the request.
  */
 #[Attribute(Attribute::TARGET_PARAMETER)]
-class FormRequest implements ContextualAttribute
+class ValidatedFormRequest implements ContextualAttribute
 {
     public function __construct(public string $abstract) {}
 
