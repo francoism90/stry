@@ -22,7 +22,7 @@ class VideoIndexRequest extends FormRequest
     {
         return [
             'filter' => ['sometimes', 'nullable', 'string', Rule::enum(VideoOrder::class)],
-            'q' => ['sometimes', 'nullable', 'string', 'min:1', 'max:2'],
+            'order' => ['sometimes', 'nullable', 'string', 'min:1', 'max:255'],
             'tags' => ['sometimes', 'nullable', 'array', 'max:5'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],
         ];

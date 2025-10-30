@@ -24,12 +24,12 @@ class VideoCollectionProperty implements ProvidesInertiaProperties
     public function __construct(
         #[CurrentUser] protected ?User $user = null,
         #[RouteParameter('search')] protected ?string $search = null,
-        #[QueryParameter('q')] protected ?string $q = null,
+        #[FormRequest(VideoIndexRequest::class)] protected mixed $request,
     ) { }
 
     public function toInertiaProperties(RenderContext $context): array
     {
-        dd($this->q);
+        dd($this->request);
 
         return [];
 
@@ -40,4 +40,6 @@ class VideoCollectionProperty implements ProvidesInertiaProperties
             'isAdmin' => $this->user->hasRole('admin'),
         ];
     }
+
+
 }
