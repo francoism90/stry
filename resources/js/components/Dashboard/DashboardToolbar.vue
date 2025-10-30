@@ -1,34 +1,66 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useCollection } from '@/composables/collection'
+import { watchDebounced } from '@vueuse/core'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
-const items = ref(['Recommended', 'Watching', 'Favorites'])
-const value = ref('Recommended')
+const { order, search, orders } = useCollection()
+
+const form = useForm('get', '', {
+  order: order.value,
+  search: search.value,
+})
+
+const onReset = () => {
+  form.defaults({
+    order: undefined,
+    search: undefined,
+  })
+
+  form.resetAndClearErrors()
+}
+
+const onSubmit = () => {
+  form.submit({
+    preserveState: true,
+    replace: true,
+    only: ['items', 'order', 'search'],
+    reset: ['items'],
+  })
+}
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
-  <UDashboardToolbar>
-    <template #left>
-      <USelect
-        v-model="value"
-        :items="items"
-        variant="ghost"
-        color="primary"
-      />
-    </template>
-
-    <template #right>
-      <USlideover>
-        <UButton
-          label="Filters"
-          icon="i-lucide-panel-right"
-          color="neutral"
+  <UForm
+    :state="form"
+    @submit="onSubmit"
+  >
+    <UDashboardToolbar>
+      <template #left>
+        <USelect
+          v-if="orders?.length"
+          v-model="form.order"
+          value-key="value"
+          :items="orders"
+          placeholder="Filter by"
           variant="ghost"
+          class="w-32 sm:w-36"
+          @update:modelValue="onSubmit"
         />
+      </template>
 
-        <template #content>
-          <Placeholder class="m-4 h-full" />
-        </template>
-      </USlideover>
-    </template>
-  </UDashboardToolbar>
+      <template #right>
+        <UInput
+          v-model="form.search"
+          class="w-52 sm:w-64"
+          placeholder="Search..."
+        />
+      </template>
+    </UDashboardToolbar>
+  </UForm>
 </template>

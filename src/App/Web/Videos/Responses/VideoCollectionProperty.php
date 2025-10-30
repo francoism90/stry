@@ -23,6 +23,9 @@ class VideoCollectionProperty implements ProvidesInertiaProperties
     {
         logger($this->order);
 
-        return [];
+        return [
+            'order' => $this->order,
+            'search' => $this->search,
+        ];
     }
 }
