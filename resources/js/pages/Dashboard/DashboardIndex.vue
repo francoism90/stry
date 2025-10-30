@@ -20,22 +20,34 @@ defineProps<Props>()
   <UPage>
     <DashboardToolbar />
 
-    <InfiniteScroll
-      data="items"
-      items-element="#page-grid"
-      :buffer="200"
-    >
-      <UPageGrid
-        id="page-grid"
-        class="gap-x-4 gap-y-6 py-2"
-      >
-        <div
-          v-for="item in items.data"
-          :key="item.id"
+    <UPageBody>
+      <UContainer class="py-4">
+        <InfiniteScroll
+          data="items"
+          items-element="#page-grid"
+          :buffer="200"
         >
-          {{ item.id }} - {{ item.duration }}
-        </div>
-      </UPageGrid>
-    </InfiniteScroll>
+          <UBlogPosts
+            orientation="vertical"
+            id="page-grid"
+            class="gap-4 lg:gap-y-8"
+          >
+            <UBlogPost
+              v-for="(item, index) in items.data"
+              :key="index"
+              :title="item.name"
+              :description="item.summary"
+              :image="item.thumb"
+              :date="item.published_at ?? item.created_at"
+              :badge="{
+                label: item.timestamp,
+                color: 'primary',
+                variant: 'solid',
+              }"
+            />
+          </UBlogPosts>
+        </InfiniteScroll>
+      </UContainer>
+    </UPageBody>
   </UPage>
 </template>

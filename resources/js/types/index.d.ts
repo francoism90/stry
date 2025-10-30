@@ -32,7 +32,7 @@ export type Tag = Model & {
   description: string | null
   category: string
   type: string
-  thumb?: AvatarProps['src'] | null
+  thumb?: string | (Partial<HTMLImageElement> & { [key: string]: unknown })
   related?: Tag[] | null
   videos?: number
 }
@@ -47,23 +47,24 @@ export type Video = Model & {
   user?: User
   name: string
   title: string
-  titles?: string[] | null
-  content?: string | null
-  summary: string | null
-  season: string | null
-  episode: string | null
-  part: string | null
-  captions: boolean | null
+  titles: string[] | undefined
+  content: string | undefined
+  summary: string | undefined
+  season: string | undefined
+  episode: string | undefined
+  part: string | undefined
+  captions: boolean | undefined
   thumb: AvatarProps['src'] | undefined
-  preview: string | null
-  duration: number | null
-  timestamp: string | null
-  snapshot: number | string | null
-  released_at: string | null
-  tags: Tag[] | null
+  preview: string | undefined
+  duration: number | undefined
+  timestamp: string | undefined
+  snapshot: number | undefined
+  released: string | undefined
+  tags: Tag[] | undefined
   state: string
-  expires_at: string | null
-  published_at: string | null
+  expires_at: string | undefined
+  published_at: string | undefined
+  released_at: string | undefined
 }
 
 export type VideoCollection = Omit<Paginator, 'data'> & {

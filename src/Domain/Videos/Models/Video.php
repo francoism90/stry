@@ -335,6 +335,13 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    protected function released(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->released_at ?? $this->published_at ?? $this->created_at
+        )->shouldCache();
+    }
+
     protected function thumb(): Attribute
     {
         return Attribute::make(

@@ -39,7 +39,7 @@ watchDebounced(
           value-key="value"
           :items="orders"
           placeholder="Filter by"
-          variant="ghost"
+          variant="soft"
           class="w-32 sm:w-36"
           @update:modelValue="onSubmit"
         />
