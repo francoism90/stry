@@ -33,7 +33,7 @@ class DashboardController extends Controller implements HasMiddleware
 
         $builder = Video::search($request->safe()->input('search'))
             ->tap(new VideoOrderScope($request->safe()->input('order')))
-            ->simplePaginate(16);
+            ->simplePaginate(12);
 
         return Inertia::render('Dashboard/DashboardIndex', [
             'orders' => fn () => VideoOrder::options(),
