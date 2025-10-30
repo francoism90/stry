@@ -16,15 +16,15 @@ class VideoOrderScope
     public function __invoke(Builder $query): void
     {
         $query
-            ->when($this->hasOrder(VideoOrder::Newest), fn ($query) => $query->latest())
-            ->when($this->hasOrder(VideoOrder::Ordered), fn ($query) => $query->orderBy('name'))
-            ->when($this->hasOrder(VideoOrder::Longest), fn ($query) => $query->orderByDesc('duration'))
-            ->when($this->hasOrder(VideoOrder::Shortest), fn ($query) => $query->orderBy('duration'))
-            ->when($this->hasOrder(VideoOrder::Recommended), fn ($query) => $query->orderBy('_rand()'))
+            ->when($this->isOrder(VideoOrder::Newest), fn ($query) => $query->latest())
+            ->when($this->isOrder(VideoOrder::Ordered), fn ($query) => $query->orderBy('name'))
+            ->when($this->isOrder(VideoOrder::Longest), fn ($query) => $query->orderByDesc('duration'))
+            ->when($this->isOrder(VideoOrder::Shortest), fn ($query) => $query->orderBy('duration'))
+            ->when($this->isOrder(VideoOrder::Recommended), fn ($query) => $query->orderBy('_rand()'))
             ->unless($this->getOrder(), fn ($query) => $query->orderBy('_rand()'));
     }
 
-    protected function hasOrder(VideoOrder $value): bool
+    protected function isOrder(VideoOrder $value): bool
     {
         return $this->getOrder() === $value;
     }
