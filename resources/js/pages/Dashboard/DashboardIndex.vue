@@ -2,14 +2,16 @@
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { Head, usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import type { Video } from '@/types'
+import { Head } from '@inertiajs/vue3'
+
+interface Props {
+  items: Video[] | null
+}
 
 defineOptions({ layout: [DefaultLayout, DashboardLayout] })
 
-const page = usePage()
-
-const user = computed(() => page.props.auth)
+defineProps<Props>()
 </script>
 
 <template>
@@ -20,6 +22,8 @@ const user = computed(() => page.props.auth)
 
     <UPageBody>
       <UPageHero title="Ultimate Vue UI library" />
+
+      {{ items }}
 
       <UPageSection class="h-10 w-full bg-amber-500">foo</UPageSection>
 
