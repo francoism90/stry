@@ -101,7 +101,6 @@ class Video extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'state' => VideoState::class,
             'snapshot' => 'decimal:2',
             'adult' => 'boolean',
             'expires_at' => 'datetime',
@@ -110,6 +109,7 @@ class Video extends Model implements HasMedia
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
+            'state' => VideoState::class,
         ];
     }
 
@@ -342,17 +342,24 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    public function summary(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => markdown($value),
+        )->shouldCache();
+    }
+
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'))
+            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false)
         )->shouldCache();
     }
 
     protected function preview(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstPlaylist('preview')?->getUrl())
+            get: fn () => rescue(fn () => $this->getFirstPlaylist('preview')?->getUrl(), report: false)
         )->shouldCache();
     }
 

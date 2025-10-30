@@ -18,7 +18,6 @@ class UserResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->whenAppended('name'),
-            'avatar' => $this->whenAppended('avatar'),
             'email' => $this->whenAppended('email'),
             'email_verified' => $this->whenAppended('email_verified'),
             'roles' => $this->whenLoaded('roles', $this->assigned_roles),

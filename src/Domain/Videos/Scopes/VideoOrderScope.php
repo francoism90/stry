@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Videos\Enums\VideoOrder;
-use Domain\Videos\Models\Video;
-use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Laravel\Scout\Builder;
 
 class VideoOrderScope

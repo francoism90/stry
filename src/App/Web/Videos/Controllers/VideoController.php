@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoCaptionCollection;
 use App\Web\Videos\Responses\VideoPlaylistClip;
 use App\Web\Videos\Responses\VideoProgress;
 use App\Web\Videos\Responses\VideoSimilarCollection;
-use App\Web\Videos\Responses\VideoTypeCollection;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoSearchScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

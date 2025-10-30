@@ -4,11 +4,6 @@ import AppLogo from '../Ui/AppLogo.vue'
 
 const items: NavigationMenuItem[] = [
   {
-    label: 'Search',
-    to: '/search',
-    icon: 'i-lucide-search',
-  },
-  {
     label: 'Library',
     to: '/library',
     icon: 'i-lucide-library',
