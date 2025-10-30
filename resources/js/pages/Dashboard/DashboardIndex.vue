@@ -2,11 +2,11 @@
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import type { Video } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import type { VideoCollection } from '@/types'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 interface Props {
-  items: Video[] | null
+  items: VideoCollection
 }
 
 defineOptions({ layout: [DefaultLayout, DashboardLayout] })
@@ -20,14 +20,22 @@ defineProps<Props>()
   <UPage>
     <DashboardToolbar />
 
-    <UPageBody>
-      <UPageHero title="Ultimate Vue UI library" />
-
-      {{ items }}
-
-      <UPageSection class="h-10 w-full bg-amber-500">foo</UPageSection>
-
-      <UPageSection title="Beautiful Vue UI components" />
-    </UPageBody>
+    <InfiniteScroll
+      data="items"
+      items-element="#page-grid"
+      :buffer="200"
+    >
+      <UPageGrid
+        id="page-grid"
+        class="gap-x-4 gap-y-6 py-2"
+      >
+        <div
+          v-for="item in items.data"
+          :key="item.id"
+        >
+          {{ item.id }} - {{ item.duration }}
+        </div>
+      </UPageGrid>
+    </InfiniteScroll>
   </UPage>
 </template>

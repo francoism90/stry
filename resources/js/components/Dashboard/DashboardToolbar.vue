@@ -10,15 +10,6 @@ const form = useForm('get', '', {
   search: search.value,
 })
 
-const onReset = () => {
-  form.defaults({
-    order: undefined,
-    search: undefined,
-  })
-
-  form.resetAndClearErrors()
-}
-
 const onSubmit = () => {
   form.submit({
     preserveState: true,
