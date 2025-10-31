@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Tags\Responses;
 
 use App\Api\Tags\Resources\TagResource;
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Illuminate\Container\Attributes\RouteParameter;
 use Inertia\ProvidesInertiaProperties;
@@ -20,6 +21,7 @@ readonly class TagEditProperties implements ProvidesInertiaProperties
     {
         return [
             'tag' => fn () => $this->tag->append('description', 'type', 'related')->toResource(TagResource::class),
+            'types' => fn () => TagType::options(),
         ];
     }
 }
