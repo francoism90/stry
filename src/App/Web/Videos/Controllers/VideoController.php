@@ -7,9 +7,17 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoCaptionCollection;
+use App\Web\Videos\Responses\VideoCaptionProperty;
+use App\Web\Videos\Responses\VideoEditProperties;
 use App\Web\Videos\Responses\VideoPlaylistClip;
+use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgress;
+use App\Web\Videos\Responses\VideoProgressProperty;
+use App\Web\Videos\Responses\VideoProperties;
+use App\Web\Videos\Responses\VideoProperty;
+use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoSimilarCollection;
+use App\Web\Videos\Responses\VideoViewProperties;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
@@ -32,7 +40,7 @@ class VideoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function show(Video $video, Request $request): Response
+    public function show(Video $video, VideoViewProperties $properties): Response
     {
         Gate::authorize('view', $video);
 
@@ -43,21 +51,18 @@ class VideoController extends Controller implements HasMiddleware
         );
 
         return Inertia::render('Videos/VideoView', [
-            'video' => fn () => $video->append(['content', 'titles'])->toResource(VideoResource::class),
-            'captions' => fn () => new VideoCaptionCollection($video),
-            'playlist' => fn () => new VideoPlaylistClip($video),
-            'progress' => fn () => new VideoProgress($video, $request->user()),
-            'queue' => Inertia::defer(fn () => new VideoSimilarCollection($video))->deepMerge()->matchOn('data.id'),
+            'playlist' => Inertia::defer(fn () => new VideoPlaylistProperty($video)),
+            'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
+            $properties,
         ]);
     }
 
-    public function edit(Video $video, Request $request): Response
+    public function edit(Video $video, VideoEditProperties $properties): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Videos/VideoEdit', [
-            'video' => fn () => $video->loadMissing('user')->append(['content', 'titles'])->toResource(VideoResource::class),
-            'progress' => fn () => new VideoProgress($video, $request->user()),
+            $properties,
         ]);
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Container\Attributes\RouteParameter;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
 
-class CollectionFilters implements ProvidesInertiaProperties
+class CollectionProperties implements ProvidesInertiaProperties
 {
     public function __construct(
         #[RouteParameter('search')] protected ?string $search = null,

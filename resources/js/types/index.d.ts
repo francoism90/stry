@@ -47,20 +47,22 @@ export type Video = Model & {
   user: User | undefined
   name: string
   title: string
+  description: string | undefined
   titles: string[] | null | undefined
   content: string | null | undefined
   summary: string | null | undefined
-  season: string | null | undefined
-  episode: string | null | undefined
-  part: string | null | undefined
-  captions: boolean | null | undefined
+  season: string | null
+  episode: string | null
+  part: string | null
+  captioned: boolean
   thumb: AvatarProps['src'] | undefined
-  preview: string | undefined
-  duration: number | undefined
-  timestamp: string | undefined
-  snapshot: number | undefined
-  released: string | undefined
-  tags: Tag[] | undefined
+  preview: string | null
+  duration: number
+  timestamp: string
+  snapshot: number | null | undefined
+  released: string | null
+  captions: Media[] | null
+  tags: Tag[] | null
   state: string
   expires_at: string | undefined
   published_at: string | undefined

@@ -24,11 +24,9 @@ class PlaylistResource extends JsonResource
             'expires_at' => $this->expires_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            $this->mergeWhen($request->user()->isAdmin(), [
-                'type' => $this->type,
-                'accessed_at' => $this->accessed_at,
-                'transcoded_at' => $this->transcoded_at,
-            ]),
+            'type' => $this->whenAppended('type'),
+            'accessed_at' => $this->whenAppended('accessed_at'),
+            'transcoded_at' => $this->whenAppended('transcoded_at'),
         ];
     }
 }

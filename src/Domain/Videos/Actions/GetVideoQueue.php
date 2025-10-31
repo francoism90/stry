@@ -9,7 +9,7 @@ use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
 use Illuminate\Support\LazyCollection;
 
-class GetSimilarVideos
+class GetVideoQueue
 {
     public function handle(Video $video, int $limit = 20): VideoCollection
     {

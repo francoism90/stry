@@ -3,7 +3,7 @@ import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 
 interface Props {
-  items: Tag[] | undefined
+  items: Tag[] | null | undefined
 }
 
 defineProps<Props>()

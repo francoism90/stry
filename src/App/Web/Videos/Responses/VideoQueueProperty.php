@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Web\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Actions\GetSimilarVideos;
+use Domain\Videos\Actions\GetVideoQueue;
 use Domain\Videos\Models\Video;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class VideoSimilarCollection implements ProvidesInertiaProperty
+readonly class VideoQueueProperty implements ProvidesInertiaProperty
 {
     public function __construct(
         protected Video $video,
@@ -18,7 +18,7 @@ readonly class VideoSimilarCollection implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return app(GetSimilarVideos::class)->handle($this->video)
+        return app(GetVideoQueue::class)->handle($this->video)
             ->loadMissing('tags')
             ->toResourceCollection(VideoResource::class);
     }
