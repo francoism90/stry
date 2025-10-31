@@ -12,7 +12,6 @@ defineProps<Props>()
 
 <template>
   <UPageList
-    id="page-grid"
     :orientation="orientation || 'vertical'"
     divide
   >

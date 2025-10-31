@@ -11,10 +11,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <UBlogPosts
-    id="page-grid"
-    :orientation="orientation || 'vertical'"
-  >
+  <UBlogPosts :orientation="orientation || 'vertical'">
     <VideoPost
       v-for="(item, index) in items?.data || []"
       :key="index"

@@ -47,10 +47,13 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
       <UContainer class="py-4">
         <InfiniteScroll
           data="items"
-          items-element="#page-grid"
+          items-element="#tag-list"
           :buffer="200"
         >
-          <VideoPosts :items="items" />
+          <VideoPosts
+            id="tag-list"
+            :items="items"
+          />
         </InfiniteScroll>
       </UContainer>
     </UPageBody>

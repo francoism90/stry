@@ -25,10 +25,13 @@ defineProps<Props>()
       <UContainer class="py-4">
         <InfiniteScroll
           data="items"
-          items-element="#page-grid"
+          items-element="#explore-list"
           :buffer="200"
         >
-          <TagList :items="items" />
+          <TagList
+            id="explore-list"
+            :items="items"
+          />
         </InfiniteScroll>
       </UContainer>
     </UPageBody>
