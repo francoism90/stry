@@ -197,7 +197,7 @@ class Tag extends BaseTag implements HasMedia
     protected function synonyms(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagCollection::make($this->relates)->synonyms(),
+            get: fn () => TagCollection::make($this->getRelates())->synonyms(),
         )->shouldCache();
     }
 }
