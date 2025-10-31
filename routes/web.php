@@ -19,7 +19,7 @@ Route::get('/', DashboardController::class)->name('home');
 Route::get('/explore', ExploreController::class)->name('explorer');
 
 // Profile
-// Route::get('/profile', ProfileController::class)->name('profile');
+Route::get('/profile', ProfileController::class)->name('profile');
 // Route::get('/history', HistoryController::class)->name('history');
 
 // Tags
