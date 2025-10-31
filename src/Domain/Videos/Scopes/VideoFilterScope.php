@@ -4,22 +4,41 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
-use Domain\Groups\Enums\GroupType;
-use Domain\Videos\QueryBuilders\VideoQueryBuilder;
+use Domain\Videos\Enums\VideoOrder;
+use Laravel\Scout\Builder;
 
 class VideoFilterScope
 {
     public function __construct(
-        protected GroupType|string|null $type = null,
+        protected VideoOrder|string|null $filter = null,
     ) {}
 
-    public function __invoke(VideoQueryBuilder $query): void
+    public function __invoke(Builder $scout): void
     {
-        $query
-            ->verified()
-            ->with(['media', 'playlists', 'tags'])
-            ->when($this->type === 'newest', fn (VideoQueryBuilder $query) => $query->latest())
-            ->when($this->type === 'watching', fn (VideoQueryBuilder $query) => $query->watching())
-            ->unless($this->type, fn (VideoQueryBuilder $query) => $query->inRandomOrder());
+        $scout
+            ->when($this->isFilter(VideoOrder::Newest), fn ($scout) => $scout->latest())
+            ->when($this->isFilter(VideoOrder::Ordered), fn ($scout) => $scout->orderBy('name'))
+            ->when($this->isFilter(VideoOrder::Longest), fn ($scout) => $scout->orderByDesc('duration'))
+            ->when($this->isFilter(VideoOrder::Shortest), fn ($scout) => $scout->orderBy('duration'))
+            ->unless($this->hasFilter() && filled($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
+    }
+
+    protected function hasFilter(): bool
+    {
+        return $this->getFilter() && $this->getFilter() !== VideoOrder::Recommended;
+    }
+
+    protected function isFilter(VideoOrder $value): bool
+    {
+        return $this->getFilter() === $value;
+    }
+
+    protected function getFilter(): ?VideoOrder
+    {
+        if (! $this->filter) {
+            return null;
+        }
+
+        return VideoOrder::tryFrom($this->filter);
     }
 }

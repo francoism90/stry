@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import TagItems from '@/components/Tag/TagItems.vue'
+import TagItems from '@/components/Tag/TagList.vue'
 import type { Video } from '@/types'
 import { computed } from 'vue'
 

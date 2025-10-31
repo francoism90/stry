@@ -3,10 +3,10 @@ import { useCollection } from '@/composables/collection'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
-const { order, search, orders } = useCollection()
+const { filter, search, filters } = useCollection()
 
 const form = useForm('get', '', {
-  order: order.value || 'recommended',
+  filter: filter.value || 'recommended',
   search: search.value || '',
 })
 
@@ -14,7 +14,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'order', 'search'],
+    only: ['items', 'filter', 'search'],
     reset: ['items'],
   })
 }
@@ -34,10 +34,10 @@ watchDebounced(
     <UDashboardToolbar>
       <template #left>
         <USelect
-          v-if="orders?.length"
-          v-model="form.order"
+          v-if="filters?.length"
+          v-model="form.filter"
           value-key="value"
-          :items="orders"
+          :items="filters"
           placeholder="Filter by"
           variant="soft"
           class="w-32 sm:w-36"

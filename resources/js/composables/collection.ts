@@ -3,13 +3,13 @@ import type { SelectItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 export function useCollection() {
-  const orders = computed(() => usePage().props.orders as SelectItem[] | undefined)
-  const order = computed(() => usePage().props.order as string | undefined)
+  const filters = computed(() => usePage().props.filters as SelectItem[] | undefined)
+  const filter = computed(() => usePage().props.filter as string | undefined)
   const search = computed(() => usePage().props.search as string | undefined)
 
   return {
-    order,
-    orders,
+    filter,
+    filters,
     search,
   }
 }

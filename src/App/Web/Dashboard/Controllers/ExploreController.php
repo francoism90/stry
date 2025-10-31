@@ -37,7 +37,7 @@ class ExploreController extends Controller implements HasMiddleware
             ->tap(new VideoOrderScope($request->safe()->input('order')))
             ->simplePaginate(16);
 
-        return Inertia::render('Dashboard/DashboardIndex', [
+        return Inertia::render('Dashboard/ExploreIndex', [
             'orders' => fn () => VideoOrder::options(),
             'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
             $collection,

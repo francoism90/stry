@@ -13,13 +13,13 @@ class CollectionProperties implements ProvidesInertiaProperties
 {
     public function __construct(
         #[RouteParameter('search')] protected ?string $search = null,
-        #[QueryParameter('order')] protected ?string $order = null,
+        #[QueryParameter('filter')] protected ?string $filter = null,
     ) {}
 
     public function toInertiaProperties(RenderContext $context): array
     {
         return [
-            'order' => fn () => $this->order,
+            'filter' => fn () => $this->filter,
             'search' => fn () => $this->search,
         ];
     }
