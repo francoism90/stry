@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
-use Domain\Videos\Actions\CreateVideoPreview;
 use Domain\Videos\Actions\ExtractVideoCaptions;
 use Domain\Videos\Actions\MarkVideoAsVerified;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
@@ -55,7 +54,6 @@ class SyncVideoMetadata implements ShouldQueueAfterCommit
             ->through([
                 ExtractVideoCaptions::class,
                 MarkVideoAsVerified::class,
-                CreateVideoPreview::class,
             ])
             ->thenReturn();
     }
