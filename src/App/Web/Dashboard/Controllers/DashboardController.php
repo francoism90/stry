@@ -6,13 +6,10 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Shared\Responses\CollectionFilters;
 use App\Web\Shared\Responses\CollectionProperties;
 use Domain\Videos\Enums\VideoOrder;
-use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
-use Domain\Videos\Scopes\VideoOrderScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;

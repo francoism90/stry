@@ -16,7 +16,7 @@ use Inertia\RenderContext;
 readonly class VideoEditProperties implements ProvidesInertiaProperties
 {
     public function __construct(
-        #[CurrentUser] protected ?User $user = null,
+        #[CurrentUser] protected ?User $user,
         #[RouteParameter('video')] protected Video $video,
     ) {}
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Api\Videos\Requests;
 
 use Domain\Videos\Enums\VideoOrder;
-use Domain\Videos\Enums\VideoScope;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

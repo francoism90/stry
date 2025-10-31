@@ -6,16 +6,10 @@ namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
-use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Api\Videos\Resources\VideoResource;
-use App\Web\Shared\Responses\CollectionFilters;
 use App\Web\Shared\Responses\CollectionProperties;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
-use Domain\Videos\Enums\VideoOrder;
-use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoOrderScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
