@@ -57,7 +57,6 @@ export type Video = Model & {
   part: string | null
   captioned: boolean
   thumb: AvatarProps['src'] | undefined
-  preview: string | null
   duration: number
   timestamp: string
   snapshot: number | null | undefined

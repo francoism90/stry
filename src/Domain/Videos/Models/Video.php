@@ -172,30 +172,6 @@ class Video extends Model implements HasMedia
                 'text/srt',
                 'text/vtt',
             ]);
-
-        $this
-            ->addMediaCollection('previews')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->singleFile()
-            ->acceptsMimeTypes([
-                'video/av1',
-                'video/avi',
-                'video/mkv',
-                'video/mp4',
-                'video/mp4v-es',
-                'video/mpeg',
-                'video/ogg',
-                'video/quicktime',
-                'video/webm',
-                'video/x-flv',
-                'video/x-m4v',
-                'video/x-matroska',
-                'video/x-mpeg',
-                'video/x-ms-asf',
-                'video/x-ms-wmv',
-                'video/x-msvideo',
-            ]);
     }
 
     public function registerMediaConversions(?Media $media = null): void
@@ -353,13 +329,6 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn () => rescue(fn (): ?string => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false)
-        )->shouldCache();
-    }
-
-    protected function preview(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => rescue(fn (): ?string => $this->getFirstPlaylist('preview')?->getUrl(), report: false)
         )->shouldCache();
     }
 
