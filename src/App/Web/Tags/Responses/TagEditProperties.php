@@ -20,7 +20,7 @@ readonly class TagEditProperties implements ProvidesInertiaProperties
     public function toInertiaProperties(RenderContext $context): array
     {
         return [
-            'tag' => fn () => $this->tag->append('description', 'type', 'related')->toResource(TagResource::class),
+            'tag' => fn () => $this->tag->append('description', 'type', 'relates')->toResource(TagResource::class),
             'types' => fn () => TagType::options(),
         ];
     }
