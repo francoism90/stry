@@ -15,9 +15,11 @@ class TagQueryBuilder extends Builder
     public function hasUlid(Tag|ArrayAccess|array|string|null $values = null): self
     {
         $values = Collection::make((array) $values)
-            ->map(fn (Tag|string $tag) => $tag instanceof Tag ? $tag->getKey() : Tag::firstWhere('ulid', $tag)->getKey());
+            ->map(fn (Tag|string $tag) => $tag instanceof Tag ? $tag : Tag::firstWhere('ulid', $tag))
+            ->pluck('id')
+            ->filter();
 
-        return $this->whereIn('id', $values->filter());
+        return $this->whereIn('id', $values);
     }
 
     public function type(TagType|string $value): self
