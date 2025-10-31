@@ -35,7 +35,7 @@ class TagFilterScope
     protected function getFilter(): ?TagType
     {
         if (! $this->filter) {
-            return null;
+            return TagType::Genre;
         }
 
         return TagType::tryFrom($this->filter);

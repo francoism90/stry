@@ -19,7 +19,7 @@ defineProps<Props>()
   <Head title="Library" />
 
   <UPage>
-    <DashboardToolbar default-filter="serie" />
+    <DashboardToolbar default-filter="genre" />
 
     <UPageBody>
       <UContainer class="py-4">

@@ -37,7 +37,7 @@ const items = ref<TabsItem[]>([
     <UPageBody>
       <UContainer>
         <UPageHeader
-          :title="video.name"
+          :title="video.title"
           :links="links"
         />
       </UContainer>
