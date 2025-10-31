@@ -13,7 +13,7 @@ const props = defineProps<Props>()
   <UPageCard
     :ui="{ container: 'p-2 sm:p-4' }"
     :title="item.name"
-    :description="item.category"
+    :description="`${item.category} • ${item.videos} videos`"
     :to="show.url(props.item.id)"
     variant="ghost"
   />
