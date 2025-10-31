@@ -9,8 +9,6 @@ use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
