@@ -7,7 +7,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { video, src, progress, store } = usePlayer()
+const { state, video, progress, store } = usePlayer()
 
 const listener = () =>
   player.value?.subscribe(({ canSeek, currentTime }) => {
@@ -33,7 +33,7 @@ onBeforeUnmount(() => listener())
   <div class="relative w-full rounded-xl">
     <media-player
       ref="player"
-      .src="src || undefined"
+      .src="state?.asset || undefined"
       .autoPlay="true"
       .playsInline="true"
       crossOrigin="anonymous"
@@ -53,7 +53,7 @@ onBeforeUnmount(() => listener())
       </media-provider>
     </media-player>
 
-    <div v-if="!progress">
+    <div v-if="!state?.valid">
       <UAlert
         color="neutral"
         variant="soft"

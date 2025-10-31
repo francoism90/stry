@@ -10,9 +10,6 @@ export function usePlayer() {
   const video = computed(() => usePage().props.video as Video | null)
   const progress = computed(() => usePage().props.progress as number | null)
 
-  const ready = computed(() => state.value?.valid && state.value?.asset)
-  const src = computed(() => (ready.value ? state.value?.asset : null))
-
   const store = useThrottleFn(async (value: number) => {
     // Round to 2 decimal places
     const time = Math.round(value * 100) / 100
@@ -26,8 +23,6 @@ export function usePlayer() {
   return {
     state,
     video,
-    ready,
-    src,
     progress,
     store,
   }

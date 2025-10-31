@@ -17,7 +17,7 @@ class GetVideoQueue
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->unique('id')->take($limit ?? 12);
+        ])->unique('id')->take($limit ?? 9);
     }
 
     protected function phrases(Video $video): LazyCollection
@@ -27,21 +27,23 @@ class GetVideoQueue
             ->title()
             ->matchAll('/[\p{L}\p{N}]+/u')
             ->reject(fn (string $word = '') => mb_strlen($word) < 2 || in_array(mb_strtolower($word), ['and', 'a', 'or']))
-            ->take(10)
+            ->take(8)
             ->merge([$video->identifier])
             ->filter()
             ->unique();
 
+        // Generate phrases from the words
         $items = LazyCollection::make(function () use ($query) {
             // e.g. foo bar 1, foo bar, foo
             $words = $query->count();
 
+            // Generate phrases by decreasing word count
             for ($i = $words; $i > 0; $i--) {
                 $phrase = (string) $query->take($i)->implode(' ');
 
                 yield Video::search($phrase)
                     ->where('state', Verified::$name)
-                    ->take(8)
+                    ->take(6)
                     ->cursor();
             }
         });
@@ -49,7 +51,7 @@ class GetVideoQueue
         return $items
             ->flatten()
             ->reject(fn (Video $item) => $item->is($video))
-            ->take(16)
+            ->take(9)
             ->unique();
     }
 
@@ -63,7 +65,7 @@ class GetVideoQueue
             ])
             ->whereKeyNot($video)
             ->inRandomOrder()
-            ->take(16)
+            ->take(9)
             ->cursor();
     }
 
@@ -72,7 +74,7 @@ class GetVideoQueue
         return Video::query()
             ->verified()
             ->whereKeyNot($video)
-            ->take(16)
+            ->take(9)
             ->cursor();
     }
 }
