@@ -4,6 +4,7 @@ import type { VideoCollection } from '@/types'
 
 interface Props {
   items?: VideoCollection
+  orientation?: 'horizontal' | 'vertical'
 }
 
 defineProps<Props>()
@@ -12,7 +13,7 @@ defineProps<Props>()
 <template>
   <UBlogPosts
     id="page-grid"
-    orientation="vertical"
+    :orientation="orientation || 'vertical'"
   >
     <VideoPost
       v-for="(item, index) in items?.data"

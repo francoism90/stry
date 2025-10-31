@@ -1,36 +1,29 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import PageActions from '@/components/Ui/PageActions.vue'
-import PageColumns from '@/components/Ui/PageColumns.vue'
-import PageDetails from '@/components/Ui/PageDetails.vue'
-import PageFeature from '@/components/Ui/PageFeature.vue'
-import PageSection from '@/components/Ui/PageSection.vue'
-import PageTags from '@/components/Ui/PageTags.vue'
-import VideoCarousel from '@/components/Video/VideoCarousel.vue'
+import TagItems from '@/components/Tag/TagItems.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Video } from '@/types'
-import { Deferred, Head, router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { useDateFormat } from '@vueuse/core'
 import { ref } from 'vue'
 
 interface Props {
   video: Video
-  queue?: Video[] | null
 }
+
+defineOptions({ layout: [DefaultLayout, DashboardLayout] })
 
 const props = defineProps<Props>()
 
-const actions = ref<NavigationMenuItem[]>([
-  { label: '0', icon: 'i-lucide-thumbs-up', to: '/tags' },
-  { label: 'Edit', icon: 'i-lucide-clipboard-pen', to: edit.url(props.video.id) },
-  { label: 'Save', icon: 'i-lucide-bookmark', to: '/tags' },
-])
-
-const details = ref<NavigationMenuItem[]>([
-  { label: 'Added', value: useDateFormat(props.video.created_at, 'YYYY-MM-DD').value },
-  { label: 'Duration', value: props.video.timestamp ?? 'N/A' },
+const links = ref<NavigationMenuItem[]>([
+  {
+    label: 'Edit',
+    icon: 'i-lucide-clipboard-pen',
+    to: edit.url(props.video.id),
+  },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
@@ -41,32 +34,23 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <UPageBody>
-    <VideoPlayer />
+  <UPage>
+    <UPageBody>
+      <UContainer class="py-2">
+        <VideoPlayer />
+      </UContainer>
 
-    <PageSection class="gap-4 py-2">
-      <PageColumns>
-        <template #left>
-          <PageFeature :title="video.title" />
-          <PageDetails :details="details" />
-          <PageTags :items="video.tags" />
-        </template>
-
-        <template #right>
-          <PageActions :actions />
-        </template>
-      </PageColumns>
-
-      <Deferred :data="['queue']">
-        <template #fallback>
-          <div class="sr-only">Loading sections...</div>
-        </template>
-
-        <VideoCarousel
-          label="Up Next"
-          :items="queue"
-        />
-      </Deferred>
-    </PageSection>
-  </UPageBody>
+      <UContainer class="py-2">
+        <UPageHeader
+          :title="video.name"
+          :links="links"
+        >
+          <template #description>
+            <p v-html="video.summary" />
+            <TagItems :items="video.tags" />
+          </template>
+        </UPageHeader>
+      </UContainer>
+    </UPageBody>
+  </UPage>
 </template>
