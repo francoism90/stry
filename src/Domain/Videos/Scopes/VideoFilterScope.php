@@ -24,7 +24,7 @@ class VideoFilterScope
             ->when($this->isFilter(VideoOrder::Ordered), fn ($scout) => $scout->orderBy('name'))
             ->when($this->isFilter(VideoOrder::Longest), fn ($scout) => $scout->orderByDesc('duration'))
             ->when($this->isFilter(VideoOrder::Shortest), fn ($scout) => $scout->orderBy('duration'))
-            ->unless($this->hasFilter() && filled($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
+            ->when($this->hasFilter() && blank($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
     }
 
     protected function hasTags(): bool
@@ -46,7 +46,7 @@ class VideoFilterScope
 
     protected function hasFilter(): bool
     {
-        return $this->getFilter() && $this->getFilter() !== VideoOrder::Recommended;
+        return filled($this->getFilter());
     }
 
     protected function isFilter(VideoOrder $value): bool
@@ -60,6 +60,8 @@ class VideoFilterScope
             return null;
         }
 
-        return VideoOrder::tryFrom($this->filter);
+        return $this->filter instanceof VideoOrder
+            ? $this->filter
+            : VideoOrder::tryFrom($this->filter);
     }
 }

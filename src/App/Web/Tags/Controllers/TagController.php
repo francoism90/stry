@@ -39,7 +39,7 @@ class TagController extends Controller implements HasMiddleware
 
         // Build the video query with search and filtering by tag
         $builder = Video::search($request->safe()->input('search'))
-            ->tap(new VideoFilterScope(tags: $tag, filter: $request->safe()->input('filter')))
+            ->tap(new VideoFilterScope(tags: $tag, filter: $request->safe()->input('filter', VideoOrder::Recommended)))
             ->simplePaginate(24);
 
         return Inertia::render('Tags/TagView', [

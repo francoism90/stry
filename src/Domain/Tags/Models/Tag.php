@@ -170,7 +170,7 @@ class Tag extends BaseTag implements HasMedia
             'name' => (string) $this->name,
             'description' => (string) $this->description,
             'category' => (string) $this->category,
-            'type' => (string) $this->type?->value,
+            'type' => (string) $this->type->value,
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
             'order' => (int) $this->order_column,

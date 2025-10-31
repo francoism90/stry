@@ -21,8 +21,7 @@ class TagFilterScope
         $scout
             ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
             ->when($this->hasFilter(), fn (Builder $scout) => $scout->where('type', $this->getFilter())->orderBy('name'))
-            ->when(! $this->hasFilter() && blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'))
-            ->unless($this->hasFilter() && filled($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
+            ->when(blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'));
     }
 
     protected function hasFilter(): bool
@@ -40,6 +39,9 @@ class TagFilterScope
             return enum_value(TagType::Genre);
         }
 
-        return enum_value(TagType::tryFrom($this->filter));
+        return enum_value($this->filter instanceof TagType
+            ? $this->filter
+            : TagType::tryFrom($this->filter)
+        );
     }
 }
