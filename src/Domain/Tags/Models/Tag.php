@@ -180,6 +180,13 @@ class Tag extends BaseTag implements HasMedia
         ];
     }
 
+    protected function summary(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => markdown($this->description),
+        )->shouldCache();
+    }
+
     protected function category(): Attribute
     {
         return Attribute::make(
@@ -191,13 +198,6 @@ class Tag extends BaseTag implements HasMedia
     {
         return Attribute::make(
             get: fn () => TagCollection::make($this->relates)->synonyms(),
-        )->shouldCache();
-    }
-
-    protected function avatar(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar', 'thumb'))
         )->shouldCache();
     }
 }

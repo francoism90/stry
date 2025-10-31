@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import TagItems from '@/components/Tag/TagList.vue'
+import TagItems from '@/components/Tag/TagItems.vue'
 import type { Video } from '@/types'
 import { computed } from 'vue'
 
@@ -17,10 +17,10 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
   <UBlogPost
     :to="show.url(props.item.id)"
     :title="item.name"
-    :description="item.description"
+    :description="item.description || ''"
     :image="item.thumb"
-    :date="item.published_at ?? item.created_at"
     :badge="item.timestamp"
+    :date="item.released || ''"
   >
     <template #description>
       <p v-html="item.description" />

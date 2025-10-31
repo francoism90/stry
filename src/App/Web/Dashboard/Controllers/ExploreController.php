@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
+use App\Api\Tags\Requests\TagIndexRequest;
+use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Shared\Responses\CollectionFilters;
 use App\Web\Shared\Responses\CollectionProperties;
+use Domain\Tags\Enums\TagType;
+use Domain\Tags\Models\Tag;
+use Domain\Tags\Scopes\TagFilterScope;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoOrderScope;
@@ -28,18 +33,18 @@ class ExploreController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(VideoIndexRequest $request, CollectionProperties $collection): Response
+    public function __invoke(TagIndexRequest $request, CollectionProperties $collection): Response
     {
-        Gate::authorize('viewAny', Video::class);
+        Gate::authorize('viewAny', Tag::class);
 
-        // Build the video query with search and ordering
-        $builder = Video::search($request->safe()->input('search'))
-            ->tap(new VideoOrderScope($request->safe()->input('order')))
+        // Build the tag query with search and filtering
+        $builder = Tag::search($request->safe()->input('search'))
+            ->tap(new TagFilterScope($request->safe()->input('filter')))
             ->simplePaginate(16);
 
         return Inertia::render('Dashboard/ExploreIndex', [
-            'orders' => fn () => VideoOrder::options(),
-            'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
+            'filters' => fn () => TagType::options(),
+            'items' => Inertia::scroll(fn () => TagResource::collection($builder)),
             $collection,
         ]);
     }

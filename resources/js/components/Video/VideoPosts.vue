@@ -3,7 +3,7 @@ import VideoPost from '@/components/Video/VideoPost.vue'
 import type { VideoCollection } from '@/types'
 
 interface Props {
-  items?: VideoCollection
+  items: VideoCollection | null | undefined
   orientation?: 'horizontal' | 'vertical'
 }
 

@@ -18,10 +18,11 @@ class TagResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->name,
-            'description' => $this->description,
+            'summary' => $this->summary,
             'category' => $this->category,
-            'type' => $this->type,
             'adult' => $this->adult,
+            'description' => $this->whenAppended('description'),
+            'type' => $this->whenAppended('type'),
             'related' => TagResource::collection($this->whenAppended('relates')),
             'videos' => $this->whenCounted('videos'),
             'created_at' => $this->created_at,

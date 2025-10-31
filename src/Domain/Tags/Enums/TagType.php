@@ -8,19 +8,19 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum TagType: string implements Enumerable
 {
+    case Genre = 'genre';
     case Serie = 'serie';
     case Studio = 'studio';
     case Person = 'person';
-    case Genre = 'genre';
     case Language = 'language';
 
     public function label(): string
     {
         return match ($this) {
+            self::Genre => __('Genre'),
             self::Serie => __('Serie'),
             self::Studio => __('Studio'),
             self::Person => __('Person'),
-            self::Genre => __('Genre'),
             self::Language => __('Language'),
         };
     }

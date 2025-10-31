@@ -29,9 +29,10 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 
 export type Tag = Model & {
   name: string
-  description: string | null
+  summary: string | null
+  description: string | null | undefined
   category: string
-  type: string
+  type: string | undefined
   thumb: AvatarProps['src'] | null | undefined
   related: Tag[] | null | undefined
   videos: number | undefined
@@ -47,7 +48,7 @@ export type Video = Model & {
   user: User | undefined
   name: string
   title: string
-  description: string | undefined
+  description: string | null
   titles: string[] | null | undefined
   content: string | null | undefined
   summary: string | null | undefined
@@ -60,7 +61,7 @@ export type Video = Model & {
   duration: number
   timestamp: string
   snapshot: number | null | undefined
-  released: string | null
+  released: string | Date | null
   captions: Media[] | null
   tags: Tag[] | null
   state: string

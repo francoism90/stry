@@ -3,11 +3,18 @@ import { useCollection } from '@/composables/collection'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
+interface Props {
+  defaultFilter?: string
+  defaultSearch?: string
+}
+
+const props = defineProps<Props>()
+
 const { filter, search, filters } = useCollection()
 
 const form = useForm('get', '', {
-  filter: filter.value || 'recommended',
-  search: search.value || '',
+  filter: filter.value || props.defaultFilter,
+  search: search.value || props.defaultSearch,
 })
 
 const onSubmit = () => {
