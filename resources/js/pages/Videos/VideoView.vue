@@ -40,7 +40,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         <VideoPlayer />
       </UContainer>
 
-      <UContainer class="py-2">
+      <UContainer>
         <UPageHeader
           :title="video.name"
           :links="links"

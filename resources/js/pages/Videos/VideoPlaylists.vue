@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PlaylistCard from '@/components/Playlist/PlaylistCard.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import ResourceLayout from '@/layouts/Video/VideoResource.vue'
+import ResourceLayout from '@/layouts/Video/VideoLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
 

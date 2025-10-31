@@ -3,8 +3,9 @@ import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Video/VideoDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import VideoResource from '@/layouts/Video/VideoResource.vue'
+import VideoLayout from '@/layouts/Video/VideoLayout.vue'
 import type { TagMenuItem, Video } from '@/types'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -13,7 +14,7 @@ interface Props {
   progress: number | null
 }
 
-defineOptions({ layout: [DefaultLayout, VideoResource] })
+defineOptions({ layout: [DefaultLayout, DashboardLayout, VideoLayout] })
 
 const props = defineProps<Props>()
 
@@ -40,7 +41,7 @@ const onSubmit = async () => {
   <UForm
     :state="form"
     @submit="onSubmit"
-    class="flex flex-col gap-4"
+    class="flex flex-col gap-4 py-4"
   >
     <UFormField
       label="Name"
@@ -149,7 +150,7 @@ const onSubmit = async () => {
               size="sm"
               icon="i-lucide-wand-sparkles"
               aria-label="Format name"
-              @click.prevent="form.snapshot = progress ?? null"
+              @click.prevent="form.snapshot = progress || undefined"
             />
           </template>
         </UInput>
