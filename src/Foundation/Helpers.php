@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 if (! function_exists('duration')) {
     function duration(mixed $value): string
     {
-        $time = Carbon::parse($value ?? null)
+        $time = Carbon::parse($value)
             ->utc()
             ->toTimeString();
 
