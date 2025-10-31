@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Web\Dashboard\Controllers\DashboardController;
+use App\Web\Dashboard\Controllers\ExploreController;
 use App\Web\Dashboard\Controllers\HistoryController;
 use App\Web\Dashboard\Controllers\ProfileController;
 use App\Web\Tags\Controllers\TagController;
@@ -14,12 +15,15 @@ use Illuminate\Support\Facades\Route;
 // Dashboard
 Route::get('/', DashboardController::class)->name('home');
 
+// Explorer
+Route::get('/explore', ExploreController::class)->name('explorer');
+
 // Profile
 // Route::get('/profile', ProfileController::class)->name('profile');
 // Route::get('/history', HistoryController::class)->name('history');
 
 // Tags
-Route::resource('tags', TagController::class)->except('create', 'store');
+Route::resource('tags', TagController::class)->except('index', 'create', 'store');
 
 // Videos
 Route::resource('videos', VideoController::class)->except('index', 'create', 'store');

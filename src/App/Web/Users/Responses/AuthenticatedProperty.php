@@ -10,7 +10,7 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class AuthenticatedUser implements ProvidesInertiaProperty
+readonly class AuthenticatedProperty implements ProvidesInertiaProperty
 {
     public function __construct(
         #[CurrentUser] protected ?User $user = null,
