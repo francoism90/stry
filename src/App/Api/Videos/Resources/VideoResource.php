@@ -43,7 +43,7 @@ class VideoResource extends JsonResource
             'released_at' => $this->whenAppended('released_at'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'captions' => MediaResource::collection($this->whenAppended('captions', $this->getMedia('captions'))),
+            'captions' => MediaResource::collection($this->whenAppended('captions', $this->captions)),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'user' => UserResource::make($this->whenLoaded('user')),
         ];

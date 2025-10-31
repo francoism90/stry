@@ -300,9 +300,14 @@ class Video extends Model implements HasMedia
             ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
     }
 
+    public function getCaptions(): MediaCollection
+    {
+        return $this->getMedia('captions');
+    }
+
     public function hasCaptions(): bool
     {
-        if ($this->getMedia('captions')->isNotEmpty()) {
+        if ($this->getCaptions()->isNotEmpty()) {
             return true;
         }
 
@@ -362,6 +367,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): bool => $this->hasCaptions()
+        )->shouldCache();
+    }
+
+    protected function captions(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): MediaCollection => $this->getCaptions()
         )->shouldCache();
     }
 
