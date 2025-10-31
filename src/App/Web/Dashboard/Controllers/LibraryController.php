@@ -33,7 +33,7 @@ class LibraryController implements HasMiddleware
         // Build the video query with the selected list scope
         $builder = Video::query()
             ->tap(new VideoListScope($request->safe()->input('filter', 'watching')))
-            ->simplePaginate(12);
+            ->simplePaginate(16);
 
         return Inertia::render('Dashboard/LibraryIndex', [
             'filters' => fn () => VideoList::options(),
