@@ -7,7 +7,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { src, captions, progress, store } = usePlayer()
+const { video, src, progress, store } = usePlayer()
 
 const listener = () =>
   player.value?.subscribe(({ canSeek, currentTime }) => {
@@ -30,25 +30,36 @@ onBeforeUnmount(() => listener())
 </script>
 
 <template>
-  <media-player
-    ref="player"
-    .src="src || undefined"
-    .autoPlay="true"
-    .playsInline="true"
-    crossOrigin="anonymous"
-    class="rounded-xl"
-  >
-    <media-video-layout />
-    <media-provider>
-      <template v-if="captions?.length">
-        <track
-          v-for="caption in captions"
-          :key="caption.id"
-          :src="caption.asset"
-          :label="caption.name"
-          kind="captions"
-        />
-      </template>
-    </media-provider>
-  </media-player>
+  <div class="relative w-full rounded-xl">
+    <media-player
+      ref="player"
+      .src="src || undefined"
+      .autoPlay="true"
+      .playsInline="true"
+      crossOrigin="anonymous"
+      class="rounded-xl"
+    >
+      <media-video-layout />
+      <media-provider>
+        <template v-if="video?.captions?.length">
+          <track
+            v-for="caption in video.captions"
+            :key="caption.id"
+            :src="caption.asset"
+            :label="caption.name"
+            kind="captions"
+          />
+        </template>
+      </media-provider>
+    </media-player>
+
+    <div v-if="!progress">
+      <UAlert
+        color="neutral"
+        variant="soft"
+        title="Preparing your video..."
+        description="Please wait while we load the video for you."
+      />
+    </div>
+  </div>
 </template>
