@@ -16,7 +16,7 @@ defineProps<Props>()
     :orientation="orientation || 'vertical'"
   >
     <VideoPost
-      v-for="(item, index) in items?.data"
+      v-for="(item, index) in items?.data || []"
       :key="index"
       :item="item"
     />

@@ -14,12 +14,15 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
 {
     public function __construct(
         protected Video $video,
+        protected ?int $limit = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return app(GetVideoQueue::class)->handle($this->video)
+        $data = app(GetVideoQueue::class)->handle($this->video, $this->limit)
             ->loadMissing('tags')
             ->toResourceCollection(VideoResource::class);
+
+        return compact('data');
     }
 }

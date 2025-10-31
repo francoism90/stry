@@ -67,6 +67,11 @@ export default defineConfig(({ mode }) => {
               title: 'font-serif text-xl font-bold sm:text-2xl',
             },
           },
+          pageFeature: {
+            slots: {
+              title: 'font-serif text-base font-semibold sm:text-lg',
+            },
+          },
           dashboardPanel: {
             slots: {
               body: 'pt-4 sm:pt-4',

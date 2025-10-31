@@ -2,16 +2,18 @@
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import TagItems from '@/components/Tag/TagItems.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
+import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import type { Video } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import type { Video, VideoCollection } from '@/types'
+import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
 interface Props {
   video: Video
+  queue?: VideoCollection
 }
 
 defineOptions({ layout: [DefaultLayout, DashboardLayout] })
@@ -50,6 +52,24 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
             <TagItems :items="video.tags" />
           </template>
         </UPageHeader>
+      </UContainer>
+
+      <UContainer>
+        <Deferred data="queue">
+          <template #fallback>
+            <div class="sr-only">Loading...</div>
+          </template>
+
+          <UPageFeature
+            class="py-4"
+            title="Up next"
+          />
+
+          <VideoPosts
+            orientation="horizontal"
+            :items="queue"
+          />
+        </Deferred>
       </UContainer>
     </UPageBody>
   </UPage>

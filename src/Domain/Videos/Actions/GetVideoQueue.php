@@ -11,13 +11,13 @@ use Illuminate\Support\LazyCollection;
 
 class GetVideoQueue
 {
-    public function handle(Video $video, int $limit = 20): VideoCollection
+    public function handle(Video $video, ?int $limit = null): VideoCollection
     {
         return VideoCollection::make([
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->unique('id')->take($limit);
+        ])->unique('id')->take($limit ?? 12);
     }
 
     protected function phrases(Video $video): LazyCollection
