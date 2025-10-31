@@ -12,14 +12,12 @@ use Illuminate\Support\Collection;
 
 class TagQueryBuilder extends Builder
 {
-    public function whereUlid(Tag|ArrayAccess|string|null $values = null): self
+    public function hasUlid(Tag|ArrayAccess|array|string|null $values = null): self
     {
-        $tags = Collection::make((array) $values)
-            ->map(fn (Tag|string $tag) => $tag instanceof Tag ? $tag->getKey() : Tag::firstWhere('ulid', $tag))
-            ->values()
-            ->toArray();
+        $values = Collection::make((array) $values)
+            ->map(fn (Tag|string $tag) => $tag instanceof Tag ? $tag->getKey() : Tag::firstWhere('ulid', $tag)->getKey());
 
-        return $this->whereIn('id', $tags);
+        return $this->whereIn('id', $values->filter());
     }
 
     public function type(TagType|string $value): self

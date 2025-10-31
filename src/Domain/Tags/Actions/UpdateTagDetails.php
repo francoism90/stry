@@ -13,12 +13,16 @@ class UpdateTagDetails
     public function handle(Tag $tag, array $attributes = []): mixed
     {
         return DB::transaction(function () use ($tag, $attributes) {
+            // Update the tag attributes
             $tag->updateOrFail(
                 Arr::only($attributes, $tag->getFillable())
             );
 
+            // Sync related tags if provided
             if (array_key_exists('related', $attributes)) {
-                $tag->syncRelated(Tag::fromOption($attributes['related'] ?? [])->get());
+                $tagIds = Tag::hasUlid(data_get($attributes, 'related.*.id', []))->get();
+
+                $tag->syncRelated($tagIds);
             }
         });
     }

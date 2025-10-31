@@ -8,6 +8,8 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Laravel\Scout\Builder;
 
+use function Illuminate\Support\enum_value;
+
 class TagFilterScope
 {
     public function __construct(
@@ -18,26 +20,26 @@ class TagFilterScope
     {
         $scout
             ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
-            ->when($this->hasFilter(), fn (Builder $scout) => $scout->where('type', $this->getFilter()->value)->orderBy('name'))
+            ->when($this->hasFilter(), fn (Builder $scout) => $scout->where('type', $this->getFilter())->orderBy('name'))
+            ->when(! $this->hasFilter() && blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'))
             ->unless($this->hasFilter() && filled($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
     }
 
     protected function hasFilter(): bool
     {
+        if ($this->filter === 'all') {
+            return false;
+        }
+
         return filled($this->getFilter());
     }
 
-    protected function isFilter(TagType $value): bool
-    {
-        return $this->getFilter() === $value;
-    }
-
-    protected function getFilter(): ?TagType
+    protected function getFilter(): ?string
     {
         if (! $this->filter) {
-            return TagType::Genre;
+            return enum_value(TagType::Genre);
         }
 
-        return TagType::tryFrom($this->filter);
+        return enum_value(TagType::tryFrom($this->filter));
     }
 }

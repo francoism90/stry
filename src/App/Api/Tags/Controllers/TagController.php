@@ -7,7 +7,7 @@ namespace App\Api\Tags\Controllers;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagSearchScope;
+use Domain\Tags\Scopes\TagFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,36 +32,8 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Tag::search($request->safe()->input('search'))
-            ->tap(new TagSearchScope(type: $request->safe()->input('filter')))
+            ->tap(new TagFilterScope(filter: $request->safe()->input('filter', 'all')))
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
-    }
-
-    public function store(Request $request): Response
-    {
-        Gate::authorize('create', Tag::class);
-
-        return response()->noContent();
-    }
-
-    public function show(Tag $tag): Response
-    {
-        Gate::authorize('view', $tag);
-
-        return response()->noContent();
-    }
-
-    public function update(Tag $tag): Response
-    {
-        Gate::authorize('update', $tag);
-
-        return response()->noContent();
-    }
-
-    public function destroy(Tag $tag): Response
-    {
-        Gate::authorize('delete', $tag);
-
-        return response()->noContent();
     }
 }

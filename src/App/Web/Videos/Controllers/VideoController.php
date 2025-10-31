@@ -56,7 +56,7 @@ class VideoController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function update(VideoUpdateRequest $request, Video $video): RedirectResponse
+    public function update(Video $video, VideoUpdateRequest $request): RedirectResponse
     {
         Gate::authorize('update', $video);
 
