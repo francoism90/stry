@@ -16,7 +16,7 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
 <template>
   <UBlogPost
     :to="show.url(props.item.id)"
-    :title="item.name"
+    :title="item.title"
     :description="item.description || ''"
     :image="item.thumb"
     :badge="item.timestamp"
