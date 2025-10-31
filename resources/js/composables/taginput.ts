@@ -10,13 +10,13 @@ export function useTagInput(selected?: MaybeRefOrGetter<Tag[]>) {
 
   const data = computed(() => mergeDeep([...items.value, ...(state.value?.data || [])]))
 
-  const mergeDeep = (values: Tag[]) => values.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
-
   const query = async (query?: QueryParams) => {
     const { data } = await http.get<TagCollection>(index.url({ query }))
 
     state.value = Object.assign(state.value || {}, data)
   }
+
+  const mergeDeep = (values: Tag[]) => values.filter((item, index, self) => index === self.findIndex((o) => o.id === item.id))
 
   watchEffect(async () => {
     items.value = toValue(selected || [])
