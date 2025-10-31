@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 // Dashboard
 Route::get('/', DashboardController::class)->name('home');
-Route::get('/explore', ExploreController::class)->name('explorer');
+Route::get('/explore', ExploreController::class)->name('explore');
 Route::get('/library', LibraryController::class)->name('library');
 Route::get('/profile', ProfileController::class)->name('profile');
 

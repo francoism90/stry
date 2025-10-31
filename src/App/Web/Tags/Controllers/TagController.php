@@ -74,6 +74,6 @@ class TagController extends Controller implements HasMiddleware
 
         $tag->delete();
 
-        return redirect()->route('tags.index');
+        return redirect()->route('explore');
     }
 }
