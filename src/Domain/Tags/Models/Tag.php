@@ -168,7 +168,7 @@ class Tag extends BaseTag implements HasMedia
         return [
             'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
-            'description' => (string) $this->description,
+            'summary' => (string) $this->summary,
             'category' => (string) $this->category,
             'type' => (string) $this->type->value,
             'adult' => (bool) $this->adult,
@@ -183,7 +183,7 @@ class Tag extends BaseTag implements HasMedia
     protected function summary(): Attribute
     {
         return Attribute::make(
-            get: fn () => markdown($this->description),
+            get: fn () => markdown($this->description ?? ''),
         )->shouldCache();
     }
 

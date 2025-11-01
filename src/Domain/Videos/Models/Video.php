@@ -321,7 +321,7 @@ class Video extends Model implements HasMedia
     protected function description(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => markdown($this->summary),
+            get: fn (): string => markdown($this->summary ?? ''),
         )->shouldCache();
     }
 

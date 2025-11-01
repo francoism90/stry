@@ -253,8 +253,9 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'description',
+                            'name' => 'summary',
                             'type' => 'string',
+                            'optional' => true,
                         ],
                         [
                             'name' => 'category',
@@ -301,7 +302,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, synonyms, category',
+                    'query_by' => 'name, summary, synonyms, category',
                 ],
             ],
 
