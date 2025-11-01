@@ -58,6 +58,16 @@ export default defineConfig(({ mode }) => {
             secondary: 'gray',
             neutral: 'zinc',
           },
+          dashboardPanel: {
+            slots: {
+              body: 'pt-4 sm:pt-4',
+            },
+          },
+          dashboardToolbar: {
+            slots: {
+              root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
+            },
+          },
           pageBody: {
             base: 'mt-0 space-y-2 pb-4',
           },
@@ -72,14 +82,14 @@ export default defineConfig(({ mode }) => {
               title: 'font-serif text-base font-semibold sm:text-lg',
             },
           },
-          dashboardPanel: {
+          pageCard: {
             slots: {
-              body: 'pt-4 sm:pt-4',
+              title: 'font-serif text-base font-semibold',
             },
           },
-          dashboardToolbar: {
+          blogPost: {
             slots: {
-              root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
+              title: 'font-serif text-base font-semibold sm:text-lg',
             },
           },
         },
