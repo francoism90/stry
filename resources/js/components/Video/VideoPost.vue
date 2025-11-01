@@ -23,7 +23,7 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
     :date="item.released_at || item.published_at || item.created_at"
   >
     <template #description>
-      <p v-html="item.description" />
+      <div v-html="item.description" />
       <TagItems :items="tags" />
     </template>
   </UBlogPost>

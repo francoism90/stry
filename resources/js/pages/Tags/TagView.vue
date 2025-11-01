@@ -37,9 +37,12 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
       <UContainer>
         <UPageHeader
           :title="tag.name"
-          :description="tag.summary"
           :links="links"
-        />
+        >
+          <template #description>
+            <div v-html="tag.summary" />
+          </template>
+        </UPageHeader>
       </UContainer>
 
       <DashboardToolbar default-filter="recommended" />

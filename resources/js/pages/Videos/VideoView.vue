@@ -47,7 +47,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           :links="links"
         >
           <template #description>
-            <p v-html="video.description" />
+            <div v-html="video.description" />
             <TagItems :items="video.tags" />
           </template>
         </UPageHeader>
