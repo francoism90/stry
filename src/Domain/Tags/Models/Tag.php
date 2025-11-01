@@ -170,7 +170,7 @@ class Tag extends BaseTag implements HasMedia
             'name' => (string) $this->name,
             'description' => (string) $this->description,
             'category' => (string) $this->category,
-            'type' => (string) $this->type?->value,
+            'type' => (string) $this->type->value,
             'adult' => (bool) $this->adult,
             'synonyms' => (string) $this->synonyms,
             'order' => (int) $this->order_column,
@@ -178,6 +178,13 @@ class Tag extends BaseTag implements HasMedia
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
+    }
+
+    protected function summary(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => markdown($this->description),
+        )->shouldCache();
     }
 
     protected function category(): Attribute
@@ -190,14 +197,7 @@ class Tag extends BaseTag implements HasMedia
     protected function synonyms(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagCollection::make($this->relates)->synonyms(),
-        )->shouldCache();
-    }
-
-    protected function avatar(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar', 'thumb'))
+            get: fn () => TagCollection::make($this->getRelates())->synonyms(),
         )->shouldCache();
     }
 }

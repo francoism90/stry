@@ -58,15 +58,40 @@ export default defineConfig(({ mode }) => {
             secondary: 'gray',
             neutral: 'zinc',
           },
-          pageBody: {
-            base: 'mt-6 space-y-2 pb-16',
-          },
-          container: {
-            base: 'max-w-6xl',
-          },
-          input: {
+          dashboardPanel: {
             slots: {
-              root: 'w-full',
+              body: 'pt-4 sm:pt-4',
+            },
+          },
+          dashboardToolbar: {
+            slots: {
+              root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
+              left: 'gap-3',
+              right: 'gap-3',
+            },
+          },
+          pageBody: {
+            base: 'mt-0 space-y-2 pb-4',
+          },
+          pageHeader: {
+            slots: {
+              root: 'border-0 py-2',
+              title: 'font-serif text-xl font-bold sm:text-2xl',
+            },
+          },
+          pageFeature: {
+            slots: {
+              title: 'font-serif text-base font-semibold sm:text-lg',
+            },
+          },
+          pageCard: {
+            slots: {
+              title: 'font-serif text-base font-semibold',
+            },
+          },
+          blogPost: {
+            slots: {
+              title: 'font-serif text-base font-semibold sm:text-lg',
             },
           },
         },

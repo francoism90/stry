@@ -3,6 +3,7 @@ import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
 import TagDeleteModal from '@/components/Tag/TagDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import TagResource from '@/layouts/Tag/TagResource.vue'
 import type { Tag, TagMenuItem } from '@/types'
@@ -13,7 +14,7 @@ interface Props {
   types: string[]
 }
 
-defineOptions({ layout: [DefaultLayout, TagResource] })
+defineOptions({ layout: [DefaultLayout, DashboardLayout, TagResource] })
 
 const props = defineProps<Props>()
 
@@ -40,7 +41,7 @@ const onSubmit = async () => {
   <UForm
     :state="form"
     @submit="onSubmit"
-    class="flex flex-col gap-4"
+    class="flex flex-col gap-4 py-4"
   >
     <UFormField
       label="Name"

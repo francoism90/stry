@@ -11,8 +11,13 @@ use Illuminate\Support\Facades\Cache;
 
 class GetVideoProgress
 {
-    public function handle(Video $video, User $user): int|float
+    public function handle(Video $video, ?User $user = null): int|float
     {
+        // If there is no user, return 0 progress
+        if (! $user) {
+            return 0;
+        }
+
         // Generate a unique cache key for the user's video progress
         $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
 

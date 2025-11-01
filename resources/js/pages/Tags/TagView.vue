@@ -1,21 +1,31 @@
 <script setup lang="ts">
-import PageFilters from '@/components/Ui/PageFilters.vue'
+import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
+import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
+import VideoPosts from '@/components/Video/VideoPosts.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import VideoCollection from '@/layouts/Video/VideoCollection.vue'
-import type { Tag } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import type { Tag, VideoCollection } from '@/types'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import type { RadioGroupItem } from '@nuxt/ui'
+import type { NavigationMenuItem } from '@nuxt/ui'
+import { ref } from 'vue'
 
 interface Props {
   tag: Tag
-  filter: string | undefined
-  filters: RadioGroupItem[]
+  items: VideoCollection
 }
 
-defineOptions({ layout: [DefaultLayout, VideoCollection] })
+defineOptions({ layout: [DefaultLayout, DashboardLayout] })
 
 const props = defineProps<Props>()
+
+const links = ref<NavigationMenuItem[]>([
+  {
+    label: 'Edit',
+    icon: 'i-lucide-clipboard-pen',
+    to: edit.url(props.tag.id),
+  },
+])
 
 useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
 </script>
@@ -23,10 +33,29 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
 <template>
   <Head :title="tag.name" />
 
-  <PageFilters
-    :title="tag.name"
-    :headline="tag.type"
-    :filters
-    :filter
-  />
+  <UPage>
+    <UPageBody>
+      <UContainer>
+        <UPageHeader
+          :title="tag.name"
+          :links="links"
+        />
+      </UContainer>
+
+      <DashboardToolbar default-filter="recommended" />
+
+      <UContainer class="py-4">
+        <InfiniteScroll
+          data="items"
+          items-element="#tag-list"
+          :buffer="200"
+        >
+          <VideoPosts
+            id="tag-list"
+            :items="items"
+          />
+        </InfiniteScroll>
+      </UContainer>
+    </UPageBody>
+  </UPage>
 </template>

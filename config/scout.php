@@ -323,12 +323,7 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'content',
-                            'type' => 'string',
-                            'optional' => true,
-                        ],
-                        [
-                            'name' => 'summary',
+                            'name' => 'description',
                             'type' => 'string',
                             'optional' => true,
                         ],
@@ -338,7 +333,7 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'captions',
+                            'name' => 'captioned',
                             'type' => 'bool',
                         ],
                         [
@@ -363,6 +358,12 @@ return [
                         [
                             'name' => 'state',
                             'type' => 'string',
+                        ],
+                        [
+                            'name' => 'published_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'released_at',
@@ -391,7 +392,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'title, name, summary, content, tags, synonyms',
+                    'query_by' => 'title, name, description, tags, synonyms',
                 ],
             ],
 

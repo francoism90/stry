@@ -10,10 +10,10 @@ export type Model = {
 export type User = Model & {
   name: string
   email: string
-  email_verified_at?: string | null
-  avatar?: AvatarProps['src'] | null
-  roles?: string[]
-  permissions?: string[]
+  email_verified_at: string | null | undefined
+  avatar: AvatarProps['src'] | null | undefined
+  roles: string[] | undefined
+  permissions: string[] | undefined
 }
 
 export type Media = Model & {
@@ -29,12 +29,13 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 
 export type Tag = Model & {
   name: string
-  description: string | null
+  summary: string | null
+  description: string | null | undefined
   category: string
-  type: string
-  videos?: number
-  related?: Tag[] | null
-  thumb?: AvatarProps['src'] | null
+  type: string | undefined
+  thumb: AvatarProps['src'] | null | undefined
+  related: Tag[] | null | undefined
+  videos: number | undefined
 }
 
 export type TagCollection = Omit<Paginator, 'data'> & {
@@ -44,26 +45,28 @@ export type TagCollection = Omit<Paginator, 'data'> & {
 export type TagMenuItem = Tag & SelectMenuItem
 
 export type Video = Model & {
-  user?: User
+  user: User | undefined
   name: string
   title: string
-  titles?: string[] | null
-  content?: string | null
-  summary: string | null
+  description: string | null
+  titles: string[] | null | undefined
+  content: string | null | undefined
+  summary: string | null | undefined
   season: string | null
   episode: string | null
   part: string | null
-  captions: boolean | null
+  captioned: boolean
   thumb: AvatarProps['src'] | undefined
-  preview: string | null
-  duration: number | null
-  timestamp: string | null
-  snapshot: number | string | null
-  released_at: string | null
+  duration: number
+  timestamp: string
+  snapshot: number | null | undefined
+  released: string | Date | null
+  captions: Media[] | null
   tags: Tag[] | null
   state: string
-  expires_at: string | null
-  published_at: string | null
+  expires_at: string | undefined
+  published_at: string | undefined
+  released_at: string | undefined
 }
 
 export type VideoCollection = Omit<Paginator, 'data'> & {
@@ -73,12 +76,12 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 export type Playlist = Model & {
   asset: PlayerSrc | null
   valid: boolean
-  percent: number | null
+  progress: number | null
   type: string
   state: string
-  accessed_at?: string | null
-  expires_at?: string | null
-  transcoded_at: string | null
+  accessed_at: string | null | undefined
+  expires_at: string | null | undefined
+  transcoded_at: string | null | undefined
 }
 
 export type PlaylistCollection = Omit<Paginator, 'data'> & {
@@ -96,6 +99,6 @@ export type Paginator = {
   first_page_url: string | null
   next_page_url: string | null
   prev_page_url: string | null
-  next_cursor?: string | null
-  prev_cursor?: string | null
+  next_cursor: string | null | undefined
+  prev_cursor: string | null | undefined
 }

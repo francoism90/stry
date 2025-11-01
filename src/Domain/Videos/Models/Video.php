@@ -101,7 +101,6 @@ class Video extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'state' => VideoState::class,
             'snapshot' => 'decimal:2',
             'adult' => 'boolean',
             'expires_at' => 'datetime',
@@ -110,6 +109,7 @@ class Video extends Model implements HasMedia
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
+            'state' => VideoState::class,
         ];
     }
 
@@ -171,30 +171,6 @@ class Video extends Model implements HasMedia
                 'text/plain',
                 'text/srt',
                 'text/vtt',
-            ]);
-
-        $this
-            ->addMediaCollection('previews')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->singleFile()
-            ->acceptsMimeTypes([
-                'video/av1',
-                'video/avi',
-                'video/mkv',
-                'video/mp4',
-                'video/mp4v-es',
-                'video/mpeg',
-                'video/ogg',
-                'video/quicktime',
-                'video/webm',
-                'video/x-flv',
-                'video/x-m4v',
-                'video/x-matroska',
-                'video/x-mpeg',
-                'video/x-ms-asf',
-                'video/x-ms-wmv',
-                'video/x-msvideo',
             ]);
     }
 
@@ -269,15 +245,15 @@ class Video extends Model implements HasMedia
             'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
             'title' => (string) $this->title,
-            'content' => (string) $this->content,
-            'summary' => (string) $this->summary,
+            'description' => (string) $this->description,
             'duration' => (float) $this->duration,
-            'captions' => (bool) $this->captions,
+            'captioned' => (bool) $this->captioned,
             'adult' => (bool) $this->adult,
             'tags' => (string) $this->tags->translated(),
             'synonyms' => (string) $this->tags->synonyms(),
             'tagged' => (array) $this->tags->modelKeys(),
             'state' => (string) $this->state,
+            'published_at' => (int) $this->published_at?->getTimestamp(),
             'released_at' => (int) $this->released_at?->getTimestamp(),
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
@@ -293,11 +269,6 @@ class Video extends Model implements HasMedia
         ]);
     }
 
-    public function getCaptionCollection(): MediaCollection
-    {
-        return $this->getMedia('captions');
-    }
-
     public function getStreams(): Collection
     {
         return $this
@@ -305,9 +276,14 @@ class Video extends Model implements HasMedia
             ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
     }
 
+    public function getCaptions(): MediaCollection
+    {
+        return $this->getMedia('captions');
+    }
+
     public function hasCaptions(): bool
     {
-        if ($this->getCaptionCollection()->isNotEmpty()) {
+        if ($this->getCaptions()->isNotEmpty()) {
             return true;
         }
 
@@ -335,45 +311,59 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
-    protected function thumb(): Attribute
+    protected function released(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'))
+            get: fn () => $this->released_at ?? $this->published_at ?? $this->created_at
         )->shouldCache();
     }
 
-    protected function preview(): Attribute
+    protected function description(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstPlaylist('preview')?->getUrl())
+            get: fn (): string => markdown($this->summary),
+        )->shouldCache();
+    }
+
+    protected function thumb(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => rescue(fn (): ?string => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false)
+        )->shouldCache();
+    }
+
+    protected function captioned(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): bool => $this->hasCaptions()
         )->shouldCache();
     }
 
     protected function captions(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->hasCaptions()
+            get: fn (): MediaCollection => $this->getCaptions()
         )->shouldCache();
     }
 
     protected function duration(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->durationInSeconds()
+            get: fn (): float => $this->durationInSeconds()
         )->shouldCache();
     }
 
     protected function timestamp(): Attribute
     {
         return Attribute::make(
-            get: fn () => duration($this->durationInSeconds())
+            get: fn (): string => duration($this->durationInSeconds())
         )->shouldCache();
     }
 
     protected function fileSize(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getClipCollection()->totalSizeInBytes(),
+            get: fn (): int => $this->getClipCollection()->totalSizeInBytes(),
         )->shouldCache();
     }
 }

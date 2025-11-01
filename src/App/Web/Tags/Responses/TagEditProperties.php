@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Web\Tags\Responses;
+
+use App\Api\Tags\Resources\TagResource;
+use Domain\Tags\Enums\TagType;
+use Domain\Tags\Models\Tag;
+use Illuminate\Container\Attributes\RouteParameter;
+use Inertia\ProvidesInertiaProperties;
+use Inertia\RenderContext;
+
+readonly class TagEditProperties implements ProvidesInertiaProperties
+{
+    public function __construct(
+        #[RouteParameter('tag')] protected Tag $tag,
+    ) {}
+
+    public function toInertiaProperties(RenderContext $context): array
+    {
+        return [
+            'tag' => fn () => $this->tag->append('description', 'type', 'relates')->toResource(TagResource::class),
+            'types' => fn () => TagType::options(),
+        ];
+    }
+}

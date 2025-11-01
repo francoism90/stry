@@ -6,13 +6,20 @@ namespace Domain\Tags\QueryBuilders;
 
 use ArrayAccess;
 use Domain\Tags\Enums\TagType;
+use Domain\Tags\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class TagQueryBuilder extends Builder
 {
-    public function fromOption(array|ArrayAccess $values = []): self
+    public function hasUlid(Tag|ArrayAccess|array|string|null $values = null): self
     {
-        return $this->whereIn('ulid', $values);
+        $values = Collection::make((array) $values)
+            ->map(fn (Tag|string $tag) => $tag instanceof Tag ? $tag : Tag::firstWhere('ulid', $tag))
+            ->pluck('id')
+            ->filter();
+
+        return $this->whereIn('id', $values);
     }
 
     public function type(TagType|string $value): self

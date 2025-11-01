@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
-use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
-use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Tags\Responses\TagTypeCollection;
-use App\Web\Videos\Responses\VideoTypeCollection;
+use App\Web\Shared\Responses\CollectionProperties;
+use App\Web\Tags\Responses\TagEditProperties;
+use App\Web\Tags\Responses\TagViewProperties;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagSearchScope;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoSearchScope;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -35,53 +33,29 @@ class TagController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(TagIndexRequest $request): Response
-    {
-        Gate::authorize('viewAny', Tag::class);
-
-        return Inertia::render('Tags/TagIndex', [
-            'filter' => $request->safe()->input('filter'),
-            'search' => $request->safe()->input('search'),
-            'filters' => fn () => new TagTypeCollection,
-            'items' => Inertia::scroll(fn () => TagResource::collection(Tag::search($request->safe()->input('search'))
-                ->tap(new TagSearchScope(type: $request->safe()->input('filter')))
-                ->simplePaginate(48)
-            )),
-        ]);
-    }
-
-    public function store(Request $request): Response
-    {
-        abort(404);
-    }
-
-    public function create(): Response
-    {
-        abort(404);
-    }
-
-    public function show(Tag $tag, VideoIndexRequest $request): Response
+    public function show(Tag $tag, VideoIndexRequest $request, TagViewProperties $properties, CollectionProperties $collection): Response
     {
         Gate::authorize('view', $tag);
 
+        // Build the video query with search and filtering by tag
+        $builder = Video::search($request->safe()->input('search'))
+            ->tap(new VideoFilterScope(tags: $tag, filter: $request->safe()->input('filter', VideoOrder::Recommended)))
+            ->simplePaginate(24);
+
         return Inertia::render('Tags/TagView', [
-            'tag' => fn () => $tag->loadCount('videos')->toResource(TagResource::class),
-            'search' => $request->safe()->input('search'),
-            'filter' => $request->safe()->input('filter'),
-            'filters' => fn () => new VideoTypeCollection,
-            'items' => Inertia::scroll(fn () => VideoResource::collection(Video::search($request->safe()->input('search'))
-                ->tap(new VideoSearchScope(tags: [$tag->getKey()], type: $request->safe()->input('filter')))
-                ->simplePaginate(24))),
+            'filters' => fn () => VideoOrder::options(),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
+            $properties,
+            $collection,
         ]);
     }
 
-    public function edit(Tag $tag): Response
+    public function edit(Tag $tag, TagEditProperties $properties): Response
     {
         Gate::authorize('update', $tag);
 
         return Inertia::render('Tags/TagEdit', [
-            'tag' => fn () => $tag->loadCount('videos')->append('relates')->toResource(TagResource::class),
-            'types' => fn () => new TagTypeCollection,
+            $properties,
         ]);
     }
 
@@ -100,6 +74,6 @@ class TagController extends Controller implements HasMiddleware
 
         $tag->delete();
 
-        return redirect()->route('tags.index');
+        return redirect()->route('explore');
     }
 }

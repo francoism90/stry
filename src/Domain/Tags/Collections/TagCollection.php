@@ -19,7 +19,6 @@ class TagCollection extends Collection
     public function synonyms(): mixed
     {
         return $this
-            ->relates()
             ->map(fn (Tag $related) => $related->only(['name', 'description']))
             ->flatten()
             ->unique()

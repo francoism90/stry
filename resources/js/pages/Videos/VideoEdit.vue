@@ -3,17 +3,18 @@ import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Video/VideoDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import VideoResource from '@/layouts/Video/VideoResource.vue'
+import VideoLayout from '@/layouts/Video/VideoLayout.vue'
 import type { TagMenuItem, Video } from '@/types'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 interface Props {
   video: Video
-  progress: number | null
+  progress: number | undefined
 }
 
-defineOptions({ layout: [DefaultLayout, VideoResource] })
+defineOptions({ layout: [DefaultLayout, DashboardLayout, VideoLayout] })
 
 const props = defineProps<Props>()
 
@@ -40,7 +41,7 @@ const onSubmit = async () => {
   <UForm
     :state="form"
     @submit="onSubmit"
-    class="flex flex-col gap-4"
+    class="flex flex-col gap-4 py-4"
   >
     <UFormField
       label="Name"
@@ -113,21 +114,6 @@ const onSubmit = async () => {
       </UFormField>
 
       <UFormField
-        label="Released"
-        name="released_at"
-        :error="form.errors.released_at"
-      >
-        <UInput
-          v-model="form.released_at"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
-          placeholder="YYYY-MM-DD HH:mm:ss"
-          class="w-full"
-        />
-      </UFormField>
-    </div>
-
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <UFormField
         label="Snapshot"
         name="snapshot"
         :error="form.errors.snapshot"
@@ -147,38 +133,12 @@ const onSubmit = async () => {
               color="neutral"
               variant="link"
               size="sm"
-              icon="i-lucide-wand-sparkles"
+              icon="i-lucide-image-down"
               aria-label="Format name"
-              @click.prevent="form.snapshot = progress ?? null"
+              @click.prevent="form.snapshot = progress || undefined"
             />
           </template>
         </UInput>
-      </UFormField>
-
-      <UFormField
-        label="Published"
-        name="published_at"
-        :error="form.errors.published_at"
-      >
-        <UInput
-          v-model="form.published_at"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
-          placeholder="YYYY-MM-DD HH:mm:ss"
-          class="w-full"
-        />
-      </UFormField>
-
-      <UFormField
-        label="Expires"
-        name="expires_at"
-        :error="form.errors.expires_at"
-      >
-        <UInput
-          v-model="form.expires_at"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
-          placeholder="YYYY-MM-DD HH:mm:ss"
-          class="w-full"
-        />
       </UFormField>
     </div>
 

@@ -18,7 +18,7 @@ const remove = async () =>
 <template>
   <UModal
     :title="item.title"
-    :description="item.summary || 'No description available.'"
+    :description="item.description || 'No description available.'"
     :ui="{ footer: 'justify-end' }"
   >
     <UButton

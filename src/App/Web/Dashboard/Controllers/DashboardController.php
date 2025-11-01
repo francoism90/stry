@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use App\Web\Videos\Responses\VideoSectionCollection;
+use App\Api\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Resources\VideoResource;
+use App\Web\Shared\Responses\CollectionProperties;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -19,17 +23,23 @@ class DashboardController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
-    public function __invoke(): Response
+    public function __invoke(VideoIndexRequest $request, CollectionProperties $collection): Response
     {
         Gate::authorize('viewAny', Video::class);
 
+        // Build the video query with search and ordering
+        $builder = Video::search($request->safe()->input('search'))
+            ->tap(new VideoFilterScope($request->safe()->input('filter', VideoOrder::Recommended)))
+            ->simplePaginate(16);
+
         return Inertia::render('Dashboard/DashboardIndex', [
-            'recommended' => Inertia::defer(fn () => new VideoSectionCollection, 'sections')->deepMerge()->matchOn('data.id'),
-            'watching' => Inertia::defer(fn () => new VideoSectionCollection(type: 'watching'), 'sections')->deepMerge()->matchOn('data.id'),
-            'newest' => Inertia::defer(fn () => new VideoSectionCollection(type: 'newest'), 'sections')->deepMerge()->matchOn('data.id'),
+            'filters' => fn () => VideoOrder::options(),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
+            $collection,
         ]);
     }
 }

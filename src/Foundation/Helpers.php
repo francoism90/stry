@@ -3,13 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Carbon;
-
-if (! function_exists('inertia_route')) {
-    function inertia_route(string $name, mixed $parameters = []): string
-    {
-        return route($name, $parameters, absolute: false);
-    }
-}
+use Illuminate\Support\Str;
 
 if (! function_exists('duration')) {
     function duration(mixed $value): string
@@ -19,5 +13,15 @@ if (! function_exists('duration')) {
             ->toTimeString();
 
         return preg_replace('/^0(?:0:0?)?/', '', $time);
+    }
+}
+
+if (! function_exists('markdown')) {
+    function markdown(string $value = ''): string
+    {
+        return Str::markdown($value, [
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
     }
 }

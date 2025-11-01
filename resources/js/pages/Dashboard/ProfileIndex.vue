@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import PageFeature from '@/components/Ui/PageFeature.vue'
-import PageSection from '@/components/Ui/PageSection.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
+
+defineOptions({ layout: [DefaultLayout, DashboardLayout] })
 </script>
 
 <template>
   <Head title="Profile" />
 
-  <UPageBody>
-    <PageSection class="gap-4">
-      <PageFeature title="Profile" />
+  <UPage>
+    <UPageBody>
+      <UContainer>
+        <UPageHeader title="Profile" />
 
-      <UButton
-        label="Logout"
-        class="w-fit"
-        variant="soft"
-        @click="() => router.post('/logout')"
-      />
-    </PageSection>
-  </UPageBody>
+        <UButton
+          label="Logout"
+          class="my-2"
+          variant="soft"
+          @click="() => router.post('/logout')"
+        />
+      </UContainer>
+    </UPageBody>
+  </UPage>
 </template>

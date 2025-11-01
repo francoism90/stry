@@ -23,15 +23,16 @@ class UpdateVideoDetails
 
             // Sync tags if provided
             if (array_key_exists('tags', $attributes)) {
-                $video->syncTags(Tag::fromOption($attributes['tags'] ?? [])->get());
+                $tagIds = Tag::hasUlid(data_get($attributes, 'tags.*.id', []))->get();
+
+                $video->syncTags($tagIds);
             }
 
             // Regenerate media conversions if snapshot changed or thumb conversion is missing
-            if ($video->wasChanged('snapshot') || ! $video->getFirstMedia('clips')->hasGeneratedConversion('thumb')) {
+            if ($video->wasChanged('snapshot') && $video->hasMedia('clips')) {
                 // Get all media IDs associated with the video's clips
                 $mediaIds = implode(',', $video->getClipCollection()->modelKeys());
 
-                // Call the media library regeneration command
                 Artisan::call('media-library:regenerate', [
                     '--ids' => $mediaIds,
                     '--force' => true,
