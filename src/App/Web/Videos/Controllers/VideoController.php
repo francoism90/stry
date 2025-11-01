@@ -60,6 +60,7 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
+        // Perform the update action
         app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
 
         return back();
@@ -69,7 +70,8 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $video);
 
-        $video->delete();
+        // Delete the video asynchronously
+        defer(fn () => $video->delete());
 
         return redirect()->route('home');
     }
