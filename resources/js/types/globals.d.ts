@@ -7,10 +7,10 @@ declare module '@inertiajs/core' {
     readonly app: string
     readonly locale: string
     readonly auth: User | undefined
-    readonly filters: SelectItem[] | undefined
-    readonly filter: string | undefined
-    readonly search: string | undefined
-    readonly grid: boolean | string | undefined
+    readonly filters?: SelectItem[] | undefined
+    readonly filter?: string | undefined
+    readonly search?: string | undefined
+    readonly grid?: boolean | string | undefined
   }
 }
 

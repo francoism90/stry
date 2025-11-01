@@ -59,6 +59,7 @@ watchDebounced(
           v-model="form.grid"
           label="Grid View"
           size="xs"
+          class="hidden sm:flex"
           @update:modelValue="onSubmit"
         />
 

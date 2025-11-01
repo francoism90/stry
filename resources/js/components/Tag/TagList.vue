@@ -1,24 +1,26 @@
 <script setup lang="ts">
+import { useCollection } from '@/composables/collection'
 import type { TagCollection } from '@/types'
 import TagCard from './TagCard.vue'
 
 interface Props {
   items: TagCollection | null | undefined
-  orientation?: 'horizontal' | 'vertical'
 }
 
 defineProps<Props>()
+
+const { orientation } = useCollection()
 </script>
 
 <template>
-  <UPageList
-    :orientation="orientation || 'vertical'"
-    divide
+  <UBlogPosts
+    :orientation="orientation"
+    class="gap-6 lg:gap-y-6"
   >
     <TagCard
       v-for="(item, index) in items?.data || []"
       :key="index"
       :item="item"
     />
-  </UPageList>
+  </UBlogPosts>
 </template>

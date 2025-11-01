@@ -15,6 +15,5 @@ const props = defineProps<Props>()
     :title="item.name"
     :description="`${item.category} • ${item.videos} videos`"
     :to="show.url(props.item.id)"
-    variant="ghost"
   />
 </template>

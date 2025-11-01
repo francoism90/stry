@@ -18,8 +18,6 @@ readonly class CollectionProperties implements ProvidesInertiaProperties
 
     public function toInertiaProperties(RenderContext $context): array
     {
-        logger($this->grid);
-
         return [
             'filter' => fn () => $this->filter,
             'search' => fn () => $this->search,
