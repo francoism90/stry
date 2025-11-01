@@ -8,18 +8,22 @@ use Foundation\Container\Attributes\QueryParameter;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
 
-class CollectionProperties implements ProvidesInertiaProperties
+readonly class CollectionProperties implements ProvidesInertiaProperties
 {
     public function __construct(
         #[QueryParameter('filter')] protected ?string $filter = null,
         #[QueryParameter('search')] protected ?string $search = null,
+        #[QueryParameter('grid')] protected ?string $grid = null,
     ) {}
 
     public function toInertiaProperties(RenderContext $context): array
     {
+        logger($this->grid);
+
         return [
             'filter' => fn () => $this->filter,
             'search' => fn () => $this->search,
+            'grid' => fn () => $this->grid,
         ];
     }
 }

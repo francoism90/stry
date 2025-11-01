@@ -1,11 +1,16 @@
 import type { User } from '@/types'
 import type { Page } from '@inertiajs/core'
+import type { SelectItem } from '@nuxt/ui'
 
 declare module '@inertiajs/core' {
   export interface PageProps {
     readonly app: string
     readonly locale: string
     readonly auth: User | undefined
+    readonly filters: SelectItem[] | undefined
+    readonly filter: string | undefined
+    readonly search: string | undefined
+    readonly grid: boolean | string | undefined
   }
 }
 

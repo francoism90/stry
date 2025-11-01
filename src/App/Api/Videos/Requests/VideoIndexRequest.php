@@ -25,6 +25,7 @@ class VideoIndexRequest extends FormRequest
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
             'tags' => ['sometimes', 'nullable', 'array', 'max:5'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],
+            'grid' => ['sometimes', 'nullable', 'string', 'in:true,false,0,1'],
         ];
     }
 }

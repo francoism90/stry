@@ -66,6 +66,8 @@ export default defineConfig(({ mode }) => {
           dashboardToolbar: {
             slots: {
               root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
+              left: 'gap-3',
+              right: 'gap-3',
             },
           },
           pageBody: {
