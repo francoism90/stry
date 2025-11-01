@@ -1,9 +1,0 @@
-@layer components {
-  .details {
-    @apply flex items-center *:after:mx-1 *:after:inline-flex *:after:self-center *:after:content-(--ui-divider-symbol);
-
-    :last-child {
-      @apply after:mx-0 after:hidden;
-    }
-  }
-}

@@ -1,19 +1,36 @@
 <script setup lang="ts">
 import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue'
+import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
+import { Head } from '@inertiajs/vue3'
 </script>
 
 <template>
-  <UDashboardGroup>
-    <UDashboardPanel id="dashboard">
-      <template #header>
-        <DashboardNavbar />
-      </template>
+  <Head>
+    <title>Stream videos</title>
+    <meta
+      head-key="description"
+      name="description"
+      content="Stream and watch your favorite videos."
+    />
+  </Head>
 
-      <template #body>
-        <div class="contain-inline-size contain-layout contain-paint contain-style">
-          <slot />
-        </div>
-      </template>
-    </UDashboardPanel>
-  </UDashboardGroup>
+  <UApp>
+    <UDashboardGroup>
+      <UDashboardPanel id="dashboard">
+        <template #header>
+          <DashboardNavbar />
+        </template>
+
+        <template #body>
+          <UMain>
+            <slot />
+          </UMain>
+        </template>
+
+        <template #footer>
+          <ServiceWorker />
+        </template>
+      </UDashboardPanel>
+    </UDashboardGroup>
+  </UApp>
 </template>

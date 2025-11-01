@@ -89,6 +89,7 @@ export type PlaylistCollection = Omit<Paginator, 'data'> & {
 
 export type Paginator = {
   data: Model[] | null
+  page: number | null
   per_page: number | null
   current_page: number | null
   from: number | null
@@ -98,6 +99,6 @@ export type Paginator = {
   first_page_url: string | null
   next_page_url: string | null
   prev_page_url: string | null
-  next_cursor: string | null | undefined
-  prev_cursor: string | null | undefined
+  next_cursor?: string | null
+  prev_cursor?: string | null
 }

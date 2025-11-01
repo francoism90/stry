@@ -2,7 +2,6 @@
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
 import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
@@ -10,7 +9,7 @@ interface Props {
   items: VideoCollection
 }
 
-defineOptions({ layout: [DefaultLayout, DashboardLayout] })
+defineOptions({ layout: DashboardLayout })
 
 defineProps<Props>()
 </script>
@@ -19,13 +18,13 @@ defineProps<Props>()
   <Head title="Library" />
 
   <UPage>
-    <DashboardToolbar />
-
     <UPageBody>
+      <DashboardToolbar />
+
       <UContainer class="py-4">
         <InfiniteScroll
-          data="items"
           items-element="#item-list"
+          data="items"
           :buffer="200"
         >
           <VideoPosts :items="items" />

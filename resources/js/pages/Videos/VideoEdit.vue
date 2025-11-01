@@ -4,7 +4,6 @@ import VideoDeleteModal from '@/components/Video/VideoDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import VideoLayout from '@/layouts/Video/VideoLayout.vue'
 import type { TagMenuItem, Video } from '@/types'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -14,7 +13,7 @@ interface Props {
   progress: number | undefined
 }
 
-defineOptions({ layout: [DefaultLayout, DashboardLayout, VideoLayout] })
+defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
 const props = defineProps<Props>()
 

@@ -1,9 +1,0 @@
-@layer components {
-  .default-video {
-    @apply !aspect-square !size-full;
-
-    video {
-      @apply !aspect-square !size-full !object-fill;
-    }
-  }
-}

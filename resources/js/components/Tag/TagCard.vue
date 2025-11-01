@@ -14,6 +14,6 @@ const props = defineProps<Props>()
     :ui="{ container: 'p-2 sm:p-4' }"
     :title="item.name"
     :description="`${item.category} • ${item.videos} videos`"
-    :to="show.url(props.item.id)"
+    :href="show.url(props.item.id)"
   />
 </template>

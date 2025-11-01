@@ -13,7 +13,3 @@
 /* Branding */
 @import './brand/theme.css';
 @import './brand/variables.css';
-
-/* Components */
-@import './components/details.css';
-@import './components/player.css';

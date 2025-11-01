@@ -4,7 +4,6 @@ import TagItems from '@/components/Tag/TagItems.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
 import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -16,7 +15,7 @@ interface Props {
   queue?: VideoCollection
 }
 
-defineOptions({ layout: [DefaultLayout, DashboardLayout] })
+defineOptions({ layout: DashboardLayout })
 
 const props = defineProps<Props>()
 
@@ -38,7 +37,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 
   <UPage>
     <UPageBody>
-      <UContainer class="py-2">
+      <UContainer class="pt-2">
         <VideoPlayer />
       </UContainer>
 
@@ -48,7 +47,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           :links="links"
         >
           <template #description>
-            <p v-html="video.description" />
+            <div v-html="video.description" />
             <TagItems :items="video.tags" />
           </template>
         </UPageHeader>

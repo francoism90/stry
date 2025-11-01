@@ -24,7 +24,7 @@ const items: NavigationMenuItem[] = [
 <template>
   <UDashboardNavbar
     :toggle="false"
-    :ui="{ root: 'fixed inset-0 top-0 z-30 mx-auto w-full max-w-(--ui-container) bg-default' }"
+    :ui="{ root: 'fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-(--ui-container) bg-default' }"
   >
     <template #left>
       <ULink to="/">
