@@ -57,6 +57,7 @@ watchDebounced(
       <template #right>
         <USwitch
           v-model="form.grid"
+          default-value
           label="Grid View"
           size="xs"
           class="hidden sm:flex"
