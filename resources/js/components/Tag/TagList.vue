@@ -14,6 +14,7 @@ const { orientation } = useCollection()
 
 <template>
   <UBlogPosts
+    id="item-list"
     :orientation="orientation"
     class="gap-6 lg:gap-y-6"
   >

@@ -23,6 +23,7 @@ defineProps<Props>()
 
       <UContainer class="py-4">
         <InfiniteScroll
+          items-element="#item-list"
           data="items"
           :buffer="200"
         >
