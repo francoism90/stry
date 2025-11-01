@@ -71,11 +71,11 @@ export default defineConfig(({ mode }) => {
             },
           },
           pageBody: {
-            base: 'mt-12 space-y-2 pb-8',
+            base: 'mt-14 space-y-2 pb-8',
           },
           pageHeader: {
             slots: {
-              root: 'border-0 pt-4 pb-2',
+              root: 'border-0 py-2',
               title: 'font-serif text-xl font-bold sm:text-2xl',
             },
           },
