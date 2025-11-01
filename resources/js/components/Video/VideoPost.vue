@@ -20,7 +20,7 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
     :image="item.thumb"
     :badge="item.timestamp"
     :date="item.released_at || item.published_at || item.created_at"
-    :href="show.url(props.item.id)"
+    :to="show.url(props.item.id)"
   >
     <template #description>
       <div v-html="item.description" />

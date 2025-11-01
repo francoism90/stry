@@ -17,7 +17,7 @@ defineProps<Props>()
     <ULink
       v-for="(item, index) in items"
       :key="index"
-      :href="show.url(item.id)"
+      :to="show.url(item.id)"
     >
       <UBadge
         :label="item.name"
