@@ -76,7 +76,7 @@ export default defineConfig(({ mode }) => {
             },
           },
           pageBody: {
-            base: 'mt-0 space-y-2 pb-4',
+            base: 'mt-4 space-y-2 pb-8',
           },
           pageHeader: {
             slots: {

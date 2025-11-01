@@ -10,7 +10,9 @@ import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue'
       </template>
 
       <template #body>
-        <slot />
+        <div class="contain-inline-size contain-layout contain-paint contain-style">
+          <slot />
+        </div>
       </template>
     </UDashboardPanel>
   </UDashboardGroup>
