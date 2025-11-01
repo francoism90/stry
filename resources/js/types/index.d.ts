@@ -60,13 +60,12 @@ export type Video = Model & {
   duration: number
   timestamp: string
   snapshot: number | null | undefined
-  released: string | Date
   captions: Media[] | null
   tags: Tag[] | null
-  state: string
   expires_at: string | undefined
   published_at: string | undefined
   released_at: string | undefined
+  state: string
 }
 
 export type VideoCollection = Omit<Paginator, 'data'> & {
@@ -78,10 +77,10 @@ export type Playlist = Model & {
   valid: boolean
   progress: number | null
   type: string
-  state: string
   accessed_at: string | null | undefined
   expires_at: string | null | undefined
   transcoded_at: string | null | undefined
+  state: string
 }
 
 export type PlaylistCollection = Omit<Paginator, 'data'> & {

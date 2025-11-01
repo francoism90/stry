@@ -20,7 +20,7 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
     :description="item.description"
     :image="item.thumb"
     :badge="item.timestamp"
-    :date="item.released"
+    :date="item.released_at || item.published_at || item.created_at"
   >
     <template #description>
       <p v-html="item.description" />

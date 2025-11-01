@@ -41,7 +41,7 @@ const onSubmit = async () => {
   <UForm
     :state="form"
     @submit="onSubmit"
-    class="flex flex-col gap-4 py-4"
+    class="flex flex-col gap-x-4 gap-y-6 py-4"
   >
     <UFormField
       label="Name"

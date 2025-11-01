@@ -7,6 +7,7 @@ namespace Domain\Videos\Models;
 use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
@@ -103,9 +104,9 @@ class Video extends Model implements HasMedia
         return [
             'snapshot' => 'decimal:2',
             'adult' => 'boolean',
-            'expires_at' => 'datetime',
-            'published_at' => 'datetime',
-            'released_at' => 'datetime',
+            'expires_at' => AsDateTime::class,
+            'published_at' => AsDateTime::class,
+            'released_at' => AsDateTime::class,
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
@@ -245,16 +246,19 @@ class Video extends Model implements HasMedia
             'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->title,
             'description' => (string) $this->summary,
+            'identifier' => (string) $this->identifier,
+            'season' => (string) $this->season,
+            'episode' => (string) $this->episode,
+            'part' => (string) $this->part,
             'duration' => (float) $this->duration,
             'captioned' => (bool) $this->captioned,
             'adult' => (bool) $this->adult,
             'tags' => (string) $this->tags->translated(),
             'tagged' => (array) $this->tags->modelKeys(),
             'synonyms' => (string) $this->tags->synonyms(),
-            'released' => (string) $this->released_at?->format('Y-m-d'),
+            'released_at' => (string) $this->released_at,
+            'published_at' => (string) $this->published_at,
             'state' => (string) $this->state,
-            'published_at' => (int) $this->published_at?->getTimestamp(),
-            'released_at' => (int) $this->released_at?->getTimestamp(),
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
@@ -308,13 +312,6 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part]))
-        )->shouldCache();
-    }
-
-    protected function released(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->released_at ?? $this->published_at ?? $this->created_at
         )->shouldCache();
     }
 

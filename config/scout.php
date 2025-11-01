@@ -324,6 +324,30 @@ return [
                             'optional' => true,
                         ],
                         [
+                            'name' => 'identifier',
+                            'type' => 'string',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'season',
+                            'type' => 'string',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'episode',
+                            'type' => 'string',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'part',
+                            'type' => 'string',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'duration',
                             'type' => 'float',
                             'sort' => true,
@@ -347,11 +371,6 @@ return [
                             'optional' => true,
                         ],
                         [
-                            'name' => 'released',
-                            'type' => 'string',
-                            'optional' => true,
-                        ],
-                        [
                             'name' => 'tagged',
                             'type' => 'int64[]',
                             'optional' => true,
@@ -361,16 +380,14 @@ return [
                             'type' => 'string',
                         ],
                         [
-                            'name' => 'published_at',
-                            'type' => 'int64',
+                            'name' => 'released_at',
+                            'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                         ],
                         [
-                            'name' => 'released_at',
-                            'type' => 'int64',
+                            'name' => 'published_at',
+                            'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                         ],
                         [
                             'name' => 'created_at',
@@ -393,7 +410,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, tags, synonyms, released',
+                    'query_by' => 'name, description, tags, synonyms, released_at',
                 ],
             ],
 

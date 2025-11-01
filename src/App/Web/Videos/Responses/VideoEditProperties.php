@@ -23,8 +23,24 @@ readonly class VideoEditProperties implements ProvidesInertiaProperties
     public function toInertiaProperties(RenderContext $context): array
     {
         return [
-            'video' => fn () => $this->video->loadMissing('media', 'tags', 'user')->append('content', 'summary', 'snapshot')->toResource(VideoResource::class),
+            'video' => fn () => $this->getVideoResource(),
             'progress' => fn () => app(GetVideoProgress::class)->handle($this->video, $this->user),
         ];
+    }
+
+    protected function getVideoResource(): VideoResource
+    {
+        // Append necessary attributes for the edit form
+        $appends = [
+            'titles',
+            'content',
+            'summary',
+            'snapshot',
+        ];
+
+        return $this->video
+            ->loadMissing('media', 'tags', 'user')
+            ->append($appends)
+            ->toResource(VideoResource::class);
     }
 }

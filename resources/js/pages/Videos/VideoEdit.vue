@@ -22,7 +22,18 @@ const { data, query } = useTagInput(props.video.tags || [])
 const { title } = useAppearance()
 const toast = useToast()
 
-const form = useForm('put', update.url({ video: props.video.id }), props.video)
+const form = useForm('put', update.url({ video: props.video.id }), {
+  name: props.video.name,
+  episode: props.video.episode || undefined,
+  season: props.video.season || undefined,
+  part: props.video.part || undefined,
+  snapshot: props.video.snapshot || undefined,
+  tags: props.video.tags || [],
+  summary: props.video.summary || undefined,
+  expires_at: props.video.expires_at || undefined,
+  published_at: props.video.published_at || undefined,
+  released_at: props.video.released_at || undefined,
+})
 
 const onSubmit = async () => {
   await form.submit({
@@ -41,7 +52,7 @@ const onSubmit = async () => {
   <UForm
     :state="form"
     @submit="onSubmit"
-    class="flex flex-col gap-4 py-4"
+    class="flex flex-col gap-x-4 gap-y-6 py-4"
   >
     <UFormField
       label="Name"
@@ -54,7 +65,6 @@ const onSubmit = async () => {
         :model-modifiers="{ string: true, trim: true }"
         autofocus
         autocapitalize="words"
-        class="w-full"
         :ui="{ trailing: 'pe-1' }"
       >
         <template #trailing>
@@ -81,7 +91,6 @@ const onSubmit = async () => {
           :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="1"
           autocapitalize="characters"
-          class="w-full"
         />
       </UFormField>
 
@@ -95,7 +104,6 @@ const onSubmit = async () => {
           :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="1"
           autocapitalize="characters"
-          class="w-full"
         />
       </UFormField>
 
@@ -109,7 +117,6 @@ const onSubmit = async () => {
           :model-modifiers="{ nullable: true, string: true, trim: true }"
           placeholder="1"
           autocapitalize="characters"
-          class="w-full"
         />
       </UFormField>
 
@@ -126,7 +133,6 @@ const onSubmit = async () => {
           step="0.01"
           min="0"
           :max="video.duration || null"
-          class="w-full"
         >
           <template #trailing>
             <UButton
@@ -139,6 +145,44 @@ const onSubmit = async () => {
             />
           </template>
         </UInput>
+      </UFormField>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <UFormField
+        label="Published"
+        name="published_at"
+        :error="form.errors.published_at"
+      >
+        <UInput
+          v-model="form.published_at"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
+          placeholder="YYYY-MM-DD HH:mm:ss"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Expires"
+        name="expires_at"
+        :error="form.errors.expires_at"
+      >
+        <UInput
+          v-model="form.expires_at"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
+          placeholder="YYYY-MM-DD HH:mm:ss"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Released"
+        name="released_at"
+        :error="form.errors.released_at"
+      >
+        <UInput
+          v-model="form.released_at"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
+          placeholder="YYYY-MM-DD HH:mm:ss"
+        />
       </UFormField>
     </div>
 

@@ -58,6 +58,11 @@ export default defineConfig(({ mode }) => {
             secondary: 'gray',
             neutral: 'zinc',
           },
+          input: {
+            slots: {
+              root: 'w-full',
+            },
+          },
           dashboardPanel: {
             slots: {
               body: 'pt-4 sm:pt-4',

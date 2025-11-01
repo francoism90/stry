@@ -3,7 +3,8 @@ import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController
 import type { Video } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem, TabsItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { formatTimeAgoIntl } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
 interface Props {
   video: Video
@@ -28,6 +29,8 @@ const items = ref<TabsItem[]>([
     label: 'Media',
   },
 ])
+
+const updatedAt = computed(() => formatTimeAgoIntl(new Date(props.video.updated_at)))
 </script>
 
 <template>
@@ -38,7 +41,9 @@ const items = ref<TabsItem[]>([
       <UContainer>
         <UPageHeader
           :title="video.title"
+          :description="`Updated ${updatedAt}`"
           :links="links"
+          :ui="{ description: 'mt-2 text-sm' }"
         />
       </UContainer>
 
