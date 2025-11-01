@@ -3,7 +3,6 @@ import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
 import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -15,7 +14,7 @@ interface Props {
   items: VideoCollection
 }
 
-defineOptions({ layout: [DefaultLayout, DashboardLayout] })
+defineOptions({ layout: DashboardLayout })
 
 const props = defineProps<Props>()
 

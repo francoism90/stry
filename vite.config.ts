@@ -63,11 +63,6 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
-          dashboardPanel: {
-            slots: {
-              body: 'pt-4 sm:pt-4',
-            },
-          },
           dashboardToolbar: {
             slots: {
               root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
@@ -76,11 +71,11 @@ export default defineConfig(({ mode }) => {
             },
           },
           pageBody: {
-            base: 'mt-4 space-y-2 pb-8',
+            base: 'mt-12 space-y-2 pb-8',
           },
           pageHeader: {
             slots: {
-              root: 'border-0 py-2',
+              root: 'border-0 pt-4 pb-2',
               title: 'font-serif text-xl font-bold sm:text-2xl',
             },
           },
