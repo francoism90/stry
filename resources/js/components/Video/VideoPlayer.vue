@@ -30,7 +30,7 @@ onBeforeUnmount(() => listener())
 </script>
 
 <template>
-  <div class="relative w-full rounded-xl">
+  <div class="relative w-full rounded-xl bg-transparent">
     <media-player
       ref="player"
       .src="state?.asset || undefined"
@@ -55,10 +55,11 @@ onBeforeUnmount(() => listener())
 
     <div v-if="!state?.valid">
       <UAlert
-        color="neutral"
-        variant="soft"
         title="Preparing your video..."
         description="Please wait while we load the video for you."
+        class="mb-4"
+        color="neutral"
+        variant="soft"
       />
     </div>
   </div>
