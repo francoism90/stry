@@ -22,9 +22,7 @@ import { Head } from '@inertiajs/vue3'
         </template>
 
         <template #body>
-          <UMain>
-            <slot />
-          </UMain>
+          <slot />
         </template>
 
         <template #footer>
