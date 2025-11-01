@@ -29,7 +29,7 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 
 export type Tag = Model & {
   name: string
-  summary: string | null
+  summary: string
   description: string | null | undefined
   category: string
   type: string | undefined
@@ -48,7 +48,7 @@ export type Video = Model & {
   user: User | undefined
   name: string
   title: string
-  description: string | null
+  description: string
   titles: string[] | null | undefined
   content: string | null | undefined
   summary: string | null | undefined
@@ -60,7 +60,7 @@ export type Video = Model & {
   duration: number
   timestamp: string
   snapshot: number | null | undefined
-  released: string | Date | null
+  released: string | Date
   captions: Media[] | null
   tags: Tag[] | null
   state: string

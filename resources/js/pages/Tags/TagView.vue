@@ -38,6 +38,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
       <UContainer>
         <UPageHeader
           :title="tag.name"
+          :description="tag.summary"
           :links="links"
         />
       </UContainer>

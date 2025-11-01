@@ -17,10 +17,10 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
   <UBlogPost
     :to="show.url(props.item.id)"
     :title="item.title"
-    :description="item.description || ''"
+    :description="item.description"
     :image="item.thumb"
     :badge="item.timestamp"
-    :date="item.released || ''"
+    :date="item.released"
   >
     <template #description>
       <p v-html="item.description" />
