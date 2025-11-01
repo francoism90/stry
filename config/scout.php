@@ -253,7 +253,7 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'summary',
+                            'name' => 'description',
                             'type' => 'string',
                             'optional' => true,
                         ],
@@ -302,7 +302,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, summary, synonyms, category',
+                    'query_by' => 'name, description, synonyms, category',
                 ],
             ],
 
@@ -315,11 +315,6 @@ return [
                         ],
                         [
                             'name' => 'name',
-                            'type' => 'string',
-                            'sort' => true,
-                        ],
-                        [
-                            'name' => 'title',
                             'type' => 'string',
                             'sort' => true,
                         ],
@@ -348,6 +343,11 @@ return [
                         ],
                         [
                             'name' => 'synonyms',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'released',
                             'type' => 'string',
                             'optional' => true,
                         ],
@@ -393,7 +393,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'title, name, description, tags, synonyms',
+                    'query_by' => 'name, description, tags, synonyms, released',
                 ],
             ],
 
