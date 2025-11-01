@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue'
+import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -24,6 +25,10 @@ import { Head } from '@inertiajs/vue3'
           <UMain>
             <slot />
           </UMain>
+        </template>
+
+        <template #footer>
+          <ServiceWorker />
         </template>
       </UDashboardPanel>
     </UDashboardGroup>
