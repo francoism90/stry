@@ -5,7 +5,7 @@
 <title inertia>{{ config('app.name', 'Laravel') }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<meta name="referrer" content="same-origin">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="manifest" href="{{ asset('build/manifest.webmanifest') }}">
 <link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" crossorigin="anonymous">
@@ -19,7 +19,9 @@
 
 <body class="antialiased">
 
-@inertia
+    <div class="isolate">
+        @inertia
+    </div>
 
 </body>
 </html>
