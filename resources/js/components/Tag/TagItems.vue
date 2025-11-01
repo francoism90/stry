@@ -15,8 +15,8 @@ defineProps<Props>()
     class="mt-4 flex flex-wrap gap-2"
   >
     <ULink
-      v-for="(item, index) in items"
-      :key="index"
+      v-for="item in items"
+      :key="item.id"
       :to="show.url(item.id)"
     >
       <UBadge

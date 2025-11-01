@@ -18,8 +18,8 @@ const { orientation } = useCollection()
     :orientation="orientation"
   >
     <VideoPost
-      v-for="(item, index) in items?.data || []"
-      :key="index"
+      v-for="item in items?.data || []"
+      :key="item.id"
       :item="item"
     />
   </UBlogPosts>

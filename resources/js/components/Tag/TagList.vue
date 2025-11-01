@@ -19,8 +19,8 @@ const { orientation } = useCollection()
     class="gap-6 lg:gap-y-6"
   >
     <TagCard
-      v-for="(item, index) in items?.data || []"
-      :key="index"
+      v-for="item in items?.data || []"
+      :key="item.id"
       :item="item"
     />
   </UBlogPosts>
