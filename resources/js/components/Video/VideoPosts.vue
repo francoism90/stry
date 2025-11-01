@@ -13,10 +13,7 @@ const { orientation } = useCollection()
 </script>
 
 <template>
-  <UBlogPosts
-    id="item-list"
-    :orientation="orientation"
-  >
+  <UBlogPosts :orientation="orientation">
     <VideoPost
       v-for="(item, index) in items?.data || []"
       :key="index"
