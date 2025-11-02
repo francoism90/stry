@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\Users\Policies;
+namespace Domain\Media\Policies;
 
 use Domain\Users\Models\User;
-use Domain\Users\Models\User as Model;
+use Domain\Media\Models\Media;
 
-class UserPolicy
+class MediaPolicy
 {
     public function before(User $user, string $ability): ?bool
     {
@@ -19,9 +19,9 @@ class UserPolicy
         return false;
     }
 
-    public function view(User $user, Model $model): bool
+    public function view(?User $user, Media $media): bool
     {
-        return $user->is($model);
+        return true;
     }
 
     public function create(User $user): bool
@@ -29,22 +29,22 @@ class UserPolicy
         return false;
     }
 
-    public function update(User $user, Model $model): bool
-    {
-        return $user->is($model);
-    }
-
-    public function delete(User $user, Model $model): bool
+    public function update(User $user, Media $media): bool
     {
         return false;
     }
 
-    public function restore(User $user, Model $model): bool
+    public function delete(User $user, Media $media): bool
     {
         return false;
     }
 
-    public function forceDelete(User $user, Model $model): bool
+    public function restore(User $user, Media $media): bool
+    {
+        return false;
+    }
+
+    public function forceDelete(User $user, Media $media): bool
     {
         return false;
     }

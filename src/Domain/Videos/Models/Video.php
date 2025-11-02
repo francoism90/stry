@@ -230,7 +230,7 @@ class Video extends Model implements HasMedia
         return filled($this->expires_at) && $this->expires_at->isPast();
     }
 
-    public function isProcessed(): bool
+    public function isValid(): bool
     {
         return $this->state->equals(Verified::class);
     }

@@ -11,11 +11,7 @@ class VideoPolicy
 {
     public function before(User $user, string $ability): ?bool
     {
-        if ($user->isAdmin()) {
-            return true;
-        }
-
-        return null;
+        return $user->isAdmin() ? true : null;
     }
 
     public function viewAny(User $user): bool
@@ -25,7 +21,7 @@ class VideoPolicy
 
     public function view(User $user, Video $video): bool
     {
-        return $video->isProcessed();
+        return $video->isValid();
     }
 
     public function create(User $user): bool
@@ -40,12 +36,12 @@ class VideoPolicy
 
     public function delete(User $user, Video $video): bool
     {
-        return $video->user()->is($user);
+        return $this->update($user, $video);
     }
 
     public function restore(User $user, Video $video): bool
     {
-        return $video->user()->is($user);
+        return $this->update($user, $video);
     }
 
     public function forceDelete(User $user, Video $video): bool

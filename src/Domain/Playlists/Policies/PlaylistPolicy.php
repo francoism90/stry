@@ -25,7 +25,7 @@ class PlaylistPolicy
 
     public function view(User $user, Playlist $playlist): bool
     {
-        return $playlist->isProcessed();
+        return $playlist->isValid();
     }
 
     public function create(User $user): bool

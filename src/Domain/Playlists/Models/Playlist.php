@@ -219,7 +219,7 @@ class Playlist extends Model
         return filled($this->expires_at) && $this->expires_at->isPast();
     }
 
-    public function isProcessed(): bool
+    public function isValid(): bool
     {
         return $this->state->equals(Verified::class);
     }
