@@ -9,10 +9,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const remove = async () =>
-  router.delete(destroy.url({ video: props.item.id }), {
-    onSuccess: () => router.visit('/videos'),
-  })
+const remove = async () => router.delete(destroy.url(props.item.id))
 </script>
 
 <template>
