@@ -70,9 +70,9 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $video);
 
-        // Delete the video asynchronously
+        // Delete the video
         $video->deleteOrFail();
 
-        return redirect()->route('home');
+        return back();
     }
 }
