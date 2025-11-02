@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Media\Policies;
 
-use Domain\Users\Models\User;
 use Domain\Media\Models\Media;
+use Domain\Users\Models\User;
 
 class MediaPolicy
 {

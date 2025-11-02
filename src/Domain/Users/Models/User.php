@@ -8,7 +8,8 @@ use Database\Factories\UserFactory;
 use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Collections\UserCollection;
-use Domain\Users\Concerns\HasSubscriptions;
+use Domain\Users\Concerns\InteractsWithCache;
+use Domain\Users\Concerns\InteractsWithSubscription;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
@@ -36,9 +37,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasGroups;
     use HasRoles;
     use HasStates;
-    use HasSubscriptions;
     use HasUlids;
+    use InteractsWithCache;
     use InteractsWithMedia;
+    use InteractsWithSubscription;
     use InteractsWithVideos;
     use Notifiable;
     use Searchable;
@@ -200,11 +202,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function isAdmin(): bool
     {
         return $this->hasAnyRole('admin', 'super-admin');
-    }
-
-    public function getCacheKey(string $suffix): string
-    {
-        return hash('xxh128', "user:{$this->getKey()}:{$suffix}");
     }
 
     protected function avatar(): Attribute

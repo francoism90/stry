@@ -7,7 +7,6 @@ namespace Domain\Videos\Actions;
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
-use Illuminate\Support\Facades\Cache;
 
 class GetVideoProgress
 {
@@ -19,10 +18,10 @@ class GetVideoProgress
         }
 
         // Generate a unique cache key for the user's video progress
-        $cacheKey = $user->getCacheKey("video-progress-{$video->getKey()}");
+        $cacheSuffix = "progress:{$video->getKey()}";
 
         // Get the existing progress record
-        $current = (float) Cache::get($cacheKey, 0);
+        $current = (float) $user->getCacheValue($cacheSuffix, 0);
 
         // Return the cached progress if it exists
         if ($current > 0) {
