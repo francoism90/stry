@@ -1,9 +1,9 @@
+FROM php:8.4-cli-alpine AS base
+
 ARG UID=1000
 ARG GID=1000
 ARG NODE_VERSION=24
 ARG TZ=UTC
-
-FROM php:8.4-cli-alpine AS base
 
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
 ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
@@ -26,6 +26,8 @@ RUN apk add --no-cache \
     nodejs npm coreutils findutils openssl \
     imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
     libass fontconfig freetype harfbuzz fribidi
+
+RUN setup-timezone -z ${TZ}
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -64,7 +66,7 @@ WORKDIR /app
 COPY . /app
 
 RUN --mount=type=cache,target=/root/.cache/composer \
-    --mount=type=cache,target=/pnpm-store \
+    --mount=type=cache,target=/pnpm/store \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction && \
     pnpm install --frozen-lockfile && pnpm build && pnpm build:ssr && pnpm prune --prod
 
@@ -82,7 +84,7 @@ USER docker
 
 RUN ${ARTISAN} optimize && ${ARTISAN} storage:link
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS development
 
@@ -90,6 +92,8 @@ WORKDIR /app
 
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/99-xx.ini
 
+COPY --chown=docker:docker . /app
+
 USER docker
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
