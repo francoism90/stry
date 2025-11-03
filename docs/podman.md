@@ -129,7 +129,7 @@ Ensure these are free on the host or adjust the `ExposeHostPort` lines in the re
 Restarting a container (`systemctl --user restart stry`) does not rebuild the image. Rebuild when dependencies, PHP extensions, or application code (without an `/app` bind) change:
 
 ```bash
-podman build -t stry.build .
+systemctl --user restart stry-build
 systemctl --user restart stry
 ```
 
@@ -172,7 +172,7 @@ Follow the [S3 Object Storage](s3.md) setup guide.
 To rebuild the image (if needed) and start all containers:
 
 ```bash
-podman build -t stry.build .
+systemctl --user restart stry-build
 systemctl --user restart stry
 ```
 
@@ -240,7 +240,7 @@ If you need to rebuild the image after changes:
 
 ```bash
 systemctl --user stop stry
-podman build -t stry.build .
+systemctl --user restart stry-build
 systemctl --user daemon-reload
 systemctl --user start stry
 ```
