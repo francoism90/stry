@@ -7,28 +7,66 @@ tags:
   - usage
 ---
 
-## Prerequisites
+# 🚀 Production Setup
 
-- Linux (Debian, Fedora, CentOS, Arch, Ubuntu, ..).
-- [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
+## 📋 Prerequisites
 
-## Installation
+**System Requirements:**
 
-### Setup project
+- 🐧 Linux (Debian, Fedora, CentOS, Arch, Ubuntu, etc.)
+- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
 
-Clone project to a working directory (i.e. `~/projects`):
+> [!WARNING]
+> Ensure your system meets all prerequisites before proceeding with production deployment.
+
+---
+
+## 🛠️ Installation
+
+### 1️⃣ Clone the Project
+
+Clone the repository to your working directory (e.g., `~/projects`):
 
 ```bash
 cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-### Podman
+### 2️⃣ Configure Podman
 
-See [Podman Quadlet](podman.md) guide for details.
+Follow the comprehensive [Podman Quadlet](podman.md) guide for container setup.
 
-### Proxy
+> [!TIP]
+> Make sure to review the Podman guide thoroughly to ensure proper configuration for production.
 
-A proxy is required to interact with the container services.
+### 3️⃣ Setup Proxy (Required)
 
-See the [proxy](proxy.md) guide for details.
+A reverse proxy is **required** to interact with the container services securely.
+
+Follow the [Proxy Setup](proxy.md) guide for detailed configuration.
+
+---
+
+## 🔒 Security Considerations
+
+> [!IMPORTANT]
+> **Production Checklist:**
+>
+> - ✅ Use strong, unique passwords for all services
+> - ✅ Configure firewall rules appropriately
+> - ✅ Enable HTTPS with valid SSL certificates
+> - ✅ Regularly update containers and dependencies
+> - ✅ Set up automated backups
+> - ✅ Monitor logs and system resources
+> - ✅ Never use development/testing seeders in production
+
+---
+
+## 📊 Next Steps
+
+After installation:
+
+1. 📖 Review the [Configuration](configuration.md) guide
+2. 🔧 Set up [S3 Storage](s3.md) for media files
+3. 🎮 Learn about [Interaction](interaction.md) commands
+4. 📈 Monitor your instance with [Laravel Horizon](https://stry.test/horizon)

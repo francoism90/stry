@@ -8,56 +8,125 @@ tags:
   - commands
 ---
 
-## Interaction
+# 🎮 CLI Interaction
 
-Stry provides a shell utility, which is a copy of [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail) with adjustments made for usage with Podman Quadlet.
+## 📝 Introduction
 
-> **NOTE**: The utility can be used with production and development environments.
+**stry** provides a shell utility similar to [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail), adapted for Podman Quadlet.
 
-To install, create a shell `alias`, e.g. when using [fish-shell](https://fishshell.com/docs/current/cmds/alias.html):
+> [!NOTE]
+> This utility works with both **production** and **development** environments.
+
+---
+
+## ⚙️ Setup Shell Alias
+
+Create a shell alias for easy access. For [fish-shell](https://fishshell.com/docs/current/cmds/alias.html):
 
 ```fish
 alias --save stry '~/projects/stry/bin/quadlet'
 ```
 
-## Usage
-
-This allows global interacting with Podman containers, using the same logic as Laravel Sail:
-
-```fish
-stry help
-stry shell
-stry tinker
-stry artisan optimize
-stry a migrate
-stry a horizon:forget --all
-stry a videos:import
-stry redis flushall
-stry garage bucket list
-```
-
-## Podman usage
-
-To interact with containers without the alias:
+For **bash/zsh**, add to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
+alias stry='~/projects/stry/bin/quadlet'
+```
+
+> [!TIP]
+> After setting the alias, restart your shell or run `source ~/.bashrc` (or equivalent).
+
+---
+
+## 🚀 Usage Examples
+
+Interact with your Podman containers using intuitive commands:
+
+### Basic Commands
+
+```bash
+stry help                           # Show all available commands
+stry shell                          # Enter the main container shell
+stry tinker                         # Open Laravel Tinker REPL
+```
+
+### Artisan Commands
+
+```bash
+stry artisan optimize               # Optimize Laravel application
+stry a migrate                      # Run database migrations (shorthand)
+stry a horizon:forget --all         # Clear Horizon failed jobs
+stry a videos:import                # Import videos
+```
+
+### Service Interactions
+
+```bash
+stry redis flushall                 # Flush Redis cache
+stry garage bucket list             # List S3 buckets
+```
+
+---
+
+## 🐳 Direct Podman Access
+
+You can also interact with containers directly using Podman:
+
+```bash
+# Execute commands in containers
 podman exec -it systemd-stry php artisan help
 podman exec -it systemd-stry-queue /bin/bash
 podman exec -ti systemd-stry-redis /bin/bash
 ```
 
-## Commands
+---
 
-See `stry help` for a complete overview:
+## 📋 Available Commands
+
+Run `stry help` for a complete list. Here are the most commonly used:
+
+### 👥 User Management
 
 | Command | Description |
-|---|---|
-| `stry a users:create` | Creates a new user. |
-| `stry a videos:import` | Import videos for an user. |
-| `stry a videos:clear` | Remove(!) soft-deleted videos from filesystem. |
-| `stry a tags:create` | Create a new tag. |
-| `stry a tags:sort` | Sort tags alphabetically, based on type. |
-| `stry a playlists:clear` | Remove generated HLS-playlist from filesystem. |
-| `stry a groups:clear` | Detach all videos from groups of a given type. |
-| `stry a scout:sync --flush` | Sync searchable model indexes. |
-| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing conversions |
+|---------|-------------|
+| `stry a users:create` | Create a new user account |
+
+### 🎬 Video Management
+
+| Command | Description |
+|---------|-------------|
+| `stry a videos:import` | Import videos for a user |
+| `stry a videos:clear` | Remove soft-deleted videos from filesystem |
+
+### 🏷️ Tag Management
+
+| Command | Description |
+|---------|-------------|
+| `stry a tags:create` | Create a new tag |
+| `stry a tags:sort` | Sort tags alphabetically by type |
+
+### 📹 Playlist & Media
+
+| Command | Description |
+|---------|-------------|
+| `stry a playlists:clear` | Remove generated HLS playlists from filesystem |
+| `stry a groups:clear` | Detach all videos from groups of a given type |
+| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions |
+
+### 🔍 Search & Indexing
+
+| Command | Description |
+|---------|-------------|
+| `stry a scout:sync --flush` | Sync searchable model indexes |
+
+---
+
+## 💡 Tips & Tricks
+
+> [!TIP]
+> **Pro Tips:**
+>
+> - Use `stry a` as shorthand for `stry artisan`
+> - Run `stry shell` to enter the container and execute multiple commands
+> - Use `stry tinker` for quick Laravel/database testing
+> - Check logs with `stry logs` or specific containers with `podman logs systemd-stry`

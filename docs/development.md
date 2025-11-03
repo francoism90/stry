@@ -9,46 +9,76 @@ tags:
   - ai
 ---
 
-## Prerequisites
+# 💻 Development Setup
 
-- Linux (Debian, Fedora, CentOS, Arch, Ubuntu, ..)
-- [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
-- [VSCode](https://code.visualstudio.com/) with [Podman extension](https://github.com/jorchube/devcontainer-definitions).
-- [GitHub Copilot](https://github.com/features/copilot) (optional)
+## 📋 Prerequisites
 
-## Installation
+**Required Tools:**
 
-### Setup project
+- 🐧 Linux (Debian, Fedora, CentOS, Arch, Ubuntu, etc.)
+- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
+- 💻 [VSCode](https://code.visualstudio.com/) with [Podman extension](https://github.com/jorchube/devcontainer-definitions)
+- 🤖 [GitHub Copilot](https://github.com/features/copilot) (optional, recommended)
 
-Clone project to a working directory (i.e. `~/projects`):
+---
+
+## 🚀 Installation
+
+### 1️⃣ Setup Project
+
+Clone the project to your working directory (e.g., `~/projects`):
 
 ```bash
 cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-### Podman
+### 2️⃣ Configure Podman
 
-See [Podman Quadlet](podman.md) guide for details, and setup with the following adjustments:
+> [!NOTE]
+> See the [Podman Quadlet](podman.md) guide for complete details.
 
-1. Change `CONTAINER_ENV` to `development` in `~/.config/containers/systemd/stry/config/app.env`.
+Apply the following adjustments for development:
 
-1. Append the `app` volume to `stry.container`, `stry-queue.container`, `stry-reverb.container` and `stry-schedule.container` containers:
+**Step 1:** Change environment to development in your config:
+
+```bash
+# Edit: ~/.config/containers/systemd/stry/config/app.env
+CONTAINER_ENV=development
+```
+
+**Step 2:** Add the app volume to these containers:
+
+- `stry.container`
+- `stry-queue.container`
+- `stry-reverb.container`
+- `stry-schedule.container`
+
+Add this line to each container file:
 
 ```diff
 +Volume=${APP_PATH}:/app:rw,z,U
 Volume=${DATA_PATH}:/data:rw,z,U
 ```
 
-**NOTE**: The volume `U` flag should only be appended in `stry.container`.
+> [!IMPORTANT]
+> The volume `U` flag should **only** be appended in `stry.container`.
 
-1. Remove `Wants=` `stry-ssr.container` from the same container files.
+**Step 3:** Remove SSR dependency:
 
-### Using devcontainer
+```diff
+-Wants=stry-ssr.container
+```
 
-Open the cloned project with VSCode as a devcontainer (recommended) or enter the main container using `podman exec -ti systemd-stry /bin/bash`.
+### 3️⃣ Setup Development Container
 
-1. Perform the following commands:
+Open the cloned project in VSCode as a devcontainer (recommended) or enter the container:
+
+```bash
+podman exec -ti systemd-stry /bin/bash
+```
+
+Run the initial setup commands:
 
 ```bash
 composer install
@@ -59,21 +89,26 @@ php artisan google-fonts:fetch
 pnpm install
 ```
 
-### Setup proxy
+### 4️⃣ Configure Proxy
 
-Follow the [proxy](proxy.md) guide for more information.
+Follow the [Proxy Setup](proxy.md) guide to enable local HTTPS access.
 
-### Using watchers
+### 5️⃣ Start Development Watchers
 
-Run the Vite watcher:
+Run the Vite development server:
 
 ```bash
 stry pnpm dev
 ```
 
-## IDE integration
+> [!TIP]
+> The watcher will automatically rebuild assets when you make changes to frontend files.
 
-To offer better [IDE integration](https://github.com/barryvdh/laravel-ide-helper) with Laravel:
+---
+
+## 🔧 IDE Integration
+
+For enhanced [IDE support](https://github.com/barryvdh/laravel-ide-helper) with Laravel autocomplete and type hints:
 
 ```bash
 php artisan ide-helper:generate
@@ -81,11 +116,15 @@ php artisan ide-helper:meta
 php artisan ide-helper:models --nowrite
 ```
 
-## Laravel Boost
+---
 
-To use [Laravel Boost](https://boost.laravel.com/installed):
+## 🤖 Laravel Boost
 
-1. Open the Command Palette (Cmd+Shift+P or Ctrl+Shift+P)
-1. Press enter on "MCP: List Servers"
-1. Arrow to laravel-boost and press enter
-1. Choose 'Start server' and you're good to go!
+To enable [Laravel Boost](https://boost.laravel.com/installed) AI assistance:
+
+1. **Open Command Palette**: `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
+2. **Select**: "MCP: List Servers"
+3. **Choose**: `laravel-boost`
+4. **Action**: Select "Start server"
+
+✅ You're ready to use AI-powered Laravel development!
