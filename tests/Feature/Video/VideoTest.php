@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Domain\Videos\States\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('can create a video', function () {
+it('can create a video with required attributes', function () {
+    $user = User::factory()->create();
     $video = Video::factory()->create([
-        'title' => 'Test Video',
-        'description' => 'Test Description',
+        'user_id' => $user->id,
+        'name' => ['en' => 'Test Video'],
+        'summary' => ['en' => 'Test Summary'],
     ]);
 
-    expect($video->title)->toBe('Test Video')
-        ->and($video->description)->toBe('Test Description')
-        ->and($video->exists)->toBeTrue();
+    expect($video->exists)->toBeTrue()
+        ->and($video->name)->toBe('Test Video')
+        ->and($video->summary)->toBe('Test Summary')
+        ->and($video->user_id)->toBe($user->id);
 });
 
 it('belongs to a user', function () {
@@ -28,42 +34,59 @@ it('belongs to a user', function () {
 it('has required fields', function () {
     $video = Video::factory()->create();
 
-    expect($video->title)->not->toBeNull()
-        ->and($video->user_id)->not->toBeNull();
+    expect($video->name)->not->toBeNull()
+        ->and($video->user_id)->not->toBeNull()
+        ->and($video->state)->not->toBeNull()
+        ->and($video->published_at)->not->toBeNull();
+});
+
+it('uses ULIDs as identifiers', function () {
+    $video = Video::factory()->create();
+
+    expect($video->ulid)->not->toBeNull()
+        ->and($video->getRouteKeyName())->toBe('ulid')
+        ->and($video->getRouteKey())->toBe($video->ulid);
+});
+
+it('has verified state by default', function () {
+    $video = Video::factory()->create();
+
+    expect($video->state)->toBeInstanceOf(Verified::class)
+        ->and($video->isValid())->toBeTrue();
 });
 
 it('can be soft deleted', function () {
     $video = Video::factory()->create();
-    $videoId = $video->id;
+    $ulid = $video->ulid;
 
     $video->delete();
 
-    expect(Video::find($videoId))->toBeNull()
-        ->and(Video::withTrashed()->find($videoId))->not->toBeNull()
-        ->and(Video::withTrashed()->find($videoId)->trashed())->toBeTrue();
+    expect(Video::find($ulid))->toBeNull()
+        ->and(Video::withTrashed()->find($ulid))->not->toBeNull()
+        ->and(Video::withTrashed()->find($ulid)->trashed())->toBeTrue();
 });
 
 it('can be restored after soft delete', function () {
     $video = Video::factory()->create();
-    $videoId = $video->id;
+    $ulid = $video->ulid;
 
     $video->delete();
-    $video->restore();
+    Video::withTrashed()->find($ulid)->restore();
 
-    expect(Video::find($videoId))->not->toBeNull()
-        ->and(Video::find($videoId)->trashed())->toBeFalse();
+    expect(Video::find($ulid))->not->toBeNull()
+        ->and(Video::find($ulid)->trashed())->toBeFalse();
 });
 
 it('can be force deleted', function () {
     $video = Video::factory()->create();
-    $videoId = $video->id;
+    $ulid = $video->ulid;
 
     $video->forceDelete();
 
-    expect(Video::withTrashed()->find($videoId))->toBeNull();
+    expect(Video::withTrashed()->find($ulid))->toBeNull();
 });
 
-it('filters videos by user', function () {
+it('can filter videos by user', function () {
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();
 
@@ -79,39 +102,124 @@ it('filters videos by user', function () {
 
 it('can update video attributes', function () {
     $video = Video::factory()->create([
-        'title' => 'Original Title',
+        'name' => ['en' => 'Original Name'],
+        'summary' => ['en' => 'Original Summary'],
     ]);
 
     $video->update([
-        'title' => 'Updated Title',
-        'description' => 'Updated Description',
+        'name' => ['en' => 'Updated Name'],
+        'summary' => ['en' => 'Updated Summary'],
     ]);
 
-    expect($video->fresh()->title)->toBe('Updated Title')
-        ->and($video->fresh()->description)->toBe('Updated Description');
+    expect($video->fresh()->name)->toBe('Updated Name')
+        ->and($video->fresh()->summary)->toBe('Updated Summary');
 });
 
 it('has timestamps', function () {
     $video = Video::factory()->create();
 
     expect($video->created_at)->not->toBeNull()
-        ->and($video->updated_at)->not->toBeNull();
+        ->and($video->updated_at)->not->toBeNull()
+        ->and($video->published_at)->not->toBeNull();
 });
 
-it('can retrieve all videos', function () {
-    Video::factory()->count(5)->create();
+it('supports translatable fields', function () {
+    $video = Video::factory()->create([
+        'name' => [
+            'en' => 'English Title',
+            'es' => 'Spanish Title',
+        ],
+        'summary' => [
+            'en' => 'English Summary',
+            'es' => 'Spanish Summary',
+        ],
+    ]);
 
-    $videos = Video::all();
-
-    expect($videos)->toHaveCount(5);
+    expect($video->getTranslation('name', 'en'))->toBe('English Title')
+        ->and($video->getTranslation('name', 'es'))->toBe('Spanish Title')
+        ->and($video->getTranslation('summary', 'en'))->toBe('English Summary')
+        ->and($video->getTranslation('summary', 'es'))->toBe('Spanish Summary');
 });
 
-it('can search videos by title', function () {
-    Video::factory()->create(['title' => 'Laravel Tutorial']);
-    Video::factory()->create(['title' => 'Vue.js Guide']);
-    Video::factory()->create(['title' => 'Laravel Advanced']);
+it('generates title attribute correctly', function () {
+    $video = Video::factory()->create([
+        'name' => ['en' => 'Test Video'],
+        'season' => null,
+        'episode' => null,
+        'part' => null,
+    ]);
 
-    $results = Video::where('title', 'like', '%Laravel%')->get();
+    expect($video->title)->toBe('Test Video');
 
-    expect($results)->toHaveCount(2);
+    $videoWithMetadata = Video::factory()->create([
+        'name' => ['en' => 'Episode Name'],
+        'season' => 1,
+        'episode' => 5,
+        'part' => 2,
+    ]);
+
+    expect($videoWithMetadata->identifier)->toBe('15')
+        ->and($videoWithMetadata->title)->toBe('15 - Episode Name - 2');
+});
+
+it('can have tags', function () {
+    $video = Video::factory()->create();
+
+    $video->attachTag('documentary');
+    $video->attachTag('nature');
+
+    expect($video->tags)->toHaveCount(2)
+        ->and($video->tags->pluck('name.en')->toArray())->toContain('documentary', 'nature');
+});
+
+it('hides sensitive attributes', function () {
+    $video = Video::factory()->create();
+
+    $array = $video->toArray();
+
+    expect($array)->not->toHaveKey('user_id');
+});
+
+it('can check if video is expired', function () {
+    $expiredVideo = Video::factory()->create([
+        'expires_at' => now()->subDay(),
+    ]);
+
+    $validVideo = Video::factory()->create([
+        'expires_at' => now()->addDay(),
+    ]);
+
+    $neverExpiresVideo = Video::factory()->create([
+        'expires_at' => null,
+    ]);
+
+    expect($expiredVideo->isExpired())->toBeTrue()
+        ->and($validVideo->isExpired())->toBeFalse()
+        ->and($neverExpiresVideo->isExpired())->toBeFalse();
+});
+
+it('casts adult flag as boolean', function () {
+    $video = Video::factory()->create(['adult' => true]);
+    $nonAdultVideo = Video::factory()->create(['adult' => false]);
+
+    expect($video->adult)->toBeTrue()
+        ->and($nonAdultVideo->adult)->toBeFalse();
+});
+
+it('casts snapshot as decimal', function () {
+    $video = Video::factory()->create(['snapshot' => 12.5]);
+
+    expect($video->snapshot)->toBe('12.50');
+});
+
+it('can store seasonal information', function () {
+    $video = Video::factory()->create([
+        'season' => 2,
+        'episode' => 10,
+        'part' => 1,
+    ]);
+
+    expect($video->season)->toBe(2)
+        ->and($video->episode)->toBe(10)
+        ->and($video->part)->toBe(1);
 });
