@@ -67,7 +67,7 @@ class Media extends BaseMedia
     protected function asset(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getTemporaryUrl(now()->addDay())),
+            get: fn () => rescue(fn () => $this->getTemporaryUrl()),
         )->shouldCache();
     }
 }

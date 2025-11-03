@@ -42,6 +42,11 @@ return [
     'media_model' => Domain\Media\Models\Media::class,
 
     /*
+     * The fully qualified class name of the media observer.
+     */
+    'media_observer' => Spatie\MediaLibrary\MediaCollections\Models\Observers\MediaObserver::class,
+
+    /*
      * When enabled, media collections will be serialised using the default
      * laravel model serialization behaviour.
      *
@@ -54,7 +59,7 @@ return [
      *
      * This model is only used in Media Library Pro (https://medialibrary.pro)
      */
-    'temporary_upload_model' => null,
+    'temporary_upload_model' => Spatie\MediaLibraryPro\Models\TemporaryUpload::class,
 
     /*
      * When enabled, Media Library Pro will only process temporary uploads that were uploaded
@@ -188,6 +193,18 @@ return [
     'ffprobe_path' => env('FFPROBE_PATH', 'ffprobe'),
 
     /*
+     * The timeout (in seconds) that will be used when generating video
+     * thumbnails via FFMPEG.
+     */
+    'ffmpeg_timeout' => env('FFMPEG_TIMEOUT', 600),
+
+    /*
+     * The number of threads that FFMPEG should use. 0 means that FFMPEG
+     * may decide itself.
+     */
+    'ffmpeg_threads' => env('FFMPEG_THREADS', 0),
+
+    /*
      * Here you can override the class names of the jobs used by this package. Make sure
      * your custom jobs extend the ones provided by the package.
      */
@@ -209,6 +226,12 @@ return [
      * Please note that this is a security risk and should only be false in a local environment.
      */
     'media_downloader_ssl' => env('MEDIA_DOWNLOADER_SSL', true),
+
+    /*
+     * The default lifetime in minutes for temporary urls.
+     * This is used when you call the `getLastTemporaryUrl` or `getLastTemporaryUrl` method on a media item.
+     */
+    'temporary_url_default_lifetime' => env('MEDIA_TEMPORARY_URL_DEFAULT_LIFETIME', 60 * 24),
 
     'remote' => [
         /*
