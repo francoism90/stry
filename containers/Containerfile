@@ -2,7 +2,6 @@ FROM php:8.4-cli-alpine AS base
 
 ARG UID=1000
 ARG GID=1000
-ARG NODE_VERSION=24
 ARG TZ=UTC
 
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
