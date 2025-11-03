@@ -45,7 +45,10 @@ RUN install-php-extensions \
     redis \
     swoole \
     memcached \
-    imagick
+    exif \
+    pcntl \
+    imagick \
+    gd
 
 RUN apk del .build-deps
 
