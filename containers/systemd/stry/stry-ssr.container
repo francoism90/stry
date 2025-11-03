@@ -9,6 +9,7 @@ AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
+Volume=stry-storage:/app/storage:rw,z
 Network=stry.network
 ExposeHostPort=13714
 HealthCmd=CMD-SHELL curl -fs http://localhost:13714/health || exit 1

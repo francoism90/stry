@@ -10,6 +10,7 @@ AutoUpdate=local
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z,U
+Volume=stry-storage:/app/storage:rw,z,U
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=8080
