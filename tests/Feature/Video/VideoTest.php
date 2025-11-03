@@ -57,33 +57,33 @@ it('has verified state by default', function () {
 
 it('can be soft deleted', function () {
     $video = Video::factory()->create();
-    $ulid = $video->ulid;
+    $id = $video->getKey();
 
     $video->delete();
 
-    expect(Video::find($ulid))->toBeNull()
-        ->and(Video::withTrashed()->find($ulid))->not->toBeNull()
-        ->and(Video::withTrashed()->find($ulid)->trashed())->toBeTrue();
+    expect(Video::find($id))->toBeNull()
+        ->and(Video::withTrashed()->find($id))->not->toBeNull()
+        ->and(Video::withTrashed()->find($id)->trashed())->toBeTrue();
 });
 
 it('can be restored after soft delete', function () {
     $video = Video::factory()->create();
-    $ulid = $video->ulid;
+    $id = $video->getKey();
 
     $video->delete();
-    Video::withTrashed()->find($ulid)->restore();
+    Video::withTrashed()->find($id)->restore();
 
-    expect(Video::find($ulid))->not->toBeNull()
-        ->and(Video::find($ulid)->trashed())->toBeFalse();
+    expect(Video::find($id))->not->toBeNull()
+        ->and(Video::find($id)->trashed())->toBeFalse();
 });
 
 it('can be force deleted', function () {
     $video = Video::factory()->create();
-    $ulid = $video->ulid;
+    $id = $video->getKey();
 
     $video->forceDelete();
 
-    expect(Video::withTrashed()->find($ulid))->toBeNull();
+    expect(Video::withTrashed()->find($id))->toBeNull();
 });
 
 it('can filter videos by user', function () {
