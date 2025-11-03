@@ -215,7 +215,7 @@ class Playlist extends Model
         return $this->getUrlResolver($this->file_name);
     }
 
-    public function getPercentage(): float
+    public function getPercentage(): int|float
     {
         return round(data_get($this->progress, 'percentage', 0));
     }
