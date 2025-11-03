@@ -55,6 +55,12 @@ This application follows a **Domain-Driven Design (DDD)** architecture with the 
 - Domain layer must remain framework-agnostic where possible
 - Business rules and domain logic belong here
 
+#### `src/Domain/Shared` - Shared Domain
+
+- Contains domain logic that is shared across multiple domains
+- Includes common value objects, traits, interfaces, and abstractions
+- Should only contain truly cross-cutting domain concerns
+
 ### `src/App` - Application Layer
 
 - HTTP layer containing controllers and requests
@@ -76,6 +82,23 @@ This application follows a **Domain-Driven Design (DDD)** architecture with the 
 - Framework extensions and custom implementations
 - Helpers that don't belong to a specific domain
 - Examples: Custom FFMpeg, MediaLibrary, Inertia extensions
+
+### Namespaces
+
+All classes in `src/` follow PSR-4 autoloading with these base namespaces:
+
+- `src/Domain/` → `Domain\` namespace
+    - Example: `src/Domain/Users/Models/User.php` → `Domain\Users\Models\User`
+    - Example: `src/Domain/Shared/Traits/HasUuid.php` → `Domain\Shared\Traits\HasUuid`
+- `src/App/` → `App\` namespace
+    - Example: `src/App/Web/Controllers/UserController.php` → `App\Web\Controllers\UserController`
+    - Example: `src/App/Api/V1/Controllers/VideoController.php` → `App\Api\V1\Controllers\VideoController`
+- `src/Foundation/` → `Foundation\` namespace
+    - Example: `src/Foundation/Providers/AppServiceProvider.php` → `Foundation\Providers\AppServiceProvider`
+- `src/Support/` → `Support\` namespace
+    - Example: `src/Support/MediaLibrary/CustomPathGenerator.php` → `Support\MediaLibrary\CustomPathGenerator`
+
+**Always use the correct namespace based on the file's location in the `src/` directory structure.**
 
 ### DDD Guidelines
 
@@ -355,7 +378,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-          $response->assertSuccessful();
+            $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -493,13 +516,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-        <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-            <div class="flex gap-8">
-                <div>Superior</div>
-                <div>Michigan</div>
-                <div>Erie</div>
-            </div>
-        </code-snippet>
+          <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+              <div class="flex gap-8">
+                  <div>Superior</div>
+                  <div>Michigan</div>
+                  <div>Erie</div>
+              </div>
+          </code-snippet>
 
 ### Dark Mode
 
