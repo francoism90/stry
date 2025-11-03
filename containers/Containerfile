@@ -26,11 +26,8 @@ RUN apk add --no-cache \
     imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
     libass fontconfig freetype harfbuzz fribidi
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
 RUN install-php-extensions \
+    @composer \
     pdo_mysql \
     pdo_pgsql \
     intl \
