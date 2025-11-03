@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Models;
 
+use Database\Factories\GroupFactory;
 use Domain\Groups\Collections\GroupCollection;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
@@ -61,6 +62,11 @@ class Group extends Model implements HasMedia, Sortable
     protected $hidden = [
         'user_id',
     ];
+
+    protected static function newFactory(): GroupFactory
+    {
+        return GroupFactory::new();
+    }
 
     protected function casts(): array
     {

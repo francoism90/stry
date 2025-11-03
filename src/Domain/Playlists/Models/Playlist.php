@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Models;
 
+use Database\Factories\PlaylistFactory;
 use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
@@ -63,6 +64,11 @@ class Playlist extends Model
     protected $hidden = [
         'user_id',
     ];
+
+    protected static function newFactory(): PlaylistFactory
+    {
+        return PlaylistFactory::new();
+    }
 
     /**
      * @var array<string, string>
