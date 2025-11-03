@@ -76,13 +76,68 @@ Create the required data directories as defined in `app.env`:
 mkdir -p /home/user/data/stry/{media,import}
 ```
 
-#### SELinux Configuration (if applicable)
+### SELinux & Volume Flags (if applicable)
 
-If using SELinux, configure the proper permissions:
+If using SELinux, configure the proper permissions. Use:
+
+- `:z` when the volume content is shared between multiple containers.
+- `:Z` when the volume should be private to a single container.
+- `,U` can be added when user namespace remapping requires ownership fix-ups (rootless environments with keep-id may omit it unless issues arise).
+
+Example:
+
+```ini
+Volume=${DATA_PATH}:/data:rw,z,U
+```
+
+### Environment Variables (`app.env`)
+
+| Key          | Purpose                                                |
+|--------------|--------------------------------------------------------|
+| `UID`, `GID` | Mapped user/group IDs for rootless container processes |
+| `CONTAINER_ENV` | Application environment (e.g. production)           |
+| `APP_PATH`   | Host path of source checkout (bind if enabling live code) |
+| `DATA_PATH`  | Host data directory containing media/import subfolders |
+
+Ensure both paths exist and are owned by the matching UID/GID:
 
 ```bash
-sudo semanage fcontext -a -t container_file_t '/home/user/data/stry/import(/.*)?'
-sudo restorecon -R -v /home/user/data/stry/import
+chown -R 1000:1000 /home/user/projects/stry /home/user/data/stry
+```
+
+### Exposed Ports
+
+Primary application & services expose:
+
+| Service      | Port |
+|--------------|------|
+| App (HTTP)   | 8080 |
+| Vite (Dev)   | 5173 |
+| Reverb (WS)  | 6001 |
+| SSR Renderer | 13714 |
+| Mailpit SMTP | 1025 |
+| Mailpit UI   | 8025 |
+| PostgreSQL   | 5432 |
+| Redis        | 6379 |
+| Typesense    | 8108 |
+| Garage       | 3900–3903 |
+
+Ensure these are free on the host or adjust the `ExposeHostPort` lines in the respective container unit files.
+
+### Rebuilding vs Restarting
+
+Restarting a container (`systemctl --user restart stry`) does not rebuild the image. Rebuild when dependencies, PHP extensions, or application code (without an `/app` bind) change:
+
+```bash
+podman build -t stry.build .
+systemctl --user restart stry
+```
+
+If you added or changed Quadlet unit files:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user restart stry
 ```
 
 ### 4️⃣ Apply Configuration Changes
@@ -108,14 +163,16 @@ Follow the [S3 Object Storage](s3.md) setup guide.
 >
 > The initial startup can take several minutes as it:
 >
-> - Installs vendor packages
-> - Runs [storage-chown-by-maps](https://github.com/containers/podman/issues/13071)
+> - Runs Laravel optimization (`artisan optimize`)
+> - Creates storage symlinks (`artisan storage:link`)
+> - Performs [storage-chown-by-maps](https://github.com/containers/podman/issues/13071) for rootless user namespaces
 >
-> **Do not cancel this process!** If needed, increase the `timeout=*` value in your container files.
+> **Do not cancel this process!** If needed, increase the `TimeoutStartSec=*` value in your container files.
 
-To build and start all containers:
+To rebuild the image (if needed) and start all containers:
 
 ```bash
+podman build -t stry.build .
 systemctl --user restart stry
 ```
 
@@ -179,11 +236,11 @@ podman logs -f systemd-stry
 
 ### Rebuild Containers
 
-If you need to rebuild after changes:
+If you need to rebuild the image after changes:
 
 ```bash
 systemctl --user stop stry
-podman pod rm -f stry
+podman build -t stry.build .
 systemctl --user daemon-reload
 systemctl --user start stry
 ```
