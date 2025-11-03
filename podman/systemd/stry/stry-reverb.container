@@ -14,10 +14,10 @@ Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001
 HealthCmd=curl -fs http://localhost:8080/up || exit 1
-HealthInterval=30s
+HealthInterval=45s
 HealthRetries=3
-HealthStartPeriod=60s
-HealthTimeout=5s
+HealthStartPeriod=120s
+HealthTimeout=8s
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
