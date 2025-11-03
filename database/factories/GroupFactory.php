@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
+use Domain\Groups\States\Pending;
 use Domain\Groups\States\Verified;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -55,7 +56,7 @@ class GroupFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'state' => \Domain\Groups\States\Pending::class,
+            'state' => Pending::class,
         ]);
     }
 

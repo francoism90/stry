@@ -83,11 +83,11 @@ it('can transition to failed state', function () {
 });
 
 it('casts progress as array object', function () {
-    $playlist = Playlist::factory()->withProgress(50.0)->create();
+    $playlist = Playlist::factory()->withProgress(50)->create();
 
     expect($playlist->progress)->toBeInstanceOf(ArrayObject::class)
-        ->and($playlist->progress['percentage'])->toBe(50.0)
-        ->and($playlist->getPercentage())->toBe(50.0);
+        ->and($playlist->progress['percentage'])->toBe(50)
+        ->and($playlist->getPercentage())->toBe(50);
 });
 
 it('can check if playlist is expired', function () {

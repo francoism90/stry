@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
+use Domain\Playlists\States\Verified;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -28,7 +30,7 @@ class PlaylistFactory extends Factory
     public function verified(): static
     {
         return $this->state(fn (array $attributes) => [
-            'state' => \Domain\Playlists\States\Verified::class,
+            'state' => Verified::class,
             'transcoded_at' => now(),
         ]);
     }
@@ -36,7 +38,7 @@ class PlaylistFactory extends Factory
     public function failed(): static
     {
         return $this->state(fn (array $attributes) => [
-            'state' => \Domain\Playlists\States\Failed::class,
+            'state' => Failed::class,
         ]);
     }
 
