@@ -16,7 +16,7 @@ WORKDIR /tmp
 
 RUN apk add --no-cache --virtual .build-deps \
     build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers \
-    libzip-dev libpq-dev oniguruma-dev
+    libzip-dev libpq-dev oniguruma-dev imagemagick-dev
 
 RUN apk add --no-cache \
     bash curl git unzip zip tzdata ca-certificates \
@@ -26,6 +26,8 @@ RUN apk add --no-cache \
     nodejs npm coreutils findutils openssl \
     imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
     libass fontconfig freetype harfbuzz fribidi
+
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN install-php-extensions \
     @composer \
