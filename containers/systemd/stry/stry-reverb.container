@@ -11,6 +11,7 @@ LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
+Volume=stry-storage:/app/storage:rw,Z,U
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001

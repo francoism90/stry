@@ -10,6 +10,7 @@ Environment=CONTAINER_ROLE=ssr
 LogDriver=none
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
+Volume=stry-storage:/app/storage:rw,Z,U
 Network=stry.network
 ExposeHostPort=13714
 
