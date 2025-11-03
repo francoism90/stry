@@ -165,11 +165,13 @@ it('generates title attribute correctly', function () {
 it('can have tags', function () {
     $video = Video::factory()->create();
 
-    $video->attachTag('documentary');
-    $video->attachTag('nature');
+    $video->attachTag(['en' => 'Documentary']);
+    $video->attachTag(['en' => 'Nature']);
+
+    $video->refresh();
 
     expect($video->tags)->toHaveCount(2)
-        ->and($video->tags->pluck('name.en')->toArray())->toContain('documentary', 'nature');
+        ->and($video->tags->pluck('name')->toArray())->toContain('Documentary', 'Nature');
 });
 
 it('hides sensitive attributes', function () {
