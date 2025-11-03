@@ -50,7 +50,7 @@ RUN install-php-extensions \
 
 RUN apk del .build-deps
 
-RUN addgroup -g ${GID} -S docker && adduser -S -D -H -u ${UID} -G docker docker
+RUN addgroup -g ${GID} -S docker && adduser -S -D -u ${UID} -G docker docker
 
 RUN npm install -g npm@latest corepack@latest svgo@latest && \
     corepack enable pnpm
