@@ -21,13 +21,13 @@ RUN apk add --no-cache --virtual .build-deps \
 RUN apk add --no-cache \
     bash curl git unzip zip tzdata ca-certificates \
     libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg ffmpeg \
-    libavif avifenc libheif-tools \
+    libavif libavif-apps libheif libheif-dev \
     postgresql-client sqlite \
     nodejs npm coreutils findutils openssl \
     imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
     libass fontconfig freetype harfbuzz fribidi
 
-RUN setup-timezone -z ${TZ}
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
