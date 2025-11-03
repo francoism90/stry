@@ -10,7 +10,6 @@ Environment=CONTAINER_ROLE=scheduler
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
-Volume=stry-storage:/app/storage:rw,z
 Network=stry.network
 HealthCmd=CMD-SHELL curl -fs http://localhost:8080/health/schedule || exit 1
 HealthInterval=60s
