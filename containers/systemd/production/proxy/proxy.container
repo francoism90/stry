@@ -4,7 +4,6 @@ Description=Caddy proxy container
 [Container]
 Image=docker.io/library/caddy:latest
 AutoUpdate=registry
-LogDriver=none
 AddCapability=CAP_NET_BIND_SERVICE
 Volume=%h/.config/containers/systemd/proxy/config:/etc/caddy:rw,Z,U
 Volume=caddy-data:/data:rw,Z,U

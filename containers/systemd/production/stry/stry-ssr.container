@@ -7,7 +7,6 @@ Requires=stry.container
 Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
-LogDriver=journald
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Volume=stry-storage:/app/storage:rw,Z,U

@@ -7,7 +7,6 @@ Wants=stry-mailpit.container stry-reverb.container stry-queue.container stry-sch
 [Container]
 Image=stry.build
 AutoUpdate=local
-LogDriver=journald
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z,U
