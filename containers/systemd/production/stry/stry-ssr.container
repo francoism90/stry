@@ -7,14 +7,24 @@ Requires=stry.container
 Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
-LogDriver=none
+LogDriver=journald
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Volume=stry-storage:/app/storage:rw,Z,U
 Network=stry.network
 ExposeHostPort=13714
+HealthCmd=CMD-SHELL curl -fs http://localhost:13714/health || exit 1
+HealthInterval=30s
+HealthRetries=3
+HealthStartPeriod=60s
+HealthTimeout=5s
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
+RestartSec=5
 TimeoutStartSec=180
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target

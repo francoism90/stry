@@ -13,10 +13,17 @@ Network=proxy.network
 PublishPort=80:80
 PublishPort=443:443
 PublishPort=443:443/udp
+HealthCmd=CMD-SHELL curl -fs http://localhost:80/ || exit 1
+HealthInterval=30s
+HealthRetries=3
+HealthStartPeriod=30s
+HealthTimeout=5s
 
 [Service]
 Restart=always
+RestartSec=5
 TimeoutStartSec=90
+TimeoutStopSec=30
 
 [Install]
 WantedBy=multi-user.target default.target

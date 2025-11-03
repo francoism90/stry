@@ -7,14 +7,24 @@ Requires=stry.container
 Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=scheduler
-LogDriver=none
+LogDriver=journald
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Volume=stry-storage:/app/storage:rw,Z,U
 Network=stry.network
+HealthCmd=CMD-SHELL curl -fs http://localhost:8080/health/schedule || exit 1
+HealthInterval=60s
+HealthRetries=3
+HealthStartPeriod=120s
+HealthTimeout=8s
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
+RestartSec=5
 TimeoutStartSec=300
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target

@@ -5,12 +5,21 @@ Description=PostgreSQL container
 Image=docker.io/library/postgres:latest
 AutoUpdate=registry
 EnvironmentFile=%h/.config/containers/systemd/stry/config/postgres.env
-LogDriver=none
 ShmSize=512m
 Volume=stry-pgsql:/var/lib/postgresql:rw,Z,U
 Network=stry.network
 ExposeHostPort=5432
+HealthCmd=CMD-SHELL pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB" || exit 1
+HealthInterval=30s
+HealthRetries=3
+HealthStartPeriod=60s
+HealthTimeout=5s
 
 [Service]
 Restart=always
+RestartSec=5
 TimeoutStartSec=300
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target
