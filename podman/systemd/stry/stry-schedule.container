@@ -7,7 +7,6 @@ Requires=stry.container
 Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=scheduler
-AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
