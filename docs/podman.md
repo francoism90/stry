@@ -9,79 +9,181 @@ tags:
   - compose
 ---
 
-## Introduction
+# 🐳 Podman Quadlet Setup
 
-To learn more about Podman Quadlet, please consider reading the following resources first:
+## 📚 Introduction
 
-- <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
-- <https://www.redhat.com/sysadmin/quadlet-podman>
-- <https://mo8it.com/blog/quadlet/>
+Podman Quadlet provides systemd integration for managing containers. Learn more:
 
-## Prerequisites
+- 📖 [Podman Systemd Unit Documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)
+- 🔴 [Red Hat Quadlet Guide](https://www.redhat.com/sysadmin/quadlet-podman)
+- 💡 [Practical Quadlet Tutorial](https://mo8it.com/blog/quadlet/)
 
-- Linux (Debian, Fedora, CentOS, Arch, Ubuntu, ..).
-- [Podman 5.3 or higher](https://podman.io/) with Quadlet (systemd) support.
+---
 
-This guide assumes a rootless setup (this may already be configured by your distribution or administrator):
+## 📋 Prerequisites
 
-- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
-- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+**System Requirements:**
 
-## Installation
+- 🐧 Linux (Debian, Fedora, CentOS, Arch, Ubuntu, etc.)
+- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
 
-### Containers
+### Rootless Setup
 
-Copy the container files:
+This guide assumes a **rootless** Podman setup (recommended for security):
+
+- 📖 [Rootless Podman Tutorial](https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md)
+- 🔧 [Arch Linux Podman Guide](https://wiki.archlinux.org/title/Podman#Rootless_Podman)
+
+> [!TIP]
+> Your distribution may have already configured rootless Podman for you.
+
+---
+
+## 🛠️ Installation
+
+### 1️⃣ Configure Container Files
+
+Copy the container configuration files:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/containers/systemd/stry ~/.config/containers/systemd/
 ```
 
-Adjust the container configurations:
+### 2️⃣ Adjust Container Configuration
+
+Edit the configuration files to match your environment:
 
 ```bash
 cd ~/.config/containers/systemd/stry/config
-vi app.env postgres.env typesense.env ..
+vi app.env postgres.env typesense.env
 ```
 
-1. Make sure the project environment is aligned with the changes made:
+> [!IMPORTANT]
+> Ensure your project's `.env` file is aligned with the container configurations:
 
 ```bash
 cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
-### Storage
+### 3️⃣ Setup Storage Paths
 
-1. Make sure the data and import paths exists as defined in `app.env`:
+Create the required data directories as defined in `app.env`:
 
 ```bash
 mkdir -p /home/user/data/stry/{media,import}
 ```
 
-1. When using SELinux, make sure to setup permissions:
+#### SELinux Configuration (if applicable)
+
+If using SELinux, configure the proper permissions:
 
 ```bash
 sudo semanage fcontext -a -t container_file_t '/home/user/data/stry/import(/.*)?'
 sudo restorecon -R -v /home/user/data/stry/import
 ```
 
-1. Reload the container configurations on changes:
+### 4️⃣ Apply Configuration Changes
+
+Reload systemd to recognize the new containers:
 
 ```bash
 systemctl --user daemon-reload
 ```
 
-1. Follow the [S3 object-storage](s3.md) guide.
+### 5️⃣ Configure S3 Storage
 
-### Rebuild containers
+Follow the [S3 Object Storage](s3.md) setup guide.
 
-> **NOTE**: The first start can take a significance of time. It will install the vendor packages, and run [storage-chown-by-maps](https://github.com/containers/podman/issues/13071).
-> It's important to not cancel this process, or increase the `timeout=*` value to a higher value if needed by the setup.
+---
 
-To rebuild or (re)start the containers:
+## 🚀 Starting Containers
+
+### First-Time Start
+
+> [!WARNING]
+> **First Start Can Take Time:**
+>
+> The initial startup can take several minutes as it:
+>
+> - Installs vendor packages
+> - Runs [storage-chown-by-maps](https://github.com/containers/podman/issues/13071)
+>
+> **Do not cancel this process!** If needed, increase the `timeout=*` value in your container files.
+
+To build and start all containers:
 
 ```bash
 systemctl --user restart stry
+```
+
+### Managing Containers
+
+```bash
+# Start services
+systemctl --user start stry
+
+# Stop services
+systemctl --user stop stry
+
+# Check status
+systemctl --user status stry
+
+# View logs
+journalctl --user -u stry -f
+```
+
+---
+
+## 🔧 Container Management
+
+### Individual Container Control
+
+```bash
+# Start specific container
+systemctl --user start stry-queue
+
+# Restart a container
+systemctl --user restart stry-reverb
+
+# Check container status
+systemctl --user status stry-postgres
+```
+
+### Viewing Logs
+
+```bash
+# All stry services
+journalctl --user -u 'stry*' -f
+
+# Specific service
+journalctl --user -u stry-queue -f
+
+# Using podman directly
+podman logs -f systemd-stry
+```
+
+---
+
+## 💡 Troubleshooting
+
+> [!TIP]
+> **Common Issues:**
+>
+> - **Container won't start**: Check `journalctl --user -u stry` for errors
+> - **Permission issues**: Verify SELinux contexts and directory ownership
+> - **Timeout errors**: Increase timeout values in container files
+> - **Port conflicts**: Ensure no other services are using the same ports
+
+### Rebuild Containers
+
+If you need to rebuild after changes:
+
+```bash
+systemctl --user stop stry
+podman pod rm -f stry
+systemctl --user daemon-reload
+systemctl --user start stry
 ```
