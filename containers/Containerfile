@@ -17,7 +17,7 @@ RUN apk add --no-cache --virtual .build-deps \
     libzip-dev libpq-dev oniguruma-dev imagemagick-dev
 
 RUN apk add --no-cache \
-    bash curl git unzip zip tzdata ca-certificates \
+    bash curl git unzip zip tzdata ca-certificates openssh-client \
     libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg ffmpeg \
     libavif libavif-apps libheif libheif-dev \
     postgresql-client sqlite \
