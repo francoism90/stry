@@ -10,8 +10,8 @@ Environment=CONTAINER_ROLE=horizon
 ShmSize=2g
 AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
+Volume=${APP_PATH}:/app:rw,z
 Volume=${DATA_PATH}:/data:rw,z
-Volume=stry-storage:/app/storage:rw,Z,U
 Network=stry.network
 HealthCmd=CMD-SHELL curl -fs http://localhost:8080/horizon/metrics || exit 1
 HealthInterval=45s
