@@ -51,7 +51,10 @@ This application follows a **Domain-Driven Design (DDD)** architecture with the 
     - `Policies/` - Authorization policies
     - `QueryBuilders/` - Custom Eloquent query builders for domain models
     - `Scopes/` - Query scopes for reusable query logic
-    - `Collections/`, `Resources/`, `Observers/`, `Enums/`, etc.
+    - `Collections/` - Custom Eloquent collection classes for enhanced model collection behavior
+    - `Resources/` - API resource transformers for consistent data formatting
+    - `Observers/` - Eloquent model observers for lifecycle event handling
+    - `Enums/` - Domain-specific enumerations for type-safe constants and values
 - Domain layer must remain framework-agnostic where possible
 - Business rules and domain logic belong here
 
@@ -378,7 +381,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                $response->assertSuccessful();
+                  $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -522,13 +525,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-              <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                  <div class="flex gap-8">
-                      <div>Superior</div>
-                      <div>Michigan</div>
-                      <div>Erie</div>
-                  </div>
-              </code-snippet>
+                <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                    <div class="flex gap-8">
+                        <div>Superior</div>
+                        <div>Michigan</div>
+                        <div>Erie</div>
+                    </div>
+                </code-snippet>
 
 ### Dark Mode
 
