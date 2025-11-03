@@ -18,6 +18,30 @@ class WebM extends DefaultVideo
      */
     public function getAvailableVideoCodecs()
     {
-        return ['copy', 'libvpx', 'libvpx-vp9'];
+        return ['copy', 'libvpx', 'libvpx-vp9', 'vp8', 'vp9'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supportBFrames()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExtraParams()
+    {
+        return ['-f', 'webm'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getModulus()
+    {
+        return 2;
     }
 }

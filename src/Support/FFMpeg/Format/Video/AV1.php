@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Support\FFMpeg\Format\Video;
 
-use FFMpeg\Format\Video\X264 as DefaultVideo;
+use FFMpeg\Format\Video\DefaultVideo;
 
-class X265 extends DefaultVideo
+class AV1 extends DefaultVideo
 {
-    public function __construct($audioCodec = 'aac', $videoCodec = 'libx265')
+    public function __construct($audioCodec = 'libopus', $videoCodec = 'libaom-av1')
     {
         $this
             ->setAudioCodec($audioCodec)
@@ -17,7 +17,7 @@ class X265 extends DefaultVideo
 
     public function getAvailableAudioCodecs()
     {
-        return ['copy', 'aac', 'libvo_aacenc', 'libfaac', 'libmp3lame', 'libfdk_aac', 'libopus'];
+        return ['copy', 'aac', 'libopus', 'libvorbis', 'libfdk_aac'];
     }
 
     /**
@@ -25,7 +25,7 @@ class X265 extends DefaultVideo
      */
     public function getAvailableVideoCodecs()
     {
-        return ['copy', 'libx265', 'h265', 'hevc'];
+        return ['copy', 'libaom-av1', 'libsvtav1', 'av1'];
     }
 
     /**
@@ -42,5 +42,18 @@ class X265 extends DefaultVideo
     public function getModulus()
     {
         return 2;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExtraParams()
+    {
+        return [
+            '-cpu-used', '4',
+            '-row-mt', '1',
+            '-tiles', '2x2',
+            '-strict', 'experimental',
+        ];
     }
 }

@@ -20,4 +20,20 @@ class X264 extends DefaultVideo
     {
         return ['copy', 'libx264', 'h264'];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supportBFrames()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getModulus()
+    {
+        return 2;
+    }
 }
