@@ -10,6 +10,7 @@ ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
 ENV TZ=${TZ}
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /tmp
 
@@ -60,9 +61,10 @@ WORKDIR /app
 
 COPY . /app
 
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
-
-RUN pnpm install --frozen-lockfile && pnpm build && pnpm build:ssr && pnpm prune --prod
+RUN --mount=type=cache,target=/root/.cache/composer \
+    --mount=type=cache,target=/pnpm-store \
+    composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction && \
+    pnpm install --frozen-lockfile && pnpm build && pnpm build:ssr && pnpm prune --prod
 
 FROM base AS production
 
