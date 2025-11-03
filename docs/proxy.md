@@ -25,7 +25,7 @@ Setup the Caddy container configuration:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/systemd/proxy ~/.config/containers/systemd/
+cp -r ~/projects/stry/podman/systemd/proxy ~/.config/containers/systemd/
 ```
 
 ### 2️⃣ Configure Caddy

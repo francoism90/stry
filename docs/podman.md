@@ -48,7 +48,7 @@ Copy the container configuration files:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/systemd/stry ~/.config/containers/systemd/
+cp -r ~/projects/stry/podman/systemd/stry ~/.config/containers/systemd/
 ```
 
 ### 2️⃣ Adjust Container Configuration

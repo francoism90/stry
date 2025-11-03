@@ -64,7 +64,7 @@ Add resource limits directly to your `.container` files:
 ```ini
 # Example: ~/.config/containers/systemd/stry/stry-queue.container
 [Container]
-Image=ghcr.io/francoism90/stry:latest
+Image=<image>
 # ... other settings ...
 
 # Resource limits
