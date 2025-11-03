@@ -1,0 +1,30 @@
+stry.test {
+    import tls
+    import compress
+    import pwa
+    reverse_proxy systemd-stry:8080
+}
+
+vite.stry.test {
+	import tls
+    import compress
+	reverse_proxy systemd-stry:5173
+}
+
+ws.stry.test {
+	import tls
+    import compress
+	reverse_proxy systemd-stry-reverb:6001
+}
+
+s3.stry.test {
+    import tls
+    import compress
+    reverse_proxy systemd-stry-garage:3900
+}
+
+web.stry.test {
+    import tls
+    import compress
+    reverse_proxy systemd-stry-garage:3902
+}
