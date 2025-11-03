@@ -23,7 +23,8 @@ RUN apk add --no-cache \
     libavif avifenc libheif-tools \
     postgresql-client sqlite \
     nodejs npm coreutils findutils openssl \
-    imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs
+    imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
+    libass fontconfig freetype harfbuzz fribidi
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
