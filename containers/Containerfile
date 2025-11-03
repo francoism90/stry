@@ -13,13 +13,16 @@ ENV TZ=${TZ}
 
 WORKDIR /tmp
 
+RUN apk add --no-cache --virtual .build-deps \
+    build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers \
+    libzip-dev libpq-dev oniguruma-dev
+
 RUN apk add --no-cache \
     bash curl git unzip zip tzdata ca-certificates \
     libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg ffmpeg \
     postgresql-client sqlite \
     nodejs npm coreutils findutils openssl \
-    imagemagick icu-data-full icu-libs libzip-dev libpq-dev oniguruma-dev \
-    build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers
+    imagemagick icu-data-full icu-libs
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -40,7 +43,7 @@ RUN install-php-extensions \
     memcached \
     imagick
 
-RUN apk del --no-cache build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers || true
+RUN apk del .build-deps
 
 RUN addgroup -g ${GID} -S docker && adduser -S -D -H -u ${UID} -G docker docker
 
