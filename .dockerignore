@@ -22,7 +22,6 @@ _ide_helper.php
 auto-imports.d.ts
 bootstrap/cache/*.php
 components.d.ts
-containers
 dist
 docs
 node_modules
