@@ -23,11 +23,22 @@ RUN apk add --no-cache \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql intl mbstring bcmath opcache zip
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN apk add --no-cache libmemcached-dev cyrus-sasl-dev imagemagick-dev && \
-    pecl install igbinary msgpack redis swoole memcached imagick && \
-    docker-php-ext-enable igbinary msgpack redis swoole memcached imagick
+RUN install-php-extensions \
+    pdo_mysql \
+    pdo_pgsql \
+    intl \
+    mbstring \
+    bcmath \
+    opcache \
+    zip \
+    igbinary \
+    msgpack \
+    redis \
+    swoole \
+    memcached \
+    imagick
 
 RUN apk del --no-cache build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers || true
 
