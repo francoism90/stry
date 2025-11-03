@@ -165,8 +165,8 @@ it('generates title attribute correctly', function () {
 it('can have tags', function () {
     $video = Video::factory()->create();
 
-    $video->attachTag(['en' => 'Documentary']);
-    $video->attachTag(['en' => 'Nature']);
+    $video->attachTag('Documentary');
+    $video->attachTag('Nature');
 
     $video->refresh();
 
