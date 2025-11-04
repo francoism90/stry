@@ -17,7 +17,7 @@ class X265 extends DefaultVideo
 
     public function getAvailableAudioCodecs()
     {
-        return ['copy', 'aac', 'libvo_aacenc', 'libfaac', 'libmp3lame', 'libfdk_aac', 'libopus'];
+        return ['copy', 'aac', 'libfdk_aac', 'libfaac', 'libmp3lame', 'libopus'];
     }
 
     /**

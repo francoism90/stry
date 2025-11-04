@@ -18,7 +18,7 @@ class WebM extends DefaultVideo
      */
     public function getAvailableVideoCodecs()
     {
-        return ['copy', 'libvpx', 'libvpx-vp9', 'vp8', 'vp9'];
+        return ['copy', 'libvpx', 'libvpx-vp9', 'vp8', 'vp9', 'libaom-av1', 'libsvtav1', 'av1'];
     }
 
     /**

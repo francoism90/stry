@@ -25,7 +25,7 @@ class AV1 extends DefaultVideo
      */
     public function getAvailableVideoCodecs()
     {
-        return ['copy', 'libaom-av1', 'libsvtav1', 'av1'];
+        return ['copy', 'libaom-av1', 'libsvtav1', 'librav1e', 'av1'];
     }
 
     /**
