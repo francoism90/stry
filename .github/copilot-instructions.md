@@ -240,33 +240,37 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ## Facades vs Helper Functions
 
 - **Always prefer Facades over helper functions** for better IDE support, static analysis, and consistency.
-- Use `Auth::` instead of `auth()`
-- Use `Cache::` instead of `cache()`
-- Use `Collection::` instead of `collect()`
-- Use `Config::` instead of `config()` (except in config files where `env()` is allowed)
-- Use `DB::` only for complex raw queries; prefer Eloquent otherwise
-- Use `Event::` instead of `event()`
-- Use `Gate::` for authorization checks
-- Use `Log::` instead of `logger()`
-- Use `Request::` instead of `request()`
-- Use `Route::` for routing operations
-- Use `Storage::` instead of `storage_path()` for file operations
-- Use `URL::` instead of `url()`
-- Use `View::` instead of `view()`
+- Use `Auth::` (`Illuminate\Support\Facades\Auth`) instead of `auth()`
+- Use `Cache::` (`Illuminate\Support\Facades\Cache`) instead of `cache()`
+- Use `Collection::` (`Illuminate\Support\Collection`) instead of `collect()`
+- Use `Config::` (`Illuminate\Support\Facades\Config`) instead of `config()` (except in config files where `env()` is allowed)
+- Use `DB::` (`Illuminate\Support\Facades\DB`) only for complex raw queries; prefer Eloquent otherwise
+- Use `Event::` (`Illuminate\Support\Facades\Event`) instead of `event()`
+- Use `Gate::` (`Illuminate\Support\Facades\Gate`) for authorization checks
+- Use `Log::` (`Illuminate\Support\Facades\Log`) instead of `logger()`
+- Use `Request::` (`Illuminate\Support\Facades\Request`) instead of `request()`
+- Use `Route::` (`Illuminate\Support\Facades\Route`) for routing operations
+- Use `Storage::` (`Illuminate\Support\Facades\Storage`) instead of `storage_path()` for file operations
+- Use `Str::` (`Illuminate\Support\Str`) instead of `str()`
+- Use `URL::` (`Illuminate\Support\Facades\URL`) instead of `url()`
+- Use `View::` (`Illuminate\Support\Facades\View`) instead of `view()`
 
 <code-snippet name="Prefer Facades" lang="php">
 // ✅ Good - Using Facades
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 $user = Auth::user();
 $value = Cache::get('key');
+$slug = Str::slug('Hello World');
 Gate::authorize('update', $post);
 
 // ❌ Avoid - Using helper functions
 $user = auth()->user();
 $value = cache('key');
+$slug = str('Hello World')->slug();
 gate()->authorize('update', $post);
 </code-snippet>
 
@@ -433,7 +437,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                          $response->assertSuccessful();
+                              $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -577,13 +581,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                        <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                            <div class="flex gap-8">
-                                <div>Superior</div>
-                                <div>Michigan</div>
-                                <div>Erie</div>
-                            </div>
-                        </code-snippet>
+                            <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                                <div class="flex gap-8">
+                                    <div>Superior</div>
+                                    <div>Michigan</div>
+                                    <div>Erie</div>
+                                </div>
+                            </code-snippet>
 
 ### Dark Mode
 
