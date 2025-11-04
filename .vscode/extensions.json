@@ -11,7 +11,11 @@
         "EditorConfig.EditorConfig",
         "esbenp.prettier-vscode",
         "laravel.vscode-laravel",
+        "mikestead.dotenv",
+        "naoray.laravel-goto-components",
+        "onecentlin.laravel-blade",
         "oxc.oxc-vscode",
+        "phpstan.vscode-phpstan",
         "vue.volar"
     ]
 }

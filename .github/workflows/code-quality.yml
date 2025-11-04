@@ -1,0 +1,66 @@
+name: Code Quality
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+
+permissions:
+    contents: read
+
+jobs:
+    php-code-quality:
+        runs-on: ubuntu-latest
+        name: PHP Code Quality
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.4
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, exif, iconv, imagick, fileinfo
+                  coverage: none
+
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-interaction --no-progress
+
+            - name: Run Laravel Pint
+              run: vendor/bin/pint --test
+
+            - name: Run Larastan
+              run: vendor/bin/phpstan analyse --memory-limit=2G --error-format=github
+
+    frontend-code-quality:
+        runs-on: ubuntu-latest
+        name: Frontend Code Quality
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            - name: Install Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-type: 20
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Run ESLint
+              run: pnpm run lint:eslint
+
+            - name: Run TypeScript type check
+              run: pnpm run type-check
+
+            - name: Check Prettier formatting
+              run: pnpm run format -- --check

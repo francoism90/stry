@@ -1,4 +1,10 @@
 {
+    "[blade]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit",
         "source.organizeImports": "always",
@@ -7,7 +13,13 @@
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+    "files.associations": {
+        ".env*": "dotenv",
+        "*.blade.php": "blade"
+    },
     "html.customData": ["./node_modules/vidstack/vscode.html-data.json"],
+    "intelephense.telemetry.enabled": false,
     "tailwindCSS.classAttributes": ["class", "ui"],
     "tailwindCSS.emmetCompletions": true,
     "tailwindCSS.experimental.classRegex": [
@@ -28,5 +40,7 @@
         "plaintext": "html",
         "vue": "html",
         "vue-html": "html"
-    }
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "volar.autoCompleteRefs": true
 }
