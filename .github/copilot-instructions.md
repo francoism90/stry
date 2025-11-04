@@ -237,6 +237,39 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
 
+## Facades vs Helper Functions
+
+- **Always prefer Facades over helper functions** for better IDE support, static analysis, and consistency.
+- Use `Auth::` instead of `auth()`
+- Use `Cache::` instead of `cache()`
+- Use `Collection::` instead of `collect()`
+- Use `Config::` instead of `config()` (except in config files where `env()` is allowed)
+- Use `DB::` only for complex raw queries; prefer Eloquent otherwise
+- Use `Event::` instead of `event()`
+- Use `Gate::` for authorization checks
+- Use `Log::` instead of `logger()`
+- Use `Request::` instead of `request()`
+- Use `Route::` for routing operations
+- Use `Storage::` instead of `storage_path()` for file operations
+- Use `URL::` instead of `url()`
+- Use `View::` instead of `view()`
+
+<code-snippet name="Prefer Facades" lang="php">
+// ✅ Good - Using Facades
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
+
+$user = Auth::user();
+$value = Cache::get('key');
+Gate::authorize('update', $post);
+
+// ❌ Avoid - Using helper functions
+$user = auth()->user();
+$value = cache('key');
+gate()->authorize('update', $post);
+</code-snippet>
+
 === inertia-laravel/core rules ===
 
 ## Inertia Core
@@ -400,7 +433,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                        $response->assertSuccessful();
+                          $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -544,13 +577,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                      <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                          <div class="flex gap-8">
-                              <div>Superior</div>
-                              <div>Michigan</div>
-                              <div>Erie</div>
-                          </div>
-                      </code-snippet>
+                        <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                            <div class="flex gap-8">
+                                <div>Superior</div>
+                                <div>Michigan</div>
+                                <div>Erie</div>
+                            </div>
+                        </code-snippet>
 
 ### Dark Mode
 
