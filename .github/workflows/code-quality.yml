@@ -42,9 +42,6 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Setup Wayfinder
-              run: php artisan wayfinder:generate
-
             - name: Run Laravel Pint
               run: vendor/bin/pint --test
 
