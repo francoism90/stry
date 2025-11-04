@@ -12,7 +12,7 @@ permissions:
 jobs:
     php-code-quality:
         runs-on: ubuntu-latest
-        name: PHP Code Quality
+        name: Code Quality
 
         steps:
             - name: Checkout code
@@ -28,17 +28,6 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-interaction --no-progress
 
-            - name: Run Laravel Pint
-              run: vendor/bin/pint --test
-
-    frontend-code-quality:
-        runs-on: ubuntu-latest
-        name: Frontend Code Quality
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v5
-
             - name: Install pnpm
               uses: pnpm/action-setup@v4
               with:
@@ -52,6 +41,12 @@ jobs:
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
+
+            - name: Setup Wayfinder
+              run: php artisan wayfinder:generate
+
+            - name: Run Laravel Pint
+              run: vendor/bin/pint --test
 
             - name: Run ESLint
               run: pnpm run lint:eslint
