@@ -9,31 +9,31 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.4.13
-- inertiajs/inertia-laravel (INERTIA) - v2
-- laravel/fortify (FORTIFY) - v1
-- laravel/framework (LARAVEL) - v12
-- laravel/horizon (HORIZON) - v5
-- laravel/octane (OCTANE) - v2
-- laravel/prompts (PROMPTS) - v0
-- laravel/reverb (REVERB) - v1
-- laravel/sanctum (SANCTUM) - v4
-- laravel/scout (SCOUT) - v10
-- laravel/wayfinder (WAYFINDER) - v0
-- larastan/larastan (LARASTAN) - v3
-- laravel/envoy (ENVOY) - v2
-- laravel/mcp (MCP) - v0
-- laravel/pint (PINT) - v1
-- laravel/telescope (TELESCOPE) - v5
-- pestphp/pest (PEST) - v4
-- phpunit/phpunit (PHPUNIT) - v12
-- @inertiajs/vue3 (INERTIA) - v2
-- @laravel/vite-plugin-wayfinder (WAYFINDER) - v0
-- laravel-echo (ECHO) - v2
-- tailwindcss (TAILWINDCSS) - v4
-- vue (VUE) - v3
-- eslint (ESLINT) - v9
-- prettier (PRETTIER) - v3
+- php - 8.4.14
+- inertiajs/inertia-laravel (INERTIA) - v2.0.10
+- laravel/fortify (FORTIFY) - v1.31.2
+- laravel/framework (LARAVEL) - v12.36.1
+- laravel/horizon (HORIZON) - v5.38.0
+- laravel/octane (OCTANE) - v2.13.1
+- laravel/prompts (PROMPTS) - v0.3.7
+- laravel/reverb (REVERB) - v1.6.0
+- laravel/sanctum (SANCTUM) - v4.2.0
+- laravel/scout (SCOUT) - v10.20.0
+- laravel/wayfinder (WAYFINDER) - v0.1.12
+- larastan/larastan (LARASTAN) - v3.8.0
+- laravel/envoy (ENVOY) - v2.10.2
+- laravel/mcp (MCP) - v0.3.2
+- laravel/pint (PINT) - v1.25.1
+- laravel/telescope (TELESCOPE) - v5.15.0
+- pestphp/pest (PEST) - v4.1.3
+- phpunit/phpunit (PHPUNIT) - v12.4.1
+- @inertiajs/vue3 (INERTIA) - v2.2.15
+- @laravel/vite-plugin-wayfinder (WAYFINDER) - v0.1.7
+- laravel-echo (ECHO) - v2.2.4
+- tailwindcss (TAILWINDCSS) - v4.1.16
+- vue (VUE) - v3.5.22
+- eslint (ESLINT) - v9.39.0
+- prettier (PRETTIER) - v3.6.2
 
 ## Domain-Driven Design Architecture
 
@@ -400,7 +400,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                      $response->assertSuccessful();
+                        $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -544,13 +544,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                    <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                        <div class="flex gap-8">
-                            <div>Superior</div>
-                            <div>Michigan</div>
-                            <div>Erie</div>
-                        </div>
-                    </code-snippet>
+                      <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                          <div class="flex gap-8">
+                              <div>Superior</div>
+                              <div>Michigan</div>
+                              <div>Erie</div>
+                          </div>
+                      </code-snippet>
 
 ### Dark Mode
 
