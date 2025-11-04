@@ -53,7 +53,7 @@ class CreateHlsPlaylist
                 // If both audio and video codecs are set to copy, use the CopyVideoFormat
                 if ($videoCodec === 'copy' && $audioCodec === 'copy') {
                     $ffmpeg->addFormat((new CopyVideoFormat)->setAdditionalParameters(
-                        Playlist::getAdditionalParameters()
+                        Playlist::getAdditionalParameters(),
                     ));
 
                     return;
@@ -65,7 +65,7 @@ class CreateHlsPlaylist
                     ->setAudioCodec($audioCodec)
                     ->setKiloBitrate($videoCodec === 'copy' ? 0 : $videoBitrate)
                     ->setAudioKiloBitrate($audioBitrate)
-                    ->setAdditionalParameters(Playlist::getAdditionalParameters())
+                    ->setAdditionalParameters(Playlist::getAdditionalParameters()),
                 );
             });
 

@@ -16,7 +16,7 @@ class ExtractMediaCaptions
     {
         // Initialize FFMpeg
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open(
-            $media->getPathRelativeToRoot()
+            $media->getPathRelativeToRoot(),
         );
 
         $items = Collection::make($ffmpeg->getStreams())

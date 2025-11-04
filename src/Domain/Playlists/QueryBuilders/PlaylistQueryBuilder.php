@@ -58,7 +58,7 @@ class PlaylistQueryBuilder extends Builder
             ->whereNotNull('expires_at')
             ->where('accessed_at', '<=', now()->subSeconds($staleAfter))
             ->orderBy('accessed_at')
-            ->oldest()
+            ->oldest(),
         );
     }
 

@@ -18,7 +18,7 @@ class UpdateVideoDetails
         return DB::transaction(function () use ($video, $attributes) {
             // Update the video attributes
             $video->updateOrFail(
-                Arr::only($attributes, $video->getFillable())
+                Arr::only($attributes, $video->getFillable()),
             );
 
             // Sync tags if provided

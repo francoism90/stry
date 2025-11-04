@@ -207,21 +207,21 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar', 'thumb'))
+            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addDays(3), 'avatar', 'thumb')),
         )->shouldCache();
     }
 
     protected function assignedRoles(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getRoleNames()
+            get: fn () => $this->getRoleNames(),
         )->shouldCache();
     }
 
     protected function assignedPermissions(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getAllPermissions()->pluck('name')
+            get: fn () => $this->getAllPermissions()->pluck('name'),
         )->shouldCache();
     }
 }

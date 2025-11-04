@@ -8,9 +8,6 @@
         "blank_line_before_statement": {
             "statements": ["return", "throw", "try"]
         },
-        "concat_space": {
-            "spacing": "one"
-        },
         "method_chaining_indentation": true,
         "no_empty_phpdoc": true,
         "phpdoc_separation": true,

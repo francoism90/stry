@@ -37,7 +37,7 @@ class PlaylistSessionController extends Controller implements HasMiddleware
         VideoHasBeenViewedEvent::dispatchIf($model instanceof Video,
             $model,
             $request->user(),
-            $request->safe()->only(['time'])
+            $request->safe()->only(['time']),
         );
 
         return response()->noContent();

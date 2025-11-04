@@ -30,7 +30,7 @@ class ClearCommand extends Command implements Isolatable
     {
         $videos = spin(
             message: 'Retrieving deleted videos...',
-            callback: fn () => Video::onlyTrashed()->lazy()
+            callback: fn () => Video::onlyTrashed()->lazy(),
         );
 
         if ($videos->isEmpty()) {
@@ -45,7 +45,7 @@ class ClearCommand extends Command implements Isolatable
                 (string) $video->getKey(),
                 (string) $video->name,
                 Number::fileSize($video->file_size),
-            ])->all()
+            ])->all(),
         );
 
         if (confirm('Are you sure you want to force-delete these videos?')) {

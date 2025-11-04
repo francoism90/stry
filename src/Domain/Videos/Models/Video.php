@@ -304,14 +304,14 @@ class Video extends Model implements HasMedia
     protected function identifier(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode('', array_filter([$this->season, $this->episode]))
+            get: fn () => implode('', array_filter([$this->season, $this->episode])),
         )->shouldCache();
     }
 
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part]))
+            get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part])),
         )->shouldCache();
     }
 
@@ -325,35 +325,35 @@ class Video extends Model implements HasMedia
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn (): ?string => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false)
+            get: fn () => rescue(fn (): ?string => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false),
         )->shouldCache();
     }
 
     protected function captioned(): Attribute
     {
         return Attribute::make(
-            get: fn (): bool => $this->hasCaptions()
+            get: fn (): bool => $this->hasCaptions(),
         )->shouldCache();
     }
 
     protected function captions(): Attribute
     {
         return Attribute::make(
-            get: fn (): MediaCollection => $this->getCaptions()
+            get: fn (): MediaCollection => $this->getCaptions(),
         )->shouldCache();
     }
 
     protected function duration(): Attribute
     {
         return Attribute::make(
-            get: fn (): float => $this->durationInSeconds()
+            get: fn (): float => $this->durationInSeconds(),
         )->shouldCache();
     }
 
     protected function timestamp(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => duration($this->durationInSeconds())
+            get: fn (): string => duration($this->durationInSeconds()),
         )->shouldCache();
     }
 

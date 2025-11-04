@@ -41,7 +41,7 @@ class TagFilterScope
 
         return enum_value($this->filter instanceof TagType
             ? $this->filter
-            : TagType::tryFrom($this->filter)
+            : TagType::tryFrom($this->filter),
         );
     }
 }

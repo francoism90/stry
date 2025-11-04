@@ -15,7 +15,7 @@ class UpdateTagDetails
         return DB::transaction(function () use ($tag, $attributes) {
             // Update the tag attributes
             $tag->updateOrFail(
-                Arr::only($attributes, $tag->getFillable())
+                Arr::only($attributes, $tag->getFillable()),
             );
 
             // Sync related tags if provided

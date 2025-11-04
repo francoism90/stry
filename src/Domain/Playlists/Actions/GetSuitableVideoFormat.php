@@ -27,7 +27,7 @@ class GetSuitableVideoFormat
             fn (DefaultVideo $videoFormat) => $videoCodec !== null
                 && in_array($audioCodec, $videoFormat->getAvailableAudioCodecs())
                 && in_array($videoCodec, $videoFormat->getAvailableVideoCodecs()),
-            fn () => $formats->first()
+            fn () => $formats->first(),
         );
 
         // Determine if we can copy the audio and video codecs

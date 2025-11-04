@@ -173,7 +173,7 @@ class Playlist extends Model
     public function getPath(string $path = ''): string
     {
         return (new WhitespacePathNormalizer)->normalizePath(
-            implode('/', [$this->getKey(), $path])
+            implode('/', [$this->getKey(), $path]),
         );
     }
 
@@ -233,7 +233,7 @@ class Playlist extends Model
     public function isRecentlyAccessed(): bool
     {
         return filled($this->accessed_at) && $this->accessed_at->greaterThanOrEqualTo(
-            Config::get('playlist.recent_activity', now()->subMinutes(10))
+            Config::get('playlist.recent_activity', now()->subMinutes(10)),
         );
     }
 

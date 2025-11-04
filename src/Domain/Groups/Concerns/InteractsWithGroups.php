@@ -92,7 +92,7 @@ trait InteractsWithGroups
     public function scopeWhereGroup(Builder $query, ?GroupType $type = null): Builder
     {
         return $query->whereHas('groups', fn ($query) => $query
-            ->when($type, fn ($query) => $query->where('type', $type))
+            ->when($type, fn ($query) => $query->where('type', $type)),
         );
     }
 }

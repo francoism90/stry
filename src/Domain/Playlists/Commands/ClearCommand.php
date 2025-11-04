@@ -29,7 +29,7 @@ class ClearCommand extends Command implements Isolatable
     {
         $playlists = spin(
             message: 'Retrieving playlists...',
-            callback: fn () => Playlist::type($this->option('type'))->lazy()
+            callback: fn () => Playlist::type($this->option('type'))->lazy(),
         );
 
         if ($playlists->isEmpty()) {
@@ -44,7 +44,7 @@ class ClearCommand extends Command implements Isolatable
                 (string) $playlist->getKey(),
                 (string) $playlist->type,
                 (string) $playlist->state,
-            ])->all()
+            ])->all(),
         );
 
         if (confirm('Are you sure you want to delete these playlists?')) {

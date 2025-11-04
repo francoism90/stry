@@ -24,7 +24,7 @@ readonly class AuthenticatedProperty implements ProvidesInertiaProperty
 
         return UserResource::make($this->user
             ->loadMissing('permissions', 'roles')
-            ->append('name', 'avatar')
+            ->append('name', 'avatar'),
         );
     }
 }

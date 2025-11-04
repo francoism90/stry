@@ -36,7 +36,7 @@ class ImportCommand extends Command implements Isolatable
     {
         $files = spin(
             message: 'Retrieving files...',
-            callback: fn () => $this->getCollection()
+            callback: fn () => $this->getCollection(),
         );
 
         if ($files->isEmpty()) {
@@ -50,7 +50,7 @@ class ImportCommand extends Command implements Isolatable
             rows: collect($files->getIterator())->map(fn (string $path) => [
                 Str::limit($path),
                 Number::fileSize($this->getFileSystem()->size($path)),
-            ])->all()
+            ])->all(),
         );
 
         $user = search(
@@ -71,7 +71,7 @@ class ImportCommand extends Command implements Isolatable
                 $progress->label("Importing {$path}");
 
                 return ImportVideo::dispatch($user, $this->option('disk'), $path);
-            }
+            },
         );
     }
 

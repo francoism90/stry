@@ -44,7 +44,7 @@ class ClearCommand extends Command implements Isolatable
 
         spin(
             message: 'Detaching videos of group...',
-            callback: fn () => $group->videos()->detach()
+            callback: fn () => $group->videos()->detach(),
         );
     }
 }

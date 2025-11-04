@@ -40,7 +40,7 @@ trait InteractsWithRelated
         $this
             ->getRelates()
             ->filter(fn (Model $model) => ! $items->contains(fn (array $item) => $item['model_type'] === $model->getMorphClass() &&
-                $item['model_id'] === $model->getKey()
+                $item['model_id'] === $model->getKey(),
             ))
             ->each(fn (Model $model) => $this->detachRelated($model));
 
@@ -88,7 +88,7 @@ trait InteractsWithRelated
     protected function relates(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getRelates()
+            get: fn () => $this->getRelates(),
         )->shouldCache();
     }
 }

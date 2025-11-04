@@ -24,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
             return ucfirst(Str::camel(str_replace(
                 [DIRECTORY_SEPARATOR, ucfirst(basename(app()->path())).'\\'],
                 ['\\', app()->getNamespace()],
-                ucfirst(Str::replaceLast('.php', '', $class))
+                ucfirst(Str::replaceLast('.php', '', $class)),
             )));
         });
     }

@@ -37,11 +37,11 @@ class VideoQueryBuilder extends Builder
         return $this
             ->whereHas('groups', fn (Builder $query) => $query
                 ->where('user_id', Auth::id())
-                ->where('type', GroupType::Viewed)
+                ->where('type', GroupType::Viewed),
             )
             ->join('groupables', fn (JoinClause $join) => $join
                 ->on('videos.id', '=', 'groupables.groupable_id')
-                ->where('groupables.groupable_type', 'video')
+                ->where('groupables.groupable_type', 'video'),
             )
             ->orderByDesc('groupables.updated_at');
     }

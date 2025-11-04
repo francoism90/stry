@@ -29,7 +29,7 @@ class ExtractVideoCaptions
             $conversion->each(fn (string $path) => $video
                 ->addMediaFromDisk($path, 'transcodes')
                 ->toMediaCollection('captions')
-                ->saveOrFail()
+                ->saveOrFail(),
             );
 
             return $next($video);
