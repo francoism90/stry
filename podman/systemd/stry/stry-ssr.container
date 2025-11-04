@@ -11,11 +11,6 @@ UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 ExposeHostPort=13714
-HealthCmd=curl -fs http://localhost:8080/up || exit 1
-HealthInterval=45s
-HealthRetries=3
-HealthStartPeriod=120s
-HealthTimeout=8s
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env

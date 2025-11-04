@@ -8,11 +8,6 @@ EnvironmentFile=%h/.config/containers/systemd/stry/config/typesense.env
 Volume=stry-typesense:/typesense-data:rw,Z,U
 Network=stry.network
 ExposeHostPort=8108
-HealthCmd=curl -fs http://localhost:8108/health || exit 1
-HealthInterval=30s
-HealthRetries=3
-HealthStartPeriod=60s
-HealthTimeout=5s
 
 [Service]
 Restart=always
