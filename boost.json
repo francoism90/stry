@@ -3,6 +3,7 @@
         "copilot"
     ],
     "editors": [
+        "phpstorm",
         "vscode"
     ],
     "guidelines": [
