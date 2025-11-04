@@ -37,7 +37,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ## Domain-Driven Design Architecture
 
-This application follows a **Domain-Driven Design (DDD)** architecture with the following layer structure:
+This application follows a **Domain-Driven Design (DDD)** architecture based on **Spatie's Laravel Beyond CRUD** principles. The architecture uses the following layer structure:
 
 ### `src/Domain` - Domain Layer
 
@@ -67,8 +67,9 @@ This application follows a **Domain-Driven Design (DDD)** architecture with the 
 ### `src/App` - Application Layer
 
 - HTTP layer containing controllers and requests
-- `Api/` - API controllers and resources (versioned)
+- `Api/` - API controllers and resources
 - `Web/` - Web controllers for Inertia.js pages
+- `Application.php` - Custom application class for framework bootstrapping
 - Application services and use cases
 - DTOs and data transformers
 - Controllers should be thin - delegate to domain actions
@@ -77,6 +78,10 @@ This application follows a **Domain-Driven Design (DDD)** architecture with the 
 
 - Service providers and framework bootstrapping
 - Core infrastructure setup
+- `Providers/` - Application service providers (e.g., `AppServiceProvider`, `FortifyServiceProvider`, `HorizonServiceProvider`, `TelescopeServiceProvider`)
+- `Http/` - HTTP kernel and middleware configuration
+- `Container/` - Container bindings and service container extensions
+- `Helpers.php` - Global helper functions
 - Examples: `AppServiceProvider`, `FortifyServiceProvider`, `HorizonServiceProvider`, `TelescopeServiceProvider`
 
 ### `src/Support` - Support Layer
@@ -84,6 +89,10 @@ This application follows a **Domain-Driven Design (DDD)** architecture with the 
 - Cross-cutting concerns and shared utilities
 - Framework extensions and custom implementations
 - Helpers that don't belong to a specific domain
+- `FFMpeg/` - Custom FFMpeg integration and video processing utilities
+- `MediaLibrary/` - Spatie Media Library extensions and customizations
+- `Inertia/` - Inertia.js framework extensions and middleware
+- `Scout/` - Laravel Scout search engine customizations
 - Examples: Custom FFMpeg, MediaLibrary, Inertia extensions
 
 ### Namespaces
@@ -126,6 +135,16 @@ All classes in `src/` follow PSR-4 autoloading with these base namespaces:
 
 - Stick to existing directory structure - don't create new base folders without approval.
 - Do not change the application's dependencies without approval.
+
+## Podman & Containerization
+
+- This application uses **Podman** with **Quadlet** (systemd integration) for containerization in both development and production environments.
+- Container configurations are stored in `containers/` directory with `Containerfile` for image builds.
+- Quadlet service files are in `podman/systemd/` for systemd-managed container orchestration.
+- The application runs in a **rootless** Podman setup for enhanced security.
+- See `docs/podman.md` for detailed setup instructions and configuration.
+- Use `bin/quadlet` helper script for common container management tasks.
+- Container runtimes (FrankenPHP, etc.) are configured in `containers/runtimes/`.
 
 ## Frontend Bundling
 
@@ -381,7 +400,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                  $response->assertSuccessful();
+                      $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -525,13 +544,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                    <div class="flex gap-8">
-                        <div>Superior</div>
-                        <div>Michigan</div>
-                        <div>Erie</div>
-                    </div>
-                </code-snippet>
+                    <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                        <div class="flex gap-8">
+                            <div>Superior</div>
+                            <div>Michigan</div>
+                            <div>Erie</div>
+                        </div>
+                    </code-snippet>
 
 ### Dark Mode
 
