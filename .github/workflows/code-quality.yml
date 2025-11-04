@@ -43,7 +43,7 @@ jobs:
               run: pnpm install --frozen-lockfile
 
             - name: Run Laravel Wayfinder
-              run: vendor/bin/artisan wayfinder:generate
+              run: php artisan wayfinder:generate
 
             - name: Run Laravel Pint
               run: vendor/bin/pint --test
