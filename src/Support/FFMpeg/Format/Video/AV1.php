@@ -50,10 +50,15 @@ class AV1 extends DefaultVideo
     public function getExtraParams()
     {
         return [
-            '-cpu-used', '4',
+            '-cpu-used', '6',
             '-row-mt', '1',
             '-tiles', '2x2',
-            '-strict', 'experimental',
+            '-crf', '32',
+            '-b:v', '0',
+            '-g', '240',
+            '-keyint_min', '120',
+            '-sc_threshold', '0',
+            '-movflags', '+faststart',
         ];
     }
 }

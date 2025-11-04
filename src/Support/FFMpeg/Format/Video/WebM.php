@@ -32,9 +32,21 @@ class WebM extends DefaultVideo
     /**
      * {@inheritDoc}
      */
-    public function getExtraParams()
+    public function getAdditionalParameters()
     {
-        return ['-f', 'webm'];
+        return [
+            '-f', 'webm',
+            '-quality', 'good',
+            '-cpu-used', '2',
+            '-crf', '31',
+            '-b:v', '0',
+            '-row-mt', '1',
+            '-tile-columns', '2',
+            '-tile-rows', '1',
+            '-g', '240',
+            '-keyint_min', '120',
+            '-sc_threshold', '0',
+        ];
     }
 
     /**
