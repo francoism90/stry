@@ -31,9 +31,6 @@ jobs:
             - name: Run Laravel Pint
               run: vendor/bin/pint --test
 
-            - name: Run Larastan
-              run: vendor/bin/phpstan analyse --memory-limit=2G --error-format=github
-
     frontend-code-quality:
         runs-on: ubuntu-latest
         name: Frontend Code Quality

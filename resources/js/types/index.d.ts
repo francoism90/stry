@@ -75,7 +75,7 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 export type Playlist = Model & {
   asset: PlayerSrc | null
   valid: boolean
-  progress: number | null
+  percent: number | null
   type: string
   accessed_at: string | null | undefined
   expires_at: string | null | undefined
