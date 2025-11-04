@@ -34,11 +34,11 @@ class ExploreController extends Controller implements HasMiddleware
         // Build the tag query with search and filtering
         $builder = Tag::search($request->safe()->input('search'))
             ->tap(new TagFilterScope($request->safe()->input('filter')))
-            ->simplePaginate(16);
+            ->simplePaginate(18);
 
         return Inertia::render('Dashboard/ExploreIndex', [
-            'filters' => fn () => TagType::options(),
-            'items' => Inertia::scroll(fn () => TagResource::collection($builder)),
+            'filters' => fn() => TagType::options(),
+            'items' => Inertia::scroll(fn() => TagResource::collection($builder)),
             $collection,
         ]);
     }
