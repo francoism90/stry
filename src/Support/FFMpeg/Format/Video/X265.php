@@ -8,6 +8,9 @@ use FFMpeg\Format\Video\X264 as DefaultVideo;
 
 class X265 extends DefaultVideo
 {
+    /** @var int */
+    private $passes = 1;
+
     public function __construct($audioCodec = 'aac', $videoCodec = 'libx265')
     {
         $this

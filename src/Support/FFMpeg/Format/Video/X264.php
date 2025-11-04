@@ -8,6 +8,9 @@ use FFMpeg\Format\Video\X264 as DefaultVideo;
 
 class X264 extends DefaultVideo
 {
+    /** @var int */
+    private $passes = 1;
+
     public function getAvailableAudioCodecs()
     {
         return ['copy', 'aac', 'libfdk_aac', 'libfaac', 'libmp3lame', 'libopus'];
