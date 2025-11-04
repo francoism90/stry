@@ -8,7 +8,7 @@ export function useServiceWorker() {
   const register = () =>
     useRegisterSW({
       immediate: true,
-      onRegisteredSW(swUrl: string, r: ServiceWorkerRegistration) {
+      onRegisteredSW(swUrl: string, r: ServiceWorkerRegistration | undefined) {
         if (r?.active?.state === 'activated') {
           activated.value = true
           registerPeriodicSync(swUrl, r)
@@ -16,7 +16,7 @@ export function useServiceWorker() {
           r.installing.addEventListener('statechange', (e) => {
             const sw = e.target as ServiceWorker
             activated.value = sw.state === 'activated'
-            if (activated.value) registerPeriodicSync(swUrl, r)
+            if (activated.value && r) registerPeriodicSync(swUrl, r)
           })
         }
       },
