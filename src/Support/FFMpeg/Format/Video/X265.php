@@ -53,7 +53,7 @@ class X265 extends DefaultVideo
             '-preset', 'medium',
             '-crf', '28',
             '-profile:v', 'main',
-            '-level', '4.2',
+            '-level', '4.1',
             '-tag:v', 'hvc1',
             '-g', '240',
             '-keyint_min', '120',
