@@ -18,22 +18,6 @@ class WebVTT extends DefaultVideo
     /**
      * {@inheritDoc}
      */
-    public function supportBFrames()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtraParams()
-    {
-        return ['-f', 'webvtt'];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getAvailableAudioCodecs()
     {
         return ['copy'];
@@ -45,5 +29,21 @@ class WebVTT extends DefaultVideo
     public function getAvailableVideoCodecs()
     {
         return ['copy'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supportBFrames()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExtraParams()
+    {
+        return ['-f', 'webvtt'];
     }
 }

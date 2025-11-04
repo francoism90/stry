@@ -46,7 +46,7 @@ class X264 extends DefaultVideo
             '-preset', 'veryfast',
             '-crf', '23',
             '-profile:v', 'high',
-            '-level', '4.2',
+            '-level', '4.1',
             '-g', '240',
             '-keyint_min', '120',
             '-sc_threshold', '0',

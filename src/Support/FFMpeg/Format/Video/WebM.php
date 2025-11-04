@@ -32,7 +32,15 @@ class WebM extends DefaultVideo
     /**
      * {@inheritDoc}
      */
-    public function getAdditionalParameters()
+    public function getModulus()
+    {
+        return 2;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExtraParams()
     {
         return [
             '-f', 'webm',
@@ -47,13 +55,5 @@ class WebM extends DefaultVideo
             '-keyint_min', '120',
             '-sc_threshold', '0',
         ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getModulus()
-    {
-        return 2;
     }
 }
