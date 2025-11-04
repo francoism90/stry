@@ -1,19 +1,23 @@
 [Unit]
-Description=Server-side Rendering (SSR) container
+Description=Queue container
 After=stry.container
 Requires=stry.container
 
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=CONTAINER_ROLE=ssr
-LogDriver=none
+Environment=CONTAINER_ROLE=horizon
+ShmSize=2g
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
-ExposeHostPort=13714
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
-TimeoutStartSec=180
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target

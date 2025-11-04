@@ -1,19 +1,24 @@
 [Unit]
-Description=Schedule container
+Description=Reverb container
 After=stry.container
 Requires=stry.container
 
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=CONTAINER_ROLE=scheduler
-LogDriver=none
-AddDevice=/dev/dri/:/dev/dri/
+Environment=CONTAINER_ROLE=reverb
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
+Network=proxy.network
+ExposeHostPort=6001
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
+RestartSec=5
 TimeoutStartSec=300
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target

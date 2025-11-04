@@ -7,8 +7,6 @@ Wants=stry-mailpit.container stry-reverb.container stry-queue.container stry-sch
 [Container]
 Image=stry.build
 AutoUpdate=local
-LogDriver=none
-AddDevice=/dev/dri/:/dev/dri/
 UserNS=keep-id
 Volume=${DATA_PATH}:/data:rw,z,U
 Network=stry.network
@@ -19,4 +17,9 @@ ExposeHostPort=5173
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
+RestartSec=5
 TimeoutStartSec=300
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target

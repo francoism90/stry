@@ -4,7 +4,6 @@ Description=Garage container
 [Container]
 Image=docker.io/dxflrs/garage:v2.1.0
 AutoUpdate=registry
-LogDriver=none
 Volume=%h/.config/containers/systemd/stry/config/garage.toml:/etc/garage.toml:rw,Z,U
 Volume=stry-garage-meta:/var/lib/garage/meta:rw,Z,U
 Volume=stry-garage-data:/var/lib/garage/data:rw,Z,U
@@ -17,4 +16,9 @@ ExposeHostPort=3903
 
 [Service]
 Restart=always
+RestartSec=5
 TimeoutStartSec=180
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target default.target

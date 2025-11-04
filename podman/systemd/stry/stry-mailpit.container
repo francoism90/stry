@@ -8,7 +8,6 @@ Environment=MP_MAX_MESSAGES=5000
 Environment=MP_DATA_FILE=/data/mailpit.db
 Environment=MP_SMTP_AUTH_ACCEPT_ANY=1
 Environment=MP_SMTP_AUTH_ALLOW_INSECURE=1
-LogDriver=none
 Volume=stry-mailpit:/data:rw,Z,U
 Network=stry.network
 Network=proxy.network
@@ -17,4 +16,9 @@ ExposeHostPort=8025
 
 [Service]
 Restart=always
+RestartSec=5
 TimeoutStartSec=90
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target default.target
