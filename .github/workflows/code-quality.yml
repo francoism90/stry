@@ -63,4 +63,4 @@ jobs:
               run: pnpm run type-check
 
             - name: Check Prettier formatting
-              run: pnpm run format -- --check
+              run: pnpm run format --check
