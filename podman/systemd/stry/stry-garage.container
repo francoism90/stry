@@ -13,11 +13,6 @@ ExposeHostPort=3900
 ExposeHostPort=3901
 ExposeHostPort=3902
 ExposeHostPort=3903
-HealthCmd=curl -fs http://localhost:3903/health || exit 1
-HealthInterval=45s
-HealthRetries=3
-HealthStartPeriod=120s
-HealthTimeout=8s
 
 [Service]
 Restart=always

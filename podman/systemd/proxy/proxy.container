@@ -12,11 +12,6 @@ Network=proxy.network
 PublishPort=80:80
 PublishPort=443:443
 PublishPort=443:443/udp
-HealthCmd=wget --no-verbose --tries=1 --spider http://localhost:2019/metrics || exit 1
-HealthInterval=30s
-HealthRetries=3
-HealthStartPeriod=30s
-HealthTimeout=5s
 
 [Service]
 Restart=always
