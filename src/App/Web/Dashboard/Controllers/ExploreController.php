@@ -37,8 +37,8 @@ class ExploreController extends Controller implements HasMiddleware
             ->simplePaginate(18);
 
         return Inertia::render('Dashboard/ExploreIndex', [
-            'filters' => fn() => TagType::options(),
-            'items' => Inertia::scroll(fn() => TagResource::collection($builder)),
+            'filters' => fn () => TagType::options(),
+            'items' => Inertia::scroll(fn () => TagResource::collection($builder)),
             $collection,
         ]);
     }

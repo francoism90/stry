@@ -37,8 +37,8 @@ class LibraryController extends Controller implements HasMiddleware
             ->simplePaginate(18);
 
         return Inertia::render('Dashboard/LibraryIndex', [
-            'filters' => fn() => VideoList::options(),
-            'items' => Inertia::scroll(fn() => VideoResource::collection($builder)),
+            'filters' => fn () => VideoList::options(),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
             $collection,
         ]);
     }
