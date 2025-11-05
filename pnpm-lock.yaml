@@ -12,8 +12,8 @@ importers:
         specifier: ^2.2.15
         version: 2.2.15(vue@3.5.22(typescript@5.9.3))
       '@laravel/echo-vue':
-        specifier: ^2.2.4
-        version: 2.2.4(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.22(typescript@5.9.3))
+        specifier: ^2.2.6
+        version: 2.2.6(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.22(typescript@5.9.3))
       '@laravel/vite-plugin-wayfinder':
         specifier: ^0.1.7
         version: 0.1.7
@@ -1158,8 +1158,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@laravel/echo-vue@2.2.4':
-    resolution: {integrity: sha512-RAl7pL+KV+do/wv2TNNCwOSy9C7UqdBYJU0CV9VhnguEje6t551yqRLYD5ZM+e1bCH1UjO5bJWtx4r89qNj/Dg==}
+  '@laravel/echo-vue@2.2.6':
+    resolution: {integrity: sha512-nznzN1BYVYR+DQ/JLHvl4qKLioBhzQjGsscWeXKLLDNUgOkbZNpx8/tF+ycUtzEPB4fR88BNqBMXs5P60TvBrA==}
     engines: {node: '>=20'}
     peerDependencies:
       pusher-js: '*'
@@ -5902,7 +5902,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@laravel/echo-vue@2.2.4(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.22(typescript@5.9.3))':
+  '@laravel/echo-vue@2.2.6(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       pusher-js: 8.4.0
       socket.io-client: 4.8.1

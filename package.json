@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.2.15",
-        "@laravel/echo-vue": "^2.2.4",
+        "@laravel/echo-vue": "^2.2.6",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@nuxt/ui": "^4.1.0",
         "@tailwindcss/vite": "^4.1.16",
