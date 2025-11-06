@@ -5,13 +5,13 @@ declare(strict_types=1);
 return [
 
     'ffmpeg' => [
-        'binaries' => env('FFMPEG_PATH', 'ffmpeg'),
+        'binaries' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
 
         'threads' => 0,
     ],
 
     'ffprobe' => [
-        'binaries' => env('FFPROBE_PATH', 'ffprobe'),
+        'binaries' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
     ],
 
     'timeout' => 60 * 60 * 4, // 4 hours

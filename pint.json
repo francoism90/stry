@@ -9,13 +9,6 @@
             "statements": ["return", "throw", "try"]
         },
         "method_chaining_indentation": true,
-        "no_empty_phpdoc": true,
-        "phpdoc_separation": true,
-        "phpdoc_summary": true,
-        "phpdoc_trim": true,
-        "single_quote": true,
-        "trailing_comma_in_multiline": {
-            "elements": ["arrays", "arguments", "parameters"]
-        }
+        "single_quote": true
     }
 }

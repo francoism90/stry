@@ -191,14 +191,14 @@ return [
      * thumbnails and have installed the php-ffmpeg/php-ffmpeg composer
      * dependency.
      */
-    'ffmpeg_path' => env('FFMPEG_PATH', 'ffmpeg'),
-    'ffprobe_path' => env('FFPROBE_PATH', 'ffprobe'),
+    'ffmpeg_path' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
+    'ffprobe_path' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
 
     /*
      * The timeout (in seconds) that will be used when generating video
      * thumbnails via FFMPEG.
      */
-    'ffmpeg_timeout' => env('FFMPEG_TIMEOUT', 600),
+    'ffmpeg_timeout' => env('FFMPEG_TIMEOUT', 900),
 
     /*
      * The number of threads that FFMPEG should use. 0 means that FFMPEG
