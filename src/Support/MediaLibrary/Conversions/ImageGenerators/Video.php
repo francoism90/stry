@@ -16,6 +16,7 @@ class Video extends ImageGenerator
 {
     public function convert(string $file, ?Conversion $conversion = null): ?string
     {
+        // Create an FFMpeg instance
         $ffmpeg = FFMpeg::create([
             'ffmpeg.binaries' => config('media-library.ffmpeg_path'),
             'ffprobe.binaries' => config('media-library.ffprobe_path'),
@@ -41,8 +42,10 @@ class Video extends ImageGenerator
         // Clamp the seconds to be within the video duration
         $quantity = Number::clamp($seconds, 0, $duration);
 
-        $imageFile = pathinfo($file, PATHINFO_DIRNAME).'/'.pathinfo($file, PATHINFO_FILENAME).'.jpg';
+        // Define the output image file path
+        $imageFile = pathinfo($file, PATHINFO_DIRNAME) . '/' . pathinfo($file, PATHINFO_FILENAME) . '.jpg';
 
+        // Extract the frame at the specified time and save it as an image
         $frame = $video->frame(TimeCode::fromSeconds($quantity));
         $frame->save($imageFile);
 
