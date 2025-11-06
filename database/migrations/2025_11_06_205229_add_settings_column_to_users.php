@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->jsonb('settings')->nullable()->after('remember_token');
+            $table->jsonb('settings')->nullable()->before('state');
         });
     }
 
