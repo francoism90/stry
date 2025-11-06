@@ -59,7 +59,7 @@
         "prettier": "3.6.2",
         "prettier-plugin-tailwindcss": "^0.7.1",
         "typescript": "^5.9.3",
-        "vite": "^7.1.12",
+        "vite": "^7.2.1",
         "vite-plugin-pwa": "^1.1.0",
         "vite-plugin-vue-devtools": "^8.0.3",
         "vitest": "^4.0.7",
