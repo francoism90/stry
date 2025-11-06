@@ -43,7 +43,7 @@ class Video extends ImageGenerator
         $quantity = Number::clamp($seconds, 0, $duration);
 
         // Define the output image file path
-        $imageFile = pathinfo($file, PATHINFO_DIRNAME) . '/' . pathinfo($file, PATHINFO_FILENAME) . '.jpg';
+        $imageFile = pathinfo($file, PATHINFO_DIRNAME).'/'.pathinfo($file, PATHINFO_FILENAME).'.jpg';
 
         // Extract the frame at the specified time and save it as an image
         $frame = $video->frame(TimeCode::fromSeconds($quantity));
