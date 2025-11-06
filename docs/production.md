@@ -62,6 +62,37 @@ Follow the [Proxy Setup](proxy.md) guide for detailed configuration.
 
 ---
 
+## ⚡ Performance Optimization
+
+### Reduce Container Logging Overhead
+
+For production deployments, consider disabling Podman container logging to prevent performance degradation:
+
+Add `LogDriver=none` to your container files in `~/.config/containers/systemd/stry/*.container`:
+
+```ini
+[Container]
+LogDriver=none
+```
+
+> [!TIP]
+> **Benefits of `LogDriver=none`:**
+>
+> - ✅ Eliminates disk I/O overhead from container logs
+> - ✅ Prevents log files from consuming disk space
+> - ✅ Reduces CPU usage from logging operations
+> - ✅ Improves overall container performance
+>
+> **Trade-offs:**
+>
+> - ⚠️ Container logs won't be available via `journalctl` or `podman logs`
+> - ⚠️ Application logs remain accessible via Laravel's logging system
+> - ⚠️ Use Laravel Telescope/Horizon for monitoring instead
+
+If you need selective logging, apply `LogDriver=none` only to high-throughput containers (e.g., `stry-queue.container`, `stry-reverb.container`) while keeping logs enabled for critical services.
+
+---
+
 ## 📊 Next Steps
 
 After installation:

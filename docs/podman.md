@@ -124,6 +124,27 @@ Primary application & services expose:
 
 Ensure these are free on the host or adjust the `ExposeHostPort` lines in the respective container unit files.
 
+### Container Logging Configuration
+
+**For production deployments**, consider disabling container logging to reduce overhead:
+
+Add `LogDriver=none` to your container files (e.g., `~/.config/containers/systemd/stry/stry.container`):
+
+```ini
+[Container]
+LogDriver=none
+```
+
+> [!NOTE]
+> **Performance Impact:**
+>
+> - ✅ Reduces disk I/O and CPU overhead from logging
+> - ✅ Prevents log files from consuming disk space
+> - ⚠️ Container logs won't be available via `journalctl` or `podman logs`
+> - ℹ️ Application logs remain accessible through Laravel's logging system
+>
+> For development, keep logging enabled. For production, selectively disable it on high-throughput containers (queue workers, websockets) or all containers if using centralized application logging.
+
 ### Rebuilding vs Restarting
 
 Restarting a container (`systemctl --user restart stry`) does not rebuild the image. Rebuild when dependencies, PHP extensions, or application code (without an `/app` bind) change:
