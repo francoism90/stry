@@ -17,20 +17,22 @@ readonly class CollectionProperties implements ProvidesInertiaProperties
         #[CurrentUser] protected ?User $user = null,
         #[QueryParameter('filter')] protected ?string $filter = null,
         #[QueryParameter('search')] protected ?string $search = null,
-        #[QueryParameter('grid')] protected ?string $grid = null,
+        #[QueryParameter('view')] protected ?string $view = null,
     ) {}
 
     public function toInertiaProperties(RenderContext $context): array
     {
-        $grid = UserSettings::fromModel($this->user)->include('general')->toArray();
-
-        dd($grid);
-
-
         return [
             'filter' => fn () => $this->filter,
             'search' => fn () => $this->search,
-            'grid' => fn () => $this->grid,
+            'view' => fn () => $this->getViewValue(),
         ];
+    }
+
+    protected function getViewValue(): ?string
+    {
+        return $this->user && blank($this->view)
+            ? UserSettings::fromModel($this->user)->appearance->default_view
+            : $this->view;
     }
 }

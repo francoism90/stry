@@ -10,6 +10,6 @@ class UserAppearanceSettings extends Data
 {
     public function __construct(
         public string $theme = 'dark',
-        public bool $grid_view = true,
+        public string $default_view = 'vertical',
     ) {}
 }

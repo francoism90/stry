@@ -3,27 +3,19 @@ import { useCollection } from '@/composables/collection'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
-interface Props {
-  defaultFilter?: string | null
-  defaultSearch?: string | null
-  defaultGrid?: boolean | undefined
-}
-
-const props = defineProps<Props>()
-
-const { filter, search, filters, grid } = useCollection()
+const { filter, search, filters, view } = useCollection()
 
 const form = useForm('get', '', {
-  filter: filter.value || props.defaultFilter,
-  search: search.value || props.defaultSearch,
-  grid: grid.value || props.defaultGrid,
+  filter: filter.value,
+  search: search.value,
+  view: view.value,
 })
 
 const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'filter', 'search', 'grid'],
+    only: ['items', 'filter', 'search', 'view'],
     reset: ['items'],
   })
 }
@@ -55,15 +47,6 @@ watchDebounced(
       </template>
 
       <template #right>
-        <USwitch
-          v-model="form.grid"
-          default-value
-          label="Grid View"
-          size="xs"
-          class="hidden sm:flex"
-          @update:modelValue="onSubmit"
-        />
-
         <UInput
           v-model="form.search"
           class="w-52 sm:w-64"
