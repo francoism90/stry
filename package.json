@@ -33,7 +33,7 @@
         "pusher-js": "^8.4.0",
         "tailwindcss": "^4.1.16",
         "vidstack": "^1.12.13",
-        "vue": "^3.5.22"
+        "vue": "^3.5.23"
     },
     "devDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
