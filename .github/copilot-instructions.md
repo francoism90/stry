@@ -199,7 +199,7 @@ All classes in `src/` follow PSR-4 autoloading with these base namespaces:
 2. Multiple Words (AND Logic) - query=rate limit - finds knowledge containing both "rate" AND "limit"
 3. Quoted Phrases (Exact Position) - query="infinite scroll" - Words must be adjacent and in that order
 4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit"
-5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms
+5. Multiple Queries - `queries=["authentication", "middleware"]` - ANY of these terms
 
 === php rules ===
 
@@ -437,7 +437,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                              $response->assertSuccessful();
+                                $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -536,7 +536,7 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 <Form
     action="/users"
     method="post"
-    #default="{
+    v-slot="{
         errors,
         hasErrors,
         processing,
@@ -568,6 +568,21 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 </code-snippet>
 
+=== wayfinder/core rules ===
+
+## Laravel Wayfinder
+
+- Prefer Wayfinder action helpers (for example `store()`, `update(1)`) over hard-coded paths so HTTP methods and URLs stay in sync with controllers.
+- Use `search-docs` before introducing new Wayfinder patterns to ensure alignment with the package guidance.
+- Pass Wayfinder results directly to Inertia helpers such as `<Form>`, `<Link>`, or `router.visit()` rather than manually wiring method/URL pairs.
+- Keep imports consistent with existing aliases (for example `@/actions/...`) to benefit from generated TypeScript definitions.
+
+### Testing
+
+- Add focused tests when introducing new Wayfinder actions to ensure the underlying routes exist and respond with the expected status codes.
+- Cover both successful and failure scenarios so Wayfinder-generated calls surface authorization or validation issues early.
+- When updating HTTP verbs or route parameters, update any tests exercising the corresponding Wayfinder helper to prevent regressions.
+
 === tailwindcss/core rules ===
 
 ## Tailwind Core
@@ -581,13 +596,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                            <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                                <div class="flex gap-8">
-                                    <div>Superior</div>
-                                    <div>Michigan</div>
-                                    <div>Erie</div>
-                                </div>
-                            </code-snippet>
+                              <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                                  <div class="flex gap-8">
+                                      <div>Superior</div>
+                                      <div>Michigan</div>
+                                      <div>Erie</div>
+                                  </div>
+                              </code-snippet>
 
 ### Dark Mode
 

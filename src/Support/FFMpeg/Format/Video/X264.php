@@ -46,15 +46,12 @@ class X264 extends DefaultVideo
     public function getExtraParams()
     {
         return [
-            '-preset', 'veryfast',
-            '-crf', '23',
-            '-profile:v', 'high',
-            '-level', '4.1',
-            '-g', '240',
-            '-keyint_min', '120',
-            '-sc_threshold', '0',
-            '-movflags', '+faststart',
-            '-pix_fmt', 'yuv420p',
+            '-preset',
+            'veryfast',
+            '-sc_threshold',
+            '0',
+            '-pix_fmt',
+            'yuv420p',
         ];
     }
 }

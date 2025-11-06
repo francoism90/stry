@@ -53,17 +53,20 @@ class X265 extends DefaultVideo
     public function getExtraParams()
     {
         return [
-            '-preset', 'medium',
-            '-crf', '28',
-            '-profile:v', 'main',
-            '-level', '4.1',
-            '-tag:v', 'hvc1',
-            '-g', '240',
-            '-keyint_min', '120',
-            '-sc_threshold', '0',
-            '-movflags', '+faststart',
-            '-pix_fmt', 'yuv420p',
-            '-x265-params', 'log-level=error',
+            '-preset',
+            'medium',
+            '-crf',
+            '23',
+            '-profile:v',
+            'main',
+            '-tag:v',
+            'hvc1',
+            '-sc_threshold',
+            '0',
+            '-pix_fmt',
+            'yuv420p',
+            '-x265-params',
+            'log-level=error',
         ];
     }
 }

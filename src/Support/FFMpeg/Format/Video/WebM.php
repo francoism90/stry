@@ -43,17 +43,26 @@ class WebM extends DefaultVideo
     public function getExtraParams()
     {
         return [
-            '-f', 'webm',
-            '-quality', 'good',
-            '-cpu-used', '2',
-            '-crf', '31',
-            '-b:v', '0',
-            '-row-mt', '1',
-            '-tile-columns', '2',
-            '-tile-rows', '1',
-            '-g', '240',
-            '-keyint_min', '120',
-            '-sc_threshold', '0',
+            '-f',
+            'webm',
+            '-quality',
+            'good',
+            '-cpu-used',
+            '2',
+            '-crf',
+            '28',
+            '-b:v',
+            '0',
+            '-row-mt',
+            '1',
+            '-tile-columns',
+            '2',
+            '-tile-rows',
+            '1',
+            '-sc_threshold',
+            '0',
+            '-pix_fmt',
+            'yuv420p',
         ];
     }
 }
