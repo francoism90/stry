@@ -31,7 +31,7 @@ class Video extends ImageGenerator
         }
 
         // Get the duration of the video in seconds
-        $duration = $ffmpeg->getFFProbe()->format($file)->get('duration');
+        $duration = (float) $ffmpeg->getFFProbe()->format($file)->get('duration');
 
         // Determine at which second to extract the frame
         $seconds = $conversion ? $conversion->getExtractVideoFrameAtSecond() : 0;
