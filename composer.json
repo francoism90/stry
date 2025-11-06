@@ -31,6 +31,7 @@
         "league/flysystem-aws-s3-v3": "^3.30.1",
         "pbmedia/laravel-ffmpeg": "^8.7.1",
         "pusher/pusher-php-server": "^7.2.7",
+        "spatie/laravel-data": "^4.18",
         "spatie/laravel-google-fonts": "^1.4.4",
         "spatie/laravel-medialibrary": "^11.17.3",
         "spatie/laravel-model-states": "^2.12.1",
