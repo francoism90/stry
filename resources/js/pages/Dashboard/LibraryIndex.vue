@@ -20,7 +20,10 @@ defineProps<Props>()
 
   <UPage>
     <UPageBody>
-      <DashboardToolbar default-filter="watching" />
+      <DashboardToolbar
+        default-filter="watching"
+        :hide-search="true"
+      />
 
       <UContainer class="py-4">
         <InfiniteScroll

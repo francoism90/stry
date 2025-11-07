@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Requests;
+namespace App\Api\Users\Requests;
 
 use Domain\Users\Enums\LibraryFilter;
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,9 +22,6 @@ class LibraryIndexRequest extends FormRequest
     {
         return [
             'filter' => ['sometimes', 'nullable', 'string', Rule::enum(LibraryFilter::class)],
-            'search' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'tags' => ['sometimes', 'nullable', 'array', 'max:5'],
-            'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],
             'view' => ['sometimes', 'nullable', 'string', 'in:vertical,horizontal'],
         ];
     }
