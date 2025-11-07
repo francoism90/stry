@@ -85,6 +85,7 @@ RUN chown -R docker:docker /app
 USER docker
 
 RUN ${ARTISAN} optimize && ${ARTISAN} storage:link
+RUN ${ARTISAN} data:cache-structures
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 

@@ -108,7 +108,7 @@ return [
      */
     'structure_caching' => [
         'enabled' => true,
-        'directories' => [base_path('src/Domain')],
+        'directories' => [base_path('src')],
         'cache' => [
             'store' => env('CACHE_STORE', env('CACHE_DRIVER', 'file')),
             'prefix' => 'laravel-data',
@@ -116,7 +116,7 @@ return [
         ],
         'reflection_discovery' => [
             'enabled' => true,
-            'base_path' => base_path(),
+            'base_path' => base_path('src'),
             'root_namespace' => null,
         ],
     ],
