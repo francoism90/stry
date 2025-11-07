@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -13,8 +13,8 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <UApp>
-    <UMain>
+    <UContainer class="flex h-dvh max-h-dvh items-center justify-center">
       <slot />
-    </UMain>
+    </UContainer>
   </UApp>
 </template>

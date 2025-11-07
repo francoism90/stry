@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import AuthLayout from '@/layouts/MinimalLayout.vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
-
-defineOptions({
-  layout: AuthLayout,
-})
 
 const props = defineProps<{
   action: string

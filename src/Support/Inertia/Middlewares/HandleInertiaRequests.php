@@ -14,13 +14,6 @@ class HandleInertiaRequests extends Middleware
     use Conditionable;
 
     /**
-     * @see https://inertiajs.com/server-side-setup#root-template
-     *
-     * @var string
-     */
-    protected $rootView = 'layouts/app';
-
-    /**
      * @see https://inertiajs.com/shared-data
      *
      * @return array<string, mixed>

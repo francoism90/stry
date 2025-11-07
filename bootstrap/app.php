@@ -8,6 +8,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Support\Inertia\Middlewares\HandleInertiaRequests;
+use Symfony\Component\HttpFoundation\Response;
+use Inertia\Inertia;
 
 $basePath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
 
@@ -52,8 +54,19 @@ $app = Application::configure(basePath: $basePath)
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // $exceptions->dontReport([]);
-        // $exceptions->render(fn (InvalidModel $e) => abort(404));
+        $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+            if (! app()->environment(['local', 'testing']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {
+                return Inertia::render('Errors/ApplicationError', ['status' => $response->getStatusCode()])
+                    ->toResponse($request)
+                    ->setStatusCode($response->getStatusCode());
+            } elseif ($response->getStatusCode() === 419) {
+                return back()->with([
+                    'message' => 'The page expired, please try again.',
+                ]);
+            }
+
+            return $response;
+        });
     })
     ->withEvents(discover: [
         base_path('src/Domain/*/Listeners'),
