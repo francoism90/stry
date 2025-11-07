@@ -23,8 +23,8 @@ class UserSettings extends Data
         $settings = $user->settings;
 
         return new self(
-            Lazy::create(fn() => UserGeneralSettings::from($settings->general?->toArray())),
-            Lazy::create(fn() => UserAppearanceSettings::from($settings->appearance?->toArray())),
+            Lazy::create(fn () => UserGeneralSettings::from($settings->general?->toArray())),
+            Lazy::create(fn () => UserAppearanceSettings::from($settings->appearance?->toArray())),
         );
     }
 }

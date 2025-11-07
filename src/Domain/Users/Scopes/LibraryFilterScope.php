@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Users\Scopes;
 
-use ArrayAccess;
-use Domain\Tags\Models\Tag;
 use Domain\Users\Enums\LibraryFilter;
-use Domain\Videos\Enums\VideoList;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
 class LibraryFilterScope

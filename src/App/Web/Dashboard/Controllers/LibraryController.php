@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Web\Dashboard\Controllers;
 
 use App\Api\Users\Requests\LibraryIndexRequest;
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Shared\Responses\CollectionProperties;
 use Domain\Users\Enums\LibraryFilter;
 use Domain\Users\Scopes\LibraryFilterScope;
-use Domain\Videos\Enums\VideoList;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoListScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
