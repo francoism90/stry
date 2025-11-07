@@ -44,7 +44,6 @@ const onSubmit = async () => {
   >
     <UFormField
       label="Name"
-      name="name"
       required
       :error="form.errors.name"
     >
@@ -72,7 +71,6 @@ const onSubmit = async () => {
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <UFormField
         label="Type"
-        name="type"
         required
         :error="form.errors.type"
       >
@@ -86,7 +84,6 @@ const onSubmit = async () => {
 
       <UFormField
         label="Related"
-        name="related"
         :error="form.errors.related"
       >
         <USelectMenu
@@ -112,7 +109,6 @@ const onSubmit = async () => {
 
     <UFormField
       label="Description"
-      name="description"
       :error="form.errors.description"
     >
       <UTextarea
