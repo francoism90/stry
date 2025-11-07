@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AuthLayout from '@/layouts/AuthLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
@@ -6,6 +7,8 @@ import { computed, ref } from 'vue'
 interface Props {
   status: number
 }
+
+defineOptions({ layout: AuthLayout })
 
 const props = defineProps<Props>()
 
