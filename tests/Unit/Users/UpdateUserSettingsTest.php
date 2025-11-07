@@ -20,7 +20,7 @@ it('merges user settings and persists the changes', function (): void {
             ],
             'appearance' => [
                 'theme' => 'dark',
-                'grid_view' => true,
+                'default_view' => 'vertical',
             ],
         ],
     ]);
@@ -50,5 +50,5 @@ it('merges user settings and persists the changes', function (): void {
         ->toBeInstanceOf(UserAppearanceSettings::class);
 
     expect($settings->appearance->theme)->toBe('light');
-    expect($settings->appearance->grid_view)->toBeTrue();
+    expect($settings->appearance->default_view)->toBe('vertical');
 });
