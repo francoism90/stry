@@ -50,8 +50,9 @@ watchDebounced(
         <USelect
           v-if="filters?.length"
           v-model="form.filter"
-          value-key="value"
           :items="filters"
+          value-key="value"
+          default-value="recommended"
           placeholder="Filter by"
           variant="soft"
           class="w-32 sm:w-36"
