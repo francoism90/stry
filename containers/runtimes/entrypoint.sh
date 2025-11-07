@@ -16,6 +16,12 @@ if [ "${CONTAINER_ENV}" = "development" ]; then
     OCTANE="${OCTANE} --watch"
 fi
 
+# Set up SQLite database
+if [ ! -f "database/database.sqlite" ]; then
+    log "INFO" "Creating SQLite database..."
+    touch database/database.sqlite
+fi
+
 # Install PHP dependencies via Composer
 if [ ! -d "vendor" ]; then
     log "INFO" "Installing PHP dependencies..."
@@ -35,13 +41,22 @@ if [ ! -f ".env" ]; then
     ${ARTISAN} key:generate
 fi
 
-# Set up SQLite database
-if [ ! -f "database/database.sqlite" ]; then
-    log "INFO" "Creating SQLite database..."
-    touch database/database.sqlite
+# Set up application
+if [ "${CONTAINER_ENV}" = "production" ]; then
+    # Optimize application
+    log "INFO" "Optimizing application..."
+    ${ARTISAN} optimize
+
+    # Link storage
+    log "INFO" "Linking storage..."
+    ${ARTISAN} storage:link
+
+    # Cache configurations
+    log "INFO" "Caching configurations..."
+    ${ARTISAN} data:cache-structures
 fi
 
-# Set up application
+# Perform role-specific setup
 if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     # Ensure database is up to date
     log "INFO" "Running any pending migrations..."
@@ -50,6 +65,10 @@ if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     # Ensure assets are fetched
     log "INFO" "Fetching Google Fonts..."
     ${ARTISAN} google-fonts:fetch
+
+    # Cache views
+    log "INFO" "Caching views..."
+    ${ARTISAN} view:cache
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
