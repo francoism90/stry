@@ -63,11 +63,11 @@ watchDebounced(
       <template #right>
         <URadioGroup
           v-model="form.view"
+          :items="views"
           orientation="horizontal"
           variant="list"
           default-value="vertical"
           class="max-lg:hidden"
-          :items="views"
           @update:modelValue="onSubmit"
         />
 
