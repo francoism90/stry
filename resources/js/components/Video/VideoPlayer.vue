@@ -50,7 +50,7 @@ onBeforeUnmount(() => listener())
 </script>
 
 <template>
-  <div class="w-full bg-transparent">
+  <div class="w-full">
     <UEmpty
       v-if="!state"
       title="Preparing your video..."
@@ -61,11 +61,11 @@ onBeforeUnmount(() => listener())
 
     <media-player
       ref="player"
+      v-show="state"
       .src="state?.asset || undefined"
       .autoPlay="true"
       .playsInline="true"
       crossOrigin="anonymous"
-      class="rounded-xl"
     >
       <media-video-layout />
       <media-provider>
