@@ -11,6 +11,9 @@ const props = defineProps<{
   defaultFilter?: string
   defaultSearch?: string
   defaultView?: string
+  hideFilter?: boolean
+  hideSearch?: boolean
+  hideView?: boolean
 }>()
 
 const form = useForm('get', '', {
@@ -54,7 +57,7 @@ watchDebounced(
     <UDashboardToolbar>
       <template #left>
         <USelect
-          v-if="filters?.length"
+          v-if="filters.length && !hideFilter"
           v-model="form.filter"
           :items="filters"
           :default-value="defaultFilter || 'recommended'"
@@ -68,6 +71,7 @@ watchDebounced(
 
       <template #right>
         <URadioGroup
+          v-if="!hideView"
           v-model="form.view"
           :items="views"
           :default-value="defaultView || 'vertical'"
@@ -80,6 +84,7 @@ watchDebounced(
         />
 
         <UInput
+          v-if="!hideSearch"
           v-model="form.search"
           class="w-52 sm:w-64"
           placeholder="Search..."
