@@ -21,28 +21,24 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <UCard
-    variant="soft"
-    class="w-full"
+  <UPageCard
+    title="Login"
+    description="Enter your credentials to access your account."
+    class="sm:min-w-md"
   >
-    <template #header>
-      <h2 class="text-md font-semibold">Login to your account</h2>
-    </template>
-
     <UForm
       :state="form"
       @submit="onSubmit"
-      class="flex flex-col gap-6"
+      class="flex flex-col gap-4"
     >
       <UFormField
         label="Your Email"
-        name="email"
         required
         :error="form.errors.email"
       >
         <UInput
           v-model="form.email"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
+          :model-modifiers="{ string: true, trim: true }"
           type="email"
           required
           autofocus
@@ -54,14 +50,12 @@ const onSubmit = async () => {
 
       <UFormField
         label="Your Password"
-        name="password"
         required
         :error="form.errors.password"
       >
         <UInput
           v-model="form.password"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
-          id="password"
+          :model-modifiers="{ string: true, trim: true }"
           type="password"
           required
           autocomplete="current-password"
@@ -85,13 +79,12 @@ const onSubmit = async () => {
 
       <UButton
         type="submit"
+        label="Continue"
         color="primary"
-        class="w-fit"
+        class="justify-center"
         variant="solid"
         loading-auto
-      >
-        Submit
-      </UButton>
+      />
     </UForm>
-  </UCard>
+  </UPageCard>
 </template>

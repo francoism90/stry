@@ -13,15 +13,15 @@ const actions = ref(<ButtonProps[]>[
   {
     icon: 'i-lucide-refresh-cw',
     label: 'Refresh',
-    color: 'neutral',
     variant: 'subtle',
+    size: 'md',
     onClick: () => router.reload(),
   },
   {
     icon: 'i-lucide-house',
     label: 'Home',
-    color: 'neutral',
     variant: 'subtle',
+    size: 'md',
     to: '/',
   },
 ])
