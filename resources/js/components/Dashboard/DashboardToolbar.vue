@@ -86,7 +86,7 @@ watchDebounced(
         <UInput
           v-if="!hideSearch"
           v-model="form.search"
-          class="w-52 sm:w-64"
+          class="w-52 sm:w-64 md:w-72"
           placeholder="Search..."
         />
       </template>
