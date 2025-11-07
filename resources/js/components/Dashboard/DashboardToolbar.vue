@@ -7,10 +7,16 @@ import { ref } from 'vue'
 
 const { filter, search, filters, view } = useCollection()
 
+const props = defineProps<{
+  defaultFilter?: string
+  defaultSearch?: string
+  defaultView?: string
+}>()
+
 const form = useForm('get', '', {
-  filter: filter.value,
-  search: search.value,
-  view: view.value,
+  filter: filter.value || props.defaultFilter,
+  search: search.value || props.defaultSearch,
+  view: view.value || props.defaultView,
 })
 
 const views = ref<RadioGroupItem[]>([
@@ -51,8 +57,8 @@ watchDebounced(
           v-if="filters?.length"
           v-model="form.filter"
           :items="filters"
+          :default-value="defaultFilter || 'recommended'"
           value-key="value"
-          default-value="recommended"
           placeholder="Filter by"
           variant="soft"
           class="w-32 sm:w-36"
@@ -64,9 +70,10 @@ watchDebounced(
         <URadioGroup
           v-model="form.view"
           :items="views"
+          :default-value="defaultView || 'vertical'"
+          value-key="value"
           orientation="horizontal"
           variant="list"
-          default-value="vertical"
           class="max-lg:hidden"
           @update:modelValue="onSubmit"
         />

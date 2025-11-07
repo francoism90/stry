@@ -20,7 +20,7 @@ defineProps<Props>()
 
   <UPage>
     <UPageBody>
-      <DashboardToolbar />
+      <DashboardToolbar default-filter="recommended" />
 
       <UContainer class="py-4">
         <InfiniteScroll
