@@ -51,37 +51,34 @@ onBeforeUnmount(() => listener())
 
 <template>
   <div class="w-full bg-transparent">
-    <template v-if="state">
-      <media-player
-        ref="player"
-        .src="state?.asset || undefined"
-        .autoPlay="true"
-        .playsInline="true"
-        crossOrigin="anonymous"
-        class="rounded-xl"
-      >
-        <media-video-layout />
-        <media-provider>
-          <template v-if="video?.captions?.length">
-            <track
-              v-for="caption in video.captions"
-              :key="caption.id"
-              :src="caption.asset"
-              :label="caption.name"
-              kind="captions"
-            />
-          </template>
-        </media-provider>
-      </media-player>
-    </template>
+    <UEmpty
+      v-if="!state"
+      title="Preparing your video..."
+      description="Please wait while we load the video for you. This may take a few moments."
+      icon="i-lucide-hard-drive-download"
+      :actions="actions"
+    />
 
-    <template v-else>
-      <UEmpty
-        title="Preparing your video..."
-        description="Please wait while we load the video for you. This may take a few moments."
-        icon="i-lucide-hard-drive-download"
-        :actions="actions"
-      />
-    </template>
+    <media-player
+      ref="player"
+      .src="state?.asset || undefined"
+      .autoPlay="true"
+      .playsInline="true"
+      crossOrigin="anonymous"
+      class="rounded-xl"
+    >
+      <media-video-layout />
+      <media-provider>
+        <template v-if="video?.captions?.length">
+          <track
+            v-for="caption in video.captions"
+            :key="caption.id"
+            :src="caption.asset"
+            :label="caption.name"
+            kind="captions"
+          />
+        </template>
+      </media-provider>
+    </media-player>
   </div>
 </template>
