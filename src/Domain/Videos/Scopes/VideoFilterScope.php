@@ -38,7 +38,7 @@ class VideoFilterScope
             : VideoFilter::tryFrom($this->filter);
     }
 
-    protected function isFilter(...$values): bool
+    protected function isFilter(VideoFilter ...$values): bool
     {
         $filterValue = $this->getFilter();
 
