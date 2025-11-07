@@ -7,7 +7,7 @@ import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 interface Props {
   items: VideoCollection
-  view: PageView
+  view?: PageView
 }
 
 defineOptions({ layout: DashboardLayout })

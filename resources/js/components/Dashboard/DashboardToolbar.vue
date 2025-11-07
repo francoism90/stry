@@ -74,6 +74,7 @@ watchDebounced(
           value-key="value"
           orientation="horizontal"
           variant="list"
+          size="xs"
           class="max-lg:hidden"
           @update:modelValue="onSubmit"
         />
