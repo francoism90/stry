@@ -30,7 +30,7 @@ class LibraryFilterScope
             : LibraryFilter::tryFrom($this->filter);
     }
 
-    protected function isFilter(...$values): bool
+    protected function isFilter(LibraryFilter ...$values): bool
     {
         $filterValue = $this->getFilter();
 

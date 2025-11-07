@@ -35,7 +35,7 @@ class TagFilterScope
             : TagType::tryFrom($this->filter);
     }
 
-    protected function isFilter(...$values): bool
+    protected function isFilter(TagType ...$values): bool
     {
         $filterValue = $this->getFilter();
 
