@@ -6,42 +6,29 @@ namespace Domain\Videos\Scopes;
 
 use ArrayAccess;
 use Domain\Tags\Models\Tag;
-use Domain\Videos\Enums\VideoOrder;
 use Laravel\Scout\Builder;
 
 class VideoFilterScope
 {
     public function __construct(
-        protected VideoOrder|string|null $filter = null,
-        protected Tag|ArrayAccess|string|null $tags = null,
+        protected ?string $filter = null,
+        protected ArrayAccess|array|Tag|string|null $tags = null,
     ) {}
 
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->hasTags(), fn ($scout) => $scout->where('tagged', $this->getTags()))
-            ->when($this->isFilter(VideoOrder::Newest), fn ($scout) => $scout->latest())
-            ->when($this->isFilter(VideoOrder::Ordered), fn ($scout) => $scout->orderBy('name'))
-            ->when($this->isFilter(VideoOrder::Longest), fn ($scout) => $scout->orderByDesc('duration'))
-            ->when($this->isFilter(VideoOrder::Shortest), fn ($scout) => $scout->orderBy('duration'))
-            ->when($this->hasFilter() && blank($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
+            ->when($this->getTags(), fn (Builder $scout, array $tags) => $scout->where('tagged', $tags))
+            ->when($this->isFilter('newest'), fn (Builder $scout) => $scout->latest())
+            ->when($this->isFilter('ordered'), fn (Builder $scout) => $scout->orderBy('name'))
+            ->when($this->isFilter('longest'), fn (Builder $scout) => $scout->orderByDesc('duration'))
+            ->when($this->isFilter('shortest'), fn (Builder $scout) => $scout->orderBy('duration'))
+            ->when($this->isFilter('default', 'recommended') && blank($scout->query), fn ($scout) => $scout->orderBy('_rand()'));
     }
 
-    protected function hasTags(): bool
+    protected function getFilter(): ?string
     {
-        return filled($this->tags);
-    }
-
-    protected function getTags(): array
-    {
-        if ($this->tags instanceof Tag) {
-            return [$this->tags->getKey()];
-        }
-
-        return Tag::query()
-            ->whereUlid($this->tags)
-            ->pluck('id')
-            ->toArray();
+        return $this->filter;
     }
 
     protected function hasFilter(): bool
@@ -49,19 +36,27 @@ class VideoFilterScope
         return filled($this->getFilter());
     }
 
-    protected function isFilter(VideoOrder $value): bool
+    protected function isFilter(...$values): bool
     {
-        return $this->getFilter() === $value;
+        $filterValue = $this->getFilter();
+
+        return $this->hasFilter() && in_array($filterValue, $values, true);
     }
 
-    protected function getFilter(): ?VideoOrder
+    protected function getTags(): ?array
     {
-        if (! $this->filter) {
+        if (! $this->hasTags()) {
             return null;
         }
 
-        return $this->filter instanceof VideoOrder
-            ? $this->filter
-            : VideoOrder::tryFrom($this->filter);
+        return Tag::query()
+            ->hasUlid($this->tags)
+            ->pluck('id')
+            ->toArray();
+    }
+
+    protected function hasTags(): bool
+    {
+        return filled($this->tags);
     }
 }
