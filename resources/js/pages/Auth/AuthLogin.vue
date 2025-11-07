@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   action: string
   status?: string
 }>()
+
+defineOptions({ layout: AuthLayout })
 
 const form = useForm('post', props.action, {
   email: '',
