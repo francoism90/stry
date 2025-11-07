@@ -57,7 +57,7 @@ class VideoFilterScope
         }
 
         return Tag::query()
-            ->hasUlid($this->tags)
+            ->options($this->tags)
             ->pluck('id')
             ->toArray();
     }

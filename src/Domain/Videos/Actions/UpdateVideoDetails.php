@@ -23,7 +23,7 @@ class UpdateVideoDetails
 
             // Sync tags if provided
             if (array_key_exists('tags', $attributes)) {
-                $tagIds = Tag::hasUlid(data_get($attributes, 'tags.*.id', []))->get();
+                $tagIds = Tag::query()->options(data_get($attributes, 'tags.*.id', []))->get();
 
                 $video->syncTags($tagIds);
             }

@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class TagQueryBuilder extends Builder
 {
-    public function hasUlid(Tag|ArrayAccess|array|string $values): self
+    public function options(Tag|ArrayAccess|array|string $values): self
     {
         if ($values instanceof Tag) {
             return $this->where('id', $values->getKey());

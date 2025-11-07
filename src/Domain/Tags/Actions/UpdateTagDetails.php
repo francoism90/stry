@@ -20,7 +20,7 @@ class UpdateTagDetails
 
             // Sync related tags if provided
             if (array_key_exists('related', $attributes)) {
-                $tagIds = Tag::hasUlid(data_get($attributes, 'related.*.id', []))->get();
+                $tagIds = Tag::query()->options(data_get($attributes, 'related.*.id', []))->get();
 
                 $tag->syncRelated($tagIds);
             }
