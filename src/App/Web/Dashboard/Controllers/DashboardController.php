@@ -33,7 +33,7 @@ class DashboardController extends Controller implements HasMiddleware
 
         // Build the video query with search and ordering
         $builder = Video::search($request->safe()->input('search'))
-            ->tap(new VideoFilterScope($request->safe()->input('filter', 'recommended')))
+            ->tap(new VideoFilterScope($request->safe()->input('filter', VideoFilter::Recommended)))
             ->simplePaginate(18);
 
         return Inertia::render('Dashboard/DashboardIndex', [
