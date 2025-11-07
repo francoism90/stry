@@ -38,11 +38,11 @@ const onSubmit = async () => {
   await form.submit({
     preserveState: true,
     replace: true,
-  })
-
-  toast.add({
-    title: 'Video updated!',
-    description: 'Your changes have been saved successfully.',
+    onSuccess: () =>
+      toast.add({
+        title: 'Video updated!',
+        description: 'Your changes have been saved successfully.',
+      }),
   })
 }
 </script>
