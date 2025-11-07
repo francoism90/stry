@@ -62,11 +62,8 @@ class Video extends ImageGenerator
         return Collection::make([
             'av1',
             'm4v',
-            'mka',
-            'mkv',
             'mov',
             'mp4',
-            'mp4v-es',
             'webm',
         ]);
     }
@@ -75,14 +72,11 @@ class Video extends ImageGenerator
     {
         return Collection::make([
             'video/av1',
-            'video/mkv',
+            'video/mpeg',
             'video/mp4',
-            'video/mp4v-es',
             'video/quicktime',
             'video/webm',
             'video/x-m4v',
-            'video/x-matroska',
-            'video/x-msvideo',
         ]);
     }
 }
