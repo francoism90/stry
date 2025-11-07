@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { usePlayer } from '@/composables/player'
+import { router } from '@inertiajs/vue3'
+import type { ButtonProps } from '@nuxt/ui'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
 import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
@@ -8,6 +10,24 @@ const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
 const { state, video, progress, store } = usePlayer()
+
+const actions = ref<ButtonProps[]>([
+  {
+    icon: 'i-lucide-refresh-cw',
+    label: 'Refresh',
+    color: 'neutral',
+    size: 'sm',
+    variant: 'subtle',
+    onClick: () => router.reload({ only: ['playlist'] }),
+  },
+  {
+    icon: 'i-lucide-flag',
+    label: 'Report',
+    color: 'neutral',
+    size: 'sm',
+    variant: 'subtle',
+  },
+])
 
 const listener = () =>
   player.value?.subscribe(({ canSeek, currentTime }) => {
@@ -54,12 +74,11 @@ onBeforeUnmount(() => listener())
     </media-player>
 
     <div v-if="!state?.valid">
-      <UAlert
+      <UEmpty
         title="Preparing your video..."
-        description="Please wait while we load the video for you."
-        class="mb-4"
-        color="neutral"
-        variant="soft"
+        description="Please wait while we load the video for you. This may take a few moments."
+        icon="i-lucide-hard-drive-download"
+        :actions="actions"
       />
     </div>
   </div>
