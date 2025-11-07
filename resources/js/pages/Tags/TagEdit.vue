@@ -4,7 +4,7 @@ import TagDeleteModal from '@/components/Tag/TagDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import TagResource from '@/layouts/Tag/TagResource.vue'
+import TagLayout from '@/layouts/Tag/TagLayout.vue'
 import type { Tag, TagMenuItem } from '@/types'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -13,7 +13,7 @@ interface Props {
   types: string[]
 }
 
-defineOptions({ layout: [DashboardLayout, TagResource] })
+defineOptions({ layout: [DashboardLayout, TagLayout] })
 
 const props = defineProps<Props>()
 

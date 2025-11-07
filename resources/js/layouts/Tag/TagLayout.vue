@@ -3,7 +3,8 @@ import { edit, show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem, TabsItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { formatDate, formatTimeAgoIntl } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
 interface Props {
   tag: Tag
@@ -28,6 +29,9 @@ const items = ref<TabsItem[]>([
     label: 'Media',
   },
 ])
+
+const createdAt = computed(() => formatDate(new Date(props.tag.created_at), 'YYYY-MM-DD'))
+const updatedAt = computed(() => formatTimeAgoIntl(new Date(props.tag.updated_at)))
 </script>
 
 <template>
@@ -39,7 +43,12 @@ const items = ref<TabsItem[]>([
         <UPageHeader
           :title="tag.name"
           :links="links"
-        />
+          :ui="{ title: 'text-lg font-bold sm:text-xl', description: 'mt-0 text-sm' }"
+        >
+          <template #description>
+            <span>Created {{ createdAt }} · Updated {{ updatedAt }}</span>
+          </template>
+        </UPageHeader>
       </UContainer>
 
       <UContainer>

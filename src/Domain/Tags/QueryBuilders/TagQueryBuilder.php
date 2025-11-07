@@ -12,8 +12,13 @@ use Illuminate\Support\Collection;
 
 class TagQueryBuilder extends Builder
 {
-    public function hasUlid(Tag|ArrayAccess|array|string|null $values = null): self
+    public function hasUlid(Tag|ArrayAccess|array|string $values): self
     {
+        if ($values instanceof Tag) {
+            return $this->where('id', $values->getKey());
+        }
+
+        // Convert values to a collection of Tag IDs
         $values = Collection::make((array) $values)
             ->map(fn (Tag|string $tag) => $tag instanceof Tag ? $tag : Tag::firstWhere('ulid', $tag))
             ->pluck('id')
