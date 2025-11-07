@@ -20,28 +20,30 @@ class TagFilterScope
     {
         $scout
             ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
-            ->when($this->hasFilter(), fn (Builder $scout) => $scout->where('type', $this->getFilter())->orderBy('name'))
-            ->when(blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'));
+            ->when(blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'))
+            ->when($this->getFilter(), fn (Builder $scout, TagType $type) => $scout->where('type', enum_value($type))->orderBy('name'));
+    }
+
+    protected function getFilter(): ?TagType
+    {
+        if (! $this->filter) {
+            return null;
+        }
+
+        return $this->filter instanceof TagType
+            ? $this->filter
+            : TagType::tryFrom($this->filter);
+    }
+
+    protected function isFilter(TagType ...$values): bool
+    {
+        $filterValue = $this->getFilter();
+
+        return $filterValue && in_array($filterValue, $values, true);
     }
 
     protected function hasFilter(): bool
     {
-        if ($this->filter === 'all') {
-            return false;
-        }
-
         return filled($this->getFilter());
-    }
-
-    protected function getFilter(): ?string
-    {
-        if (! $this->filter) {
-            return enum_value(TagType::Genre);
-        }
-
-        return enum_value($this->filter instanceof TagType
-            ? $this->filter
-            : TagType::tryFrom($this->filter),
-        );
     }
 }

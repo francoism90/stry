@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Web\Dashboard\Controllers;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
+use App\Api\Users\Requests\LibraryIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Shared\Responses\CollectionProperties;
-use Domain\Videos\Enums\VideoList;
+use Domain\Users\Enums\LibraryFilter;
+use Domain\Users\Scopes\LibraryFilterScope;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoListScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -27,17 +27,17 @@ class LibraryController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(VideoIndexRequest $request, CollectionProperties $collection): Response
+    public function __invoke(LibraryIndexRequest $request, CollectionProperties $collection): Response
     {
         Gate::authorize('viewAny', Video::class);
 
         // Build the video query with the selected list scope
         $builder = Video::query()
-            ->tap(new VideoListScope($request->safe()->input('filter', 'watching')))
+            ->tap(new LibraryFilterScope($request->safe()->input('filter', LibraryFilter::Watching)))
             ->simplePaginate(18);
 
         return Inertia::render('Dashboard/LibraryIndex', [
-            'filters' => fn () => VideoList::options(),
+            'filters' => fn () => LibraryFilter::options(),
             'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
             $collection,
         ]);

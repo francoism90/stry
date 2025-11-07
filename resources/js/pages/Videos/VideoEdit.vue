@@ -55,7 +55,6 @@ const onSubmit = async () => {
   >
     <UFormField
       label="Name"
-      name="name"
       required
       :error="form.errors.name"
     >
@@ -82,7 +81,6 @@ const onSubmit = async () => {
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
       <UFormField
         label="Episode"
-        name="episode"
         :error="form.errors.episode"
       >
         <UInput
@@ -95,7 +93,6 @@ const onSubmit = async () => {
 
       <UFormField
         label="Season"
-        name="season"
         :error="form.errors.season"
       >
         <UInput
@@ -108,7 +105,6 @@ const onSubmit = async () => {
 
       <UFormField
         label="Part"
-        name="part"
         :error="form.errors.part"
       >
         <UInput
@@ -121,7 +117,6 @@ const onSubmit = async () => {
 
       <UFormField
         label="Snapshot"
-        name="snapshot"
         :error="form.errors.snapshot"
       >
         <UInput
@@ -150,7 +145,6 @@ const onSubmit = async () => {
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <UFormField
         label="Published"
-        name="published_at"
         :error="form.errors.published_at"
       >
         <UInput
@@ -162,7 +156,6 @@ const onSubmit = async () => {
 
       <UFormField
         label="Expires"
-        name="expires_at"
         :error="form.errors.expires_at"
       >
         <UInput
@@ -174,7 +167,6 @@ const onSubmit = async () => {
 
       <UFormField
         label="Released"
-        name="released_at"
         :error="form.errors.released_at"
       >
         <UInput
@@ -187,7 +179,6 @@ const onSubmit = async () => {
 
     <UFormField
       label="Tags"
-      name="tags"
       :error="form.errors.tags"
     >
       <USelectMenu
@@ -213,7 +204,6 @@ const onSubmit = async () => {
 
     <UFormField
       label="Summary"
-      name="summary"
       :error="form.errors.summary"
     >
       <UTextarea

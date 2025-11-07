@@ -2,11 +2,12 @@
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
 import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { VideoCollection } from '@/types'
+import type { PageView, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 interface Props {
   items: VideoCollection
+  view?: PageView
 }
 
 defineOptions({ layout: DashboardLayout })
@@ -19,7 +20,10 @@ defineProps<Props>()
 
   <UPage>
     <UPageBody>
-      <DashboardToolbar />
+      <DashboardToolbar
+        default-filter="watching"
+        :hide-search="true"
+      />
 
       <UContainer class="py-4">
         <InfiniteScroll
@@ -27,7 +31,10 @@ defineProps<Props>()
           data="items"
           :buffer="200"
         >
-          <VideoPosts :items="items" />
+          <VideoPosts
+            :items="items"
+            :orientation="view"
+          />
         </InfiniteScroll>
       </UContainer>
     </UPageBody>

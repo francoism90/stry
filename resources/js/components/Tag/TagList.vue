@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { useCollection } from '@/composables/collection'
 import type { TagCollection } from '@/types'
 import TagCard from './TagCard.vue'
 
 interface Props {
   items: TagCollection | null | undefined
+  orientation?: 'horizontal' | 'vertical' | undefined
 }
 
 defineProps<Props>()
-
-const { orientation } = useCollection()
 </script>
 
 <template>

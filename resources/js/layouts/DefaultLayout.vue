@@ -1,4 +1,5 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+import AppLogo from '@/components/Ui/AppLogo.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -13,8 +14,9 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <UApp>
-    <UMain>
+    <UContainer class="flex h-dvh max-h-dvh flex-col items-center justify-center gap-3 py-4 sm:py-6">
+      <AppLogo />
       <slot />
-    </UMain>
+    </UContainer>
   </UApp>
 </template>

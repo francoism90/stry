@@ -1,29 +1,43 @@
 <script setup lang="ts">
 import { useCollection } from '@/composables/collection'
+import type { RadioGroupItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
+import { ref } from 'vue'
 
-interface Props {
-  defaultFilter?: string | null
-  defaultSearch?: string | null
-  defaultGrid?: boolean | undefined
-}
+const { filter, search, filters, view } = useCollection()
 
-const props = defineProps<Props>()
-
-const { filter, search, filters, grid } = useCollection()
+const props = defineProps<{
+  defaultFilter?: string
+  defaultSearch?: string
+  defaultView?: string
+  hideFilter?: boolean
+  hideSearch?: boolean
+  hideView?: boolean
+}>()
 
 const form = useForm('get', '', {
   filter: filter.value || props.defaultFilter,
   search: search.value || props.defaultSearch,
-  grid: grid.value || props.defaultGrid,
+  view: view.value || props.defaultView,
 })
+
+const views = ref<RadioGroupItem[]>([
+  {
+    label: 'List View',
+    value: 'vertical',
+  },
+  {
+    label: 'Grid View',
+    value: 'horizontal',
+  },
+])
 
 const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'filter', 'search', 'grid'],
+    only: ['items', 'filter', 'search', 'view'],
     reset: ['items'],
   })
 }
@@ -43,10 +57,11 @@ watchDebounced(
     <UDashboardToolbar>
       <template #left>
         <USelect
-          v-if="filters?.length"
+          v-if="filters.length && !hideFilter"
           v-model="form.filter"
-          value-key="value"
           :items="filters"
+          :default-value="defaultFilter || 'recommended'"
+          value-key="value"
           placeholder="Filter by"
           variant="soft"
           class="w-32 sm:w-36"
@@ -55,16 +70,21 @@ watchDebounced(
       </template>
 
       <template #right>
-        <USwitch
-          v-model="form.grid"
-          default-value
-          label="Grid View"
+        <URadioGroup
+          v-if="!hideView"
+          v-model="form.view"
+          :items="views"
+          :default-value="defaultView || 'vertical'"
+          value-key="value"
+          orientation="horizontal"
+          variant="list"
           size="xs"
-          class="hidden sm:flex"
+          class="max-lg:hidden"
           @update:modelValue="onSubmit"
         />
 
         <UInput
+          v-if="!hideSearch"
           v-model="form.search"
           class="w-52 sm:w-64"
           placeholder="Search..."

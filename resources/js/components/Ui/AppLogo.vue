@@ -1,3 +1,7 @@
 <template>
-  <h1 class="font-serif text-sm font-bold text-neutral-500 uppercase">stry</h1>
+  <UButton
+    label="stry"
+    variant="link"
+    class="px-0 font-serif font-bold text-neutral-400 uppercase"
+  />
 </template>

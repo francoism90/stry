@@ -93,3 +93,5 @@ export type Paginator = {
   next_cursor?: string | null
   prev_cursor?: string | null
 }
+
+export type PageView = 'horizontal' | 'vertical' | undefined

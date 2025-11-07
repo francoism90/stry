@@ -7,7 +7,7 @@ namespace App\Web\Dashboard\Controllers;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Shared\Responses\CollectionProperties;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -33,11 +33,11 @@ class DashboardController extends Controller implements HasMiddleware
 
         // Build the video query with search and ordering
         $builder = Video::search($request->safe()->input('search'))
-            ->tap(new VideoFilterScope($request->safe()->input('filter', VideoOrder::Recommended)))
+            ->tap(new VideoFilterScope($request->safe()->input('filter', VideoFilter::Recommended)))
             ->simplePaginate(18);
 
         return Inertia::render('Dashboard/DashboardIndex', [
-            'filters' => fn () => VideoOrder::options(),
+            'filters' => fn () => VideoFilter::options(),
             'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
             $collection,
         ]);

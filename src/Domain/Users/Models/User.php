@@ -10,6 +10,7 @@ use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithSubscription;
+use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
@@ -77,8 +78,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return [
             'state' => UserState::class,
-            'email_verified_at' => 'datetime',
+            'settings' => UserSettings::class.':default',
             'password' => 'hashed',
+            'email_verified_at' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',

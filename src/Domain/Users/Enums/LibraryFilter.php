@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Enums;
+namespace Domain\Users\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum VideoList: string implements Enumerable
+enum LibraryFilter: string implements Enumerable
 {
     case Watching = 'watching';
     // case Saved = 'saved';
