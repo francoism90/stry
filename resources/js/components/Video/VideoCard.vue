@@ -2,15 +2,12 @@
 import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import TagItems from '@/components/Tag/TagItems.vue'
 import type { Video } from '@/types'
-import { computed } from 'vue'
 
 interface Props {
   item: Video
 }
 
 const props = defineProps<Props>()
-
-const tags = computed(() => props.item.tags?.slice(0, 5))
 </script>
 
 <template>
@@ -24,7 +21,7 @@ const tags = computed(() => props.item.tags?.slice(0, 5))
   >
     <template #description>
       <div v-html="item.description" />
-      <TagItems :items="tags" />
+      <TagItems :items="item.tags" />
     </template>
   </UBlogPost>
 </template>

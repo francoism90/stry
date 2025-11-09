@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import TagItems from '@/components/Tag/TagItems.vue'
+import VideoItems from '@/components/Video/VideoItems.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
-import VideoPosts from '@/components/Video/VideoPosts.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
@@ -56,7 +56,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
       <UContainer>
         <Deferred data="queue">
           <template #fallback>
-            <div class="sr-only">Loading...</div>
+            <div class="sr-only">Loading queue...</div>
           </template>
 
           <UPageFeature
@@ -64,7 +64,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
             title="Up next"
           />
 
-          <VideoPosts
+          <VideoItems
             orientation="horizontal"
             :items="queue"
           />

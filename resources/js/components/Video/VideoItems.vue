@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoPost from '@/components/Video/VideoPost.vue'
+import VideoCard from '@/components/Video/VideoCard.vue'
 import type { VideoCollection } from '@/types'
 
 interface Props {
@@ -15,7 +15,7 @@ defineProps<Props>()
     id="item-list"
     :orientation="orientation"
   >
-    <VideoPost
+    <VideoCard
       v-for="item in items?.data || []"
       :key="item.id"
       :item="item"

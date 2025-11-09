@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
-import VideoPosts from '@/components/Video/VideoPosts.vue'
+import VideoItems from '@/components/Video/VideoItems.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { PageView, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -31,7 +31,7 @@ defineProps<Props>()
           data="items"
           :buffer="200"
         >
-          <VideoPosts
+          <VideoItems
             :items="items"
             :orientation="view"
           />

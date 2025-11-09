@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
-import VideoPosts from '@/components/Video/VideoPosts.vue'
+import VideoItems from '@/components/Video/VideoItems.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
@@ -53,7 +53,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
           data="items"
           :buffer="200"
         >
-          <VideoPosts :items="items" />
+          <VideoItems :items="items" />
         </InfiniteScroll>
       </UContainer>
     </UPageBody>
