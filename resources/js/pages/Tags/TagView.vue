@@ -6,7 +6,7 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { ButtonProps } from '@nuxt/ui'
 import { ref } from 'vue'
 
 interface Props {
@@ -18,7 +18,7 @@ defineOptions({ layout: DashboardLayout })
 
 const props = defineProps<Props>()
 
-const links = ref<NavigationMenuItem[]>([
+const links = ref<ButtonProps[]>([
   {
     label: 'Edit',
     icon: 'i-lucide-clipboard-pen',
