@@ -248,7 +248,6 @@ return [
                     [
                         'query_by' => 'title, name',
                         'facet_by' => 'state',
-                        'filter_by' => '__soft_deleted:=0',
                     ],
                 ),
             ],
@@ -324,7 +323,7 @@ return [
                 'search-parameters' => array_merge(
                     [
                         'query_by' => 'name, description, synonyms, category',
-                        'facet_by' => 'category,type,adult',
+                        'facet_by' => 'category, type, adult',
                     ],
                 ),
             ],
@@ -447,8 +446,7 @@ return [
                 'search-parameters' => array_merge(
                     [
                         'query_by' => 'name, description, tags, synonyms, released_at',
-                        'facet_by' => 'state,adult,captioned,season,episode,part',
-                        'filter_by' => '__soft_deleted:=0',
+                        'facet_by' => 'state, adult, captioned, season, episode, part',
                     ],
                 ),
             ],
