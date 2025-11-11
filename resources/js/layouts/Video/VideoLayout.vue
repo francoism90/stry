@@ -2,7 +2,7 @@
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import type { NavigationMenuItem, TabsItem } from '@nuxt/ui'
+import type { ButtonProps, TabsItem } from '@nuxt/ui'
 import { formatDate, formatTimeAgoIntl } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -12,7 +12,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const links = ref<NavigationMenuItem[]>([
+const links = ref<ButtonProps[]>([
   {
     label: 'View',
     icon: 'i-lucide-eye',

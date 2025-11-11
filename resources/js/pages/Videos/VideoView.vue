@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import TagItems from '@/components/Tag/TagItems.vue'
 import VideoItems from '@/components/Video/VideoItems.vue'
 import VideoPlayer from '@/components/Video/VideoPlayer.vue'
+import VideoSaveModal from '@/components/Video/VideoSaveModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import type { NavigationMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
 
 interface Props {
   video: Video
@@ -18,14 +16,6 @@ interface Props {
 defineOptions({ layout: DashboardLayout })
 
 const props = defineProps<Props>()
-
-const links = ref<NavigationMenuItem[]>([
-  {
-    label: 'Edit',
-    icon: 'i-lucide-clipboard-pen',
-    to: edit.url(props.video.id),
-  },
-])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
@@ -42,13 +32,14 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
       </UContainer>
 
       <UContainer>
-        <UPageHeader
-          :title="video.title"
-          :links="links"
-        >
+        <UPageHeader :title="video.title">
           <template #description>
             <div v-html="video.description" />
             <TagItems :items="video.tags" />
+          </template>
+
+          <template #links>
+            <VideoSaveModal :item="video" />
           </template>
         </UPageHeader>
       </UContainer>
