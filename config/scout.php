@@ -187,7 +187,7 @@ return [
             'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
 
-        // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
+        'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
 
         'model-settings' => [
 
@@ -235,6 +235,11 @@ return [
                     ],
 
                     'default_sorting_field' => 'created_at',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#'],
+
+                    'symbols_to_index' => ['+', '#', '++', '##'],
+
                 ],
 
                 'search-parameters' => [
@@ -301,6 +306,10 @@ return [
                     ],
 
                     'default_sorting_field' => 'order',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#'],
+
+                    'symbols_to_index' => ['+', '#', '++', '##'],
                 ],
 
                 'search-parameters' => [
@@ -330,24 +339,28 @@ return [
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'infix' => true,
                         ],
                         [
                             'name' => 'season',
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'infix' => true,
                         ],
                         [
                             'name' => 'episode',
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'infix' => true,
                         ],
                         [
                             'name' => 'part',
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'infix' => true,
                         ],
                         [
                             'name' => 'duration',
@@ -409,6 +422,10 @@ return [
                     ],
 
                     'default_sorting_field' => 'created_at',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#'],
+
+                    'symbols_to_index' => ['+', '#', '++', '##'],
                 ],
 
                 'search-parameters' => [
