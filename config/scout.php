@@ -240,7 +240,7 @@ return [
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#'],
 
-                    'symbols_to_index' => ['+', '#', '++', '##'],
+                    'symbols_to_index' => ['+', '++'],
 
                 ],
 
@@ -317,7 +317,7 @@ return [
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
 
-                    'symbols_to_index' => ['+', '#', '++', '##', '@'],
+                    'symbols_to_index' => ['+', '++'],
                 ],
 
                 'search-parameters' => array_merge(
@@ -440,7 +440,7 @@ return [
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
 
-                    'symbols_to_index' => ['+', '#', '++', '##', '@'],
+                    'symbols_to_index' => ['+', '++'],
                 ],
 
                 'search-parameters' => array_merge(
