@@ -238,9 +238,7 @@ return [
 
                     'default_sorting_field' => 'created_at',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#'],
-
-                    'symbols_to_index' => ['+', '++'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|'],
 
                 ],
 
@@ -317,7 +315,6 @@ return [
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
 
-                    'symbols_to_index' => ['+', '++'],
                 ],
 
                 'search-parameters' => array_merge(
@@ -440,7 +437,6 @@ return [
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
 
-                    'symbols_to_index' => ['+', '++'],
                 ],
 
                 'search-parameters' => array_merge(
