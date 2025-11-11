@@ -7,7 +7,7 @@ namespace Domain\Users\Scopes;
 use Domain\Users\Enums\LibraryFilter;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 
-class LibraryFilterScope
+readonly class LibraryFilterScope
 {
     public function __construct(
         protected LibraryFilter|string|null $filter = null,
