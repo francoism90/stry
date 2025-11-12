@@ -242,12 +242,10 @@ return [
 
                 ],
 
-                'search-parameters' => array_merge(
-                    [
-                        'query_by' => 'title, name',
-                        'facet_by' => 'state',
-                    ],
-                ),
+                'search-parameters' => [
+                    'query_by' => 'title, name',
+                    'facet_by' => 'state',
+                ],
             ],
 
             Tag::class => [
@@ -317,12 +315,10 @@ return [
 
                 ],
 
-                'search-parameters' => array_merge(
-                    [
-                        'query_by' => 'name, description, synonyms, category',
-                        'facet_by' => 'category, type, adult',
-                    ],
-                ),
+                'search-parameters' => [
+                    'query_by' => 'name, description, synonyms, category',
+                    'facet_by' => 'category, type, adult',
+                ],
             ],
 
             Video::class => [
@@ -439,12 +435,10 @@ return [
 
                 ],
 
-                'search-parameters' => array_merge(
-                    [
-                        'query_by' => 'name, description, tags, synonyms, released_at',
-                        'facet_by' => 'state, adult, captioned, season, episode, part',
-                    ],
-                ),
+                'search-parameters' => [
+                    'query_by' => 'name, description, tags, synonyms, released_at',
+                    'facet_by' => 'state, adult, captioned, season, episode, part',
+                ],
             ],
 
         ],
