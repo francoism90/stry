@@ -13,8 +13,8 @@
         "strings": "on"
     },
     "files.associations": {
-        ".env*": "dotenv",
-        "*.blade.php": "blade"
+        "*.blade.php": "blade",
+        "*.css": "tailwindcss"
     },
     "html.customData": ["./node_modules/vidstack/vscode.html-data.json"],
     "intelephense.telemetry.enabled": false,
@@ -38,6 +38,5 @@
         "plaintext": "html",
         "vue": "html",
         "vue-html": "html"
-    },
-    "typescript.tsdk": "node_modules/typescript/lib"
+    }
 }
