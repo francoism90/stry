@@ -24,11 +24,12 @@ defineProps<Props>()
 
       <UContainer class="py-4">
         <InfiniteScroll
-          items-element="#item-list"
+          items-element="#feed-items"
           data="items"
           :buffer="200"
         >
           <VideoItems
+            id="feed-items"
             :items="items"
             :orientation="view"
           />

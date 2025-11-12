@@ -3,7 +3,7 @@ import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
 import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
 import VideoItems from '@/components/Video/VideoItems.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { Tag, VideoCollection } from '@/types'
+import type { PageView, Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
@@ -12,6 +12,7 @@ import { ref } from 'vue'
 interface Props {
   tag: Tag
   items: VideoCollection
+  view?: PageView
 }
 
 defineOptions({ layout: DashboardLayout })
@@ -49,11 +50,15 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
 
       <UContainer class="py-4">
         <InfiniteScroll
-          items-element="#item-list"
+          items-element="#tag-items"
           data="items"
           :buffer="200"
         >
-          <VideoItems :items="items" />
+          <VideoItems
+            id="tag-items"
+            :items="items"
+            :orientation="view"
+          />
         </InfiniteScroll>
       </UContainer>
     </UPageBody>
