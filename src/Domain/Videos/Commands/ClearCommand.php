@@ -43,7 +43,7 @@ class ClearCommand extends Command implements Isolatable
             headers: ['ID', 'Name', 'File Size'],
             rows: $videos->map(fn (Video $video) => [
                 (string) $video->getKey(),
-                (string) $video->name,
+                (string) $video->title,
                 Number::fileSize($video->file_size),
             ])->all(),
         );
@@ -54,7 +54,7 @@ class ClearCommand extends Command implements Isolatable
                     return;
                 }
 
-                info("deleting video `{$video->name}` ({$video->getKey()})");
+                info("deleting video `{$video->title}` ({$video->getKey()})");
 
                 $video->forceDelete();
             });
