@@ -29,6 +29,8 @@ class CheckAvailableSpace
 
     protected function checkFreeSpace(FilesystemAdapter $adapter, int $limit = 0): void
     {
+        // TODO: Add S3 and other adapters support
+
         if ($limit > 0 && $adapter instanceof LocalFilesystemAdapter) {
             $this->checkLocalFreeSpace($adapter, $limit);
         }
