@@ -8,6 +8,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on"
+    },
     "files.associations": {
         ".env*": "dotenv",
         "*.blade.php": "blade"
@@ -35,6 +39,5 @@
         "vue": "html",
         "vue-html": "html"
     },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "volar.autoCompleteRefs": true
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
