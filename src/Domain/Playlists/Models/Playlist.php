@@ -251,6 +251,16 @@ class Playlist extends Model
             ->sortBy('kilo_bitrate');
     }
 
+    public static function copyVideoCodec(): bool
+    {
+        return Config::boolean('playlist.copy_video_codec', true);
+    }
+
+    public static function copyAudioCodec(): bool
+    {
+        return Config::boolean('playlist.copy_audio_codec', true);
+    }
+
     public static function getSegmentLength(): int
     {
         return Config::integer('playlist.segment_length', 6);
@@ -296,15 +306,5 @@ class Playlist extends Model
     public static function getRotationKeysSections(): int
     {
         return Config::integer('playlist.rotation_keys_sections', 5);
-    }
-
-    public static function copyVideoCodec(): bool
-    {
-        return Config::boolean('playlist.copy_video_codec', true);
-    }
-
-    public static function copyAudioCodec(): bool
-    {
-        return Config::boolean('playlist.copy_audio_codec', true);
     }
 }
