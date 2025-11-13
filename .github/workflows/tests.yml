@@ -9,14 +9,18 @@ on:
 permissions:
     contents: read
 
+concurrency:
+    group: tests-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     tests:
         runs-on: ubuntu-latest
+        timeout-minutes: 15
 
         strategy:
             fail-fast: true
             matrix:
-                os: [ubuntu-latest]
                 php: [8.4]
 
         name: PHP ${{ matrix.php }}
@@ -80,6 +84,7 @@ jobs:
             - name: Install Node.js
               uses: actions/setup-node@v6
               with:
+                  node-version: 22
                   cache: 'pnpm'
 
             - name: Build application

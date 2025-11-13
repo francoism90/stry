@@ -9,9 +9,14 @@ on:
 permissions:
     contents: read
 
+concurrency:
+    group: code-quality-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     php-code-quality:
         runs-on: ubuntu-latest
+        timeout-minutes: 10
         name: Code Quality
 
         steps:
@@ -48,6 +53,7 @@ jobs:
             - name: Install Node.js
               uses: actions/setup-node@v6
               with:
+                  node-version: 22
                   cache: 'pnpm'
 
             - name: Build application
@@ -60,6 +66,9 @@ jobs:
 
             - name: Run Laravel Pint
               run: vendor/bin/pint --test
+
+            - name: Run Larastan
+              run: vendor/bin/phpstan analyse --memory-limit=2G
 
             - name: Run ESLint
               run: pnpm run lint:eslint
