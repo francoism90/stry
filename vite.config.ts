@@ -70,8 +70,7 @@ export default defineConfig(({ mode }) => {
           },
           dashboardPanel: {
             slots: {
-              root: 'min-h-dvh',
-              body: 'overflow-hidden',
+              body: 'overflow-clip',
             },
           },
           dashboardToolbar: {
