@@ -19,7 +19,7 @@
         "format": "prettier --write resources/"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^2.2.15",
+        "@inertiajs/vue3": "^2.2.16",
         "@laravel/echo-vue": "^2.2.6",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@nuxt/ui": "^4.1.0",
@@ -37,7 +37,7 @@
     },
     "devDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
-        "@tsconfig/node22": "^22.0.2",
+        "@tsconfig/node22": "^22.0.3",
         "@types/jsdom": "^27.0.0",
         "@types/node": "^24.10.1",
         "@vitejs/plugin-vue": "^6.0.1",
