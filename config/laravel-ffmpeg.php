@@ -7,7 +7,7 @@ return [
     'ffmpeg' => [
         'binaries' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
 
-        'threads' => 0,
+        'threads' => (int) env('FFMPEG_THREADS', 0),
     ],
 
     'ffprobe' => [
@@ -16,9 +16,9 @@ return [
 
     'timeout' => 60 * 60 * 4, // 4 hours
 
-    'log_channel' => env('FFMPEG_LOG_CHANNEL', env('APP_ENV') === 'production' ? false : ENV('LOG_CHANNEL', 'stack')),
+    'log_channel' => env('FFMPEG_LOG_CHANNEL', false),
 
-    'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', sys_get_temp_dir()),
+    'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', storage_path('app/laravel-ffmpeg/temp')),
 
     'temporary_files_encrypted_hls' => env('FFMPEG_TEMPORARY_ENCRYPTED_HLS', '/dev/shm'),
 

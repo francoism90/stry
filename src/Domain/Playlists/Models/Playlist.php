@@ -194,17 +194,17 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addDay());
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addDay());
+        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
     }
 
     public function getUrlResolver(?string $path = null): string
     {
-        return URL::temporarySignedRoute('api.playlists.playlist', now()->addDay(), [
+        return URL::temporarySignedRoute('api.playlists.playlist', now()->addMinutes(30), [
             'playlist' => $this,
             'path' => $path,
         ]);
