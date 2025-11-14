@@ -18,7 +18,7 @@ return [
 
     'log_channel' => env('FFMPEG_LOG_CHANNEL', false),
 
-    'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', storage_path('app/laravel-ffmpeg/temp')),
+    'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', storage_path('app/media/temp')),
 
     'temporary_files_encrypted_hls' => env('FFMPEG_TEMPORARY_ENCRYPTED_HLS', '/dev/shm'),
 
