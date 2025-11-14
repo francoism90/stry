@@ -1,3 +1,6 @@
+_ide_helper_models.php
+_ide_helper.php
+!database/database.sqlite
 .DS_Store
 .env.*
 .git
@@ -6,7 +9,9 @@
 .gitignore
 .gitmodules
 .idea
+.php-cs-fixer.cache
 .phpstorm.meta.php
+.phpunit.result.cache
 .pnpm-store
 .vscode
 .zed
@@ -16,9 +21,6 @@
 *.sqlite
 *.tar.gz
 *.zip
-_ide_helper_models.php
-_ide_helper.php
-!database/database.sqlite
 auto-imports.d.ts
 bootstrap/cache/*.php
 components.d.ts
