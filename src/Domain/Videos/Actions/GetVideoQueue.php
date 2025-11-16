@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
+use Domain\Tags\Collections\TagCollection;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
@@ -17,7 +18,7 @@ class GetVideoQueue
             ...$this->phrases($video),
             ...$this->tagged($video),
             ...$this->random($video),
-        ])->unique('id')->take($limit ?? 9);
+        ])->unique('id')->take($limit ?? 12);
     }
 
     protected function phrases(Video $video): LazyCollection
@@ -51,21 +52,28 @@ class GetVideoQueue
         return $items
             ->flatten()
             ->reject(fn (Video $item) => $item->is($video))
-            ->take(9)
+            ->take(12)
             ->unique();
     }
 
     protected function tagged(Video $video): LazyCollection
     {
+        /** @var TagCollection $tags */
+        $tags = $video->tags;
+
+        if ($tags->isEmpty()) {
+            return LazyCollection::empty();
+        }
+
         return Video::query()
             ->verified()
             ->withAnyTagsOfAnyType([
-                ...$video->tags,
-                ...$video->tags->relates()->all(),
+                ...$tags,
+                ...$tags->relates()->all(),
             ])
             ->whereKeyNot($video)
             ->inRandomOrder()
-            ->take(9)
+            ->take(12)
             ->cursor();
     }
 
@@ -74,7 +82,7 @@ class GetVideoQueue
         return Video::query()
             ->verified()
             ->whereKeyNot($video)
-            ->take(9)
+            ->take(12)
             ->cursor();
     }
 }
