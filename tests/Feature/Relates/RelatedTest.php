@@ -34,6 +34,18 @@ it('syncs related models by removing stale relations', function () {
         ->and($tag->fresh()->relates->first()->is($related->first()))->toBeTrue();
 });
 
+it('does not duplicate relations when syncing identical models', function () {
+    $tag = Tag::factory()->create();
+    $relatedTag = Tag::factory()->create();
+
+    $tag->syncRelated([$relatedTag]);
+    $tag->syncRelated([$relatedTag]);
+
+    expect(Related::count())->toBe(1)
+        ->and($tag->fresh()->relates)->toHaveCount(1)
+        ->and($tag->fresh()->relates->first()->is($relatedTag))->toBeTrue();
+});
+
 it('removes related records when deleting a model', function () {
     $tag = Tag::factory()->create();
     $relatedTag = Tag::factory()->create();
