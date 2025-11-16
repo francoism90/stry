@@ -11,8 +11,6 @@
 
 [Demo](https://github.com/francoism90/.github/tree/main/stry) • [Documentation](#-documentation) • [Installation](#-usage)
 
-</div>
-
 ---
 
 ## 🎯 Introduction
@@ -39,7 +37,7 @@ Built with [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls),
 
 For WIP screenshots, please check out: <https://github.com/francoism90/.github/tree/main/stry>
 
-> [!INFO]
+> [!NOTE]
 > A hosted demo is planned, but not yet available.
 
 ---
