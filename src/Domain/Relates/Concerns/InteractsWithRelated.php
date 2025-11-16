@@ -34,18 +34,23 @@ trait InteractsWithRelated
 
     public function syncRelated(array|ArrayAccess|Collection $related = []): static
     {
-        $items = $this->convertToRelated($related);
+        $items = $this
+            ->convertToRelated($related)
+            ->mapWithKeys(fn (array $values): array => [
+                $this->relatedKey($values['model_type'], $values['model_id']) => $values,
+            ]);
 
-        // Detach models that are not in the new list
         $this
-            ->getRelates()
-            ->filter(fn (Model $model) => ! $items->contains(fn (array $item) => $item['model_type'] === $model->getMorphClass() &&
-                $item['model_id'] === $model->getKey(),
+            ->related()
+            ->cursor()
+            ->filter(fn (Related $relation): bool => ! $items->has(
+                $this->relatedKey($relation->model_type, $relation->model_id),
             ))
-            ->each(fn (Model $model) => $this->detachRelated($model));
+            ->each(function (Related $relation): void {
+                $relation->delete();
+            });
 
-        // Attach new models
-        $items->each(fn (array $values) => Related::firstOrCreate($values));
+        $items->each(fn (array $values): Related => Related::firstOrCreate($values));
 
         return $this;
     }
@@ -76,13 +81,25 @@ trait InteractsWithRelated
     public function convertToRelated(array|ArrayAccess|Collection $models = []): Collection
     {
         return collect($models)
-            ->filter(fn (mixed $model) => $model instanceof Model)
-            ->map(fn (Model $model) => [
-                'relatable_type' => $this->getMorphClass(),
-                'relatable_id' => $this->getKey(),
-                'model_type' => $model->getMorphClass(),
-                'model_id' => $model->getKey(),
-            ]);
+            ->map(function (mixed $model): ?array {
+                if (! $model instanceof Model) {
+                    return null;
+                }
+
+                return [
+                    'relatable_type' => $this->getMorphClass(),
+                    'relatable_id' => $this->getKey(),
+                    'model_type' => $model->getMorphClass(),
+                    'model_id' => $model->getKey(),
+                ];
+            })
+            ->filter()
+            ->values();
+    }
+
+    protected function relatedKey(string $type, mixed $id): string
+    {
+        return sprintf('%s::%s', $type, (string) $id);
     }
 
     protected function relates(): Attribute

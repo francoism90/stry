@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -103,10 +104,10 @@ class Video extends Model implements HasMedia
     {
         return [
             'snapshot' => 'decimal:2',
-            'adult' => 'boolean',
             'expires_at' => AsDateTime::class,
             'published_at' => AsDateTime::class,
             'released_at' => AsDateTime::class,
+            'adult' => 'boolean',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
@@ -227,7 +228,7 @@ class Video extends Model implements HasMedia
 
     public function isExpired(): bool
     {
-        return filled($this->expires_at) && $this->expires_at->isPast();
+        return filled($this->expires_at) && Carbon::parse($this->expires_at)->isPast();
     }
 
     public function isValid(): bool
