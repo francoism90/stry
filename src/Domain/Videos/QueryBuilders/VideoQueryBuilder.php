@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -12,6 +13,16 @@ use Illuminate\Support\Facades\Auth;
 
 class VideoQueryBuilder extends Builder
 {
+    public function failed(): self
+    {
+        return $this->whereState('state', Failed::class);
+    }
+
+    public function verified(): self
+    {
+        return $this->whereState('state', Verified::class);
+    }
+
     public function published(): self
     {
         return $this
@@ -20,16 +31,11 @@ class VideoQueryBuilder extends Builder
             ->where('published_at', '<=', now());
     }
 
-    public function verified(): self
-    {
-        return $this->whereState('state', Verified::class);
-    }
-
     public function recent(): self
     {
         return $this
-            ->orderByDesc('created_at')
-            ->orderByDesc('released_at');
+            ->orderByDesc('released_at')
+            ->orderByDesc('created_at');
     }
 
     public function watching(): self
