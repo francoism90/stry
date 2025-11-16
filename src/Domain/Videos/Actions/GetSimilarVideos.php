@@ -64,7 +64,9 @@ class GetSimilarVideos
         $candidates = LazyCollection::make();
 
         /** @var TagCollection $tags */
-        if (! $tags = $video->tags) {
+        $tags = $video->tags;
+
+        if ($tags->isEmpty()) {
             return $candidates;
         }
 
