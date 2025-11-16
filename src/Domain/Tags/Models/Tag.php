@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
@@ -124,13 +125,13 @@ class Tag extends BaseTag implements HasMedia
     /**
      * @return Collection<int, string>
      */
-    public static function resolveTagIds(Tag|ArrayAccess|array|string $values): TagCollection
+    public static function resolveTagIds(Tag|ArrayAccess|array|string $values): Collection
     {
         if ($values instanceof Tag) {
-            return TagCollection::make([$values->getKey()]);
+            return Collection::make([$values->getKey()]);
         }
 
-        return TagCollection::wrap($values)
+        return Collection::wrap($values)
             ->map(fn (Tag|string $tag) => static::resolveTag($tag)?->getKey())
             ->filter()
             ->unique()
