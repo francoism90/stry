@@ -90,6 +90,7 @@ return [
      * These parameters will be used to configure the transcoding process.
      */
     'additional_parameters' => [
+        '-max_muxing_queue_size', '2048',
         // '-force_key_frames:v', 'expr:gte(t,n_forced*2.000)',
     ],
 

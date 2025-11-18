@@ -11,10 +11,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <UBlogPosts
-    id="item-list"
-    :orientation="orientation"
-  >
+  <UBlogPosts :orientation="orientation">
     <VideoCard
       v-for="item in items?.data || []"
       :key="item.id"

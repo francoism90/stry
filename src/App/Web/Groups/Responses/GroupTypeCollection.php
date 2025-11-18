@@ -12,9 +12,13 @@ readonly class GroupTypeCollection implements ProvidesInertiaProperty
 {
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return [
-            ['value' => null, 'label' => __('All')],
-            ...GroupType::options(),
-        ];
+        return $this->values();
+    }
+
+    protected function values(): array
+    {
+        return once(fn () => array_merge([
+            ['value' => null, 'label' => 'All'],
+        ], GroupType::options()));
     }
 }

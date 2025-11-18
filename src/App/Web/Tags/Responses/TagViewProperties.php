@@ -19,7 +19,14 @@ readonly class TagViewProperties implements ProvidesInertiaProperties
     public function toInertiaProperties(RenderContext $context): array
     {
         return [
-            'tag' => fn () => $this->tag->loadCount('videos')->toResource(TagResource::class),
+            'tag' => fn () => $this->getTagResource(),
         ];
+    }
+
+    protected function getTagResource(): TagResource
+    {
+        return once(fn () => $this->tag
+            ->loadCount('videos')
+            ->toResource(TagResource::class));
     }
 }

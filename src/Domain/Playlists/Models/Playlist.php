@@ -194,17 +194,17 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addDay());
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addDay());
+        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
     }
 
     public function getUrlResolver(?string $path = null): string
     {
-        return URL::temporarySignedRoute('api.playlists.playlist', now()->addDay(), [
+        return URL::temporarySignedRoute('api.playlists.playlist', now()->addMinutes(30), [
             'playlist' => $this,
             'path' => $path,
         ]);
@@ -249,6 +249,16 @@ class Playlist extends Model
         return Config::collection('playlist.hls_formats', [])
             ->map(fn (array $format) => Fluent::make($format))
             ->sortBy('kilo_bitrate');
+    }
+
+    public static function copyVideoCodec(): bool
+    {
+        return Config::boolean('playlist.copy_video_codec', true);
+    }
+
+    public static function copyAudioCodec(): bool
+    {
+        return Config::boolean('playlist.copy_audio_codec', true);
     }
 
     public static function getSegmentLength(): int
@@ -296,15 +306,5 @@ class Playlist extends Model
     public static function getRotationKeysSections(): int
     {
         return Config::integer('playlist.rotation_keys_sections', 5);
-    }
-
-    public static function copyVideoCodec(): bool
-    {
-        return Config::boolean('playlist.copy_video_codec', true);
-    }
-
-    public static function copyAudioCodec(): bool
-    {
-        return Config::boolean('playlist.copy_audio_codec', true);
     }
 }

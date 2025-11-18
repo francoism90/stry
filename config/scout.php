@@ -187,7 +187,7 @@ return [
             'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
 
-        // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
+        'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
 
         'model-settings' => [
 
@@ -202,6 +202,7 @@ return [
                             'name' => 'name',
                             'type' => 'string',
                             'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'email',
@@ -211,6 +212,7 @@ return [
                         [
                             'name' => 'state',
                             'type' => 'string',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'email_verified_at',
@@ -235,10 +237,14 @@ return [
                     ],
 
                     'default_sorting_field' => 'created_at',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|'],
+
                 ],
 
                 'search-parameters' => [
                     'query_by' => 'title, name',
+                    'facet_by' => 'state',
                 ],
             ],
 
@@ -263,11 +269,13 @@ return [
                             'name' => 'category',
                             'type' => 'string',
                             'optional' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'type',
                             'type' => 'string',
                             'optional' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'synonyms',
@@ -277,6 +285,7 @@ return [
                         [
                             'name' => 'adult',
                             'type' => 'bool',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'order',
@@ -301,10 +310,14 @@ return [
                     ],
 
                     'default_sorting_field' => 'order',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+
                 ],
 
                 'search-parameters' => [
                     'query_by' => 'name, description, synonyms, category',
+                    'facet_by' => 'category, type, adult',
                 ],
             ],
 
@@ -330,24 +343,29 @@ return [
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'infix' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'season',
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'episode',
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'part',
                             'type' => 'string',
                             'optional' => true,
                             'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'duration',
@@ -357,10 +375,12 @@ return [
                         [
                             'name' => 'captioned',
                             'type' => 'bool',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'adult',
                             'type' => 'bool',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'tags',
@@ -380,6 +400,7 @@ return [
                         [
                             'name' => 'state',
                             'type' => 'string',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'released_at',
@@ -409,10 +430,14 @@ return [
                     ],
 
                     'default_sorting_field' => 'created_at',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+
                 ],
 
                 'search-parameters' => [
                     'query_by' => 'name, description, tags, synonyms, released_at',
+                    'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],
 

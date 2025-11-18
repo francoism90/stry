@@ -24,7 +24,7 @@ readonly class VideoEditProperties implements ProvidesInertiaProperties
     {
         return [
             'video' => fn () => $this->getVideoResource(),
-            'progress' => fn () => app(GetVideoProgress::class)->handle($this->video, $this->user),
+            'progress' => fn () => $this->getProgress(),
         ];
     }
 
@@ -38,9 +38,14 @@ readonly class VideoEditProperties implements ProvidesInertiaProperties
             'snapshot',
         ];
 
-        return $this->video
+        return once(fn () => $this->video
             ->loadMissing('media', 'tags', 'user')
             ->append($appends)
-            ->toResource(VideoResource::class);
+            ->toResource(VideoResource::class));
+    }
+
+    protected function getProgress(): int|float
+    {
+        return app(GetVideoProgress::class)->handle($this->video, $this->user);
     }
 }

@@ -12,8 +12,10 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
 
-readonly class CollectionProperties implements ProvidesInertiaProperties
+class CollectionProperties implements ProvidesInertiaProperties
 {
+    private ?UserSettings $cachedSettings = null;
+
     public function __construct(
         #[CurrentUser] protected ?User $user = null,
         #[QueryParameter('filter')] protected ?string $filter = null,
@@ -44,21 +46,15 @@ readonly class CollectionProperties implements ProvidesInertiaProperties
 
     protected function storeView(): void
     {
-        if (! $this->user) {
+        if (! $this->user || $this->view === null) {
             return;
         }
 
-        // Get the view from the query parameter
-        $currentView = $this->getView();
-
-        // Get the current user view preference
-        $defaultView = $this->getDefaultView();
-
         // Only update if the view has changed
-        if ($currentView && $currentView !== $defaultView) {
+        if ($this->view !== $this->getDefaultView()) {
             app(UpdateUserSettings::class)->handle($this->user, [
                 'appearance' => [
-                    'default_view' => $currentView,
+                    'default_view' => $this->view,
                 ],
             ]);
         }
@@ -80,6 +76,6 @@ readonly class CollectionProperties implements ProvidesInertiaProperties
             return null;
         }
 
-        return UserSettings::fromModel($this->user)->include('appearance');
+        return $this->cachedSettings ??= UserSettings::fromModel($this->user)->include('appearance');
     }
 }

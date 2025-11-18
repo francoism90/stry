@@ -7,6 +7,8 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
+import type { ButtonProps } from '@nuxt/ui'
+import { ref } from 'vue'
 
 interface Props {
   video: Video
@@ -16,6 +18,14 @@ interface Props {
 defineOptions({ layout: DashboardLayout })
 
 const props = defineProps<Props>()
+
+const links = ref<ButtonProps[]>([
+  {
+    label: 'Edit',
+    icon: 'i-lucide-clipboard-pen',
+    to: edit.url(props.video.id),
+  },
+])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))

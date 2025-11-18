@@ -17,6 +17,12 @@ readonly class VideoPlaylistProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return $this->video->getFirstPlaylist('clip')?->toResource(PlaylistResource::class);
+        return $this->resolvePlaylist();
+    }
+
+    protected function resolvePlaylist(): ?PlaylistResource
+    {
+        return once(fn () => $this->video
+            ->getFirstPlaylist('clip')?->toResource(PlaylistResource::class));
     }
 }

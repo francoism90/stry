@@ -9,7 +9,7 @@ use Domain\Tags\Models\Tag;
 use Domain\Videos\Enums\VideoFilter;
 use Laravel\Scout\Builder;
 
-class VideoFilterScope
+readonly class VideoFilterScope
 {
     public function __construct(
         protected VideoFilter|string|null $filter = null,
@@ -20,7 +20,7 @@ class VideoFilterScope
     {
         $scout
             ->when($this->getTags(), fn (Builder $scout, array $tags) => $scout->where('tagged', $tags))
-            ->when($this->isFilter(VideoFilter::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->orderBy('_rand()'))
+            ->when($this->isFilter(VideoFilter::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
             ->when($this->isFilter(VideoFilter::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isFilter(VideoFilter::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isFilter(VideoFilter::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))

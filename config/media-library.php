@@ -61,7 +61,7 @@ return [
      *
      * This model is only used in Media Library Pro (https://medialibrary.pro)
      */
-    'temporary_upload_model' => Spatie\MediaLibraryPro\Models\TemporaryUpload::class,
+    'temporary_upload_model' => null,
 
     /*
      * When enabled, Media Library Pro will only process temporary uploads that were uploaded
@@ -178,7 +178,7 @@ return [
      * The path where to store temporary files while performing image conversions.
      * If set to null, storage_path('media-library/temp') will be used.
      */
-    'temporary_directory_path' => env('MEDIA_CONVERSION_PATH', sys_get_temp_dir()),
+    'temporary_directory_path' => env('MEDIA_CONVERSION_PATH', storage_path('app/media/conversions')),
 
     /*
      * The engine that should perform the image conversions.

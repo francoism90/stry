@@ -76,7 +76,7 @@ FROM base AS production
 
 WORKDIR /app
 
-COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/99-xx.ini
+COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 COPY --from=build /app /app
 
@@ -90,7 +90,7 @@ FROM base AS development
 
 WORKDIR /app
 
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/99-xx.ini
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 RUN chown -R docker:docker /app
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Models;
 
+use ArrayAccess;
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Relates\Concerns\InteractsWithRelated;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
@@ -118,6 +120,33 @@ class Tag extends BaseTag implements HasMedia
     public function videos(): MorphToMany
     {
         return $this->morphedByMany(Video::class, 'taggable');
+    }
+
+    /**
+     * @return Collection<int, string>
+     */
+    public static function resolveTagIds(Tag|ArrayAccess|array|string $values): Collection
+    {
+        if ($values instanceof Tag) {
+            return Collection::make([$values->getKey()]);
+        }
+
+        return Collection::wrap($values)
+            ->map(fn (Tag|string $tag) => static::resolveTag($tag)?->getKey())
+            ->filter()
+            ->unique()
+            ->values();
+    }
+
+    public static function resolveTag(Tag|string $value): ?Tag
+    {
+        if ($value instanceof Tag) {
+            return $value;
+        }
+
+        return Tag::query()
+            ->where('ulid', $value)
+            ->first();
     }
 
     /**

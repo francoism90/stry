@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Actions\GetVideoQueue;
+use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Models\Video;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
@@ -19,10 +19,15 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        $data = app(GetVideoQueue::class)->handle($this->video, $this->limit)
-            ->loadMissing('tags')
-            ->toResourceCollection(VideoResource::class);
+        return ['data' => $this->resolveQueue()];
+    }
 
-        return compact('data');
+    protected function resolveQueue(): array
+    {
+        return once(fn () => app(GetSimilarVideos::class)
+            ->handle(video: $this->video, limit: $this->limit)
+            ->loadMissing('tags')
+            ->toResourceCollection(VideoResource::class)
+            ->all());
     }
 }

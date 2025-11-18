@@ -51,7 +51,7 @@ return [
 
         'transcodes' => [
             'driver' => 'local',
-            'root' => env('TRANSCODES_PATH', sys_get_temp_dir()),
+            'root' => storage_path('app/media/transcodes'),
             'serve' => false,
             'throw' => true,
             'report' => true,
