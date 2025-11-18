@@ -23,15 +23,15 @@ const toast = useToast()
 
 const form = useForm('put', update.url({ video: props.video.id }), {
   name: props.video.name,
-  episode: props.video.episode || undefined,
-  season: props.video.season || undefined,
-  part: props.video.part || undefined,
-  snapshot: props.video.snapshot || undefined,
+  episode: props.video.episode || null,
+  season: props.video.season || null,
+  part: props.video.part || null,
+  snapshot: props.video.snapshot || null,
   tags: props.video.tags || [],
-  summary: props.video.summary || undefined,
-  expires_at: props.video.expires_at || undefined,
-  published_at: props.video.published_at || undefined,
-  released_at: props.video.released_at || undefined,
+  summary: props.video.summary || null,
+  expires_at: props.video.expires_at || null,
+  published_at: props.video.published_at || null,
+  released_at: props.video.released_at || null,
 })
 
 const onSubmit = async () => {
@@ -121,12 +121,12 @@ const onSubmit = async () => {
       >
         <UInput
           v-model="form.snapshot"
-          :model-modifiers="{ nullable: true, number: true, trim: true }"
+          :model-modifiers="{ nullable: true, number: true }"
           type="number"
           placeholder="3.00"
           step="0.01"
           min="0"
-          :max="video.duration || null"
+          :max="video.duration || undefined"
         >
           <template #trailing>
             <UButton
@@ -135,7 +135,7 @@ const onSubmit = async () => {
               size="sm"
               icon="i-lucide-image-down"
               aria-label="Format name"
-              @click.prevent="form.snapshot = progress || undefined"
+              @click.prevent="form.snapshot = progress || null"
             />
           </template>
         </UInput>
