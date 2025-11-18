@@ -36,7 +36,7 @@
         "vue": "^3.5.24"
     },
     "devDependencies": {
-        "@prettier/plugin-oxc": "^0.0.4",
+        "@prettier/plugin-oxc": "^0.0.5",
         "@tsconfig/node22": "^22.0.4",
         "@types/jsdom": "^27.0.0",
         "@types/node": "^24.10.1",
