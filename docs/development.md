@@ -2,11 +2,11 @@
 title: Development
 order: 2
 tags:
-  - vscode
-  - podman
-  - devcontainer
-  - boost
-  - ai
+    - vscode
+    - podman
+    - devcontainer
+    - boost
+    - ai
 ---
 
 # 💻 Development Setup

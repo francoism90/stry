@@ -2,10 +2,7 @@
     "mcpServers": {
         "laravel-boost": {
             "command": "/usr/local/bin/php",
-            "args": [
-                "/workspaces/stry/artisan",
-                "boost:mcp"
-            ]
+            "args": ["/workspaces/stry/artisan", "boost:mcp"]
         }
     }
 }

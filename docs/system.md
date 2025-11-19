@@ -2,10 +2,10 @@
 title: System Configuration
 order: 1
 tags:
-  - podman
-  - quadlet
-  - containers
-  - resources
+    - podman
+    - quadlet
+    - containers
+    - resources
 ---
 
 # 🔧 System Configuration
@@ -109,16 +109,16 @@ podman inspect systemd-stry-queue | grep -A5 "Resources"
 
 ### Production Guidelines
 
-| Container | CPUs | Memory | Notes |
-|-----------|------|--------|-------|
-| `stry` (main app) | 4-8 | 2-4GB | Main application server |
-| `stry-queue` | 4-6 | 2-4GB | Background job processing |
-| `stry-reverb` | 1-2 | 512MB-1GB | WebSocket server |
-| `stry-schedule` | 1 | 256MB-512MB | Task scheduler (low usage) |
-| `stry-postgres` | 2-4 | 2-8GB | Database (adjust based on data size) |
-| `stry-redis` | 1-2 | 512MB-2GB | Cache & sessions |
-| `stry-typesense` | 2-4 | 1-4GB | Search engine |
-| `stry-garage` | 2-4 | 1-2GB | S3 storage |
+| Container         | CPUs | Memory      | Notes                                |
+| ----------------- | ---- | ----------- | ------------------------------------ |
+| `stry` (main app) | 4-8  | 2-4GB       | Main application server              |
+| `stry-queue`      | 4-6  | 2-4GB       | Background job processing            |
+| `stry-reverb`     | 1-2  | 512MB-1GB   | WebSocket server                     |
+| `stry-schedule`   | 1    | 256MB-512MB | Task scheduler (low usage)           |
+| `stry-postgres`   | 2-4  | 2-8GB       | Database (adjust based on data size) |
+| `stry-redis`      | 1-2  | 512MB-2GB   | Cache & sessions                     |
+| `stry-typesense`  | 2-4  | 1-4GB       | Search engine                        |
+| `stry-garage`     | 2-4  | 1-2GB       | S3 storage                           |
 
 > [!NOTE]
 > These are starting points. Adjust based on your actual usage patterns and available system resources.

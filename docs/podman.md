@@ -2,11 +2,11 @@
 title: Podman Quadlet
 order: 3
 tags:
-  - podman
-  - quadlet
-  - containers
-  - systemd
-  - compose
+    - podman
+    - quadlet
+    - containers
+    - systemd
+    - compose
 ---
 
 # 🐳 Podman Quadlet Setup
@@ -92,12 +92,12 @@ Volume=${DATA_PATH}:/data:rw,z,U
 
 ### Environment Variables (`app.env`)
 
-| Key          | Purpose                                                |
-|--------------|--------------------------------------------------------|
-| `UID`, `GID` | Mapped user/group IDs for rootless container processes |
-| `CONTAINER_ENV` | Application environment (e.g. production)           |
-| `APP_PATH`   | Host path of source checkout (bind if enabling live code) |
-| `DATA_PATH`  | Host data directory containing media/import subfolders |
+| Key             | Purpose                                                   |
+| --------------- | --------------------------------------------------------- |
+| `UID`, `GID`    | Mapped user/group IDs for rootless container processes    |
+| `CONTAINER_ENV` | Application environment (e.g. production)                 |
+| `APP_PATH`      | Host path of source checkout (bind if enabling live code) |
+| `DATA_PATH`     | Host data directory containing media/import subfolders    |
 
 Ensure both paths exist and are owned by the matching UID/GID:
 
@@ -109,17 +109,17 @@ chown -R 1000:1000 /home/user/projects/stry /home/user/data/stry
 
 Primary application & services expose:
 
-| Service      | Port |
-|--------------|------|
-| App (HTTP)   | 8080 |
-| Vite (Dev)   | 5173 |
-| Reverb (WS)  | 6001 |
-| SSR Renderer | 13714 |
-| Mailpit SMTP | 1025 |
-| Mailpit UI   | 8025 |
-| PostgreSQL   | 5432 |
-| Redis        | 6379 |
-| Typesense    | 8108 |
+| Service      | Port      |
+| ------------ | --------- |
+| App (HTTP)   | 8080      |
+| Vite (Dev)   | 5173      |
+| Reverb (WS)  | 6001      |
+| SSR Renderer | 13714     |
+| Mailpit SMTP | 1025      |
+| Mailpit UI   | 8025      |
+| PostgreSQL   | 5432      |
+| Redis        | 6379      |
+| Typesense    | 8108      |
 | Garage       | 3900–3903 |
 
 Ensure these are free on the host or adjust the `ExposeHostPort` lines in the respective container unit files.

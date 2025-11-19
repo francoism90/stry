@@ -44,14 +44,14 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|----------|-----------|
-| **Backend** | [Laravel 12.x](https://laravel.com/) |
-| **Frontend** | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/) |
-| **Database** | [PostgreSQL 18.x](https://www.postgresql.org/) |
-| **Containers** | [Podman 5.x](https://podman.io/) |
-| **Search** | [Typesense 29.x](https://typesense.org/) |
-| **Video Processing** | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg) |
+| Category             | Technology                                                                |
+| -------------------- | ------------------------------------------------------------------------- |
+| **Backend**          | [Laravel 12.x](https://laravel.com/)                                      |
+| **Frontend**         | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/) |
+| **Database**         | [PostgreSQL 18.x](https://www.postgresql.org/)                            |
+| **Containers**       | [Podman 5.x](https://podman.io/)                                          |
+| **Search**           | [Typesense 29.x](https://typesense.org/)                                  |
+| **Video Processing** | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
 
 ---
 
@@ -69,16 +69,16 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 Comprehensive guides are available in the `docs/` folder:
 
-| Guide | Description |
-|-------|-------------|
-| [🚀 Production Setup](docs/production.md) | Deploy to production |
-| [💻 Development Guide](docs/development.md) | Local development setup |
-| [⚙️ Configuration](docs/configuration.md) | Configuration options |
-| [🔧 System Setup](docs/system.md) | System requirements |
-| [🐳 Podman Guide](docs/podman.md) | Container management |
-| [🌐 Proxy Setup](docs/proxy.md) | Reverse proxy configuration |
-| [☁️ S3 Storage](docs/s3.md) | Object storage setup |
-| [🎮 Interaction](docs/interaction.md) | CLI usage and commands |
+| Guide                                       | Description                 |
+| ------------------------------------------- | --------------------------- |
+| [🚀 Production Setup](docs/production.md)   | Deploy to production        |
+| [💻 Development Guide](docs/development.md) | Local development setup     |
+| [⚙️ Configuration](docs/configuration.md)   | Configuration options       |
+| [🔧 System Setup](docs/system.md)           | System requirements         |
+| [🐳 Podman Guide](docs/podman.md)           | Container management        |
+| [🌐 Proxy Setup](docs/proxy.md)             | Reverse proxy configuration |
+| [☁️ S3 Storage](docs/s3.md)                 | Object storage setup        |
+| [🎮 Interaction](docs/interaction.md)       | CLI usage and commands      |
 
 > [!TIP]
 > Quick start: Choose between [Production](docs/production.md) or [Development](docs/development.md) setup.
@@ -113,10 +113,10 @@ stry a db:seed --class=AdminSeeder
 
 The following services are only accessible when logged in as **super-admin**:
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| 🌊 **Horizon** | <https://stry.test/horizon> | Queue monitoring and management |
-| 🔭 **Telescope** | <https://stry.test/telescope> | Debugging assistant (dev only) |
+| Service          | URL                           | Description                     |
+| ---------------- | ----------------------------- | ------------------------------- |
+| 🌊 **Horizon**   | <https://stry.test/horizon>   | Queue monitoring and management |
+| 🔭 **Telescope** | <https://stry.test/telescope> | Debugging assistant (dev only)  |
 
 ---
 

@@ -2,10 +2,10 @@
 title: Interaction
 order: 5
 tags:
-  - fish
-  - shell
-  - bash
-  - commands
+    - fish
+    - shell
+    - bash
+    - commands
 ---
 
 # 🎮 CLI Interaction
@@ -87,36 +87,36 @@ Run `stry help` for a complete list. Here are the most commonly used:
 
 ### 👥 User Management
 
-| Command | Description |
-|---------|-------------|
+| Command               | Description               |
+| --------------------- | ------------------------- |
 | `stry a users:create` | Create a new user account |
 
 ### 🎬 Video Management
 
-| Command | Description |
-|---------|-------------|
-| `stry a videos:import` | Import videos for a user |
-| `stry a videos:clear` | Remove soft-deleted videos from filesystem |
+| Command                | Description                                |
+| ---------------------- | ------------------------------------------ |
+| `stry a videos:import` | Import videos for a user                   |
+| `stry a videos:clear`  | Remove soft-deleted videos from filesystem |
 
 ### 🏷️ Tag Management
 
-| Command | Description |
-|---------|-------------|
-| `stry a tags:create` | Create a new tag |
-| `stry a tags:sort` | Sort tags alphabetically by type |
+| Command              | Description                      |
+| -------------------- | -------------------------------- |
+| `stry a tags:create` | Create a new tag                 |
+| `stry a tags:sort`   | Sort tags alphabetically by type |
 
 ### 📹 Playlist & Media
 
-| Command | Description |
-|---------|-------------|
-| `stry a playlists:clear` | Remove generated HLS playlists from filesystem |
-| `stry a groups:clear` | Detach all videos from groups of a given type |
-| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions |
+| Command                                                      | Description                                    |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| `stry a playlists:clear`                                     | Remove generated HLS playlists from filesystem |
+| `stry a groups:clear`                                        | Detach all videos from groups of a given type  |
+| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions           |
 
 ### 🔍 Search & Indexing
 
-| Command | Description |
-|---------|-------------|
+| Command                     | Description                   |
+| --------------------------- | ----------------------------- |
 | `stry a scout:sync --flush` | Sync searchable model indexes |
 
 ---

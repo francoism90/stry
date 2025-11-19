@@ -2,8 +2,8 @@
 title: Proxy
 order: 4
 tags:
-  - proxy
-  - caddy
+    - proxy
+    - caddy
 ---
 
 # 🌐 Proxy Configuration
@@ -129,13 +129,13 @@ sudo update-ca-certificates
 
 After setup, these services will be available:
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| 🏠 Main App | <https://stry.test> | Main application |
-| 🔌 WebSocket | <https://ws.stry.test> | Laravel Reverb |
-| ⚡ Vite Dev | <https://vite.stry.test> | Vite development server |
-| ☁️ S3 API | <https://s3.stry.test> | Object storage endpoint |
-| 🗄️ MinIO Console | <https://mc.stry.test> | S3 management interface |
+| Service          | URL                      | Description             |
+| ---------------- | ------------------------ | ----------------------- |
+| 🏠 Main App      | <https://stry.test>      | Main application        |
+| 🔌 WebSocket     | <https://ws.stry.test>   | Laravel Reverb          |
+| ⚡ Vite Dev      | <https://vite.stry.test> | Vite development server |
+| ☁️ S3 API        | <https://s3.stry.test>   | Object storage endpoint |
+| 🗄️ MinIO Console | <https://mc.stry.test>   | S3 management interface |
 
 ---
 

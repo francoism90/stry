@@ -2,9 +2,9 @@
 title: Configuration
 order: 6
 tags:
-  - config
-  - environment
-  - customizing
+    - config
+    - environment
+    - customizing
 ---
 
 # ⚙️ Configuration
@@ -25,8 +25,8 @@ You can customize **stry** by either:
 
 The following configuration files are available for customization:
 
-| Config File | Description | Key Features |
-|-------------|-------------|--------------|
-| 📹 `config/playlist.php` | HLS playlist generation | Encryption parameters, bitrate presets, segment settings |
-| 🎬 `config/laravel-ffmpeg.php` | FFmpeg video processing | Temporary paths, thread count, encoding parameters |
-| 📦 `config/media-library.php` | Media collection management | File handling, conversions. See [Spatie docs](https://spatie.be/docs/laravel-medialibrary/v11/introduction) |
+| Config File                    | Description                 | Key Features                                                                                                |
+| ------------------------------ | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 📹 `config/playlist.php`       | HLS playlist generation     | Encryption parameters, bitrate presets, segment settings                                                    |
+| 🎬 `config/laravel-ffmpeg.php` | FFmpeg video processing     | Temporary paths, thread count, encoding parameters                                                          |
+| 📦 `config/media-library.php`  | Media collection management | File handling, conversions. See [Spatie docs](https://spatie.be/docs/laravel-medialibrary/v11/introduction) |

@@ -2,9 +2,9 @@
 title: Running on production
 order: 1
 tags:
-  - podman
-  - quadlet
-  - usage
+    - podman
+    - quadlet
+    - usage
 ---
 
 # 🚀 Production Setup
@@ -76,12 +76,12 @@ PLAYLIST_ROTATION_KEYS_SECTIONS=5  # Default: balanced security/performance
 **Understanding the Trade-off:**
 
 - **Lower values** (e.g., `3`): More encryption keys per playlist
-  - ✅ Stronger security (keys rotate more frequently)
-  - ⚠️ Slower performance (more key generation overhead)
+    - ✅ Stronger security (keys rotate more frequently)
+    - ⚠️ Slower performance (more key generation overhead)
 
 - **Higher values** (e.g., `10`): Fewer encryption keys per playlist
-  - ✅ Better performance (less key generation overhead)
-  - ⚠️ Potentially weaker security (keys rotate less frequently)
+    - ✅ Better performance (less key generation overhead)
+    - ⚠️ Potentially weaker security (keys rotate less frequently)
 
 > [!TIP]
 > For most deployments, the default value of `5` provides a good balance. Only adjust if you have specific security requirements or performance constraints.

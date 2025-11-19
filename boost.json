@@ -1,12 +1,5 @@
 {
-    "agents": [
-        "copilot"
-    ],
-    "editors": [
-        "phpstorm",
-        "vscode"
-    ],
-    "guidelines": [
-        "laravel/fortify"
-    ]
+    "agents": ["copilot"],
+    "editors": ["phpstorm", "vscode"],
+    "guidelines": ["laravel/fortify"]
 }
