@@ -68,7 +68,7 @@ jobs:
               run: vendor/bin/pint --test
 
             - name: Run ESLint
-              run: pnpm run lint:eslint
+              run: pnpm run lint
 
             - name: Run TypeScript type check
               run: pnpm run type-check
