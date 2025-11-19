@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue'
-import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
-import { Head } from '@inertiajs/vue3'
+import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue';
+import ServiceWorker from '@/components/Ui/ServiceWorker.vue';
+import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -15,8 +15,8 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <UApp>
-    <UDashboardGroup>
-      <UDashboardPanel id="dashboard">
+    <UDashboardGroup class="overflow-y-auto">
+      <UDashboardPanel id="dashboard" :ui="{ body: 'overflow-clip' }">
         <template #header>
           <DashboardNavbar />
         </template>

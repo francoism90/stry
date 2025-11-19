@@ -5,15 +5,11 @@
         "bradlc.vscode-tailwindcss",
         "christian-kohler.npm-intellisense",
         "christian-kohler.path-intellisense",
-        "davidanson.vscode-markdownlint",
         "dbaeumer.vscode-eslint",
         "devsense.composer-php-vscode",
         "EditorConfig.EditorConfig",
         "esbenp.prettier-vscode",
         "laravel.vscode-laravel",
-        "mikestead.dotenv",
-        "oxc.oxc-vscode",
-        "phpstan.vscode-phpstan",
         "vue.volar"
     ]
 }

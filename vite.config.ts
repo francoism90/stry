@@ -63,16 +63,6 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
-          dashboardGroup: {
-            slots: {
-              base: 'overflow-y-auto',
-            },
-          },
-          dashboardPanel: {
-            slots: {
-              body: 'overflow-clip',
-            },
-          },
           dashboardToolbar: {
             slots: {
               root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
