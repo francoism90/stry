@@ -15,11 +15,8 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <UApp>
-    <UDashboardGroup class="overflow-y-auto">
-      <UDashboardPanel
-        id="dashboard"
-        :ui="{ body: 'overflow-clip' }"
-      >
+    <UDashboardGroup class="relative overflow-auto overflow-x-hidden">
+      <UDashboardPanel id="dashboard">
         <template #header>
           <DashboardNavbar />
         </template>
