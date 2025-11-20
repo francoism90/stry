@@ -143,20 +143,15 @@ class Video extends Model implements HasMedia
             ->storeConversionsOnDisk('conversions')
             ->acceptsMimeTypes([
                 'video/av1',
-                'video/avi',
-                'video/mkv',
                 'video/mp4',
                 'video/mp4v-es',
                 'video/mpeg',
                 'video/ogg',
                 'video/quicktime',
                 'video/webm',
-                'video/x-flv',
                 'video/x-m4v',
                 'video/x-matroska',
                 'video/x-mpeg',
-                'video/x-ms-asf',
-                'video/x-ms-wmv',
                 'video/x-msvideo',
             ]);
 

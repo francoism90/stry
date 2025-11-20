@@ -6,6 +6,7 @@ namespace Foundation\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,9 +27,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::guessPolicyNamesUsing(function (string $modelClass) {
             $className = class_basename($modelClass);
 
-            $namespace = str($className)->pluralStudly();
+            $namespace = Str::pluralStudly($className);
 
-            return str("{$className}Policy")
+            return Str::of("{$className}Policy")
                 ->prepend("Domain\\{$namespace}\\Policies\\")
                 ->value();
         });
