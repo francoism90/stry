@@ -86,15 +86,6 @@ return [
     ],
 
     /**
-     * This setting is used to configure the additional parameters that will be passed to the FFMpeg exporter.
-     * These parameters will be used to configure the transcoding process.
-     */
-    'additional_parameters' => [
-        '-max_muxing_queue_size', '2048',
-        // '-force_key_frames:v', 'expr:gte(t,n_forced*6)',
-    ],
-
-    /**
      * When this setting is true, the playlist will copy the video codec from the original video file.
      * This is useful for cases where the original video file is already in a compatible video codec.
      * It can also improve performance by avoiding the need to transcode the video.

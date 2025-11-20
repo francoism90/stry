@@ -293,11 +293,6 @@ class Playlist extends Model
         return Config::integer('playlist.stale_after', 0);
     }
 
-    public static function getAdditionalParameters(): array
-    {
-        return Config::array('playlist.additional_parameters', []);
-    }
-
     public static function shouldUseRotationKeys(): bool
     {
         return Config::boolean('playlist.rotation_keys', true);

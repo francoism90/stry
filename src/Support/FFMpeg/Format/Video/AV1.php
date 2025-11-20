@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Support\FFMpeg\Format\Video;
 
+use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\DefaultVideo;
 
 class AV1 extends DefaultVideo
@@ -44,19 +45,31 @@ class AV1 extends DefaultVideo
         return 2;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtraParams()
+    public function getPlaylistParameters(): array
     {
+        $frameInterval = $this->getFrameInterval();
+
+        $segmentLength = $this->getSegmentLength();
+
         return [
-            '-cpu-used', '6',
+            '-cpu-used', '4',
+            '-threads', '8',
+            '-g', (string) $frameInterval,
+            '-lag-in-frames', '0',
             '-row-mt', '1',
-            '-tiles', '2x2',
-            '-crf', '28',
-            '-b:v', '0',
-            '-sc_threshold', '0',
+            '-tile-columns', '0',
             '-pix_fmt', 'yuv420p',
+            '-force_key_frames', "expr:gte(t,n_forced*{$segmentLength})",
         ];
+    }
+
+    public function getFrameInterval(): int
+    {
+        return Playlist::getFrameInterval();
+    }
+
+    public function getSegmentLength(): int
+    {
+        return Playlist::getSegmentLength();
     }
 }

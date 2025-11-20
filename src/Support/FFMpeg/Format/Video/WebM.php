@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Support\FFMpeg\Format\Video;
 
+use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\WebM as DefaultVideo;
 
 class WebM extends DefaultVideo
@@ -37,32 +38,29 @@ class WebM extends DefaultVideo
         return 2;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtraParams()
+    public function getPlaylistParameters(): array
     {
+        $frameInterval = $this->getFrameInterval();
+
+        $segmentLength = $this->getSegmentLength();
+
         return [
-            '-f',
-            'webm',
-            '-quality',
-            'good',
-            '-cpu-used',
-            '2',
-            '-crf',
-            '28',
-            '-b:v',
-            '0',
-            '-row-mt',
-            '1',
-            '-tile-columns',
-            '2',
-            '-tile-rows',
-            '1',
-            '-sc_threshold',
-            '0',
-            '-pix_fmt',
-            'yuv420p',
+            '-deadline', 'realtime',
+            '-cpu-used', '4',
+            '-g', (string) $frameInterval,
+            '-keyint_min', (string) $frameInterval,
+            '-pix_fmt', 'yuv420p',
+            '-force_key_frames', "expr:gte(t,n_forced*{$segmentLength})",
         ];
+    }
+
+    public function getFrameInterval(): int
+    {
+        return Playlist::getFrameInterval();
+    }
+
+    public function getSegmentLength(): int
+    {
+        return Playlist::getSegmentLength();
     }
 }

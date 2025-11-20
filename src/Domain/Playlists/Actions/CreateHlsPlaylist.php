@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Domain\Playlists\Actions;
 
 use Domain\Playlists\Models\Playlist;
-use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
-use ProtoneMedia\LaravelFFMpeg\FFMpeg\CopyVideoFormat;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Support\FFMpeg\Format\Video\X264;
 
@@ -41,7 +39,7 @@ class CreateHlsPlaylist
 
             // Add formats to the ffmpeg exporter
             Playlist::getHlsFormats()->each(function (Fluent $preset) use (&$ffmpeg, $video) {
-                /** @var DefaultVideo $format */
+                /** @var X264 $format */
                 $format = $preset->get('format', $video->get('format', X264::class));
 
                 $videoCodec = $video->get('copy_video', false) ? 'copy' : $preset->get('video_codec', $format->getVideoCodec());
@@ -50,22 +48,13 @@ class CreateHlsPlaylist
                 $videoBitrate = $preset->get('kilo_bitrate', $format->getKiloBitrate());
                 $audioBitrate = $preset->get('audio_bitrate', $format->getAudioKiloBitrate());
 
-                // If both audio and video codecs are set to copy, use the CopyVideoFormat
-                if ($videoCodec === 'copy' && $audioCodec === 'copy') {
-                    $ffmpeg->addFormat((new CopyVideoFormat)->setAdditionalParameters(
-                        Playlist::getAdditionalParameters(),
-                    ));
-
-                    return;
-                }
-
                 // Add the format with the specified codecs and bitrate
                 $ffmpeg->addFormat($format
                     ->setVideoCodec($videoCodec)
                     ->setAudioCodec($audioCodec)
                     ->setKiloBitrate($videoCodec === 'copy' ? 0 : $videoBitrate)
                     ->setAudioKiloBitrate($audioBitrate)
-                    ->setAdditionalParameters(Playlist::getAdditionalParameters()),
+                    ->setAdditionalParameters($format->getPlaylistParameters()),
                 );
             });
 

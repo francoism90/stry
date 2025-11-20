@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Support\FFMpeg\Format\Video;
 
+use Domain\Playlists\Models\Playlist;
 use FFMpeg\Format\Video\X264 as DefaultVideo;
 
 class X265 extends DefaultVideo
@@ -47,26 +48,29 @@ class X265 extends DefaultVideo
         return 2;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtraParams()
+    public function getPlaylistParameters(): array
     {
+        $frameInterval = $this->getFrameInterval();
+
+        $segmentLength = $this->getSegmentLength();
+
         return [
-            '-preset',
-            'medium',
-            '-crf',
-            '23',
-            '-profile:v',
-            'main',
-            '-tag:v',
-            'hvc1',
-            '-sc_threshold',
-            '0',
-            '-pix_fmt',
-            'yuv420p',
-            '-x265-params',
-            'log-level=error',
+            '-preset', 'fast',
+            '-profile:v', 'main',
+            '-x265-params', "keyint={$frameInterval}:min-keyint={$frameInterval}:scenecut=0:profile=main:level-idc=4.1",
+            '-keyint_min', (string) $frameInterval,
+            '-force_key_frames', "expr:gte(t,n_forced*{$segmentLength})",
+            '-pix_fmt', 'yuv420p',
         ];
+    }
+
+    public function getFrameInterval(): int
+    {
+        return Playlist::getFrameInterval();
+    }
+
+    public function getSegmentLength(): int
+    {
+        return Playlist::getSegmentLength();
     }
 }
