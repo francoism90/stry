@@ -45,10 +45,8 @@ class AV1 extends DefaultVideo
         return 2;
     }
 
-    public function getPlaylistParameters(): array
+    public function getHlsParameters(): array
     {
-        $frameInterval = $this->getFrameInterval();
-
         $segmentLength = $this->getSegmentLength();
 
         return [
@@ -60,11 +58,6 @@ class AV1 extends DefaultVideo
             '-pix_fmt', 'yuv420p',
             '-force_key_frames', "expr:gte(t,n_forced*{$segmentLength})",
         ];
-    }
-
-    public function getFrameInterval(): int
-    {
-        return Playlist::getFrameInterval();
     }
 
     public function getSegmentLength(): int

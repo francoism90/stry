@@ -38,7 +38,7 @@ class WebM extends DefaultVideo
         return 2;
     }
 
-    public function getPlaylistParameters(): array
+    public function getHlsParameters(): array
     {
         $frameInterval = $this->getFrameInterval();
 

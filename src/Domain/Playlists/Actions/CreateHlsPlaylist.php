@@ -54,7 +54,7 @@ class CreateHlsPlaylist
                     ->setAudioCodec($audioCodec)
                     ->setKiloBitrate($videoCodec === 'copy' ? 0 : $videoBitrate)
                     ->setAudioKiloBitrate($audioBitrate)
-                    ->setAdditionalParameters($format->getPlaylistParameters()),
+                    ->setAdditionalParameters($format->getHlsParameters()),
                 );
             });
 
