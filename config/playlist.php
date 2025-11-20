@@ -70,7 +70,7 @@ return [
      * A lower frame interval will result in more keyframes, which can improve seeking performance,
      * but will also increase the file size.
      */
-    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 60),
+    'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 180),
 
     /**
      * This setting is used to configure the video formats that will be used for transcoding.
@@ -91,7 +91,7 @@ return [
      */
     'additional_parameters' => [
         '-max_muxing_queue_size', '2048',
-        // '-force_key_frames:v', 'expr:gte(t,n_forced*2.000)',
+        // '-force_key_frames:v', 'expr:gte(t,n_forced*6)',
     ],
 
     /**

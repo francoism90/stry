@@ -268,7 +268,7 @@ class Playlist extends Model
 
     public static function getFrameInterval(): int
     {
-        return Config::integer('playlist.frame_interval', 60);
+        return Config::integer('playlist.frame_interval', 180);
     }
 
     public static function getTranscodeDisk(): string
