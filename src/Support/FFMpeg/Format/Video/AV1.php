@@ -54,7 +54,6 @@ class AV1 extends DefaultVideo
         return [
             '-cpu-used', '4',
             '-threads', '8',
-            '-g', (string) $frameInterval,
             '-lag-in-frames', '0',
             '-row-mt', '1',
             '-tile-columns', '0',

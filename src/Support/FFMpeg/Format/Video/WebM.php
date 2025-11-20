@@ -47,7 +47,6 @@ class WebM extends DefaultVideo
         return [
             '-deadline', 'realtime',
             '-cpu-used', '4',
-            '-g', (string) $frameInterval,
             '-keyint_min', (string) $frameInterval,
             '-pix_fmt', 'yuv420p',
             '-force_key_frames', "expr:gte(t,n_forced*{$segmentLength})",
