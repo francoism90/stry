@@ -18,8 +18,8 @@ RUN apk add --no-cache --virtual .build-deps \
 
 RUN apk add --no-cache \
     bash curl git unzip zip tzdata ca-certificates openssh-client \
-    libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg ffmpeg \
-    libavif libavif-apps libheif libheif-dev \
+    libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg \
+    libavif libavif-apps libheif libheif-dev libmatroska ffmpeg \
     postgresql-client sqlite aws-cli \
     nodejs npm coreutils findutils openssl \
     imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \

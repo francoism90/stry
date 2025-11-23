@@ -60,8 +60,8 @@ class Video extends ImageGenerator
     public function supportedExtensions(): Collection
     {
         return Collection::make([
-            'av1',
             'm4v',
+            'mkv',
             'mov',
             'mp4',
             'webm',
@@ -72,11 +72,12 @@ class Video extends ImageGenerator
     {
         return Collection::make([
             'video/av1',
-            'video/mpeg',
             'video/mp4',
+            'video/mpeg',
             'video/quicktime',
             'video/webm',
             'video/x-m4v',
+            'video/x-matroska',
         ]);
     }
 }
