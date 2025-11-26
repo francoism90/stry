@@ -25,13 +25,11 @@ import { Head } from '@inertiajs/vue3'
       >
         <template #header>
           <ServiceWorker />
-          <DashboardNavbar title="Videos" />
+          <DashboardNavbar />
         </template>
 
         <template #body>
-          <UPage>
-            <slot />
-          </UPage>
+          <slot />
         </template>
       </UDashboardPanel>
     </UDashboardGroup>
