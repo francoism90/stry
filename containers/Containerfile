@@ -7,7 +7,7 @@ ARG TZ=UTC
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
 ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV PNPM_HOME="/pnpm"
-ENV PATH="${PNPM_HOME}:${PATH}"
+ENV PATH="${PATH}:${PNPM_HOME}"
 ENV TZ=${TZ}
 
 WORKDIR /usr/local/src
