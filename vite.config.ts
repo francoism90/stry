@@ -63,41 +63,6 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
-          dashboardToolbar: {
-            slots: {
-              root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
-              left: 'gap-3.5',
-              right: 'gap-3.5',
-            },
-          },
-          pageBody: {
-            base: 'mt-14 space-y-2 pb-8',
-          },
-          pageHeader: {
-            slots: {
-              root: 'border-0 py-2',
-              title: 'font-serif text-lg font-bold sm:text-xl',
-              description: 'text-sm sm:text-base',
-            },
-          },
-          pageFeature: {
-            slots: {
-              title: 'font-serif text-sm font-semibold sm:text-base',
-              description: 'text-sm sm:text-base',
-            },
-          },
-          pageCard: {
-            slots: {
-              title: 'font-serif text-sm font-semibold sm:text-base',
-              description: 'text-sm sm:text-base',
-            },
-          },
-          blogPost: {
-            slots: {
-              title: 'font-serif text-sm font-semibold sm:text-base',
-              description: 'text-sm sm:text-base',
-            },
-          },
         },
       }),
       VitePWA({

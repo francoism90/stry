@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import AppLogo from '@/components/Ui/AppLogo.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import AppLogo from '../Ui/AppLogo.vue'
 
 const items: NavigationMenuItem[] = [
   {
@@ -22,10 +22,7 @@ const items: NavigationMenuItem[] = [
 </script>
 
 <template>
-  <UDashboardNavbar
-    :toggle="false"
-    :ui="{ root: 'fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-(--ui-container) bg-default' }"
-  >
+  <UDashboardNavbar :ui="{ root: 'fixed inset-x-0 top-0 z-30 mx-auto bg-default' }">
     <template #left>
       <ULink to="/">
         <AppLogo />
@@ -34,8 +31,8 @@ const items: NavigationMenuItem[] = [
 
     <template #right>
       <UNavigationMenu
-        :items="items"
         variant="link"
+        :items="items"
         :ui="{
           linkLabel: 'sr-only sm:not-sr-only',
         }"
