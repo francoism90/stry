@@ -112,6 +112,7 @@ COPY --from=build /app /app
 # PHP Production Configuration
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
+# Set proper ownership
 RUN chown -R docker:docker /app
 
 USER docker
@@ -122,6 +123,7 @@ FROM base AS development
 
 WORKDIR /app
 
+# Set proper ownership
 RUN chown -R docker:docker /app
 
 USER docker
