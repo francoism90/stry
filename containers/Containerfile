@@ -13,8 +13,7 @@ ENV TZ=${TZ}
 WORKDIR /usr/local/src
 
 RUN apk add --no-cache --virtual .build-deps \
-    build-base autoconf libtool pcre-dev openssl-dev zlib-dev linux-headers \
-    libzip-dev imagemagick-dev
+    build-base autoconf libtool pcre-dev openssl-dev zlib-dev linux-headers
 
 RUN apk add --no-cache \
     bash coreutils findutils unzip zip tzdata \
