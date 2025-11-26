@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN rm -rf /usr/local/src/*
 
-RUN arch="$(uname -m)" \
-    && case "$arch" in \
+# FFmpeg
+RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
       aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
@@ -19,16 +19,16 @@ RUN arch="$(uname -m)" \
     && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
-RUN git clone --recurse-submodules https://github.com/shaka-project/shaka-packager.git \
-    && cd shaka-packager \
-    && cmake -B build -G Ninja \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_SHARED_LIBS=OFF \
-        -DFULLY_STATIC=ON \
-    && cmake --build build --parallel \
-    && install -m 0755 build/packager/packager /usr/local/bin/packager \
-    && cd .. && rm -rf shaka-packager
+# Shaka Packager
+RUN arch="$(uname -m)" && case "$arch" in \
+      x86_64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ;; \
+      aarch64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
+    && chmod +x /usr/local/bin/packager
 
+# ab-av1
 RUN cargo install ab-av1
 
 FROM php:8.4-cli-bookworm AS base
@@ -67,11 +67,13 @@ COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-us
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
-COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin
+COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
+# PHP Extensions
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN install-php-extensions @composer apcu bcmath exif \
@@ -79,9 +81,11 @@ RUN install-php-extensions @composer apcu bcmath exif \
     opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
     sockets swoole uv zip
 
+# Node.js Packages
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
 
+# Create docker user
 RUN groupadd -g ${GID} docker && \
     useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
@@ -102,6 +106,7 @@ WORKDIR /app
 
 COPY --from=build /app /app
 
+# PHP Production Configuration
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 RUN chown -R docker:docker /app
