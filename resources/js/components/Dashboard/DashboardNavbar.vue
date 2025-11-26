@@ -4,19 +4,9 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items: NavigationMenuItem[] = [
   {
-    label: 'Explore',
-    to: '/explore',
-    icon: 'i-lucide-compass',
-  },
-  {
-    label: 'Library',
-    to: '/library',
-    icon: 'i-lucide-library',
-  },
-  {
     label: 'Profile',
-    to: '/profile',
     icon: 'i-lucide-user',
+    to: '/profile',
   },
 ]
 </script>
@@ -30,12 +20,12 @@ const items: NavigationMenuItem[] = [
     </template>
 
     <template #right>
+      <UDashboardSearchButton />
+
       <UNavigationMenu
         variant="link"
+        class="w-full"
         :items="items"
-        :ui="{
-          linkLabel: 'sr-only sm:not-sr-only',
-        }"
       />
     </template>
   </UDashboardNavbar>

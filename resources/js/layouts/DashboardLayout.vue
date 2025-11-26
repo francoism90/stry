@@ -14,6 +14,8 @@ import { Head } from '@inertiajs/vue3'
     <UDashboardGroup class="relative overflow-auto overflow-x-hidden">
       <DashboardSidebar />
 
+      <UDashboardSearch />
+
       <UDashboardPanel
         id="video"
         :ui="{ body: 'pt-(--ui-header-height) sm:pt-(--ui-header-height)' }"
