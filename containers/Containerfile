@@ -33,9 +33,7 @@ RUN arch="$(uname -m)" \
       aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
-    && rm -rf /usr/local/src/* \
-    && mkdir -p /usr/local/src/ffmpeg \
-    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/src/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe'
+    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe'
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -83,10 +81,6 @@ FROM base AS production
 
 WORKDIR /app
 
-COPY --from=base /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=base /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=base /root/.cargo/bin/ab-av1 /usr/local/bin/ab-av1
-
 COPY --from=build /app /app
 
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
@@ -102,10 +96,6 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 FROM base AS development
 
 WORKDIR /app
-
-COPY --from=base /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=base /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=base /root/.cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
