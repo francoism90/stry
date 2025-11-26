@@ -46,10 +46,11 @@ COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-us
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions @composer bcmath ctype curl dom \
+RUN install-php-extensions @composer apcu bcmath ctype curl dom \
     exif fileinfo filter gd hash igbinary imagick inotify intl \
     mbstring memcached msgpack opcache openssl pcntl pdo_mysql \
-    pdo_pgsql pgsql redis session sockets swoole tokenizer uv xml zip
+    pdo_pgsql pgsql posix redis session simplexml sockets swoole \
+    tokenizer uv xml zip
 
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
