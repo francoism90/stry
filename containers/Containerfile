@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates dnsutils fswatch unzip zip \
     git openssh-client sqlite3 postgresql-common awscli \
     libavif-bin jpegoptim optipng pngquant gifsicle \
+    cargo rustc \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
@@ -39,8 +40,7 @@ RUN arch="$(uname -m)" \
     && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
-RUN curl -fsSL "https://github.com/alexheretic/ab-av1/releases/download/v0.10.2/ab-av1-v0.10.2-x86_64-unknown-linux-musl.tar.zst" -o /usr/local/bin/ab-av1 \
-    && chmod +x /usr/local/bin/ab-av1
+RUN cargo install ab-av1 --root /usr/local
 
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
