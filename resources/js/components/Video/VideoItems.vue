@@ -13,7 +13,7 @@ defineProps<Props>()
 <template>
   <UBlogPosts :orientation="orientation">
     <VideoCard
-      v-for="item in items?.data || []"
+      v-for="item in items?.data"
       :key="item.id"
       :item="item"
     />

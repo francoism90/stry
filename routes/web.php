@@ -21,5 +21,5 @@ Route::get('/profile', ProfileController::class)->name('profile');
 Route::resource('tags', TagController::class)->except('index', 'create', 'store');
 
 // Videos
-Route::resource('videos', VideoController::class)->except('index', 'create', 'store');
+Route::resource('videos', VideoController::class)->except('create', 'store');
 Route::resource('videos.media', VideoMediaController::class)->except( 'create', 'store')->shallow();
