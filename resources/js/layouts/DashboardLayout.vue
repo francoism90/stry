@@ -11,7 +11,10 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <UApp>
-    <UDashboardGroup class="relative overflow-auto overflow-x-hidden">
+    <UDashboardGroup
+      unit="rem"
+      class="relative overflow-auto overflow-x-hidden"
+    >
       <DashboardSidebar />
 
       <UDashboardSearch />
