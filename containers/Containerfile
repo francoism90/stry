@@ -2,6 +2,14 @@ FROM rust:bookworm AS builder
 
 WORKDIR /usr/local/src
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl git \
+    build-essential cmake ninja-build python3 musl-tools \
+    && apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN rm -rf /usr/local/src/*
+
 RUN arch="$(uname -m)" \
     && case "$arch" in \
       x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
@@ -10,6 +18,16 @@ RUN arch="$(uname -m)" \
     esac \
     && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
+
+RUN git clone --recurse-submodules https://github.com/shaka-project/shaka-packager.git \
+    && cd shaka-packager \
+    && cmake -B build -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DFULLY_STATIC=ON \
+    && cmake --build build --parallel \
+    && install -m 0755 build/packager/packager /usr/local/bin/packager \
+    && cd .. && rm -rf shaka-packager
 
 RUN cargo install ab-av1
 
@@ -42,7 +60,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
-    && apt-get autoremove -y && apt-get clean \
+    && apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
@@ -51,6 +69,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
