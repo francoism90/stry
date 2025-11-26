@@ -10,22 +10,28 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
 ENV TZ=${TZ}
 
-WORKDIR /tmp
+WORKDIR /usr/local/src
 
 RUN apk add --no-cache --virtual .build-deps \
-    build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers \
-    libzip-dev libpq-dev oniguruma-dev imagemagick-dev
+    build-base autoconf libtool pcre-dev openssl-dev zlib-dev linux-headers \
+    libzip-dev imagemagick-dev cargo
 
 RUN apk add --no-cache \
-    bash curl git unzip zip tzdata ca-certificates openssh-client \
-    libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg \
-    libavif libavif-apps libheif libheif-dev libmatroska ffmpeg \
-    postgresql-client sqlite aws-cli \
-    nodejs npm coreutils findutils openssl \
-    imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
-    libass fontconfig freetype harfbuzz fribidi
+    bash coreutils findutils unzip zip tzdata \
+    curl ca-certificates git openssh-client \
+    sqlite nodejs npm postgresql-client aws-cli \
+    libavif-apps jpegoptim optipng pngquant gifsicle
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+RUN arch="$(uname -m)" \
+    && case "$arch" in \
+      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
+      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && mkdir -p /usr/local/src/ffmpeg \
+    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/src/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe'
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -47,6 +53,8 @@ RUN install-php-extensions \
     pcntl \
     imagick \
     gd
+
+RUN cargo install ab-av1
 
 RUN apk del .build-deps
 
