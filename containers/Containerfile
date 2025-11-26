@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates dnsutils fswatch unzip zip tzdata \
     git openssh-client sqlite3 postgresql-common awscli \
     libavif-bin jpegoptim optipng pngquant gifsicle \
-    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh \
+    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
