@@ -3,26 +3,32 @@ FROM php:8.4-cli-bookworm AS base
 ARG UID=1000
 ARG GID=1000
 ARG TZ=UTC
+ARG NODE_VERSION=24
+ARG POSTGRES_VERSION=18
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=${TZ}
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
 ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-ENV TZ=${TZ}
 
 WORKDIR /usr/local/src
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash coreutils findutils unzip zip tzdata \
-    curl ca-certificates git openssh-client \
-    sqlite3 postgresql-client awscli \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
-    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs \
-    && apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
-
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+RUN mkdir -p ${PNPM_HOME} && rm -rf /usr/local/src/*
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl ca-certificates dnsutils fswatch unzip zip tzdata \
+    git openssh-client sqlite3 postgresql-common awscli \
+    libavif-bin jpegoptim optipng pngquant gifsicle \
+    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh \
+    && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
+    && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get autoremove -y && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN arch="$(uname -m)" \
     && case "$arch" in \
