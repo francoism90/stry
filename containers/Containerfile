@@ -42,22 +42,23 @@ RUN arch="$(uname -m)" \
 RUN curl -fsSL "https://github.com/alexheretic/ab-av1/releases/download/v0.10.2/ab-av1-v0.10.2-x86_64-unknown-linux-musl.tar.zst" -o /usr/local/bin/ab-av1 \
     && chmod +x /usr/local/bin/ab-av1
 
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-    && install-php-extensions @composer bcmath ctype curl dom \
-    exif fileinfo filter gd hash igbinary imagick intl mbstring \
-    memcached msgpack opcache openssl pcntl pdo_mysql pdo_pgsql redis \
-    session swoole tokenizer uv xml zip
+RUN install-php-extensions @composer bcmath ctype curl dom \
+    exif fileinfo filter gd hash igbinary imagick inotify intl \
+    mbstring memcached msgpack opcache openssl pcntl pdo_mysql \
+    pdo_pgsql pgsql redis session sockets swoole tokenizer uv xml zip
 
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
 
-COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 RUN groupadd -g ${GID} docker && \
     useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+
+COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 FROM base AS build
 
