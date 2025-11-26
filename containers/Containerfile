@@ -20,7 +20,7 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 RUN mkdir -p ${PNPM_HOME} && rm -rf /usr/local/src/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates dnsutils fswatch unzip zip tzdata \
+    curl ca-certificates dnsutils fswatch unzip zip \
     git openssh-client sqlite3 postgresql-common awscli \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
@@ -44,24 +44,11 @@ RUN curl -fsSL "https://github.com/alexheretic/ab-av1/releases/download/v0.10.2/
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions \
-    @composer \
-    pdo_mysql \
-    pdo_pgsql \
-    intl \
-    mbstring \
-    bcmath \
-    opcache \
-    zip \
-    igbinary \
-    msgpack \
-    redis \
-    swoole \
-    memcached \
-    exif \
-    pcntl \
-    imagick \
-    gd
+RUN containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+    && install-php-extensions @composer bcmath ctype curl dom \
+    exif fileinfo filter gd hash igbinary imagick intl mbstring \
+    memcached msgpack opcache openssl pcntl pdo_mysql pdo_pgsql redis \
+    session swoole tokenizer uv xml zip
 
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
@@ -102,8 +89,6 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 FROM base AS development
 
 WORKDIR /app
-
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 RUN chown -R docker:docker /app
 
