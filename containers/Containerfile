@@ -24,12 +24,16 @@ RUN apk add --no-cache \
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
+RUN addgroup -g ${GID} docker && \
+    adduser -u ${UID} -G docker -h /home/docker -s /bin/bash -D docker
+
 RUN arch="$(uname -m)" \
     && case "$arch" in \
       x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
       aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
+    && rm -rf /usr/local/src/* \
     && mkdir -p /usr/local/src/ffmpeg \
     && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/src/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe'
 
@@ -54,20 +58,15 @@ RUN install-php-extensions \
     imagick \
     gd
 
+RUN npm install -g npm@latest corepack@latest svgo@latest \
+    && corepack enable pnpm
+
 RUN cargo install ab-av1
-
-RUN apk del .build-deps
-
-RUN addgroup -g ${GID} docker && \
-    adduser -u ${UID} -G docker -h /home/docker -s /bin/bash -D docker
-
-RUN npm install -g npm@latest corepack@latest svgo@latest && \
-    corepack enable pnpm
 
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5173 6001 8080 13714
+RUN apk del .build-deps
 
 FROM base AS build
 
@@ -92,6 +91,8 @@ RUN chown -R docker:docker /app
 
 USER docker
 
+EXPOSE 6001 8080 13714
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS development
@@ -103,5 +104,7 @@ COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-us
 RUN chown -R docker:docker /app
 
 USER docker
+
+EXPOSE 5173 6001 8080
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
