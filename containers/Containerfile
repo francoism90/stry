@@ -12,9 +12,6 @@ ENV TZ=${TZ}
 
 WORKDIR /usr/local/src
 
-RUN apk add --no-cache --virtual .build-deps \
-    build-base autoconf libtool pcre-dev openssl-dev zlib-dev linux-headers
-
 RUN apk add --no-cache \
     bash coreutils findutils unzip zip tzdata \
     curl ca-certificates git openssh-client \
@@ -63,8 +60,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN addgroup -g ${GID} docker && \
     adduser -u ${UID} -G docker -h /home/docker -s /bin/bash -D docker
-
-RUN apk del .build-deps
 
 FROM base AS build
 
