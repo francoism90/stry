@@ -30,6 +30,13 @@ class VideoMediaController extends Controller implements HasMiddleware
         ];
     }
 
+    public function index(): Response
+    {
+        Gate::authorize('viewAny', Video::class);
+
+        return Inertia::render('Videos/VideoMediaIndex');
+    }
+
     public function show(Video $video, VideoViewProperties $properties): Response
     {
         Gate::authorize('view', $video);

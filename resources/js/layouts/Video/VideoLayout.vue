@@ -1,54 +1,46 @@
 <script setup lang="ts">
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
-import type { Video } from '@/types'
+import { useVideo } from '@/composables/video'
 import { Head } from '@inertiajs/vue3'
 import type { ButtonProps, TabsItem } from '@nuxt/ui'
-import { formatDate, formatTimeAgoIntl } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
-interface Props {
-  video: Video
-}
-
-const props = defineProps<Props>()
+const { state, created, updated } = useVideo()
 
 const links = ref<ButtonProps[]>([
   {
     label: 'View',
     icon: 'i-lucide-eye',
-    to: show.url(props.video.id),
+    to: show.url(state.value.id),
   },
 ])
 
 const items = ref<TabsItem[]>([
   {
     label: 'General',
-    to: edit.url(props.video.id),
+    to: edit.url(state.value.id),
   },
   {
     label: 'Media',
-    to: index.url({ video: props.video.id }),
+    to: index.url({ video: state.value.id }),
   },
 ])
-
-const createdAt = computed(() => formatDate(new Date(props.video.created_at), 'YYYY-MM-DD'))
-const updatedAt = computed(() => formatTimeAgoIntl(new Date(props.video.updated_at)))
 </script>
 
 <template>
-  <Head :title="video.title" />
+  <Head :title="state.title" />
 
   <UPage>
     <UPageBody>
       <UContainer>
         <UPageHeader
-          :title="video.title"
+          :title="state.title"
           :links="links"
           :ui="{ title: 'text-lg font-bold sm:text-xl', description: 'mt-0 text-sm' }"
         >
           <template #description>
-            <span>{{ video.user?.name }} · Created {{ createdAt }} · Updated {{ updatedAt }}</span>
+            <span>{{ state.user?.name }} · Created {{ created }} · Updated {{ updated }}</span>
           </template>
         </UPageHeader>
       </UContainer>
