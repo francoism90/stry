@@ -63,6 +63,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# PHP Configuration and Entrypoint
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -88,6 +89,8 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 # Create docker user
 RUN groupadd -g ${GID} docker && \
     useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS build
 
@@ -115,8 +118,6 @@ USER docker
 
 EXPOSE 6001 8080 13714
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
 FROM base AS development
 
 WORKDIR /app
@@ -126,5 +127,3 @@ RUN chown -R docker:docker /app
 USER docker
 
 EXPOSE 5173 6001 8080
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
