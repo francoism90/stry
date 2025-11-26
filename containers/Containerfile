@@ -27,6 +27,7 @@ RUN arch="$(uname -m)" \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe'
+    && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
 RUN curl -fsSL "https://github.com/alexheretic/ab-av1/releases/download/v0.10.2/ab-av1-v0.10.2-x86_64-unknown-linux-musl.tar.zst" -o /usr/local/bin/ab-av1 \
     && chmod +x /usr/local/bin/ab-av1
