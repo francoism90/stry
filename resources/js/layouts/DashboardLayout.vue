@@ -21,7 +21,7 @@ import { Head } from '@inertiajs/vue3'
 
       <UDashboardPanel
         id="video"
-        :ui="{ body: 'pt-(--ui-header-height) sm:pt-(--ui-header-height)' }"
+        :ui="{ body: 'pt-(--ui-header-height) sm:pt-(--ui-header-height) lg:ml-72' }"
       >
         <template #header>
           <ServiceWorker />

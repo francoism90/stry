@@ -55,9 +55,13 @@ const items: NavigationMenuItem[][] = [
 
 <template>
   <UDashboardSidebar
-    :min-size="16"
-    :default-size="16"
-    :ui="{ footer: 'border-t border-default' }"
+    :min-size="18"
+    :max-size="18"
+    :default-size="18"
+    :ui="{
+      root: 'fixed top-0 left-0',
+      footer: 'border-t border-default',
+    }"
   >
     <template #header>
       <div class="hidden"></div>
