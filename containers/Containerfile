@@ -83,9 +83,13 @@ FROM base AS production
 
 WORKDIR /app
 
-COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY --from=base /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=base /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+COPY --from=base /root/.cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 COPY --from=build /app /app
+
+COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 RUN chown -R docker:docker /app
 
@@ -98,6 +102,10 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 FROM base AS development
 
 WORKDIR /app
+
+COPY --from=base /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=base /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+COPY --from=base /root/.cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
