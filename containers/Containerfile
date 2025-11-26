@@ -1,4 +1,4 @@
-FROM php:8.4-cli-alpine AS base
+FROM php:8.4-cli-bookworm AS base
 
 ARG UID=1000
 ARG GID=1000
@@ -12,11 +12,15 @@ ENV TZ=${TZ}
 
 WORKDIR /usr/local/src
 
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bash coreutils findutils unzip zip tzdata \
     curl ca-certificates git openssh-client \
-    sqlite nodejs npm postgresql-client aws-cli \
-    libavif-apps jpegoptim optipng pngquant gifsicle
+    sqlite3 postgresql-client awscli \
+    libavif-bin jpegoptim optipng pngquant gifsicle \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
@@ -59,8 +63,8 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-RUN addgroup -g ${GID} docker && \
-    adduser -u ${UID} -G docker -h /home/docker -s /bin/bash -D docker
+RUN groupadd -g ${GID} docker && \
+    useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 FROM base AS build
 
