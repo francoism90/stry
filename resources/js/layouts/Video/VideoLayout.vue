@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { index } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
 import type { Video } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { ButtonProps, TabsItem } from '@nuxt/ui'
@@ -27,6 +28,7 @@ const items = ref<TabsItem[]>([
   },
   {
     label: 'Media',
+    to: index.url({ video: props.video.id }),
   },
 ])
 

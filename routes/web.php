@@ -8,6 +8,7 @@ use App\Web\Dashboard\Controllers\LibraryController;
 use App\Web\Dashboard\Controllers\ProfileController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Videos\Controllers\VideoController;
+use App\Web\Videos\Controllers\VideoMediaController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard
@@ -21,3 +22,4 @@ Route::resource('tags', TagController::class)->except('index', 'create', 'store'
 
 // Videos
 Route::resource('videos', VideoController::class)->except('index', 'create', 'store');
+Route::resource('videos.media', VideoMediaController::class)->except( 'create', 'store')->shallow();
