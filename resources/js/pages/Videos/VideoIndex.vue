@@ -18,20 +18,18 @@ defineProps<Props>()
   <Head title="Library" />
 
   <UPage>
-    <UPageBody>
-      <InfiniteScroll
-        data="items"
-        items-element="#video-items"
-        :buffer="200"
-      >
-        <UBlogPosts id="video-items">
-          <VideoCard
-            v-for="item in items?.data"
-            :key="item.id"
-            :item="item"
-          />
-        </UBlogPosts>
-      </InfiniteScroll>
-    </UPageBody>
+    <InfiniteScroll
+      data="items"
+      items-element="#video-items"
+      :buffer="200"
+    >
+      <UBlogPosts id="video-items">
+        <VideoCard
+          v-for="item in items?.data"
+          :key="item.id"
+          :item="item"
+        />
+      </UBlogPosts>
+    </InfiniteScroll>
   </UPage>
 </template>

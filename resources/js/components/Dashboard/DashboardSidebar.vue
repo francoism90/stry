@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserMenu from '@/components/Ui/UserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items: NavigationMenuItem[][] = [
@@ -76,6 +77,10 @@ const items: NavigationMenuItem[][] = [
         :items="items"
         orientation="vertical"
       />
+    </template>
+
+    <template #footer="{ collapsed }">
+      <UserMenu :collapsed="collapsed" />
     </template>
   </UDashboardSidebar>
 </template>

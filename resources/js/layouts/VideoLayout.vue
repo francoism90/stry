@@ -9,7 +9,7 @@
         </template>
 
         <template #right>
-          <CustomersAddModal />
+          <!-- <CustomersAddModal /> -->
         </template>
       </UDashboardNavbar>
     </template>
