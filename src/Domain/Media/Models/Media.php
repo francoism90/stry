@@ -71,9 +71,6 @@ class Media extends BaseMedia
     {
         return [
             'id' => (string) $this->getScoutKey(),
-            'model_type' => (string) $this->model_type,
-            'model_id' => (string) $this->model_id,
-            'uuid' => (string) $this->uuid,
             'name' => (string) $this->name,
             'file_name' => (string) $this->file_name,
             'mime_type' => (string) $this->mime_type,
@@ -82,8 +79,8 @@ class Media extends BaseMedia
             'conversions_disk' => (string) $this->conversions_disk,
             'size' => (int) $this->size,
             'order' => (int) $this->order_column,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'created_at' => (int) $this->created_at->timestamp,
+            'updated_at' => (int) $this->updated_at->timestamp,
         ];
     }
 

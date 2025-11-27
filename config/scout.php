@@ -244,7 +244,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'title, name',
+                    'query_by' => 'name, email',
                     'facet_by' => 'state',
                 ],
             ],
@@ -255,16 +255,6 @@ return [
                         [
                             'name' => 'id',
                             'type' => 'string',
-                        ],
-                        [
-                            'name' => 'model_type',
-                            'type' => 'string',
-                            'facet' => true,
-                        ],
-                        [
-                            'name' => 'model_id',
-                            'type' => 'string',
-                            'facet' => true,
                         ],
                         [
                             'name' => 'name',
@@ -295,7 +285,6 @@ return [
                             'name' => 'conversions_disk',
                             'type' => 'string',
                             'optional' => true,
-                            'facet' => true,
                         ],
                         [
                             'name' => 'size',
@@ -303,9 +292,8 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'order_column',
+                            'name' => 'order',
                             'type' => 'int64',
-                            'optional' => true,
                             'sort' => true,
                         ],
                         [
@@ -327,8 +315,8 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, file_name, model_name, mime_type, collection_name, disk',
-                    'facet_by' => 'model_type, collection_name, disk, conversions_disk',
+                    'query_by' => 'name, file_name, mime_type, collection_name',
+                    'facet_by' => 'collection_name, disk',
                 ],
             ],
 
@@ -490,11 +478,13 @@ return [
                             'name' => 'released_at',
                             'type' => 'string',
                             'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'published_at',
                             'type' => 'string',
                             'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'created_at',
@@ -520,7 +510,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, tags, synonyms, released_at',
+                    'query_by' => 'name, description, tags, synonyms, identifier, released_at',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],

@@ -255,8 +255,8 @@ class Video extends Model implements HasMedia
             'released_at' => (string) $this->released_at,
             'published_at' => (string) $this->published_at,
             'state' => (string) $this->state,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'created_at' => (int) $this->created_at->timestamp,
+            'updated_at' => (int) $this->updated_at->timestamp,
         ];
     }
 
