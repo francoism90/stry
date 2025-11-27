@@ -29,7 +29,7 @@ const items: NavigationMenuItem[][] = [
     {
       label: 'Media',
       icon: 'i-lucide-files',
-      to: '/tags',
+      to: '/media',
     },
   ],
   [
