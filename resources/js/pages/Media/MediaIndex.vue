@@ -7,6 +7,7 @@ import { Deferred, Head } from '@inertiajs/vue3'
 
 defineProps<{
   items: MediaCollection
+  search?: string | null
 }>()
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
@@ -20,6 +21,9 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <div>Loading...</div>
     </template>
 
-    <MediaItems :items="items" />
+    <MediaItems
+      :items="items"
+      :search="search"
+    />
   </Deferred>
 </template>

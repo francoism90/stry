@@ -2,20 +2,34 @@
 import { index } from '@/actions/App/Web/Media/Controllers/MediaController'
 import type { Media, MediaCollection } from '@/types'
 import type { TableColumn } from '@nuxt/ui'
+import { watchDebounced } from '@vueuse/core'
+import { useForm } from 'laravel-precognition-vue-inertia'
 import { ref, useTemplateRef } from 'vue'
 
 const props = defineProps<{
   items: MediaCollection
+  search?: string | null
 }>()
 
 const table = useTemplateRef('table')
+
+const form = useForm('get', '', {
+  search: props.search || '',
+})
+
+const onSubmit = () => {
+  form.submit({
+    preserveState: true,
+    replace: true,
+    only: ['items'],
+    reset: ['items'],
+  })
+}
 
 const pagination = ref({
   pageIndex: props.items.meta.current_page,
   pageSize: props.items.meta.per_page,
 })
-
-const globalFilter = ref('')
 
 const columns: TableColumn<Media>[] = [
   {
@@ -29,15 +43,23 @@ const columns: TableColumn<Media>[] = [
   },
 ]
 
-const to = (page: number) => index.url({ mergeQuery: { page } })
+const to = (page: number) => index.url({ mergeQuery: { page, ...form.data() } })
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
   <div class="flex flex-col gap-6">
     <div class="flex flex-wrap items-center justify-between gap-1.5">
       <UInput
-        v-model="globalFilter"
+        v-model="form.search"
         class="max-w-sm"
+        type="search"
+        name="search"
         icon="i-lucide-search"
         placeholder="Filter media..."
       />
@@ -46,7 +68,6 @@ const to = (page: number) => index.url({ mergeQuery: { page } })
     <UTable
       ref="table"
       v-model:pagination="pagination"
-      v-model:global-filter="globalFilter"
       :data="items.data || []"
       :columns="columns"
       class="shrink-0"

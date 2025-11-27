@@ -23,9 +23,8 @@ class MediaCollection implements ProvidesInertiaProperties
     public function toInertiaProperties(RenderContext $context): array
     {
 
-
-
         return [
+            'search' => fn() => $this->search,
             'items' =>  fn () => MediaResource::collection(
                 $this->getBuilder(),
             ),
