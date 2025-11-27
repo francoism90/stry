@@ -55,12 +55,14 @@ const items: NavigationMenuItem[][] = [
 
 <template>
   <UDashboardSidebar
+    id="default"
+    collapsible
     :min-size="18"
     :max-size="18"
     :default-size="18"
     :ui="{
-      root: 'max-h-dvh bg-elevated/25 lg:sticky lg:top-0',
-      footer: 'border-t border-default',
+      root: 'bg-elevated/25 lg:sticky lg:top-0 lg:max-h-dvh',
+      footer: 'lg:border-t lg:border-default',
     }"
   >
     <template #header>
