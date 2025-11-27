@@ -13,7 +13,7 @@ import { Head } from '@inertiajs/vue3'
       <UDashboardGroup
         unit="rem"
         storage="local"
-        class="relative overflow-auto overflow-x-hidden"
+        class="relative overflow-clip"
       >
         <DashboardSidebar />
 

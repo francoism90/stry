@@ -1,10 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <UDashboardPanel
-    id="videos"
-    :ui="{ body: 'pt-(--ui-header-height) sm:pt-(--ui-header-height) lg:ml-72' }"
-  >
+  <UDashboardPanel id="videos">
     <template #header>
       <UDashboardNavbar title="Customers">
         <template #leading>

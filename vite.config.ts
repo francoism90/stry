@@ -65,7 +65,7 @@ export default defineConfig(({ mode }) => {
           },
           dashboardNavbar: {
             slots: {
-              root: 'fixed inset-x-0 top-0 z-30 mx-auto bg-default',
+              root: 'sticky top-0 z-50 w-full bg-default',
             },
           },
           pageHeader: {
