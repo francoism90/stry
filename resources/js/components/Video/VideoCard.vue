@@ -24,7 +24,7 @@ const props = defineProps<Props>()
     }"
   >
     <template #description>
-      <div v-html="item.description" />
+      <p v-html="item.description" />
       <TagItems :items="item.tags" />
     </template>
   </UBlogPost>
