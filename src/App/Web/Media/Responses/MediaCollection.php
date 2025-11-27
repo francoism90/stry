@@ -9,7 +9,6 @@ use Domain\Media\Models\Media;
 use Domain\Users\Models\User;
 use Foundation\Container\Attributes\QueryParameter;
 use Illuminate\Container\Attributes\CurrentUser;
-use Inertia\Inertia;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
 
@@ -33,7 +32,7 @@ class MediaCollection implements ProvidesInertiaProperties
 
     protected function getBuilder(): mixed
     {
-        return Media::query()
-            ->paginate(1);
+        return Media::search($this->search)
+            ->paginate(16);
     }
 }

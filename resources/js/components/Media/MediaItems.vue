@@ -21,7 +21,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items'],
+    only: ['items', 'search'],
     reset: ['items'],
   })
 }
@@ -33,13 +33,24 @@ const pagination = ref({
 
 const columns: TableColumn<Media>[] = [
   {
-    accessorKey: 'id',
-    header: '#',
-    cell: ({ row }) => `#${row.getValue('id')}`,
+    accessorKey: 'file_name',
+    header: 'File',
   },
   {
-    accessorKey: 'name',
-    header: 'Name',
+    accessorKey: 'file_size',
+    header: 'Size',
+  },
+  {
+    accessorKey: 'collection_name',
+    header: 'Collection',
+  },
+  {
+    accessorKey: 'mime_type',
+    header: 'MIME Type',
+  },
+  {
+    accessorKey: 'created_at',
+    header: 'Created At',
   },
 ]
 
