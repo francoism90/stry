@@ -28,6 +28,12 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
   [
     {
+      label: 'Horizon',
+      icon: 'i-lucide-bar-chart-3',
+      to: '/horizon',
+      target: '_blank',
+    },
+    {
       label: 'Documentation',
       icon: 'i-lucide-book-open',
       to: 'https://ui.nuxt.com/docs/getting-started/installation/vue',
