@@ -68,13 +68,6 @@ export default defineConfig(({ mode }) => {
               root: 'sticky top-0 z-50 w-full bg-default',
             },
           },
-          pageHeader: {
-            slots: {
-              title: 'font-serif text-2xl font-bold sm:text-3xl',
-              description: 'mt-2! text-sm sm:text-base',
-              links: 'mb-2 space-x-2',
-            },
-          },
         },
       }),
       VitePWA({

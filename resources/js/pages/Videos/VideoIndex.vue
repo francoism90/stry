@@ -18,11 +18,6 @@ defineProps<Props>()
   <Head title="Library" />
 
   <UPage>
-    <UPageHeader
-      title="Videos"
-      description="Browse and manage your video library."
-    />
-
     <UPageBody>
       <InfiniteScroll
         data="items"

@@ -3,7 +3,7 @@
 <template>
   <UDashboardPanel id="videos">
     <template #header>
-      <UDashboardNavbar title="Customers">
+      <UDashboardNavbar title="Videos">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
