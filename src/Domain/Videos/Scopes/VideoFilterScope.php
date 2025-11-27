@@ -13,8 +13,5 @@ readonly class VideoFilterScope
         public VideoIndexRequest $request,
     ) {}
 
-    public function __invoke(Builder $scout): void
-    {
-        $scout;
-    }
+    public function __invoke(Builder $scout): void {}
 }

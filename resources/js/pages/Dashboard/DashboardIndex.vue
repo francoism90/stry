@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import DashboardToolbar from '@/components/Dashboard/DashboardToolbar.vue'
-import VideoItems from '@/components/Video/VideoItems.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { PageView, VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 interface Props {
   items: VideoCollection
@@ -18,23 +16,5 @@ defineProps<Props>()
 <template>
   <Head title="Library" />
 
-  <UPage>
-    <UPageBody>
-      <DashboardToolbar default-filter="recommended" />
-
-      <UContainer class="py-4">
-        <InfiniteScroll
-          data="items"
-          items-element="#feed-items"
-          :buffer="200"
-        >
-          <VideoItems
-            id="feed-items"
-            :items="items"
-            :orientation="view"
-          />
-        </InfiniteScroll>
-      </UContainer>
-    </UPageBody>
-  </UPage>
+  <UPage> Dashboard Index </UPage>
 </template>

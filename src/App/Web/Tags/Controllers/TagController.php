@@ -9,7 +9,6 @@ use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Shared\Responses\CollectionProperties;
 use App\Web\Tags\Responses\TagEditProperties;
 use App\Web\Tags\Responses\TagViewProperties;
 use Domain\Tags\Actions\UpdateTagDetails;
@@ -51,7 +50,7 @@ class TagController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function show(Tag $tag, VideoIndexRequest $request, TagViewProperties $properties, CollectionProperties $collection): Response
+    public function show(Tag $tag, VideoIndexRequest $request, TagViewProperties $properties): Response
     {
         Gate::authorize('view', $tag);
 
