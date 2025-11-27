@@ -18,14 +18,14 @@ const props = defineProps<Props>()
     :badge="item.timestamp"
     :date="item.released_at || item.published_at || item.created_at"
     :to="show.url(props.item.id)"
+    :ui="{
+      title: 'text-sm font-medium',
+      description: 'flex flex-col gap-2 text-xs',
+    }"
   >
     <template #description>
       <div v-html="item.description" />
-
-      <TagItems
-        class="mt-4"
-        :items="item.tags"
-      />
+      <TagItems :items="item.tags" />
     </template>
   </UBlogPost>
 </template>
