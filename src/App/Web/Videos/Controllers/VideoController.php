@@ -12,6 +12,7 @@ use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoViewProperties;
 use Domain\Videos\Actions\UpdateVideoDetails;
+use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
@@ -37,13 +38,13 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        // Build the video query with search and ordering
-        $builder = Video::search($request->safe()->input('search'))
-            ->tap(new VideoFilterScope())
+        $scout = Video::search($request->safe()->input('search'))
+            ->tap(new VideoFilterScope($request))
             ->simplePaginate(18);
 
         return Inertia::render('Videos/VideoIndex', [
-            'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
+            'search' => fn () => $request->safe()->input('search', ''),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
         ]);
     }
 
