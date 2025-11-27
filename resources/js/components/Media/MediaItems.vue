@@ -2,11 +2,13 @@
 import { index } from '@/actions/App/Web/Media/Controllers/MediaController'
 import type { Media, MediaCollection } from '@/types'
 import type { TableColumn } from '@nuxt/ui'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
 const props = defineProps<{
   items: MediaCollection
 }>()
+
+const table = useTemplateRef('table')
 
 const pagination = ref({
   pageIndex: props.items.meta.current_page,
@@ -31,12 +33,13 @@ const to = (page: number) => index.url({ mergeQuery: { page } })
 </script>
 
 <template>
-  <div class="w-full space-y-4 pb-4">
-    <div class="flex border-b border-accented px-4 py-3.5">
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-wrap items-center justify-between gap-1.5">
       <UInput
         v-model="globalFilter"
         class="max-w-sm"
-        placeholder="Filter..."
+        icon="i-lucide-search"
+        placeholder="Filter media..."
       />
     </div>
 
@@ -44,19 +47,31 @@ const to = (page: number) => index.url({ mergeQuery: { page } })
       ref="table"
       v-model:pagination="pagination"
       v-model:global-filter="globalFilter"
-      :data="items.data"
+      :data="items.data || []"
       :columns="columns"
-      class="flex-1"
+      class="shrink-0"
+      :ui="{
+        base: 'table-fixed border-separate border-spacing-0',
+        thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
+        tbody: '[&>tr]:last:[&>td]:border-b-0',
+        th: 'border-y border-default py-2 first:rounded-l-lg first:border-l last:rounded-r-lg last:border-r',
+        td: 'border-b border-default',
+        separator: 'h-0',
+      }"
     />
 
-    <div class="flex justify-end border-t border-default px-4 pt-4">
-      <UPagination
-        :page="items.meta.current_page"
-        :total="items.meta.total"
-        :items-per-page="items.meta.per_page"
-        :sibling-count="1"
-        :to="to"
-      />
+    <div class="mt-auto flex items-center justify-between gap-3 border-t border-default pt-4">
+      <div class="text-sm text-muted">{{ items.meta.total }} results</div>
+
+      <div class="flex items-center gap-1.5">
+        <UPagination
+          :page="items.meta.current_page"
+          :total="items.meta.total"
+          :items-per-page="items.meta.per_page"
+          :sibling-count="1"
+          :to="to"
+        />
+      </div>
     </div>
   </div>
 </template>
