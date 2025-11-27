@@ -14,7 +14,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <Head title="Library" />
+  <Head title="Videos" />
 
   <UDashboardPanel id="videos">
     <template #header>

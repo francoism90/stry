@@ -41,7 +41,7 @@ class VideoController extends Controller implements HasMiddleware
             ->tap(new VideoFilterScope($request))
             ->simplePaginate(18);
 
-        return Inertia::render('Videos/VideoIndex', [
+        return Inertia::render('Dashboard/VideoIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
         ]);
