@@ -24,12 +24,10 @@ class MediaController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(MediaIndexRequest $request, MediaCollection $collection): Response
+    public function index(MediaIndexRequest $request, MediaCollection $items): Response
     {
         Gate::authorize('viewAny', Media::class);
 
-        return Inertia::render('Media/MediaIndex', [
-            'items' => Inertia::scroll(fn () => $collection),
-        ]);
+        return Inertia::render('Media/MediaIndex', $items);
     }
 }
