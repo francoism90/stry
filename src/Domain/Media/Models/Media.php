@@ -7,10 +7,13 @@ namespace Domain\Media\Models;
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
 {
+    use Searchable;
+
     /**
      * @var array<int, string>
      */
@@ -62,6 +65,26 @@ class Media extends BaseMedia
     public function getRouteKeyName(): string
     {
         return 'uuid';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string) $this->getScoutKey(),
+            'model_type' => (string) $this->model_type,
+            'model_id' => (string) $this->model_id,
+            'uuid' => (string) $this->uuid,
+            'name' => (string) $this->name,
+            'file_name' => (string) $this->file_name,
+            'mime_type' => (string) $this->mime_type,
+            'collection_name' => (string) $this->collection_name,
+            'disk' => (string) $this->disk,
+            'conversions_disk' => (string) $this->conversions_disk,
+            'size' => (int) $this->size,
+            'order' => (int) $this->order_column,
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
+        ];
     }
 
     protected function asset(): Attribute

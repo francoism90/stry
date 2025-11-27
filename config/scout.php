@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\Media\Models\Media;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -245,6 +246,89 @@ return [
                 'search-parameters' => [
                     'query_by' => 'title, name',
                     'facet_by' => 'state',
+                ],
+            ],
+
+            Media::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'model_type',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'model_id',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'file_name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'mime_type',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'collection_name',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'disk',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'conversions_disk',
+                            'type' => 'string',
+                            'optional' => true,
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'size',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'order_column',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'order',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'name, file_name, model_name, mime_type, collection_name, disk',
+                    'facet_by' => 'model_type, collection_name, disk, conversions_disk',
                 ],
             ],
 
