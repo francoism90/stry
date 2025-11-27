@@ -64,7 +64,7 @@ const items: NavigationMenuItem[][] = [
     }"
   >
     <template #header>
-      <div class="hidden"></div>
+      <div>foo</div>
     </template>
 
     <template #default="{ collapsed }">

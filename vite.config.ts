@@ -63,6 +63,11 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
+          dashboardNavbar: {
+            slots: {
+              root: 'fixed inset-x-0 top-0 z-30 mx-auto bg-default',
+            },
+          },
           pageHeader: {
             slots: {
               title: 'font-serif text-2xl font-bold sm:text-3xl',

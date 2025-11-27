@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import VideoCard from '@/components/Video/VideoCard.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import VideoLayout from '@/layouts/VideoLayout.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
@@ -8,7 +9,7 @@ interface Props {
   items: VideoCollection
 }
 
-defineOptions({ layout: DashboardLayout })
+defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
 defineProps<Props>()
 </script>
