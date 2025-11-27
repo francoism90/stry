@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import VideoCard from '@/components/Video/VideoCard.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { PageView, VideoCollection } from '@/types'
+import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 interface Props {
   items: VideoCollection
-  view?: PageView
 }
 
 defineOptions({ layout: DashboardLayout })
