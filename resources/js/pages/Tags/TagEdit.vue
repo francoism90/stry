@@ -4,7 +4,7 @@ import TagDeleteModal from '@/components/Tag/TagDeleteModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useTagInput } from '@/composables/taginput'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import TagLayout from '@/layouts/Tag/TagLayout.vue'
+import TagLayout from '@/layouts/Tags/TagCollection.vue'
 import type { Tag, TagMenuItem } from '@/types'
 import { useForm } from 'laravel-precognition-vue-inertia'
 

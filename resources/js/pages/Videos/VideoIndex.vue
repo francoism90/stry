@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import VideoCard from '@/components/Video/VideoCard.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import VideoLayout from '@/layouts/VideoLayout.vue'
-import type { VideoCollection } from '@/types'
+import VideoCollection from '@/layouts/Videos/VideoCollection.vue'
+import type { Videos } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 interface Props {
-  items: VideoCollection
+  items: Videos
 }
 
-defineOptions({ layout: [DashboardLayout, VideoLayout] })
+defineOptions({ layout: [DashboardLayout, VideoCollection] })
 
 defineProps<Props>()
 </script>
