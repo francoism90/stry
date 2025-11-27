@@ -23,7 +23,7 @@ export type Media = Model & {
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
-  data: Media[] | null
+  data: Media[] | undefined
 }
 
 export type Tag = Model & {
@@ -38,7 +38,7 @@ export type Tag = Model & {
 }
 
 export type TagCollection = Omit<Paginator, 'data'> & {
-  data: Tag[] | null
+  data: Tag[] | undefined
 }
 
 export type TagMenuItem = Tag & SelectMenuItem
@@ -68,7 +68,7 @@ export type Video = Model & {
 }
 
 export type VideoCollection = Omit<Paginator, 'data'> & {
-  data: Video[] | null
+  data: Video[] | undefined
 }
 
 export type Playlist = Model & {
@@ -83,14 +83,26 @@ export type Playlist = Model & {
 }
 
 export type PlaylistCollection = Omit<Paginator, 'data'> & {
-  data: Playlist[] | null
+  data: Playlist[] | undefined
 }
 
 export type Paginator = {
-  data: Model[] | null | undefined
-  page?: number | null
-  next_cursor?: string | null
-  prev_cursor?: string | null
+  data: Model[] | undefined
+  links: {
+    first: string | undefined
+    last: string | undefined
+    prev: string | undefined
+    next: string | undefined
+  }
+  meta: {
+    current_page: number
+    current_page_url: string
+    from: number | undefined
+    path: string
+    per_page: number
+    to: number | undefined
+    total: number
+  }
 }
 
 export type PageView = 'horizontal' | 'vertical' | undefined

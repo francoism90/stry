@@ -26,15 +26,15 @@ class MediaCollection implements ProvidesInertiaProperties
 
 
         return [
-            'items' => Inertia::scroll(fn () => MediaResource::collection(
+            'items' =>  fn () => MediaResource::collection(
                 $this->getBuilder(),
-            )),
+            ),
         ];
     }
 
     protected function getBuilder(): mixed
     {
         return Media::query()
-            ->simplePaginate(16);
+            ->paginate(1);
     }
 }
