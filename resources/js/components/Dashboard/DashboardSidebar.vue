@@ -59,7 +59,7 @@ const items: NavigationMenuItem[][] = [
     :max-size="18"
     :default-size="18"
     :ui="{
-      root: 'lg:fixed lg:top-0 lg:left-0 lg:z-10',
+      root: 'fixed top-0 left-0 z-10',
       footer: 'border-t border-default',
     }"
   >
