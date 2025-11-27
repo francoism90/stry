@@ -12,7 +12,6 @@ use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoViewProperties;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;

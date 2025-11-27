@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Media\Controllers;
 
 use App\Api\Media\Requests\MediaIndexRequest;
-use App\Web\Media\Responses\MediaCollection;
+use App\Api\Media\Resources\MediaResource;
 use Domain\Media\Models\Media;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -24,10 +24,16 @@ class MediaController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(MediaIndexRequest $request, MediaCollection $items): Response
+    public function index(MediaIndexRequest $request): Response
     {
         Gate::authorize('viewAny', Media::class);
 
-        return Inertia::render('Media/MediaIndex', $items);
+        $scout = Media::search($request->safe()->input('search'))
+            ->simplePaginate(18);
+
+        return Inertia::render('Media/MediaIndex', [
+            'search' => fn () => $request->safe()->input('search', ''),
+            'items' => fn () => MediaResource::collection($scout),
+        ]);
     }
 }
