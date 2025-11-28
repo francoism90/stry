@@ -51,14 +51,13 @@ const columns: TableColumn<Video>[] = [
   },
 ]
 
-const onSubmit = () => {
+const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
     only: ['items', 'search'],
     reset: ['items'],
   })
-}
 
 const to = (page: number) => index.url({ mergeQuery: { ...form.data(), page } })
 
