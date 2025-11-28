@@ -35,7 +35,7 @@ const columns: TableColumn<Video>[] = [
         h(UAvatar, {
           src: row.original.thumb,
           size: 'lg',
-          lazy: true,
+          loading: 'lazy',
         }),
         h('div', undefined, [
           h('p', { class: 'font-medium text-highlighted' }, row.original.name),
