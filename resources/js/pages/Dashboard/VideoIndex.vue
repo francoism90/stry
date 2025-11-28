@@ -97,6 +97,8 @@ watchDebounced(
           />
         </div>
 
+        {{ items }}
+
         <UTable
           ref="table"
           v-model:pagination="pagination"
