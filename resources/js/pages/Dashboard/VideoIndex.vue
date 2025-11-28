@@ -18,6 +18,7 @@ defineOptions({ layout: DashboardLayout })
 const UAvatar = resolveComponent('UAvatar')
 
 const form = useForm('get', '', {
+  page: 1,
   search: props.search || '',
 })
 
@@ -59,7 +60,7 @@ const onSubmit = () => {
   })
 }
 
-const to = (page: number) => index.url({ mergeQuery: { page, ...form.data() } })
+const to = (page: number) => index.url({ mergeQuery: { ...form.data(), page } })
 
 watchDebounced(
   () => form.search,
