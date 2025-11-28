@@ -19,15 +19,6 @@ const form = useForm('get', '', {
   search: props.search || '',
 })
 
-const onSubmit = () => {
-  form.submit({
-    preserveState: true,
-    replace: true,
-    only: ['items', 'search'],
-    reset: ['items'],
-  })
-}
-
 const pagination = ref({
   pageIndex: props.items.meta.current_page,
   pageSize: props.items.meta.per_page,
@@ -55,6 +46,15 @@ const columns: TableColumn<Media>[] = [
     header: 'Created At',
   },
 ]
+
+const onSubmit = () => {
+  form.submit({
+    preserveState: true,
+    replace: true,
+    only: ['items', 'search'],
+    reset: ['items'],
+  })
+}
 
 const to = (page: number) => index.url({ mergeQuery: { page, ...form.data() } })
 
@@ -99,6 +99,7 @@ watchDebounced(
           v-model:pagination="pagination"
           :data="items.data || []"
           :columns="columns"
+          :sibling-count="1"
           class="shrink-0"
           :ui="{
             base: 'table-fixed border-separate border-spacing-0',
@@ -111,7 +112,7 @@ watchDebounced(
         />
 
         <div class="mt-auto flex items-center justify-between gap-3 border-t border-default pt-4">
-          <div class="text-sm text-muted">{{ items.meta.total }} results</div>
+          <div class="text-sm text-muted">{{ items.meta.to }} of {{ items.meta.total }} results</div>
 
           <div class="flex items-center gap-1.5">
             <UPagination

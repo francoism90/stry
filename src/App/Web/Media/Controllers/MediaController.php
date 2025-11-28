@@ -29,7 +29,7 @@ class MediaController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Media::class);
 
         $scout = Media::search($request->safe()->input('search'))
-            ->simplePaginate(18);
+            ->paginate(16);
 
         return Inertia::render('Dashboard/MediaIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
