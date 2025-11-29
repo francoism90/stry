@@ -10,7 +10,7 @@ use Laravel\Scout\Builder;
 readonly class VideoSortScope
 {
     public function __construct(
-        protected VideoSort|string|null $sort = null,
+        public VideoSort|string|null $sort = null,
     ) {}
 
     public function __invoke(Builder $scout): void
@@ -30,8 +30,10 @@ readonly class VideoSortScope
         return $currentSorter && in_array($currentSorter, $values, true);
     }
 
-    protected function getSorter(): VideoSort|string|null
+    protected function getSorter(): ?VideoSort
     {
-        return $this->sort instanceof VideoSort ? $this->sort : VideoSort::tryFrom($this->sort);
+        $currentSorter = $this->sort;
+
+        return $currentSorter instanceof VideoSort ? $currentSorter : VideoSort::tryFrom($currentSorter);
     }
 }

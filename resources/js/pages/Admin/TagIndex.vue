@@ -1,20 +1,34 @@
 <script setup lang="ts">
-import TagCard from '@/components/Tag/TagCard.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
-interface Props {
+const props = defineProps<{
   items: TagCollection
-}
+  type: string | null
+  types: SelectMenuItem[]
+}>()
 
 defineOptions({ layout: DashboardLayout })
 
-defineProps<Props>()
+const form = useForm('get', '', {
+  type: props.type,
+  page: 1,
+})
+
+const onSubmit = () =>
+  form.submit({
+    preserveState: true,
+    replace: true,
+    only: ['items', 'type'],
+    reset: ['items'],
+  })
 </script>
 
 <template>
-  <Head title="Tags" />
+  <Head title="Library" />
 
   <UDashboardPanel id="tags">
     <template #header>
@@ -30,19 +44,44 @@ defineProps<Props>()
     </template>
 
     <template #body>
-      <InfiniteScroll
-        data="items"
-        items-element="#video-items"
-        :buffer="200"
-      >
-        <UBlogPosts id="video-items">
-          <TagCard
-            v-for="item in items?.data"
-            :key="item.id"
-            :item="item"
+      <UPage>
+        <div class="flex flex-wrap items-center justify-between gap-1.5">
+          <USelect
+            v-model="form.type"
+            :items="types"
+            label-key="label"
+            value-key="value"
+            placeholder="Filter by"
+            class="w-32 sm:w-36"
+            @update:modelValue="onSubmit"
           />
-        </UBlogPosts>
-      </InfiniteScroll>
+        </div>
+
+        <InfiniteScroll data="items">
+          <UPageList divide>
+            <UPageCard
+              v-for="(item, index) in items.data"
+              :key="index"
+              variant="ghost"
+            >
+              <UUser
+                class="px-0"
+                size="xl"
+                :name="item.name"
+                :avatar="{
+                  class: 'rounded-sm size-12',
+                }"
+              >
+                <template #description>
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                    <span>{{ item.videos }} videos</span>
+                  </div>
+                </template>
+              </UUser>
+            </UPageCard>
+          </UPageList>
+        </InfiniteScroll>
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>

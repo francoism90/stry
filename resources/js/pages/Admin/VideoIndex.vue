@@ -73,7 +73,7 @@ const onSubmit = () =>
                   src: item.thumb,
                   loading: 'lazy',
                   decoding: 'async',
-                  class: 'rounded-md',
+                  class: 'rounded-sm size-12',
                 }"
               >
                 <template #description>

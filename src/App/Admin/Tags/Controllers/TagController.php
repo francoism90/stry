@@ -12,8 +12,10 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagEditProperties;
 use App\Web\Tags\Responses\TagViewProperties;
 use Domain\Tags\Actions\UpdateTagDetails;
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
+use Domain\Tags\Scopes\TagTypeScope;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
@@ -39,14 +41,19 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Tag::class);
 
+        // Apply filters
+        $type = $request->safe()->input('type', TagType::Genre);
+
+        // Scout builder
         $scout = Tag::search($request->safe()->input('search'))
-            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
-            // ->tap(new VideoFilterScope($request))
-            ->simplePaginate(18);
+            ->tap(new TagTypeScope($type))
+            ->simplePaginate(18)
+            ->through(fn (Tag $tag) => new TagResource($tag));
 
         return Inertia::render('Admin/TagIndex', [
-            'search' => fn () => $request->safe()->input('search', ''),
-            'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
+            'items' => Inertia::scroll(fn () => $scout),
+            'type' => fn () => $type,
+            'types' => fn () => TagType::options(),
         ]);
     }
 }
