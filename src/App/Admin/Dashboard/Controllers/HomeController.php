@@ -2,29 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Dashboard\Controllers;
+namespace App\Admin\Dashboard\Controllers;
 
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller implements HasMiddleware
+class HomeController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
-        Gate::authorize('update', $request->user());
-
-        return Inertia::render('Dashboard/ProfileIndex');
+        return Inertia::render('Admin/DashboardIndex');
     }
 }

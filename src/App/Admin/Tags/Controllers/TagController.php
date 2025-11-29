@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Controllers;
+namespace App\Admin\Tags\Controllers;
 
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
@@ -44,53 +44,9 @@ class TagController extends Controller implements HasMiddleware
             // ->tap(new VideoFilterScope($request))
             ->simplePaginate(18);
 
-        return Inertia::render('Dashboard/TagIndex', [
+        return Inertia::render('Admin/TagIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
         ]);
-    }
-
-    public function show(Tag $tag, VideoIndexRequest $request, TagViewProperties $properties): Response
-    {
-        Gate::authorize('view', $tag);
-
-        // Build the video query with search and filtering by tag
-        $builder = Video::search($request->safe()->input('search'))
-            ->tap(new VideoFilterScope(tags: $tag, filter: $request->safe()->input('filter', VideoFilter::Recommended)))
-            ->simplePaginate(24);
-
-        return Inertia::render('Tags/TagView', [
-            'filters' => fn () => VideoFilter::options(),
-            'items' => Inertia::scroll(fn () => VideoResource::collection($builder)),
-            $properties,
-            $collection,
-        ]);
-    }
-
-    public function edit(Tag $tag, TagEditProperties $properties): Response
-    {
-        Gate::authorize('update', $tag);
-
-        return Inertia::render('Tags/TagEdit', [
-            $properties,
-        ]);
-    }
-
-    public function update(TagUpdateRequest $request, Tag $tag): RedirectResponse
-    {
-        Gate::authorize('update', $tag);
-
-        app(UpdateTagDetails::class)->handle($tag, $request->safe()->all());
-
-        return back();
-    }
-
-    public function destroy(Tag $tag): RedirectResponse
-    {
-        Gate::authorize('delete', $tag);
-
-        $tag->delete();
-
-        return redirect()->route('explore');
     }
 }

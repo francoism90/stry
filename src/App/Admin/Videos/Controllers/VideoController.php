@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Admin\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
@@ -41,55 +41,9 @@ class VideoController extends Controller implements HasMiddleware
             // ->tap(new VideoFilterScope($request))
             ->paginate(12);
 
-        return Inertia::render('Dashboard/VideoIndex', [
+        return Inertia::render('Admin/VideoIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
             'items' => fn () => VideoResource::collection($scout),
         ]);
-    }
-
-    public function show(Video $video, VideoViewProperties $properties): Response
-    {
-        Gate::authorize('view', $video);
-
-        // Generate video playlists if they don't exist
-        PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist('clip'),
-            $video,
-        );
-
-        return Inertia::render('Videos/VideoView', [
-            'playlist' => Inertia::defer(fn () => new VideoPlaylistProperty($video)),
-            'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
-            $properties,
-        ]);
-    }
-
-    public function edit(Video $video, VideoEditProperties $properties): Response
-    {
-        Gate::authorize('update', $video);
-
-        return Inertia::render('Videos/VideoEdit', [
-            $properties,
-        ]);
-    }
-
-    public function update(Video $video, VideoUpdateRequest $request): RedirectResponse
-    {
-        Gate::authorize('update', $video);
-
-        // Perform the update action
-        app(UpdateVideoDetails::class)->handle($video, $request->safe()->all());
-
-        return back();
-    }
-
-    public function destroy(Video $video): RedirectResponse
-    {
-        Gate::authorize('delete', $video);
-
-        // Delete the video
-        $video->deleteOrFail();
-
-        return back();
     }
 }

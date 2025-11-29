@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Media\Controllers;
+namespace App\Admin\Media\Controllers;
 
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
@@ -31,7 +31,7 @@ class MediaController extends Controller implements HasMiddleware
         $scout = Media::search($request->safe()->input('search'))
             ->paginate(16);
 
-        return Inertia::render('Dashboard/MediaIndex', [
+        return Inertia::render('Admin/MediaIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
             'items' => fn () => MediaResource::collection($scout),
         ]);
