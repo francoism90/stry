@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Web\Users\Responses\AuthenticatedProperty;
+use App\Client\Account\Responses\AuthenticatedProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Traits\Conditionable;
 use Inertia\Middleware;
