@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { index } from '@/actions/App/Web/Media/Controllers/MediaController'
+import { index } from '@/actions/App/Admin/Media/Controllers/MediaController'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Media, MediaCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { index } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { index } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
