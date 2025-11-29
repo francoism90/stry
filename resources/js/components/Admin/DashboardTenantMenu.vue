@@ -21,13 +21,6 @@ const teams = ref([
       alt: 'Vite',
     },
   },
-  {
-    label: 'Vitest',
-    avatar: {
-      src: 'https://github.com/vitest-dev.png',
-      alt: 'Vitest',
-    },
-  },
 ])
 
 const selectedTenant = ref(teams.value[0])

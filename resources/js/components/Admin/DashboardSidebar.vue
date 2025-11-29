@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import UserMenu from '@/components/Ui/UserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import TenantMenu from '../Ui/TenantMenu.vue'
+import DashboardTenantMenu from './DashboardTenantMenu.vue'
+import DashboardUserMenu from './DashboardUserMenu.vue'
 
 const items: NavigationMenuItem[][] = [
   [
@@ -74,7 +74,7 @@ const items: NavigationMenuItem[][] = [
     }"
   >
     <template #header="{ collapsed }">
-      <TenantMenu :collapsed="collapsed" />
+      <DashboardTenantMenu :collapsed="collapsed" />
     </template>
 
     <template #default="{ collapsed }">
@@ -94,7 +94,7 @@ const items: NavigationMenuItem[][] = [
     </template>
 
     <template #footer="{ collapsed }">
-      <UserMenu :collapsed="collapsed" />
+      <DashboardUserMenu :collapsed="collapsed" />
     </template>
   </UDashboardSidebar>
 </template>
