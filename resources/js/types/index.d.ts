@@ -55,7 +55,7 @@ export type Video = Model & {
   episode: string | null
   part: string | null
   captioned: boolean
-  thumb: AvatarProps['src'] | undefined
+  thumb: string | undefined
   duration: number
   timestamp: string
   snapshot: number | null | undefined
@@ -104,5 +104,3 @@ export type Paginator = {
     total: number
   }
 }
-
-export type PageView = 'horizontal' | 'vertical' | undefined

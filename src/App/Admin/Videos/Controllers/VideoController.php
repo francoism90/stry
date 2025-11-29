@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace App\Admin\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Web\Videos\Responses\VideoEditProperties;
-use App\Web\Videos\Responses\VideoPlaylistProperty;
-use App\Web\Videos\Responses\VideoQueueProperty;
-use App\Web\Videos\Responses\VideoViewProperties;
-use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Jobs\PlaylistVideo;
+use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -28,7 +21,6 @@ class VideoController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
@@ -37,15 +29,19 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
+        // Get filters
+        $sort = $request->safe()->input('sort', VideoSort::Recommended);
+
+        // Build query
         $scout = Video::search($request->safe()->input('search'))
-            // ->tap(new VideoFilterScope($request))
-            ->paginate(12);
+            ->tap(new VideoSortScope($sort))
+            ->paginate(12)
+            ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Admin/VideoIndex', [
-            'search' => fn () => $request->safe()->input('search', ''),
-            'sort' => fn () => $request->safe()->input('sort', 'name'),
-            'desc' => fn () => $request->safe()->input('desc', true),
-            'items' => fn () => VideoResource::collection($scout),
+            'items' => Inertia::scroll(fn () => $scout),
+            'sort' => fn () => $sort,
+            'sorters' => fn () => VideoSort::options(),
         ]);
     }
 }
