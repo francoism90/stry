@@ -28,7 +28,7 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Library" />
+  <Head title="Videos" />
 
   <UDashboardPanel id="videos">
     <template #header>
@@ -68,8 +68,8 @@ const onSubmit = () =>
                 class="px-0"
                 size="xl"
                 :name="item.name"
-                :description="item.description"
                 :avatar="{
+                  alt: item.name,
                   src: item.thumb,
                   loading: 'lazy',
                   decoding: 'async',

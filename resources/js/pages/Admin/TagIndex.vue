@@ -69,6 +69,7 @@ const onSubmit = () =>
                 size="xl"
                 :name="item.name"
                 :avatar="{
+                  alt: item.name,
                   class: 'rounded-sm size-12',
                 }"
               >

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
@@ -6,11 +7,12 @@ defineProps<{
   collapsed?: boolean
 }>()
 
+const page = usePage()
+
 const user = ref({
-  name: 'Benjamin Canac',
+  name: page.props.auth?.name || 'User',
   avatar: {
-    src: 'https://github.com/benjamincanac.png',
-    alt: 'Benjamin Canac',
+    alt: page.props.auth?.name,
   },
 })
 
