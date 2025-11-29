@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DashboardSidebar from '@/components/Dashboard/DashboardSidebar.vue'
+import DashboardSidebar from '@/components/Admin/DashboardSidebar.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 

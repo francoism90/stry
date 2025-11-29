@@ -43,6 +43,8 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('Admin/VideoIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
+            'sort' => fn () => $request->safe()->input('sort', 'name'),
+            'desc' => fn () => $request->safe()->input('desc', true),
             'items' => fn () => VideoResource::collection($scout),
         ]);
     }

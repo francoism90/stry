@@ -4,33 +4,82 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { TableColumn } from '@nuxt/ui'
+import type { Column, Row, SortingFn } from '@tanstack/vue-table'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { h, ref, resolveComponent } from 'vue'
 
 const props = defineProps<{
   items: VideoCollection
+  sort: string | null
+  desc: boolean | null
   search: string | null
 }>()
 
 defineOptions({ layout: DashboardLayout })
 
 const UAvatar = resolveComponent('UAvatar')
+const UButton = resolveComponent('UButton')
 
 const form = useForm('get', '', {
-  search: props.search || '',
+  sort: props.sort,
+  desc: props.desc,
+  search: props.search,
   page: 1,
 })
+
+const sorting = ref([
+  {
+    id: 'name',
+    desc: false,
+  },
+])
 
 const pagination = ref({
   pageIndex: props.items.meta.current_page,
   pageSize: props.items.meta.per_page,
 })
 
+const myCustomSortingFn: SortingFn<Video> = (rowA: Row<Video>, rowB: Row<Video>, columnId: string) => {
+  console.log('Custom sorting function called for column:', columnId)
+  // console.log('Row A data:', rowA.original)
+  // console.log('Row B data:', rowB.original)
+
+  // form.sort = columnId
+  // form.desc = false
+  // onSubmit()
+
+  return 0
+}
+
+const getHeader = (column: Column<Video>, label: string) => {
+  const isSorted = column.getIsSorted()
+
+  return h(UButton, {
+    color: 'neutral',
+    variant: 'ghost',
+    label: label,
+    icon: isSorted ? (isSorted === 'asc' ? 'i-lucide-arrow-up-narrow-wide' : 'i-lucide-arrow-down-wide-narrow') : 'i-lucide-arrow-up-down',
+    class: '-mx-2.5',
+    onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+  })
+}
+
+const onSubmit = () =>
+  form.submit({
+    preserveState: true,
+    replace: true,
+    only: ['items', 'sort', 'desc', 'search'],
+    reset: ['items'],
+  })
+
+const to = (page: number) => index.url({ mergeQuery: { ...form.data(), page } })
+
 const columns: TableColumn<Video>[] = [
   {
     accessorKey: 'name',
-    header: 'Name',
+    sortingFn: myCustomSortingFn,
+    header: ({ column }) => getHeader(column, 'Name'),
     cell: ({ row }) => {
       return h('div', { class: 'flex items-center gap-3' }, [
         h(UAvatar, {
@@ -50,16 +99,6 @@ const columns: TableColumn<Video>[] = [
     header: 'Created At',
   },
 ]
-
-const onSubmit = () =>
-  form.submit({
-    preserveState: true,
-    replace: true,
-    only: ['items', 'search'],
-    reset: ['items'],
-  })
-
-const to = (page: number) => index.url({ mergeQuery: { ...form.data(), page } })
 
 watchDebounced(
   () => form.search,
@@ -100,6 +139,7 @@ watchDebounced(
         <UTable
           ref="table"
           v-model:pagination="pagination"
+          v-model:sorting="sorting"
           class="flex-1"
           :data="items.data || []"
           :columns="columns"

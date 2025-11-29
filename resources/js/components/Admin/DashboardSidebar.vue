@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import DashboardTenantMenu from '@/components/Admin/DashboardTenantMenu.vue'
+import DashboardUserMenu from '@/components/Admin/DashboardUserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import DashboardTenantMenu from './DashboardTenantMenu.vue'
-import DashboardUserMenu from './DashboardUserMenu.vue'
 
 const items: NavigationMenuItem[][] = [
   [
