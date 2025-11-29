@@ -8,12 +8,13 @@ const items: NavigationMenuItem[][] = [
     {
       label: 'Home',
       icon: 'i-lucide-house',
-      to: '/',
+      to: '/admin',
       exact: true,
     },
     {
       label: 'Inbox',
       icon: 'i-lucide-inbox',
+      to: '/admin/inbox',
       badge: '4',
     },
   ],
@@ -21,17 +22,22 @@ const items: NavigationMenuItem[][] = [
     {
       label: 'Videos',
       icon: 'i-lucide-videotape',
-      to: '/videos',
+      to: '/admin/videos',
     },
     {
       label: 'Tags',
       icon: 'i-lucide-tags',
-      to: '/tags',
+      to: '/admin/tags',
     },
     {
       label: 'Media',
       icon: 'i-lucide-files',
-      to: '/media',
+      to: '/admin/media',
+    },
+    {
+      label: 'Users',
+      icon: 'i-lucide-users',
+      to: '/admin/users',
     },
   ],
   [
