@@ -10,7 +10,7 @@ import { h, ref, resolveComponent } from 'vue'
 
 const props = defineProps<{
   items: VideoCollection
-  search?: string | null
+  search: string | null
 }>()
 
 defineOptions({ layout: DashboardLayout })
@@ -18,8 +18,8 @@ defineOptions({ layout: DashboardLayout })
 const UAvatar = resolveComponent('UAvatar')
 
 const form = useForm('get', '', {
-  page: 1,
   search: props.search || '',
+  page: 1,
 })
 
 const pagination = ref({
@@ -71,9 +71,9 @@ watchDebounced(
 <template>
   <Head title="Library" />
 
-  <UDashboardPanel id="media">
+  <UDashboardPanel id="videos">
     <template #header>
-      <UDashboardNavbar title="Media">
+      <UDashboardNavbar title="Videos">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -122,6 +122,7 @@ watchDebounced(
               :page="items.meta.current_page"
               :total="items.meta.total"
               :items-per-page="items.meta.per_page"
+              :sibling-count="1"
               :to="to"
             />
           </div>
