@@ -28,6 +28,10 @@ readonly class TagTypeScope
     {
         $currentType = $this->type;
 
+        if (blank($currentType)) {
+            return null;
+        }
+
         return $currentType instanceof TagType ? $currentType : TagType::tryFrom($currentType);
     }
 }

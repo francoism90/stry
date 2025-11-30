@@ -1,33 +1,213 @@
 <script setup lang="ts">
+import { update } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { Video } from '@/types'
+import type { TagMenuItem, Video } from '@/types'
+import { capitalize } from '@/utils/case'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
-defineProps<{
+const props = defineProps<{
   video: Video
+  progress: number | null
 }>()
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
+
+const { items, filter } = useTags(props.video.tags || [])
+const toast = useToast()
+
+const form = useForm('put', update.url({ video: props.video.id }), {
+  name: props.video.name,
+  episode: props.video.episode || null,
+  season: props.video.season || null,
+  part: props.video.part || null,
+  snapshot: props.video.snapshot || null,
+  tags: props.video.tags || [],
+  summary: props.video.summary || null,
+  expires_at: props.video.expires_at || null,
+  published_at: props.video.published_at || null,
+  released_at: props.video.released_at || null,
+})
+
+const onSubmit = () =>
+  form.submit({
+    preserveState: true,
+    replace: true,
+    onSuccess: () =>
+      toast.add({
+        title: 'Success',
+        description: 'The video has been updated.',
+        icon: 'i-lucide-check',
+        color: 'success',
+      }),
+  })
 </script>
 
 <template>
-  <UPageCard
-    title="Password"
-    description="Confirm your current password before setting a new one."
-    variant="subtle"
+  <UForm
+    id="general"
+    :state="form"
+    class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-2xl lg:py-3"
+    @submit="onSubmit"
   >
-  </UPageCard>
-
-  <UPageCard
-    title="Account"
-    description="No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
-    class="bg-linear-to-tl from-error/10 from-5% to-default"
-  >
-    <template #footer>
+    <UPageCard
+      title="Video details"
+      description="This information will be displayed publicly."
+      variant="naked"
+      orientation="horizontal"
+    >
       <UButton
-        label="Delete account"
-        color="error"
+        form="general"
+        label="Save changes"
+        color="neutral"
+        type="submit"
+        class="w-fit lg:ms-auto"
       />
-    </template>
-  </UPageCard>
+    </UPageCard>
+
+    <UPageCard variant="subtle">
+      <UFormField
+        label="Name"
+        required
+        :error="form.errors.name"
+      >
+        <UInput
+          v-model="form.name"
+          :model-modifiers="{ string: true, trim: true }"
+          :ui="{ trailing: 'pe-1' }"
+          autofocus
+          autocapitalize="words"
+        >
+          <template #trailing>
+            <UButton
+              color="neutral"
+              variant="link"
+              size="sm"
+              icon="i-lucide-wand-sparkles"
+              aria-label="Format name"
+              @click.prevent="form.name = capitalize(form.name)"
+            />
+          </template>
+        </UInput>
+      </UFormField>
+
+      <USeparator />
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <UFormField
+          label="Season"
+          :error="form.errors.season"
+        >
+          <UInput
+            v-model="form.season"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="1"
+            autocapitalize="characters"
+          />
+        </UFormField>
+
+        <UFormField
+          label="Episode"
+          :error="form.errors.episode"
+        >
+          <UInput
+            v-model="form.episode"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="1"
+            autocapitalize="characters"
+          />
+        </UFormField>
+
+        <UFormField
+          label="Part"
+          :error="form.errors.part"
+        >
+          <UInput
+            v-model="form.part"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="1"
+            autocapitalize="characters"
+          />
+        </UFormField>
+      </div>
+
+      <USeparator />
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <UFormField
+          label="Published At"
+          :error="form.errors.published_at"
+        >
+          <UInput
+            v-model="form.published_at"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="YYYY-MM-DD HH:mm:ss"
+          />
+        </UFormField>
+
+        <UFormField
+          label="Expires At"
+          :error="form.errors.expires_at"
+        >
+          <UInput
+            v-model="form.expires_at"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="YYYY-MM-DD HH:mm:ss"
+          />
+        </UFormField>
+
+        <UFormField
+          label="Released At"
+          :error="form.errors.released_at"
+        >
+          <UInput
+            v-model="form.released_at"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="YYYY-MM-DD HH:mm:ss"
+          />
+        </UFormField>
+      </div>
+
+      <USeparator />
+
+      <UFormField
+        label="Tags"
+        :error="form.errors.tags"
+      >
+        <USelectMenu
+          v-model="form.tags as TagMenuItem[]"
+          :model-modifiers="{ nullable: true }"
+          :items="items as TagMenuItem[]"
+          :ignore-filter="true"
+          label-key="name"
+          multiple
+          class="w-full"
+          placeholder="Add tags"
+          @update:search-term="(value: string) => filter({ query: { search: value } })"
+        >
+          <template #item-label="{ item }">
+            {{ item.name }}
+
+            <span class="text-muted">
+              {{ item.category }}
+            </span>
+          </template>
+        </USelectMenu>
+      </UFormField>
+    </UPageCard>
+
+    <UPageCard
+      title="Account"
+      description="No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
+      class="bg-linear-to-tl from-error/10 from-5% to-default"
+    >
+      <template #footer>
+        <UButton
+          label="Delete account"
+          color="error"
+        />
+      </template>
+    </UPageCard>
+  </UForm>
 </template>

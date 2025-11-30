@@ -8,6 +8,7 @@ use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Tags\Scopes\TagTypeScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -30,7 +31,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         return Tag::search($request->safe()->input('search'))
-            ->tap(new TagFilterScope(filter: $request->safe()->input('filter', 'all')))
+            ->tap(new TagTypeScope($request->safe()->input('type')))
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }

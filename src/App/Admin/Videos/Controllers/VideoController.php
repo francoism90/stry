@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Admin\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Client\Videos\Responses\VideoEditProperties;
+use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -45,12 +49,34 @@ class VideoController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function edit(Video $video): Response
+    public function edit(Video $video, VideoEditProperties $properties): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Admin/Videos/VideoEdit', [
-            'video' => fn () => new VideoResource($video),
+            $properties
         ]);
+    }
+
+     public function update(Video $video, VideoUpdateRequest $request): RedirectResponse
+    {
+        Gate::authorize('update', $video);
+
+        app(UpdateVideoDetails::class)->handle(
+            video: $video,
+            attributes: $request->safe()->all()
+        );
+
+        return back();
+    }
+
+    public function destroy(Video $video): RedirectResponse
+    {
+        Gate::authorize('delete', $video);
+
+        // Delete the video
+        $video->deleteOrFail();
+
+        return back();
     }
 }

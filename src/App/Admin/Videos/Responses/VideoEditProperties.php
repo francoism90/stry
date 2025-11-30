@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Videos\Responses;
+namespace App\Admin\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Users\Models\User;
@@ -23,8 +23,8 @@ readonly class VideoEditProperties implements ProvidesInertiaProperties
     public function toInertiaProperties(RenderContext $context): array
     {
         return [
-            'video' => fn (): VideoResource => $this->getVideoResource(),
-            'progress' => fn (): int|float => $this->getProgress(),
+            'video' => fn () => $this->getVideoResource(),
+            'progress' => fn () => $this->getProgress(),
         ];
     }
 
@@ -38,7 +38,7 @@ readonly class VideoEditProperties implements ProvidesInertiaProperties
             'snapshot',
         ];
 
-        return once(fn (): VideoResource => $this->video
+        return once(fn () => $this->video
             ->loadMissing('media', 'tags', 'user')
             ->append($appends)
             ->toResource(VideoResource::class));
