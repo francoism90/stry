@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -62,6 +63,7 @@ const onSubmit = () =>
             <UPageCard
               v-for="(item, index) in items.data"
               :key="index"
+              :to="edit.url({ video: item.id })"
               variant="ghost"
             >
               <UUser

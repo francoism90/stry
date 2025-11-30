@@ -32,7 +32,6 @@ class TagController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
@@ -50,7 +49,7 @@ class TagController extends Controller implements HasMiddleware
             ->simplePaginate(18)
             ->through(fn (Tag $tag) => new TagResource($tag));
 
-        return Inertia::render('Admin/TagIndex', [
+        return Inertia::render('Admin/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),

@@ -38,10 +38,19 @@ class VideoController extends Controller implements HasMiddleware
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Admin/VideoIndex', [
+        return Inertia::render('Admin/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'sort' => fn () => $sort,
             'sorters' => fn () => VideoSort::options(),
+        ]);
+    }
+
+    public function edit(Video $video): Response
+    {
+        Gate::authorize('update', $video);
+
+        return Inertia::render('Admin/Videos/VideoEdit', [
+            'video' => fn () => new VideoResource($video),
         ]);
     }
 }

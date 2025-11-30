@@ -31,7 +31,7 @@ class MediaController extends Controller implements HasMiddleware
         $scout = Media::search($request->safe()->input('search'))
             ->paginate(16);
 
-        return Inertia::render('Admin/MediaIndex', [
+        return Inertia::render('Admin/Media/MediaIndex', [
             'search' => fn () => $request->safe()->input('search', ''),
             'items' => fn () => MediaResource::collection($scout),
         ]);
