@@ -19,10 +19,8 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   }
 
   watchEffect(async () => {
-    // Set initial items
     initial.value = toValue(tags || [])
 
-    // Populate tags
     if (!state.value?.data?.length) {
       await filter()
     }
