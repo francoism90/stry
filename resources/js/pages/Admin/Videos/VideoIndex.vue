@@ -46,7 +46,7 @@ const onSubmit = () =>
 
     <template #body>
       <UPage>
-        <div class="flex flex-wrap items-center justify-between gap-1.5">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
           <USelect
             v-model="form.sort"
             :items="sorters"
