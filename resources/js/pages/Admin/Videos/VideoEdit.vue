@@ -137,7 +137,7 @@ const onSubmit = () =>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <UFormField
-          label="Published At"
+          label="Published"
           :error="form.errors.published_at"
         >
           <UInput
@@ -148,7 +148,7 @@ const onSubmit = () =>
         </UFormField>
 
         <UFormField
-          label="Expires At"
+          label="Expires"
           :error="form.errors.expires_at"
         >
           <UInput
@@ -159,7 +159,7 @@ const onSubmit = () =>
         </UFormField>
 
         <UFormField
-          label="Released At"
+          label="Released"
           :error="form.errors.released_at"
         >
           <UInput
