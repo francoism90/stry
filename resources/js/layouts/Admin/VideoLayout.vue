@@ -11,13 +11,21 @@ const props = defineProps<{
 const links: NavigationMenuItem[] = [
   {
     label: 'General',
-    icon: 'i-lucide-user',
+    icon: 'i-lucide-film',
     to: edit.url({ video: props.video.id }),
     exact: true,
   },
   {
+    label: 'Metadata',
+    icon: 'i-lucide-file-braces',
+  },
+  {
     label: 'Media',
-    icon: 'i-lucide-users',
+    icon: 'i-lucide-images',
+  },
+  {
+    label: 'Playlists',
+    icon: 'i-lucide-list-video',
   },
 ]
 </script>
