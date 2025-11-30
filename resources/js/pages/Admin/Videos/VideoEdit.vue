@@ -49,6 +49,7 @@ const onSubmit = () =>
     id="general"
     :state="form"
     class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-2xl lg:py-3"
+    loading-auto
     @submit="onSubmit"
   >
     <UPageCard
@@ -195,16 +196,31 @@ const onSubmit = () =>
           </template>
         </USelectMenu>
       </UFormField>
+
+      <USeparator />
+
+      <UFormField
+        label="Summary"
+        :error="form.errors.summary"
+      >
+        <UTextarea
+          v-model="form.summary"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
+          :rows="5"
+          autoresize
+          class="w-full"
+        />
+      </UFormField>
     </UPageCard>
 
     <UPageCard
-      title="Account"
-      description="No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
+      title="Delete video"
+      description="Once you delete a video, there is no going back. Please be certain."
       class="bg-linear-to-tl from-error/10 from-5% to-default"
     >
       <template #footer>
         <UButton
-          label="Delete account"
+          label="Delete video"
           color="error"
         />
       </template>
