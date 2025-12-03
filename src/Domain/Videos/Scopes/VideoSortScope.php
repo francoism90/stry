@@ -4,36 +4,39 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Enums\VideoSort;
 use Laravel\Scout\Builder;
 
 readonly class VideoSortScope
 {
     public function __construct(
-        public VideoSort|string|null $sort = null,
+        public VideoOrder|string|null $sort = null,
     ) {}
 
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isSort(VideoSort::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
-            ->when($this->isSort(VideoSort::Newest), fn (Builder $scout) => $scout->latest())
-            ->when($this->isSort(VideoSort::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
-            ->when($this->isSort(VideoSort::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
-            ->when($this->isSort(VideoSort::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
+            ->when($this->isSort(VideoOrder::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
+            ->when($this->isSort(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
+            ->when($this->isSort(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
+            ->when($this->isSort(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
+            ->when($this->isSort(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
     }
 
-    protected function isSort(VideoSort ...$values): bool
+    protected function isSort(VideoOrder ...$values): bool
     {
         $currentSorter = $this->getSorter();
 
         return $currentSorter && in_array($currentSorter, $values, true);
     }
 
-    protected function getSorter(): ?VideoSort
+    protected function getSorter(): ?VideoOrder
     {
         $currentSorter = $this->sort;
 
-        return $currentSorter instanceof VideoSort ? $currentSorter : VideoSort::tryFrom($currentSorter);
+        return $currentSorter instanceof VideoOrder
+            ? $currentSorter
+            : VideoOrder::tryFrom($currentSorter);
     }
 }

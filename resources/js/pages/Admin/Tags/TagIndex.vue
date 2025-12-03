@@ -65,12 +65,10 @@ const onSubmit = () =>
               variant="ghost"
             >
               <UUser
-                class="px-0"
-                size="xl"
                 :name="item.name"
                 :avatar="{
                   alt: item.name,
-                  class: 'rounded-sm size-12',
+                  class: 'rounded-sm size-12 me-1',
                 }"
               >
                 <template #description>

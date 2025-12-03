@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { MediaCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -7,14 +8,14 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: MediaCollection
-  type: string | null
-  types: SelectMenuItem[]
+  sort: string | null
+  sorters: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
-  type: props.type,
+  sort: props.sort,
   page: 1,
 })
 
@@ -22,33 +23,29 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'type'],
+    only: ['items', 'sort'],
     reset: ['items'],
   })
 </script>
 
 <template>
-  <Head title="Library" />
+  <Head title="Videos" />
 
-  <UDashboardPanel id="media">
+  <UDashboardPanel id="Media">
     <template #header>
       <UDashboardNavbar title="Media">
         <template #leading>
           <UDashboardSidebarCollapse />
-        </template>
-
-        <template #right>
-          <!-- <CustomersAddModal /> -->
         </template>
       </UDashboardNavbar>
     </template>
 
     <template #body>
       <UPage>
-        <div class="flex flex-wrap items-center justify-between gap-1.5">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
           <USelect
-            v-model="form.type"
-            :items="types"
+            v-model="form.sort"
+            :items="sorters"
             label-key="label"
             value-key="value"
             placeholder="Filter by"
@@ -62,19 +59,19 @@ const onSubmit = () =>
             <UPageCard
               v-for="(item, index) in items.data"
               :key="index"
+              :to="edit.url({ video: item.id })"
               variant="ghost"
             >
               <UUser
-                class="px-0"
-                size="xl"
                 :name="item.name"
                 :avatar="{
-                  class: 'rounded-md',
+                  alt: item.name,
+                  class: 'rounded-sm size-12 me-1',
                 }"
               >
                 <template #description>
                   <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>N/A</span>
+                    <span>{{ item.file_size ?? 'N/A' }}</span>
                   </div>
                 </template>
               </UUser>
