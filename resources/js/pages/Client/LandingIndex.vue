@@ -40,18 +40,17 @@ const form = useForm('get', '', {
       />
 
       <InfiniteScroll data="items">
-        <UBlogPosts orientation="vertical">
+        <UBlogPosts class="gap-10 sm:grid-cols-1 lg:grid-cols-2">
           <UBlogPost
             v-for="(item, index) in items.data"
             v-bind="item"
             variant="naked"
-            orientation="horizontal"
             :key="index"
             :image="item.thumb"
             :badge="item.timestamp"
             :date="item.released_at || item.published_at || item.created_at"
             :ui="{
-              root: 'group gap-x-6 gap-y-4 md:grid md:grid-cols-2 lg:items-start',
+              root: 'gap-y-4',
               header: 'rounded-xs shadow-none',
               body: 'p-0 sm:p-0 lg:px-0',
               title: 'font-serif text-sm',
