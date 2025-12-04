@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
+import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -10,25 +10,36 @@ const props = defineProps<{
   sorters: SelectMenuItem[]
 }>()
 
+const tabs: TabsItem[] = [
+  {
+    label: 'Recommended',
+  },
+  {
+    label: 'Most Recent',
+  },
+  {
+    label: 'Longest',
+  },
+]
+
 const form = useForm('get', '', {
   sort: props.sort,
   page: 1,
 })
-
-const onSubmit = () =>
-  form.submit({
-    preserveState: true,
-    replace: true,
-    only: ['items', 'sort'],
-    reset: ['items'],
-  })
 </script>
 
 <template>
   <Head title="Home" />
 
   <UPage>
-    <UPageBody>
+    <UPageBody class="mt-4 space-y-4 pb-0">
+      <UTabs
+        :items="tabs"
+        class="w-full gap-4"
+        variant="link"
+        :ui="{ trigger: 'grow' }"
+      />
+
       <InfiniteScroll data="items">
         <UBlogPosts orientation="vertical">
           <UBlogPost

@@ -1,9 +1,8 @@
 <template>
   <UModal>
     <UButton
-      label="Open"
       color="neutral"
-      variant="subtle"
+      icon="i-lucide-list-filter"
     />
 
     <template #content>

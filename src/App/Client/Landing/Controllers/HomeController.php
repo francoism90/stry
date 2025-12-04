@@ -38,7 +38,7 @@ class HomeController extends Controller implements HasMiddleware
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Client/DashboardIndex', [
+        return Inertia::render('Client/LandingIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'sort' => fn () => $order,
             'sorters' => fn () => VideoOrder::options(),
