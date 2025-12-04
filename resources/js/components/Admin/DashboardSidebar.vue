@@ -3,7 +3,7 @@ import DashboardTenantMenu from '@/components/Admin/DashboardTenantMenu.vue'
 import DashboardUserMenu from '@/components/Admin/DashboardUserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const items: NavigationMenuItem[][] = [
+const links: NavigationMenuItem[][] = [
   [
     {
       label: 'Home',
@@ -91,7 +91,7 @@ const items: NavigationMenuItem[][] = [
       <UNavigationMenu
         :collapsed="collapsed"
         :ui="{ root: 'gap-3', link: 'py-2' }"
-        :items="items"
+        :items="links"
         orientation="vertical"
         tooltip
         popover
