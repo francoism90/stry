@@ -66,10 +66,12 @@ const onSubmit = () =>
                 v-if="item.tags?.length"
                 class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
               >
-                <ULink
+                <UButton
                   v-for="(tag, index) in item.tags"
                   :key="index"
-                  :title="tag.name"
+                  :label="tag.name"
+                  variant="soft"
+                  size="xs"
                 />
               </div>
             </template>
