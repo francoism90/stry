@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FeedCollections from '@/components/Feed/FeedCollections.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -28,20 +29,9 @@ const onSubmit = () =>
   <Head title="Home" />
 
   <UPage>
-    <UPageBody>
-      <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
-        <USelect
-          v-model="form.sort"
-          :items="sorters"
-          label-key="label"
-          value-key="value"
-          placeholder="Filter by"
-          variant="soft"
-          class="w-32 sm:w-36"
-          @update:modelValue="onSubmit"
-        />
-      </div>
+    <FeedCollections />
 
+    <UPageBody>
       <InfiniteScroll data="items">
         <UBlogPosts orientation="vertical">
           <UBlogPost

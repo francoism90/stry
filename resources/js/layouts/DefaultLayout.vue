@@ -14,9 +14,7 @@ import { Head } from '@inertiajs/vue3'
 
   <Suspense>
     <UApp>
-      <UContainer>
-        <slot />
-      </UContainer>
+      <slot />
     </UApp>
   </Suspense>
 </template>
