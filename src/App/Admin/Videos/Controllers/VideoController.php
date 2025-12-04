@@ -11,6 +11,7 @@ use App\Client\Videos\Responses\VideoEditProperties;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoOrderScope;
 use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -34,17 +35,17 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $sort = $request->safe()->input('sort', VideoOrder::Recommended);
+        $order = $request->safe()->input('sort', VideoOrder::Recommended);
 
         // Scout builder
         $scout = Video::search($request->safe()->input('search'))
-            ->tap(new VideoSortScope($sort))
+            ->tap(new VideoOrderScope($order))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Admin/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
-            'sort' => fn () => $sort,
+            'sort' => fn () => $order,
             'sorters' => fn () => VideoOrder::options(),
         ]);
     }

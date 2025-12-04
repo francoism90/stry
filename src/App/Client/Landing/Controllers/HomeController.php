@@ -6,7 +6,9 @@ namespace App\Client\Landing\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoOrderScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -19,7 +21,6 @@ class HomeController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
@@ -28,13 +29,19 @@ class HomeController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
+        // Apply filters
+        $order = $request->safe()->input('sort', VideoOrder::Recommended);
+
+        // Scout builder
         $scout = Video::search($request->safe()->input('search'))
-            // ->tap(new VideoFilterScope($request))
-            ->paginate(12);
+            ->tap(new VideoOrderScope($order))
+            ->simplePaginate(12)
+            ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Client/DashboardIndex', [
-            'search' => fn () => $request->safe()->input('search', ''),
-            'items' => fn () => VideoResource::collection($scout),
+            'items' => Inertia::scroll(fn () => $scout),
+            'sort' => fn () => $order,
+            'sorters' => fn () => VideoOrder::options(),
         ]);
     }
 }

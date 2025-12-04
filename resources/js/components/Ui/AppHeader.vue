@@ -1,45 +1,45 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
+import AppLogo from '../Ui/AppLogo.vue'
 
-const links: NavigationMenuItem[] = [
+const items: NavigationMenuItem[] = [
   {
-    label: 'Home',
-    icon: 'i-lucide-videotape',
-    to: '/',
+    label: 'Explore',
+    to: '/explore',
+    icon: 'i-lucide-compass',
   },
   {
-    label: 'Videos',
-    icon: 'i-lucide-videotape',
-    to: '/videos',
-  },
-  {
-    label: 'Collections',
+    label: 'Library',
+    to: '/library',
     icon: 'i-lucide-library',
-    to: '/collections',
   },
   {
-    label: 'Tags',
-    icon: 'i-lucide-tags',
-    to: '/tags',
+    label: 'Profile',
+    to: '/profile',
+    icon: 'i-lucide-user',
   },
 ]
 </script>
 
 <template>
-  <div class="fixed top-2 left-1/2 z-10 mx-auto -translate-x-1/2 transform sm:top-4">
-    <UNavigationMenu
-      :items="links"
-      variant="link"
-      color="neutral"
-      class="rounded-full border border-muted/50 bg-muted/80 px-2 shadow-lg shadow-neutral-950/5 backdrop-blur-sm sm:px-4"
-      :ui="{
-        link: 'px-2 py-1',
-        linkLeadingIcon: 'hidden',
-      }"
-    >
-      <template #list-trailing>
-        <ColorModeButton />
-      </template>
-    </UNavigationMenu>
-  </div>
+  <UDashboardNavbar
+    :toggle="false"
+    :ui="{ root: 'sticky top-0 z-50 w-full bg-default' }"
+  >
+    <template #left>
+      <ULink to="/">
+        <AppLogo />
+      </ULink>
+    </template>
+
+    <template #right>
+      <UNavigationMenu
+        :items="items"
+        variant="link"
+        :ui="{
+          linkLabel: 'sr-only sm:not-sr-only',
+        }"
+      />
+    </template>
+  </UDashboardNavbar>
 </template>
