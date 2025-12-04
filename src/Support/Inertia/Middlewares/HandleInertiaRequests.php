@@ -6,13 +6,10 @@ namespace Support\Inertia\Middlewares;
 
 use App\Client\Profile\Responses\AuthenticatedProperty;
 use Illuminate\Http\Request;
-use Illuminate\Support\Traits\Conditionable;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
-    use Conditionable;
-
     /**
      * @see https://inertiajs.com/shared-data
      *
