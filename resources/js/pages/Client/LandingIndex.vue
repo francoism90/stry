@@ -15,10 +15,10 @@ const tabs: TabsItem[] = [
     label: 'Recommended',
   },
   {
-    label: 'Most Recent',
+    label: 'Recently Watched',
   },
   {
-    label: 'Longest',
+    label: 'Most Recent',
   },
 ]
 
@@ -35,7 +35,6 @@ const form = useForm('get', '', {
     <UPageBody class="mt-4 space-y-4 pb-0">
       <UTabs
         :items="tabs"
-        class="w-full gap-4"
         variant="link"
         :ui="{ trigger: 'grow' }"
       />
