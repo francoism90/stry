@@ -3,14 +3,24 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const links: NavigationMenuItem[] = [
   {
+    label: 'Home',
+    icon: 'i-lucide-videotape',
+    to: '/',
+  },
+  {
     label: 'Videos',
     icon: 'i-lucide-videotape',
-    to: '/admin/videos',
+    to: '/videos',
+  },
+  {
+    label: 'Collections',
+    icon: 'i-lucide-library',
+    to: '/collections',
   },
   {
     label: 'Tags',
     icon: 'i-lucide-tags',
-    to: '/admin/tags',
+    to: '/tags',
   },
 ]
 </script>
