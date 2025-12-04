@@ -52,12 +52,15 @@ const onSubmit = () =>
           :badge="item.timestamp"
           :date="item.released_at || item.published_at || item.created_at"
           :ui="{
-            root: 'group overflow-visible transition-all duration-300 md:grid md:grid-cols-2',
-            image: 'rounded-xs',
+            root: 'group gap-x-6 gap-y-4 md:grid md:grid-cols-2 lg:items-start',
+            header: 'rounded-xs shadow-none',
+            body: 'p-0 sm:p-0 lg:px-0',
+            title: 'font-serif text-sm',
+            description: 'text-sm',
           }"
         >
           <template #description>
-            <div v-html="item.description" />
+            <p v-html="item.description" />
             <div
               v-if="item.tags?.length"
               class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
@@ -65,12 +68,8 @@ const onSubmit = () =>
               <ULink
                 v-for="(tag, index) in item.tags"
                 :key="index"
-              >
-                <UBadge
-                  :label="tag.name"
-                  variant="soft"
-                />
-              </ULink>
+                :title="tag.name"
+              />
             </div>
           </template>
         </UBlogPost>
