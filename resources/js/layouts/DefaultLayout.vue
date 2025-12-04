@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import AppFooter from '@/components/Ui/AppFooter.vue'
-import AppHeader from '@/components/Ui/AppHeader.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -17,9 +15,7 @@ import { Head } from '@inertiajs/vue3'
   <Suspense>
     <UApp>
       <UContainer>
-        <AppHeader />
         <slot />
-        <AppFooter />
       </UContainer>
     </UApp>
   </Suspense>

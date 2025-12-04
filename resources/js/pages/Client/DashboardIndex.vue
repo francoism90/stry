@@ -36,6 +36,7 @@ const onSubmit = () =>
           label-key="label"
           value-key="value"
           placeholder="Filter by"
+          variant="soft"
           class="w-32 sm:w-36"
           @update:modelValue="onSubmit"
         />
