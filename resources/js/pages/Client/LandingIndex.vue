@@ -60,6 +60,7 @@ const form = useForm('get', '', {
           >
             <template #description>
               <p v-html="item.description" />
+
               <div
                 v-if="item.tags?.length"
                 class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
