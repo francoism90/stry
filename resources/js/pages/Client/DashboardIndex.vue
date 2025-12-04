@@ -28,52 +28,54 @@ const onSubmit = () =>
   <Head title="Home" />
 
   <UPage>
-    <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
-      <USelect
-        v-model="form.sort"
-        :items="sorters"
-        label-key="label"
-        value-key="value"
-        placeholder="Filter by"
-        class="w-32 sm:w-36"
-        @update:modelValue="onSubmit"
-      />
-    </div>
+    <UPageBody>
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
+        <USelect
+          v-model="form.sort"
+          :items="sorters"
+          label-key="label"
+          value-key="value"
+          placeholder="Filter by"
+          class="w-32 sm:w-36"
+          @update:modelValue="onSubmit"
+        />
+      </div>
 
-    <InfiniteScroll data="items">
-      <UBlogPosts orientation="vertical">
-        <UBlogPost
-          v-for="(item, index) in items.data"
-          v-bind="item"
-          variant="naked"
-          orientation="horizontal"
-          :key="index"
-          :image="item.thumb"
-          :badge="item.timestamp"
-          :date="item.released_at || item.published_at || item.created_at"
-          :ui="{
-            root: 'group gap-x-6 gap-y-4 md:grid md:grid-cols-2 lg:items-start',
-            header: 'rounded-xs shadow-none',
-            body: 'p-0 sm:p-0 lg:px-0',
-            title: 'font-serif text-sm',
-            description: 'text-sm',
-          }"
-        >
-          <template #description>
-            <p v-html="item.description" />
-            <div
-              v-if="item.tags?.length"
-              class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
-            >
-              <ULink
-                v-for="(tag, index) in item.tags"
-                :key="index"
-                :title="tag.name"
-              />
-            </div>
-          </template>
-        </UBlogPost>
-      </UBlogPosts>
-    </InfiniteScroll>
+      <InfiniteScroll data="items">
+        <UBlogPosts orientation="vertical">
+          <UBlogPost
+            v-for="(item, index) in items.data"
+            v-bind="item"
+            variant="naked"
+            orientation="horizontal"
+            :key="index"
+            :image="item.thumb"
+            :badge="item.timestamp"
+            :date="item.released_at || item.published_at || item.created_at"
+            :ui="{
+              root: 'group gap-x-6 gap-y-4 md:grid md:grid-cols-2 lg:items-start',
+              header: 'rounded-xs shadow-none',
+              body: 'p-0 sm:p-0 lg:px-0',
+              title: 'font-serif text-sm',
+              description: 'text-sm',
+            }"
+          >
+            <template #description>
+              <p v-html="item.description" />
+              <div
+                v-if="item.tags?.length"
+                class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
+              >
+                <ULink
+                  v-for="(tag, index) in item.tags"
+                  :key="index"
+                  :title="tag.name"
+                />
+              </div>
+            </template>
+          </UBlogPost>
+        </UBlogPosts>
+      </InfiniteScroll>
+    </UPageBody>
   </UPage>
 </template>
