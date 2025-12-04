@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppHeader from '@/components/Ui/AppHeader.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -14,7 +15,11 @@ import { Head } from '@inertiajs/vue3'
 
   <Suspense>
     <UApp>
-      <slot />
+      <UContainer>
+        <AppHeader />
+
+        <slot />
+      </UContainer>
     </UApp>
   </Suspense>
 </template>

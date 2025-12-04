@@ -1,45 +1,36 @@
 <script setup lang="ts">
+import UserMenu from '@/components/Ui/UserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import AppLogo from '../Ui/AppLogo.vue'
 
 const items: NavigationMenuItem[] = [
   {
-    label: 'Explore',
-    to: '/explore',
-    icon: 'i-lucide-compass',
+    label: 'Featured',
+    to: '/',
   },
   {
-    label: 'Library',
-    to: '/library',
-    icon: 'i-lucide-library',
+    label: 'Newest',
+    to: '/newest',
   },
   {
-    label: 'Profile',
-    to: '/profile',
-    icon: 'i-lucide-user',
+    label: 'Longest',
+    to: '/longest',
+  },
+  {
+    label: 'Shortest',
+    to: '/shortest',
   },
 ]
 </script>
 
 <template>
-  <UDashboardNavbar
-    :toggle="false"
-    :ui="{ root: 'sticky top-0 z-50 w-full bg-default' }"
-  >
-    <template #left>
-      <ULink to="/">
-        <AppLogo />
-      </ULink>
-    </template>
+  <div class="flex w-full items-center justify-between">
+    <UNavigationMenu
+      :items="items"
+      variant="link"
+      class="h-18"
+      highlight
+    />
 
-    <template #right>
-      <UNavigationMenu
-        :items="items"
-        variant="link"
-        :ui="{
-          linkLabel: 'sr-only sm:not-sr-only',
-        }"
-      />
-    </template>
-  </UDashboardNavbar>
+    <UserMenu />
+  </div>
 </template>

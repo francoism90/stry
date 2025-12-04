@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FeedCollections from '@/components/Feed/FeedCollections.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -29,8 +28,6 @@ const onSubmit = () =>
   <Head title="Home" />
 
   <UPage>
-    <FeedCollections />
-
     <UPageBody>
       <InfiniteScroll data="items">
         <UBlogPosts orientation="vertical">

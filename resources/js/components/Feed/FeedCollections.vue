@@ -1,46 +1,41 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
+import FeedFilterModal from './FeedFilterModal.vue'
 
-const items = ref<NavigationMenuItem[][]>([
-  [
-    {
-      label: 'Guide',
-      icon: 'i-lucide-book-open',
-      to: '/docs/getting-started',
-    },
-    {
-      label: 'Composables',
-      icon: 'i-lucide-database',
-      to: '/docs/composables',
-    },
-    {
-      label: 'Components',
-      icon: 'i-lucide-box',
-      to: '/docs/components',
-      active: true,
-    },
-  ],
-  [
-    {
-      label: 'GitHub',
-      icon: 'i-simple-icons-github',
-      badge: '3.8k',
-      to: 'https://github.com/nuxt/ui',
-      target: '_blank',
-    },
-  ],
+const items = ref<NavigationMenuItem[]>([
+  {
+    label: 'Featured',
+    to: '/docs/getting-started',
+    active: true,
+  },
+  {
+    label: 'Newest',
+    to: '/docs/components',
+  },
+  {
+    label: 'Longest',
+    to: '/docs/longest',
+  },
+  {
+    label: 'Shortest',
+    to: '/docs/shortest',
+  },
 ])
 </script>
 
 <template>
-  <div class="sticky top-0 z-50 w-full border-b border-muted bg-default">
+  <div class="flex h-16 w-full items-center justify-between gap-3">
     <UNavigationMenu
       color="neutral"
       :items="items"
       :ui="{
-        root: 'h-16 w-full px-4 sm:px-6',
+        root: 'w-full px-0 sm:px-0',
+        list: 'gap-1',
+        link: 'px-4 py-2 before:rounded-full',
       }"
     />
+
+    <FeedFilterModal />
   </div>
 </template>
