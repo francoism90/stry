@@ -15,11 +15,11 @@ import { Head } from '@inertiajs/vue3'
 
   <Suspense>
     <UApp>
-      <UContainer>
+      <div class="mx-auto w-full max-w-(--ui-container)">
         <AppHeader />
 
         <slot />
-      </UContainer>
+      </div>
     </UApp>
   </Suspense>
 </template>

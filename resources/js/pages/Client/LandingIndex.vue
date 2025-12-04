@@ -32,50 +32,50 @@ const form = useForm('get', '', {
   <Head title="Home" />
 
   <UPage>
-    <UPageBody class="mt-4 space-y-4 pb-0">
-      <UTabs
-        :items="tabs"
-        variant="link"
-        :ui="{ trigger: 'grow' }"
-      />
+    <UTabs
+      :items="tabs"
+      variant="link"
+      :ui="{
+        trigger: 'grow py-2',
+      }"
+    />
 
-      <InfiniteScroll data="items">
-        <UBlogPosts class="gap-10 sm:grid-cols-1 lg:grid-cols-2">
-          <UBlogPost
-            v-for="(item, index) in items.data"
-            v-bind="item"
-            variant="naked"
-            :key="index"
-            :image="item.thumb"
-            :badge="item.timestamp"
-            :date="item.released_at || item.published_at || item.created_at"
-            :ui="{
-              root: 'gap-y-4',
-              header: 'rounded-xs shadow-none',
-              body: 'p-0 sm:p-0 lg:px-0',
-              title: 'font-serif text-sm',
-              description: 'text-sm',
-            }"
-          >
-            <template #description>
-              <p v-html="item.description" />
+    <InfiniteScroll data="items">
+      <UBlogPosts class="gap-10 px-4 py-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-2">
+        <UBlogPost
+          v-for="(item, index) in items.data"
+          v-bind="item"
+          variant="naked"
+          :key="index"
+          :image="item.thumb"
+          :badge="item.timestamp"
+          :date="item.released_at || item.published_at || item.created_at"
+          :ui="{
+            root: 'gap-y-4',
+            header: 'rounded-xs shadow-none',
+            body: 'p-0 sm:p-0 lg:px-0',
+            title: 'font-serif text-sm',
+            description: 'text-sm',
+          }"
+        >
+          <template #description>
+            <p v-html="item.description" />
 
-              <div
-                v-if="item.tags?.length"
-                class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
-              >
-                <UButton
-                  v-for="(tag, index) in item.tags"
-                  :key="index"
-                  :label="tag.name"
-                  variant="soft"
-                  size="xs"
-                />
-              </div>
-            </template>
-          </UBlogPost>
-        </UBlogPosts>
-      </InfiniteScroll>
-    </UPageBody>
+            <div
+              v-if="item.tags?.length"
+              class="mt-4 flex flex-wrap gap-2 overflow-x-auto"
+            >
+              <UButton
+                v-for="(tag, index) in item.tags"
+                :key="index"
+                :label="tag.name"
+                variant="soft"
+                size="xs"
+              />
+            </div>
+          </template>
+        </UBlogPost>
+      </UBlogPosts>
+    </InfiniteScroll>
   </UPage>
 </template>

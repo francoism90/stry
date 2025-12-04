@@ -16,7 +16,7 @@ const items: NavigationMenuItem[] = [
 </script>
 
 <template>
-  <div class="flex h-20 w-full items-center justify-between gap-4 border-b border-muted">
+  <div class="sticky top-0 z-50 flex h-20 w-full items-center justify-between gap-4 border-b border-muted bg-default px-4 sm:px-6">
     <ULink to="/">
       <span class="font-serif text-sm font-bold text-neutral-400 uppercase">stry</span>
     </ULink>
