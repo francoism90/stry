@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Search\Controllers;
+namespace App\Client\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class SearchController extends Controller implements HasMiddleware
+class FeedController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -38,7 +38,7 @@ class SearchController extends Controller implements HasMiddleware
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Client/SearchIndex', [
+        return Inertia::render('Client/Videos/FeedIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'sort' => fn () => $order,
             'sorters' => fn () => VideoOrder::options(),

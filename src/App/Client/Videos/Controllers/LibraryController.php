@@ -10,6 +10,7 @@ use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoOrderScope;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -38,8 +39,8 @@ class LibraryController extends Controller implements HasMiddleware
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Client/LibraryIndex', [
-            'items' => Inertia::scroll(fn () => $scout),
+        return Inertia::render('Client/Videos/LibraryIndex', [
+            'items' => Inertia::scroll(fn (): Paginator => $scout),
             'sort' => fn () => $order,
             'sorters' => fn () => VideoOrder::options(),
         ]);

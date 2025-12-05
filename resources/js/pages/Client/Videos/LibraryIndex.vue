@@ -2,28 +2,17 @@
 import VideoItems from '@/components/Library/VideoItems.vue'
 import type { VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
   search: string | null
+  type: string | null
   sort: string | null
   sorters: SelectMenuItem[]
 }>()
-
-const tabs: TabsItem[] = [
-  {
-    label: 'Videos',
-  },
-  {
-    label: 'Tags',
-  },
-  {
-    label: 'Collections',
-  },
-]
 
 const form = useForm('get', '', {
   search: props.search,
@@ -48,17 +37,9 @@ watchDebounced(
 </script>
 
 <template>
-  <Head title="Search" />
+  <Head title="Library" />
 
   <UPage>
-    <UTabs
-      :items="tabs"
-      variant="link"
-      :ui="{
-        trigger: 'grow py-2',
-      }"
-    />
-
     <UForm
       id="general"
       :state="form"

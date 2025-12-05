@@ -3,9 +3,14 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items: NavigationMenuItem[] = [
   {
-    label: 'Search',
-    to: '/search',
-    icon: 'i-lucide-search',
+    label: 'Discover',
+    to: '/discover',
+    icon: 'i-lucide-compass',
+  },
+  {
+    label: 'Library',
+    to: '/library',
+    icon: 'i-lucide-library',
   },
   {
     label: 'Profile',
