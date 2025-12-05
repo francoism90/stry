@@ -13,7 +13,6 @@ defineProps<{
       v-for="(item, index) in items?.data"
       variant="naked"
       :key="index"
-      v-bind="item"
       :title="item.title"
       :image="item.thumb"
       :badge="item.timestamp"

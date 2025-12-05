@@ -12,7 +12,6 @@ defineProps<{
     <UPageCard
       v-for="(item, index) in items?.data"
       :key="index"
-      v-bind="item"
       variant="subtle"
       :title="item.name"
       :description="`${item.videos} videos`"
