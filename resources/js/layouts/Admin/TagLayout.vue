@@ -1,41 +1,33 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import type { Video } from '@/types'
+import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
+import type { Tag } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
-  video: Video
+  tag: Tag
 }>()
 
 const links: NavigationMenuItem[] = [
   {
     label: 'General',
-    icon: 'i-lucide-film',
-    to: edit.url(props.video.id),
+    icon: 'i-lucide-tag',
+    to: edit.url(props.tag.id),
     exact: true,
   },
   {
     label: 'Metadata',
     icon: 'i-lucide-file-braces',
   },
-  {
-    label: 'Media',
-    icon: 'i-lucide-images',
-  },
-  {
-    label: 'Playlists',
-    icon: 'i-lucide-list-video',
-  },
 ]
 </script>
 
 <template>
-  <Head :title="video.title" />
+  <Head :title="tag.name" />
 
-  <UDashboardPanel id="video">
+  <UDashboardPanel id="tag">
     <template #header>
-      <UDashboardNavbar title="Video">
+      <UDashboardNavbar title="Tag">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>

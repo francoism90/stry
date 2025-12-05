@@ -17,10 +17,10 @@ readonly class VideoTagScope
     public function __invoke(Builder $scout): void
     {
         $scout
-             ->when($this->getIds(), fn (Builder $scout, array $tags) => $scout->where('tagged', $tags));
+            ->when($this->getIds(), fn (Builder $scout, array $tags) => $scout->where('tagged', $tags));
     }
 
-     protected function getIds(): ?array
+    protected function getIds(): ?array
     {
         if (! filled($this->tags)) {
             return null;

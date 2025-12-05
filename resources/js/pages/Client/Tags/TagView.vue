@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { VideoCollection } from '@/types'
+import type { Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
+import type { ButtonProps, SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
+import { ref } from 'vue'
 
 const props = defineProps<{
+  tag: Tag
   items: VideoCollection
   search: string | null
   sort: string | null
@@ -28,6 +31,14 @@ const onSubmit = () => {
   })
 }
 
+const links = ref<ButtonProps[]>([
+  {
+    label: 'Edit',
+    icon: 'i-lucide-clipboard-pen',
+    to: edit.url(props.tag.id),
+  },
+])
+
 watchDebounced(
   () => form.search,
   () => onSubmit(),
@@ -36,9 +47,23 @@ watchDebounced(
 </script>
 
 <template>
-  <Head title="Library" />
+  <Head :title="tag.name" />
 
   <UPage>
+    <UPageHeader
+      :title="tag.name"
+      :links="links"
+      :ui="{
+        root: 'px-4 py-4 sm:px-6',
+        title: 'font-serif text-2xl font-semibold sm:text-3xl',
+        description: 'text-base',
+      }"
+    >
+      <template #description>
+        <p v-html="tag.summary" />
+      </template>
+    </UPageHeader>
+
     <UPageBody class="mt-4 space-y-6 px-4 sm:px-6">
       <UForm
         id="general"
@@ -54,7 +79,7 @@ watchDebounced(
           <UInput
             v-model="form.search"
             :model-modifiers="{ nullable: true, string: true, trim: true }"
-            placeholder="Search videos..."
+            placeholder="Filter videos..."
             size="lg"
           />
         </UFormField>

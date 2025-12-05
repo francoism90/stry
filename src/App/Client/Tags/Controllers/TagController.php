@@ -6,11 +6,7 @@ namespace App\Client\Tags\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Client\Tags\Responses\TagPlaylistProperty;
-use App\Client\Tags\Responses\TagProgressProperty;
-use App\Client\Tags\Responses\TagQueueProperty;
 use App\Client\Tags\Responses\TagResourceProperty;
-use Domain\Tags\Jobs\PlaylistTag;
 use Domain\Tags\Models\Tag;
 use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;

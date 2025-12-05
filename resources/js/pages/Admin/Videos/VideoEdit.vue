@@ -19,7 +19,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
 const { items, filter } = useTags(props.video.tags || [])
 const toast = useToast()
 
-const form = useForm('put', update.url({ video: props.video.id }), {
+const form = useForm('put', update.url(props.video.id), {
   name: props.video.name,
   episode: props.video.episode || null,
   season: props.video.season || null,

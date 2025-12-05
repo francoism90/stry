@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import type { Video } from '@/types'
+import { destroy } from '@/actions/App/Admin/Tags/Controllers/TagController'
+import type { Tag } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
-  item: Video
+  item: Tag
 }>()
 
 const remove = async () => router.delete(destroy.url(props.item.id))
@@ -12,18 +12,18 @@ const remove = async () => router.delete(destroy.url(props.item.id))
 
 <template>
   <UModal
-    :title="item.title"
+    :title="item.name"
     :ui="{ footer: 'justify-end' }"
   >
     <UButton
-      label="Delete video"
+      label="Delete tag"
       color="error"
       variant="soft"
     />
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to delete this video?</h3>
+        <h3>Are you sure you want to delete this tag?</h3>
         <p class="text-sm text-neutral-500">This action cannot be undone. All associated data will be permanently removed.</p>
       </div>
     </template>
@@ -37,7 +37,7 @@ const remove = async () => router.delete(destroy.url(props.item.id))
       />
 
       <UButton
-        label="Delete video"
+        label="Delete tag"
         variant="soft"
         color="error"
         loading-auto

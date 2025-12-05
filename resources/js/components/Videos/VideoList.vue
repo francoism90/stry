@@ -27,7 +27,10 @@ defineProps<{
       }"
     >
       <template #description>
-        <p v-html="item.description" />
+        <p
+          v-if="item.description?.length"
+          v-html="item.description"
+        />
 
         <div
           v-if="item.tags?.length"

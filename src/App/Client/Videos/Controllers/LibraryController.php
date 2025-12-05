@@ -10,7 +10,6 @@ use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
