@@ -6,9 +6,9 @@ namespace App\Client\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoOrderScope;
+use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -32,18 +32,20 @@ class LibraryController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $order = $request->safe()->input('sort', VideoOrder::Relevant);
+        $search = $request->safe()->input('search', '');
+        $sort = $request->safe()->input('sort', VideoSort::Relevant);
 
         // Scout builder
         $scout = Video::search($request->safe()->input('search'))
-            ->tap(new VideoOrderScope($order))
+            ->tap(new VideoSortScope($sort))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Client/Videos/LibraryIndex', [
             'items' => Inertia::scroll(fn (): Paginator => $scout),
-            'sort' => fn () => $order,
-            'sorters' => fn () => VideoOrder::options(),
+            'search' => fn () => $search,
+            'sort' => fn () => $sort,
+            'sorters' => fn () => VideoSort::options(),
         ]);
     }
 }

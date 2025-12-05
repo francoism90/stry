@@ -31,6 +31,7 @@ class DiscoverController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         // Apply filters
+        $search = $request->safe()->input('search', '');
         $type = $request->safe()->input('type', TagType::Genre);
 
         // Scout builder
@@ -41,6 +42,7 @@ class DiscoverController extends Controller implements HasMiddleware
 
         return Inertia::render('Client/Tags/DiscoverIndex', [
             'items' => Inertia::scroll(fn () => $scout),
+            'search' => fn () => $search,
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),
         ]);

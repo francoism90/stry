@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
@@ -29,18 +30,14 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <Head :title="video.title" />
 
   <UPage>
-    <UPageBody>
+    <UPageBody class="mt-4 space-y-6">
       <VideoPlayer />
 
-      <UPageHeader
-        :title="video.title"
-        :links="links"
-      >
+      <UPageFeature :title="video.title">
         <template #description>
-          <div v-html="video.description" />
-          <TagItems :items="video.tags" />
+          <p v-html="video.description" />
         </template>
-      </UPageHeader>
+      </UPageFeature>
 
       <Deferred data="queue">
         <template #fallback>
@@ -52,10 +49,9 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           title="Up next"
         />
 
-        <VideoItems
-          orientation="horizontal"
-          :items="queue"
-        />
+        {{ queue }}
+
+        <VideoList :items="queue" />
       </Deferred>
     </UPageBody>
   </UPage>

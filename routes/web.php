@@ -6,6 +6,7 @@ use App\Client\Account\Controllers\ProfileController;
 use App\Client\Tags\Controllers\DiscoverController;
 use App\Client\Videos\Controllers\FeedController;
 use App\Client\Videos\Controllers\LibraryController;
+use App\Client\Videos\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 // Home
@@ -16,6 +17,7 @@ Route::get('/profile', ProfileController::class)->name('profile');
 
 // Library
 Route::get('/library', LibraryController::class)->name('library');
+Route::get('/play/{video}', VideoController::class)->name('play');
 
 // Discover
 Route::get('/discover', DiscoverController::class)->name('discover');

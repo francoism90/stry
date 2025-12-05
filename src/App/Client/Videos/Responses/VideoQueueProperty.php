@@ -7,6 +7,7 @@ namespace App\Client\Videos\Responses;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Models\Video;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
@@ -19,15 +20,16 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): array => ['data' => $this->getCollection()]);
+        return once(fn (): array => [
+            'data' => $this->getCollection(),
+        ]);
     }
 
-    protected function getCollection(): array
+    protected function getCollection(): ResourceCollection
     {
         return app(GetSimilarVideos::class)
             ->handle(video: $this->video, limit: $this->limit)
             ->loadMissing('tags')
-            ->toResourceCollection(VideoResource::class)
-            ->all();
+            ->toResourceCollection(VideoResource::class);
     }
 }

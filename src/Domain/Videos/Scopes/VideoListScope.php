@@ -10,30 +10,30 @@ use Laravel\Scout\Builder;
 readonly class VideoListScope
 {
     public function __construct(
-        public VideoList|string|null $type = null,
+        public VideoList|string|null $list = null,
     ) {}
 
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isType(VideoList::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
-            ->when($this->isType(VideoList::Watched), fn (Builder $scout) => $scout->latest())
-            ->when($this->isType(VideoList::Newest), fn (Builder $scout) => $scout->latest());
+            ->when($this->isList(VideoList::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
+            ->when($this->isList(VideoList::Watched), fn (Builder $scout) => $scout->latest())
+            ->when($this->isList(VideoList::Newest), fn (Builder $scout) => $scout->latest());
     }
 
-    protected function isType(VideoList ...$values): bool
+    protected function isList(VideoList ...$values): bool
     {
-        $currentType = $this->getType();
+        $currentList = $this->getList();
 
-        return $currentType && in_array($currentType, $values, true);
+        return $currentList && in_array($currentList, $values, true);
     }
 
-    protected function getType(): ?VideoList
+    protected function getList(): ?VideoList
     {
-        $currentType = $this->type;
+        $listValue = $this->list;
 
-        return $currentType instanceof VideoList
-            ? $currentType
-            : VideoList::tryFrom($currentType);
+        return $listValue instanceof VideoList
+            ? $listValue
+            : VideoList::tryFrom($listValue);
     }
 }
