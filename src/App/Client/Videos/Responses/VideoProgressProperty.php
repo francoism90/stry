@@ -11,7 +11,6 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Container\Attributes\RouteParameter;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
-use Inertia\RenderContext;
 
 readonly class VideoProgressProperty implements ProvidesInertiaProperty
 {

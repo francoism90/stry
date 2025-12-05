@@ -12,7 +12,6 @@ use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoOrderScope;
-use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -55,11 +54,11 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Admin/Videos/VideoEdit', [
-            $properties
+            $properties,
         ]);
     }
 
-     public function update(Video $video, VideoUpdateRequest $request): RedirectResponse
+    public function update(Video $video, VideoUpdateRequest $request): RedirectResponse
     {
         Gate::authorize('update', $video);
 

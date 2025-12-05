@@ -6,10 +6,8 @@ namespace App\Client\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Enums\VideoList;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoOrderScope;
 use Domain\Videos\Scopes\VideoListScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;

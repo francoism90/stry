@@ -7,7 +7,6 @@ namespace App\Api\Tags\Controllers;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagFilterScope;
 use Domain\Tags\Scopes\TagTypeScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;

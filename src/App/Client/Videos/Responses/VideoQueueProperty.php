@@ -24,7 +24,7 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
 
     protected function getCollection(): array
     {
-        return  app(GetSimilarVideos::class)
+        return app(GetSimilarVideos::class)
             ->handle(video: $this->video, limit: $this->limit)
             ->loadMissing('tags')
             ->toResourceCollection(VideoResource::class)

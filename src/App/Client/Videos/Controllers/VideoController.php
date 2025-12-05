@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace App\Client\Videos\Controllers;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Client\Videos\Responses\VideoPlaylistProperty;
 use App\Client\Videos\Responses\VideoProgressProperty;
 use App\Client\Videos\Responses\VideoQueueProperty;
-use App\Client\Videos\Responses\VideoResource;
 use App\Client\Videos\Responses\VideoResourceProperty;
-use Domain\Videos\Enums\VideoOrder;
-use Domain\Videos\Enums\VideoList;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoOrderScope;
-use Domain\Videos\Scopes\VideoListScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
