@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoItems from '@/components/Library/VideoItems.vue'
+import VideoList from '@/components/Videos/VideoList.vue'
 import type { VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { TabsItem } from '@nuxt/ui'
@@ -41,7 +41,7 @@ const onSubmit = () => {
     />
 
     <UPageBody class="mt-4 space-y-6">
-      <VideoItems :items="items" />
+      <VideoList :items="items" />
     </UPageBody>
   </UPage>
 </template>

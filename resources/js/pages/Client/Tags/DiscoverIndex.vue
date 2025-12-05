@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TagItems from '@/components/Discover/TagItems.vue'
+import TagList from '@/components/Tags/TagList.vue'
 import type { TagCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -76,7 +76,7 @@ watchDebounced(
         </UFormField>
       </UForm>
 
-      <TagItems :items="items" />
+      <TagList :items="items" />
     </UPageBody>
   </UPage>
 </template>

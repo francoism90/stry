@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoItems from '@/components/Library/VideoItems.vue'
+import VideoList from '@/components/Videos/VideoList.vue'
 import type { VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -76,7 +76,7 @@ watchDebounced(
         </UFormField>
       </UForm>
 
-      <VideoItems :items="items" />
+      <VideoList :items="items" />
     </UPageBody>
   </UPage>
 </template>
