@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Media\Requests;
 
-use Domain\Media\Enums\MediaSort;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class MediaIndexRequest extends FormRequest
 {

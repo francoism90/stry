@@ -6,7 +6,6 @@ namespace App\Admin\Users\Controllers;
 
 use App\Api\Users\Requests\UserIndexRequest;
 use App\Api\Users\Resources\UserResource;
-use Domain\Users\Enums\UserSort;
 use Domain\Users\Models\User;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;

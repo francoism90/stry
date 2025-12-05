@@ -6,7 +6,6 @@ namespace App\Admin\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
-use Domain\Playlists\Enums\PlaylistSort;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;

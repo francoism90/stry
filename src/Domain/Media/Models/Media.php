@@ -7,7 +7,6 @@ namespace Domain\Media\Models;
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia

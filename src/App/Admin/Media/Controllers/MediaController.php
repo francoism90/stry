@@ -6,7 +6,6 @@ namespace App\Admin\Media\Controllers;
 
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
-use Domain\Media\Enums\MediaSort;
 use Domain\Media\Models\Media;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;

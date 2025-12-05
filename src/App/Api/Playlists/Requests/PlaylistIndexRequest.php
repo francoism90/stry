@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Requests;
 
-use Domain\Playlist\Enums\PlaylistSort;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class PlaylistIndexRequest extends FormRequest
 {
