@@ -57,8 +57,8 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Admin/Videos/VideoEdit', [
-            'video' => new VideoResourceProperty($video),
-            'progress' => new VideoProgressProperty($video),
+            'video' => fn () => new VideoResourceProperty($video),
+            'progress' => fn () => new VideoProgressProperty($video),
         ]);
     }
 

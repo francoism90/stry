@@ -19,10 +19,6 @@ const links = ref<ButtonProps[]>([
     to: edit.url(props.video.id),
     icon: 'i-lucide-clipboard-pen',
   },
-  {
-    label: 'Edit',
-    icon: 'i-lucide-clipboard-pen',
-  },
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
