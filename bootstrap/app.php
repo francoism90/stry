@@ -20,6 +20,13 @@ $app = Application::configure(basePath: $basePath)
         channels: __DIR__.'/../routes/channels.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
+        then: function () {
+            // Admin Routes
+            Route::middleware(['web', 'verified', 'role:super-admin'])
+                ->prefix('admin')
+                ->name('admin.')
+                ->group(base_path('routes/admin.php'));
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(

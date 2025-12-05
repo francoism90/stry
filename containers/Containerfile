@@ -1,65 +1,96 @@
-FROM php:8.4-cli-alpine AS base
+FROM rust:bookworm AS builder
+
+WORKDIR /usr/local/src
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl git \
+    build-essential cmake ninja-build python3 musl-tools \
+    && apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN rm -rf /usr/local/src/*
+
+# FFmpeg
+RUN arch="$(uname -m)" && case "$arch" in \
+      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
+      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
+    && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
+
+# Shaka Packager
+# RUN arch="$(uname -m)" && case "$arch" in \
+#       x86_64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ;; \
+#       aarch64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ;; \
+#       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+#     esac \
+#     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
+#     && chmod +x /usr/local/bin/packager
+
+# ab-av1
+# RUN cargo install ab-av1
+
+FROM php:8.5-cli-bookworm AS base
 
 ARG UID=1000
 ARG GID=1000
 ARG TZ=UTC
+ARG NODE_VERSION=24
+ARG POSTGRES_VERSION=18
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=${TZ}
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
 ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV PNPM_HOME="/pnpm"
-ENV PATH="${PNPM_HOME}:${PATH}"
-ENV TZ=${TZ}
+ENV PATH="${PATH}:${PNPM_HOME}"
 
-WORKDIR /tmp
-
-RUN apk add --no-cache --virtual .build-deps \
-    build-base autoconf libtool make pcre-dev openssl-dev zlib-dev linux-headers \
-    libzip-dev libpq-dev oniguruma-dev imagemagick-dev
-
-RUN apk add --no-cache \
-    bash curl git unzip zip tzdata ca-certificates openssh-client \
-    libjpeg-turbo-utils jpegoptim optipng pngquant gifsicle libwebp-tools librsvg \
-    libavif libavif-apps libheif libheif-dev libmatroska ffmpeg \
-    postgresql-client sqlite aws-cli \
-    nodejs npm coreutils findutils openssl \
-    imagemagick imagemagick-heic imagemagick-webp icu-data-full icu-libs \
-    libass fontconfig freetype harfbuzz fribidi
+WORKDIR /usr/local/src
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN mkdir -p ${PNPM_HOME} && rm -rf /usr/local/src/*
 
-RUN install-php-extensions \
-    @composer \
-    pdo_mysql \
-    pdo_pgsql \
-    intl \
-    mbstring \
-    bcmath \
-    opcache \
-    zip \
-    igbinary \
-    msgpack \
-    redis \
-    swoole \
-    memcached \
-    exif \
-    pcntl \
-    imagick \
-    gd
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl ca-certificates dnsutils fswatch unzip zip \
+    git openssh-client sqlite3 postgresql-common awscli \
+    libavif-bin jpegoptim optipng pngquant gifsicle \
+    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
+    && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
+    && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apk del .build-deps
-
-RUN addgroup -g ${GID} docker && \
-    adduser -u ${UID} -G docker -h /home/docker -s /bin/bash -D docker
-
-RUN npm install -g npm@latest corepack@latest svgo@latest && \
-    corepack enable pnpm
-
+# PHP Configuration and Entrypoint
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5173 6001 8080 13714
+# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
+COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+# COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
+# COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
+
+# PHP Extensions
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions @composer apcu bcmath exif \
+    gd igbinary imagick inotify intl memcached msgpack \
+    opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
+    sockets swoole uv zip
+
+# Node.js Packages
+RUN npm install -g npm@latest corepack@latest svgo@latest \
+    && corepack enable pnpm
+
+# Create docker user
+RUN groupadd -g ${GID} docker && \
+    useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS build
 
@@ -76,24 +107,25 @@ FROM base AS production
 
 WORKDIR /app
 
-COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-
 COPY --from=build /app /app
 
+# PHP Production Configuration
+COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+
+# Set proper ownership
 RUN chown -R docker:docker /app
 
 USER docker
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+EXPOSE 6001 8080 13714
 
 FROM base AS development
 
 WORKDIR /app
 
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-
+# Set proper ownership
 RUN chown -R docker:docker /app
 
 USER docker
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+EXPOSE 5173 6001 8080

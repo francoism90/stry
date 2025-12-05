@@ -21,7 +21,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php: [8.4]
+                php: [8.5, 8.4]
 
         name: PHP ${{ matrix.php }}
 
@@ -84,7 +84,7 @@ jobs:
             - name: Install Node.js
               uses: actions/setup-node@v6
               with:
-                  node-version: 22
+                  node-version: 24
                   cache: 'pnpm'
 
             - name: Build application

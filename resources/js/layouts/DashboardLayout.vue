@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DashboardNavbar from '@/components/Dashboard/DashboardNavbar.vue'
+import DashboardSidebar from '@/components/Admin/DashboardSidebar.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
@@ -7,28 +7,23 @@ import { Head } from '@inertiajs/vue3'
 <template>
   <Head>
     <title>Stream videos</title>
-    <meta
-      head-key="description"
-      name="description"
-      content="Stream and watch your favorite videos."
-    />
   </Head>
 
-  <UApp>
-    <UDashboardGroup class="relative overflow-auto overflow-x-hidden">
-      <UDashboardPanel id="dashboard">
-        <template #header>
-          <DashboardNavbar />
-        </template>
+  <Suspense>
+    <UApp>
+      <ServiceWorker />
 
-        <template #body>
-          <slot />
-        </template>
+      <UDashboardGroup
+        unit="rem"
+        storage="local"
+        class="relative overflow-clip"
+      >
+        <DashboardSidebar />
 
-        <template #footer>
-          <ServiceWorker />
-        </template>
-      </UDashboardPanel>
-    </UDashboardGroup>
-  </UApp>
+        <UDashboardSearch />
+
+        <slot />
+      </UDashboardGroup>
+    </UApp>
+  </Suspense>
 </template>

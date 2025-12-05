@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-use App\Web\Dashboard\Controllers\DashboardController;
-use App\Web\Dashboard\Controllers\ExploreController;
-use App\Web\Dashboard\Controllers\LibraryController;
-use App\Web\Dashboard\Controllers\ProfileController;
-use App\Web\Tags\Controllers\TagController;
-use App\Web\Videos\Controllers\VideoController;
+use App\Client\Account\Controllers\ProfileController;
+use App\Client\Tags\Controllers\DiscoverController;
+use App\Client\Tags\Controllers\TagController;
+use App\Client\Videos\Controllers\FeedController;
+use App\Client\Videos\Controllers\LibraryController;
+use App\Client\Videos\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
-// Dashboard
-Route::get('/', DashboardController::class)->name('home');
-Route::get('/explore', ExploreController::class)->name('explore');
-Route::get('/library', LibraryController::class)->name('library');
+// Home
+Route::get('/', FeedController::class)->name('home');
+
+// Account
 Route::get('/profile', ProfileController::class)->name('profile');
 
-// Tags
-Route::resource('tags', TagController::class)->except('index', 'create', 'store');
+// Library
+Route::get('/library', LibraryController::class)->name('library');
+Route::get('/play/{video}', VideoController::class)->name('play');
 
-// Videos
-Route::resource('videos', VideoController::class)->except('index', 'create', 'store');
+// Discover
+Route::get('/discover', DiscoverController::class)->name('discover');
+Route::get('/tags/{tag}', TagController::class)->name('tag');

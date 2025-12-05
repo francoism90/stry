@@ -11,5 +11,4 @@
 @source '../**/*.vue';
 
 /* Branding */
-@import './brand/theme.css';
 @import './brand/variables.css';

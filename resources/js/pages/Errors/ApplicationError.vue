@@ -4,13 +4,11 @@ import { Head, router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
-interface Props {
-  status: number
-}
-
 defineOptions({ layout: AuthLayout })
 
-const props = defineProps<Props>()
+const props = defineProps<{
+  status: number
+}>()
 
 const actions = ref(<ButtonProps[]>[
   {
@@ -31,19 +29,19 @@ const actions = ref(<ButtonProps[]>[
 
 const title = computed(() => {
   return {
-    503: 'Maintenance Mode',
-    500: 'Server Error',
-    404: 'Page Not Found',
     403: 'Access Denied',
+    404: 'Page Not Found',
+    500: 'Server Error',
+    503: 'Maintenance Mode',
   }[props.status]
 })
 
 const description = computed(() => {
   return {
-    503: 'Sorry, we are doing some maintenance. Please check back soon.',
-    500: 'Whoops, something went wrong on our servers.',
-    404: 'Sorry, the page you are looking for could not be found.',
     403: 'Sorry, you are forbidden from accessing this page.',
+    404: 'Sorry, the page you are looking for could not be found.',
+    500: 'Whoops, something went wrong on our servers.',
+    503: 'Sorry, we are doing some maintenance. Please check back soon.',
   }[props.status]
 })
 </script>

@@ -2,13 +2,11 @@ import { wayfinder } from '@laravel/vite-plugin-wayfinder'
 import ui from '@nuxt/ui/vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import laravel from 'laravel-vite-plugin'
 import { fileURLToPath, URL } from 'node:url'
 import { vite as vidstack } from 'vidstack/plugins'
 import { defineConfig, loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -34,7 +32,6 @@ export default defineConfig(({ mode }) => {
         ssr: 'resources/js/ssr.ts',
         refresh: true,
       }),
-      wayfinder(),
       vue({
         template: {
           compilerOptions: {
@@ -46,10 +43,9 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      vueJsx(),
-      vueDevTools(),
       tailwindcss(),
       vidstack(),
+      wayfinder(),
       ui({
         inertia: true,
         ui: {
@@ -63,39 +59,9 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
-          dashboardToolbar: {
+          dashboardNavbar: {
             slots: {
-              root: 'mx-auto w-full max-w-(--ui-container) border-0 bg-default px-4 sm:px-6',
-              left: 'gap-3.5',
-              right: 'gap-3.5',
-            },
-          },
-          pageBody: {
-            base: 'mt-14 space-y-2 pb-8',
-          },
-          pageHeader: {
-            slots: {
-              root: 'border-0 py-2',
-              title: 'font-serif text-lg font-bold sm:text-xl',
-              description: 'text-sm sm:text-base',
-            },
-          },
-          pageFeature: {
-            slots: {
-              title: 'font-serif text-sm font-semibold sm:text-base',
-              description: 'text-sm sm:text-base',
-            },
-          },
-          pageCard: {
-            slots: {
-              title: 'font-serif text-sm font-semibold sm:text-base',
-              description: 'text-sm sm:text-base',
-            },
-          },
-          blogPost: {
-            slots: {
-              title: 'font-serif text-sm font-semibold sm:text-base',
-              description: 'text-sm sm:text-base',
+              root: 'sticky top-0 z-50 w-full bg-default',
             },
           },
         },

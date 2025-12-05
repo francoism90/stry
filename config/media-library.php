@@ -191,8 +191,8 @@ return [
      * thumbnails and have installed the php-ffmpeg/php-ffmpeg composer
      * dependency.
      */
-    'ffmpeg_path' => env('FFMPEG_PATH', '/usr/bin/ffmpeg'),
-    'ffprobe_path' => env('FFPROBE_PATH', '/usr/bin/ffprobe'),
+    'ffmpeg_path' => env('FFMPEG_PATH', '/usr/local/bin/ffmpeg'),
+    'ffprobe_path' => env('FFPROBE_PATH', '/usr/local/bin/ffprobe'),
 
     /*
      * The timeout (in seconds) that will be used when generating video

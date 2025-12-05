@@ -243,7 +243,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'title, name',
+                    'query_by' => 'name, email',
                     'facet_by' => 'state',
                 ],
             ],
@@ -406,11 +406,13 @@ return [
                             'name' => 'released_at',
                             'type' => 'string',
                             'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'published_at',
                             'type' => 'string',
                             'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'created_at',
@@ -436,7 +438,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, tags, synonyms, released_at',
+                    'query_by' => 'name, description, tags, synonyms, identifier, released_at',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],
