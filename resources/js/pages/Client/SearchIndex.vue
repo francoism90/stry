@@ -35,7 +35,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'filter', 'search', 'view'],
+    only: ['items', 'search', 'sort'],
     reset: ['items'],
   })
 }
@@ -48,7 +48,7 @@ watchDebounced(
 </script>
 
 <template>
-  <Head title="Home" />
+  <Head title="Search" />
 
   <UPage>
     <UTabs
