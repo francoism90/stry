@@ -26,9 +26,9 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
 
     protected function getResource(): VideoResource
     {
-        return once(fn () => $this->video
+        return $this->video
             ->loadMissing('media', 'tags', 'user')
             ->append('captions')
-            ->toResource(VideoResource::class));
+            ->toResource(VideoResource::class);
     }
 }
