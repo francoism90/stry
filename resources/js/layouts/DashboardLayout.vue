@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DashboardSidebar from '@/components/Admin/DashboardSidebar.vue'
+import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -10,6 +11,8 @@ import { Head } from '@inertiajs/vue3'
 
   <Suspense>
     <UApp>
+      <ServiceWorker />
+
       <UDashboardGroup
         unit="rem"
         storage="local"
