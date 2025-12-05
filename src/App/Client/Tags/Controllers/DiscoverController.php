@@ -35,7 +35,7 @@ class DiscoverController extends Controller implements HasMiddleware
         $type = $request->safe()->input('type', TagType::Genre);
 
         // Scout builder
-        $scout = Tag::search($request->safe()->input('search'))
+        $scout = Tag::search($search)
             ->tap(new TagTypeScope($type))
             ->simplePaginate(24)
             ->through(fn (Tag $video) => new TagResource($video));
