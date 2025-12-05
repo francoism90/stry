@@ -6,7 +6,7 @@ import { Head, router } from '@inertiajs/vue3'
   <Head title="Profile" />
 
   <UPage>
-    <UPageBody>
+    <UPageBody class="mt-4 space-y-4 px-4 sm:px-6">
       <UPageFeature
         title="Profile"
         description="Manage your account profile and settings."
