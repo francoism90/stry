@@ -20,7 +20,7 @@ defineProps<{
       :to="VideoController.url(item.id)"
       :ui="{
         root: 'gap-y-4 rounded-none',
-        header: 'rounded-xs shadow-none',
+        header: 'rounded-sm shadow-none',
         body: 'p-0 sm:p-0 lg:px-0',
         title: 'font-serif text-sm',
         description: 'text-sm',
