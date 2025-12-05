@@ -45,7 +45,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         </template>
 
         <UPageFeature title="Up next" />
-
         <VideoList :items="queue" />
       </Deferred>
     </UPageBody>
