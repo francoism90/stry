@@ -16,7 +16,7 @@ defineProps<{
         :ui="{ container: 'p-2 sm:p-4' }"
         v-bind="item"
         :title="item.name"
-        :description="`${item.category} • ${item.videos} videos`"
+        :description="`${item.videos} videos`"
       />
     </UBlogPosts>
   </InfiniteScroll>
