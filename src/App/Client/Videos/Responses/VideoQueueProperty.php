@@ -19,15 +19,15 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return ['data' => $this->resolveQueue()];
+        return once(fn (): array => ['data' => $this->getCollection()]);
     }
 
-    protected function resolveQueue(): array
+    protected function getCollection(): array
     {
-        return once(fn () => app(GetSimilarVideos::class)
+        return  app(GetSimilarVideos::class)
             ->handle(video: $this->video, limit: $this->limit)
             ->loadMissing('tags')
             ->toResourceCollection(VideoResource::class)
-            ->all());
+            ->all();
     }
 }

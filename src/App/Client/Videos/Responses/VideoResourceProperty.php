@@ -10,34 +10,28 @@ use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Models\Video;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Container\Attributes\RouteParameter;
+use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperties;
+use Inertia\ProvidesInertiaProperty;
 use Inertia\RenderContext;
 
-readonly class VideoViewProperties implements ProvidesInertiaProperties
+readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        #[CurrentUser] protected ?User $user,
         #[RouteParameter('video')] protected Video $video,
+        #[CurrentUser] protected ?User $user = null,
     ) {}
 
-    public function toInertiaProperties(RenderContext $context): array
+    public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return [
-            'video' => fn () => $this->getVideoResource(),
-            'progress' => fn () => $this->getProgress(),
-        ];
+        return once(fn (): VideoResource => $this->getResource());
     }
 
-    protected function getVideoResource(): VideoResource
+    protected function getResource(): VideoResource
     {
         return once(fn () => $this->video
             ->loadMissing('media', 'tags', 'user')
             ->append('captions')
             ->toResource(VideoResource::class));
-    }
-
-    protected function getProgress(): int|float
-    {
-        return app(GetVideoProgress::class)->handle($this->video, $this->user);
     }
 }
