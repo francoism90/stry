@@ -3,6 +3,7 @@ import VideoItems from '@/components/Library/VideoItems.vue'
 import type { VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
+import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -30,11 +31,20 @@ const form = useForm('get', '', {
   page: 1,
 })
 
-const onSubmit = () =>
+const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
+    only: ['items', 'filter', 'search', 'view'],
+    reset: ['items'],
   })
+}
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
