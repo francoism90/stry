@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import type { Video, VideoCollection } from '@/types'
@@ -7,14 +8,17 @@ import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
 import { ref } from 'vue'
 
-interface Props {
+const props = defineProps<{
   video: Video
   queue?: VideoCollection
-}
-
-const props = defineProps<Props>()
+}>()
 
 const links = ref<ButtonProps[]>([
+  {
+    label: 'Edit',
+    to: edit.url(props.video.id),
+    icon: 'i-lucide-clipboard-pen',
+  },
   {
     label: 'Edit',
     icon: 'i-lucide-clipboard-pen',
@@ -30,7 +34,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <Head :title="video.title" />
 
   <UPage>
-    <UPageBody class="mt-4 space-y-6 px-4 sm:px-6">
+    <UPageBody class="mt-4 space-y-4 px-4 sm:px-6">
       <VideoPlayer />
 
       <UPageFeature :title="video.title">
@@ -38,6 +42,17 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           <p v-html="video.description" />
         </template>
       </UPageFeature>
+
+      <div class="flex items-center gap-2 overflow-auto">
+        <UButton
+          v-for="(link, index) in links"
+          :key="index"
+          v-bind="link"
+          variant="soft"
+          size="sm"
+          class="mb-2"
+        />
+      </div>
 
       <Deferred data="queue">
         <template #fallback>
