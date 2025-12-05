@@ -9,6 +9,7 @@ use Domain\Shared\Contracts\Enumerable;
 enum VideoOrder: string implements Enumerable
 {
     case Recommended = 'recommended';
+    case Watched = 'watched';
     case Newest = 'newest';
     case Ordered = 'ordered';
     case Longest = 'longest';
@@ -18,6 +19,7 @@ enum VideoOrder: string implements Enumerable
     {
         return match ($this) {
             self::Recommended => __('Recommended'),
+            self::Watched => __('Watched'),
             self::Newest => __('Newest'),
             self::Ordered => __('Ordered'),
             self::Longest => __('Longest'),
