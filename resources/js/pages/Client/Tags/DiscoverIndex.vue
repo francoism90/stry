@@ -39,11 +39,11 @@ watchDebounced(
   <Head title="Discover" />
 
   <UPage>
-    <UPageBody class="mt-4 space-y-6">
+    <UPageBody class="mt-4 space-y-6 px-4 sm:px-6">
       <UForm
         id="general"
         :state="form"
-        class="flex items-center gap-2 px-4 sm:px-6"
+        class="flex items-center gap-2"
         loading-auto
         @submit="onSubmit"
       >
