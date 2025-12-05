@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Videos\Controllers;
 
+use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
-use App\Client\Videos\Responses\VideoEditProperties;
+use App\Client\Videos\Responses\VideoProgressProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;
@@ -34,27 +35,30 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
+        $search = $request->safe()->input('search', '');
         $sort = $request->safe()->input('sort', VideoSort::Relevant);
 
         // Scout builder
-        $scout = Video::search($request->safe()->input('search'))
+        $scout = Video::search($search)
             ->tap(new VideoSortScope($sort))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Admin/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
+            'search' => fn () => $search,
             'sort' => fn () => $sort,
             'sorters' => fn () => VideoSort::options(),
         ]);
     }
 
-    public function edit(Video $video, VideoEditProperties $properties): Response
+    public function edit(Video $video): Response
     {
         Gate::authorize('update', $video);
 
         return Inertia::render('Admin/Videos/VideoEdit', [
-            $properties,
+            'video' => new VideoResourceProperty($video),
+            'progress' => new VideoProgressProperty($video),
         ]);
     }
 
