@@ -17,7 +17,7 @@ enum VideoOrder: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
-            self::Relevant => __('Relevant'),
+            self::Relevant => __('Relevance'),
             self::Newest => __('Newest'),
             self::Ordered => __('Ordered'),
             self::Longest => __('Longest'),
