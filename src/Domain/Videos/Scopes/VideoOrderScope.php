@@ -16,7 +16,7 @@ readonly class VideoOrderScope
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isOrder(VideoOrder::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
+            ->when($this->isOrder(VideoOrder::Relevant) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))

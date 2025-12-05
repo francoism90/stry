@@ -6,22 +6,18 @@ namespace Domain\Videos\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum VideoOrder: string implements Enumerable
+enum VideoList: string implements Enumerable
 {
-    case Relevant = 'relevant';
+    case Recommended = 'recommended';
+    case Watched = 'watched';
     case Newest = 'newest';
-    case Ordered = 'ordered';
-    case Longest = 'longest';
-    case Shortest = 'shortest';
 
     public function label(): string
     {
         return match ($this) {
-            self::Relevant => __('Relevant'),
-            self::Newest => __('Newest'),
-            self::Ordered => __('Ordered'),
-            self::Longest => __('Longest'),
-            self::Shortest => __('Shortest'),
+            self::Recommended => __('Recommended'),
+            self::Watched => __('Recently Watched'),
+            self::Newest => __('Most Recent'),
         };
     }
 

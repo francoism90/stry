@@ -2,33 +2,18 @@
 import VideoItems from '@/components/Library/VideoItems.vue'
 import type { VideoCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
+import type { TabsItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
-  sort: string | number | undefined
-  sorters: SelectMenuItem[]
+  list: string | number | undefined
+  lists: TabsItem[]
 }>()
 
-const tabs: TabsItem[] = [
-  {
-    label: 'Recommended',
-    value: 'recommended',
-  },
-  {
-    label: 'Recently Watched',
-    value: 'watched',
-  },
-  {
-    label: 'Most Recent',
-    value: 'newest',
-  },
-]
-
 const form = useForm('get', '', {
-  sort: props.sort,
+  list: props.list,
   page: 1,
 })
 
@@ -36,13 +21,13 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'sort'],
+    only: ['items', 'search', 'list'],
     reset: ['items'],
   })
 }
 
 watchDebounced(
-  () => form.sort,
+  () => form.list,
   () => onSubmit(),
   { debounce: 100, maxWait: 1000 },
 )
@@ -53,9 +38,9 @@ watchDebounced(
 
   <UPage>
     <UTabs
-      v-model="form.sort"
+      v-model="form.list"
       :content="false"
-      :items="tabs"
+      :items="lists"
       variant="link"
       class="w-full"
       :ui="{

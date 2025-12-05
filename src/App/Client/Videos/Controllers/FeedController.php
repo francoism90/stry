@@ -7,8 +7,10 @@ namespace App\Client\Videos\Controllers;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoList;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoOrderScope;
+use Domain\Videos\Scopes\VideoListScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -30,18 +32,18 @@ class FeedController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $order = $request->safe()->input('sort', VideoOrder::Recommended);
+        $list = $request->safe()->input('list', VideoList::Recommended);
 
         // Scout builder
         $scout = Video::search($request->safe()->input('search'))
-            ->tap(new VideoOrderScope($order))
+            ->tap(new VideoListScope($list))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Client/Videos/FeedIndex', [
             'items' => Inertia::scroll(fn () => $scout),
-            'sort' => fn () => $order,
-            'sorters' => fn () => VideoOrder::options(),
+            'list' => fn () => $list,
+            'lists' => fn () => VideoList::options(),
         ]);
     }
 }
