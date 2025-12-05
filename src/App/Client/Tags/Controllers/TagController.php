@@ -48,7 +48,7 @@ class TagController extends Controller implements HasMiddleware
             ->simplePaginate(16)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Client/Videos/LibraryIndex', [
+        return Inertia::render('Client/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => $scout),
             'search' => fn () => $search,
