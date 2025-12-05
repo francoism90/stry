@@ -11,7 +11,7 @@ use Laravel\Scout\Builder;
 readonly class VideoTagScope
 {
     public function __construct(
-        protected ArrayAccess|array|Tag|string|null $tags = null,
+        public ArrayAccess|array|Tag|string|null $tags = null,
     ) {}
 
     public function __invoke(Builder $scout): void
