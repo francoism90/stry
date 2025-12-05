@@ -3,10 +3,12 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
+import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: TagCollection
+  search: string | null
   type: string | null
   types: SelectMenuItem[]
 }>()
@@ -14,6 +16,7 @@ const props = defineProps<{
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
+  search: props.search,
   type: props.type,
   page: 1,
 })
@@ -25,6 +28,12 @@ const onSubmit = () =>
     only: ['items', 'type'],
     reset: ['items'],
   })
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
