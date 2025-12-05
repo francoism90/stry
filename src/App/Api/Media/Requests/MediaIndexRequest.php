@@ -21,8 +21,7 @@ class MediaIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sort' => ['sometimes', 'nullable', 'string', Rule::enum(MediaSort::class)],
-            'search' => ['nullable', 'string', 'max:255'],
+            //
         ];
     }
 }

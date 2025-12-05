@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Api\Users\Requests;
 
-use Domain\Users\Enums\LibraryFilter;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class LibraryIndexRequest extends FormRequest
+class UserIndexRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -21,8 +19,7 @@ class LibraryIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filter' => ['sometimes', 'nullable', 'string', Rule::enum(LibraryFilter::class)],
-            'view' => ['sometimes', 'nullable', 'string', 'in:vertical,horizontal'],
+            'search' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 }

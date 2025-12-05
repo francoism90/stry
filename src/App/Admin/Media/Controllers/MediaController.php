@@ -29,18 +29,13 @@ class MediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Media::class);
 
-        // Apply filters
-        $sort = $request->safe()->input('sort', MediaSort::Newest);
-
-        // Scout builder
+        // QueryBuilder
         $scout = Media::query()
             ->simplePaginate(16)
             ->through(fn (Media $media) => new MediaResource($media));
 
         return Inertia::render('Admin/Media/MediaIndex', [
             'items' => Inertia::scroll(fn () => $scout),
-            'sort' => fn () => $sort,
-            'sorters' => fn () => MediaSort::options(),
         ]);
     }
 }

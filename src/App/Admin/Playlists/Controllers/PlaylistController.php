@@ -29,18 +29,13 @@ class PlaylistController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Playlist::class);
 
-        // Apply filters
-        $sort = $request->safe()->input('sort', PlaylistSort::Newest);
-
-        // Scout builder
+        // QueryBuilder
         $scout = Playlist::query()
             ->simplePaginate(16)
             ->through(fn (Playlist $playlist) => new PlaylistResource($playlist));
 
         return Inertia::render('Admin/Playlists/PlaylistIndex', [
             'items' => Inertia::scroll(fn () => $scout),
-            'sort' => fn () => $sort,
-            'sorters' => fn () => PlaylistSort::options(),
         ]);
     }
 }

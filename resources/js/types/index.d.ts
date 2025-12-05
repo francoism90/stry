@@ -15,6 +15,10 @@ export type User = Model & {
   permissions: string[] | undefined
 }
 
+export type UserCollection = Omit<Paginator, 'data'> & {
+  data: User[] | undefined
+}
+
 export type Media = Model & {
   asset: string | undefined
   name: string

@@ -21,8 +21,7 @@ class PlaylistIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sort' => ['sometimes', 'nullable', 'string', Rule::enum(PlaylistSort::class)],
-            'search' => ['sometimes', 'nullable', 'string', 'max:255'],
+            //
         ];
     }
 }

@@ -1,23 +1,49 @@
 <script setup lang="ts">
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { MediaCollection } from '@/types'
+import type { UserCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { watchDebounced } from '@vueuse/core'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
-defineProps<{
-  items: MediaCollection
+const props = defineProps<{
+  items: UserCollection
+  search: string | null
 }>()
 
 defineOptions({ layout: DashboardLayout })
+
+const form = useForm('get', '', {
+  search: props.search,
+  page: 1,
+})
+
+const onSubmit = () =>
+  form.submit({
+    preserveState: true,
+    replace: true,
+    only: ['items'],
+    reset: ['items'],
+  })
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
-  <Head title="Videos" />
+  <Head title="Users" />
 
-  <UDashboardPanel id="Media">
+  <UDashboardPanel id="users">
     <template #header>
-      <UDashboardNavbar title="Media">
+      <UDashboardNavbar title="Users">
         <template #leading>
           <UDashboardSidebarCollapse />
+        </template>
+
+        <template #right>
+          <!-- <CustomersAddModal /> -->
         </template>
       </UDashboardNavbar>
     </template>
@@ -37,15 +63,11 @@ defineOptions({ layout: DashboardLayout })
                 :name="item.name"
                 :avatar="{
                   alt: item.name,
+                  loading: 'lazy',
+                  decoding: 'async',
                   class: 'rounded-sm size-12 me-1',
                 }"
-              >
-                <template #description>
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>{{ item.file_size ?? 'N/A' }}</span>
-                  </div>
-                </template>
-              </UUser>
+              />
             </UPageCard>
           </UPageList>
         </InfiniteScroll>
