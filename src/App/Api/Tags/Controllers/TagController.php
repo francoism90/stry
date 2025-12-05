@@ -31,7 +31,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Tag::search($request->safe()->input('search'))
             ->tap(new TagTypeScope($request->safe()->input('type')))
-            ->simplePaginate(perPage: 16)
+            ->simplePaginate(16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }
 }
