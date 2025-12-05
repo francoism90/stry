@@ -71,8 +71,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
-COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
+# COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
+# COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 # PHP Extensions
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
