@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Landing\Controllers;
+namespace App\Client\Search\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class HomeController extends Controller implements HasMiddleware
+class SearchController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
