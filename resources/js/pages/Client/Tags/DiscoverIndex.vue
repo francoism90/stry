@@ -39,42 +39,44 @@ watchDebounced(
   <Head title="Discover" />
 
   <UPage>
-    <UForm
-      id="general"
-      :state="form"
-      class="flex items-center gap-2 px-4 py-4 sm:px-6"
-      loading-auto
-      @submit="onSubmit"
-    >
-      <UFormField
-        :error="form.errors.search"
-        class="flex-1"
+    <UPageBody class="mt-4 space-y-6">
+      <UForm
+        id="general"
+        :state="form"
+        class="flex items-center gap-2 px-4 sm:px-6"
+        loading-auto
+        @submit="onSubmit"
       >
-        <UInput
-          v-model="form.search"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
-          placeholder="Search tags..."
-          size="lg"
-        />
-      </UFormField>
+        <UFormField
+          :error="form.errors.search"
+          class="flex-1"
+        >
+          <UInput
+            v-model="form.search"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            placeholder="Search tags..."
+            size="lg"
+          />
+        </UFormField>
 
-      <UFormField
-        :error="form.errors.type"
-        class="flex-none"
-      >
-        <USelect
-          v-model="form.type"
-          :items="types"
-          label-key="label"
-          value-key="value"
-          placeholder="Filter by"
-          variant="soft"
-          size="lg"
-          @update:modelValue="onSubmit"
-        />
-      </UFormField>
-    </UForm>
+        <UFormField
+          :error="form.errors.type"
+          class="flex-none"
+        >
+          <USelect
+            v-model="form.type"
+            :items="types"
+            label-key="label"
+            value-key="value"
+            placeholder="Filter by"
+            variant="soft"
+            size="lg"
+            @update:modelValue="onSubmit"
+          />
+        </UFormField>
+      </UForm>
 
-    <TagItems :items="items" />
+      <TagItems :items="items" />
+    </UPageBody>
   </UPage>
 </template>

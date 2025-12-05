@@ -48,6 +48,8 @@ watchDebounced(
       }"
     />
 
-    <VideoItems :items="items" />
+    <UPageBody class="mt-4 space-y-6">
+      <VideoItems :items="items" />
+    </UPageBody>
   </UPage>
 </template>

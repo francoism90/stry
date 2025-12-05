@@ -9,12 +9,13 @@ defineProps<{
 
 <template>
   <InfiniteScroll data="items">
-    <UBlogPosts class="gap-10 px-4 py-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-2">
+    <UBlogPosts class="grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-2 lg:gap-y-4">
       <UPageCard
         v-for="(item, index) in items.data"
         :key="index"
-        :ui="{ container: 'p-2 sm:p-4' }"
+        :ui="{ container: 'p-4 sm:p-4' }"
         v-bind="item"
+        variant="soft"
         :title="item.name"
         :description="`${item.videos} videos`"
       />

@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <InfiniteScroll data="items">
-    <UBlogPosts class="gap-10 px-4 py-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-2">
+    <UBlogPosts class="grid-cols-1 gap-10 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-2">
       <UBlogPost
         v-for="(item, index) in items.data"
         v-bind="item"
