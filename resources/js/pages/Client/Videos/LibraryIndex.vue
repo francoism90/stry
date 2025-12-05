@@ -9,7 +9,6 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 const props = defineProps<{
   items: VideoCollection
   search: string | null
-  type: string | null
   sort: string | null
   sorters: SelectMenuItem[]
 }>()
@@ -64,7 +63,6 @@ watchDebounced(
         class="flex-none"
       >
         <USelect
-          v-if="sorters.length"
           v-model="form.sort"
           :items="sorters"
           label-key="label"

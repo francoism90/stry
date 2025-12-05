@@ -21,11 +21,6 @@ $app = Application::configure(basePath: $basePath)
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            // Client Routes
-            Route::middleware(['web', 'verified'])
-                ->name('client.')
-                ->group(base_path('routes/client.php'));
-
             // Admin Routes
             Route::middleware(['web', 'verified', 'role:super-admin'])
                 ->prefix('admin')

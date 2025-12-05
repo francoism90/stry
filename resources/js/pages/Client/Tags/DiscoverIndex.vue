@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import VideoItems from '@/components/Library/VideoItems.vue'
+import TagItems from '@/components/Discover/TagItems.vue'
 import type { TagCollection } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import type { TabsItem } from '@nuxt/ui'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: TagCollection
-  type: string | number | undefined
-  types: TabsItem[]
+  search: string | null
+  type: string | null
+  types: SelectMenuItem[]
 }>()
 
 const form = useForm('get', '', {
+  search: props.search,
   type: props.type,
   page: 1,
 })
@@ -34,20 +36,45 @@ watchDebounced(
 </script>
 
 <template>
-  <Head title="Home" />
+  <Head title="Discover" />
 
   <UPage>
-    <UTabs
-      v-model="form.type"
-      :content="false"
-      :items="types"
-      variant="link"
-      class="w-full"
-      :ui="{
-        trigger: 'grow py-2',
-      }"
-    />
+    <UForm
+      id="general"
+      :state="form"
+      class="flex items-center gap-2 px-4 py-4 sm:px-6"
+      loading-auto
+      @submit="onSubmit"
+    >
+      <UFormField
+        :error="form.errors.search"
+        class="flex-1"
+      >
+        <UInput
+          v-model="form.search"
+          :model-modifiers="{ nullable: true, string: true, trim: true }"
+          placeholder="Search tags..."
+          size="lg"
+        />
+      </UFormField>
 
-    <VideoItems :items="items" />
+      <UFormField
+        :error="form.errors.type"
+        class="flex-none"
+      >
+        <USelect
+          v-model="form.type"
+          :items="types"
+          label-key="label"
+          value-key="value"
+          placeholder="Filter by"
+          variant="soft"
+          size="lg"
+          @update:modelValue="onSubmit"
+        />
+      </UFormField>
+    </UForm>
+
+    <TagItems :items="items" />
   </UPage>
 </template>
