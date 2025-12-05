@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TagList from '@/components/Tags/TagList.vue'
 import type { TagCollection } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -76,7 +76,9 @@ watchDebounced(
         </UFormField>
       </UForm>
 
-      <TagList :items="items" />
+      <InfiniteScroll data="items">
+        <TagList :items="items" />
+      </InfiniteScroll>
     </UPageBody>
   </UPage>
 </template>
