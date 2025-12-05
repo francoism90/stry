@@ -52,16 +52,36 @@ const onSubmit = () =>
     <UForm
       id="general"
       :state="form"
-      class="py-4"
+      class="flex items-center gap-2 px-4 py-4 sm:px-6"
       loading-auto
       @submit="onSubmit"
     >
-      <UFormField :error="form.errors.search">
+      <UFormField
+        :error="form.errors.search"
+        class="flex-1"
+      >
         <UInput
           v-model="form.search"
           :model-modifiers="{ nullable: true, string: true, trim: true }"
-          size="lg"
           placeholder="Search videos..."
+          size="lg"
+        />
+      </UFormField>
+
+      <UFormField
+        :error="form.errors.sort"
+        class="flex-none"
+      >
+        <USelect
+          v-if="sorters.length"
+          v-model="form.sort"
+          :items="sorters"
+          label-key="label"
+          value-key="value"
+          placeholder="Filter by"
+          variant="soft"
+          size="lg"
+          @update:modelValue="onSubmit"
         />
       </UFormField>
     </UForm>
