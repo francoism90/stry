@@ -32,6 +32,7 @@ const items: NavigationMenuItem[] = [
       :ui="{
         list: 'gap-4',
         link: 'px-0',
+        linkLabel: 'sr-only sm:not-sr-only',
       }"
     />
   </div>
