@@ -6,7 +6,7 @@ defineProps<{
   collapsed?: boolean
 }>()
 
-const teams = ref([
+const tenants = ref([
   {
     label: 'Vue',
     avatar: {
@@ -23,11 +23,11 @@ const teams = ref([
   },
 ])
 
-const selectedTenant = ref(teams.value[0])
+const selectedTenant = ref(tenants.value[0])
 
 const items = computed<DropdownMenuItem[][]>(() => {
   return [
-    teams.value.map((team) => ({
+    tenants.value.map((team) => ({
       ...team,
       onSelect() {
         selectedTenant.value = team
