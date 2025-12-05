@@ -34,7 +34,15 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     <UPageBody class="mt-4 space-y-4 px-4 sm:px-6">
       <VideoPlayer />
 
-      <UPageFeature :title="video.title">
+      <UPageHeader
+        :title="video.title"
+        :links="links"
+        :ui="{
+          root: 'py-4',
+          title: 'font-serif text-xl sm:text-2xl',
+          description: 'text-base',
+        }"
+      >
         <template #description>
           <p
             v-if="video.description?.length"
@@ -53,18 +61,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
             />
           </div>
         </template>
-      </UPageFeature>
-
-      <div class="flex items-center gap-x-2 overflow-auto">
-        <UButton
-          v-for="(link, index) in links"
-          :key="index"
-          v-bind="link"
-          variant="soft"
-          size="sm"
-          class="mb-2"
-        />
-      </div>
+      </UPageHeader>
 
       <Deferred data="queue">
         <template #fallback>

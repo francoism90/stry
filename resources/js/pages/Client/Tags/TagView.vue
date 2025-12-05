@@ -55,7 +55,7 @@ watchDebounced(
       :links="links"
       :ui="{
         root: 'px-4 py-4 sm:px-6',
-        title: 'font-serif text-2xl font-semibold sm:text-3xl',
+        title: 'font-serif text-xl font-semibold sm:text-2xl',
         description: 'text-base',
       }"
     >
