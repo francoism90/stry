@@ -13,6 +13,7 @@ use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -37,9 +38,9 @@ class VideoController extends Controller implements HasMiddleware
         );
 
         return Inertia::render('Client/Videos/VideoView', [
-            'video' => fn () => new VideoResourceProperty($video),
-            'progress' => fn () => new VideoProgressProperty($video),
-            'playlist' => fn () => new VideoPlaylistProperty($video),
+            'video' => fn () => new VideoResourceProperty(video: $video),
+            'playlist' => fn () => new VideoPlaylistProperty(video: $video),
+            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
         ]);
     }

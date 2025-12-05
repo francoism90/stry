@@ -17,6 +17,7 @@ use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -57,8 +58,8 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         return Inertia::render('Admin/Videos/VideoEdit', [
-            'video' => fn () => new VideoResourceProperty($video),
-            'progress' => fn () => new VideoProgressProperty($video),
+            'video' => fn () => new VideoResourceProperty(video: $video),
+            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
         ]);
     }
 
