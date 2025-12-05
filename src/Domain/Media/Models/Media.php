@@ -64,23 +64,6 @@ class Media extends BaseMedia
         return 'uuid';
     }
 
-    public function toSearchableArray(): array
-    {
-        return [
-            'id' => (string) $this->getScoutKey(),
-            'name' => (string) $this->name,
-            'file_name' => (string) $this->file_name,
-            'mime_type' => (string) $this->mime_type,
-            'collection_name' => (string) $this->collection_name,
-            'disk' => (string) $this->disk,
-            'conversions_disk' => (string) $this->conversions_disk,
-            'size' => (int) $this->size,
-            'order' => (int) $this->order_column,
-            'created_at' => (int) $this->created_at->timestamp,
-            'updated_at' => (int) $this->updated_at->timestamp,
-        ];
-    }
-
     protected function asset(): Attribute
     {
         return Attribute::make(
