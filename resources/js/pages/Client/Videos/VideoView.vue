@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import TagController from '@/actions/App/Client/Tags/Controllers/TagController'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import type { Video, VideoCollection } from '@/types'
@@ -36,6 +37,18 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
       <UPageFeature :title="video.title">
         <template #description>
           <p v-html="video.description" />
+
+          <div class="flex items-center gap-2 overflow-auto">
+            <UButton
+              v-for="(tag, index) in video.tags"
+              :key="index"
+              :label="tag.name"
+              :to="TagController.url(tag.id)"
+              variant="outline"
+              size="sm"
+              class="mt-2"
+            />
+          </div>
         </template>
       </UPageFeature>
 
