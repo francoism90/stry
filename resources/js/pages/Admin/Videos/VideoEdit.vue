@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
@@ -54,17 +55,27 @@ const onSubmit = () =>
   >
     <UPageCard
       title="Video details"
-      description="This information will be displayed publicly."
+      :description="video.user?.name"
       variant="naked"
       orientation="horizontal"
     >
-      <UButton
-        form="general"
-        label="Save changes"
-        color="neutral"
-        type="submit"
-        class="w-fit lg:ms-auto"
-      />
+      <div class="flex items-center gap-2 lg:ms-auto">
+        <UButton
+          label="View video"
+          type="submit"
+          color="neutral"
+          variant="soft"
+        />
+
+        <UButton
+          form="general"
+          label="Save changes"
+          type="submit"
+          color="primary"
+          variant="soft"
+          loading-auto
+        />
+      </div>
     </UPageCard>
 
     <UPageCard variant="subtle">
@@ -86,7 +97,7 @@ const onSubmit = () =>
               variant="link"
               size="sm"
               icon="i-lucide-wand-sparkles"
-              aria-label="Format name"
+              aria-label="Capitalize"
               @click.prevent="form.name = capitalize(form.name)"
             />
           </template>
@@ -148,7 +159,18 @@ const onSubmit = () =>
             step="0.01"
             min="0"
             :max="video.duration || undefined"
-          />
+          >
+            <template #trailing>
+              <UButton
+                color="neutral"
+                variant="link"
+                size="sm"
+                icon="i-lucide-image-down"
+                aria-label="From progress"
+                @click.prevent="form.snapshot = progress || null"
+              />
+            </template>
+          </UInput>
         </UFormField>
 
         <UFormField
@@ -223,10 +245,7 @@ const onSubmit = () =>
       class="bg-linear-to-tl from-error/10 from-5% to-default"
     >
       <template #footer>
-        <UButton
-          label="Delete video"
-          color="error"
-        />
+        <VideoDeleteModal :item="video" />
       </template>
     </UPageCard>
   </UForm>

@@ -81,6 +81,6 @@ class VideoController extends Controller implements HasMiddleware
         // Delete the video
         $video->deleteOrFail();
 
-        return back();
+        return redirect()->route('admin.videos.index');
     }
 }
