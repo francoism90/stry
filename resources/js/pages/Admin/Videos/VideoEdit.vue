@@ -137,22 +137,26 @@ const onSubmit = () =>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <UFormField
+          label="Snapshot"
+          :error="form.errors.snapshot"
+        >
+          <UInput
+            v-model="form.snapshot"
+            :model-modifiers="{ nullable: true, number: true }"
+            type="number"
+            placeholder="3.00"
+            step="0.01"
+            min="0"
+            :max="video.duration || undefined"
+          />
+        </UFormField>
+
+        <UFormField
           label="Published"
           :error="form.errors.published_at"
         >
           <UInput
             v-model="form.published_at"
-            :model-modifiers="{ nullable: true, string: true, trim: true }"
-            placeholder="YYYY-MM-DD HH:mm:ss"
-          />
-        </UFormField>
-
-        <UFormField
-          label="Expires"
-          :error="form.errors.expires_at"
-        >
-          <UInput
-            v-model="form.expires_at"
             :model-modifiers="{ nullable: true, string: true, trim: true }"
             placeholder="YYYY-MM-DD HH:mm:ss"
           />
