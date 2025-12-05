@@ -102,7 +102,7 @@ const onSubmit = () =>
       <USeparator />
 
       <UFormField
-        label="Season"
+        label="Type"
         :error="form.errors.type"
       >
         <USelectMenu

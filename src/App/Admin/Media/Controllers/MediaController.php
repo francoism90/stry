@@ -6,7 +6,7 @@ namespace App\Admin\Media\Controllers;
 
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
-use Domain\Media\Enums\MediaOrder;
+use Domain\Media\Enums\MediaSort;
 use Domain\Media\Models\Media;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -30,17 +30,18 @@ class MediaController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Media::class);
 
         // Apply filters
-        $sort = $request->safe()->input('sort', MediaOrder::Newest);
+        $search = $request->safe()->input('search', '');
+        $sort = $request->safe()->input('sort', MediaSort::Newest);
 
         // Scout builder
-        $scout = Media::search($request->safe()->input('search'))
+        $scout = Media::search($search)
             ->simplePaginate(16)
             ->through(fn (Media $media) => new MediaResource($media));
 
         return Inertia::render('Admin/Media/MediaIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'sort' => fn () => $sort,
-            'sorters' => fn () => MediaOrder::options(),
+            'sorters' => fn () => MediaSort::options(),
         ]);
     }
 }

@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { MediaCollection } from '@/types'
+import type { PlaylistCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
+import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
-  items: MediaCollection
-  sort: string | null
-  sorters: SelectMenuItem[]
+  items: PlaylistCollection
+  search: string | null
+  type: string | null
+  types: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
-  sort: props.sort,
+  search: props.search,
+  type: props.type,
   page: 1,
 })
 
@@ -22,19 +25,29 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'sort'],
+    only: ['items', 'type'],
     reset: ['items'],
   })
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
-  <Head title="Videos" />
+  <Head title="Playlists" />
 
-  <UDashboardPanel id="Media">
+  <UDashboardPanel id="playlists">
     <template #header>
-      <UDashboardNavbar title="Media">
+      <UDashboardNavbar title="Playlists">
         <template #leading>
           <UDashboardSidebarCollapse />
+        </template>
+
+        <template #right>
+          <!-- <CustomersAddModal /> -->
         </template>
       </UDashboardNavbar>
     </template>
@@ -43,8 +56,8 @@ const onSubmit = () =>
       <UPage>
         <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
           <USelect
-            v-model="form.sort"
-            :items="sorters"
+            v-model="form.type"
+            :items="types"
             label-key="label"
             value-key="value"
             placeholder="Filter by"
@@ -59,21 +72,7 @@ const onSubmit = () =>
               v-for="(item, index) in items.data"
               :key="index"
               variant="ghost"
-            >
-              <UUser
-                :name="item.name"
-                :avatar="{
-                  alt: item.name,
-                  class: 'rounded-sm size-12 me-1',
-                }"
-              >
-                <template #description>
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>{{ item.file_size ?? 'N/A' }}</span>
-                  </div>
-                </template>
-              </UUser>
-            </UPageCard>
+            />
           </UPageList>
         </InfiniteScroll>
       </UPage>

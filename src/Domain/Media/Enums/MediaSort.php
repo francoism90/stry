@@ -6,7 +6,7 @@ namespace Domain\Media\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum MediaOrder: string implements Enumerable
+enum MediaSort: string implements Enumerable
 {
     case Newest = 'newest';
     case Filesize = 'filesize';

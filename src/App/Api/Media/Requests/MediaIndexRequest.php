@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Media\Requests;
 
-use Domain\Media\Enums\MediaOrder;
+use Domain\Media\Enums\MediaSort;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +21,7 @@ class MediaIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sort' => ['sometimes', 'nullable', 'string', Rule::enum(MediaOrder::class)],
+            'sort' => ['sometimes', 'nullable', 'string', Rule::enum(MediaSort::class)],
             'search' => ['nullable', 'string', 'max:255'],
         ];
     }

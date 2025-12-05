@@ -63,7 +63,7 @@ const onSubmit = () =>
             <UPageCard
               v-for="(item, index) in items.data"
               :key="index"
-              :to="edit.url({ video: item.id })"
+              :to="edit.url(item.id)"
               variant="ghost"
             >
               <UUser
