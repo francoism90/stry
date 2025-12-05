@@ -3,7 +3,7 @@ import VideoController from '@/actions/App/Client/Videos/Controllers/VideoContro
 import type { VideoCollection } from '@/types'
 
 defineProps<{
-  items: VideoCollection
+  items: VideoCollection | undefined
 }>()
 </script>
 

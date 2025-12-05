@@ -30,7 +30,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <Head :title="video.title" />
 
   <UPage>
-    <UPageBody class="mt-4 space-y-6">
+    <UPageBody class="mt-4 space-y-6 px-4 sm:px-6">
       <VideoPlayer />
 
       <UPageFeature :title="video.title">
@@ -44,12 +44,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           <div class="sr-only">Loading queue...</div>
         </template>
 
-        <UPageFeature
-          class="py-4"
-          title="Up next"
-        />
-
-        {{ queue }}
+        <UPageFeature title="Up next" />
 
         <VideoList :items="queue" />
       </Deferred>
