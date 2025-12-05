@@ -11,9 +11,10 @@ defineProps<{
   <UBlogPosts class="grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
     <UBlogPost
       v-for="(item, index) in items?.data"
-      v-bind="item"
       variant="naked"
       :key="index"
+      v-bind="item"
+      :title="item.title"
       :image="item.thumb"
       :badge="item.timestamp"
       :date="item.released_at || item.published_at || item.created_at"
@@ -34,14 +35,15 @@ defineProps<{
 
         <div
           v-if="item.tags?.length"
-          class="mt-4 flex flex-wrap gap-2 overflow-auto"
+          class="flex flex-wrap gap-x-2 overflow-auto"
         >
           <UButton
             v-for="(tag, index) in item.tags"
             :key="index"
             :label="tag.name"
-            variant="soft"
+            variant="outline"
             size="xs"
+            class="mt-2"
           />
         </div>
       </template>

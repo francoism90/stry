@@ -36,9 +36,12 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 
       <UPageFeature :title="video.title">
         <template #description>
-          <p v-html="video.description" />
+          <p
+            v-if="video.description?.length"
+            v-html="video.description"
+          />
 
-          <div class="flex items-center gap-2 overflow-auto">
+          <div class="flex items-center gap-x-2 overflow-auto">
             <UButton
               v-for="(tag, index) in video.tags"
               :key="index"
@@ -52,7 +55,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         </template>
       </UPageFeature>
 
-      <div class="flex items-center gap-2 overflow-auto">
+      <div class="flex items-center gap-x-2 overflow-auto">
         <UButton
           v-for="(link, index) in links"
           :key="index"

@@ -60,7 +60,10 @@ watchDebounced(
       }"
     >
       <template #description>
-        <p v-html="tag.summary" />
+        <p
+          v-if="tag.summary?.length"
+          v-html="tag.summary"
+        />
       </template>
     </UPageHeader>
 
