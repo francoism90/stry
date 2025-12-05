@@ -234,9 +234,9 @@ const onSubmit = () =>
           v-model="form.summary"
           :model-modifiers="{ nullable: true, string: true, trim: true }"
           :rows="5"
+          autoresize
           placeholder="Enter markdown"
           class="w-full"
-          autoresize
         />
       </UFormField>
     </UPageCard>
