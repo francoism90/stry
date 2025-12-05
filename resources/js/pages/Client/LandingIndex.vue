@@ -41,7 +41,7 @@ const form = useForm('get', '', {
     />
 
     <InfiniteScroll data="items">
-      <UBlogPosts class="gap-10 px-4 py-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-2">
+      <UBlogPosts class="gap-10 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-2">
         <UBlogPost
           v-for="(item, index) in items.data"
           v-bind="item"
