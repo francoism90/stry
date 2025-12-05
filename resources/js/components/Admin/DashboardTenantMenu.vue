@@ -27,10 +27,10 @@ const selectedTenant = ref(tenants.value[0])
 
 const items = computed<DropdownMenuItem[][]>(() => {
   return [
-    tenants.value.map((team) => ({
-      ...team,
+    tenants.value.map((tenant) => ({
+      ...tenant,
       onSelect() {
-        selectedTenant.value = team
+        selectedTenant.value = tenant
       },
     })),
     [
