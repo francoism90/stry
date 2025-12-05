@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Playlist\Enums;
+namespace Domain\Playlists\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 

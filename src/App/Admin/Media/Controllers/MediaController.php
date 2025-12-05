@@ -30,11 +30,10 @@ class MediaController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Media::class);
 
         // Apply filters
-        $search = $request->safe()->input('search', '');
         $sort = $request->safe()->input('sort', MediaSort::Newest);
 
         // Scout builder
-        $scout = Media::search($search)
+        $scout = Media::query()
             ->simplePaginate(16)
             ->through(fn (Media $media) => new MediaResource($media));
 
