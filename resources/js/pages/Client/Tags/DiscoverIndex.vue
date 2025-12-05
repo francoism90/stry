@@ -29,7 +29,7 @@ const onSubmit = () => {
 }
 
 watchDebounced(
-  () => form.type,
+  () => form.search,
   () => onSubmit(),
   { debounce: 100, maxWait: 1000 },
 )

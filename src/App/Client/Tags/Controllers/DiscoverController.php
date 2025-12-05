@@ -36,7 +36,7 @@ class DiscoverController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Tag::search($request->safe()->input('search'))
             ->tap(new TagTypeScope($type))
-            ->simplePaginate(12)
+            ->simplePaginate(24)
             ->through(fn (Tag $video) => new TagResource($video));
 
         return Inertia::render('Client/Tags/DiscoverIndex', [
