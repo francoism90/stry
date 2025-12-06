@@ -14,6 +14,7 @@ use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -189,7 +190,7 @@ class Tag extends BaseTag implements HasMedia
 
     public function makeSearchableUsing(TagCollection $models): TagCollection
     {
-        return $models->loadMissing($this->with);
+        return $models->loadMissing('related');
     }
 
     public function toSearchableArray(): array
@@ -207,6 +208,11 @@ class Tag extends BaseTag implements HasMedia
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
+    }
+
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with('related');
     }
 
     protected function summary(): Attribute
