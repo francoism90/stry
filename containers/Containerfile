@@ -1,4 +1,4 @@
-FROM rust:bookworm AS builder
+FROM rust:latest AS builder
 
 WORKDIR /usr/local/src
 
@@ -31,7 +31,7 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # ab-av1
 # RUN cargo install ab-av1
 
-FROM php:8.4-cli-bookworm AS base
+FROM php:8.4-cli-trixie AS base
 
 ARG UID=1000
 ARG GID=1000
