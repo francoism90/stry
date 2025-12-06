@@ -7,7 +7,6 @@ namespace Domain\Videos\Commands;
 use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Support\Number;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
@@ -44,7 +43,7 @@ class ClearCommand extends Command implements Isolatable
             rows: $videos->map(fn (Video $video) => [
                 (string) $video->getKey(),
                 (string) $video->title,
-                Number::fileSize($video->file_size),
+                (string) $video->filesize,
             ])->all(),
         );
 
