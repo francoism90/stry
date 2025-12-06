@@ -53,8 +53,8 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 RUN mkdir -p ${PNPM_HOME} && rm -rf /usr/local/src/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates dnsutils fswatch unzip zip \
-    git openssh-client sqlite3 postgresql-common awscli \
+    curl ca-certificates dnsutils fswatch unzip zip git  \
+    nano openssh-client sqlite3 postgresql-common awscli \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
