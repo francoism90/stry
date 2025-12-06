@@ -41,6 +41,7 @@ class Tag extends BaseTag implements HasMedia
      */
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'type',
         'adult',
