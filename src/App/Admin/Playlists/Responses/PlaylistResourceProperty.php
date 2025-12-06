@@ -23,7 +23,8 @@ readonly class PlaylistResourceProperty implements ProvidesInertiaProperty
 
     protected function getResource(): PlaylistResource
     {
-        return $this->playlist
+        return $this
+            ->playlist
             ->toResource(PlaylistResource::class);
     }
 }

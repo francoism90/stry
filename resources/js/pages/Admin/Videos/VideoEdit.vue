@@ -56,7 +56,7 @@ const onSubmit = () =>
   >
     <UPageCard
       title="Video details"
-      :description="video.user?.name"
+      :description="video.filesize"
       variant="naked"
       orientation="horizontal"
     >

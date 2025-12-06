@@ -62,7 +62,8 @@ export type Video = Model & {
   thumb: string | undefined
   duration: number
   timestamp: string
-  snapshot: number | null | undefined
+  filesize: string | undefined
+  snapshot: number | undefined
   captions: Media[] | null
   tags: Tag[] | null
   expires_at: string | undefined

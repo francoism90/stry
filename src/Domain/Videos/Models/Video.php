@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Number;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
@@ -275,6 +276,11 @@ class Video extends Model implements HasMedia
         ]);
     }
 
+    public function getThumb(): ?string
+    {
+        return $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb');
+    }
+
     public function getStreams(): Collection
     {
         return $this
@@ -327,21 +333,14 @@ class Video extends Model implements HasMedia
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn (): ?string => $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb'), report: false),
+            get: fn () => rescue(fn (): ?string => $this->getThumb(), report: false),
         )->shouldCache();
     }
 
-    protected function captioned(): Attribute
+    protected function filesize(): Attribute
     {
         return Attribute::make(
-            get: fn (): bool => $this->hasCaptions(),
-        )->shouldCache();
-    }
-
-    protected function captions(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): MediaCollection => $this->getCaptions(),
+            get: fn (): string => Number::fileSize($this->getClipCollection()->totalSizeInBytes()),
         )->shouldCache();
     }
 
@@ -359,10 +358,17 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
-    protected function fileSize(): Attribute
+    protected function captioned(): Attribute
     {
         return Attribute::make(
-            get: fn (): int => $this->getClipCollection()->totalSizeInBytes(),
+            get: fn (): bool => $this->hasCaptions(),
+        )->shouldCache();
+    }
+
+    protected function captions(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): MediaCollection => $this->getCaptions(),
         )->shouldCache();
     }
 }
