@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('file_name');
             $table->string('mime_type')->nullable();
-            $table->string('collection_name');
+            $table->string('collection_name')->index();
             $table->string('disk');
             $table->string('conversions_disk')->nullable();
             $table->unsignedBigInteger('size');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->jsonb('custom_properties');
             $table->jsonb('generated_conversions');
             $table->jsonb('responsive_images');
-            $table->unsignedInteger('order_column')->nullable()->index();
+            $table->unsignedBigInteger('order_column')->nullable()->index();
             $table->nullableTimestamps();
         });
     }
