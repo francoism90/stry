@@ -78,7 +78,6 @@ class Video extends Model implements HasMedia
      * @var array<int, string>
      */
     protected $with = [
-        'media',
         'tags',
     ];
 
