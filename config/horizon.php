@@ -176,7 +176,7 @@ return [
     |
     */
 
-    'memory_limit' => 2048,
+    'memory_limit' => 128,
 
     /*
     |--------------------------------------------------------------------------
@@ -192,94 +192,53 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['default', 'broadcasts'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => 1,
-            'maxProcesses' => 5,
+            'maxProcesses' => 10,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 256,
+            'maxTime' => 3600,
+            'maxJobs' => 1000,
+            'memory' => 128,
             'tries' => 3,
-            'timeout' => 300,
+            'timeout' => 600,
             'nice' => 0,
         ],
 
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['broadcasts'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'minProcesses' => 1,
-            'maxProcesses' => 3,
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 1,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 2,
-            'timeout' => 300,
-            'nice' => 0,
-        ],
-
-        'supervisor-3' => [
-            'connection' => 'redis',
             'queue' => ['processing'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
             'minProcesses' => 1,
-            'maxProcesses' => 4,
+            'maxProcesses' => 5,
             'balanceMaxShift' => 1,
-            'balanceCooldown' => 5,
-            'maxTime' => 3600,
+            'balanceCooldown' => 3,
+            'maxTime' => 14400,
             'maxJobs' => 10,
-            'memory' => 2048,
+            'memory' => 1536,
             'tries' => 1,
-            'timeout' => 7200,
-            'nice' => 10,
+            'timeout' => 14400,
+            'nice' => 3,
         ],
     ],
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
-            ],
-            'supervisor-2' => [
-                'maxProcesses' => 5,
-            ],
-            'supervisor-3' => [
-                'maxProcesses' => 6,
-                'memory' => 3072,
-            ],
+            'supervisor-1' => [],
+            'supervisor-2' => [],
         ],
 
         'staging' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
-            ],
-            'supervisor-2' => [
-                'maxProcesses' => 2,
-            ],
-            'supervisor-3' => [
-                'maxProcesses' => 2,
-                'memory' => 2048,
-            ],
+            'supervisor-1' => [],
+            'supervisor-2' => [],
         ],
 
         'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 2,
-            ],
-            'supervisor-2' => [
-                'maxProcesses' => 1,
-            ],
-            'supervisor-3' => [
-                'maxProcesses' => 1,
-                'memory' => 1024,
-            ],
+            'supervisor-1' => [],
+            'supervisor-2' => [],
         ],
     ],
 ];
