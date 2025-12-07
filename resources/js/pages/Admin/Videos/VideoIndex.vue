@@ -67,7 +67,8 @@ const onSubmit = () =>
               variant="ghost"
             >
               <UUser
-                :name="item.name"
+                :name="item.title"
+                :description="`${item.filesize} • ${item.timestamp}`"
                 :avatar="{
                   alt: item.name,
                   src: item.thumb,
@@ -75,15 +76,7 @@ const onSubmit = () =>
                   decoding: 'async',
                   class: 'rounded-sm size-12 me-1',
                 }"
-              >
-                <template #description>
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>{{ item.episode ? `Episode: ${item.episode}` : 'N/A' }}</span>
-                    <span v-if="item.part">| Part: {{ item.part }}</span>
-                    <span v-if="item.captioned">| Captioned</span>
-                  </div>
-                </template>
-              </UUser>
+              />
             </UPageCard>
           </UPageList>
         </InfiniteScroll>

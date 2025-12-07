@@ -35,17 +35,12 @@ defineOptions({ layout: DashboardLayout })
             >
               <UUser
                 :name="item.name"
+                :description="`${item.mime_type} • ${item.file_size}`"
                 :avatar="{
                   alt: item.name,
                   class: 'rounded-sm size-12 me-1',
                 }"
-              >
-                <template #description>
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>{{ item.file_size ?? 'N/A' }}</span>
-                  </div>
-                </template>
-              </UUser>
+              />
             </UPageCard>
           </UPageList>
         </InfiniteScroll>

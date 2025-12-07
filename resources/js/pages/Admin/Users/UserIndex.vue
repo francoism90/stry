@@ -61,6 +61,7 @@ watchDebounced(
             >
               <UUser
                 :name="item.name"
+                :description="`${item.created_at}`"
                 :avatar="{
                   alt: item.name,
                   loading: 'lazy',

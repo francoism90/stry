@@ -75,17 +75,12 @@ watchDebounced(
             >
               <UUser
                 :name="item.name"
+                :description="`${item.type} • ${item.videos} videos`"
                 :avatar="{
                   alt: item.name,
                   class: 'rounded-sm size-12 me-1',
                 }"
-              >
-                <template #description>
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>{{ item.videos }} videos</span>
-                  </div>
-                </template>
-              </UUser>
+              />
             </UPageCard>
           </UPageList>
         </InfiniteScroll>

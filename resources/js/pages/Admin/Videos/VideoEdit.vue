@@ -56,7 +56,7 @@ const onSubmit = () =>
   >
     <UPageCard
       title="Video details"
-      :description="video.filesize"
+      :description="`Filesize: ${video.filesize} • Duration: ${video.timestamp}`"
       variant="naked"
       orientation="horizontal"
     >

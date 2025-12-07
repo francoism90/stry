@@ -9,7 +9,7 @@ export type Model = {
 
 export type User = Model & {
   name: string
-  email: string
+  email: string | undefined
   avatar: AvatarProps['src'] | null | undefined
   roles: string[] | undefined
   permissions: string[] | undefined

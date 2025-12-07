@@ -39,17 +39,12 @@ defineOptions({ layout: DashboardLayout })
             >
               <UUser
                 :name="item.id"
+                :description="`${item.percent}% • ${item.state}`"
                 :avatar="{
                   alt: item.id,
                   class: 'rounded-sm size-12 me-1',
                 }"
-              >
-                <template #description>
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span>{{ item.percent ?? '0' }}%</span>
-                  </div>
-                </template>
-              </UUser>
+              />
             </UPageCard>
           </UPageList>
         </InfiniteScroll>
