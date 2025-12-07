@@ -75,7 +75,6 @@ onBeforeUnmount(() => listener())
             :key="caption.id"
             :src="caption.asset"
             :label="caption.name"
-            kind="captions"
           />
         </template>
       </media-provider>

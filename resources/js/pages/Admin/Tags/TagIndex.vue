@@ -69,8 +69,8 @@ watchDebounced(
         <InfiniteScroll data="items">
           <UPageList divide>
             <UPageCard
-              v-for="(item, index) in items.data"
-              :key="index"
+              v-for="item in items?.data"
+              :key="item.id"
               variant="ghost"
             >
               <UUser

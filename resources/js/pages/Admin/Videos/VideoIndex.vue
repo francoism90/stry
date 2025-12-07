@@ -61,8 +61,8 @@ const onSubmit = () =>
         <InfiniteScroll data="items">
           <UPageList divide>
             <UPageCard
-              v-for="(item, index) in items.data"
-              :key="index"
+              v-for="item in items?.data"
+              :key="item.id"
               :to="edit.url(item.id)"
               variant="ghost"
             >

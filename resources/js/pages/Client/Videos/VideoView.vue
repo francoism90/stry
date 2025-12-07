@@ -51,13 +51,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 
           <div class="flex items-center gap-x-2 overflow-auto">
             <UButton
-              v-for="(tag, index) in video.tags"
-              :key="index"
-              :label="tag.name"
-              :to="TagController.url(tag.id)"
+              v-for="tag in video.tags"
+              :key="tag.id"
               variant="outline"
               size="sm"
               class="mt-2"
+              :label="tag.name"
+              :to="TagController.url(tag.id)"
             />
           </div>
         </template>
