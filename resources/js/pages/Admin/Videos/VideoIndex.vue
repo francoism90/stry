@@ -68,7 +68,7 @@ const onSubmit = () =>
             >
               <UUser
                 :name="item.title"
-                :description="`${item.filesize} • ${item.timestamp}`"
+                :description="item.timestamp"
                 :avatar="{
                   alt: item.name,
                   src: item.thumb,
