@@ -7,11 +7,6 @@ import { Head } from '@inertiajs/vue3'
 <template>
   <Head>
     <title>Stream videos</title>
-    <meta
-      head-key="description"
-      name="description"
-      content="Stream and watch your favorite videos."
-    />
   </Head>
 
   <Suspense>

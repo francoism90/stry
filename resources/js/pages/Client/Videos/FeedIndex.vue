@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VideoList from '@/components/Videos/VideoList.vue'
 import type { VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { InfiniteScroll } from '@inertiajs/vue3'
 import type { TabsItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -27,8 +27,6 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <Head title="Home" />
-
   <UPage>
     <UTabs
       v-model="form.list"
