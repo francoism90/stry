@@ -10,16 +10,16 @@ enum VideoList: string implements Enumerable
 {
     case Recommended = 'recommended';
     case Shorts = 'shorts';
-    case Newest = 'newest';
     case Watched = 'watched';
+    case Newest = 'newest';
 
     public function label(): string
     {
         return match ($this) {
             self::Recommended => __('Recommended'),
             self::Shorts => __('Shorts'),
-            self::Newest => __('Newest'),
             self::Watched => __('Watched'),
+            self::Newest => __('Newest'),
         };
     }
 
