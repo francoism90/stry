@@ -218,7 +218,7 @@ return [
             'balanceCooldown' => 3,
             'maxTime' => 3600,
             'maxJobs' => 50,
-            'memory' => 1536,
+            'memory' => 2048,
             'tries' => 1,
             'timeout' => 3600,
             'nice' => 3,
