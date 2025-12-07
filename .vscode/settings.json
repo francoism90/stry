@@ -1,17 +1,17 @@
 {
     "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit",
+        "source.fixAll": "always",
         "source.organizeImports": "always",
         "source.removeUnusedImports": "always",
         "source.sortImports": "always"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
     "editor.quickSuggestions": {
         "comments": "on",
         "strings": "on"
     },
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
     "files.associations": {
         "*.blade.php": "blade",
         "*.css": "tailwindcss"
@@ -38,5 +38,7 @@
         "plaintext": "html",
         "vue": "html",
         "vue-html": "html"
-    }
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "vue.server.hybridMode": true
 }
