@@ -51,14 +51,20 @@ const links: NavigationMenuItem[][] = [
       icon: 'i-lucide-settings',
       children: [
         {
-          label: 'Horizon',
-          to: '/horizon',
-          target: '_blank',
+          label: 'General',
+          to: '/admin/settings/general',
         },
         {
-          label: 'Telescope',
-          to: '/telescope',
-          target: '_blank',
+          label: 'Playback',
+          to: '/admin/settings/playback',
+        },
+        {
+          label: 'Logs',
+          to: '/admin/settings/logs',
+        },
+        {
+          label: 'Tasks',
+          to: '/admin/settings/tasks',
         },
       ],
     },
