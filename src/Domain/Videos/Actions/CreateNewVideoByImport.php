@@ -23,7 +23,7 @@ class CreateNewVideoByImport
 
             // Create the video record
             $video = $user->videos()->create([
-                'name' => Str::headline($fileName),
+                'name' => Str::title($fileName),
             ]);
 
             // Attach the video clip
