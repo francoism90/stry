@@ -217,7 +217,7 @@ return [
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
             'maxTime' => 3600,
-            'maxJobs' => 50,
+            'maxJobs' => 100,
             'memory' => 2048,
             'tries' => 1,
             'timeout' => 3600,
