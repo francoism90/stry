@@ -115,6 +115,7 @@ The following services are only accessible when logged in as **super-admin**:
 
 | Service          | URL                           | Description                     |
 | ---------------- | ----------------------------- | ------------------------------- |
+| 🎛️ **Admin**     | <https://stry.test/admin>     | Admin dashboard (WIP)           |
 | 🌊 **Horizon**   | <https://stry.test/horizon>   | Queue monitoring and management |
 | 🔭 **Telescope** | <https://stry.test/telescope> | Debugging assistant (dev only)  |
 
