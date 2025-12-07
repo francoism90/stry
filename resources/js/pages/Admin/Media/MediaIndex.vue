@@ -24,8 +24,6 @@ defineOptions({ layout: DashboardLayout })
 
     <template #body>
       <UPage>
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5"></div>
-
         <InfiniteScroll data="items">
           <UPageList divide>
             <UPageCard
