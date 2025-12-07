@@ -74,7 +74,7 @@ return [
 
     'middleware' => [
         'web',
-        'auth.basic',
+        'verified',
         'role:super-admin',
     ],
 
@@ -192,7 +192,7 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default', 'broadcasts'],
+            'queue' => ['default', 'broadcasts', 'notifications'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => 1,
@@ -216,11 +216,11 @@ return [
             'maxProcesses' => 5,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
-            'maxTime' => 14400,
-            'maxJobs' => 10,
+            'maxTime' => 3600,
+            'maxJobs' => 50,
             'memory' => 1536,
             'tries' => 1,
-            'timeout' => 14400,
+            'timeout' => 3600,
             'nice' => 3,
         ],
     ],
