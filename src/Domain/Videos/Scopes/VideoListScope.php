@@ -17,7 +17,7 @@ readonly class VideoListScope
     {
         $scout
             ->when($this->isList(VideoList::Recommended) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
-            ->when($this->isList(VideoList::Watched), fn (Builder $scout) => $scout->latest())
+            ->when($this->isList(VideoList::Watched), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
             ->when($this->isList(VideoList::Newest), fn (Builder $scout) => $scout->latest());
     }
 
