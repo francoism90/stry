@@ -18,8 +18,8 @@ enum VideoList: string implements Enumerable
         return match ($this) {
             self::Recommended => __('Recommended'),
             self::Shorts => __('Shorts'),
-            self::Newest => __('Most Recent'),
-            self::Watched => __('Recently Watched'),
+            self::Newest => __('Newest'),
+            self::Watched => __('Watched'),
         };
     }
 
