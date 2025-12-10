@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Client\Account\Responses\AuthenticatedProperty;
+use App\Api\Users\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -18,9 +20,12 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'app' => fn () => config('app.name', 'Laravel'),
-            'locale' => fn () => $request->getLocale(),
-            'auth' => fn () => new AuthenticatedProperty($request->user()),
+            'app' => Inertia::once(fn () => Config::string('app.name', 'Laravel')),
+            'locale' => Inertia::once(fn () => $request->getLocale()),
+            'auth' => Inertia::once(fn () => UserResource::make($request->user()
+                ->loadMissing('permissions', 'roles')
+                ->append('name', 'avatar'),
+            )),
         ]);
     }
 
