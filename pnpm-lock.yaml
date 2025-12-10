@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@inertiajs/vue3':
-        specifier: ^2.2.19
-        version: 2.2.19(vue@3.5.25(typescript@5.9.3))
+        specifier: ^2.2.20
+        version: 2.2.20(vue@3.5.25(typescript@5.9.3))
       '@laravel/echo-vue':
         specifier: ^2.2.6
         version: 2.2.6(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.25(typescript@5.9.3))
@@ -19,7 +19,7 @@ importers:
         version: 0.1.7
       '@nuxt/ui':
         specifier: ^4.2.1
-        version: 4.2.1(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.19(vue@3.5.25(typescript@5.9.3)))(axios@1.13.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.25(typescript@5.9.3))(zod@4.1.11)
+        version: 4.2.1(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.20(vue@3.5.25(typescript@5.9.3)))(axios@1.13.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.25(typescript@5.9.3))(zod@4.1.11)
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))
@@ -37,7 +37,7 @@ importers:
         version: 2.2.6(pusher-js@8.4.0)(socket.io-client@4.8.1)
       laravel-precognition-vue-inertia:
         specifier: ^0.8.0
-        version: 0.8.0(@inertiajs/vue3@2.2.19(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
+        version: 0.8.0(@inertiajs/vue3@2.2.20(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       laravel-vite-plugin:
         specifier: ^2.0.1
         version: 2.0.1(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))
@@ -1069,11 +1069,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@inertiajs/core@2.2.19':
-    resolution: {integrity: sha512-W0hp92AzusxxYIzthw9VbFt3ZMu4+SrtJBOF9bR2ljcU6r2b9JTauidf1+oxO1NfLnQN80uvt7tBJ015BNVJ4w==}
+  '@inertiajs/core@2.2.20':
+    resolution: {integrity: sha512-sfMlbutO2/bP9e5swUFo/shu/+QsDisXXXyRIQ1dJeBAawcDZGT7rSTBGFuzE2fdF6UYDBvY9QHMAbzAOlVf0A==}
 
-  '@inertiajs/vue3@2.2.19':
-    resolution: {integrity: sha512-hjPeUxlk2LziRb1WmWJx8E4q1QB1XnWKk4l/1XGW3RgKKNdk10Xcr57YPyjkaaHT53It8nHazAPGQ6ctdYNSHQ==}
+  '@inertiajs/vue3@2.2.20':
+    resolution: {integrity: sha512-KK4cbNNfu7rZqG8Q+u2HmbKTNub7a2oJvPsScOXYDYBf+8dEagJXZ69HY3GCVNrWv6E5u2hTZsNOjVCw8b6Lkw==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -5595,7 +5595,7 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@inertiajs/core@2.2.19':
+  '@inertiajs/core@2.2.20':
     dependencies:
       '@types/lodash-es': 4.17.12
       axios: 1.13.2
@@ -5604,9 +5604,9 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@inertiajs/vue3@2.2.19(vue@3.5.25(typescript@5.9.3))':
+  '@inertiajs/vue3@2.2.20(vue@3.5.25(typescript@5.9.3))':
     dependencies:
-      '@inertiajs/core': 2.2.19
+      '@inertiajs/core': 2.2.20
       '@types/lodash-es': 4.17.12
       lodash-es: 4.17.21
       vue: 3.5.25(typescript@5.9.3)
@@ -5814,7 +5814,7 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 3.10.0
 
-  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.19(vue@3.5.25(typescript@5.9.3)))(axios@1.13.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.25(typescript@5.9.3))(zod@4.1.11)':
+  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@inertiajs/vue3@2.2.20(vue@3.5.25(typescript@5.9.3)))(axios@1.13.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.25(typescript@5.9.3))(zod@4.1.11)':
     dependencies:
       '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
       '@internationalized/date': 3.10.0
@@ -5863,7 +5863,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.6.0(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-component-type-helpers: 3.1.8
     optionalDependencies:
-      '@inertiajs/vue3': 2.2.19(vue@3.5.25(typescript@5.9.3))
+      '@inertiajs/vue3': 2.2.20(vue@3.5.25(typescript@5.9.3))
       zod: 4.1.11
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -7940,9 +7940,9 @@ snapshots:
       pusher-js: 8.4.0
       socket.io-client: 4.8.1
 
-  laravel-precognition-vue-inertia@0.8.0(@inertiajs/vue3@2.2.19(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3)):
+  laravel-precognition-vue-inertia@0.8.0(@inertiajs/vue3@2.2.20(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
-      '@inertiajs/vue3': 2.2.19(vue@3.5.25(typescript@5.9.3))
+      '@inertiajs/vue3': 2.2.20(vue@3.5.25(typescript@5.9.3))
       laravel-precognition: 0.8.0
       laravel-precognition-vue: 0.8.0(vue@3.5.25(typescript@5.9.3))
       vue: 3.5.25(typescript@5.9.3)
