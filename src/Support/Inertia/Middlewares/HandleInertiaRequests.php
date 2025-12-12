@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Support\Inertia\Middlewares;
 
 use App\Api\Users\Resources\UserResource;
+use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
@@ -22,11 +23,20 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'app' => Inertia::once(fn () => Config::string('app.name', 'Laravel')),
             'locale' => Inertia::once(fn () => $request->getLocale()),
-            'auth' => Inertia::once(fn () => UserResource::make($request->user()
-                ->loadMissing('permissions', 'roles')
-                ->append('name', 'avatar'),
-            )),
+            'auth' => Inertia::once(fn () => $this->auth($request->user())),
         ]);
+    }
+
+    public function auth(?User $user = null): ?UserResource
+    {
+        if (! $user) {
+            return null;
+        }
+
+        return UserResource::make($user
+            ->loadMissing('permissions', 'roles')
+            ->append('name', 'avatar'),
+        );
     }
 
     /**

@@ -17,7 +17,7 @@
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2",
-        "inertiajs/inertia-laravel": "^2.0.13",
+        "inertiajs/inertia-laravel": "^2.0.14",
         "laravel/fortify": "^1.32.1",
         "laravel/framework": "^12.42.0",
         "laravel/horizon": "^5.40.2",
