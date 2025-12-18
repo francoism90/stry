@@ -176,7 +176,7 @@ return [
     |
     */
 
-    'memory_limit' => 512,
+    'memory_limit' => 256,
 
     /*
     |--------------------------------------------------------------------------
@@ -192,22 +192,39 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default', 'broadcasts', 'notifications'],
+            'queue' => ['default'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => 1,
-            'maxProcesses' => 10,
+            'maxProcesses' => 5,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
             'maxTime' => 3600,
             'maxJobs' => 1000,
             'memory' => 128,
             'tries' => 3,
-            'timeout' => 600,
+            'timeout' => 300,
             'nice' => 0,
         ],
 
         'supervisor-2' => [
+            'connection' => 'redis',
+            'queue' => ['broadcasts', 'notifications'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+            'maxTime' => 1800,
+            'maxJobs' => 500,
+            'memory' => 64,
+            'tries' => 3,
+            'timeout' => 120,
+            'nice' => 0,
+        ],
+
+        'supervisor-3' => [
             'connection' => 'redis',
             'queue' => ['processing'],
             'balance' => 'auto',
@@ -217,7 +234,7 @@ return [
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
             'maxTime' => 3600,
-            'maxJobs' => 100,
+            'maxJobs' => 50,
             'memory' => 2048,
             'tries' => 1,
             'timeout' => 3600,
@@ -229,16 +246,19 @@ return [
         'production' => [
             'supervisor-1' => [],
             'supervisor-2' => [],
+            'supervisor-3' => [],
         ],
 
         'staging' => [
             'supervisor-1' => [],
             'supervisor-2' => [],
+            'supervisor-3' => [],
         ],
 
         'local' => [
             'supervisor-1' => [],
             'supervisor-2' => [],
+            'supervisor-3' => [],
         ],
     ],
 ];
