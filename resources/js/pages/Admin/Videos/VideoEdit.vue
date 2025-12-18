@@ -205,7 +205,6 @@ const onSubmit = () =>
       >
         <USelectMenu
           v-model="form.tags as TagMenuItem[]"
-          :model-modifiers="{ nullable: true }"
           :items="items as TagMenuItem[]"
           :ignore-filter="true"
           label-key="name"
