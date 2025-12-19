@@ -18,7 +18,7 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
         return Config::array('playlist.middleware', []);
     }
 
-    public function __invoke(Playlist $playlist): Response
+    public function __invoke(Playlist $playlist, string $path): Response
     {
         // Check if playlist has encryption enabled
         if (! $playlist->encryption_key) {
@@ -26,7 +26,7 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
         }
 
         // Get the encryption key file from storage
-        $keyPath = $playlist->getPath('encryption.key');
+        $keyPath = $playlist->getPath($path);
 
         $keyContent = Storage::disk($playlist->getRotationKeyDisk())->get($keyPath);
 

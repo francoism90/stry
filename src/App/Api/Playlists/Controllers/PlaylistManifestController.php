@@ -27,12 +27,6 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         // Ensure the playlist is not expired
         // abort_if($playlist->isExpired(), 410);
 
-        // Dispatch the viewed event
-        // PlaylistHasBeenViewedEvent::dispatchIf(
-        //     ! $playlist->isRecentlyAccessed(),
-        //     $playlist,
-        // );
-
         logger($playlist->getPath($path));
 
         return Shaka::dynamicHLSPlaylist()

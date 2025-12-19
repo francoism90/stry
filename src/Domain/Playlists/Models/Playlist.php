@@ -220,6 +220,14 @@ class Playlist extends Model
         return $this->getUrlResolver($this->file_name);
     }
 
+    public function markAsReady(): void
+    {
+        $this->updateOrFail([
+            'state' => Verified::class,
+            'transcoded_at' => Carbon::now(),
+        ]);
+    }
+
     public function getPercentage(): float
     {
         return round(data_get($this->progress, 'percentage', 0));
@@ -233,13 +241,6 @@ class Playlist extends Model
     public function isValid(): bool
     {
         return $this->state->equals(Verified::class);
-    }
-
-    public function isRecentlyAccessed(): bool
-    {
-        return filled($this->accessed_at) && $this->accessed_at->greaterThanOrEqualTo(
-            Config::get('playlist.recent_activity', now()->subMinutes(10)),
-        );
     }
 
     public static function getVideoFormats(): Collection

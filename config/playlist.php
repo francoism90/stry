@@ -82,6 +82,6 @@ return [
      * You may want to use a temporary path to improve performance.
      * The disk should be configured in the `filesystems.php` configuration file.
      */
-    'rotation_keys_disk' => env('PLAYLIST_ROTATION_KEYS_DISK', 'secrets'),
+    'rotation_keys_disk' => env('PLAYLIST_ROTATION_KEYS_DISK', 'export'),
 
 ];

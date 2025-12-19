@@ -66,6 +66,9 @@ class CreateNewVideoPlaylist
             // Clean up temporary files used during packaging
             $packager->cleanupTemporaryFiles();
 
+            // Mark the playlist as ready
+            $playlist->markAsReady();
+
             return $playlist;
         });
     }
