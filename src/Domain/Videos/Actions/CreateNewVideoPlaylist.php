@@ -9,7 +9,7 @@ use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
 use Illuminate\Support\Facades\DB;
 
-class GenerateVideoPlaylist
+class CreateNewVideoPlaylist
 {
     public function handle(Video $video): ?Playlist
     {
@@ -28,7 +28,7 @@ class GenerateVideoPlaylist
             $playlist = $video->playlists()->create([
                 'type' => 'clip',
                 'file_name' => 'master.m3u8',
-                'disk' => 'export',
+                'disk' => Playlist::getDisk,
             ]);
 
             // Create HLS playlist for the clip media with custom UUID path

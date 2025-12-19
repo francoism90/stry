@@ -12,12 +12,6 @@ return [
     'disk_name' => env('PLAYLIST_DISK', 'export'),
 
     /**
-     * This setting is used to define the free disk space requirements for playlists.
-     * The value is in bytes, and it will be used to limit the size of the playlist storage.
-     */
-    'disk_size' => (int) env('PLAYLIST_DISK_SIZE', 1073741824 * 4), // 4 GB
-
-    /**
      * This setting is used to define the expiration time for the playlist.
      * The value is in seconds, and it will be used to determine how long the playlist will be valid.
      * After this time, the playlist will be considered expired and can be prunable.
@@ -70,33 +64,6 @@ return [
     'frame_interval' => (int) env('PLAYLIST_FRAME_INTERVAL', 180),
 
     /**
-     * This setting is used to configure the video formats that will be used for transcoding.
-     * The order of the formats will determine the priority of transcoding.
-     * The first format in the list will be used as the fallback format for transcoding.
-     * At least one format must be defined.
-     */
-    'video_formats' => [
-        \Support\FFMpeg\Format\Video\X264::class,
-        \Support\FFMpeg\Format\Video\X265::class,
-        // \Support\FFMpeg\Format\Video\AV1::class,
-        // \Support\FFMpeg\Format\Video\WebM::class,
-    ],
-
-    /**
-     * When this setting is true, the playlist will copy the video codec from the original video file.
-     * This is useful for cases where the original video file is already in a compatible video codec.
-     * It can also improve performance by avoiding the need to transcode the video.
-     */
-    'copy_video_codec' => (bool) env('PLAYLIST_COPY_VIDEO_CODEC', true),
-
-    /**
-     * When this setting is true, the playlist will copy the audio codec from the original audio file.
-     * This is useful for cases where the original video file is already in a compatible audio codec.
-     * It can also improve performance by avoiding the need to transcode the audio.
-     */
-    'copy_audio_codec' => (bool) env('PLAYLIST_COPY_AUDIO_CODEC', true),
-
-    /**
      * This setting is used to enable or disable the rotation keys (encryption) for playlists.
      * When enabled, the playlist segments will be encrypted using AES-128 encryption.
      * This can help to protect the content from unauthorized access.
@@ -116,11 +83,5 @@ return [
      * The disk should be configured in the `filesystems.php` configuration file.
      */
     'rotation_keys_disk' => env('PLAYLIST_ROTATION_KEYS_DISK', 'secrets'),
-
-    /**
-     * This setting is used to define the required free disk space for the rotation keys.
-     * The value is in bytes, and it will be used to limit the size of the rotation keys storage.
-     */
-    'rotation_keys_disk_size' => (int) env('PLAYLIST_ROTATION_DISK_SIZE', 1073741824 * 1), // 1 GB
 
 ];
