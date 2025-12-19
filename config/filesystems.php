@@ -49,14 +49,6 @@ return [
             'report' => true,
         ],
 
-        'transcodes' => [
-            'driver' => 'local',
-            'root' => storage_path('app/media/transcodes'),
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
-        ],
-
         'media' => [
             'driver' => 'local',
             'root' => env('MEDIA_PATH', '/data/media'),
