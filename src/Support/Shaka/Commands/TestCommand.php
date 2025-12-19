@@ -25,14 +25,16 @@ class TestCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $result = Shaka::fromDisk('import')
+        $mediaOpener = Shaka::fromDisk('import')
             ->open('example.mp4')
+            ->export()
             ->addVideoStream('example.mp4', 'video.mp4')
             ->addAudioStream('example.mp4', 'audio.mp4')
             ->withMpdOutput('manifest.mpd')
-            ->export()
-            ->toDisk('export');
+            ->toDisk('export')  // Set output disk on exporter
+            ->save();
 
-        dd($result);
+        info('Export completed successfully!');
+        info('Returned: '.get_class($mediaOpener));
     }
 }
