@@ -36,7 +36,7 @@ class GenerateVideoPlaylist
                 ->open($path)
                 ->export()
                 ->toDisk($playlist->disk)
-                ->outputPath($video->ulid)  // Set custom output directory
+                ->outputPath((string) $playlist->getKey())  // Set custom output directory
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist('master.m3u8')
