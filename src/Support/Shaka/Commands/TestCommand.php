@@ -30,7 +30,8 @@ class TestCommand extends Command implements Isolatable
             ->addVideoStream('example.mp4', 'video.mp4')
             ->addAudioStream('example.mp4', 'audio.mp4')
             ->withMpdOutput('manifest.mpd')
-            ->export();
+            ->export()
+            ->toDisk('export');
 
         dd($result);
     }
