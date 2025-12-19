@@ -20,13 +20,13 @@ RUN arch="$(uname -m)" && case "$arch" in \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
 # Shaka Packager
-# RUN arch="$(uname -m)" && case "$arch" in \
-#       x86_64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ;; \
-#       aarch64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ;; \
-#       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
-#     esac \
-#     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
-#     && chmod +x /usr/local/bin/packager
+RUN arch="$(uname -m)" && case "$arch" in \
+      x86_64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ;; \
+      aarch64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
+    && chmod +x /usr/local/bin/packager
 
 # ab-av1
 # RUN cargo install ab-av1
@@ -71,7 +71,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-# COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
+COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 # PHP Extensions
