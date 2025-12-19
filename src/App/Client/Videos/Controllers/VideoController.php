@@ -8,8 +8,7 @@ use App\Client\Videos\Responses\VideoPlaylistProperty;
 use App\Client\Videos\Responses\VideoProgressProperty;
 use App\Client\Videos\Responses\VideoQueueProperty;
 use App\Client\Videos\Responses\VideoResourceProperty;
-use Domain\Videos\Actions\GenerateVideoClipPlaylist;
-use Domain\Videos\Actions\GenerateVideoPlaylist;
+use Domain\Videos\Actions\CreateNewVideoPlaylist;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -38,7 +37,7 @@ class VideoController extends Controller implements HasMiddleware
         //     $video,
         // );
 
-        app(GenerateVideoPlaylist::class)->handle($video);
+        app(CreateNewVideoPlaylist::class)->handle($video);
 
         return Inertia::render('Client/Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video),

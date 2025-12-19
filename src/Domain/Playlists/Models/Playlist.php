@@ -251,16 +251,6 @@ class Playlist extends Model
             ->sortBy('kilo_bitrate');
     }
 
-    public static function copyVideoCodec(): bool
-    {
-        return Config::boolean('playlist.copy_video_codec', true);
-    }
-
-    public static function copyAudioCodec(): bool
-    {
-        return Config::boolean('playlist.copy_audio_codec', true);
-    }
-
     public static function getSegmentLength(): int
     {
         return Config::integer('playlist.segment_length', 6);
@@ -271,9 +261,9 @@ class Playlist extends Model
         return Config::integer('playlist.frame_interval', 180);
     }
 
-    public static function getTranscodeDisk(): string
+    public static function getDestinationDisk(): string
     {
-        return Config::string('playlist.disk_name', 'segments');
+        return Config::string('playlist.disk_name', 'export');
     }
 
     public static function getRotationKeyDisk(): string

@@ -26,9 +26,9 @@ class CreateNewVideoPlaylist
 
             /** @var Playlist $playlist */
             $playlist = $video->playlists()->create([
-                'type' => 'clip',
                 'file_name' => 'master.m3u8',
-                'disk' => Playlist::getDisk,
+                'type' => 'clip',
+                'disk' => Playlist::getDestinationDisk(),
             ]);
 
             // Create HLS playlist for the clip media with custom UUID path
