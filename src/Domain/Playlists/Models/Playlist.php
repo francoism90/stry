@@ -11,7 +11,6 @@ use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Users\Concerns\InteractsWithUser;
-use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -22,11 +21,9 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Fluent;
 use League\Flysystem\WhitespacePathNormalizer;
 use Spatie\ModelStates\HasStates;
 
@@ -177,6 +174,29 @@ class Playlist extends Model
         return $this->file_name;
     }
 
+    public function getUrl(): string
+    {
+        return $this->getUrlResolver($this->file_name);
+    }
+
+    public function markAsReady(): void
+    {
+        $this->updateOrFail([
+            'state' => Verified::class,
+            'transcoded_at' => Carbon::now(),
+        ]);
+    }
+
+    public function isExpired(): bool
+    {
+        return filled($this->expires_at) && $this->expires_at->isPast();
+    }
+
+    public function isValid(): bool
+    {
+        return $this->state->equals(Verified::class);
+    }
+
     public function getPath(string $path = ''): string
     {
         return (new WhitespacePathNormalizer)->normalizePath(
@@ -220,40 +240,6 @@ class Playlist extends Model
         ]);
     }
 
-    public function getUrl(): string
-    {
-        return $this->getUrlResolver($this->file_name);
-    }
-
-    public function markAsReady(): void
-    {
-        $this->updateOrFail([
-            'state' => Verified::class,
-            'transcoded_at' => Carbon::now(),
-        ]);
-    }
-
-    public function getPercentage(): float
-    {
-        return round(data_get($this->progress, 'percentage', 0));
-    }
-
-    public function isExpired(): bool
-    {
-        return filled($this->expires_at) && $this->expires_at->isPast();
-    }
-
-    public function isValid(): bool
-    {
-        return $this->state->equals(Verified::class);
-    }
-
-
-    public static function getSegmentLength(): int
-    {
-        return Config::integer('playlists.segment_length', 6);
-    }
-
     public static function getDestinationDisk(): string
     {
         return Config::string('playlists.disk_name', 'segments');
@@ -264,6 +250,11 @@ class Playlist extends Model
         return Config::string('playlists.secret_disk', 'secrets');
     }
 
+    public static function getSegmentLength(): int
+    {
+        return Config::integer('playlists.segment_length', 6);
+    }
+
     public static function getExpiresAfter(): ?Carbon
     {
         $expires = Config::integer('playlists.expires_after');
@@ -271,9 +262,8 @@ class Playlist extends Model
         return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
     }
 
-
-    public static function shouldUseRotationKeys(): bool
+    public static function getEncryptionMethod(): string
     {
-        return Config::boolean('playlists.rotation_keys', true);
+        return Config::string('playlists.encryption', 'raw_key_encryption');
     }
 }

@@ -25,22 +25,22 @@ class CreateNewVideoPlaylist
 
             $path = $media->getPathRelativeToRoot();
 
-            // Generate encryption keys for HLS
-            $encryption = EncryptionKeyGenerator::generate();
+            // Get encryption method from config
+            $encryptionMethod = Playlist::getEncryptionMethod();
+
+            // Generate encryption keys if encryption is enabled
+            $encryption = $encryptionMethod === 'raw_key_encryption'
+                ? EncryptionKeyGenerator::generate()
+                : null;
 
             /** @var Playlist $playlist */
             $playlist = $video->createPlaylist([
-                'encryption_key_id' => $encryption['key_id'],
-                'encryption_key' => $encryption['key'],
+                'encryption_key_id' => $encryption['key_id'] ?? null,
+                'encryption_key' => $encryption['key'] ?? null,
                 'type' => 'clip',
             ]);
 
-            // Store the encryption key file in the secrets disk
-            $keyPath = $playlist->getPath('encryption.key');
-
-            EncryptionKeyGenerator::writeKeyFile($playlist->getSecretDisk(), $keyPath, $encryption['key']);
-
-            // Create HLS playlist for the clip media with custom UUID path and encryption
+            // Create HLS playlist for the clip media with custom UUID path
             $packager = Shaka::fromDisk($media->disk)
                 ->open($path)
                 ->export()
@@ -49,18 +49,28 @@ class CreateNewVideoPlaylist
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist($playlist->getFileName())
-                ->withSegmentDuration(Playlist::getSegmentLength())
-                // ->withEncryption([
-                //     'keys' => EncryptionKeyGenerator::formatForShaka(
-                //         $encryption['key_id'],
-                //         $encryption['key']
-                //     ),
-                //     'hls_key_uri' => 'encryption.key',
-                // ])
-                ->save();
+                ->withSegmentDuration(Playlist::getSegmentLength());
+
+            // Add encryption if enabled
+            if ($encryption) {
+                // Store the encryption key file in the secrets disk
+                $keyPath = $playlist->getPath('encryption.key');
+
+                EncryptionKeyGenerator::writeKeyFile($playlist->getSecretDisk(), $keyPath, $encryption['key']);
+
+                $packager->withEncryption([
+                    'keys' => EncryptionKeyGenerator::formatForShaka(
+                        $encryption['key_id'],
+                        $encryption['key']
+                    ),
+                    'hls_key_uri' => 'encryption.key',
+                ]);
+            }
+
+            $packager->save();
 
             // Clean up temporary files used during packaging
-            $packager->cleanupTemporaryFiles();
+            // $packager->cleanupTemporaryFiles();
 
             // Mark the playlist as ready
             $playlist->markAsReady();
