@@ -94,7 +94,7 @@ return [
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=259200, immutable',
+                'CacheControl' => 'public, max-age=2592000, immutable', // 30 days
             ],
         ],
 
@@ -112,7 +112,7 @@ return [
             'throw' => true,
             'report' => true,
             'options' => [
-                // 'CacheControl' => 'private, max-age=259200, immutable',
+                'CacheControl' => 'private, max-age=31536000, immutable', // 1 year
             ],
         ],
 
@@ -130,7 +130,7 @@ return [
             'throw' => true,
             'report' => true,
             'options' => [
-                'CacheControl' => 'private, max-age=259200, immutable',
+                'CacheControl' => 'private, max-age=1800, no-store', // 30 minutes, no persistent cache
             ],
         ],
 
