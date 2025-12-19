@@ -87,7 +87,6 @@ $app = Application::configure(basePath: $basePath)
         \Domain\Videos\Commands\ClearCommand::class,
         \Domain\Videos\Commands\ImportCommand::class,
         \Support\Scout\Commands\SyncCommand::class,
-        \Support\Shaka\Commands\TestCommand::class,
     ])
     ->create();
 
