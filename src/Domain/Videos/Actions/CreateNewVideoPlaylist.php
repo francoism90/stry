@@ -41,13 +41,18 @@ class CreateNewVideoPlaylist
             ]);
 
             // Create HLS playlist for the clip media with custom UUID path
+            // Note: For encrypted HLS, we must use TS segments (not fMP4) for browser compatibility
+            // fMP4 with encryption uses SAMPLE-AES-CTR which browsers don't support
+            $videoOutput = $encryption ? 'video.ts' : 'video.mp4';
+            $audioOutput = $encryption ? 'audio.ts' : 'audio.mp4';
+
             $packager = Shaka::fromDisk($media->disk)
                 ->open($path)
                 ->export()
                 ->toDisk($playlist->getDisk())
                 ->outputPath($playlist->getPath())
-                ->addVideoStream($path, 'video.mp4')
-                ->addAudioStream($path, 'audio.mp4')
+                ->addVideoStream($path, $videoOutput)
+                ->addAudioStream($path, $audioOutput)
                 ->withHlsMasterPlaylist($playlist->getFileName())
                 ->withSegmentDuration(Playlist::getSegmentLength());
 
