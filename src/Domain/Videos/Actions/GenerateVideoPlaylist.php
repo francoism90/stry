@@ -36,7 +36,7 @@ class GenerateVideoPlaylist
                 ->open($path)
                 ->export()
                 ->toDisk($playlist->getDisk())
-                ->outputPath((string) $playlist->getKey())
+                ->outputPath($playlist->getPath())
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist('master.m3u8')
