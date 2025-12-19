@@ -50,6 +50,8 @@ class Playlist extends Model
         'disk',
         'file_name',
         'secret_disk',
+        'encryption_key_id',
+        'encryption_key',
         'progress',
         'type',
         'state',
@@ -199,7 +201,10 @@ class Playlist extends Model
 
     public function getKeyUrlResolver(string $path): string
     {
-        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
+        return URL::temporarySignedRoute('api.playlists.key', now()->addMinutes(30), [
+            'playlist' => $this,
+            'path' => $path,
+        ]);
     }
 
     public function getUrlResolver(?string $path = null): string
