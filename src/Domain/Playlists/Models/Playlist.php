@@ -165,7 +165,7 @@ class Playlist extends Model
         return $this->disk;
     }
 
-    public function getSecretDisk(): string
+    public function getSecretDisk(): ?string
     {
         return $this->secret_disk;
     }
