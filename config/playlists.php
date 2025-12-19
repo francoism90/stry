@@ -35,12 +35,4 @@ return [
      */
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 14), // 14 days
 
-    /**
-     * This setting is used to define the middleware that will be applied to the playlist routes.
-     * You can add or remove middleware as needed.
-     */
-    'middleware' => [
-        'signed',
-    ],
-
 ];

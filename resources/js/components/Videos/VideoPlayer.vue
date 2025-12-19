@@ -38,7 +38,7 @@ const listener = () =>
     }
 
     // Store the current time periodically
-    if (seeked.value && currentTime > 0) {
+    if (seeked.value && currentTime >= 0) {
       store(currentTime)
     }
 

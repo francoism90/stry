@@ -14,12 +14,12 @@ class PlaylistPolicy
         return $user->isAdmin() ? true : null;
     }
 
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return false;
     }
 
-    public function view(User $user, Playlist $playlist): bool
+    public function view(?User $user, Playlist $playlist): bool
     {
         return $playlist->isValid();
     }
