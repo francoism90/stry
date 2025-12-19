@@ -8,6 +8,8 @@ use App\Client\Videos\Responses\VideoPlaylistProperty;
 use App\Client\Videos\Responses\VideoProgressProperty;
 use App\Client\Videos\Responses\VideoQueueProperty;
 use App\Client\Videos\Responses\VideoResourceProperty;
+use Domain\Videos\Actions\GenerateVideoClipPlaylist;
+use Domain\Videos\Actions\GenerateVideoPlaylist;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -32,10 +34,13 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('view', $video);
 
         // Generate video playlists if they don't exist
-        PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist('clip'),
-            $video,
-        );
+        // PlaylistVideo::dispatchSync(
+        //     $video,
+        // );
+
+        app(GenerateVideoPlaylist::class)->handle($video);
+
+        dd('do');
 
         return Inertia::render('Client/Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video),
