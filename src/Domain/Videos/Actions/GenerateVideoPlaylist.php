@@ -15,9 +15,9 @@ class GenerateVideoPlaylist
     {
         return DB::transaction(function () use ($video) {
             // If the video already has playlists or has no clips, skip processing
-            if ($video->hasPlaylist('clip') || ! $video->hasMedia('clips')) {
-                return;
-            }
+            // if ($video->hasPlaylist('clip') || ! $video->hasMedia('clips')) {
+            //     return;
+            // }
 
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
@@ -31,15 +31,18 @@ class GenerateVideoPlaylist
                 'disk' => 'export',
             ]);
 
-            // Create HLS playlist for the clip media
-            Shaka::fromDisk($media->disk)
+            // Create HLS playlist for the clip media with custom UUID path
+            $packager = Shaka::fromDisk($media->disk)
                 ->open($path)
+                ->inPath($video->ulid)  // Must be before export() to set output path
                 ->export()
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist('master.m3u8')
                 ->toDisk($playlist->disk)
                 ->save();
+
+            $packager->cleanupTemporaryFiles();
 
             return $playlist;
         });
