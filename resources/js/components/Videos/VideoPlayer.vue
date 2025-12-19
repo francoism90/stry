@@ -31,14 +31,17 @@ const actions = ref<ButtonProps[]>([
 
 const listener = () =>
   player.value?.subscribe(({ canSeek, currentTime }) => {
-    // Seek to the stored progress time only once
+    // Seek to stored progress once when ready
     if (!seeked.value && canSeek) {
-      player.value!.currentTime = progress.value || 0
+      if (progress.value && progress.value > 1) {
+        player.value!.currentTime = progress.value
+      }
+
       seeked.value = true
     }
 
-    // Store the current time periodically
-    if (seeked.value && currentTime >= 0) {
+    // Store current time periodically (skip first second)
+    if (seeked.value && currentTime > 1) {
       store(currentTime)
     }
 

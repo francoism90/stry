@@ -25,7 +25,7 @@ class SetVideoProgress
             $time = (float) data_get($attributes, 'time', 0);
 
             // Store the video as viewed if not already cached
-            if (Cache::missing($cacheKey) && $time >= 0) {
+            if (Cache::missing($cacheKey) && $time > 0) {
                 $this->viewed->handle($video, $user, $attributes);
             }
 
@@ -33,7 +33,7 @@ class SetVideoProgress
             $current = (float) Cache::get($cacheKey, 0);
 
             // Cache the progress to avoid excessive updates
-            if ($time >= 0 && $current !== $time) {
+            if ($time > 0 && $current !== $time) {
                 Cache::put($cacheKey, $time, now()->addDays(3));
             }
         });
