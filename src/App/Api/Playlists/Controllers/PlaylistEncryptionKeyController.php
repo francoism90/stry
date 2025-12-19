@@ -28,13 +28,16 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
         // Get the encryption key file from storage
         $keyPath = $playlist->getPath($path);
 
-        $keyContent = Storage::disk($playlist->getRotationKeyDisk())->get($keyPath);
+        if (! Storage::disk($playlist->getSecretDisk())->exists($keyPath)) {
+            abort(404, 'Encryption key file not found');
+        }
 
-        // Return the key as binary data
+        $keyContent = Storage::disk($playlist->getSecretDisk())->get($keyPath);
+
+        // Return the key as binary data with CORS headers
         return response($keyContent, 200, [
             'Content-Type' => 'application/octet-stream',
             'Content-Disposition' => 'inline; filename="encryption.key"',
-            // 'Cache-Control' => 'private, max-age=300',
         ]);
     }
 }

@@ -172,6 +172,11 @@ class Playlist extends Model
         return $this->secret_disk;
     }
 
+    public function getFileName(): string
+    {
+        return $this->file_name;
+    }
+
     public function getPath(string $path = ''): string
     {
         return (new WhitespacePathNormalizer)->normalizePath(
@@ -272,9 +277,9 @@ class Playlist extends Model
         return Config::string('playlist.disk_name', 'export');
     }
 
-    public static function getRotationKeyDisk(): string
+    public static function getSecretsDisk(): string
     {
-        return Config::string('playlist.rotation_keys_disk', 'secrets');
+        return Config::string('playlist.secret_disk', 'secrets');
     }
 
     public static function getExpiresAfter(): ?Carbon
@@ -292,10 +297,5 @@ class Playlist extends Model
     public static function shouldUseRotationKeys(): bool
     {
         return Config::boolean('playlist.rotation_keys', true);
-    }
-
-    public static function getRotationKeysSections(): int
-    {
-        return Config::integer('playlist.rotation_keys_sections', 5);
     }
 }
