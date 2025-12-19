@@ -52,15 +52,7 @@ return [
         'media' => [
             'driver' => 'local',
             'root' => env('MEDIA_PATH', '/data/media'),
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
-        ],
-
-        'import' => [
-            'driver' => 'local',
-            'root' => env('IMPORT_PATH', '/data/import'),
-            'serve' => false,
+            'serve' => true,
             'throw' => true,
             'report' => true,
         ],
@@ -68,6 +60,14 @@ return [
         'export' => [
             'driver' => 'local',
             'root' => env('EXPORT_PATH', '/data/export'),
+            'serve' => true,
+            'throw' => true,
+            'report' => true,
+        ],
+
+        'import' => [
+            'driver' => 'local',
+            'root' => env('IMPORT_PATH', '/data/import'),
             'serve' => false,
             'throw' => true,
             'report' => true,
