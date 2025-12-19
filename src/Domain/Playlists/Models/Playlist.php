@@ -248,54 +248,32 @@ class Playlist extends Model
         return $this->state->equals(Verified::class);
     }
 
-    public static function getVideoFormats(): Collection
-    {
-        return Config::collection('playlist.video_formats', [])
-            ->filter(fn (string $format) => is_subclass_of($format, DefaultVideo::class))
-            ->map(fn (string $format) => app($format));
-    }
-
-    public static function getHlsFormats(): Collection
-    {
-        return Config::collection('playlist.hls_formats', [])
-            ->map(fn (array $format) => Fluent::make($format))
-            ->sortBy('kilo_bitrate');
-    }
 
     public static function getSegmentLength(): int
     {
-        return Config::integer('playlist.segment_length', 6);
-    }
-
-    public static function getFrameInterval(): int
-    {
-        return Config::integer('playlist.frame_interval', 180);
+        return Config::integer('playlists.segment_length', 6);
     }
 
     public static function getDestinationDisk(): string
     {
-        return Config::string('playlist.disk_name', 'export');
+        return Config::string('playlists.disk_name', 'segments');
     }
 
     public static function getSecretsDisk(): string
     {
-        return Config::string('playlist.secret_disk', 'secrets');
+        return Config::string('playlists.secret_disk', 'secrets');
     }
 
     public static function getExpiresAfter(): ?Carbon
     {
-        $expires = Config::integer('playlist.expires_after');
+        $expires = Config::integer('playlists.expires_after');
 
         return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getStaleAfter(): int
-    {
-        return Config::integer('playlist.stale_after', 0);
-    }
 
     public static function shouldUseRotationKeys(): bool
     {
-        return Config::boolean('playlist.rotation_keys', true);
+        return Config::boolean('playlists.rotation_keys', true);
     }
 }

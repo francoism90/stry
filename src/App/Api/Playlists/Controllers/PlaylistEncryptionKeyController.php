@@ -15,7 +15,7 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
 {
     public static function middleware(): array
     {
-        return Config::array('playlist.middleware', []);
+        return Config::array('playlists.middleware', []);
     }
 
     public function __invoke(Playlist $playlist, string $path): Response

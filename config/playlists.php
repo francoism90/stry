@@ -9,7 +9,7 @@ return [
      * You may want to use a temporary path to improve performance.
      * The disk should be configured in the `filesystems.php` configuration file.
      */
-    'disk_name' => env('PLAYLIST_DISK', 'export'),
+    'disk_name' => env('PLAYLIST_DISK', 'segments'),
 
     /**
      * This setting is used to define the disk where the rotation keys will be stored.

@@ -52,23 +52,7 @@ return [
         'media' => [
             'driver' => 'local',
             'root' => env('MEDIA_PATH', '/data/media'),
-            'serve' => true,
-            'throw' => true,
-            'report' => true,
-        ],
-
-        'export' => [
-            'driver' => 'local',
-            'root' => env('EXPORT_PATH', '/data/export'),
-            'serve' => true,
-            'throw' => true,
-            'report' => true,
-        ],
-
-        'secrets' => [
-            'driver' => 'local',
-            'root' => env('SECRETS_PATH', '/data/secrets'),
-            'serve' => true,
+            'serve' => false,
             'throw' => true,
             'report' => true,
         ],
@@ -111,6 +95,42 @@ return [
             'report' => false,
             'options' => [
                 'CacheControl' => 'public, max-age=259200, immutable',
+            ],
+        ],
+
+        'segments' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => 'segments',
+            'url' => env('AWS_URL'),
+            'temporary_url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'private',
+            'throw' => true,
+            'report' => true,
+            'options' => [
+                // 'CacheControl' => 'private, max-age=259200, immutable',
+            ],
+        ],
+
+        'secrets' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => 'secrets',
+            'url' => env('AWS_URL'),
+            'temporary_url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'private',
+            'throw' => true,
+            'report' => true,
+            'options' => [
+                'CacheControl' => 'private, max-age=259200, immutable',
             ],
         ],
 
