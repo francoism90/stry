@@ -7,7 +7,6 @@ namespace Support\Shaka\Commands;
 use Foxws\Shaka\Facades\Shaka;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Support\Facades\Config;
 
 use function Laravel\Prompts\info;
 
