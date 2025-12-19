@@ -32,12 +32,11 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        // Generate video playlists if they don't exist
-        // PlaylistVideo::dispatchSync(
-        //     $video,
-        // );
-
-        app(CreateNewVideoPlaylist::class)->handle($video);
+        // Dispatch playlist job if needed
+        PlaylistVideo::dispatchIf(
+            ! $video->hasPlaylist('clip') && $video->hasMedia('clips'),
+            $video,
+        );
 
         return Inertia::render('Client/Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video),

@@ -14,12 +14,7 @@ class CreateNewVideoPlaylist
 {
     public function handle(Video $video): ?Playlist
     {
-        return DB::transaction(function () use ($video): ?Playlist {
-            // If the video already has playlists or has no clips, skip processing
-            if ($video->hasPlaylist('clip') || ! $video->hasMedia('clips')) {
-                return null;
-            }
-
+        return DB::transaction(function () use ($video): Playlist {
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
@@ -73,9 +68,6 @@ class CreateNewVideoPlaylist
             }
 
             $packager->save();
-
-            // Clean up temporary files used during packaging
-            // $packager->cleanupTemporaryFiles();
 
             // Mark the playlist as ready
             $playlist->markAsReady();
