@@ -40,6 +40,7 @@ class CreateNewVideoPlaylist
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist('master.m3u8')
+                ->withSegmentDuration(Playlist::getSegmentLength())
                 ->save();
 
             // Clean up temporary files used during packaging
