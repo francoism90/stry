@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Controllers;
 
-use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Foxws\Shaka\Facades\Shaka;
