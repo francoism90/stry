@@ -41,7 +41,6 @@ return [
      */
     'middleware' => [
         'signed',
-        // 'cache:private;max_age=259200;immutable',
     ],
 
 ];

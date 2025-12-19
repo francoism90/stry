@@ -130,7 +130,7 @@ return [
             'throw' => true,
             'report' => true,
             'options' => [
-                'CacheControl' => 'private, max-age=1800, no-store', // 30 minutes, no persistent cache
+                'CacheControl' => 'private, max-age=1800', // 30 minutes - matches signed URL expiry
             ],
         ],
 
