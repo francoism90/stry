@@ -34,12 +34,12 @@ class GenerateVideoPlaylist
             // Create HLS playlist for the clip media with custom UUID path
             $packager = Shaka::fromDisk($media->disk)
                 ->open($path)
-                ->inPath($video->ulid)  // Must be before export() to set output path
                 ->export()
+                ->toDisk($playlist->disk)
+                ->outputPath($video->ulid)  // Set custom output directory
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist('master.m3u8')
-                ->toDisk($playlist->disk)
                 ->save();
 
             $packager->cleanupTemporaryFiles();
