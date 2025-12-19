@@ -7,11 +7,11 @@ namespace App\Api\Playlists\Controllers;
 use Domain\Playlists\Events\PlaylistHasBeenViewedEvent;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
+use Foxws\Shaka\Facades\Shaka;
+use Foxws\Shaka\Http\DynamicHLSPlaylist;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
-use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class PlaylistManifestController extends Controller implements HasMiddleware
 {
@@ -22,18 +22,20 @@ class PlaylistManifestController extends Controller implements HasMiddleware
 
     public function __invoke(Playlist $playlist, string $path): DynamicHLSPlaylist
     {
-        Gate::authorize('view', [$playlist->getModel(), $playlist]);
+        // Gate::authorize('view', [$playlist->getModel(), $playlist]);
 
         // Ensure the playlist is not expired
-        abort_if($playlist->isExpired(), 410);
+        // abort_if($playlist->isExpired(), 410);
 
         // Dispatch the viewed event
-        PlaylistHasBeenViewedEvent::dispatchIf(
-            ! $playlist->isRecentlyAccessed(),
-            $playlist,
-        );
+        // PlaylistHasBeenViewedEvent::dispatchIf(
+        //     ! $playlist->isRecentlyAccessed(),
+        //     $playlist,
+        // );
 
-        return FFMpeg::dynamicHLSPlaylist()
+        logger($playlist->getPath($path));
+
+        return Shaka::dynamicHLSPlaylist()
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
             ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))

@@ -37,9 +37,6 @@ return [
      */
     'middleware' => [
         'signed',
-        'auth:sanctum',
-        'verified',
-        'subscribed',
         // 'cache:private;max_age=259200;immutable',
     ],
 

@@ -15,16 +15,16 @@ class GenerateVideoPlaylist
     {
         return DB::transaction(function () use ($video) {
             // If the video already has playlists or has no clips, skip processing
-            // if ($video->hasPlaylist('clip') || ! $video->hasMedia('clips')) {
-            //     return;
-            // }
+            if ($video->hasPlaylist('clip') || ! $video->hasMedia('clips')) {
+                return;
+            }
 
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
             $path = $media->getPathRelativeToRoot();
 
-            // Create the playlist record in the database
+            /** @var Playlist $playlist */
             $playlist = $video->playlists()->create([
                 'type' => 'clip',
                 'file_name' => 'master.m3u8',
@@ -35,13 +35,14 @@ class GenerateVideoPlaylist
             $packager = Shaka::fromDisk($media->disk)
                 ->open($path)
                 ->export()
-                ->toDisk($playlist->disk)
-                ->outputPath((string) $playlist->getKey())  // Set custom output directory
+                ->toDisk($playlist->getDisk())
+                ->outputPath((string) $playlist->getKey())
                 ->addVideoStream($path, 'video.mp4')
                 ->addAudioStream($path, 'audio.mp4')
                 ->withHlsMasterPlaylist('master.m3u8')
                 ->save();
 
+            // Clean up temporary files used during packaging
             $packager->cleanupTemporaryFiles();
 
             return $playlist;

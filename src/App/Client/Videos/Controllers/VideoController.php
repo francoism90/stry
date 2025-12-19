@@ -40,8 +40,6 @@ class VideoController extends Controller implements HasMiddleware
 
         app(GenerateVideoPlaylist::class)->handle($video);
 
-        dd('do');
-
         return Inertia::render('Client/Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),

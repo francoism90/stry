@@ -194,6 +194,7 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
+        dd($path);
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
     }
 
