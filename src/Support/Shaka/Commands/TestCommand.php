@@ -25,7 +25,7 @@ class TestCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $result = Shaka::fromDisk('s3')
+        $result = Shaka::fromDisk('import')
             ->open('example.mp4')
             ->addVideoStream('example.mp4', 'video.mp4')
             ->addAudioStream('example.mp4', 'audio.mp4')
