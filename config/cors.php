@@ -27,9 +27,14 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => ['Precognition', 'Precognition-Success'],
+    'exposed_headers' => [
+        'Precognition',
+        'Precognition-Success',
+        'X-RateLimit-Limit',
+        'X-RateLimit-Remaining',
+    ],
 
-    'max_age' => 1728000,
+    'max_age' => 86400, // 24 hours
 
     'supports_credentials' => true,
 
