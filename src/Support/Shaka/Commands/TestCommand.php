@@ -30,7 +30,6 @@ class TestCommand extends Command implements Isolatable
             ->export()
             ->addVideoStream('example.mp4', 'video.mp4')
             ->addAudioStream('example.mp4', 'audio.mp4')
-            ->withMpdOutput('manifest.mpd')
             ->withHlsMasterPlaylist('master.m3u8')
             ->toDisk('export')  // Set output disk on exporter
             ->save();
