@@ -114,24 +114,6 @@ return [
             ],
         ],
 
-        'segments' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => 'segments',
-            'url' => env('AWS_URL'),
-            'temporary_url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'private',
-            'throw' => false,
-            'report' => false,
-            'options' => [
-                'CacheControl' => 'private, max-age=259200, immutable',
-            ],
-        ],
-
     ],
 
     /*
