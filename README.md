@@ -26,7 +26,7 @@
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
 - 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
 
-Built with [laravel-ffmpeg](https://github.com/protonemedia/laravel-ffmpeg#hls), offering professional-grade video processing capabilities.
+Built with [laravel-shaka](https://github.com/foxws/laravel-shaka), offering video processing and packaging (HLS/DASH) capabilities.
 
 > [!NOTE]
 > This is a personal project that can be used personally or as a reference guide for building your own streaming platform.
@@ -52,6 +52,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 | **Containers**       | [Podman 5.x](https://podman.io/)                                          |
 | **Search**           | [Typesense 29.x](https://typesense.org/)                                  |
 | **Video Processing** | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
+| **Video Streaming**  | [Laravel Shaka](https://github.com/foxws/laravel-shaka)                   |
 
 ---
 
