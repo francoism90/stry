@@ -21,11 +21,16 @@ RUN arch="$(uname -m)" && case "$arch" in \
 
 # Shaka Packager
 RUN arch="$(uname -m)" && case "$arch" in \
-      x86_64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ;; \
-      aarch64) PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ;; \
+      x86_64) \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ; \
+        PACKAGER_SHA256="7bdefe5a25fe84535c6c1a425f4c3c6b65fa85c441c2aeba01254b3c0f4b1956" ;; \
+      aarch64) \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ; \
+        PACKAGER_SHA256="170ee824cc30a8ed7c7c22346c46bd614aa5532a4af16d9f3c8cfaed6eda268e" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
+    && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
     && chmod +x /usr/local/bin/packager
 
 # ab-av1
