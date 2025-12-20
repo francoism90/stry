@@ -221,11 +221,14 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
+        $expiration = once(fn () => now()->addDay());
+
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
     }
 
     public function getKeyUrlResolver(string $path): string
     {
+        // Keys are accessed rarely, no need for once() caching
         return URL::temporarySignedRoute('api.playlists.key', now()->addMinutes(30), [
             'playlist' => $this,
             'path' => $path,
@@ -234,6 +237,7 @@ class Playlist extends Model
 
     public function getUrlResolver(?string $path = null): string
     {
+        // Playlist files are accessed infrequently, no need for once() caching
         return URL::temporarySignedRoute('api.playlists.playlist', now()->addMinutes(30), [
             'playlist' => $this,
             'path' => $path,
