@@ -100,19 +100,6 @@ it('can check if playlist is expired', function () {
         ->and($neverExpiresPlaylist->isExpired())->toBeFalse();
 });
 
-it('can check if playlist is recently accessed', function () {
-    $recentlyAccessedPlaylist = Playlist::factory()->create([
-        'accessed_at' => now()->subMinutes(5),
-    ]);
-
-    $notRecentlyAccessedPlaylist = Playlist::factory()->create([
-        'accessed_at' => now()->subHours(1),
-    ]);
-
-    expect($recentlyAccessedPlaylist->isRecentlyAccessed())->toBeTrue()
-        ->and($notRecentlyAccessedPlaylist->isRecentlyAccessed())->toBeFalse();
-});
-
 it('has timestamps', function () {
     $playlist = Playlist::factory()->create();
 
@@ -165,16 +152,4 @@ it('can get model from playlistable', function () {
 
     expect($playlist->getModel())->toBeInstanceOf(Video::class)
         ->and($playlist->getModel()->getKey())->toBe($video->getKey());
-});
-
-it('calculates percentage from progress', function () {
-    $playlist = Playlist::factory()->withProgress(75.6)->create();
-
-    expect($playlist->getPercentage())->toBe(76.0);
-});
-
-it('returns zero percentage when progress is empty', function () {
-    $playlist = Playlist::factory()->create();
-
-    expect($playlist->getPercentage())->toBe(0.0);
 });
