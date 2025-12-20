@@ -67,6 +67,7 @@ class CreateNewVideoPlaylist
                 ]);
             }
 
+            // Export the playlist to the configured disk and path
             $opener
                 ->export()
                 ->toDisk($playlist->getDisk())
@@ -75,6 +76,9 @@ class CreateNewVideoPlaylist
 
             // Mark the playlist as ready
             $playlist->markAsReady();
+
+            // Cleanup temporary files
+            $opener->cleanupTemporaryFiles();
 
             return $playlist;
         });
