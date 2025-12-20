@@ -22,6 +22,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
       label: 'Home',
       icon: 'i-lucide-house',
       to: '/',
+      exact: true,
     },
     {
       label: 'Profile',
