@@ -15,7 +15,7 @@
 
 ## 🎯 Introduction
 
-**stry** is a powerful video-on-demand (VOD) media distribution system that allows users to access videos, television shows and movies with enterprise-grade streaming capabilities.
+**stry** is a video-on-demand (VOD) media distribution system that allows users to access videos, television shows and movies with streaming capabilities.
 
 ### ✨ Key Features
 
