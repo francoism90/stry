@@ -35,7 +35,7 @@ class SetVideoProgress
 
             // Update the cache only if the time has changed
             if ($current !== $time) {
-                Cache::put($cacheKey, $time, now()->addMinutes(10));
+                Cache::put($cacheKey, $time, now()->addMinutes(30));
             }
         });
     }
