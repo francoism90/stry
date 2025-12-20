@@ -58,6 +58,7 @@ class CreateNewVideoPlaylist
                 $opener->withEncryption([
                     'protection_scheme' => 'cbc1', // AES-128-CBC for browser compatibility
                     'hls_key_uri' => 'encryption.key', // Placeholder URI that will be resolved dynamically
+                    'clear_lead' => 0, // Encrypt all segments including the first one (default is 5 seconds)
                     'keys' => EncryptionKeyGenerator::formatForShaka(
                         $encryption['key_id'],
                         $encryption['key']
