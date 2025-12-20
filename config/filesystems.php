@@ -138,7 +138,7 @@ return [
             'throw' => true,
             'report' => true,
             'options' => [
-                'CacheControl' => 'private, max-age=1800', // 30 minutes - matches signed URL expiry
+                'CacheControl' => 'private, max-age=31536000, immutable', // 1 year - keys are immutable
             ],
         ],
 
