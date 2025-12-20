@@ -23,7 +23,7 @@ class CreateNewVideoPlaylist
             // Get encryption method from config
             $encryptionMethod = Playlist::getEncryptionMethod();
 
-            // Generate encryption keys if encryption is enabled
+            // Generate encryption keys if enabled
             $encryption = $encryptionMethod === 'raw_key_encryption'
                 ? EncryptionKeyGenerator::generate()
                 : null;
@@ -35,9 +35,8 @@ class CreateNewVideoPlaylist
                 'type' => 'clip',
             ]);
 
-            // Create HLS playlist for the clip media with custom UUID path
-            // Note: For encrypted HLS, we must use TS segments (not fMP4) for browser compatibility
-            // fMP4 with encryption uses SAMPLE-AES-CTR which browsers don't support
+            // Create HLS playlist - use TS segments for AES-128-CBC encryption compatibility
+            // fMP4 + cbc1 may not be supported; TS segments work reliably with AES-128
             $videoOutput = $encryption ? 'video.ts' : 'video.mp4';
             $audioOutput = $encryption ? 'audio.ts' : 'audio.mp4';
 
@@ -47,19 +46,22 @@ class CreateNewVideoPlaylist
                 ->addAudioStream($path, $audioOutput)
                 ->withHlsMasterPlaylist($playlist->getFileName());
 
-            // Add encryption if enabled
+            // Add AES-128-CBC encryption for browser compatibility
             if ($encryption) {
                 // Store the encryption key file in the secrets disk
                 $keyPath = $playlist->getPath('encryption.key');
 
                 EncryptionKeyGenerator::writeKeyFile($playlist->getSecretDisk(), $keyPath, $encryption['key']);
 
+                // Note: hls_key_uri is not validated, so we merge it with encryption config
+                // The DynamicHLSPlaylist middleware will replace 'encryption.key' with the signed URL
                 $opener->withEncryption([
+                    'protection_scheme' => 'cbc1', // AES-128-CBC for browser compatibility
+                    'hls_key_uri' => 'encryption.key', // Placeholder URI that will be resolved dynamically
                     'keys' => EncryptionKeyGenerator::formatForShaka(
                         $encryption['key_id'],
                         $encryption['key']
                     ),
-                    'hls_key_uri' => 'encryption.key',
                 ]);
             }
 

@@ -9,9 +9,9 @@ use Domain\Users\Models\User;
 
 class PlaylistPolicy
 {
-    public function before(User $user, string $ability): ?bool
+    public function before(?User $user, string $ability): ?bool
     {
-        return $user->isAdmin() ? true : null;
+        return $user?->isAdmin() ? true : null;
     }
 
     public function viewAny(?User $user): bool

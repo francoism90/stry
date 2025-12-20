@@ -18,8 +18,9 @@ return [
 
     /**
      * This setting is used to define the encryption method for the playlist.
-     * Set to 'raw_key_encryption' to enable AES-128 encryption with key URI for browser compatibility.
-     * Set to any other value to disable encryption.
+     *
+     * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
+     * Set to 'none' or any other value to disable encryption.
      */
     'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
 

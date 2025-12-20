@@ -8,18 +8,26 @@ use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PlaylistEncryptionKeyController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return Config::array('playlists.middleware', []);
+        return [
+            new Middleware('signed'),
+        ];
     }
 
     public function __invoke(Playlist $playlist, string $path): Response
     {
+        Gate::authorize('view', $playlist);
+
+        // Ensure the playlist is not expired
+        abort_if($playlist->isExpired(), 410);
+
         // Check if playlist has encryption enabled
         if (! $playlist->encryption_key) {
             abort(404);

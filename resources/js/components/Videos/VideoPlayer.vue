@@ -4,7 +4,7 @@ import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
-import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import { ref, shallowRef } from 'vue'
 
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
@@ -31,7 +31,6 @@ const actions = ref<ButtonProps[]>([
 
 const listener = () =>
   player.value?.subscribe(({ canPlay, canSeek, currentTime }) => {
-    // Seek to stored progress once when ready and playable
     if (!seeked.value && canPlay && canSeek) {
       if (progress.value && progress.value > 1) {
         player.value!.currentTime = progress.value
@@ -48,8 +47,8 @@ const listener = () =>
     return () => player.value
   })
 
-onMounted(() => listener())
-onBeforeUnmount(() => listener())
+// onMounted(() => listener())
+// onBeforeUnmount(() => listener())
 </script>
 
 <template>

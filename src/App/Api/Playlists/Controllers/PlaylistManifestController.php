@@ -17,8 +17,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum'),
-            new Middleware('subscribed'),
+            new Middleware('signed'),
         ];
     }
 
