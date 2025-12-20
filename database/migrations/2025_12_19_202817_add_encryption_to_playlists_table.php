@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('playlists', function (Blueprint $table) {
-            $table->string('encryption_key_id')->nullable()->after('secret_disk');
+            $table->string('encryption_key_id')->nullable()->after('secret_disk')->index();
             $table->text('encryption_key')->nullable()->after('encryption_key_id');
         });
     }
