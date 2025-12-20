@@ -37,7 +37,7 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
         $keyPath = $playlist->getPath($path);
 
         if (! Storage::disk($playlist->getSecretDisk())->exists($keyPath)) {
-            abort(404, 'Encryption key file not found');
+            abort(404);
         }
 
         // Stream the key directly from storage (though 16 bytes is tiny, this is cleaner)

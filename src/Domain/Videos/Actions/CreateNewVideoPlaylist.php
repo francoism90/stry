@@ -16,6 +16,11 @@ class CreateNewVideoPlaylist
     public function handle(Video $video, Closure $next): mixed
     {
         return DB::transaction(function () use ($video, $next) {
+            // Skip if there are no clips associated with the video
+            if (! $video->hasMedia('clips')) {
+                return $next($video);
+            }
+
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 

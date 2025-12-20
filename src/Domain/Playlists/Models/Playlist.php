@@ -77,6 +77,7 @@ class Playlist extends Model
         return [
             'state' => PlaylistState::class,
             'progress' => AsArrayObject::class,
+            'encryption_key' => 'encrypted',
             'accessed_at' => 'datetime',
             'expires_at' => 'datetime',
             'transcoded_at' => 'datetime',
@@ -216,7 +217,7 @@ class Playlist extends Model
 
     public function getSecretFilesystem(): FilesystemAdapter
     {
-        return Storage::disk($this->getSecretDisk());
+        return Storage::disk($this->getSecretDisk() ?? static::getSecretsDisk());
     }
 
     public function getMediaUrlResolver(string $path): string
