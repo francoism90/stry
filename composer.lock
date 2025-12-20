@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aecd393e5cbae847db43ed26d21deeba",
+    "content-hash": "912373dd6447901a05344b0ace81c573",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1235,16 +1235,16 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "c02cdafc861016bbf86022f0f5e3a5b8d4e5b0c2"
+                "reference": "5780d6b1f1950e3d7e45db9858f34160833c00a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/c02cdafc861016bbf86022f0f5e3a5b8d4e5b0c2",
-                "reference": "c02cdafc861016bbf86022f0f5e3a5b8d4e5b0c2",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/5780d6b1f1950e3d7e45db9858f34160833c00a4",
+                "reference": "5780d6b1f1950e3d7e45db9858f34160833c00a4",
                 "shasum": ""
             },
             "require": {
@@ -1311,7 +1311,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/0.1.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/0.2.0"
             },
             "funding": [
                 {
@@ -1319,7 +1319,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-20T14:14:13+00:00"
+            "time": "2025-12-20T17:13:29+00:00"
         },
         {
             "name": "fruitcake/php-cors",
