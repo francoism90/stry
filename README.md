@@ -20,13 +20,11 @@
 ### ✨ Key Features
 
 - 🎥 **HLS Streaming** - Built-in HLS playlist generation with adaptive bitrate support
-- 🔐 **Segment Encryption** - Secure video content with encryption and authorization
+- 🔐 **HLS Encryption** - Secure video content with encryption
 - 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
 - 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
-
-Built with [laravel-shaka](https://github.com/foxws/laravel-shaka), offering video processing and packaging (HLS/DASH) capabilities.
 
 > [!NOTE]
 > This is a personal project that can be used personally or as a reference guide for building your own streaming platform.
@@ -105,7 +103,7 @@ stry a db:seed --class=AdminSeeder
 ```
 
 > [!WARNING]
-> Only use the admin seeder for testing! Never use in production.
+> Only seed admins for testing! Never use the seeder in production.
 
 > [!TIP]
 > See the [Interaction Guide](docs/interaction.md) for a Laravel Sail-style shell utility approach.
