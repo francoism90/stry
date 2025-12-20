@@ -4,7 +4,7 @@ import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import type { MediaPlayer } from 'vidstack'
 import 'vidstack/bundle'
-import { ref, shallowRef } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
@@ -47,8 +47,8 @@ const listener = () =>
     return () => player.value
   })
 
-// onMounted(() => listener())
-// onBeforeUnmount(() => listener())
+onMounted(() => listener())
+onBeforeUnmount(() => listener())
 </script>
 
 <template>
