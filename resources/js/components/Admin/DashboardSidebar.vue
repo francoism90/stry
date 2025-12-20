@@ -6,8 +6,8 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 const links: NavigationMenuItem[][] = [
   [
     {
-      label: 'Home',
-      icon: 'i-lucide-house',
+      label: 'Dashboard',
+      icon: 'i-lucide-layout-dashboard',
       to: '/admin',
       exact: true,
     },

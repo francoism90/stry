@@ -19,6 +19,11 @@ const user = ref({
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
+      label: 'Home',
+      icon: 'i-lucide-house',
+      to: '/',
+    },
+    {
       label: 'Profile',
       icon: 'i-lucide-user',
       to: '/profile',
