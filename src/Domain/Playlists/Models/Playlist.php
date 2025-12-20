@@ -254,11 +254,6 @@ class Playlist extends Model
         return Config::string('playlists.secret_disk', 'secrets');
     }
 
-    public static function getSegmentLength(): int
-    {
-        return Config::integer('playlists.segment_length', 6);
-    }
-
     public static function getExpiresAfter(): ?Carbon
     {
         $expires = Config::integer('playlists.expires_after');

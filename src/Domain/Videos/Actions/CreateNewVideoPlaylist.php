@@ -45,8 +45,7 @@ class CreateNewVideoPlaylist
                 ->open($path)
                 ->addVideoStream($path, $videoOutput)
                 ->addAudioStream($path, $audioOutput)
-                ->withHlsMasterPlaylist($playlist->getFileName())
-                ->withSegmentDuration(Playlist::getSegmentLength());
+                ->withHlsMasterPlaylist($playlist->getFileName());
 
             // Add encryption if enabled
             if ($encryption) {

@@ -30,9 +30,9 @@ const actions = ref<ButtonProps[]>([
 ])
 
 const listener = () =>
-  player.value?.subscribe(({ canSeek, currentTime }) => {
-    // Seek to stored progress once when ready
-    if (!seeked.value && canSeek) {
+  player.value?.subscribe(({ canPlay, canSeek, currentTime }) => {
+    // Seek to stored progress once when ready and playable
+    if (!seeked.value && canPlay && canSeek) {
       if (progress.value && progress.value > 1) {
         player.value!.currentTime = progress.value
       }
