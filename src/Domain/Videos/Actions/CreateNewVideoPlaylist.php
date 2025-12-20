@@ -1,0 +1,92 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Domain\Videos\Actions;
+
+use Closure;
+use Domain\Playlists\Models\Playlist;
+use Domain\Videos\Models\Video;
+use Foxws\Shaka\Facades\Shaka;
+use Foxws\Shaka\Support\EncryptionKeyGenerator;
+use Illuminate\Support\Facades\DB;
+
+class CreateNewVideoPlaylist
+{
+    public function handle(Video $video, Closure $next): mixed
+    {
+        return DB::transaction(function () use ($video, $next) {
+            // Skip if there are no clips associated with the video
+            if (! $video->hasMedia('clips')) {
+                return $next($video);
+            }
+
+            // Get the first media item from the video
+            $media = $video->getClipCollection()->first();
+
+            // Get the path relative to the disk root
+            $path = $media->getPathRelativeToRoot();
+
+            // Get encryption method from config
+            $encryptionMethod = Playlist::getEncryptionMethod();
+
+            // Generate encryption keys if enabled
+            $encryption = $encryptionMethod === 'raw_key_encryption'
+                ? EncryptionKeyGenerator::generate()
+                : null;
+
+            /** @var Playlist $playlist */
+            $playlist = $video->createPlaylist([
+                'encryption_key_id' => $encryption['key_id'] ?? null,
+                'encryption_key' => $encryption['key'] ?? null,
+                'type' => 'clip',
+            ]);
+
+            // Create HLS playlist - use TS segments for AES-128-CBC encryption compatibility
+            // fMP4 + cbc1 may not be supported; TS segments work reliably with AES-128
+            $videoOutput = $encryption ? 'video.ts' : 'video.mp4';
+            $audioOutput = $encryption ? 'audio.ts' : 'audio.mp4';
+
+            $opener = Shaka::fromDisk($media->disk)
+                ->open($path)
+                ->addVideoStream($path, $videoOutput)
+                ->addAudioStream($path, $audioOutput)
+                ->withHlsMasterPlaylist($playlist->getFileName());
+
+            // Add AES-128-CBC encryption for browser compatibility
+            if ($encryption) {
+                // Store the encryption key file in the secrets disk
+                $keyPath = $playlist->getPath('encryption.key');
+
+                EncryptionKeyGenerator::writeKeyFile($playlist->getSecretDisk(), $keyPath, $encryption['key']);
+
+                // Note: hls_key_uri is not validated, so we merge it with encryption config
+                // The DynamicHLSPlaylist middleware will replace 'encryption.key' with the signed URL
+                $opener->withEncryption([
+                    'protection_scheme' => 'cbc1', // AES-128-CBC for browser compatibility
+                    'hls_key_uri' => 'encryption.key', // Placeholder URI that will be resolved dynamically
+                    'clear_lead' => 0, // Encrypt all segments including the first one (default is 5 seconds)
+                    'keys' => EncryptionKeyGenerator::formatForShaka(
+                        $encryption['key_id'],
+                        $encryption['key']
+                    ),
+                ]);
+            }
+
+            // Export the playlist to the configured disk and path
+            $opener
+                ->export()
+                ->toDisk($playlist->getDisk())
+                ->toPath($playlist->getPath())
+                ->save();
+
+            // Mark the playlist as ready
+            $playlist->markAsReady();
+
+            // Cleanup temporary files
+            $opener->cleanupTemporaryFiles();
+
+            return $next($video);
+        });
+    }
+}

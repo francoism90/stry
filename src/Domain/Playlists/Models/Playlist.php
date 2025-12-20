@@ -11,7 +11,6 @@ use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Users\Concerns\InteractsWithUser;
-use FFMpeg\Format\Video\DefaultVideo;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -22,11 +21,9 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Fluent;
 use League\Flysystem\WhitespacePathNormalizer;
 use Spatie\ModelStates\HasStates;
 
@@ -50,6 +47,8 @@ class Playlist extends Model
         'disk',
         'file_name',
         'secret_disk',
+        'encryption_key_id',
+        'encryption_key',
         'progress',
         'type',
         'state',
@@ -78,6 +77,7 @@ class Playlist extends Model
         return [
             'state' => PlaylistState::class,
             'progress' => AsArrayObject::class,
+            'encryption_key' => 'encrypted',
             'accessed_at' => 'datetime',
             'expires_at' => 'datetime',
             'transcoded_at' => 'datetime',
@@ -165,9 +165,37 @@ class Playlist extends Model
         return $this->disk;
     }
 
-    public function getSecretDisk(): string
+    public function getSecretDisk(): ?string
     {
         return $this->secret_disk;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->file_name;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->getUrlResolver($this->file_name);
+    }
+
+    public function markAsReady(): void
+    {
+        $this->updateOrFail([
+            'state' => Verified::class,
+            'transcoded_at' => Carbon::now(),
+        ]);
+    }
+
+    public function isExpired(): bool
+    {
+        return filled($this->expires_at) && $this->expires_at->isPast();
+    }
+
+    public function isValid(): bool
+    {
+        return $this->state->equals(Verified::class);
     }
 
     public function getPath(string $path = ''): string
@@ -189,117 +217,53 @@ class Playlist extends Model
 
     public function getSecretFilesystem(): FilesystemAdapter
     {
-        return Storage::disk($this->getSecretDisk());
+        return Storage::disk($this->getSecretDisk() ?? static::getSecretsDisk());
     }
 
     public function getMediaUrlResolver(string $path): string
     {
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
+        $expiration = once(fn () => now()->addDay());
+
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        return $this->getSecretFilesystem()->temporaryUrl($this->getPath($path), now()->addMinutes(30));
+        // Keys are accessed rarely, no need for once() caching
+        return URL::temporarySignedRoute('api.playlists.key', now()->addMinutes(30), [
+            'playlist' => $this,
+            'path' => $path,
+        ]);
     }
 
     public function getUrlResolver(?string $path = null): string
     {
+        // Playlist files are accessed infrequently, no need for once() caching
         return URL::temporarySignedRoute('api.playlists.playlist', now()->addMinutes(30), [
             'playlist' => $this,
             'path' => $path,
         ]);
     }
 
-    public function getUrl(): string
+    public static function getDestinationDisk(): string
     {
-        return $this->getUrlResolver($this->file_name);
+        return Config::string('playlists.disk_name', 'segments');
     }
 
-    public function getPercentage(): float
+    public static function getSecretsDisk(): string
     {
-        return round(data_get($this->progress, 'percentage', 0));
-    }
-
-    public function isExpired(): bool
-    {
-        return filled($this->expires_at) && $this->expires_at->isPast();
-    }
-
-    public function isValid(): bool
-    {
-        return $this->state->equals(Verified::class);
-    }
-
-    public function isRecentlyAccessed(): bool
-    {
-        return filled($this->accessed_at) && $this->accessed_at->greaterThanOrEqualTo(
-            Config::get('playlist.recent_activity', now()->subMinutes(10)),
-        );
-    }
-
-    public static function getVideoFormats(): Collection
-    {
-        return Config::collection('playlist.video_formats', [])
-            ->filter(fn (string $format) => is_subclass_of($format, DefaultVideo::class))
-            ->map(fn (string $format) => app($format));
-    }
-
-    public static function getHlsFormats(): Collection
-    {
-        return Config::collection('playlist.hls_formats', [])
-            ->map(fn (array $format) => Fluent::make($format))
-            ->sortBy('kilo_bitrate');
-    }
-
-    public static function copyVideoCodec(): bool
-    {
-        return Config::boolean('playlist.copy_video_codec', true);
-    }
-
-    public static function copyAudioCodec(): bool
-    {
-        return Config::boolean('playlist.copy_audio_codec', true);
-    }
-
-    public static function getSegmentLength(): int
-    {
-        return Config::integer('playlist.segment_length', 6);
-    }
-
-    public static function getFrameInterval(): int
-    {
-        return Config::integer('playlist.frame_interval', 180);
-    }
-
-    public static function getTranscodeDisk(): string
-    {
-        return Config::string('playlist.disk_name', 'segments');
-    }
-
-    public static function getRotationKeyDisk(): string
-    {
-        return Config::string('playlist.rotation_keys_disk', 'secrets');
+        return Config::string('playlists.secret_disk', 'secrets');
     }
 
     public static function getExpiresAfter(): ?Carbon
     {
-        $expires = Config::integer('playlist.expires_after');
+        $expires = Config::integer('playlists.expires_after');
 
         return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getStaleAfter(): int
+    public static function getEncryptionMethod(): string
     {
-        return Config::integer('playlist.stale_after', 0);
-    }
-
-    public static function shouldUseRotationKeys(): bool
-    {
-        return Config::boolean('playlist.rotation_keys', true);
-    }
-
-    public static function getRotationKeysSections(): int
-    {
-        return Config::integer('playlist.rotation_keys_sections', 5);
+        return Config::string('playlists.encryption', 'raw_key_encryption');
     }
 }

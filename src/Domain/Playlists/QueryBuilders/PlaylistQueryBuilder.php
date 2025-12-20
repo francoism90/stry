@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Playlists\QueryBuilders;
 
 use ArrayAccess;
-use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
@@ -47,19 +46,6 @@ class PlaylistQueryBuilder extends Builder
         return $this
             ->whereNotNull('expires_at')
             ->whereNowOrPast('expires_at');
-    }
-
-    public function stale(): self
-    {
-        $staleAfter = Playlist::getStaleAfter();
-
-        return $this->when($staleAfter > 0, fn ($query) => $query
-            ->whereNotNull('accessed_at')
-            ->whereNotNull('expires_at')
-            ->where('accessed_at', '<=', now()->subSeconds($staleAfter))
-            ->orderBy('accessed_at')
-            ->oldest(),
-        );
     }
 
     public function ordered(): self

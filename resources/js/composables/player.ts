@@ -11,11 +11,11 @@ export function usePlayer() {
   const progress = computed(() => usePage().props.progress as number | null)
 
   const store = useThrottleFn(async (value: number) => {
-    // Round to 2 decimal places
-    const time = Math.round(value * 100) / 100
+    // Round to 2 decimal places and ensure valid number
+    const time = Number.isFinite(value) ? Math.round(value * 100) / 100 : 0
 
-    // Only store if changed
-    if (state.value && progress.value !== time) {
+    // Only store if playlist exists and time has changed significantly (> 0.5 seconds)
+    if (state.value && Math.abs((progress.value ?? 0) - time) > 0.5) {
       await http.post(PlaylistSessionController.url(state.value.id), { time })
     }
   }, 2500)

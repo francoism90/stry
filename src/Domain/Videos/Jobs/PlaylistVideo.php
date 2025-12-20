@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use Domain\Videos\Actions\GenerateVideoClipPlaylist;
+use Domain\Videos\Actions\CreateNewVideoPlaylist;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -59,7 +59,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     {
         Pipeline::send($this->video)
             ->through([
-                GenerateVideoClipPlaylist::class,
+                CreateNewVideoPlaylist::class,
             ])
             ->thenReturn();
     }

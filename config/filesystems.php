@@ -51,7 +51,7 @@ return [
 
         'transcodes' => [
             'driver' => 'local',
-            'root' => storage_path('app/media/transcodes'),
+            'root' => storage_path('app/transcodes'),
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -102,7 +102,7 @@ return [
             'throw' => false,
             'report' => false,
             'options' => [
-                'CacheControl' => 'public, max-age=259200, immutable',
+                'CacheControl' => 'public, max-age=2592000, immutable', // 30 days
             ],
         ],
 
@@ -118,9 +118,9 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
             'throw' => false,
-            'report' => false,
+            'report' => true,
             'options' => [
-                'CacheControl' => 'private, max-age=259200, immutable',
+                'CacheControl' => 'private, max-age=604800, immutable', // 7 days - matches playlist expiry
             ],
         ],
 
@@ -136,9 +136,9 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
             'throw' => false,
-            'report' => false,
+            'report' => true,
             'options' => [
-                'CacheControl' => 'private, max-age=259200, immutable',
+                'CacheControl' => 'private, max-age=31536000, immutable', // 1 year - keys are immutable
             ],
         ],
 

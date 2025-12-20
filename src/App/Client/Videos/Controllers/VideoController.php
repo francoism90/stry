@@ -31,9 +31,9 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        // Generate video playlists if they don't exist
+        // Dispatch playlist job if needed
         PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist('clip'),
+            ! $video->hasPlaylist('clip') && $video->hasMedia('clips'),
             $video,
         );
 
