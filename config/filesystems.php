@@ -120,7 +120,7 @@ return [
             'throw' => true,
             'report' => true,
             'options' => [
-                'CacheControl' => 'private, max-age=31536000, immutable', // 1 year
+                'CacheControl' => 'private, max-age=604800, immutable', // 7 days - matches playlist expiry
             ],
         ],
 
