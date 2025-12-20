@@ -41,11 +41,8 @@ class CreateNewVideoPlaylist
             $videoOutput = $encryption ? 'video.ts' : 'video.mp4';
             $audioOutput = $encryption ? 'audio.ts' : 'audio.mp4';
 
-            $packager = Shaka::fromDisk($media->disk)
+            $opener = Shaka::fromDisk($media->disk)
                 ->open($path)
-                ->export()
-                ->toDisk($playlist->getDisk())
-                ->outputPath($playlist->getPath())
                 ->addVideoStream($path, $videoOutput)
                 ->addAudioStream($path, $audioOutput)
                 ->withHlsMasterPlaylist($playlist->getFileName())
@@ -58,7 +55,7 @@ class CreateNewVideoPlaylist
 
                 EncryptionKeyGenerator::writeKeyFile($playlist->getSecretDisk(), $keyPath, $encryption['key']);
 
-                $packager->withEncryption([
+                $opener->withEncryption([
                     'keys' => EncryptionKeyGenerator::formatForShaka(
                         $encryption['key_id'],
                         $encryption['key']
@@ -67,7 +64,11 @@ class CreateNewVideoPlaylist
                 ]);
             }
 
-            $packager->save();
+            $opener
+                ->export()
+                ->toDisk($playlist->getDisk())
+                ->toPath($playlist->getPath())
+                ->save();
 
             // Mark the playlist as ready
             $playlist->markAsReady();
