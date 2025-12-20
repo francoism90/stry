@@ -18,6 +18,7 @@ class CreateNewVideoPlaylist
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
+            // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
             // Get encryption method from config
