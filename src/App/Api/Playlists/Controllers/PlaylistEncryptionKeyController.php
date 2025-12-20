@@ -6,11 +6,11 @@ namespace App\Api\Playlists\Controllers;
 
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PlaylistEncryptionKeyController extends Controller implements HasMiddleware
 {
@@ -21,7 +21,7 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
         ];
     }
 
-    public function __invoke(Playlist $playlist, string $path): Response
+    public function __invoke(Playlist $playlist, string $path): StreamedResponse
     {
         Gate::authorize('view', $playlist);
 
@@ -40,12 +40,10 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
             abort(404, 'Encryption key file not found');
         }
 
-        $keyContent = Storage::disk($playlist->getSecretDisk())->get($keyPath);
-
-        // Return the key as binary data with CORS headers
-        return response($keyContent, 200, [
+        // Stream the key directly from storage (though 16 bytes is tiny, this is cleaner)
+        return Storage::disk($playlist->getSecretDisk())->response($keyPath, null, [
             'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'inline; filename="encryption.key"',
+            'Cache-Control' => 'private, max-age=300',
         ]);
     }
 }
