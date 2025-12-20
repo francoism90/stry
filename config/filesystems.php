@@ -117,7 +117,7 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
-            'throw' => true,
+            'throw' => false,
             'report' => true,
             'options' => [
                 'CacheControl' => 'private, max-age=604800, immutable', // 7 days - matches playlist expiry
@@ -135,7 +135,7 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
-            'throw' => true,
+            'throw' => false,
             'report' => true,
             'options' => [
                 'CacheControl' => 'private, max-age=31536000, immutable', // 1 year - keys are immutable
