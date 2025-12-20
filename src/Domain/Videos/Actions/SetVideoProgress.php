@@ -22,7 +22,7 @@ class SetVideoProgress
             $time = (float) data_get($attributes, 'time', 0);
 
             // Store the video as viewed if not already cached
-            if (Cache::missing($cacheKey)) {
+            if (Cache::missing($cacheKey) && $time > 0) {
                 // Ensure the user has a viewed group
                 $group = $user->findOrCreateGroup(GroupType::Viewed);
 
