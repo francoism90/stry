@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
+use Closure;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class CreateNewVideoPlaylist
 {
-    public function handle(Video $video): ?Playlist
+    public function handle(Video $video, Closure $next): mixed
     {
-        return DB::transaction(function () use ($video): Playlist {
+        return DB::transaction(function () use ($video, $next) {
             // Get the first media item from the video
             $media = $video->getClipCollection()->first();
 
@@ -80,7 +81,7 @@ class CreateNewVideoPlaylist
             // Cleanup temporary files
             $opener->cleanupTemporaryFiles();
 
-            return $playlist;
+            return $next($video);
         });
     }
 }
