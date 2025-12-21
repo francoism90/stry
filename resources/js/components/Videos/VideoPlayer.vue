@@ -9,7 +9,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { state, video, progress, store } = usePlayer()
+const { state, progress, store } = usePlayer()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -70,16 +70,7 @@ onBeforeUnmount(() => listener())
       crossOrigin="anonymous"
     >
       <media-video-layout />
-      <media-provider>
-        <template v-if="video?.captions?.length">
-          <track
-            v-for="caption in video.captions"
-            :key="caption.id"
-            :src="caption.asset"
-            :label="caption.name"
-          />
-        </template>
-      </media-provider>
+      <media-provider />
     </media-player>
   </div>
 </template>
