@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Resources;
 
-use App\Api\Media\Resources\MediaResource;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Users\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -42,7 +41,6 @@ class VideoResource extends JsonResource
             'expires_at' => $this->expires_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'captions' => MediaResource::collection($this->whenAppended('captions', $this->captions)),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'user' => UserResource::make($this->whenLoaded('user')),
         ];

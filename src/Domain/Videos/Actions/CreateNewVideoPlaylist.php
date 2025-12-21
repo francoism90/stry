@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Closure;
+use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
@@ -47,11 +48,17 @@ class CreateNewVideoPlaylist
             $videoOutput = $encryption ? 'video.ts' : 'video.mp4';
             $audioOutput = $encryption ? 'audio.ts' : 'audio.mp4';
 
+            // Build Shaka Packager command
             $opener = Shaka::fromDisk($media->disk)
                 ->open($path)
                 ->addVideoStream($path, $videoOutput)
                 ->addAudioStream($path, $audioOutput)
                 ->withHlsMasterPlaylist($playlist->getFileName());
+
+            // Add text tracks (captions) to the playlist if available
+            $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
+                'language' => $caption->getCustomProperty('language_code', 'en'),
+            ]));
 
             // Add AES-128-CBC encryption for browser compatibility
             if ($encryption) {
