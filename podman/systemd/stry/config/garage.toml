@@ -8,7 +8,7 @@ metadata_auto_snapshot_interval = "6h"
 db_engine = "lmdb"
 
 block_size = "1M"
-block_ram_buffer_max = "512MiB"
+block_ram_buffer_max = "1GiB"
 block_max_concurrent_reads = 32
 
 lmdb_map_size = "1T"
