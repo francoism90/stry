@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Resources;
 
-use App\Api\Media\Resources\MediaResource;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Users\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;

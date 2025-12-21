@@ -57,7 +57,7 @@ class CreateNewVideoPlaylist
 
             // Add text tracks (captions) to the playlist if available
             $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
-                    'language' => $caption->getCustomProperty('language_code', 'en'),
+                'language' => $caption->getCustomProperty('language_code', 'en'),
             ]));
 
             // Add AES-128-CBC encryption for browser compatibility
