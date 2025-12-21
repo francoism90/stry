@@ -242,7 +242,7 @@ const onSubmit = () =>
 
     <UPageCard
       title="Delete video"
-      description="Once you delete a video, there is no going back. Please be certain."
+      description="This will delete the video and all associated data. There is no going back. Please be certain."
       class="bg-linear-to-tl from-error/10 from-5% to-default"
     >
       <template #footer>
