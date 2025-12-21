@@ -709,8 +709,8 @@ packages:
     peerDependencies:
       '@csstools/css-tokenizer': ^3.0.4
 
-  '@csstools/css-syntax-patches-for-csstree@1.0.21':
-    resolution: {integrity: sha512-plP8N8zKfEZ26figX4Nvajx8DuzfuRpLTqglQ5d0chfnt35Qt3X+m6ASZ+rG0D0kxe/upDVNwSIVJP5n4FuNfw==}
+  '@csstools/css-syntax-patches-for-csstree@1.0.22':
+    resolution: {integrity: sha512-qBcx6zYlhleiFfdtzkRgwNC7VVoAwfK76Vmsw5t+PbvtdknO9StgRk7ROvq9so1iqbdW4uLIDAsXRsTfUrIoOw==}
     engines: {node: '>=18'}
 
   '@csstools/css-tokenizer@3.0.4':
@@ -4817,8 +4817,8 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
-  vue-component-type-helpers@3.2.0:
-    resolution: {integrity: sha512-6o41sHNIAzqSjmXz+5nXjBCCVfjVB3qTfUJQslH979mTnPw0TKl/j3PfArKOwyP/nJKT/QhppfQE7zUgrCeBWA==}
+  vue-component-type-helpers@3.2.1:
+    resolution: {integrity: sha512-gKV7XOkQl4urSuLHNY1tnVQf7wVgtb/mKbRyxSLWGZUY9RK7aDPhBenTjm+i8ZFe0zC2PZeHMPtOZXZfyaFOzQ==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -5822,7 +5822,7 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
     optional: true
 
-  '@csstools/css-syntax-patches-for-csstree@1.0.21':
+  '@csstools/css-syntax-patches-for-csstree@1.0.22':
     optional: true
 
   '@csstools/css-tokenizer@3.0.4':
@@ -6442,7 +6442,7 @@ snapshots:
       unplugin-auto-import: 20.3.0(@nuxt/kit@4.2.2)(@vueuse/core@14.1.0(vue@3.5.26(typescript@5.9.3)))
       unplugin-vue-components: 30.0.0(@babel/parser@7.28.5)(@nuxt/kit@4.2.2)(vue@3.5.26(typescript@5.9.3))
       vaul-vue: 0.4.1(reka-ui@2.6.1(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))
-      vue-component-type-helpers: 3.2.0
+      vue-component-type-helpers: 3.2.1
     optionalDependencies:
       '@inertiajs/vue3': 2.3.4(vue@3.5.26(typescript@5.9.3))
       zod: 4.1.11
@@ -7803,7 +7803,7 @@ snapshots:
   cssstyle@5.3.5:
     dependencies:
       '@asamuzakjp/css-color': 4.1.1
-      '@csstools/css-syntax-patches-for-csstree': 1.0.21
+      '@csstools/css-syntax-patches-for-csstree': 1.0.22
       css-tree: 3.1.0
     optional: true
 
@@ -10242,7 +10242,7 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-component-type-helpers@3.2.0: {}
+  vue-component-type-helpers@3.2.1: {}
 
   vue-demi@0.14.10(vue@3.5.26(typescript@5.9.3)):
     dependencies:
