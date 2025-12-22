@@ -75,7 +75,7 @@ log "INFO" "Container role: ${CONTAINER_ROLE}"
 case ${CONTAINER_ROLE} in
     app)
         log "INFO" "Starting Octane..."
-        exec ${ARTISAN} octane:frankenphp
+        exec ${OCTANE}
         ;;
     ssr)
         log "INFO" "Starting SSR..."

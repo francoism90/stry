@@ -47,6 +47,7 @@ ENV TZ=${TZ}
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
+ENV OCTANE="${ARTISAN} octane:frankenphp"
 
 WORKDIR /tmp
 
