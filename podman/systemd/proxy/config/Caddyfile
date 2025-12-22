@@ -5,8 +5,8 @@
     }
 
     # debug
-    admin off
     local_certs
+    admin off
 }
 
 (pwa) {
