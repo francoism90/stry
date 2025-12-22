@@ -2,7 +2,7 @@ stry.test {
     import tls
     import compress
     import pwa
-    reverse_proxy systemd-stry:8080
+    reverse_proxy systemd-stry:8000
 }
 
 vite.stry.test {
