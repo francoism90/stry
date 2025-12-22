@@ -46,7 +46,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-ENV ARTISAN="php /app/artisan"
+ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
 
 WORKDIR /tmp
 
