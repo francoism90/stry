@@ -1,14 +1,11 @@
 FROM docker.io/rust:latest AS builder
 
-WORKDIR /usr/local/src
+WORKDIR /tmp
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl git \
-    build-essential cmake ninja-build python3 musl-tools \
+    ca-certificates curl build-essential cmake ninja-build python3 musl-tools \
     && apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN rm -rf /usr/local/src/*
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
@@ -47,15 +44,15 @@ ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV ARTISAN="frankenphp php-cli artisan"
+ENV ARTISAN="frankenphp php-cli /app/artisan"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
-WORKDIR /usr/local/src
+WORKDIR /tmp
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-RUN mkdir -p ${PNPM_HOME} && rm -rf /usr/local/src/*
+RUN mkdir -p ${PNPM_HOME}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates unzip zip git  \
@@ -64,9 +61,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs \
-    && apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get install -y --no-install-recommends nodejs
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
@@ -93,6 +88,10 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 # Create docker user
 RUN groupadd -g ${GID} ${USER} && \
     useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
+
+# Clean up
+RUN apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
