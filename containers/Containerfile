@@ -44,7 +44,7 @@ ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV ARTISAN="frankenphp php-cli /app/artisan"
+ENV ARTISAN="php /app/artisan"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
