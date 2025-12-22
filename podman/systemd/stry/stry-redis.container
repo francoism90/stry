@@ -8,11 +8,6 @@ Exec=valkey-server --save --loglevel warning
 Volume=stry-redis:/data:rw,Z,U
 Network=stry.network
 ExposeHostPort=6379
-HealthCmd=valkey-cli ping | grep -q PONG || exit 1
-HealthInterval=30s
-HealthRetries=3
-HealthStartPeriod=30s
-HealthTimeout=5s
 
 [Service]
 Restart=on-failure
