@@ -85,7 +85,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 RUN install-php-extensions @composer apcu bcmath exif \
     gd igbinary imagick inotify intl memcached msgpack \
     opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
-    sockets swoole uv zip
+    sockets swoole-6.1.4 uv zip
 
 # Node.js Packages
 RUN npm install -g npm@latest corepack@latest svgo@latest \
