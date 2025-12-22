@@ -243,6 +243,17 @@ journalctl --user -u stry-queue -f
 podman logs -f systemd-stry
 ```
 
+### Autostart on Boot
+
+By default, Podman Quadlet containers will autostart on boot if the unit file contains an [Install] section with:
+
+```ini
+[Install]
+WantedBy=multi-user.target default.target
+```
+
+If you do not want a container to start automatically on boot, you can remove the [Install] section from its unit file. The service will then only start when manually started with systemctl or podman systemd.
+
 ---
 
 ## 💡 Troubleshooting
