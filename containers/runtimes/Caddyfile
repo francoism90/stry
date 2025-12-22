@@ -1,0 +1,28 @@
+{
+    servers {
+        enable_full_duplex
+		trusted_proxies static private_ranges
+	}
+
+    admin off
+    auto_https off
+
+    http_port 8080
+    https_port off
+
+	frankenphp
+}
+
+# The domain name of your server
+localhost {
+	# Set the webroot to the public/ directory
+	root /app/public/
+
+	# Enable compression (optional)
+	encode zstd br gzip
+
+	# Execute PHP files from the public/ directory and serve assets
+	php_server {
+		try_files {path} index.php
+	}
+}

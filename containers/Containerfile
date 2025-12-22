@@ -1,14 +1,11 @@
-FROM rust:latest AS builder
+FROM docker.io/rust:latest AS builder
 
-WORKDIR /usr/local/src
+WORKDIR /tmp
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl git \
-    build-essential cmake ninja-build python3 musl-tools \
+    ca-certificates curl build-essential cmake ninja-build python3 musl-tools \
     && apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN rm -rf /usr/local/src/*
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
@@ -36,42 +33,35 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # ab-av1
 # RUN cargo install ab-av1
 
-FROM php:8.4-cli-trixie AS base
+FROM docker.io/dunglas/frankenphp:latest AS base
 
 ARG UID=1000
 ARG GID=1000
+ARG USER=docker
 ARG TZ=UTC
 ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
-ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
+ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
 
-WORKDIR /usr/local/src
+WORKDIR /tmp
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-RUN mkdir -p ${PNPM_HOME} && rm -rf /usr/local/src/*
+RUN mkdir -p ${PNPM_HOME}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates dnsutils fswatch unzip zip git  \
-    nano openssh-client sqlite3 postgresql-common awscli \
+    curl ca-certificates unzip zip git  \
+    nano openssh-client postgresql-common awscli \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs \
-    && apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# PHP Configuration and Entrypoint
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+    && apt-get install -y --no-install-recommends nodejs
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
@@ -79,21 +69,32 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
-# PHP Extensions
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+# PHP Configuration and Entrypoint
+COPY containers/runtimes/Caddyfile /etc/caddy/Caddyfile
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# PHP Extensions
 RUN install-php-extensions @composer apcu bcmath exif \
     gd igbinary imagick inotify intl memcached msgpack \
     opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
-    sockets swoole-6.1.4 uv zip
+    sockets uv zip
 
 # Node.js Packages
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
 
 # Create docker user
-RUN groupadd -g ${GID} docker && \
-    useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+RUN groupadd -g ${GID} ${USER} && \
+    useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
+
+# Set proper ownership
+RUN chown -R ${USER}:${USER} /app /config/caddy /data/caddy
+
+# Clean up
+RUN apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
@@ -101,8 +102,10 @@ FROM base AS build
 
 WORKDIR /app
 
+# Copy application source code
 COPY . /app
 
+# Install PHP and Node.js dependencies, build assets
 RUN --mount=type=cache,target=/root/.composer/cache \
     --mount=type=cache,target=/pnpm/store \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction && \
@@ -112,15 +115,13 @@ FROM base AS production
 
 WORKDIR /app
 
-COPY --from=build /app /app
+# Copy application from build stage
+COPY --chown=${USER}:${USER} --from=build /app /app
 
 # PHP Production Configuration
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
-# Set proper ownership
-RUN chown -R docker:docker /app
-
-USER docker
+USER ${USER}
 
 EXPOSE 6001 8080 13714
 
@@ -128,9 +129,6 @@ FROM base AS development
 
 WORKDIR /app
 
-# Set proper ownership
-RUN chown -R docker:docker /app
-
-USER docker
+USER ${USER}
 
 EXPOSE 5173 6001 8080
