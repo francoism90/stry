@@ -36,10 +36,11 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # ab-av1
 # RUN cargo install ab-av1
 
-FROM php:8.4-cli-trixie AS base
+FROM dunglas/frankenphp:latest AS base
 
 ARG UID=1000
 ARG GID=1000
+ARG USER=docker
 ARG TZ=UTC
 ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
@@ -80,20 +81,18 @@ COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 # PHP Extensions
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
 RUN install-php-extensions @composer apcu bcmath exif \
     gd igbinary imagick inotify intl memcached msgpack \
     opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
-    sockets swoole-6.1.4 uv zip
+    sockets uv zip
 
 # Node.js Packages
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
 
 # Create docker user
-RUN groupadd -g ${GID} docker && \
-    useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+RUN groupadd -g ${GID} ${USER} && \
+    useradd -u ${UID} -g ${USER} -d /home/docker -s /bin/bash -m ${USER}
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
@@ -118,9 +117,9 @@ COPY --from=build /app /app
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
-RUN chown -R docker:docker /app
+RUN chown -R ${USER}:${USER} /app
 
-USER docker
+USER ${USER}
 
 EXPOSE 6001 8080 13714
 
@@ -129,8 +128,8 @@ FROM base AS development
 WORKDIR /app
 
 # Set proper ownership
-RUN chown -R docker:docker /app
+RUN chown -R ${USER}:${USER} /app
 
-USER docker
+USER ${USER}
 
 EXPOSE 5173 6001 8080
