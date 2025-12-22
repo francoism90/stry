@@ -89,6 +89,9 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 RUN groupadd -g ${GID} ${USER} && \
     useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
 
+# Set proper ownership
+RUN chown -R ${USER}:${USER} /etc/caddy /etc/frankenphp.yaml /app
+
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -99,8 +102,10 @@ FROM base AS build
 
 WORKDIR /app
 
+# Copy application source code
 COPY . /app
 
+# Install PHP and Node.js dependencies, build assets
 RUN --mount=type=cache,target=/root/.composer/cache \
     --mount=type=cache,target=/pnpm/store \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction && \
@@ -110,25 +115,20 @@ FROM base AS production
 
 WORKDIR /app
 
-COPY --from=build /app /app
+# Copy application from build stage
+COPY --chown=${USER}:${USER} --from=build /app /app
 
 # PHP Production Configuration
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
-# Set proper ownership
-RUN chown -R ${USER}:${USER} /app
-
 USER ${USER}
 
-EXPOSE 6001 8080 13714
+EXPOSE 6001 8000 8080 13714
 
 FROM base AS development
 
 WORKDIR /app
 
-# Set proper ownership
-RUN chown -R ${USER}:${USER} /app
-
 USER ${USER}
 
-EXPOSE 5173 6001 8080
+EXPOSE 5173 6001 8000 8080
