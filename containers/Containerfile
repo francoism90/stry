@@ -1,4 +1,4 @@
-FROM rust:latest AS builder
+FROM docker.io/rust:latest AS builder
 
 WORKDIR /usr/local/src
 
@@ -36,7 +36,7 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # ab-av1
 # RUN cargo install ab-av1
 
-FROM dunglas/frankenphp:latest AS base
+FROM docker.io/dunglas/frankenphp:latest AS base
 
 ARG UID=1000
 ARG GID=1000
@@ -75,7 +75,7 @@ COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 # PHP Configuration and Entrypoint
-COPY ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
+COPY containers/runtimes/Caddyfile /etc/caddy/Caddyfile
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -114,7 +114,6 @@ WORKDIR /app
 COPY --from=build /app /app
 
 # PHP Production Configuration
-COPY ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
