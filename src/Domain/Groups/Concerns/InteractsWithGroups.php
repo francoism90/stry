@@ -70,7 +70,9 @@ trait InteractsWithGroups
     {
         return collect($values)
             ->map(fn (Group|int|string $value) => $value instanceof Group ? $value : Group::find($value))
-            ->filter();
+            ->filter()
+            ->unique()
+            ->values();
     }
 
     public function getGroup(?GroupType $type = null): ?Group

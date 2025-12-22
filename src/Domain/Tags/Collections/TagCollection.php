@@ -21,8 +21,8 @@ class TagCollection extends Collection
         return $this
             ->map(fn (Tag $related) => $related->only(['name', 'description']))
             ->flatten()
-            ->unique()
             ->filter()
+            ->unique()
             ->implode(', ');
     }
 
@@ -33,8 +33,8 @@ class TagCollection extends Collection
             'description' => $item->getTranslations('description'),
         ])
             ->flatten()
-            ->unique()
             ->filter()
+            ->unique()
             ->implode(', ');
     }
 }

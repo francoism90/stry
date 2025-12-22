@@ -40,7 +40,9 @@ class ExtractMediaCaptions
                 }
 
                 return $path;
-            });
+            })
+            ->filter()
+            ->values();
 
         // Cleanup temporary files used during extraction
         $ffmpeg->cleanupTemporaryFiles();

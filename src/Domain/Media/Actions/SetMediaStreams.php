@@ -28,7 +28,8 @@ class SetMediaStreams
 
         $items = collect($streams)
             ->map(fn (Stream $stream) => collect($stream->all())->only($keys)->toArray())
-            ->filter();
+            ->filter()
+            ->values();
 
         // Update the media item with the streams
         $media
