@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
+use Exception;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
@@ -21,18 +22,22 @@ class ExtractMediaCaptions
 
         $items = Collection::make($ffmpeg->getStreams())
             ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')
-            ->map(function (Stream $stream) use (&$ffmpeg, $media) {
+            ->map(function (Stream $stream) use ($ffmpeg, $media): ?string {
                 $index = $stream->get('index', 0);
                 $language = data_get($stream->get('tags', []), 'language', 'und');
                 $path = "{$media->uuid}_{$index}_{$language}.vtt";
 
                 // Export the caption stream to a WebVTT file
-                $ffmpeg
-                    ->export()
-                    ->toDisk('transcodes')
-                    ->inFormat(new WebVTT)
-                    ->addFilter(['-map', "0:{$index}"])
-                    ->save($path);
+                try {
+                    $ffmpeg
+                        ->export()
+                        ->toDisk('transcodes')
+                        ->inFormat(new WebVTT)
+                        ->addFilter(['-map', "0:{$index}"])
+                        ->save($path);
+                } catch (Exception $e) {
+                    return null;
+                }
 
                 return $path;
             });
