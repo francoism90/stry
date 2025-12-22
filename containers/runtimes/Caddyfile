@@ -1,7 +1,7 @@
 {
     servers {
-		trusted_proxies static private_ranges
         enable_full_duplex
+		trusted_proxies static private_ranges
 	}
 
     http_port 8080
