@@ -44,9 +44,9 @@ ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV ARTISAN="php /app/artisan"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
+ENV ARTISAN="php /app/artisan"
 
 WORKDIR /tmp
 
