@@ -70,13 +70,15 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
-# PHP Configuration and Entrypoint
-COPY containers/runtimes/Caddyfile /etc/caddy/Caddyfile
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+# FrankenPHP Configuration
+COPY containers/runtimes/Caddyfile /etc/frankenphp/Caddyfile
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# PHP Extensions
+# PHP Configuration
+RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+
 RUN install-php-extensions @composer apcu bcmath exif \
     gd igbinary imagick inotify intl memcached msgpack \
     opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
@@ -119,7 +121,8 @@ WORKDIR /app
 # Copy application from build stage
 COPY --chown=${USER}:${USER} --from=build /app /app
 
-# PHP Production Configuration
+# PHP Configuration
+RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 USER ${USER}
