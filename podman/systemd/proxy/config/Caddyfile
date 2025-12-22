@@ -1,12 +1,12 @@
 {
-    servers {
-        enable_full_duplex
-        trusted_proxies static private_ranges
-    }
+	servers {
+		enable_full_duplex
+		trusted_proxies static private_ranges
+	}
 
-    # debug
-    local_certs
-    admin off
+	# debug
+	local_certs
+	admin off
 }
 
 (pwa) {
@@ -14,11 +14,11 @@
 }
 
 (tls) {
-    tls internal
+	tls internal
 }
 
 (compress) {
-    encode zstd gzip
+	encode zstd gzip
 }
 
 import /etc/caddy/sites/*.caddyfile
