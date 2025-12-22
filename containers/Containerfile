@@ -70,8 +70,7 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
-# FrankenPHP Configuration
-COPY containers/runtimes/Caddyfile /etc/frankenphp/Caddyfile
+# Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
@@ -84,7 +83,7 @@ RUN install-php-extensions @composer apcu bcmath exif \
     opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
     sockets uv zip
 
-# Node.js Packages
+# Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
 
