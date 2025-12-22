@@ -1,4 +1,13 @@
 {
+    servers {
+		trusted_proxies static private_ranges
+        enable_full_duplex
+	}
+
+    http_port 8080
+    https_port 4443
+    admin off
+
 	frankenphp
 }
 
