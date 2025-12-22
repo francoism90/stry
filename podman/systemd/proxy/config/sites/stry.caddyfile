@@ -1,7 +1,7 @@
 stry.test {
-    import tls
-    import pwa
-    reverse_proxy systemd-stry:8000
+	import tls
+	import pwa
+	reverse_proxy systemd-stry:8000
 }
 
 vite.stry.test {
@@ -15,11 +15,11 @@ ws.stry.test {
 }
 
 s3.stry.test {
-    import tls
-    reverse_proxy systemd-stry-garage:3900
+	import tls
+	reverse_proxy systemd-stry-garage:3900
 }
 
 web.stry.test {
-    import tls
-    reverse_proxy systemd-stry-garage:3902
+	import tls
+	reverse_proxy systemd-stry-garage:3902
 }
