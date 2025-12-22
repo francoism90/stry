@@ -21,4 +21,4 @@
 	encode zstd gzip
 }
 
-import /etc/caddy/sites/*.caddyfile
+import /etc/caddy/sites/*.Caddyfile
