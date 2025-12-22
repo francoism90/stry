@@ -14,7 +14,7 @@ PublishPort=443:443
 PublishPort=443:443/udp
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30

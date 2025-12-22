@@ -15,7 +15,7 @@ ExposeHostPort=1025
 ExposeHostPort=8025
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30

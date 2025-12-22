@@ -13,7 +13,7 @@ Network=stry.network
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=300
 TimeoutStopSec=60

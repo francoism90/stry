@@ -10,7 +10,7 @@ Network=stry.network
 ExposeHostPort=8108
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=300
 TimeoutStopSec=60

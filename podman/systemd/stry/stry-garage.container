@@ -15,7 +15,7 @@ ExposeHostPort=3902
 ExposeHostPort=3903
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=180
 TimeoutStopSec=60
