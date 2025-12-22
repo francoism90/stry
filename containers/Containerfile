@@ -47,8 +47,7 @@ ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
-ENV OCTANE="${ARTISAN} octane:start --server=swoole --host=0.0.0.0 --port=8080"
+ENV ARTISAN="frankenphp php-cli -d variables_order=EGPCS /app/artisan"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
@@ -69,16 +68,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# PHP Configuration and Entrypoint
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 # COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
+
+# PHP Configuration and Entrypoint
+COPY ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # PHP Extensions
 RUN install-php-extensions @composer apcu bcmath exif \
@@ -92,7 +92,7 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 
 # Create docker user
 RUN groupadd -g ${GID} ${USER} && \
-    useradd -u ${UID} -g ${USER} -d /home/docker -s /bin/bash -m ${USER}
+    useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
@@ -114,6 +114,7 @@ WORKDIR /app
 COPY --from=build /app /app
 
 # PHP Production Configuration
+COPY ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership

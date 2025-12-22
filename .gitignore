@@ -18,6 +18,7 @@ _ide_helper.php
 .vscode/*
 *.log
 *.tsbuildinfo
+**/caddy
 /bootstrap/ssr
 /node_modules
 /public/build
@@ -33,6 +34,8 @@ _ide_helper.php
 auth.json
 auto-imports.d.ts
 components.d.ts
+frankenphp
+frankenphp-worker.php
 Homestead.json
 Homestead.yaml
 npm-debug.log
