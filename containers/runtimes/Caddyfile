@@ -16,7 +16,7 @@
 # The domain name of your server
 localhost {
 	# Set the webroot to the public/ directory
-	root public/
+	root /app/public/
 
 	# Enable compression (optional)
 	encode zstd br gzip
