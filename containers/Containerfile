@@ -126,7 +126,7 @@ COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-use
 
 USER ${USER}
 
-EXPOSE 6001 8080 13714
+EXPOSE 6001 8000 13714
 
 FROM base AS development
 
@@ -134,4 +134,4 @@ WORKDIR /app
 
 USER ${USER}
 
-EXPOSE 5173 6001 8080
+EXPOSE 5173 6001 8000
