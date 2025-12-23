@@ -32,7 +32,7 @@ const onSubmit = () => {
       v-model="form.list"
       variant="link"
       class="w-full"
-      :ui="{ trigger: 'grow py-2' }"
+      :ui="{ trigger: 'grow py-3' }"
       :content="false"
       :items="lists"
       @update:modelValue="onSubmit"

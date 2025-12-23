@@ -2,10 +2,11 @@
     "servers": {
         "laravel-boost": {
             "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
-            ]
+            "args": ["artisan", "boost:mcp"]
+        },
+        "nuxt-ui": {
+            "type": "http",
+            "url": "https://ui.nuxt.com/mcp"
         }
     }
 }

@@ -47,7 +47,7 @@ export default defineConfig(({ mode }) => {
       vidstack(),
       wayfinder(),
       ui({
-        inertia: true,
+        router: 'inertia',
         ui: {
           colors: {
             primary: 'purple',
