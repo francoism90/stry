@@ -39,7 +39,7 @@ watchDebounced(
 </script>
 
 <template>
-  <UDashboardPanel id="feed">
+  <UDashboardPanel id="library">
     <template #header>
       <UForm
         :state="form"

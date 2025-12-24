@@ -13,7 +13,7 @@ defineOptions({ layout: DashboardLayout })
 <template>
   <Head title="Videos" />
 
-  <UDashboardPanel id="Media">
+  <UDashboardPanel id="media">
     <template #header>
       <UDashboardNavbar title="Media">
         <template #leading>
