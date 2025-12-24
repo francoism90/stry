@@ -34,7 +34,7 @@ readonly class VideoSortScope
 
     protected function getSorter(): ?VideoSort
     {
-        $sortValue = $this->sort;
+        $sortValue = $this->sort ?? '';
 
         return $sortValue instanceof VideoSort
             ? $sortValue
