@@ -52,7 +52,7 @@ readonly class VideoFilterScope
     protected function isFilterDefault(): bool
     {
         // Determine the default filter
-        $defaultFilter = $this->default ?? VideoFilter::All;
+        $defaultFilter = $this->default ?? VideoFilter::Default;
 
         return $this->getFilter() === $defaultFilter;
     }
@@ -62,10 +62,6 @@ readonly class VideoFilterScope
         /** @var Repository $sessionCache */
         $sessionCache = Request::session()->cache();
 
-        if (! $sessionCache->has('video:random-seed')) {
-            $sessionCache->put('video:random-seed', random_int(1, 1000), now()->addHour());
-        }
-
-        return $sessionCache->get('video:filter-seed', 1000);
+        return $sessionCache->remember('video:random-seed', now()->addHour(), fn (): int => random_int(1, 1000));
     }
 }
