@@ -5,21 +5,41 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Videos\Enums\VideoFilter;
-use Laravel\Scout\Builder;
+use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Request;
+use Laravel\Scout\Builder;
 
 readonly class VideoFilterScope
 {
     public function __construct(
         public VideoFilter|string|null $filter = null,
+        public VideoOrder|string|null $default = null,
     ) {}
 
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
-            ->when($this->isFilter(VideoFilter::Watchlist), fn (Builder $scout) => $scout->where('duration', ['<=', 600]));
+            ->when($this->isFilterDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->randomSeed()))
+            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()));
+    }
+
+    protected function getFilter(): ?VideoFilter
+    {
+        $filterValue = $this->filter ?? '';
+
+        return $filterValue instanceof VideoFilter
+            ? $filterValue
+            : VideoFilter::tryFrom($filterValue);
+    }
+
+    protected function getOrder(): ?VideoOrder
+    {
+        $orderValue = $this->order ?? '';
+
+        return $orderValue instanceof VideoOrder
+            ? $orderValue
+            : VideoOrder::tryFrom($orderValue);
     }
 
     protected function isFilter(?VideoFilter ...$values): bool
@@ -29,20 +49,15 @@ readonly class VideoFilterScope
         return $currentFilter && in_array($currentFilter, $values, true);
     }
 
-    protected function getFilter(): ?VideoFilter
+    protected function isFilterDefault(): bool
     {
-        $currentFilter = $this->filter;
+        // Determine the default filter
+        $defaultFilter = $this->default ?? VideoFilter::All;
 
-        if (blank($currentFilter)) {
-            return null;
-        }
-
-        return $currentFilter instanceof VideoFilter
-            ? $currentFilter
-            : VideoFilter::tryFrom($currentFilter);
+        return $this->getFilter() === $defaultFilter;
     }
 
-    protected function getRandomSeed(): int
+    protected function randomSeed(): int
     {
         /** @var Repository $sessionCache */
         $sessionCache = Request::session()->cache();

@@ -7,9 +7,11 @@ namespace App\Client\Account\Controllers;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Enums\VideoSort;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoOrderScope;
 use Domain\Videos\Scopes\VideoSortScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -34,21 +36,21 @@ class HomeController extends Controller implements HasMiddleware
 
         // Apply filters
         $search = $request->safe()->input('search');
-        $sort = $request->safe()->input('sort', VideoSort::Recommended);
+        $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
         $scout = Video::search($search)
             ->tap(new VideoFilterScope($filter))
-            ->tap(new VideoSortScope($sort))
+            ->tap(new VideoOrderScope($order))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
         return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'filter' => fn () => $filter->label(),
-            'sorters' => fn () => VideoSort::options(),
+            'orders' => fn () => VideoOrder::options(),
+            'order' => fn () => $order,
             'search' => fn () => $search,
-            'sort' => fn () => $sort,
         ]);
     }
 }

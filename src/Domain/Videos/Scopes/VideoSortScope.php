@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
-use Domain\Videos\Enums\VideoSort;
+use Domain\Videos\Enums\VideoOrder;
 use Laravel\Scout\Builder;
 
-readonly class VideoSortScope
+readonly class VideoOrderScope
 {
     public function __construct(
-        public VideoSort|string|null $sort = null,
+        public VideoOrder|string|null $order = null,
     ) {}
 
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isSort(VideoSort::Newest), fn (Builder $scout) => $scout->latest())
-            ->when($this->isSort(VideoSort::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
-            ->when($this->isSort(VideoSort::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
-            ->when($this->isSort(VideoSort::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
+            ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
+            ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
+            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
+            ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
     }
 
-    protected function isSort(VideoSort ...$values): bool
+    protected function isOrder(VideoOrder ...$values): bool
     {
-        $currentSorter = $this->getSorter();
+        $currentOrderer = $this->getOrderer();
 
-        return $currentSorter && in_array($currentSorter, $values, true);
+        return $currentOrderer && in_array($currentOrderer, $values, true);
     }
 
-    protected function getSorter(): ?VideoSort
+    protected function getOrderer(): ?VideoOrder
     {
-        $sortValue = $this->sort ?? '';
+        $orderValue = $this->order ?? '';
 
-        return $sortValue instanceof VideoSort
-            ? $sortValue
-            : VideoSort::tryFrom($sortValue);
+        return $orderValue instanceof VideoOrder
+            ? $orderValue
+            : VideoOrder::tryFrom($orderValue);
     }
 }

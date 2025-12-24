@@ -8,7 +8,7 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum VideoFilter: string implements Enumerable
 {
-    case Default = 'default';
+    case All = 'all';
     case History = 'history';
     case Watchlist = 'watchlist';
     case Liked = 'liked';
@@ -16,7 +16,7 @@ enum VideoFilter: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
-            self::Default => __('All'),
+            self::All => __('All'),
             self::History => __('History'),
             self::Watchlist => __('Watch Later'),
             self::Liked => __('Liked'),
