@@ -16,8 +16,8 @@ readonly class VideoListScope
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isList(VideoList::Watched), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
-            ->when($this->isList(VideoList::Shorts), fn (Builder $scout) => $scout->where('duration', ['<=', 600]));
+            ->when($this->isList(VideoList::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
+            ->when($this->isList(VideoList::Watchlist), fn (Builder $scout) => $scout->where('duration', ['<=', 600]));
     }
 
     protected function isList(?VideoList ...$values): bool

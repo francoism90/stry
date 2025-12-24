@@ -28,9 +28,9 @@ const links: NavigationMenuItem[][] = [
       to: '/watchlist',
     },
     {
-      label: 'Starred',
-      icon: 'i-lucide-star',
-      to: '/starred',
+      label: 'Liked Videos',
+      icon: 'i-lucide-thumbs-up',
+      to: '/liked',
     },
   ],
   [

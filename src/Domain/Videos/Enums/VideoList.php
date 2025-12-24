@@ -9,15 +9,17 @@ use Domain\Shared\Contracts\Enumerable;
 enum VideoList: string implements Enumerable
 {
     case All = 'all';
-    case Watched = 'watched';
-    case Shorts = 'shorts';
+    case History = 'history';
+    case Watchlist = 'watchlist';
+    case Liked = 'liked';
 
     public function label(): string
     {
         return match ($this) {
             self::All => __('All'),
-            self::Watched => __('Watched'),
-            self::Shorts => __('Shorts'),
+            self::History => __('History'),
+            self::Watchlist => __('Watch Later'),
+            self::Liked => __('Liked'),
         };
     }
 

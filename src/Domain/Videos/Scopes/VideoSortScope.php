@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Videos\Enums\VideoSort;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Builder;
 
 readonly class VideoSortScope
@@ -16,7 +18,7 @@ readonly class VideoSortScope
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isSort(VideoSort::Relevant) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder())
+            ->when($this->isSort(VideoSort::Relevant) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->getRandomSeed()))
             ->when($this->isSort(VideoSort::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isSort(VideoSort::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isSort(VideoSort::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
@@ -37,5 +39,18 @@ readonly class VideoSortScope
         return $sortValue instanceof VideoSort
             ? $sortValue
             : VideoSort::tryFrom($sortValue);
+    }
+
+    protected function getRandomSeed(): ?int
+    {
+        if (! Auth::check()) {
+            return null;
+        }
+
+        return (int) Auth::user()->cacheRemember(
+            key: 'videos:random-seed',
+            ttl: now()->addHour(),
+            value: fn () => random_int(1, 1000),
+        );
     }
 }
