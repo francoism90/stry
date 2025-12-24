@@ -76,22 +76,46 @@ watchDebounced(
           </template>
         </UDashboardNavbar>
 
-        <UDashboardToolbar>
-          <UFormField
-            :error="form.errors.sort"
-            class="flex-none"
-          >
-            <USelect
-              v-model="form.sort"
-              :items="sorters"
-              label-key="label"
-              value-key="value"
-              placeholder="Filter by"
-              variant="soft"
-              size="lg"
-              @update:modelValue="onSubmit"
-            />
-          </UFormField>
+        <UDashboardToolbar :ui="{ root: 'min-h-0 border-0', left: 'gap-3' }">
+          <template #left>
+            <UFormField
+              orientation="horizontal"
+              label="Filter"
+              :ui="{ label: 'text-xs text-secondary-400' }"
+              :error="form.errors.filter"
+            >
+              <USelect
+                v-model="form.filter"
+                :items="filters"
+                :ui="{ content: 'min-w-32' }"
+                label-key="label"
+                value-key="value"
+                placeholder="Filter by"
+                variant="soft"
+                size="sm"
+                @update:modelValue="onSubmit"
+              />
+            </UFormField>
+
+            <UFormField
+              orientation="horizontal"
+              label="by"
+              :ui="{ label: 'text-xs text-secondary-400' }"
+              :error="form.errors.sort"
+            >
+              <USelect
+                v-model="form.sort"
+                :items="sorters"
+                :ui="{ content: 'min-w-32' }"
+                label-key="label"
+                value-key="value"
+                placeholder="Filter by"
+                variant="soft"
+                size="sm"
+                @update:modelValue="onSubmit"
+              />
+            </UFormField>
+          </template>
         </UDashboardToolbar>
       </UForm>
     </template>

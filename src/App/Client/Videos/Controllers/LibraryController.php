@@ -33,8 +33,8 @@ class LibraryController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $search = $request->safe()->input('search', '');
-        $filter = $request->safe()->input('filter', VideoList::Recommended);
+        $search = $request->safe()->input('search');
+        $filter = $request->safe()->input('filter', VideoList::All);
         $sort = $request->safe()->input('sort', VideoSort::Relevant);
 
         // Scout builder

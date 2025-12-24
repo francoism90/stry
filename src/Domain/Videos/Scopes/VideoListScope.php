@@ -17,11 +17,10 @@ readonly class VideoListScope
     {
         $scout
             ->when($this->isList(VideoList::Watched), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
-            ->when($this->isList(VideoList::Shorts), fn (Builder $scout) => $scout->where('duration', ['<=', 300]))
-            ->when($this->isList(VideoList::Newest), fn (Builder $scout) => $scout->latest());
+            ->when($this->isList(VideoList::Shorts), fn (Builder $scout) => $scout->where('duration', ['<=', 600]));
     }
 
-    protected function isList(VideoList ...$values): bool
+    protected function isList(?VideoList ...$values): bool
     {
         $currentList = $this->getList();
 
@@ -30,7 +29,7 @@ readonly class VideoListScope
 
     protected function getList(): ?VideoList
     {
-        $listValue = $this->list;
+        $listValue = $this->list ?? '';
 
         return $listValue instanceof VideoList
             ? $listValue
