@@ -27,19 +27,32 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <UDashboardPanel id="app">
+  <UDashboardPanel id="feed">
+    <template #header>
+      <UDashboardNavbar :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }">
+        <template #left>
+          <UInput
+            color="neutral"
+            variant="soft"
+            placeholder="Search..."
+            icon="i-lucide-search"
+            size="xl"
+          />
+        </template>
+
+        <template #right>
+          <UButton
+            icon="i-lucide-settings"
+            variant="soft"
+            size="xl"
+            :ui="{ base: 'p-3', leadingIcon: 'size-4' }"
+          />
+        </template>
+      </UDashboardNavbar>
+    </template>
+
     <template #body>
       <UPage>
-        <UTabs
-          v-model="form.list"
-          variant="link"
-          class="w-full"
-          :ui="{ trigger: 'grow py-3' }"
-          :content="false"
-          :items="lists"
-          @update:modelValue="onSubmit"
-        />
-
         <InfiniteScroll data="items">
           <VideoList :items="items" />
         </InfiniteScroll>

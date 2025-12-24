@@ -55,7 +55,7 @@ const links: NavigationMenuItem[][] = [
     :default-size="16"
     :ui="{
       root: 'border-0 px-2 lg:sticky lg:top-0 lg:max-h-dvh',
-      header: 'flex h-30 items-center',
+      header: 'flex h-24 items-center',
     }"
   >
     <template #header>
