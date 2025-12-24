@@ -79,7 +79,7 @@ watchDebounced(
           </template>
         </UDashboardNavbar>
 
-        <UDashboardToolbar :ui="{ root: 'min-h-0 border-0', left: 'gap-3' }">
+        <UDashboardToolbar :ui="{ root: 'min-h-0 border-0', left: 'gap-2' }">
           <template #left>
             <UFormField
               orientation="horizontal"
