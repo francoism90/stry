@@ -44,7 +44,7 @@ class LibraryController extends Controller implements HasMiddleware
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Client/Videos/LibraryIndex', [
+        return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'sorters' => fn () => VideoSort::options(),
             'filters' => fn () => VideoList::options(),

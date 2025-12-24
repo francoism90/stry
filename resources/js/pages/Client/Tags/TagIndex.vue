@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import TagList from '@/components/Tags/TagList.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -38,10 +37,9 @@ watchDebounced(
 <template>
   <Head title="Tags" />
 
-  <UDashboardPanel id="feed">
+  <UDashboardPanel id="tags">
     <template #header>
       <UForm
-        id="library"
         :state="form"
         loading-auto
         @submit="onSubmit"
@@ -104,13 +102,10 @@ watchDebounced(
 
     <template #body>
       <UPage>
-        <InfiniteScroll
-          data="items"
-          :buffer="200"
-        >
+        <InfiniteScroll data="items">
           {{ items }}
 
-          <TagList :items="items" />
+          <!-- <TagList :items="items" /> -->
         </InfiniteScroll>
       </UPage>
     </template>
