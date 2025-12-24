@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Requests;
 
-use Domain\Videos\Enums\VideoSort;
+use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +22,7 @@ class VideoIndexRequest extends FormRequest
     {
         return [
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'sort' => ['sometimes', 'nullable', Rule::enum(VideoSort::class)],
+            'order' => ['sometimes', 'nullable', Rule::enum(VideoOrder::class)],
         ];
     }
 }

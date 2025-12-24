@@ -10,13 +10,13 @@ const props = defineProps<{
   items: VideoCollection
   filter: string | undefined
   search: string | undefined
-  sort: string | undefined
-  sorters: SelectMenuItem[] | undefined
+  order: string | undefined
+  orders: SelectMenuItem[] | undefined
 }>()
 
 const form = useForm('get', '', {
   search: props.search,
-  sort: props.sort,
+  order: props.order,
   page: 1,
 })
 
@@ -24,7 +24,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'sort'],
+    only: ['items', 'search', 'order'],
     reset: ['items'],
   })
 }
@@ -84,11 +84,11 @@ watchDebounced(
               orientation="horizontal"
               label="Sort by"
               :ui="{ label: 'text-xs text-secondary-400' }"
-              :error="form.errors.sort"
+              :error="form.errors.order"
             >
               <USelect
-                v-model="form.sort"
-                :items="sorters"
+                v-model="form.order"
+                :items="orders"
                 :ui="{ content: 'min-w-36' }"
                 label-key="label"
                 value-key="value"
