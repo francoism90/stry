@@ -42,7 +42,6 @@ watchDebounced(
   <UDashboardPanel id="feed">
     <template #header>
       <UForm
-        id="library"
         :state="form"
         loading-auto
         @submit="onSubmit"
