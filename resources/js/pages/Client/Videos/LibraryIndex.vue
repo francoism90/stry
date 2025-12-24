@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VideoList from '@/components/Videos/VideoList.vue'
 import type { VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -10,11 +10,14 @@ const props = defineProps<{
   items: VideoCollection
   search: string | null
   sort: string | null
+  filter: string | number | undefined
+  filters: SelectMenuItem[]
   sorters: SelectMenuItem[]
 }>()
 
 const form = useForm('get', '', {
   search: props.search,
+  filter: props.filter,
   sort: props.sort,
   page: 1,
 })
@@ -23,7 +26,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'sort'],
+    only: ['items', 'search', 'sort', 'filter'],
     reset: ['items'],
   })
 }
@@ -36,49 +39,72 @@ watchDebounced(
 </script>
 
 <template>
-  <Head title="Library" />
-
-  <UPage>
-    <UPageBody class="mt-4 space-y-6 px-4 sm:px-6">
+  <UDashboardPanel id="feed">
+    <template #header>
       <UForm
-        id="general"
+        id="library"
         :state="form"
-        class="flex items-center gap-2"
         loading-auto
         @submit="onSubmit"
       >
-        <UFormField
-          :error="form.errors.search"
-          class="flex-1"
-        >
-          <UInput
-            v-model="form.search"
-            :model-modifiers="{ nullable: true, string: true, trim: true }"
-            placeholder="Search videos..."
-            size="lg"
-          />
-        </UFormField>
+        <UDashboardNavbar :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }">
+          <template #left>
+            <UFormField
+              :error="form.errors.search"
+              class="flex-1"
+            >
+              <UInput
+                v-model="form.search"
+                :model-modifiers="{ nullable: true, string: true, trim: true }"
+                variant="soft"
+                size="xl"
+                color="neutral"
+                placeholder="Search..."
+                icon="i-lucide-search"
+              />
+            </UFormField>
+          </template>
 
-        <UFormField
-          :error="form.errors.sort"
-          class="flex-none"
-        >
-          <USelect
-            v-model="form.sort"
-            :items="sorters"
-            label-key="label"
-            value-key="value"
-            placeholder="Filter by"
-            variant="soft"
-            size="lg"
-            @update:modelValue="onSubmit"
-          />
-        </UFormField>
+          <template #right>
+            <UButton
+              variant="soft"
+              size="xl"
+              color="neutral"
+              icon="i-lucide-settings"
+              :ui="{ base: 'p-3', leadingIcon: 'size-4' }"
+            />
+          </template>
+        </UDashboardNavbar>
+
+        <UDashboardToolbar>
+          <UFormField
+            :error="form.errors.sort"
+            class="flex-none"
+          >
+            <USelect
+              v-model="form.sort"
+              :items="sorters"
+              label-key="label"
+              value-key="value"
+              placeholder="Filter by"
+              variant="soft"
+              size="lg"
+              @update:modelValue="onSubmit"
+            />
+          </UFormField>
+        </UDashboardToolbar>
       </UForm>
+    </template>
 
-      <InfiniteScroll data="items">
-        <VideoList :items="items" />
-      </InfiniteScroll>
-    </UPageBody>
-  </UPage>
+    <template #body>
+      <UPage>
+        <InfiniteScroll
+          data="items"
+          :buffer="200"
+        >
+          <VideoList :items="items" />
+        </InfiniteScroll>
+      </UPage>
+    </template>
+  </UDashboardPanel>
 </template>

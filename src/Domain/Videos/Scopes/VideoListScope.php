@@ -18,8 +18,7 @@ readonly class VideoListScope
         $scout
             ->when($this->isList(VideoList::Watched), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
             ->when($this->isList(VideoList::Shorts), fn (Builder $scout) => $scout->where('duration', ['<=', 300]))
-            ->when($this->isList(VideoList::Newest), fn (Builder $scout) => $scout->latest())
-            ->when($this->isList(VideoList::Recommended, VideoList::Shorts) && blank($scout->query), fn (Builder $scout) => $scout->randomOrder());
+            ->when($this->isList(VideoList::Newest), fn (Builder $scout) => $scout->latest());
     }
 
     protected function isList(VideoList ...$values): bool
