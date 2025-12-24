@@ -10,7 +10,7 @@ const url = (search: string) => LibraryController.url({ query: { search } })
 </script>
 
 <template>
-  <UBlogPosts class="grid-cols-1 gap-x-3 gap-y-1 sm:grid-cols-2 lg:grid-cols-2 lg:gap-y-3">
+  <UBlogPosts class="grid-cols-1 gap-x-3 gap-y-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-3">
     <UButton
       v-for="item in items?.data"
       :key="item.id"
