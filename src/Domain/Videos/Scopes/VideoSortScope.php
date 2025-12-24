@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Videos\Enums\VideoSort;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Request;
 use Laravel\Scout\Builder;
 
 readonly class VideoSortScope
@@ -41,16 +41,15 @@ readonly class VideoSortScope
             : VideoSort::tryFrom($sortValue);
     }
 
-    protected function getRandomSeed(): ?int
+    protected function getRandomSeed(): int
     {
-        if (! Auth::check()) {
-            return null;
+        /** @var Repository $sessionCache */
+        $sessionCache = Request::session()->cache();
+
+        if (! $sessionCache->has('video-random-seed')) {
+            $sessionCache->put('video-random-seed', random_int(1, 1000), now()->addMinutes(30));
         }
 
-        return (int) Auth::user()->cacheRemember(
-            key: 'videos:random-seed',
-            ttl: now()->addHour(),
-            value: fn (): int => random_int(1, 1000),
-        );
+        return $sessionCache->get('video-random-seed', 1000);
     }
 }
