@@ -18,7 +18,6 @@ const url = (search: string) => LibraryController.url({ query: { search } })
       size="lg"
       :label="`# ${item.name}`"
       :to="url(item.name)"
-      :ui="{ container: 'p-4 sm:p-4' }"
     />
   </UBlogPosts>
 </template>
