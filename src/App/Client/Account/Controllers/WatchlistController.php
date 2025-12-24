@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Videos\Controllers;
+namespace App\Client\Account\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LibraryController extends Controller implements HasMiddleware
+class WatchlistController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -34,12 +34,11 @@ class LibraryController extends Controller implements HasMiddleware
 
         // Apply filters
         $search = $request->safe()->input('search');
-        $filter = $request->safe()->input('filter', VideoList::All);
-        $sort = $request->safe()->input('sort', VideoSort::Relevant);
+        $sort = $request->safe()->input('sort', VideoSort::Default);
 
         // Scout builder
         $scout = Video::search($search)
-            ->tap(new VideoListScope($filter))
+            ->tap(new VideoListScope(VideoList::Watchlist))
             ->tap(new VideoSortScope($sort))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
@@ -47,9 +46,7 @@ class LibraryController extends Controller implements HasMiddleware
         return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
             'sorters' => fn () => VideoSort::options(),
-            'filters' => fn () => VideoList::options(),
             'search' => fn () => $search,
-            'filter' => fn () => $filter,
             'sort' => fn () => $sort,
         ]);
     }

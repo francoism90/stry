@@ -8,16 +8,13 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
-  search: string | null
-  sort: string | null
-  filter: string | number | undefined
-  filters: SelectMenuItem[]
+  search: string | undefined
+  sort: string | undefined
   sorters: SelectMenuItem[]
 }>()
 
 const form = useForm('get', '', {
   search: props.search,
-  filter: props.filter,
   sort: props.sort,
   page: 1,
 })
@@ -26,7 +23,7 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'sort', 'filter'],
+    only: ['items', 'search', 'sort'],
     reset: ['items'],
   })
 }
@@ -57,7 +54,7 @@ watchDebounced(
             >
               <UInput
                 v-model="form.search"
-                :model-modifiers="{ nullable: true, string: true, trim: true }"
+                :model-modifiers="{ string: true, trim: true }"
                 variant="soft"
                 size="xl"
                 color="neutral"
@@ -82,25 +79,7 @@ watchDebounced(
           <template #left>
             <UFormField
               orientation="horizontal"
-              label="Filter"
-              :ui="{ label: 'text-xs text-secondary-400' }"
-              :error="form.errors.filter"
-            >
-              <USelect
-                v-model="form.filter"
-                :items="filters"
-                :ui="{ content: 'min-w-36' }"
-                label-key="label"
-                value-key="value"
-                variant="soft"
-                size="sm"
-                @update:modelValue="onSubmit"
-              />
-            </UFormField>
-
-            <UFormField
-              orientation="horizontal"
-              label="by"
+              label="Sort by"
               :ui="{ label: 'text-xs text-secondary-400' }"
               :error="form.errors.sort"
             >

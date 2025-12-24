@@ -24,7 +24,7 @@ class VideoIndexRequest extends FormRequest
         return [
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
             'sort' => ['sometimes', 'nullable', Rule::enum(VideoSort::class)],
-            'filter' => ['sometimes', 'nullable', Rule::enum(VideoList::class)],
+            'list' => ['sometimes', 'nullable', Rule::enum(VideoList::class)],
         ];
     }
 }

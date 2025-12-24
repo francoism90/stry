@@ -8,7 +8,7 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
-  sort: string | null
+  sort: string | undefined
   sorters: SelectMenuItem[]
 }>()
 
@@ -50,6 +50,7 @@ const onSubmit = () =>
           <USelect
             v-model="form.sort"
             :items="sorters"
+            default-value="recommended"
             label-key="label"
             value-key="value"
             placeholder="Filter by"
