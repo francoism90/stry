@@ -11,36 +11,28 @@ const links: NavigationMenuItem[][] = [
       exact: true,
     },
     {
-      label: 'Shorts',
-      icon: 'i-lucide-clock',
-      to: '/shors',
+      label: 'Tags',
+      icon: 'i-lucide-tags',
+      to: '/tags',
     },
   ],
   [
     {
-      label: 'Videos',
-      icon: 'i-lucide-videotape',
-      to: '/admin/videos',
+      label: 'Starred',
+      icon: 'i-lucide-star',
+      to: '/starred',
     },
     {
-      label: 'Tags',
-      icon: 'i-lucide-tags',
-      to: '/admin/tags',
+      label: 'Watched',
+      icon: 'i-lucide-clock',
+      to: '/watched',
     },
+  ],
+  [
     {
-      label: 'Media',
-      icon: 'i-lucide-files',
-      to: '/admin/media',
-    },
-    {
-      label: 'Playlists',
-      icon: 'i-lucide-image-play',
-      to: '/admin/playlists',
-    },
-    {
-      label: 'Users',
-      icon: 'i-lucide-users',
-      to: '/admin/users',
+      label: 'Profile',
+      icon: 'i-lucide-user',
+      to: '/profile',
     },
   ],
 ]
