@@ -46,10 +46,10 @@ readonly class VideoSortScope
         /** @var Repository $sessionCache */
         $sessionCache = Request::session()->cache();
 
-        if (! $sessionCache->has('video-random-seed')) {
-            $sessionCache->put('video-random-seed', random_int(1, 1000), now()->addMinutes(30));
+        if (! $sessionCache->has('video:random-seed')) {
+            $sessionCache->put('video:random-seed', random_int(1, 1000), now()->addHour());
         }
 
-        return $sessionCache->get('video-random-seed', 1000);
+        return $sessionCache->get('video:random-seed', 1000);
     }
 }
