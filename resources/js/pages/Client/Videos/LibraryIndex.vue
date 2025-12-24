@@ -47,7 +47,10 @@ watchDebounced(
         loading-auto
         @submit="onSubmit"
       >
-        <UDashboardNavbar :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }">
+        <UDashboardNavbar
+          :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }"
+          :toggle="{ variant: 'link', class: 'ps-0' }"
+        >
           <template #left>
             <UFormField
               :error="form.errors.search"
