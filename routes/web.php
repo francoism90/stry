@@ -8,9 +8,6 @@ use App\Client\Tags\Controllers\TagController;
 use App\Client\Videos\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
-// Home
-Route::get('/', HomeController::class)->name('home');
-
 // Videos
 Route::get('/play/{video}', VideoController::class)->name('play');
 
@@ -19,3 +16,8 @@ Route::get('/tags', TagController::class)->name('tags');
 
 // Account
 Route::get('/profile', ProfileController::class)->name('profile');
+
+// Fallback
+Route::any('/{filter?}', HomeController::class)
+    ->defaults('filter', 'default')
+    ->name('home');
