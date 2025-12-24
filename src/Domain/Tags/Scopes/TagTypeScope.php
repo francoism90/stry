@@ -18,10 +18,10 @@ readonly class TagTypeScope
 
     public function __invoke(Builder $scout): void
     {
-        $scout
-            ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
-            ->when(blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'))
-            ->when($this->getType(), fn (Builder $scout, TagType $type) => $scout->where('type', enum_value($type))->orderBy('name'));
+        $scout;
+            // ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
+            // ->when(blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'))
+            // ->when($this->getType(), fn (Builder $scout, TagType $type) => $scout->where('type', enum_value($type))->orderBy('name'));
     }
 
     protected function getType(): ?TagType
@@ -32,6 +32,8 @@ readonly class TagTypeScope
             return null;
         }
 
-        return $currentType instanceof TagType ? $currentType : TagType::tryFrom($currentType);
+        return $currentType instanceof TagType
+            ? $currentType
+            : TagType::tryFrom($currentType);
     }
 }

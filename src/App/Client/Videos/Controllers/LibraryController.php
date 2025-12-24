@@ -38,7 +38,7 @@ class LibraryController extends Controller implements HasMiddleware
         $sort = $request->safe()->input('sort', VideoSort::Relevant);
 
         // Scout builder
-        $scout = Video::search($request->safe()->input('search'))
+        $scout = Video::search($search)
             ->tap(new VideoListScope($filter))
             ->tap(new VideoSortScope($sort))
             ->simplePaginate(12)

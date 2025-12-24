@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Client\Tags\Controllers;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
-use App\Api\Videos\Resources\VideoResource;
-use App\Client\Tags\Responses\TagResourceProperty;
+use App\Api\Tags\Requests\TagIndexRequest;
+use App\Api\Tags\Resources\TagResource;
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
-use Domain\Videos\Enums\VideoSort;
-use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoSortScope;
-use Domain\Videos\Scopes\VideoTagScope;
+use Domain\Tags\Scopes\TagTypeScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -29,27 +26,25 @@ class TagController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Tag $tag, VideoIndexRequest $request): Response
+    public function __invoke(TagIndexRequest $request): Response
     {
-        Gate::authorize('view', $tag);
+        Gate::authorize('viewAny', Tag::class);
 
         // Apply filters
-        $search = $request->safe()->input('search', '');
-        $sort = $request->safe()->input('sort', VideoSort::Relevant);
+        $search = $request->safe()->input('search');
+        $type = $request->safe()->input('type', TagType::Genre);
 
         // Scout builder
-        $scout = Video::search($search)
-            ->tap(new VideoTagScope($tag))
-            ->tap(new VideoSortScope($sort))
+        $scout = Tag::search($search)
+            ->tap(new TagTypeScope($type))
             ->simplePaginate(16)
-            ->through(fn (Video $video) => new VideoResource($video));
+            ->through(fn (Tag $tag) => new TagResource($tag));
 
-        return Inertia::render('Client/Tags/TagView', [
-            'tag' => fn () => new TagResourceProperty($tag),
+        return Inertia::render('Client/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => $scout),
+            'types' => fn () => TagType::options(),
             'search' => fn () => $search,
-            'sort' => fn () => $sort,
-            'sorters' => fn () => VideoSort::options(),
+            'type' => fn () => $type,
         ]);
     }
 }

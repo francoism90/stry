@@ -29,10 +29,14 @@ readonly class VideoListScope
 
     protected function getList(): ?VideoList
     {
-        $listValue = $this->list ?? '';
+        $currentList = $this->list;
 
-        return $listValue instanceof VideoList
-            ? $listValue
-            : VideoList::tryFrom($listValue);
+        if (blank($currentList)) {
+            return null;
+        }
+
+        return $currentList instanceof VideoList
+            ? $currentList
+            : VideoList::tryFrom($currentList);
     }
 }
