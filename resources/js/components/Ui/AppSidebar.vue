@@ -18,14 +18,19 @@ const links: NavigationMenuItem[][] = [
   ],
   [
     {
+      label: 'History',
+      icon: 'i-lucide-history',
+      to: '/history',
+    },
+    {
+      label: 'Watch Later',
+      icon: 'i-lucide-clock',
+      to: '/watchlist',
+    },
+    {
       label: 'Starred',
       icon: 'i-lucide-star',
       to: '/starred',
-    },
-    {
-      label: 'Watched',
-      icon: 'i-lucide-clock',
-      to: '/watched',
     },
   ],
   [
