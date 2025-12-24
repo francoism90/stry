@@ -1,7 +1,8 @@
 <template>
-  <UButton
-    label="stry"
-    variant="link"
-    class="px-0 font-serif font-bold text-neutral-400 uppercase"
-  />
+  <ULink
+    class="font-serif font-bold text-neutral-400 uppercase"
+    to="/"
+  >
+    <span>stry</span>
+  </ULink>
 </template>

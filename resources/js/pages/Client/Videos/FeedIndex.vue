@@ -32,19 +32,20 @@ const onSubmit = () => {
       <UDashboardNavbar :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }">
         <template #left>
           <UInput
-            color="neutral"
             variant="soft"
+            size="xl"
+            color="neutral"
             placeholder="Search..."
             icon="i-lucide-search"
-            size="xl"
           />
         </template>
 
         <template #right>
           <UButton
-            icon="i-lucide-settings"
             variant="soft"
             size="xl"
+            color="neutral"
+            icon="i-lucide-settings"
             :ui="{ base: 'p-3', leadingIcon: 'size-4' }"
           />
         </template>
