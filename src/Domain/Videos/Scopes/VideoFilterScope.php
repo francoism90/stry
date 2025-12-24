@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Videos\Enums\VideoFilter;
-use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Request;
 use Laravel\Scout\Builder;
@@ -13,8 +12,8 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
-        public VideoFilter|string|null $filter = null,
-        public VideoOrder|string|null $default = null,
+        public ?VideoFilter $filter = null,
+        public ?VideoFilter $default = null,
     ) {}
 
     public function __invoke(Builder $scout): void
@@ -24,29 +23,16 @@ readonly class VideoFilterScope
             ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()));
     }
 
-    protected function getFilter(): ?VideoFilter
+    protected function getFilter(): VideoFilter
     {
-        $filterValue = $this->filter ?? '';
-
-        return $filterValue instanceof VideoFilter
-            ? $filterValue
-            : VideoFilter::tryFrom($filterValue);
+        return $this->filter ?? VideoFilter::Default;
     }
 
-    protected function getOrder(): ?VideoOrder
-    {
-        $orderValue = $this->order ?? '';
-
-        return $orderValue instanceof VideoOrder
-            ? $orderValue
-            : VideoOrder::tryFrom($orderValue);
-    }
-
-    protected function isFilter(?VideoFilter ...$values): bool
+    protected function isFilter(VideoFilter ...$values): bool
     {
         $currentFilter = $this->getFilter();
 
-        return $currentFilter && in_array($currentFilter, $values, true);
+        return in_array($currentFilter, $values, true);
     }
 
     protected function isFilterDefault(): bool
