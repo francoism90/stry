@@ -1,39 +1,29 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
-
-const items: NavigationMenuItem[] = [
-  {
-    label: 'Discover',
-    to: '/discover',
-    icon: 'i-lucide-compass',
-  },
-  {
-    label: 'Library',
-    to: '/library',
-    icon: 'i-lucide-library',
-  },
-  {
-    label: 'Profile',
-    to: '/profile',
-    icon: 'i-lucide-user',
-  },
-]
+import AppSidebar from '@/components/Ui/AppSidebar.vue'
+import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
+import { Head } from '@inertiajs/vue3'
 </script>
 
 <template>
-  <div class="sticky top-0 z-50 flex h-16 w-full items-center justify-between gap-4 border-b border-muted bg-default px-4 sm:px-6">
-    <ULink to="/">
-      <span class="font-serif text-sm font-bold text-neutral-400 uppercase">stry</span>
-    </ULink>
+  <Head>
+    <title>Stream videos</title>
+  </Head>
 
-    <UNavigationMenu
-      :items="items"
-      variant="link"
-      :ui="{
-        list: 'gap-4',
-        link: 'px-0',
-        linkLabel: 'sr-only sm:not-sr-only',
-      }"
-    />
-  </div>
+  <Suspense>
+    <UApp>
+      <ServiceWorker />
+
+      <UDashboardGroup
+        unit="rem"
+        storage="local"
+        class="relative overflow-clip"
+      >
+        <AppSidebar />
+
+        <UDashboardSearch />
+
+        <slot />
+      </UDashboardGroup>
+    </UApp>
+  </Suspense>
 </template>
