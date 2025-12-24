@@ -12,7 +12,7 @@ use App\Client\Videos\Responses\VideoProgressProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoOrderScope;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -41,7 +41,7 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = Video::search($search)
-            ->tap(new VideoOrderScope($order))
+            ->tap(new VideoFilterScope(order: $order))
             ->simplePaginate(16)
             ->through(fn (Video $video) => new VideoResource($video));
 

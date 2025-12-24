@@ -10,7 +10,6 @@ use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
-use Domain\Videos\Scopes\VideoOrderScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -38,8 +37,7 @@ class HomeController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = Video::search($search)
-            ->tap(new VideoFilterScope($filter))
-            ->tap(new VideoOrderScope($order))
+            ->tap(new VideoFilterScope($filter, $order))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
