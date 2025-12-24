@@ -90,10 +90,9 @@ watchDebounced(
               <USelect
                 v-model="form.filter"
                 :items="filters"
-                :ui="{ content: 'min-w-32' }"
+                :ui="{ content: 'min-w-36' }"
                 label-key="label"
                 value-key="value"
-                placeholder="Filter by"
                 variant="soft"
                 size="sm"
                 @update:modelValue="onSubmit"
@@ -109,10 +108,9 @@ watchDebounced(
               <USelect
                 v-model="form.sort"
                 :items="sorters"
-                :ui="{ content: 'min-w-32' }"
+                :ui="{ content: 'min-w-36' }"
                 label-key="label"
                 value-key="value"
-                placeholder="Filter by"
                 variant="soft"
                 size="sm"
                 @update:modelValue="onSubmit"
