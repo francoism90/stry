@@ -50,7 +50,7 @@ readonly class VideoSortScope
         return (int) Auth::user()->cacheRemember(
             key: 'videos:random-seed',
             ttl: now()->addHour(),
-            value: fn () => random_int(1, 1000),
+            value: fn (): int => random_int(1, 1000),
         );
     }
 }
