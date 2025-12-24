@@ -7,14 +7,13 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-2 lg:gap-y-8">
-    {{ items?.data }}
-
-    <UPageCard
+  <UBlogPosts class="grid-cols-1 gap-x-3 gap-y-1 sm:grid-cols-2 lg:grid-cols-2 lg:gap-y-3">
+    <UButton
       v-for="item in items?.data"
       :key="item.id"
-      variant="subtle"
-      :title="item.name"
+      variant="soft"
+      size="lg"
+      :label="`# ${item.name}`"
       :ui="{ container: 'p-4 sm:p-4' }"
     />
   </UBlogPosts>
