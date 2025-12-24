@@ -27,21 +27,23 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <UPage>
-    <UTabs
-      v-model="form.list"
-      variant="link"
-      class="w-full"
-      :ui="{ trigger: 'grow py-3' }"
-      :content="false"
-      :items="lists"
-      @update:modelValue="onSubmit"
-    />
+  <UDashboardPanel id="app">
+    <template #body>
+      <UPage>
+        <UTabs
+          v-model="form.list"
+          variant="link"
+          class="w-full"
+          :ui="{ trigger: 'grow py-3' }"
+          :content="false"
+          :items="lists"
+          @update:modelValue="onSubmit"
+        />
 
-    <UPageBody class="mt-4 space-y-6 px-4 sm:px-6">
-      <InfiniteScroll data="items">
-        <VideoList :items="items" />
-      </InfiniteScroll>
-    </UPageBody>
-  </UPage>
+        <InfiniteScroll data="items">
+          <VideoList :items="items" />
+        </InfiniteScroll>
+      </UPage>
+    </template>
+  </UDashboardPanel>
 </template>

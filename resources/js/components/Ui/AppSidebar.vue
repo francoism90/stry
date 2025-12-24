@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import AppLogo from '@/components/Ui/AppLogo.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import AppLogo from './AppLogo.vue'
 
 const links: NavigationMenuItem[][] = [
   [
@@ -54,9 +54,8 @@ const links: NavigationMenuItem[][] = [
     :max-size="16"
     :default-size="16"
     :ui="{
-      root: 'border-0 lg:sticky lg:top-0 lg:max-h-dvh',
+      root: 'border-0 px-2 lg:sticky lg:top-0 lg:max-h-dvh',
       header: 'flex h-30 items-center',
-      footer: 'lg:border-t lg:border-default',
     }"
   >
     <template #header>
@@ -69,7 +68,7 @@ const links: NavigationMenuItem[][] = [
         :items="links"
         :ui="{
           root: 'gap-3',
-          link: 'gap-2 py-3',
+          link: 'gap-2 px-0 py-3',
         }"
         orientation="vertical"
         variant="link"
