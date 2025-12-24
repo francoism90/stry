@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import LibraryController from '@/actions/App/Client/Videos/Controllers/LibraryController'
 import type { TagCollection } from '@/types'
 
 defineProps<{
   items: TagCollection | undefined
 }>()
+
+const url = (search: string) => LibraryController.url({ query: { search } })
 </script>
 
 <template>
@@ -14,6 +17,7 @@ defineProps<{
       variant="soft"
       size="lg"
       :label="`# ${item.name}`"
+      :to="url(item.name)"
       :ui="{ container: 'p-4 sm:p-4' }"
     />
   </UBlogPosts>
