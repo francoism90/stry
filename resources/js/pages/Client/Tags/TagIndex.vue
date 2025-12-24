@@ -38,7 +38,7 @@ watchDebounced(
 <template>
   <Head title="Tags" />
 
-  <UDashboardPanel id="tags">
+  <UDashboardPanel id="taggables">
     <template #header>
       <UForm
         :state="form"
