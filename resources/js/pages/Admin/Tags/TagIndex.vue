@@ -42,43 +42,39 @@ watchDebounced(
 
   <UDashboardPanel id="tags">
     <template #header>
-      <UForm
+      <UDashboardNavbar title="Tags">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
+
+      <UDashboardToolbar
         id="tag-header"
-        :state="form"
-        loading-auto
-        @submit="onSubmit"
+        class="min-h-20"
       >
-        <UDashboardNavbar title="Tags">
-          <template #leading>
-            <UDashboardSidebarCollapse />
-          </template>
-        </UDashboardNavbar>
+        <template #left>
+          <UFormField :error="form.errors.type">
+            <USelect
+              v-model="form.type"
+              :items="types"
+              :ui="{ content: 'min-w-36' }"
+              label-key="label"
+              value-key="value"
+              @update:modelValue="onSubmit"
+            />
+          </UFormField>
 
-        <UDashboardToolbar class="h-20">
-          <template #left>
-            <UFormField :error="form.errors.type">
-              <USelect
-                v-model="form.type"
-                :items="types"
-                :ui="{ content: 'min-w-36' }"
-                label-key="label"
-                value-key="value"
-                @update:modelValue="onSubmit"
-              />
-            </UFormField>
-
-            <UFormField :error="form.errors.search">
-              <UInput
-                v-model="form.search"
-                :model-modifiers="{ string: true, trim: true }"
-                color="neutral"
-                placeholder="Search..."
-                icon="i-lucide-search"
-              />
-            </UFormField>
-          </template>
-        </UDashboardToolbar>
-      </UForm>
+          <UFormField :error="form.errors.search">
+            <UInput
+              v-model="form.search"
+              :model-modifiers="{ string: true, trim: true }"
+              color="neutral"
+              placeholder="Search..."
+              icon="i-lucide-search"
+            />
+          </UFormField>
+        </template>
+      </UDashboardToolbar>
     </template>
 
     <template #body>

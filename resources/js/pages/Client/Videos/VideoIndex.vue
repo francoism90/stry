@@ -41,67 +41,63 @@ watchDebounced(
 
   <UDashboardPanel id="library">
     <template #header>
-      <UForm
-        id="video-header"
-        :state="form"
-        loading-auto
-        @submit="onSubmit"
+      <UDashboardNavbar
+        :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }"
+        :toggle="{ variant: 'link', class: 'ps-0' }"
       >
-        <UDashboardNavbar
-          :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }"
-          :toggle="{ variant: 'link', class: 'ps-0' }"
-        >
-          <template #left>
-            <UFormField
-              :error="form.errors.search"
-              class="flex-1"
-            >
-              <UInput
-                v-model="form.search"
-                :model-modifiers="{ string: true, trim: true }"
-                variant="soft"
-                size="xl"
-                color="neutral"
-                placeholder="Search..."
-                icon="i-lucide-search"
-              />
-            </UFormField>
-          </template>
-
-          <template #right>
-            <UButton
+        <template #left>
+          <UFormField
+            :error="form.errors.search"
+            class="flex-1"
+          >
+            <UInput
+              v-model="form.search"
+              :model-modifiers="{ string: true, trim: true }"
               variant="soft"
-              size="xs"
+              size="xl"
               color="neutral"
-              icon="i-lucide-settings"
-              class="p-3"
+              placeholder="Search..."
+              icon="i-lucide-search"
             />
-          </template>
-        </UDashboardNavbar>
+          </UFormField>
+        </template>
 
-        <UDashboardToolbar :ui="{ root: 'min-h-0 border-0', left: 'gap-2' }">
-          <template #left>
-            <UFormField
-              v-show="items.data?.length"
-              orientation="horizontal"
-              label="Sort by"
-              :ui="{ label: 'text-xs text-secondary-400' }"
-              :error="form.errors.order"
-            >
-              <USelect
-                v-model="form.order"
-                :items="orders"
-                :ui="{ content: 'min-w-36' }"
-                label-key="label"
-                value-key="value"
-                variant="soft"
-                size="sm"
-                @update:modelValue="onSubmit"
-              />
-            </UFormField>
-          </template>
-        </UDashboardToolbar>
-      </UForm>
+        <template #right>
+          <UButton
+            variant="soft"
+            size="xs"
+            color="neutral"
+            icon="i-lucide-settings"
+            class="p-3"
+          />
+        </template>
+      </UDashboardNavbar>
+
+      <UDashboardToolbar
+        id="video-header"
+        class="min-h-8 border-0"
+      >
+        <template #left>
+          <UFormField
+            v-show="items.data?.length"
+            orientation="horizontal"
+            label="Sort by"
+            :ui="{ label: 'text-xs text-secondary-400' }"
+            :error="form.errors.order"
+          >
+            <USelect
+              v-model="form.order"
+              :items="orders"
+              :ui="{ content: 'min-w-36' }"
+              label-key="label"
+              value-key="value"
+              variant="soft"
+              size="sm"
+              @update:modelValue="onSubmit"
+            />
+          </UFormField>
+        </template>
+      </UDashboardToolbar>
     </template>
 
     <template #body>

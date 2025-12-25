@@ -37,32 +37,28 @@ watchDebounced(
 
   <UDashboardPanel id="users">
     <template #header>
-      <UForm
-        id="user-header"
-        :state="form"
-        loading-auto
-        @submit="onSubmit"
-      >
-        <UDashboardNavbar title="Users">
-          <template #leading>
-            <UDashboardSidebarCollapse />
-          </template>
-        </UDashboardNavbar>
+      <UDashboardNavbar title="Users">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
 
-        <UDashboardToolbar class="h-20">
-          <template #left>
-            <UFormField :error="form.errors.search">
-              <UInput
-                v-model="form.search"
-                :model-modifiers="{ string: true, trim: true }"
-                color="neutral"
-                placeholder="Search..."
-                icon="i-lucide-search"
-              />
-            </UFormField>
-          </template>
-        </UDashboardToolbar>
-      </UForm>
+      <UDashboardToolbar
+        id="user-header"
+        class="min-h-20"
+      >
+        <template #left>
+          <UFormField :error="form.errors.search">
+            <UInput
+              v-model="form.search"
+              :model-modifiers="{ string: true, trim: true }"
+              color="neutral"
+              placeholder="Search..."
+              icon="i-lucide-search"
+            />
+          </UFormField>
+        </template>
+      </UDashboardToolbar>
     </template>
 
     <template #body>
