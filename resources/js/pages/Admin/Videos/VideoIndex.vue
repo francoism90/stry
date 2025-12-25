@@ -8,14 +8,15 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
-  sort: string | undefined
-  sorters: SelectMenuItem[]
+  orders: SelectMenuItem[]
+  search: string | undefined
+  order: string | undefined
 }>()
 
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
-  sort: props.sort,
+  order: props.order,
   page: 1,
 })
 
@@ -23,7 +24,7 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'sort'],
+    only: ['items', 'order'],
     reset: ['items'],
   })
 </script>
@@ -48,13 +49,12 @@ const onSubmit = () =>
       <UPage>
         <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
           <USelect
-            v-model="form.sort"
-            :items="sorters"
-            default-value="recommended"
+            v-model="form.order"
+            :items="orders"
+            :ui="{ content: 'min-w-36' }"
             label-key="label"
             value-key="value"
             placeholder="Filter by"
-            class="w-32 sm:w-36"
             @update:modelValue="onSubmit"
           />
         </div>
@@ -65,7 +65,8 @@ const onSubmit = () =>
               v-for="item in items?.data"
               :key="item.id"
               :to="edit.url(item.id)"
-              variant="ghost"
+              variant="naked"
+              class="py-4"
             >
               <UUser
                 :name="item.title"
@@ -75,7 +76,7 @@ const onSubmit = () =>
                   src: item.thumb,
                   loading: 'lazy',
                   decoding: 'async',
-                  class: 'rounded-sm size-12 me-1',
+                  class: 'rounded-sm size-14 me-1',
                 }"
               />
             </UPageCard>

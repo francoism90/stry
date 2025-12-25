@@ -8,10 +8,10 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
+  orders: SelectMenuItem[] | undefined
   filter: string | undefined
   search: string | undefined
   order: string | undefined
-  orders: SelectMenuItem[] | undefined
 }>()
 
 const form = useForm('get', '', {
@@ -70,10 +70,10 @@ watchDebounced(
           <template #right>
             <UButton
               variant="soft"
-              size="xl"
+              size="xs"
               color="neutral"
               icon="i-lucide-settings"
-              :ui="{ base: 'p-3', leadingIcon: 'size-4' }"
+              class="p-3"
             />
           </template>
         </UDashboardNavbar>

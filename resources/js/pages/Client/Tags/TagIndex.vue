@@ -8,9 +8,9 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: TagCollection
-  search: string | null
-  type: string | number | undefined
-  types: SelectMenuItem[]
+  types: SelectMenuItem[] | undefined
+  search: string | undefined
+  type: string | undefined
 }>()
 
 const form = useForm('get', '', {
@@ -56,7 +56,7 @@ watchDebounced(
             >
               <UInput
                 v-model="form.search"
-                :model-modifiers="{ nullable: true, string: true, trim: true }"
+                :model-modifiers="{ string: true, trim: true }"
                 variant="soft"
                 size="xl"
                 color="neutral"

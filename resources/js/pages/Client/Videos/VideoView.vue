@@ -32,17 +32,18 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <UDashboardPanel id="play">
     <template #header>
       <UDashboardNavbar
-        title="Watch Video"
-        :ui="{ root: 'h-24 gap-3 border-0', left: 'w-full' }"
+        :ui="{ root: 'h-24 gap-3 border-0' }"
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>
           <UButton
-            v-for="link in links"
-            :key="link.label"
-            v-bind="link"
+            label="Back"
+            to="/"
+            variant="outline"
             size="xs"
-            variant="soft"
+            color="neutral"
+            class="p-3"
+            icon="i-lucide-arrow-left"
           />
         </template>
       </UDashboardNavbar>
@@ -53,7 +54,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         <VideoPlayer />
 
         <UPageHeader
-          title="Video"
+          :title="video.title"
           :links="links"
           :ui="{
             root: 'py-4',
@@ -80,14 +81,16 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           </template>
         </UPageHeader>
 
-        <Deferred data="queue">
-          <template #fallback>
-            <div class="sr-only">Loading queue...</div>
-          </template>
+        <UPageBody>
+          <Deferred data="queue">
+            <template #fallback>
+              <div class="sr-only">Loading queue...</div>
+            </template>
 
-          <UPageFeature title="Up next" />
-          <VideoList :items="queue" />
-        </Deferred>
+            <UPageFeature title="Up next" />
+            <VideoList :items="queue" />
+          </Deferred>
+        </UPageBody>
       </UPage>
     </template>
   </UDashboardPanel>
