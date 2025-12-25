@@ -81,6 +81,7 @@ watchDebounced(
         <UDashboardToolbar :ui="{ root: 'min-h-0 border-0', left: 'gap-2' }">
           <template #left>
             <UFormField
+              v-show="items.data?.length"
               orientation="horizontal"
               label="Sort by"
               :ui="{ label: 'text-xs text-secondary-400' }"
