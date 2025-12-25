@@ -34,7 +34,7 @@ defineProps<{
 
         <div
           v-if="item.tags?.length"
-          class="flex flex-wrap gap-2 overflow-auto"
+          class="flex flex-wrap gap-x-2 overflow-auto"
         >
           <UButton
             v-for="tag in item.tags"

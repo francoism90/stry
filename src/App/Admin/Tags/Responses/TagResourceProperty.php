@@ -25,7 +25,7 @@ readonly class TagResourceProperty implements ProvidesInertiaProperty
     {
         return $this->tag
             ->loadMissing('related')
-            ->append('description', 'type', 'relates')
+            ->append('description', 'relates')
             ->toResource(TagResource::class);
     }
 }
