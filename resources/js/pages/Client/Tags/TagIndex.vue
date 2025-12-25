@@ -41,6 +41,7 @@ watchDebounced(
   <UDashboardPanel id="taggables">
     <template #header>
       <UForm
+        id="tag-header"
         :state="form"
         loading-auto
         @submit="onSubmit"
@@ -105,9 +106,14 @@ watchDebounced(
       <UPage>
         <InfiniteScroll
           data="items"
-          :buffer="400"
+          start-element="#tag-header"
+          items-element="#tag-list"
+          :buffer="200"
         >
-          <TagList :items="items" />
+          <TagList
+            id="tag-list"
+            :items="items"
+          />
         </InfiniteScroll>
       </UPage>
     </template>

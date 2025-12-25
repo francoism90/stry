@@ -24,20 +24,28 @@ defineOptions({ layout: DashboardLayout })
 
     <template #body>
       <UPage>
-        <InfiniteScroll data="items">
-          <UPageList divide>
+        <InfiniteScroll
+          data="items"
+          items-element="#media-list"
+          start-element="#media-header"
+          :buffer="200"
+        >
+          <UPageList
+            id="media-list"
+            divide
+          >
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
               variant="naked"
-              class="py-4"
+              class="py-4 first:pt-0 last:pb-0"
             >
               <UUser
                 :name="item.name"
                 :description="`${item.mime_type} • ${item.file_size}`"
                 :avatar="{
                   alt: item.name,
-                  class: 'rounded-sm size-12 me-1',
+                  class: 'rounded-sm size-14 me-1',
                 }"
               />
             </UPageCard>

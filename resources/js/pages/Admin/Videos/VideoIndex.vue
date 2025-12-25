@@ -4,11 +4,12 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
+import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
-  orders: SelectMenuItem[]
+  orders: SelectMenuItem[] | undefined
   search: string | undefined
   order: string | undefined
 }>()
@@ -16,17 +17,25 @@ const props = defineProps<{
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
+  search: props.search,
   order: props.order,
   page: 1,
 })
 
-const onSubmit = () =>
+const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'order'],
+    only: ['items', 'search', 'order'],
     reset: ['items'],
   })
+}
+
+watchDebounced(
+  () => form.search,
+  () => onSubmit(),
+  { debounce: 300, maxWait: 1000 },
+)
 </script>
 
 <template>
@@ -34,39 +43,63 @@ const onSubmit = () =>
 
   <UDashboardPanel id="videos">
     <template #header>
-      <UDashboardNavbar title="Videos">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
+      <UForm
+        id="video-header"
+        :state="form"
+        loading-auto
+        @submit="onSubmit"
+      >
+        <UDashboardNavbar title="Videos">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+        </UDashboardNavbar>
 
-        <template #right>
-          <!-- <CustomersAddModal /> -->
-        </template>
-      </UDashboardNavbar>
+        <UDashboardToolbar class="h-20">
+          <template #left>
+            <UFormField :error="form.errors.order">
+              <USelect
+                v-model="form.order"
+                :items="orders"
+                :ui="{ content: 'min-w-36' }"
+                label-key="label"
+                value-key="value"
+                @update:modelValue="onSubmit"
+              />
+            </UFormField>
+
+            <UFormField :error="form.errors.search">
+              <UInput
+                v-model="form.search"
+                :model-modifiers="{ string: true, trim: true }"
+                color="neutral"
+                placeholder="Search..."
+                icon="i-lucide-search"
+              />
+            </UFormField>
+          </template>
+        </UDashboardToolbar>
+      </UForm>
     </template>
 
     <template #body>
       <UPage>
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
-          <USelect
-            v-model="form.order"
-            :items="orders"
-            :ui="{ content: 'min-w-36' }"
-            label-key="label"
-            value-key="value"
-            placeholder="Filter by"
-            @update:modelValue="onSubmit"
-          />
-        </div>
-
-        <InfiniteScroll data="items">
-          <UPageList divide>
+        <InfiniteScroll
+          data="items"
+          items-element="#video-list"
+          start-element="#video-header"
+          :buffer="200"
+        >
+          <UPageList
+            id="video-list"
+            divide
+          >
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
               :to="edit.url(item.id)"
               variant="naked"
-              class="py-4"
+              class="py-4 first:pt-0 last:pb-0"
             >
               <UUser
                 :name="item.title"
@@ -76,7 +109,7 @@ const onSubmit = () =>
                   src: item.thumb,
                   loading: 'lazy',
                   decoding: 'async',
-                  class: 'rounded-sm size-12 me-1',
+                  class: 'rounded-sm size-14 me-1',
                 }"
               />
             </UPageCard>

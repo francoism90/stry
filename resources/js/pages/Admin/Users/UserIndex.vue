@@ -21,7 +21,7 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items'],
+    only: ['items', 'search'],
     reset: ['items'],
   })
 
@@ -37,26 +37,51 @@ watchDebounced(
 
   <UDashboardPanel id="users">
     <template #header>
-      <UDashboardNavbar title="Users">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
+      <UForm
+        id="user-header"
+        :state="form"
+        loading-auto
+        @submit="onSubmit"
+      >
+        <UDashboardNavbar title="Users">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+        </UDashboardNavbar>
 
-        <template #right>
-          <!-- <CustomersAddModal /> -->
-        </template>
-      </UDashboardNavbar>
+        <UDashboardToolbar class="h-20">
+          <template #left>
+            <UFormField :error="form.errors.search">
+              <UInput
+                v-model="form.search"
+                :model-modifiers="{ string: true, trim: true }"
+                color="neutral"
+                placeholder="Search..."
+                icon="i-lucide-search"
+              />
+            </UFormField>
+          </template>
+        </UDashboardToolbar>
+      </UForm>
     </template>
 
     <template #body>
       <UPage>
-        <InfiniteScroll data="items">
-          <UPageList divide>
+        <InfiniteScroll
+          data="items"
+          items-element="#user-list"
+          start-element="#user-header"
+          :buffer="200"
+        >
+          <UPageList
+            id="user-list"
+            divide
+          >
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
               variant="naked"
-              class="py-4"
+              class="py-4 first:pt-0 last:pb-0"
             >
               <UUser
                 :name="item.name"
@@ -65,7 +90,7 @@ watchDebounced(
                   alt: item.name,
                   loading: 'lazy',
                   decoding: 'async',
-                  class: 'rounded-sm size-12 me-1',
+                  class: 'rounded-sm size-14 me-1',
                 }"
               />
             </UPageCard>

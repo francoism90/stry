@@ -26,7 +26,7 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'type'],
+    only: ['items', 'search', 'type'],
     reset: ['items'],
   })
 
@@ -42,46 +42,70 @@ watchDebounced(
 
   <UDashboardPanel id="tags">
     <template #header>
-      <UDashboardNavbar title="Tags">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
+      <UForm
+        id="tag-header"
+        :state="form"
+        loading-auto
+        @submit="onSubmit"
+      >
+        <UDashboardNavbar title="Tags">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+        </UDashboardNavbar>
 
-        <template #right>
-          <!-- <CustomersAddModal /> -->
-        </template>
-      </UDashboardNavbar>
+        <UDashboardToolbar class="h-20">
+          <template #left>
+            <UFormField :error="form.errors.type">
+              <USelect
+                v-model="form.type"
+                :items="types"
+                :ui="{ content: 'min-w-36' }"
+                label-key="label"
+                value-key="value"
+                @update:modelValue="onSubmit"
+              />
+            </UFormField>
+
+            <UFormField :error="form.errors.search">
+              <UInput
+                v-model="form.search"
+                :model-modifiers="{ string: true, trim: true }"
+                color="neutral"
+                placeholder="Search..."
+                icon="i-lucide-search"
+              />
+            </UFormField>
+          </template>
+        </UDashboardToolbar>
+      </UForm>
     </template>
 
     <template #body>
       <UPage>
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-1.5">
-          <USelect
-            v-model="form.type"
-            :items="types"
-            :ui="{ content: 'min-w-36' }"
-            label-key="label"
-            value-key="value"
-            placeholder="Filter by"
-            @update:modelValue="onSubmit"
-          />
-        </div>
-
-        <InfiniteScroll data="items">
-          <UPageList divide>
+        <InfiniteScroll
+          data="items"
+          items-element="#tag-list"
+          start-element="#tag-header"
+          :buffer="200"
+        >
+          <UPageList
+            id="tag-list"
+            divide
+          >
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
               :to="edit.url(item.id)"
               variant="naked"
-              class="py-4"
+              class="py-4 first:pt-0 last:pb-0"
             >
               <UUser
                 :name="item.name"
                 :description="`${item.category} • ${item.videos} videos`"
                 :avatar="{
                   alt: item.name,
-                  class: 'rounded-sm size-12 me-1',
+                  class: 'rounded-sm size-14 me-1',
                 }"
               />
             </UPageCard>

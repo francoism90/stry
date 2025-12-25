@@ -42,6 +42,7 @@ watchDebounced(
   <UDashboardPanel id="library">
     <template #header>
       <UForm
+        id="video-header"
         :state="form"
         loading-auto
         @submit="onSubmit"
@@ -107,9 +108,14 @@ watchDebounced(
       <UPage>
         <InfiniteScroll
           data="items"
-          :buffer="400"
+          items-element="#video-list"
+          start-element="#video-header"
+          :buffer="200"
         >
-          <VideoList :items="items" />
+          <VideoList
+            id="video-list"
+            :items="items"
+          />
         </InfiniteScroll>
       </UPage>
     </template>

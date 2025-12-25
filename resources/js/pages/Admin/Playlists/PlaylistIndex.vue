@@ -19,29 +19,33 @@ defineOptions({ layout: DashboardLayout })
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
-
-        <template #right>
-          <!-- <CustomersAddModal /> -->
-        </template>
       </UDashboardNavbar>
     </template>
 
     <template #body>
       <UPage>
-        <InfiniteScroll data="items">
-          <UPageList divide>
+        <InfiniteScroll
+          data="items"
+          items-element="#playlist-list"
+          start-element="#playlist-header"
+          :buffer="200"
+        >
+          <UPageList
+            id="playlist-list"
+            divide
+          >
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
               variant="naked"
-              class="py-4"
+              class="py-4 first:pt-0 last:pb-0"
             >
               <UUser
                 :name="item.id"
                 :description="`${item.percent}% • ${item.state}`"
                 :avatar="{
                   alt: item.id,
-                  class: 'rounded-sm size-12 me-1',
+                  class: 'rounded-sm size-14 me-1',
                 }"
               />
             </UPageCard>
