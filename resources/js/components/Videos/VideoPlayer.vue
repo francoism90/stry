@@ -52,7 +52,7 @@ onBeforeUnmount(() => listener())
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="relative w-full flex-1">
     <UEmpty
       v-if="!state"
       title="Preparing your video..."

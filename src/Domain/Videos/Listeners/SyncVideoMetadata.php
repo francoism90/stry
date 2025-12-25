@@ -36,7 +36,7 @@ class SyncVideoMetadata implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60;
+    public $timeout = 60 * 30;
 
     /**
      * @var bool
@@ -64,7 +64,7 @@ class SyncVideoMetadata implements ShouldQueueAfterCommit
     public function middleware(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): array
     {
         return [
-            (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterOneMinute(),
+            (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterRandomSeconds(10),
             (new WithoutOverlapping($event->video->getKey()))->releaseAfter(10),
         ];
     }

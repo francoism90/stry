@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -8,9 +9,9 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: TagCollection
-  search: string | null
-  type: string | null
-  types: SelectMenuItem[]
+  types: SelectMenuItem[] | undefined
+  search: string | undefined
+  type: string | undefined
 }>()
 
 defineOptions({ layout: DashboardLayout })
@@ -58,10 +59,10 @@ watchDebounced(
           <USelect
             v-model="form.type"
             :items="types"
+            :ui="{ content: 'min-w-36' }"
             label-key="label"
             value-key="value"
             placeholder="Filter by"
-            class="w-32 sm:w-36"
             @update:modelValue="onSubmit"
           />
         </div>
@@ -71,11 +72,13 @@ watchDebounced(
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
-              variant="ghost"
+              :to="edit.url(item.id)"
+              variant="naked"
+              class="py-4"
             >
               <UUser
                 :name="item.name"
-                :description="`${item.type} • ${item.videos} videos`"
+                :description="`${item.category} • ${item.videos} videos`"
                 :avatar="{
                   alt: item.name,
                   class: 'rounded-sm size-12 me-1',

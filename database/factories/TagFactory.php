@@ -16,6 +16,7 @@ class TagFactory extends Factory
     {
         return [
             'name' => ['en' => fake()->word()],
+            'description' => ['en' => fake()->sentence()],
             'type' => fake()->randomElement(TagType::cases()),
         ];
     }

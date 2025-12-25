@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppHeader from '@/components/Ui/AppHeader.vue'
+import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
@@ -13,10 +13,15 @@ import { Head } from '@inertiajs/vue3'
     <UApp>
       <ServiceWorker />
 
-      <div class="mx-auto w-full max-w-(--ui-container)">
-        <AppHeader />
+      <UDashboardGroup
+        unit="rem"
+        storage="local"
+        class="relative mx-auto w-full max-w-(--ui-container) overflow-clip"
+      >
+        <AppSidebar />
+
         <slot />
-      </div>
+      </UDashboardGroup>
     </UApp>
   </Suspense>
 </template>

@@ -32,6 +32,8 @@ readonly class TagTypeScope
             return null;
         }
 
-        return $currentType instanceof TagType ? $currentType : TagType::tryFrom($currentType);
+        return $currentType instanceof TagType
+            ? $currentType
+            : TagType::tryFrom($currentType);
     }
 }

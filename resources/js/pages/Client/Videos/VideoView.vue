@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import TagController from '@/actions/App/Client/Tags/Controllers/TagController'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import type { Video, VideoCollection } from '@/types'
@@ -30,47 +29,69 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <UPage>
-    <UPageBody class="mt-4 space-y-4 px-4 sm:px-6">
-      <VideoPlayer />
-
-      <UPageHeader
-        :title="video.title"
-        :links="links"
-        :ui="{
-          root: 'py-4',
-          title: 'font-serif text-xl sm:text-2xl',
-          description: 'text-base',
-        }"
+  <UDashboardPanel id="play">
+    <template #header>
+      <UDashboardNavbar
+        :ui="{ root: 'h-24 gap-3 border-0' }"
+        :toggle="{ variant: 'link', class: 'ps-0' }"
       >
-        <template #description>
-          <p
-            v-if="video.description?.length"
-            v-html="video.description"
+        <template #right>
+          <UButton
+            label="Back"
+            to="/"
+            variant="outline"
+            size="xs"
+            color="neutral"
+            class="p-3"
+            icon="i-lucide-arrow-left"
           />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-          <div class="flex items-center gap-x-2 overflow-auto">
-            <UButton
-              v-for="tag in video.tags"
-              :key="tag.id"
-              variant="outline"
-              size="sm"
-              class="mt-2"
-              :label="tag.name"
-              :to="TagController.url(tag.id)"
+    <template #body>
+      <UPage>
+        <VideoPlayer />
+
+        <UPageHeader
+          :title="video.title"
+          :links="links"
+          :ui="{
+            root: 'py-4',
+            title: 'font-serif text-xl sm:text-2xl',
+            description: 'text-base',
+          }"
+        >
+          <template #description>
+            <p
+              v-if="video.description?.length"
+              v-html="video.description"
             />
-          </div>
-        </template>
-      </UPageHeader>
 
-      <Deferred data="queue">
-        <template #fallback>
-          <div class="sr-only">Loading queue...</div>
-        </template>
+            <div class="flex items-center gap-2 overflow-auto">
+              <UButton
+                v-for="tag in video.tags"
+                :key="tag.id"
+                :label="tag.name"
+                variant="outline"
+                size="sm"
+                class="mt-2"
+              />
+            </div>
+          </template>
+        </UPageHeader>
 
-        <UPageFeature title="Up next" />
-        <VideoList :items="queue" />
-      </Deferred>
-    </UPageBody>
-  </UPage>
+        <UPageBody>
+          <Deferred data="queue">
+            <template #fallback>
+              <div class="sr-only">Loading queue...</div>
+            </template>
+
+            <UPageFeature title="Up next" />
+            <VideoList :items="queue" />
+          </Deferred>
+        </UPageBody>
+      </UPage>
+    </template>
+  </UDashboardPanel>
 </template>

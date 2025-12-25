@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Tags/Controllers/TagController'
-import TagController from '@/actions/App/Client/Tags/Controllers/TagController'
 import TagDeleteModal from '@/components/Tags/TagDeleteModal.vue'
 import { useTags } from '@/composables/tags'
 import TagLayout from '@/layouts/Admin/TagLayout.vue'
@@ -51,18 +50,11 @@ const onSubmit = () =>
   >
     <UPageCard
       :title="tag.name"
-      :description="tag.type"
+      :description="tag.category"
       variant="naked"
       orientation="horizontal"
     >
       <div class="flex items-center gap-2 lg:ms-auto">
-        <UButton
-          label="View tag"
-          :to="TagController.url(tag.id)"
-          color="neutral"
-          variant="soft"
-        />
-
         <UButton
           form="general"
           label="Save changes"

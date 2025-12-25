@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Videos\Controllers;
+namespace App\Client\Account\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Enums\VideoList;
+use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoListScope;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class FeedController extends Controller implements HasMiddleware
+class HomeController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -26,23 +27,26 @@ class FeedController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(VideoIndexRequest $request): Response
+    public function __invoke(VideoFilter $filter, VideoIndexRequest $request): Response
     {
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $list = $request->safe()->input('list', VideoList::Recommended);
+        $search = $request->safe()->input('search');
+        $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
-        $scout = Video::search($request->safe()->input('search'))
-            ->tap(new VideoListScope($list))
+        $scout = Video::search($search)
+            ->tap(new VideoFilterScope($filter, $order))
             ->simplePaginate(12)
             ->through(fn (Video $video) => new VideoResource($video));
 
-        return Inertia::render('Client/Videos/FeedIndex', [
+        return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => $scout),
-            'list' => fn () => $list,
-            'lists' => fn () => VideoList::options(),
+            'filter' => fn () => $filter->label(),
+            'orders' => fn () => VideoOrder::options(),
+            'order' => fn () => $order,
+            'search' => fn () => $search,
         ]);
     }
 }

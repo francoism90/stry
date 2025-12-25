@@ -5,20 +5,45 @@ import { Head, router } from '@inertiajs/vue3'
 <template>
   <Head title="Profile" />
 
-  <UPage>
-    <UPageBody class="mt-4 space-y-4 px-4 sm:px-6">
-      <UPageFeature
+  <UDashboardPanel id="profile">
+    <template #header>
+      <UDashboardNavbar
         title="Profile"
-        description="Manage your account profile and settings."
-        class="mb-6"
-      />
+        :ui="{ root: 'h-24 gap-3 border-0' }"
+        :toggle="{ variant: 'link', class: 'ps-0' }"
+      >
+        <template #right>
+          <UButton
+            label="Back"
+            to="/"
+            variant="outline"
+            size="xs"
+            color="neutral"
+            class="p-3"
+            icon="i-lucide-arrow-left"
+          />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-      <UButton
-        label="Logout"
-        class="my-2"
-        variant="soft"
-        @click="() => router.post('/logout')"
-      />
-    </UPageBody>
-  </UPage>
+    <template #body>
+      <UPage>
+        <UPageHeader
+          title="Account Profile"
+          description="Manage your account profile and settings (WIP)."
+          :ui="{
+            root: 'border-0 py-4',
+            title: 'font-serif text-xl sm:text-2xl',
+            description: 'text-base',
+          }"
+        />
+
+        <UButton
+          label="Logout"
+          variant="soft"
+          @click="() => router.post('/logout')"
+        />
+      </UPage>
+    </template>
+  </UDashboardPanel>
 </template>

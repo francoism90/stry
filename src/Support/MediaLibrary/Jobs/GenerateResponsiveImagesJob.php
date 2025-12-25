@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Support\MediaLibrary\Jobs;
 
-use DateTime;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Spatie\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob as BaseGenerateResponsiveImagesJob;
@@ -44,10 +43,5 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
         return [
             (new WithoutOverlapping($this->media->getKey()))->releaseAfter(10),
         ];
-    }
-
-    public function retryUntil(): DateTime
-    {
-        return now()->addDay();
     }
 }

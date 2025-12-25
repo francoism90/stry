@@ -13,7 +13,7 @@ defineOptions({ layout: DashboardLayout })
 <template>
   <Head title="Videos" />
 
-  <UDashboardPanel id="Media">
+  <UDashboardPanel id="media">
     <template #header>
       <UDashboardNavbar title="Media">
         <template #leading>
@@ -29,7 +29,8 @@ defineOptions({ layout: DashboardLayout })
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
-              variant="ghost"
+              variant="naked"
+              class="py-4"
             >
               <UUser
                 :name="item.name"

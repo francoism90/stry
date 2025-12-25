@@ -6,20 +6,20 @@ namespace Domain\Videos\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum VideoList: string implements Enumerable
+enum VideoFilter: string implements Enumerable
 {
-    case Recommended = 'recommended';
-    case Shorts = 'shorts';
-    case Watched = 'watched';
-    case Newest = 'newest';
+    case Default = 'default';
+    case History = 'history';
+    case Watchlist = 'watchlist';
+    case Liked = 'liked';
 
     public function label(): string
     {
         return match ($this) {
-            self::Recommended => __('Recommended'),
-            self::Shorts => __('Shorts'),
-            self::Watched => __('Watched'),
-            self::Newest => __('Newest'),
+            self::Default => __('All'),
+            self::History => __('History'),
+            self::Watchlist => __('Watch Later'),
+            self::Liked => __('Liked'),
         };
     }
 
