@@ -6,12 +6,12 @@ namespace Domain\Videos\Listeners;
 
 use Domain\Videos\Actions\SetVideoProgress;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Spatie\RateLimitedMiddleware\RateLimited;
 
-class SyncPlaylistProgress implements ShouldQueueAfterCommit
+class SyncPlaylistProgress implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -61,7 +61,7 @@ class SyncPlaylistProgress implements ShouldQueueAfterCommit
     {
         return [
             (new RateLimited)->allow(30)->everySeconds(60)->dontRelease(),
-            (new WithoutOverlapping($event->video->getKey()))->dontRelease(),
+            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(5),
         ];
     }
 }
