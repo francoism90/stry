@@ -105,7 +105,7 @@ watchDebounced(
       <UPage>
         <InfiniteScroll
           data="items"
-          :buffer="200"
+          :buffer="400"
         >
           <TagList :items="items" />
         </InfiniteScroll>
