@@ -60,7 +60,7 @@ class SyncPlaylistProgress implements ShouldQueueAfterCommit
     public function middleware(VideoHasBeenViewedEvent $event): array
     {
         return [
-            (new RateLimited())->allow(30)->everySeconds(60)->dontRelease(),
+            (new RateLimited)->allow(30)->everySeconds(60)->dontRelease(),
             (new WithoutOverlapping($event->video->getKey()))->dontRelease(),
         ];
     }
