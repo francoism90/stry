@@ -28,6 +28,6 @@ readonly class TagTypeScope
     {
         $typeValue = $this->type ?? '';
 
-        return is_string($typeValue) ? TagType::from($typeValue) : $typeValue;
+        return is_string($typeValue) ? TagType::tryFrom($typeValue) : $typeValue;
     }
 }
