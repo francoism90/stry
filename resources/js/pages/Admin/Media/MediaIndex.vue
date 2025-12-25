@@ -29,7 +29,8 @@ defineOptions({ layout: DashboardLayout })
             <UPageCard
               v-for="item in items?.data"
               :key="item.id"
-              variant="ghost"
+              variant="naked"
+              class="py-4"
             >
               <UUser
                 :name="item.name"

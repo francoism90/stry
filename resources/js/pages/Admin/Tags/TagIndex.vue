@@ -81,7 +81,7 @@ watchDebounced(
                 :description="`${item.category} • ${item.videos} videos`"
                 :avatar="{
                   alt: item.name,
-                  class: 'rounded-sm size-14 me-1',
+                  class: 'rounded-sm size-12 me-1',
                 }"
               />
             </UPageCard>

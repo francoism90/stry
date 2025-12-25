@@ -76,7 +76,7 @@ const onSubmit = () =>
                   src: item.thumb,
                   loading: 'lazy',
                   decoding: 'async',
-                  class: 'rounded-sm size-14 me-1',
+                  class: 'rounded-sm size-12 me-1',
                 }"
               />
             </UPageCard>
