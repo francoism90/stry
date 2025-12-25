@@ -14,11 +14,11 @@ const url = (search: string) => HomeController.url('default', { query: { search 
     <UButton
       v-for="item in items?.data"
       :key="item.id"
+      :label="`# ${item.name}`"
+      :to="url(item.name)"
       variant="soft"
       size="lg"
       color="secondary"
-      :label="`# ${item.name}`"
-      :to="url(item.name)"
     />
   </UBlogPosts>
 </template>
