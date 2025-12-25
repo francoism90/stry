@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import LibraryController from '@/actions/App/Client/Videos/Controllers/LibraryController'
+import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import type { TagCollection } from '@/types'
 
 defineProps<{
   items: TagCollection | undefined
 }>()
 
-const url = (search: string) => LibraryController.url({ query: { search } })
+const url = (search: string) => HomeController.url('default', { query: { search } })
 </script>
 
 <template>
@@ -16,6 +16,7 @@ const url = (search: string) => LibraryController.url({ query: { search } })
       :key="item.id"
       variant="soft"
       size="lg"
+      color="secondary"
       :label="`# ${item.name}`"
       :to="url(item.name)"
     />
