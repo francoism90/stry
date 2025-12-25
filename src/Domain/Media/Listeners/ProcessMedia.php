@@ -33,7 +33,7 @@ class ProcessMedia implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60;
+    public $timeout = 60 * 30;
 
     /**
      * @var bool
