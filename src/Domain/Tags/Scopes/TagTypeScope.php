@@ -26,14 +26,8 @@ readonly class TagTypeScope
 
     protected function getType(): ?TagType
     {
-        $currentType = $this->type;
+        $typeValue = $this->type ?? '';
 
-        if (blank($currentType)) {
-            return null;
-        }
-
-        return $currentType instanceof TagType
-            ? $currentType
-            : TagType::tryFrom($currentType);
+        return is_string($typeValue) ? TagType::from($typeValue) : $typeValue;
     }
 }
