@@ -16,7 +16,7 @@ class SetVideoProgress
     {
         return DB::transaction(function () use ($video, $user, $attributes) {
             // Generate a unique cache key for the user's video progress
-            $cacheKey = $user->generateCacheKey("progress:{$video->getKey()}");
+            $cacheKey = $user->generateCacheKey("video:progress:{$video->getKey()}");
 
             // Extract the current progress time from attributes
             $time = (float) data_get($attributes, 'time', 0);
