@@ -66,8 +66,7 @@ class VideoQueryBuilder extends Builder
                 ->where('groupables.groupable_type', 'video'),
             )
             ->selectRaw('DISTINCT ON (videos.id) videos.*, groupables.updated_at')
-            ->orderBy('videos.id')
             ->orderByDesc('groupables.updated_at')
-            ->orderByDesc('groupables.group_id');
+            ->orderByDesc('videos.id');
     }
 }
