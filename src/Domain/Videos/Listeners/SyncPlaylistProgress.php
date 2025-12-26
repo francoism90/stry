@@ -33,7 +33,7 @@ class SyncPlaylistProgress implements ShouldQueue
     /**
      * @var int
      */
-    public $timeout = 60 * 2;
+    public $timeout = 60 * 3;
 
     /**
      * @var bool
@@ -61,7 +61,7 @@ class SyncPlaylistProgress implements ShouldQueue
     {
         return [
             (new RateLimited)->allow(30)->everySeconds(60)->dontRelease(),
-            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(5),
+            (new WithoutOverlapping($event->video->getKey()))->dontRelease(),
         ];
     }
 }
