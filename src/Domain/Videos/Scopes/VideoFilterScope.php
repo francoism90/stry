@@ -8,7 +8,6 @@ use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Facades\Request;
 use Laravel\Scout\Builder;
 
