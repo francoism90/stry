@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('can create a group with required attributes', function () {
+it('can create favorite group', function () {
     $user = User::factory()->create();
 
     // Use HasGroups logic to get or create a unique group
@@ -20,7 +20,7 @@ it('can create a group with required attributes', function () {
         ->and($group->type)->toBe(GroupType::Favorited);
 });
 
-it('can attach and detach videos to group', function () {
+it('can attach and detach videos to saved group', function () {
     $user = User::factory()->create();
 
     $video = Video::factory()->create();
@@ -41,7 +41,7 @@ it('can attach and detach videos to group', function () {
     expect($group->groupables)->not->toContain($video);
 });
 
-it('can toggle video in group', function () {
+it('can toggle video in viewed group', function () {
     $user = User::factory()->create();
 
     $group = $user->viewedGroup();
@@ -59,7 +59,7 @@ it('can toggle video in group', function () {
     expect($group->groupables)->not->toContain($video);
 });
 
-it('can check if video is in group', function () {
+it('can toggle video in favorited group', function () {
     $user = User::factory()->create();
 
     $group = $user->favoritedGroup();
