@@ -23,11 +23,7 @@ class SetVideoProgress
 
             // Store the video as viewed if not already cached
             if (Cache::missing($cacheKey) && $time > 0) {
-                // Ensure the user has a viewed group
-                $group = $user->findOrCreateGroup(GroupType::Viewed);
-
-                // Update with the video attributes
-                $video->syncGroup($group, $attributes);
+                $video->markAsViewed($user, $attributes);
             }
 
             // Get the current progress time (if any)
