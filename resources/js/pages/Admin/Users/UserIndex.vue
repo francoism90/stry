@@ -67,7 +67,6 @@ watchDebounced(
           data="items"
           items-element="#user-list"
           start-element="#user-header"
-          :buffer="200"
         >
           <UPageList
             id="user-list"

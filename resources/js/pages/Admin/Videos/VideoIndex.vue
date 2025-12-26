@@ -84,7 +84,6 @@ watchDebounced(
           data="items"
           items-element="#video-list"
           start-element="#video-header"
-          :buffer="200"
         >
           <UPageList
             id="video-list"

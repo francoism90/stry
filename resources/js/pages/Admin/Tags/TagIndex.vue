@@ -83,7 +83,6 @@ watchDebounced(
           data="items"
           items-element="#tag-list"
           start-element="#tag-header"
-          :buffer="200"
         >
           <UPageList
             id="tag-list"

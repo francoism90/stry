@@ -28,7 +28,6 @@ defineOptions({ layout: DashboardLayout })
           data="items"
           items-element="#media-list"
           start-element="#media-header"
-          :buffer="200"
         >
           <UPageList
             id="media-list"
