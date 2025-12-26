@@ -8,6 +8,7 @@ use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Facades\Request;
 use Laravel\Scout\Builder;
 
@@ -21,17 +22,30 @@ readonly class VideoFilterScope
 
     public function __invoke(Builder $scout): void
     {
-        $user = $this->getUser();
-
         $scout
             ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->randomSeed()))
-            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->viewedBy($user)))
-            ->when($this->isFilter(VideoFilter::Liked), fn (Builder $scout) => $scout->query(fn ($query) => $query->likedBy($user)))
-            ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $scout->query(fn ($query) => $query->savedBy($user)))
+            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::History))
+            ->when($this->isFilter(VideoFilter::Liked), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Liked))
+            ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Saved))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
             ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
+    }
+
+    protected function applyFilter(Builder $scout, VideoFilter $filter): Builder
+    {
+        // If no user is set, return the scout builder unmodified
+        if (! $user = $this->getUser()) {
+            return $scout;
+        }
+
+        return match ($filter) {
+            VideoFilter::Liked => $scout->query(fn ($query) => $query->likedBy($user)),
+            VideoFilter::History => $scout->query(fn ($query) => $query->viewedBy($user)),
+            VideoFilter::Saved => $scout->query(fn ($query) => $query->savedBy($user)),
+            default => $scout,
+        };
     }
 
     protected function getFilter(): VideoFilter
