@@ -30,6 +30,21 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
+    public function favorite(): Group
+    {
+        return $this->findOrCreateGroup(GroupType::Favorite);
+    }
+
+    public function saved(): Group
+    {
+        return $this->findOrCreateGroup(GroupType::Saved);
+    }
+
+    public function viewed(): Group
+    {
+        return $this->findOrCreateGroup(GroupType::Viewed);
+    }
+
     public function findOrCreateGroup(GroupType $type): Group
     {
         return $this->groups()->firstOrCreate([

@@ -38,25 +38,19 @@ trait InteractsWithGroups
 
     public function markAsFavorite(User $user, ?array $options = null): static
     {
-        $group = $user->findOrCreateGroup(GroupType::Favorite);
-
-        return $this->attachToGroup($group, $options);
+        return $this->attachToGroup($user->favorite(), $options);
     }
 
 
     public function markAsSaved(User $user, ?array $options = null): static
     {
-        $group = $user->findOrCreateGroup(GroupType::Saved);
-
-        return $this->attachToGroup($group, $options);
+        return $this->attachToGroup($user->saved(), $options);
     }
 
 
     public function markAsViewed(User $user, ?array $options = null): static
     {
-        $group = $user->findOrCreateGroup(GroupType::Viewed);
-
-        return $this->attachToGroup($group, $options);
+        return $this->attachToGroup($user->viewed(), $options);
     }
 
 
