@@ -6,7 +6,7 @@ defineProps<{
   items: TagCollection | undefined
 }>()
 
-const url = (search: string) => HomeController.url('default', { query: { search } })
+const url = (search: string) => HomeController.url('all', { query: { search } })
 </script>
 
 <template>
