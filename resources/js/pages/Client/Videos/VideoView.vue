@@ -19,8 +19,13 @@ const { toggleGroup } = useVideos()
 
 const links = computed<ButtonProps[]>(() => [
   {
-    label: 'Save',
-    icon: props.video.saved ? 'i-lucide-bookmark-check' : 'i-lucide-bookmark-plus',
+    label: props.video.favorited ? 'Unfavorite' : 'Favorite',
+    icon: props.video.favorited ? 'i-lucide-heart' : 'i-lucide-heart-plus',
+    onClick: () => toggleGroup(props.video, 'favorited'),
+  },
+  {
+    label: props.video.saved ? 'Unsave' : 'Save',
+    icon: props.video.saved ? 'i-lucide-bookmark' : 'i-lucide-bookmark-plus',
     onClick: () => toggleGroup(props.video, 'saved'),
   },
   {
@@ -61,8 +66,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     <template #body>
       <UPage>
         <VideoPlayer />
-
-        saved {{ video.saved }}
 
         <UPageHeader
           :title="video.title"

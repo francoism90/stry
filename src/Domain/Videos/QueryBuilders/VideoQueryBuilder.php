@@ -39,9 +39,9 @@ class VideoQueryBuilder extends Builder
             ->latest();
     }
 
-    public function likedBy(User $user): self
+    public function favoriteBy(User $user): self
     {
-        return $this->byGroupType($user, GroupType::Liked);
+        return $this->byGroupType($user, GroupType::Favorited);
     }
 
     public function savedBy(User $user): self

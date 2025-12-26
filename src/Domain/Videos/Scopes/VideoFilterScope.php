@@ -24,7 +24,7 @@ readonly class VideoFilterScope
         $scout
             ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->randomSeed()))
             ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::History))
-            ->when($this->isFilter(VideoFilter::Liked), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Liked))
+            ->when($this->isFilter(VideoFilter::Favorites), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Favorites))
             ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Saved))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
@@ -40,7 +40,7 @@ readonly class VideoFilterScope
         }
 
         return match ($filter) {
-            VideoFilter::Liked => $scout->query(fn ($query) => $query->likedBy($user)),
+            VideoFilter::Favorites => $scout->query(fn ($query) => $query->favoriteBy($user)),
             VideoFilter::History => $scout->query(fn ($query) => $query->viewedBy($user)),
             VideoFilter::Saved => $scout->query(fn ($query) => $query->savedBy($user)),
             default => $scout,

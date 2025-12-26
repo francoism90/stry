@@ -30,7 +30,7 @@ class VideoResource extends JsonResource
             'thumb' => $this->thumb,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
-            'liked' => $request->user()?->isLiked($this->resource),
+            'favorited' => $request->user()?->isFavorite($this->resource),
             'saved' => $request->user()?->isSaved($this->resource),
             'viewed' => $request->user()?->isViewed($this->resource),
             'titles' => $this->whenAppended('titles'),

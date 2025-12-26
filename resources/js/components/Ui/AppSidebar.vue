@@ -23,14 +23,14 @@ const links: NavigationMenuItem[][] = [
       to: '/history',
     },
     {
+      label: 'Favorites',
+      icon: 'i-lucide-heart',
+      to: '/favorites',
+    },
+    {
       label: 'Saved',
       icon: 'i-lucide-bookmark',
       to: '/saved',
-    },
-    {
-      label: 'Liked',
-      icon: 'i-lucide-thumbs-up',
-      to: '/liked',
     },
   ],
   [

@@ -10,16 +10,16 @@ enum VideoFilter: string implements Enumerable
 {
     case Default = 'all';
     case History = 'history';
+    case Favorites = 'favorites';
     case Saved = 'saved';
-    case Liked = 'liked';
 
     public function label(): string
     {
         return match ($this) {
             self::Default => __('All'),
             self::History => __('History'),
+            self::Favorites => __('Favorites'),
             self::Saved => __('Saved'),
-            self::Liked => __('Liked'),
         };
     }
 

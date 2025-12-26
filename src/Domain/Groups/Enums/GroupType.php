@@ -9,7 +9,7 @@ use Domain\Shared\Contracts\Enumerable;
 enum GroupType: string implements Enumerable
 {
     case Custom = 'custom';
-    case Liked = 'liked';
+    case Favorited = 'favorited';
     case Mixer = 'mixer';
     case Saved = 'saved';
     case Viewed = 'viewed';
@@ -18,7 +18,7 @@ enum GroupType: string implements Enumerable
     {
         return match ($this) {
             self::Custom => __('Custom'),
-            self::Liked => __('Liked'),
+            self::Favorited => __('Favorited'),
             self::Mixer => __('Mixer'),
             self::Saved => __('Saved'),
             self::Viewed => __('Viewed'),
