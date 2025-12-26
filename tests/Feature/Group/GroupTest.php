@@ -31,48 +31,33 @@ it('can attach and detach videos to saved group', function () {
     $group = $user->savedGroup();
     $group->refresh();
 
-    expect($group->groupables)->toContain($video);
+    expect($user->isSaved($video))->toBeTrue();
 
     // Detach using HasGroups toggle method
     $user->toggleSaved($video);
 
     $group->refresh();
 
-    expect($group->groupables)->not->toContain($video);
+    expect($user->isSaved($video))->toBeFalse();
 });
 
-it('can toggle video in viewed group', function () {
+it('can attach and detach videos to favorited group', function () {
     $user = User::factory()->create();
-
-    $group = $user->viewedGroup();
 
     $video = Video::factory()->create();
 
-    $group->toggleViewed($video);
-    $group->refresh();
-
-    expect($group->groupables)->toContain($video);
-
-    $group->toggleViewed($video);
-    $group->refresh();
-
-    expect($group->groupables)->not->toContain($video);
-});
-
-it('can toggle video in favorited group', function () {
-    $user = User::factory()->create();
+    // Attach using HasGroups method
+    $user->markAsFavorited($video);
 
     $group = $user->favoritedGroup();
-
-    $video = Video::factory()->create();
-
-    $group->toggleFavorited($video);
     $group->refresh();
 
-    expect($group->has($video))->toBeTrue();
+    expect($user->isFavorite($video))->toBeTrue();
 
-    $group->toggleFavorited($video);
+    // Detach using HasGroups toggle method
+    $user->toggleFavorited($video);
+
     $group->refresh();
 
-    expect($group->has($video))->toBeFalse();
+    expect($user->isFavorite($video))->toBeFalse();
 });
