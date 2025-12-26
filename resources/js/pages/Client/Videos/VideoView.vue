@@ -3,6 +3,7 @@ import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
+import { useVideos } from '@/composables/videos'
 import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -14,10 +15,13 @@ const props = defineProps<{
   queue?: VideoCollection
 }>()
 
+const { toggleGroup } = useVideos()
+
 const links = ref<ButtonProps[]>([
   {
     label: 'Save',
     icon: 'i-lucide-bookmark-plus',
+    onClick: () => toggleGroup(props.video, 'saved'),
   },
   {
     label: 'Edit',
@@ -57,6 +61,8 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     <template #body>
       <UPage>
         <VideoPlayer />
+
+        saved {{ video.saved }}
 
         <UPageHeader
           :title="video.title"
