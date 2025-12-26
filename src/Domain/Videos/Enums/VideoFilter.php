@@ -8,7 +8,7 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum VideoFilter: string implements Enumerable
 {
-    case Default = 'default';
+    case Default = 'all';
     case History = 'history';
     case Saved = 'saved';
     case Liked = 'liked';

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import type { Video, VideoCollection } from '@/types'
@@ -73,6 +74,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
                 v-for="tag in video.tags"
                 :key="tag.id"
                 :label="tag.name"
+                :to="HomeController.url('all', { query: { search: tag.name } })"
                 variant="outline"
                 size="sm"
                 class="mt-2"
