@@ -118,7 +118,10 @@ FROM base AS production
 WORKDIR /app
 
 # Copy application from build stage
-COPY --chown=${USER}:${USER} --from=build /app /app
+COPY --from=build /app /app
+
+# Set proper ownership
+RUN chown -R ${USER}:${USER} /app
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
