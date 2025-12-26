@@ -9,7 +9,6 @@ use Domain\Users\Models\User;
 use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\JoinClause;
 
 class VideoQueryBuilder extends Builder
 {
@@ -56,17 +55,9 @@ class VideoQueryBuilder extends Builder
 
     public function byGroupType(User $user, GroupType $type): self
     {
-        return $this
-            ->whereHas('groups', fn (Builder $query) => $query
-                ->where('user_id', $user->getKey())
-                ->where('type', $type),
-            )
-            ->join('groupables', fn (JoinClause $join) => $join
-                ->on('videos.id', '=', 'groupables.groupable_id')
-                ->where('groupables.groupable_type', 'video'),
-            )
-            ->selectRaw('DISTINCT ON (videos.id) videos.*, groupables.updated_at')
-            ->orderByDesc('groupables.updated_at')
-            ->orderByDesc('videos.id');
+        return $this->whereHas('groups', fn (Builder $query) => $query
+            ->where('user_id', $user->getKey())
+            ->where('type', $type),
+        );
     }
 }
