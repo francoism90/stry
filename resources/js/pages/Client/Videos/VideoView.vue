@@ -35,6 +35,8 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
+const back = () => (window && window.history?.length > 1 ? window.history.back() : router.visit('/'))
+
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
@@ -52,7 +54,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         <template #right>
           <UButton
             label="Back"
-            to="/"
+            @click="back"
             variant="outline"
             size="xs"
             color="neutral"
