@@ -22,7 +22,7 @@ class SetVideoProgress
 
             // Store the video as viewed if not already cached
             if (Cache::missing($cacheKey) && $time > 0) {
-                $video->markAsViewed($user, $attributes);
+                $user->markAsViewed($video, ['time' => $time]);
             }
 
             // Get the current progress time (if any)
