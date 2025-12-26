@@ -29,8 +29,8 @@ readonly class VideoFilterScope
             ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Saved))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
-            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
-            ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
+            ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
+            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'));
     }
 
     protected function applyFilter(Builder $scout, VideoFilter $filter): Builder
