@@ -4,7 +4,7 @@ import HomeController from '@/actions/App/Client/Account/Controllers/HomeControl
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import { useVideos } from '@/composables/videos'
-import type { Video, VideoCollection } from '@/types'
+import type { Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
@@ -12,7 +12,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
-  queue?: VideoCollection
+  queue?: Video[]
 }>()
 
 const { toggleGroup } = useVideos()

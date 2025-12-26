@@ -107,7 +107,7 @@ watchDebounced(
         >
           <TagList
             id="tag-list"
-            :items="items"
+            :items="items?.data"
           />
         </InfiniteScroll>
       </UPage>

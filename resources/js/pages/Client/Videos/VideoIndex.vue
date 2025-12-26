@@ -109,7 +109,7 @@ watchDebounced(
         >
           <VideoList
             id="video-list"
-            :items="items"
+            :items="items?.data"
           />
         </InfiniteScroll>
       </UPage>

@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
-import type { VideoCollection } from '@/types'
+import type { Video } from '@/types'
 
 defineProps<{
-  items: VideoCollection | undefined
+  items: Video[] | undefined
 }>()
 </script>
 
 <template>
   <UBlogPosts>
     <UBlogPost
-      v-for="item in items?.data"
+      v-for="item in items"
       :key="item.id"
       variant="naked"
       :title="item.title"
