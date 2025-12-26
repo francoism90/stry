@@ -43,8 +43,6 @@ ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV XDG_CONFIG_HOME="/home/${USER}/.config"
-ENV XDG_CACHE_HOME="/home/${USER}/.cache"
 ENV TZ=${TZ}
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
@@ -94,11 +92,13 @@ RUN groupadd -g ${GID} ${USER} && \
     useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
 
 # Set proper ownership
-RUN chown -R ${USER}:${USER} /app /config/caddy /data/caddy
+RUN chown -R ${USER}:${USER} /app /config /data
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS build
 
@@ -131,8 +131,6 @@ USER ${USER}
 
 EXPOSE 6001 8000 13714
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
 FROM base AS development
 
 WORKDIR /app
@@ -143,5 +141,3 @@ RUN chown -R ${USER}:${USER} /app
 USER ${USER}
 
 EXPOSE 5173 6001 8000
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
