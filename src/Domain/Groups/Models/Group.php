@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -176,7 +177,7 @@ class Group extends Model implements HasMedia, Sortable
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => str($this->name ?: $this->kind)->apa(),
+            get: fn () => Str::of($this->name ?: $this->kind)->apa(),
         )->shouldCache();
     }
 }
