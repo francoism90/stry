@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Cache;

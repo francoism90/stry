@@ -8,7 +8,6 @@ use ArrayAccess;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
-use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -35,25 +34,6 @@ trait InteractsWithGroups
             ->withTimestamps();
     }
 
-
-    public function markAsFavorite(User $user, ?array $options = null): static
-    {
-        return $this->attachToGroup($user->favorite(), $options);
-    }
-
-
-    public function markAsSaved(User $user, ?array $options = null): static
-    {
-        return $this->attachToGroup($user->saved(), $options);
-    }
-
-
-    public function markAsViewed(User $user, ?array $options = null): static
-    {
-        return $this->attachToGroup($user->viewed(), $options);
-    }
-
-
     public function attachToGroup(Group $group, ?array $options = null): static
     {
         return $this->attachToGroups([$group], $options);
@@ -72,18 +52,6 @@ trait InteractsWithGroups
         return $this;
     }
 
-    public function toggleGroup(User $user, GroupType $type, ?array $options = null): static
-    {
-        $group = $user->findOrCreateGroup($type);
-
-        $group->hasGroupable($this)
-            ? $this->detachFromGroup($group)
-            : $this->attachToGroup($group, $options);
-
-        return $this;
-    }
-
-
     public function detachFromGroup(Group $group): static
     {
         return $this->detachFromGroups([$group]);
@@ -92,13 +60,24 @@ trait InteractsWithGroups
     public function detachFromGroups(array|ArrayAccess|Collection $groups = []): static
     {
         $items = static::convertToGroups($groups);
+
         $items->each(fn (Group $group) => $this->groups()->detach($group));
+
+        return $this;
+    }
+
+    public function toggleGroup(Group $group, ?array $options = null): static
+    {
+        $group->hasGroupable($this)
+            ? $this->detachFromGroup($group)
+            : $this->attachToGroup($group, $options);
+
         return $this;
     }
 
     public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection
     {
-        return collect($values)
+        return Collection::make($values)
             ->map(fn (Group|int|string $value) => $value instanceof Group ? $value : Group::find($value))
             ->filter()
             ->unique()
