@@ -8,7 +8,7 @@ import type { Video, VideoCollection } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
@@ -17,10 +17,10 @@ const props = defineProps<{
 
 const { toggleGroup } = useVideos()
 
-const links = ref<ButtonProps[]>([
+const links = computed<ButtonProps[]>(() => [
   {
     label: 'Save',
-    icon: 'i-lucide-bookmark-plus',
+    icon: props.video.saved ? 'i-lucide-bookmark-check' : 'i-lucide-bookmark-plus',
     onClick: () => toggleGroup(props.video, 'saved'),
   },
   {

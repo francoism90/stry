@@ -18,8 +18,8 @@ enum VideoFilter: string implements Enumerable
         return match ($this) {
             self::Default => __('All'),
             self::History => __('History'),
-            self::Saved => __('Watch Later'),
-            self::Liked => __('Liked Videos'),
+            self::Saved => __('Saved'),
+            self::Liked => __('Liked'),
         };
     }
 

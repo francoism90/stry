@@ -7,6 +7,8 @@ namespace App\Api\Videos\Controllers;
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -24,7 +26,7 @@ class VideoGroupController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Video $video, GroupType $type): Response
+    public function __invoke(Video $video, GroupType $type, Request $request): Response|RedirectResponse
     {
         Gate::authorize('view', $video);
 
@@ -38,6 +40,8 @@ class VideoGroupController extends Controller implements HasMiddleware
             default => abort(403),
         };
 
-        return response()->noContent();
+        return $request->inertia()
+            ? redirect()->back()
+            : response()->noContent();
     }
 }
