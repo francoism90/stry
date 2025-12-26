@@ -25,7 +25,7 @@ class GetVideoProgress
         }
 
         // Find the video in the viewed group
-        $record = $user->viewed()->videos()->find($video);
+        $record = $user->viewed()->getGroupable($video);
 
         // Extract the progress time from the pivot options
         $current = data_get($record?->pivot?->options ?? [], 'time', 0);
