@@ -8,7 +8,6 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
 UserNS=keep-id
-Volume=${DATA_PATH}:/data:rw,z
 Network=stry.network
 ExposeHostPort=13714
 

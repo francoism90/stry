@@ -87,12 +87,13 @@ RUN install-php-extensions @composer apcu bcmath exif \
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable pnpm
 
-# Create docker user
+# Create non-root user
 RUN groupadd -g ${GID} ${USER} && \
     useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
 
-# Set proper ownership
-RUN chown -R ${USER}:${USER} /app /config /data
+# Create necessary directories
+RUN mkdir -p /app /config /data/{media,import} \
+    && chown -R ${USER}:${USER} /app /data /config
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \

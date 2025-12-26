@@ -59,7 +59,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => env('MEDIA_PATH', '/data/media'),
+            'root' =>'/data/media',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -67,7 +67,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => env('IMPORT_PATH', '/data/import'),
+            'root' => '/data/import',
             'serve' => false,
             'throw' => true,
             'report' => true,

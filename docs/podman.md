@@ -87,7 +87,7 @@ If using SELinux, configure the proper permissions. Use:
 Example:
 
 ```ini
-Volume=${DATA_PATH}:/data:rw,z,U
+Volume=${MEDIA_PATH}:/data/media:rw,z,U
 ```
 
 ### Environment Variables (`app.env`)
@@ -97,7 +97,8 @@ Volume=${DATA_PATH}:/data:rw,z,U
 | `UID`, `GID`    | Mapped user/group IDs for rootless container processes    |
 | `CONTAINER_ENV` | Application environment (e.g. production)                 |
 | `APP_PATH`      | Host path of source checkout (bind if enabling live code) |
-| `DATA_PATH`     | Host data directory containing media/import subfolders    |
+| `MEDIA_PATH`    | Host data directory containing media subfolders           |
+| `IMPORT_PATH`   | Host data directory containing files to be imported       |
 
 Ensure both paths exist and are owned by the matching UID/GID:
 

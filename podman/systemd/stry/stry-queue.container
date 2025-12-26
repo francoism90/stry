@@ -9,7 +9,8 @@ AutoUpdate=local
 Environment=CONTAINER_ROLE=horizon
 ShmSize=256m
 UserNS=keep-id
-Volume=${DATA_PATH}:/data:rw,z
+Volume=${MEDIA_PATH}:/data/media:rw,z
+Volume=${IMPORT_PATH}:/data/import:rw,z
 Network=stry.network
 
 [Service]
