@@ -29,7 +29,7 @@ class UserController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', User::class);
 
         // Apply filters
-        $search = $request->safe()->input('search');
+        $search = $request->safe()->input('search', '');
 
         // Scout builder
         $scout = User::search($search)

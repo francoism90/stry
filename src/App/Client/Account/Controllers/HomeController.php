@@ -32,7 +32,7 @@ class HomeController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $search = $request->safe()->input('search');
+        $search = $request->safe()->input('search', '');
         $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
