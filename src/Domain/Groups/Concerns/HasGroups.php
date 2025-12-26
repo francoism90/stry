@@ -30,14 +30,6 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
-    public function customGroup(string $name): Group
-    {
-        return $this->groups()->firstOrCreate([
-            'name' => $name,
-            'type' => GroupType::Custom,
-        ]);
-    }
-
     public function isFavorite(Model $model): bool
     {
         return $this->groupHasModel($model, GroupType::Favorited);
@@ -51,6 +43,14 @@ trait HasGroups
     public function isViewed(Model $model): bool
     {
         return $this->groupHasModel($model, GroupType::Viewed);
+    }
+
+    public function customGroup(string $name): Group
+    {
+        return $this->groups()->firstOrCreate([
+            'name' => $name,
+            'type' => GroupType::Custom,
+        ]);
     }
 
     public function favoritedGroup(): Group
