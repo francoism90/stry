@@ -30,6 +30,14 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
+    public function customGroup(string $name): Group
+    {
+        return $this->groups()->firstOrCreate([
+            'name' => $name,
+            'type' => GroupType::Custom,
+        ]);
+    }
+
     public function likedGroup(): Group
     {
         return $this->findOrCreateGroup(GroupType::Liked);

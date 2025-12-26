@@ -16,6 +16,10 @@ const props = defineProps<{
 
 const links = ref<ButtonProps[]>([
   {
+    label: 'Save',
+    icon: 'i-lucide-bookmark-plus',
+  },
+  {
     label: 'Edit',
     to: edit.url(props.video.id),
     icon: 'i-lucide-clipboard-pen',

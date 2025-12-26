@@ -9,22 +9,27 @@ use Illuminate\Database\Eloquent\Builder;
 
 class GroupQueryBuilder extends Builder
 {
+    public function custom(): self
+    {
+        return $this->where('type', GroupType::Custom);
+    }
+
     public function mixer(): self
     {
         return $this->where('type', GroupType::Mixer);
     }
 
-    public function favorites(): self
+    public function liked(): self
     {
-        return $this->where('type', GroupType::Favorite);
+        return $this->where('type', GroupType::Liked);
     }
 
-    public function saves(): self
+    public function saved(): self
     {
         return $this->where('type', GroupType::Saved);
     }
 
-    public function views(): self
+    public function viewed(): self
     {
         return $this->where('type', GroupType::Viewed);
     }

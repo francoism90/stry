@@ -8,6 +8,7 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum GroupType: string implements Enumerable
 {
+    case Custom = 'custom';
     case Liked = 'liked';
     case Mixer = 'mixer';
     case Saved = 'saved';
@@ -16,6 +17,7 @@ enum GroupType: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
+            self::Custom => __('Custom'),
             self::Liked => __('Liked'),
             self::Mixer => __('Mixer'),
             self::Saved => __('Saved'),
