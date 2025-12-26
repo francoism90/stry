@@ -34,12 +34,12 @@ trait InteractsWithGroups
             ->withTimestamps();
     }
 
-    public function syncGroup(Group $group, ?array $options = null): static
+    public function attachToGroup(Group $group, ?array $options = null): static
     {
-        return $this->syncGroups([$group], $options);
+        return $this->attachToGroups([$group], $options);
     }
 
-    public function syncGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
+    public function attachToGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
     {
         $groups = static::convertToGroups($groups);
 
@@ -52,12 +52,12 @@ trait InteractsWithGroups
         return $this;
     }
 
-    public function detachGroup(Group $group): static
+    public function detachFromGroup(Group $group): static
     {
-        return $this->detachGroups([$group]);
+        return $this->detachFromGroups([$group]);
     }
 
-    public function detachGroups(array|ArrayAccess|Collection $groups = []): static
+    public function detachFromGroups(array|ArrayAccess|Collection $groups = []): static
     {
         $items = static::convertToGroups($groups);
 
@@ -66,9 +66,18 @@ trait InteractsWithGroups
         return $this;
     }
 
+    public function toggleGroup(Group $group, ?array $options = null): static
+    {
+        $group->hasGroupable($this)
+            ? $this->detachFromGroup($group)
+            : $this->attachToGroup($group, $options);
+
+        return $this;
+    }
+
     public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection
     {
-        return collect($values)
+        return Collection::make($values)
             ->map(fn (Group|int|string $value) => $value instanceof Group ? $value : Group::find($value))
             ->filter()
             ->unique()

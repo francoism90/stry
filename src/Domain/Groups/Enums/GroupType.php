@@ -8,7 +8,8 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum GroupType: string implements Enumerable
 {
-    case Favorite = 'favorite';
+    case Custom = 'custom';
+    case Favorited = 'favorited';
     case Mixer = 'mixer';
     case Saved = 'saved';
     case Viewed = 'viewed';
@@ -16,10 +17,11 @@ enum GroupType: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
-            self::Favorite => __('Favorite'),
+            self::Custom => __('Custom'),
+            self::Favorited => __('Favorited'),
             self::Mixer => __('Mixer'),
             self::Saved => __('Saved'),
-            self::Viewed => __('Watched'),
+            self::Viewed => __('Viewed'),
         };
     }
 

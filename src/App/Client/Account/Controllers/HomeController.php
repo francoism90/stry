@@ -37,7 +37,7 @@ class HomeController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = Video::search($search)
-            ->tap(new VideoFilterScope($filter, $order))
+            ->tap(new VideoFilterScope(filter: $filter, order: $order, user: $request->user()))
             ->simplePaginate(18)
             ->through(fn (Video $video) => new VideoResource($video));
 

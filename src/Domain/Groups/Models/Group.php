@@ -11,7 +11,6 @@ use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Concerns\InteractsWithUser;
-use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -20,9 +19,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -99,13 +98,39 @@ class Group extends Model implements HasMedia, Sortable
         return 'ulid';
     }
 
-    public function videos(): MorphToMany
+    public function groupables()
     {
-        return $this
-            ->morphedByMany(Video::class, 'groupable')
-            ->using(Groupable::class)
-            ->withPivot(['group_id', 'options'])
-            ->withTimestamps();
+        return $this->hasMany(Groupable::class, 'group_id');
+    }
+
+    public function getGroupable(Model $model): ?Groupable
+    {
+        return $this->groupables()
+            ->where('groupable_id', $model->getKey())
+            ->where('groupable_type', $model->getMorphClass())
+            ->first();
+    }
+
+    public function hasGroupable(Model $model): bool
+    {
+        return $this->groupables()
+            ->where('groupable_id', $model->getKey())
+            ->where('groupable_type', $model->getMorphClass())
+            ->exists();
+    }
+
+    public function buildSortQuery(): Builder
+    {
+        return static::query()
+            ->where('user_id', $this->user_id)
+            ->where('type', $this->type);
+    }
+
+    public function prunable(): Builder
+    {
+        return static::query()
+            ->mixer()
+            ->where('created_at', '<=', now()->subDay());
     }
 
     /**
@@ -146,24 +171,10 @@ class Group extends Model implements HasMedia, Sortable
         return true;
     }
 
-    public function buildSortQuery(): Builder
-    {
-        return static::query()
-            ->where('user_id', $this->user_id)
-            ->where('type', $this->type);
-    }
-
-    public function prunable(): Builder
-    {
-        return static::query()
-            ->mixer()
-            ->where('created_at', '<=', now()->subDay());
-    }
-
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => str($this->name ?: $this->kind)->apa(),
+            get: fn () => Str::of($this->name ?: $this->kind)->apa(),
         )->shouldCache();
     }
 }

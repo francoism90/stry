@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
+use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Contracts\Cache\Repository;
@@ -13,6 +14,7 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
+        public ?User $user = null,
         public VideoFilter|string|null $filter = null,
         public VideoOrder|string|null $order = null,
     ) {}
@@ -21,11 +23,28 @@ readonly class VideoFilterScope
     {
         $scout
             ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->randomSeed()))
-            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
+            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::History))
+            ->when($this->isFilter(VideoFilter::Favorites), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Favorites))
+            ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Saved))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
-            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
-            ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'));
+            ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
+            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'));
+    }
+
+    protected function applyFilter(Builder $scout, VideoFilter $filter): Builder
+    {
+        // If no user is set, return the scout builder unmodified
+        if (! $user = $this->getUser()) {
+            return $scout;
+        }
+
+        return match ($filter) {
+            VideoFilter::Favorites => $scout->query(fn ($query) => $query->favoriteBy($user)),
+            VideoFilter::History => $scout->query(fn ($query) => $query->viewedBy($user)),
+            VideoFilter::Saved => $scout->query(fn ($query) => $query->savedBy($user)),
+            default => $scout,
+        };
     }
 
     protected function getFilter(): VideoFilter
@@ -69,6 +88,11 @@ readonly class VideoFilterScope
     protected function isOrderDefault(): bool
     {
         return $this->getOrderer() === VideoOrder::Default;
+    }
+
+    protected function getUser(): ?User
+    {
+        return $this->user;
     }
 
     protected function randomSeed(): int

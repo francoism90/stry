@@ -8,18 +8,18 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum VideoFilter: string implements Enumerable
 {
-    case Default = 'default';
+    case Default = 'all';
     case History = 'history';
-    case Watchlist = 'watchlist';
-    case Liked = 'liked';
+    case Favorites = 'favorites';
+    case Saved = 'saved';
 
     public function label(): string
     {
         return match ($this) {
             self::Default => __('All'),
             self::History => __('History'),
-            self::Watchlist => __('Watch Later'),
-            self::Liked => __('Liked'),
+            self::Favorites => __('Favorites'),
+            self::Saved => __('Saved'),
         };
     }
 

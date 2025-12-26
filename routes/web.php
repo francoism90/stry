@@ -19,5 +19,5 @@ Route::get('/profile', ProfileController::class)->name('profile');
 
 // Fallback
 Route::any('/{filter?}', HomeController::class)
-    ->defaults('filter', 'default')
+    ->defaults('filter', 'all')
     ->name('home');

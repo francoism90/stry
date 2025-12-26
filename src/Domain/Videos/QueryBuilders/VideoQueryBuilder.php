@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Domain\Videos\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Users\Models\User;
 use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\Auth;
 
 class VideoQueryBuilder extends Builder
 {
@@ -35,20 +35,38 @@ class VideoQueryBuilder extends Builder
     {
         return $this
             ->orderByDesc('released_at')
-            ->orderByDesc('created_at');
+            ->orderByDesc('published_at')
+            ->latest();
     }
 
-    public function watching(): self
+    public function favoriteBy(User $user): self
+    {
+        return $this->byGroupType($user, GroupType::Favorited);
+    }
+
+    public function savedBy(User $user): self
+    {
+        return $this->byGroupType($user, GroupType::Saved);
+    }
+
+    public function viewedBy(User $user): self
+    {
+        return $this->byGroupType($user, GroupType::Viewed);
+    }
+
+    public function byGroupType(User $user, GroupType $type): self
     {
         return $this
             ->whereHas('groups', fn (Builder $query) => $query
-                ->where('user_id', Auth::id())
-                ->where('type', GroupType::Viewed),
+                ->where('user_id', $user->getKey())
+                ->where('type', $type),
             )
             ->join('groupables', fn (JoinClause $join) => $join
                 ->on('videos.id', '=', 'groupables.groupable_id')
                 ->where('groupables.groupable_type', 'video'),
             )
+            ->selectRaw('DISTINCT ON (videos.id) videos.*, groupables.updated_at')
+            ->orderBy('videos.id')
             ->orderByDesc('groupables.updated_at');
     }
 }

@@ -23,14 +23,14 @@ const links: NavigationMenuItem[][] = [
       to: '/history',
     },
     {
-      label: 'Watch Later',
-      icon: 'i-lucide-clock',
-      to: '/watchlist',
+      label: 'Favorites',
+      icon: 'i-lucide-heart',
+      to: '/favorites',
     },
     {
-      label: 'Liked Videos',
-      icon: 'i-lucide-thumbs-up',
-      to: '/liked',
+      label: 'Saved',
+      icon: 'i-lucide-bookmark',
+      to: '/saved',
     },
   ],
   [
