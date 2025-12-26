@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
+use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Illuminate\Contracts\Cache\Repository;
@@ -13,15 +14,20 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
+        public ?User $user = null,
         public VideoFilter|string|null $filter = null,
         public VideoOrder|string|null $order = null,
     ) {}
 
     public function __invoke(Builder $scout): void
     {
+        $user = $this->getUser();
+
         $scout
             ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->randomSeed()))
-            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->watching()))
+            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $scout->query(fn ($query) => $query->viewedBy($user)))
+            ->when($this->isFilter(VideoFilter::Liked), fn (Builder $scout) => $scout->query(fn ($query) => $query->likedBy($user)))
+            ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $scout->query(fn ($query) => $query->savedBy($user)))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
@@ -69,6 +75,11 @@ readonly class VideoFilterScope
     protected function isOrderDefault(): bool
     {
         return $this->getOrderer() === VideoOrder::Default;
+    }
+
+    protected function getUser(): ?User
+    {
+        return $this->user;
     }
 
     protected function randomSeed(): int

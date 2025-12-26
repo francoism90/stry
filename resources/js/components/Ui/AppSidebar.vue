@@ -25,7 +25,7 @@ const links: NavigationMenuItem[][] = [
     {
       label: 'Watch Later',
       icon: 'i-lucide-clock',
-      to: '/watchlist',
+      to: '/saved',
     },
     {
       label: 'Liked Videos',
