@@ -17,6 +17,8 @@ const props = defineProps<{
 
 const { toggleGroup } = useVideos()
 
+const back = () => (window && window.history?.length > 1 ? window.history.back() : router.visit('/'))
+
 const links = computed<ButtonProps[]>(() => [
   {
     label: props.video.favorited ? 'Unfavorite' : 'Favorite',
@@ -34,8 +36,6 @@ const links = computed<ButtonProps[]>(() => [
     icon: 'i-lucide-clipboard-pen',
   },
 ])
-
-const back = () => (window && window.history?.length > 1 ? window.history.back() : router.visit('/'))
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
