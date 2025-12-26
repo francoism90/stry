@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
-use Domain\Groups\Enums\GroupType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
