@@ -9,6 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+it('can create a custom group', function () {
+    $user = User::factory()->create();
+
+    // Use HasGroups logic to get or create a unique group
+    $group = $user->customGroup('foo');
+
+    expect($group->exists)->toBeTrue()
+        ->and($group->user_id)->toBe($user->id)
+        ->and($group->name)->toBe('foo')
+        ->and($group->type)->toBe(GroupType::Custom);
+});
+
 it('can create favorite group', function () {
     $user = User::factory()->create();
 
