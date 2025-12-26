@@ -99,6 +99,11 @@ class Group extends Model implements HasMedia, Sortable
         return 'ulid';
     }
 
+    public function groupables()
+    {
+        return $this->hasMany(Groupable::class, 'group_id');
+    }
+
     public function videos(): MorphToMany
     {
         return $this
@@ -106,6 +111,28 @@ class Group extends Model implements HasMedia, Sortable
             ->using(Groupable::class)
             ->withPivot(['group_id', 'options'])
             ->withTimestamps();
+    }
+
+    public function hasGroupable(Model $model): bool
+    {
+        return $this->groupables()
+            ->where('groupable_id', $model->getKey())
+            ->where('groupable_type', $model->getMorphClass())
+            ->exists();
+    }
+
+    public function buildSortQuery(): Builder
+    {
+        return static::query()
+            ->where('user_id', $this->user_id)
+            ->where('type', $this->type);
+    }
+
+    public function prunable(): Builder
+    {
+        return static::query()
+            ->mixer()
+            ->where('created_at', '<=', now()->subDay());
     }
 
     /**
@@ -144,20 +171,6 @@ class Group extends Model implements HasMedia, Sortable
     public function broadcastAfterCommit(): bool
     {
         return true;
-    }
-
-    public function buildSortQuery(): Builder
-    {
-        return static::query()
-            ->where('user_id', $this->user_id)
-            ->where('type', $this->type);
-    }
-
-    public function prunable(): Builder
-    {
-        return static::query()
-            ->mixer()
-            ->where('created_at', '<=', now()->subDay());
     }
 
     protected function title(): Attribute

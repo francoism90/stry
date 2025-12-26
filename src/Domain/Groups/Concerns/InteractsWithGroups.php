@@ -8,6 +8,7 @@ use ArrayAccess;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
+use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -34,12 +35,37 @@ trait InteractsWithGroups
             ->withTimestamps();
     }
 
-    public function syncGroup(Group $group, ?array $options = null): static
+
+    public function markAsFavorite(User $user, ?array $options = null): static
     {
-        return $this->syncGroups([$group], $options);
+        $group = $user->findOrCreateGroup(GroupType::Favorite);
+
+        return $this->attachToGroup($group, $options);
     }
 
-    public function syncGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
+
+    public function markAsSaved(User $user, ?array $options = null): static
+    {
+        $group = $user->findOrCreateGroup(GroupType::Saved);
+
+        return $this->attachToGroup($group, $options);
+    }
+
+
+    public function markAsViewed(User $user, ?array $options = null): static
+    {
+        $group = $user->findOrCreateGroup(GroupType::Viewed);
+
+        return $this->attachToGroup($group, $options);
+    }
+
+
+    public function attachToGroup(Group $group, ?array $options = null): static
+    {
+        return $this->attachToGroups([$group], $options);
+    }
+
+    public function attachToGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
     {
         $groups = static::convertToGroups($groups);
 
@@ -52,17 +78,27 @@ trait InteractsWithGroups
         return $this;
     }
 
-    public function detachGroup(Group $group): static
+    public function toggleGroup(User $user, GroupType $type, ?array $options = null): static
     {
-        return $this->detachGroups([$group]);
+        $group = $user->findOrCreateGroup($type);
+
+        $group->hasGroupable($this)
+            ? $this->detachFromGroup($group)
+            : $this->attachToGroup($group, $options);
+
+        return $this;
     }
 
-    public function detachGroups(array|ArrayAccess|Collection $groups = []): static
+
+    public function detachFromGroup(Group $group): static
+    {
+        return $this->detachFromGroups([$group]);
+    }
+
+    public function detachFromGroups(array|ArrayAccess|Collection $groups = []): static
     {
         $items = static::convertToGroups($groups);
-
         $items->each(fn (Group $group) => $this->groups()->detach($group));
-
         return $this;
     }
 

@@ -19,7 +19,7 @@ enum GroupType: string implements Enumerable
             self::Favorite => __('Favorite'),
             self::Mixer => __('Mixer'),
             self::Saved => __('Saved'),
-            self::Viewed => __('Watched'),
+            self::Viewed => __('Viewed'),
         };
     }
 
