@@ -98,8 +98,6 @@ RUN chown -R ${USER}:${USER} /app /config/caddy /data/caddy
 RUN apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
 FROM base AS build
 
 WORKDIR /app
@@ -131,6 +129,8 @@ USER ${USER}
 
 EXPOSE 6001 8000 13714
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 FROM base AS development
 
 WORKDIR /app
@@ -141,3 +141,5 @@ RUN chown -R ${USER}:${USER} /app
 USER ${USER}
 
 EXPOSE 5173 6001 8000
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
