@@ -11,8 +11,6 @@ uses(RefreshDatabase::class);
 
 it('can create a custom group', function () {
     $user = User::factory()->create();
-
-    // Use HasGroups logic to get or create a unique group
     $group = $user->customGroup('foo');
 
     expect($group->exists)->toBeTrue()
@@ -23,8 +21,6 @@ it('can create a custom group', function () {
 
 it('can create favorite group', function () {
     $user = User::factory()->create();
-
-    // Use HasGroups logic to get or create a unique group
     $group = $user->favoritedGroup();
 
     expect($group->exists)->toBeTrue()
@@ -34,7 +30,6 @@ it('can create favorite group', function () {
 
 it('can attach and detach videos to saved group', function () {
     $user = User::factory()->create();
-
     $video = Video::factory()->create();
 
     // Attach using HasGroups method
@@ -55,7 +50,6 @@ it('can attach and detach videos to saved group', function () {
 
 it('can attach and detach videos to favorited group', function () {
     $user = User::factory()->create();
-
     $video = Video::factory()->create();
 
     // Attach using HasGroups method
@@ -68,7 +62,6 @@ it('can attach and detach videos to favorited group', function () {
 
     // Detach using HasGroups toggle method
     $user->toggleFavorited($video);
-
     $group->refresh();
 
     expect($user->isFavorite($video))->toBeFalse();
