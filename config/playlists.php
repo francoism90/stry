@@ -27,6 +27,7 @@ return [
     /**
      * This setting is used to define the time after which the playlist will expire.
      * The value is in seconds, and it will be used to set the expiration time for the playlist.
+     * Set to 0 for no expiration.
      */
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 7), // 7 days
 
