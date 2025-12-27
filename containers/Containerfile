@@ -112,7 +112,7 @@ COPY . /app
 RUN --mount=type=cache,target=/root/.composer/cache \
     --mount=type=cache,target=/pnpm/store \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction && \
-    pnpm install --frozen-lockfile && pnpm build:ssr && pnpm prune --prod
+    pnpm install --frozen-lockfile && pnpm build && pnpm prune --prod
 
 FROM base AS production
 
