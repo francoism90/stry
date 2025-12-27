@@ -81,8 +81,8 @@ watchDebounced(
       <UPage>
         <InfiniteScroll
           data="items"
-          items-element="#tag-list"
           start-element="#tag-header"
+          items-element="#tag-list"
         >
           <UPageList
             id="tag-list"

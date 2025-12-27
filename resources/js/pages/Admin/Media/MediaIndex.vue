@@ -26,8 +26,8 @@ defineOptions({ layout: DashboardLayout })
       <UPage>
         <InfiniteScroll
           data="items"
-          items-element="#media-list"
           start-element="#media-header"
+          items-element="#media-list"
         >
           <UPageList
             id="media-list"
