@@ -115,15 +115,6 @@ class Group extends Model implements HasMedia, Sortable
         return $this->hasMany(Groupable::class, 'group_id');
     }
 
-    public function videos(): MorphToMany
-    {
-        return $this
-            ->morphedByMany(Video::class, 'groupable')
-            ->using(Groupable::class)
-            ->withPivot(['group_id', 'options'])
-            ->withTimestamps();
-    }
-
     public function getGroupable(Model $model): ?Groupable
     {
         return $this->groupables()

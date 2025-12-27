@@ -59,8 +59,17 @@ class VideoQueryBuilder extends Builder
             return $this;
         }
 
-        return $this->whereHas('groups', function (Builder $query) use ($user, $type) {
+        $table = $this->getModel()->getTable();
+
+        $morph = $this->getModel()->getMorphClass();
+
+        return $this->whereExists(function ($query) use ($user, $type, $table, $morph) {
             $query
+                ->selectRaw('1')
+                ->from('groupables')
+                ->join('groups', 'groups.id', '=', 'groupables.group_id')
+                ->whereColumn('groupables.groupable_id', $table . '.id')
+                ->where('groupables.groupable_type', $morph)
                 ->where('groups.user_id', $user->getKey())
                 ->where('groups.type', $type);
         });
