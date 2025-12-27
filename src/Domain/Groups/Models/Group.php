@@ -11,6 +11,7 @@ use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Concerns\InteractsWithUser;
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -103,6 +105,15 @@ class Group extends Model implements HasMedia, Sortable
     public function groupables()
     {
         return $this->hasMany(Groupable::class, 'group_id');
+    }
+
+    public function videos(): MorphToMany
+    {
+        return $this
+            ->morphedByMany(Video::class, 'groupable')
+            ->using(Groupable::class)
+            ->withPivot(['group_id', 'options'])
+            ->withTimestamps();
     }
 
     public function getGroupable(Model $model): ?Groupable

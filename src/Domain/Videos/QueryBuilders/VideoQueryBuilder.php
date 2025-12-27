@@ -59,13 +59,10 @@ class VideoQueryBuilder extends Builder
             return $this;
         }
 
-        return $this
-            ->join('groupables', 'videos.id', '=', 'groupables.groupable_id')
-            ->join('groups', 'groupables.group_id', '=', 'groups.id')
-            ->where('groupables.groupable_type', 'video')
-            ->where('groups.user_id', $user->getKey())
-            ->where('groups.type', $type)
-            ->orderByDesc('groupables.updated_at')
-            ->select('videos.*');
+        return $this->whereHas('groups', function (Builder $query) use ($user, $type) {
+            $query
+                ->where('groups.user_id', $user->getKey())
+                ->where('groups.type', $type);
+        });
     }
 }
