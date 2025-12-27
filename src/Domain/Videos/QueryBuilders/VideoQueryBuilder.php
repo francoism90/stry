@@ -59,10 +59,9 @@ class VideoQueryBuilder extends Builder
             return $this;
         }
 
-        return $this->whereHas('groups', function (Builder $query) use ($user, $type) {
-            $query
-                ->where('groups.user_id', $user->getKey())
-                ->where('groups.type', $type);
-        });
+        return $this->whereHas('groups', fn (Builder $query) => $query
+            ->where('groups.user_id', $user->getKey())
+            ->where('groups.type', $type)
+        );
     }
 }

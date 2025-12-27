@@ -11,7 +11,6 @@ use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Users\Concerns\InteractsWithUser;
-use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -20,7 +19,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -66,6 +64,14 @@ class Group extends Model implements HasMedia, Sortable
         'user_id',
     ];
 
+    /**
+     * @var array<string, mixed>
+     */
+    public $sortable = [
+        'order_column_name' => 'order_column',
+        'sort_when_creating' => true,
+    ];
+
     protected static function newFactory(): GroupFactory
     {
         return GroupFactory::new();
@@ -107,15 +113,6 @@ class Group extends Model implements HasMedia, Sortable
         return $this->hasMany(Groupable::class, 'group_id');
     }
 
-    public function videos(): MorphToMany
-    {
-        return $this
-            ->morphedByMany(Video::class, 'groupable')
-            ->using(Groupable::class)
-            ->withPivot(['group_id', 'options'])
-            ->withTimestamps();
-    }
-
     public function getGroupable(Model $model): ?Groupable
     {
         return $this->groupables()
@@ -134,9 +131,7 @@ class Group extends Model implements HasMedia, Sortable
 
     public function buildSortQuery(): Builder
     {
-        return static::query()
-            ->where('user_id', $this->user_id)
-            ->where('type', $this->type);
+        return static::query()->where('user_id', $this->user_id);
     }
 
     public function prunable(): Builder

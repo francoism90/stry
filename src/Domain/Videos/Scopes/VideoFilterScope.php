@@ -20,13 +20,16 @@ readonly class VideoFilterScope
 
     public function __invoke(Builder $scout): void
     {
+        // Determine if we should use placeholder results
+        $fallback = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
+
         $scout
             ->query(fn ($query) => $this->applyQuery($query))
+            ->when($fallback, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
-            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
-            ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder());
+            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'));
     }
 
     protected function applyQuery(EloquentBuilder $query): EloquentBuilder
