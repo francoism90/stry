@@ -183,11 +183,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->broadcastChannel();
     }
 
-    public function makeSearchableUsing(UserCollection $models): UserCollection
-    {
-        return $models->loadMissing($this->with);
-    }
-
     public function toSearchableArray(): array
     {
         return [

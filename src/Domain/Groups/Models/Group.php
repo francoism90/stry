@@ -173,11 +173,6 @@ class Group extends Model implements HasMedia, Sortable
         return true;
     }
 
-    public function makeSearchableUsing(GroupCollection $models): GroupCollection
-    {
-        return $models->loadMissing($this->with);
-    }
-
     public function toSearchableArray(): array
     {
         return [
@@ -190,11 +185,6 @@ class Group extends Model implements HasMedia, Sortable
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
-    }
-
-    protected function makeAllSearchableUsing(Builder $query): Builder
-    {
-        return $query->with($this->with);
     }
 
     protected function title(): Attribute

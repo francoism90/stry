@@ -115,9 +115,12 @@ Run `stry help` for a complete list. Here are the most commonly used:
 
 ### 🔍 Search & Indexing
 
-| Command                     | Description                   |
-| --------------------------- | ----------------------------- |
-| `stry a scout:sync --flush` | Sync searchable model indexes |
+| Command                           | Description                                                                               |
+| --------------------------------- | ----------------------------------------------------------------------------------------- |
+| `stry a scout:sync`               | Sync searchable model indexes (re-import all models)                                      |
+| `stry a scout:sync --delete`      | Delete and re-sync all indexes (clears existing data before re-importing)                 |
+| `stry a scout:delete-index Model` | Delete a specific index (useful for fixing corrupted indexes)                             |
+| `stry a scout:import Model`       | Import a specific model into its search index                                             |
 
 ---
 

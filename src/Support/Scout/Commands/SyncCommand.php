@@ -15,7 +15,7 @@ class SyncCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'scout:sync {--flush}';
+    protected $signature = 'scout:sync {--delete}';
 
     /**
      * @var string
@@ -31,13 +31,16 @@ class SyncCommand extends Command implements Isolatable
         }
 
         $indexes->each(function (array $settings, string $model) {
-            if ($this->option('flush')) {
-                info("Flushing existing records for model: {$model}");
-
-                $this->call('scout:flush', compact('model'));
+            // Delete existing index
+            if ($this->option('delete')) {
+                $this->call('scout:delete-index', ['name' => $model]);
             }
 
-            $this->call('scout:queue-import', compact('model'));
+            // Recreate index
+            $this->call('scout:index', ['name' => $model]);
+
+            // Import records
+            $this->call('scout:import', ['model' => $model]);
         });
     }
 }

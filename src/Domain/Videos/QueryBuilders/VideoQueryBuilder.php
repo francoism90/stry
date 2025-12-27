@@ -6,7 +6,6 @@ namespace Domain\Videos\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
-use Domain\Videos\Models\Video;
 use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
