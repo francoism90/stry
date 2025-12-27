@@ -458,7 +458,7 @@ return [
                         ],
                         [
                             'name' => 'user_id',
-                            'type' => 'string',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'name',
