@@ -61,7 +61,8 @@ class VideoQueryBuilder extends Builder
 
         return $this->whereHas('groups', fn (Builder $query) => $query
             ->where('user_id', $user->getKey())
-            ->where('type', $type),
+            ->where('type', $type)
+            ->orderByDesc('groupables.updated_at')
         );
     }
 }

@@ -16,7 +16,7 @@ import { Head } from '@inertiajs/vue3'
       <UDashboardGroup
         unit="rem"
         storage="local"
-        class="relative overflow-clip"
+        class="relative w-full overflow-clip"
       >
         <DashboardSidebar />
 
