@@ -7,8 +7,8 @@ namespace Domain\Videos\Scopes;
 use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
-use Laravel\Scout\Builder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Laravel\Scout\Builder;
 
 readonly class VideoFilterScope
 {

@@ -6,13 +6,14 @@ namespace App\Client\Videos\Responses;
 
 use App\Api\Playlists\Resources\PlaylistResource;
 use Domain\Videos\Models\Video;
+use Illuminate\Container\Attributes\RouteParameter;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
 readonly class VideoPlaylistProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Video $video,
+        #[RouteParameter('video')] protected Video $video,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
