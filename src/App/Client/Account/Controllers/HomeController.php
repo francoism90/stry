@@ -32,11 +32,11 @@ class HomeController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Apply filters
-        $search = $request->safe()->input('search', '');
+        $search = $request->safe()->input('search');
         $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
-        $scout = Video::search($search)
+        $scout = Video::search($search ?: '*')
             ->tap(new VideoFilterScope(filter: $filter, order: $order, user: $request->user()))
             ->paginate(perPage: 18);
 

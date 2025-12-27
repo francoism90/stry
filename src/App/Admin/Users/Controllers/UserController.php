@@ -29,12 +29,12 @@ class UserController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', User::class);
 
         // Apply filters
-        $search = $request->safe()->input('search', '');
+        $search = $request->safe()->input('search');
 
         // Scout builder
-        $scout = User::search($search)
+        $scout = User::search($search ?: '*')
             ->query(fn ($query) => $query->with('permissions', 'roles'))
-            ->simplePaginate(16);
+            ->paginate(perPage: 16);
 
         return Inertia::render('Admin/Users/UserIndex', [
             'items' => Inertia::scroll(fn () => UserResource::collection($scout)),
