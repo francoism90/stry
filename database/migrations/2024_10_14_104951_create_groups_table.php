@@ -31,7 +31,6 @@ return new class extends Migration
         });
 
         Schema::create('groupables', function (Blueprint $table) {
-            $table->id();
             $table
                 ->foreignId('group_id')
                 ->constrained()

@@ -509,42 +509,6 @@ return [
                 ],
             ],
 
-            Groupable::class => [
-                'collection-schema' => [
-                    'fields' => [
-                        [
-                            'name' => 'id',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'group_id',
-                            'type' => 'int64',
-                        ],
-                        [
-                            'name' => 'groupable_type',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'groupable_id',
-                            'type' => 'int64',
-                        ],
-                        [
-                            'name' => 'created_at',
-                            'type' => 'int64',
-                            'sort' => true,
-                        ],
-                        [
-                            'name' => 'updated_at',
-                            'type' => 'int64',
-                            'sort' => true,
-                        ],
-                    ],
-
-                    'default_sorting_field' => 'created_at',
-                ],
-
-            ],
-
         ],
     ],
 
