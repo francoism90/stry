@@ -38,23 +38,27 @@ class VideoQueryBuilder extends Builder
             ->latest();
     }
 
-    public function favoriteBy(User $user): self
+    public function favoriteBy(?User $user = null): self
     {
-        return $this->byGroupType($user, GroupType::Favorited);
+        return $this->inGroup($user, GroupType::Favorited);
     }
 
-    public function savedBy(User $user): self
+    public function savedBy(?User $user = null): self
     {
-        return $this->byGroupType($user, GroupType::Saved);
+        return $this->inGroup($user, GroupType::Saved);
     }
 
-    public function viewedBy(User $user): self
+    public function viewedBy(?User $user = null): self
     {
-        return $this->byGroupType($user, GroupType::Viewed);
+        return $this->inGroup($user, GroupType::Viewed);
     }
 
-    public function byGroupType(User $user, GroupType $type): self
+    public function inGroup(?User $user, GroupType $type): self
     {
+        if (! $user) {
+            return $this;
+        }
+
         return $this->whereHas('groups', fn (Builder $query) => $query
             ->where('user_id', $user->getKey())
             ->where('type', $type),

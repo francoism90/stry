@@ -7,9 +7,8 @@ namespace Domain\Videos\Scopes;
 use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
-use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Facades\Request;
 use Laravel\Scout\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 readonly class VideoFilterScope
 {
@@ -22,28 +21,24 @@ readonly class VideoFilterScope
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder($this->randomSeed()))
-            ->when($this->isFilter(VideoFilter::History), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::History))
-            ->when($this->isFilter(VideoFilter::Favorites), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Favorites))
-            ->when($this->isFilter(VideoFilter::Saved), fn (Builder $scout) => $this->applyFilter($scout, VideoFilter::Saved))
+            ->query(fn ($query) => $this->applyQuery($query))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
-            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'));
+            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
+            ->when($this->isDefault() && blank($scout->query), fn (Builder $scout) => $scout->randomOrder());
     }
 
-    protected function applyFilter(Builder $scout, VideoFilter $filter): Builder
+    protected function applyQuery(EloquentBuilder $query): EloquentBuilder
     {
-        // If no user is set, return the scout builder unmodified
-        if (! $user = $this->getUser()) {
-            return $scout;
-        }
+        // Get current user (if any)
+        $user = $this->getUser();
 
-        return match ($filter) {
-            VideoFilter::Favorites => $scout->query(fn ($query) => $query->favoriteBy($user)),
-            VideoFilter::History => $scout->query(fn ($query) => $query->viewedBy($user)),
-            VideoFilter::Saved => $scout->query(fn ($query) => $query->savedBy($user)),
-            default => $scout,
+        return match ($this->getFilter()) {
+            VideoFilter::Favorites => $query->favoriteBy($user),
+            VideoFilter::History => $query->viewedBy($user),
+            VideoFilter::Saved => $query->savedBy($user),
+            default => $query,
         };
     }
 
@@ -61,20 +56,6 @@ readonly class VideoFilterScope
         return is_string($orderValue) ? VideoOrder::from($orderValue) : $orderValue;
     }
 
-    protected function isFilter(VideoFilter ...$values): bool
-    {
-        $currentFilter = $this->getFilter();
-
-        return in_array($currentFilter, $values, true);
-    }
-
-    protected function isOrder(VideoOrder ...$values): bool
-    {
-        $currentOrderer = $this->getOrderer();
-
-        return $currentOrderer && in_array($currentOrderer, $values, true);
-    }
-
     protected function isDefault(): bool
     {
         return $this->isFilterDefault() && $this->isOrderDefault();
@@ -90,20 +71,22 @@ readonly class VideoFilterScope
         return $this->getOrderer() === VideoOrder::Default;
     }
 
+    protected function isFilter(VideoFilter ...$values): bool
+    {
+        $currentFilter = $this->getFilter();
+
+        return in_array($currentFilter, $values, true);
+    }
+
+    protected function isOrder(VideoOrder ...$values): bool
+    {
+        $currentOrderer = $this->getOrderer();
+
+        return $currentOrderer && in_array($currentOrderer, $values, true);
+    }
+
     protected function getUser(): ?User
     {
         return $this->user;
-    }
-
-    protected function randomSeed(): int
-    {
-        /** @var Repository $sessionCache */
-        $sessionCache = Request::session()->cache();
-
-        return $sessionCache->remember(
-            'video:random-seed',
-            now()->addHour(),
-            fn (): int => random_int(1, 1000)
-        );
     }
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
-use Domain\Groups\Models\Groupable;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
