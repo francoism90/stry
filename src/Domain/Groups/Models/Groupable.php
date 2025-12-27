@@ -16,6 +16,16 @@ class Groupable extends MorphPivot
      */
     protected $table = 'groupables';
 
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'group_id',
+        'groupable_id',
+        'groupable_type',
+        'options',
+    ];
+
     protected function casts(): array
     {
         return [
