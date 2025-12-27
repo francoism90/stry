@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -37,6 +38,7 @@ class Group extends Model implements HasMedia, Sortable
     use InteractsWithUser;
     use Notifiable;
     use Prunable;
+    use Searchable;
     use SoftDeletes;
     use SortableTrait;
 
@@ -169,6 +171,30 @@ class Group extends Model implements HasMedia, Sortable
     public function broadcastAfterCommit(): bool
     {
         return true;
+    }
+
+    public function makeSearchableUsing(GroupCollection $models): GroupCollection
+    {
+        return $models->loadMissing($this->with);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string) $this->getScoutKey(),
+            'user_id' => (string) $this->user_id,
+            'name' => (string) $this->name,
+            'content' => (string) $this->content,
+            'type' => (string) $this->type,
+            'state' => (string) $this->state,
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
+        ];
+    }
+
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with($this->with);
     }
 
     protected function title(): Attribute
