@@ -28,6 +28,7 @@ defineOptions({ layout: DashboardLayout })
           data="items"
           start-element="#playlist-header"
           items-element="#playlist-list"
+          :buffer="200"
         >
           <UPageList
             id="playlist-list"

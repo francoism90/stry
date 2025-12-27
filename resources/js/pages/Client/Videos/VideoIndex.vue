@@ -106,6 +106,7 @@ watchDebounced(
           data="items"
           start-element="#video-header"
           items-element="#video-list"
+          :buffer="200"
         >
           <VideoList
             id="video-list"
