@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
+use Domain\Groups\Models\Groupable;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -331,7 +332,7 @@ return [
                         ],
                         [
                             'name' => 'user_id',
-                            'type' => 'string',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'name',
@@ -457,7 +458,7 @@ return [
                         ],
                         [
                             'name' => 'user_id',
-                            'type' => 'string',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'name',
@@ -505,6 +506,43 @@ return [
                 'search-parameters' => [
                     'query_by' => 'name, content, type',
                     'facet_by' => 'state',
+                ],
+            ],
+
+            Groupable::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'group_id',
+                            'type' => 'int64',
+                        ],
+                        [
+                            'name' => 'groupable_type',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'groupable_id',
+                            'type' => 'int64',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'updated_at',
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'groupable_type, groupable_id',
+                    'facet_by' => 'groupable_type',
                 ],
             ],
 
