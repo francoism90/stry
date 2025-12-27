@@ -82,8 +82,8 @@ watchDebounced(
       <UPage>
         <InfiniteScroll
           data="items"
-          items-element="#video-list"
           start-element="#video-header"
+          items-element="#video-list"
         >
           <UPageList
             id="video-list"

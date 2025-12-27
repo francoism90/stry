@@ -30,11 +30,10 @@ class MediaController extends Controller implements HasMiddleware
 
         // QueryBuilder
         $scout = Media::query()
-            ->simplePaginate(16)
-            ->through(fn (Media $media) => new MediaResource($media));
+            ->simplePaginate(16);
 
         return Inertia::render('Admin/Media/MediaIndex', [
-            'items' => Inertia::scroll(fn () => $scout),
+            'items' => Inertia::scroll(fn () => MediaResource::collection($scout)),
         ]);
     }
 }

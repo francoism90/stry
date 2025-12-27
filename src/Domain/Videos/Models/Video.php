@@ -242,6 +242,7 @@ class Video extends Model implements HasMedia
     {
         return [
             'id' => (string) $this->getScoutKey(),
+            'user_id' => (int) $this->user_id,
             'name' => (string) $this->title,
             'description' => (string) $this->summary,
             'identifier' => (string) $this->identifier,

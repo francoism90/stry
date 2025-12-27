@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -329,6 +330,10 @@ return [
                             'type' => 'string',
                         ],
                         [
+                            'name' => 'user_id',
+                            'type' => 'int64',
+                        ],
+                        [
                             'name' => 'name',
                             'type' => 'string',
                             'sort' => true,
@@ -440,6 +445,66 @@ return [
                 'search-parameters' => [
                     'query_by' => 'name, description, tags, synonyms, identifier, released_at',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
+                ],
+            ],
+
+            Group::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'user_id',
+                            'type' => 'int64',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'content',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'type',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'created_at',
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'name, content',
+                    'facet_by' => 'state',
                 ],
             ],
 

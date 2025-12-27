@@ -34,11 +34,10 @@ class UserController extends Controller implements HasMiddleware
         // Scout builder
         $scout = User::search($search)
             ->query(fn ($query) => $query->with('permissions', 'roles'))
-            ->simplePaginate(16)
-            ->through(fn (User $user) => new UserResource($user));
+            ->simplePaginate(16);
 
         return Inertia::render('Admin/Users/UserIndex', [
-            'items' => Inertia::scroll(fn () => $scout),
+            'items' => Inertia::scroll(fn () => UserResource::collection($scout)),
         ]);
     }
 }

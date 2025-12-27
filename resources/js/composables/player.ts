@@ -18,7 +18,7 @@ export function usePlayer() {
     if (state.value && Math.abs((progress.value ?? 0) - time) > 0.5) {
       await http.post(PlaylistSessionController.url(state.value.id), { time })
     }
-  }, 2000)
+  }, 2500)
 
   return {
     state,
