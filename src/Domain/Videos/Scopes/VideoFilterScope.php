@@ -21,11 +21,11 @@ readonly class VideoFilterScope
     public function __invoke(Builder $scout): void
     {
         // Determine if we should use placeholder results
-        $usePlaceholder = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
+        $fallback = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
 
         $scout
             ->query(fn ($query) => $this->applyQuery($query))
-            ->when($usePlaceholder, fn (Builder $scout) => $scout->randomOrder())
+            ->when($fallback, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
