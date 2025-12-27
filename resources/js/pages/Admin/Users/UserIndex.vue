@@ -19,7 +19,7 @@ const form = useForm('get', '', {
 
 const onSubmit = () =>
   form.submit({
-    preserveState: 'errors',
+    preserveState: true,
     replace: true,
     only: ['items', 'search'],
     reset: ['items'],
