@@ -24,6 +24,7 @@ class Groupable extends MorphPivot
         'groupable_id',
         'groupable_type',
         'options',
+        'updated_at',
     ];
 
     protected function casts(): array
