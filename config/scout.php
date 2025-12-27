@@ -504,7 +504,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, content, type',
+                    'query_by' => 'name, content',
                     'facet_by' => 'state',
                 ],
             ],
@@ -523,7 +523,6 @@ return [
                         [
                             'name' => 'groupable_type',
                             'type' => 'string',
-                            'facet' => true,
                         ],
                         [
                             'name' => 'groupable_id',
@@ -541,13 +540,9 @@ return [
                         ],
                     ],
 
-                    'default_sorting_field' => 'updated_at',
+                    'default_sorting_field' => 'created_at',
                 ],
 
-                'search-parameters' => [
-                    'query_by' => 'groupable_type',
-                    'facet_by' => 'groupable_type',
-                ],
             ],
 
         ],
