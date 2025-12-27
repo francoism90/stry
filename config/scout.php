@@ -198,7 +198,7 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'name',
@@ -255,7 +255,7 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'name',
@@ -328,7 +328,7 @@ return [
                     'fields' => [
                         [
                            'name' => 'id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'user_id',
@@ -454,11 +454,11 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'user_id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'name',
@@ -514,7 +514,7 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'group_id',
