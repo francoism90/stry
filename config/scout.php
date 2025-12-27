@@ -327,7 +327,7 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                           'name' => 'id',
+                            'name' => 'id',
                             'type' => 'string',
                         ],
                         [

@@ -19,6 +19,11 @@ class Groupable extends MorphPivot
      */
     protected $table = 'groupables';
 
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
+
     protected function casts(): array
     {
         return [
