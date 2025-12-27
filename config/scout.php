@@ -198,7 +198,7 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'string',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'name',
@@ -255,7 +255,7 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'string',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'name',
@@ -327,8 +327,8 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                            'name' => 'id',
-                            'type' => 'string',
+                           'name' => 'id',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'user_id',
@@ -454,7 +454,7 @@ return [
                     'fields' => [
                         [
                             'name' => 'id',
-                            'type' => 'string',
+                            'type' => 'int64',
                         ],
                         [
                             'name' => 'user_id',
@@ -512,6 +512,10 @@ return [
             Groupable::class => [
                 'collection-schema' => [
                     'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'int64',
+                        ],
                         [
                             'name' => 'group_id',
                             'type' => 'int64',

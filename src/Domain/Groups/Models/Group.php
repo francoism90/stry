@@ -181,7 +181,7 @@ class Group extends Model implements HasMedia, Sortable
     public function toSearchableArray(): array
     {
         return [
-            'id' => (string) $this->getScoutKey(),
+            'id' => (int) $this->getScoutKey(),
             'user_id' => (int) $this->user_id,
             'name' => (string) $this->name,
             'content' => (string) $this->content,
