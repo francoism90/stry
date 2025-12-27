@@ -38,7 +38,7 @@ class HomeController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Video::search($search)
             ->tap(new VideoFilterScope(filter: $filter, order: $order, user: $request->user()))
-            ->simplePaginate(perPage: 18);
+            ->paginate(perPage: 18);
 
         return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
