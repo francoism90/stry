@@ -545,7 +545,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'groupable_type, groupable_id',
+                    'query_by' => 'groupable_type',
                     'facet_by' => 'groupable_type',
                 ],
             ],
