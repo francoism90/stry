@@ -6,6 +6,7 @@ namespace Domain\Videos\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
+use Domain\Videos\Models\Video;
 use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Builder;
@@ -59,10 +60,13 @@ class VideoQueryBuilder extends Builder
             return $this;
         }
 
-        return $this->whereHas('groups', fn (Builder $query) => $query
-            ->where('user_id', $user->getKey())
-            ->where('type', $type)
+        return $this
+            ->join('groupables', 'videos.id', '=', 'groupables.groupable_id')
+            ->join('groups', 'groupables.group_id', '=', 'groups.id')
+            ->where('groupables.groupable_type', 'video')
+            ->where('groups.user_id', $user->getKey())
+            ->where('groups.type', $type)
             ->orderByDesc('groupables.updated_at')
-        );
+            ->select('videos.*');
     }
 }
