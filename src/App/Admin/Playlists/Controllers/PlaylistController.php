@@ -30,11 +30,10 @@ class PlaylistController extends Controller implements HasMiddleware
 
         // QueryBuilder
         $scout = Playlist::query()
-            ->simplePaginate(16)
-            ->through(fn (Playlist $playlist) => new PlaylistResource($playlist));
+            ->simplePaginate(16);
 
         return Inertia::render('Admin/Playlists/PlaylistIndex', [
-            'items' => Inertia::scroll(fn () => $scout),
+            'items' => Inertia::scroll(fn () => PlaylistResource::collection($scout)),
         ]);
     }
 }

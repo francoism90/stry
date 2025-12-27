@@ -42,11 +42,10 @@ class VideoController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Video::search($search)
             ->tap(new VideoFilterScope(order: $order))
-            ->simplePaginate(16)
-            ->through(fn (Video $video) => new VideoResource($video));
+            ->simplePaginate(16);
 
         return Inertia::render('Admin/Videos/VideoIndex', [
-            'items' => Inertia::scroll(fn () => $scout),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'search' => fn () => $search,
             'order' => fn () => $order,
             'orders' => fn () => VideoOrder::options(),
