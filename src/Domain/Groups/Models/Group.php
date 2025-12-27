@@ -185,7 +185,7 @@ class Group extends Model implements HasMedia, Sortable
             'user_id' => (int) $this->user_id,
             'name' => (string) $this->name,
             'content' => (string) $this->content,
-            'type' => (string) $this->type,
+            'type' => (string) $this->type?->value ?? '',
             'state' => (string) $this->state,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
