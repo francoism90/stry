@@ -132,7 +132,7 @@ return [
 
     'previous_keys' => [
         ...array_filter(
-            explode(',', (string) env('APP_PREVIOUS_KEYS', '')),
+            explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
 
@@ -169,14 +169,7 @@ return [
         // Package Service Providers...
     ])->merge([
         // Application Service Providers...
-        Foundation\Providers\AppServiceProvider::class,
-        Foundation\Providers\AuthServiceProvider::class,
-        Foundation\Providers\BroadcastServiceProvider::class,
-        Foundation\Providers\EventServiceProvider::class,
-        Foundation\Providers\FortifyServiceProvider::class,
-        Foundation\Providers\HorizonServiceProvider::class,
-        Foundation\Providers\RouteServiceProvider::class,
-        Foundation\Providers\ViewServiceProvider::class,
+        // App\Providers\AppServiceProvider::class,
     ])->merge([
         // Added Service Providers (Do not remove this line)...
     ])->toArray(),
