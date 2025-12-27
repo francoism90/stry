@@ -66,6 +66,14 @@ class Group extends Model implements HasMedia, Sortable
         'user_id',
     ];
 
+    /**
+     * @var array<string, mixed>
+     */
+    public $sortable = [
+        'order_column_name' => 'order_column',
+        'sort_when_creating' => true,
+    ];
+
     protected static function newFactory(): GroupFactory
     {
         return GroupFactory::new();
@@ -134,9 +142,7 @@ class Group extends Model implements HasMedia, Sortable
 
     public function buildSortQuery(): Builder
     {
-        return static::query()
-            ->where('user_id', $this->user_id)
-            ->where('type', $this->type);
+        return static::query()->where('user_id', $this->user_id);
     }
 
     public function prunable(): Builder
