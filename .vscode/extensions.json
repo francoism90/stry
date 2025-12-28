@@ -1,10 +1,7 @@
 {
     "recommendations": [
-        "aaron-bond.better-comments",
         "bmewburn.vscode-intelephense-client",
         "bradlc.vscode-tailwindcss",
-        "christian-kohler.npm-intellisense",
-        "christian-kohler.path-intellisense",
         "dbaeumer.vscode-eslint",
         "devsense.composer-php-vscode",
         "EditorConfig.EditorConfig",
