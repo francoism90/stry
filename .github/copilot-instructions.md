@@ -1,164 +1,88 @@
-<laravel-boost-guidelines>
-=== foundation rules ===
+# Laravel Boost Copilot Instructions (2025 Refresh)
 
-# Laravel Boost Guidelines
+## Core Principles
 
-The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to enhance the user's satisfaction building Laravel applications.
+- **Follow DDD (Domain-Driven Design)**: Use the layered structure: Domain, Application, Foundation, Support. Keep business logic in Domain, HTTP/controllers in Application, bootstrapping in Foundation, and cross-cutting utilities in Support.
+- **Respect boundaries**: Outer layers depend on inner layers, never the reverse.
+- **Use PSR-4 namespaces**: Match file location to namespace (see below).
+- **No new top-level folders** without approval.
+- **Check sibling files** for naming, structure, and conventions before creating new files.
 
-## Foundational Context
+## Directory Structure & Namespaces
 
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
+- `src/Domain/` → `Domain\` (core business logic, models, actions, jobs, policies, states, query builders, collections, enums, observers, resources)
+- `src/Domain/Shared/` → `Domain\Shared\` (shared value objects, traits, interfaces)
+- `src/App/` → `App\` (controllers, requests, DTOs, API/web separation)
+- `src/Foundation/` → `Foundation\` (service providers, HTTP kernel, middleware, container bindings, helpers)
+- `src/Support/` → `Support\` (framework extensions, utilities, FFMpeg, MediaLibrary, Inertia, Scout, etc.)
 
-- php - 8.4.14
-- inertiajs/inertia-laravel (INERTIA) - v2.0.10
-- laravel/fortify (FORTIFY) - v1.31.2
-- laravel/framework (LARAVEL) - v12.37.0
-- laravel/horizon (HORIZON) - v5.39.0
-- laravel/octane (OCTANE) - v2.13.1
-- laravel/prompts (PROMPTS) - v0.3.7
-- laravel/reverb (REVERB) - v1.6.0
-- laravel/sanctum (SANCTUM) - v4.2.0
-- laravel/scout (SCOUT) - v10.21.0
-- laravel/wayfinder (WAYFINDER) - v0.1.12
-- larastan/larastan (LARASTAN) - v3.8.0
-- laravel/envoy (ENVOY) - v2.10.2
-- laravel/mcp (MCP) - v0.3.2
-- laravel/pint (PINT) - v1.25.1
-- laravel/telescope (TELESCOPE) - v5.15.0
-- pestphp/pest (PEST) - v4.1.3
-- phpunit/phpunit (PHPUNIT) - v12.4.1
-- @inertiajs/vue3 (INERTIA) - v2.2.15
-- @laravel/vite-plugin-wayfinder (WAYFINDER) - v0.1.7
-- laravel-echo (ECHO) - v2.2.4
-- tailwindcss (TAILWINDCSS) - v4.1.17
-- vue (VUE) - v3.5.24
-- eslint (ESLINT) - v9.39.1
-- prettier (PRETTIER) - v3.6.2
+## Package & Version Alignment
 
-## Domain-Driven Design Architecture
+- PHP 8.5+
+- Laravel 12.x
+- Inertia.js 2.x (inertiajs/inertia-laravel, @inertiajs/vue3)
+- Pest 4.x
+- Tailwind CSS 4.x
+- Wayfinder, Fortify, Horizon, Octane, Reverb, Sanctum, Scout, Telescope, Pint, Larastan, Envoy, MCP, Prettier, ESLint: use latest stable versions as in composer.json/package.json
 
-This application follows a **Domain-Driven Design (DDD)** architecture based on **Spatie's Laravel Beyond CRUD** principles. The architecture uses the following layer structure:
+## Coding Conventions
 
-### `src/Domain` - Domain Layer
+- **Use Facades** (Auth, Cache, Gate, etc.) over helpers for static analysis and consistency.
+- **Type everything**: Use PHP 8+ type hints and return types everywhere.
+- **Prefer constructor property promotion**.
+- **No env() outside config files**; use config().
+- **Controllers must be thin**: Delegate to domain actions/services.
+- **Form Requests for validation**: Never inline validation in controllers.
+- **Eloquent relationships**: Use relationship methods with return types.
+- **No raw DB queries unless necessary**; prefer Eloquent.
+- **Use factories in tests**; check for custom states.
+- **Use Pest for all tests**; feature tests preferred unless unit is more appropriate.
+- **Use datasets in Pest for repeated validation/data tests.**
+- **Use named routes and route() for URL generation.**
+- **No new dependencies without approval.**
 
-- Contains core business logic and entities
-- Each domain (Users, Videos, Playlists, Groups, Tags, Media, etc.) includes:
-    - `Models/` - Eloquent models representing domain entities
-    - `Actions/` - Business logic and domain operations
-    - `Jobs/` - Queued domain jobs
-    - `Commands/` - Artisan commands specific to the domain
-    - `States/` - Model states (using Spatie Model States)
-    - `Policies/` - Authorization policies
-    - `QueryBuilders/` - Custom Eloquent query builders for domain models
-    - `Scopes/` - Query scopes for reusable query logic
-    - `Collections/` - Custom Eloquent collection classes for enhanced model collection behavior
-    - `Resources/` - API resource transformers for consistent data formatting
-    - `Observers/` - Eloquent model observers for lifecycle event handling
-    - `Enums/` - Domain-specific enumerations for type-safe constants and values
-- Domain layer must remain framework-agnostic where possible
-- Business rules and domain logic belong here
+## Testing
 
-#### `src/Domain/Shared` - Shared Domain
+- All tests must use Pest.
+- Use assertSuccessful, assertForbidden, etc. (not assertStatus(200)).
+- Use browser tests for UI/UX flows (Pest v4+).
+- Use datasets for validation and repeated logic.
+- Run focused tests after changes; ask user before running full suite.
 
-- Contains domain logic that is shared across multiple domains
-- Includes common value objects, traits, interfaces, and abstractions
-- Should only contain truly cross-cutting domain concerns
+## Frontend
 
-### `src/App` - Application Layer
+- Use Inertia.js v2 features: polling, prefetching, deferred props, infinite scroll, lazy loading.
+- Use <Form> component or useForm helper for forms.
+- Use NuxtUI components (UButton, UInput, UCard, etc.) and Lucide icons (i-lucide-\*).
+- Use Tailwind v4: @import "tailwindcss"; no deprecated utilities.
+- Use gap utilities for spacing, not margins.
+- Support dark mode if other components/pages do.
+- Use router.visit() or <Link> for navigation.
+- Use Wayfinder action helpers for HTTP methods/URLs.
 
-- HTTP layer containing controllers and requests
-- `Api/` - API controllers and resources
-- `Web/` - Web controllers for Inertia.js pages
-- `Application.php` - Custom application class for framework bootstrapping
-- Application services and use cases
-- DTOs and data transformers
-- Controllers should be thin - delegate to domain actions
+## Containerization
 
-### `src/Foundation` - Foundation Layer
+- Use Podman with Quadlet/systemd for all container orchestration.
+- Service files in podman/systemd/; use bin/quadlet for management.
+- Rootless Podman setup for security.
+- See docs/podman.md for details.
 
-- Service providers and framework bootstrapping
-- Core infrastructure setup
-- `Providers/` - Application service providers (e.g., `AppServiceProvider`, `FortifyServiceProvider`, `HorizonServiceProvider`, `TelescopeServiceProvider`)
-- `Http/` - HTTP kernel and middleware configuration
-- `Container/` - Container bindings and service container extensions
-- `Helpers.php` - Global helper functions
-- Examples: `AppServiceProvider`, `FortifyServiceProvider`, `HorizonServiceProvider`, `TelescopeServiceProvider`
+## Miscellaneous
 
-### `src/Support` - Support Layer
+- Do not create verification scripts if tests already cover the functionality.
+- Only create documentation files if explicitly requested.
+- Be concise in explanations; focus on what matters.
 
-- Cross-cutting concerns and shared utilities
-- Framework extensions and custom implementations
-- Helpers that don't belong to a specific domain
-- `FFMpeg/` - Custom FFMpeg integration and video processing utilities
-- `MediaLibrary/` - Spatie Media Library extensions and customizations
-- `Inertia/` - Inertia.js framework extensions and middleware
-- `Scout/` - Laravel Scout search engine customizations
-- Examples: Custom FFMpeg, MediaLibrary, Inertia extensions
+## Example Namespaces
 
-### Namespaces
+- `src/Domain/Users/Models/User.php` → `Domain\Users\Models\User`
+- `src/App/Web/Controllers/UserController.php` → `App\Web\Controllers\UserController`
+- `src/Foundation/Providers/AppServiceProvider.php` → `Foundation\Providers\AppServiceProvider`
+- `src/Support/MediaLibrary/CustomPathGenerator.php` → `Support\MediaLibrary\CustomPathGenerator`
 
-All classes in `src/` follow PSR-4 autoloading with these base namespaces:
+---
 
-- `src/Domain/` → `Domain\` namespace
-    - Example: `src/Domain/Users/Models/User.php` → `Domain\Users\Models\User`
-    - Example: `src/Domain/Shared/Traits/HasUuid.php` → `Domain\Shared\Traits\HasUuid`
-- `src/App/` → `App\` namespace
-    - Example: `src/App/Web/Controllers/UserController.php` → `App\Web\Controllers\UserController`
-    - Example: `src/App/Api/V1/Controllers/VideoController.php` → `App\Api\V1\Controllers\VideoController`
-- `src/Foundation/` → `Foundation\` namespace
-    - Example: `src/Foundation/Providers/AppServiceProvider.php` → `Foundation\Providers\AppServiceProvider`
-- `src/Support/` → `Support\` namespace
-    - Example: `src/Support/MediaLibrary/CustomPathGenerator.php` → `Support\MediaLibrary\CustomPathGenerator`
-
-**Always use the correct namespace based on the file's location in the `src/` directory structure.**
-
-### DDD Guidelines
-
-- **Respect domain boundaries** - keep domains isolated and cohesive
-- **Dependency direction** - outer layers depend on inner layers, never the reverse
-- **Business logic placement** - domain logic belongs in `src/Domain`, not controllers
-- **Naming conventions** - follow existing DDD naming patterns in sibling files
-- **No new base directories** - do not create new top-level directories without approval
-- When creating files, check sibling files in the same domain for structure and patterns
-
-## Conventions
-
-- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, naming.
-- Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
-- Check for existing components to reuse before writing a new one.
-
-## Verification Scripts
-
-- Do not create verification scripts or tinker when tests cover that functionality and prove it works. Unit and feature tests are more important.
-
-## Application Structure & Architecture
-
-- Stick to existing directory structure - don't create new base folders without approval.
-- Do not change the application's dependencies without approval.
-
-## Podman & Containerization
-
-- This application uses **Podman** with **Quadlet** (systemd integration) for containerization in both development and production environments.
-- Container configurations are stored in `containers/` directory with `Containerfile` for image builds.
-- Quadlet service files are in `podman/systemd/` for systemd-managed container orchestration.
-- The application runs in a **rootless** Podman setup for enhanced security.
-- See `docs/podman.md` for detailed setup instructions and configuration.
-- Use `bin/quadlet` helper script for common container management tasks.
-- Container runtimes (FrankenPHP, etc.) are configured in `containers/runtimes/`.
-
-## Frontend Bundling
-
-- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `pnpm run build`, `pnpm run dev`, or `composer run dev`. Ask them.
-
-## Replies
-
-- Be concise in your explanations - focus on what's important rather than explaining obvious details.
-
-## Documentation Files
-
-- You must only create documentation files if explicitly requested by the user.
-
-=== boost rules ===
+**Always check for the latest Boost rules and package versions before making structural or architectural changes.**
 
 ## Laravel Boost
 
@@ -437,7 +361,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                                          $response->assertSuccessful();
+                                            $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -596,13 +520,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                                        <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                                            <div class="flex gap-8">
-                                                <div>Superior</div>
-                                                <div>Michigan</div>
-                                                <div>Erie</div>
-                                            </div>
-                                        </code-snippet>
+                                          <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                                              <div class="flex gap-8">
+                                                  <div>Superior</div>
+                                                  <div>Michigan</div>
+                                                  <div>Erie</div>
+                                              </div>
+                                          </code-snippet>
 
 ### Dark Mode
 
