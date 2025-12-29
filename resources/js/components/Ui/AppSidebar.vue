@@ -57,7 +57,7 @@ const links: NavigationMenuItem[][] = [
     }"
   >
     <template #header>
-      <AppLogo />
+      <AppLogo class="w-full" />
     </template>
 
     <template #default="{ collapsed }">
