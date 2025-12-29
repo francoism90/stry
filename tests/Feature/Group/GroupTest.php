@@ -21,11 +21,11 @@ it('can create a custom group', function () {
 
 it('can create favorite group', function () {
     $user = User::factory()->create();
-    $group = $user->favoritedGroup();
+    $group = $user->favoriteGroup();
 
     expect($group->exists)->toBeTrue()
         ->and($group->user_id)->toBe($user->id)
-        ->and($group->type)->toBe(GroupType::Favorited);
+        ->and($group->type)->toBe(GroupType::Favorite);
 });
 
 it('can attach and detach videos to saved group', function () {
@@ -61,7 +61,7 @@ it('can attach and detach videos to favorite group', function () {
     expect($user->isFavorite($video))->toBeTrue();
 
     // Detach using HasGroups toggle method
-    $user->toggleFavorited($video);
+    $user->toggleFavorite($video);
     $group->refresh();
 
     expect($user->isFavorite($video))->toBeFalse();
