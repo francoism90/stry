@@ -48,14 +48,14 @@ it('can attach and detach videos to saved group', function () {
     expect($user->isSaved($video))->toBeFalse();
 });
 
-it('can attach and detach videos to favorited group', function () {
+it('can attach and detach videos to favorite group', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
 
     // Attach using HasGroups method
-    $user->markAsFavorited($video);
+    $user->markAsFavorite($video);
 
-    $group = $user->favoritedGroup();
+    $group = $user->favoriteGroup();
     $group->refresh();
 
     expect($user->isFavorite($video))->toBeTrue();
