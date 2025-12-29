@@ -15,20 +15,20 @@ const props = defineProps<{
   queue?: Video[]
 }>()
 
-const { toggleGroup } = useVideos()
+const { toggleFavorite, toggleSaved } = useVideos()
 
 const back = () => (window && window.history?.length > 1 ? window.history.back() : router.visit('/'))
 
 const links = computed<ButtonProps[]>(() => [
   {
-    label: props.video.favorited ? 'Unfavorite' : 'Favorite',
-    icon: props.video.favorited ? 'i-lucide-heart' : 'i-lucide-heart-plus',
-    onClick: () => toggleGroup(props.video, 'favorited'),
+    label: props.video.favorite ? 'Unfavorite' : 'Favorite',
+    icon: props.video.favorite ? 'i-lucide-heart' : 'i-lucide-heart-plus',
+    onClick: () => toggleFavorite(props.video),
   },
   {
     label: props.video.saved ? 'Unsave' : 'Save',
     icon: props.video.saved ? 'i-lucide-bookmark' : 'i-lucide-bookmark-plus',
-    onClick: () => toggleGroup(props.video, 'saved'),
+    onClick: () => toggleSaved(props.video),
   },
   {
     label: 'Edit',

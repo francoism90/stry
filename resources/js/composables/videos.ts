@@ -3,7 +3,11 @@ import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 export function useVideos() {
-  const toggleGroup = (video: Video, type: string) =>
+  const toggleFavorite = async (video: Video) => await toggleGroup(video, 'favorite')
+
+  const toggleSaved = async (video: Video) => await toggleGroup(video, 'saved')
+
+  const toggleGroup = async (video: Video, type: string) =>
     router.post(
       VideoGroupController.url({ video: video.id, type }),
       {},
@@ -14,6 +18,7 @@ export function useVideos() {
     )
 
   return {
-    toggleGroup,
+    toggleFavorite,
+    toggleSaved,
   }
 }

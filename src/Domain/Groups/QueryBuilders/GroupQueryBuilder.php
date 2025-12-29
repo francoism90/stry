@@ -21,7 +21,7 @@ class GroupQueryBuilder extends Builder
 
     public function favorite(): self
     {
-        return $this->where('type', GroupType::Favorited);
+        return $this->where('type', GroupType::Favorite);
     }
 
     public function saved(): self

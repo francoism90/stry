@@ -40,7 +40,7 @@ class VideoQueryBuilder extends Builder
 
     public function favoriteBy(?User $user = null): self
     {
-        return $this->inGroup($user, GroupType::Favorited);
+        return $this->inGroup($user, GroupType::Favorite);
     }
 
     public function savedBy(?User $user = null): self
