@@ -250,6 +250,11 @@ class Playlist extends Model
         return Config::string('playlists.disk_name', 'segments');
     }
 
+    public static function getSegmentDuration(): int
+    {
+        return Config::integer('playlists.segment_duration', 6);
+    }
+
     public static function getSecretsDisk(): string
     {
         return Config::string('playlists.secret_disk', 'secrets');

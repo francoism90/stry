@@ -11,6 +11,12 @@ return [
     'disk_name' => env('PLAYLIST_DISK', 'segments'),
 
     /**
+     * This setting is used to define the duration of each segment in the playlist, in seconds.
+     * A typical value is between 4 and 10 seconds.
+     */
+    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 6),
+
+    /**
      * This setting is used to define the disk where the playlist encryption keys will be stored.
      * The disk should be configured in the `filesystems.php` configuration file.
      */

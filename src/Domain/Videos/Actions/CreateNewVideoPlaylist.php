@@ -53,7 +53,8 @@ class CreateNewVideoPlaylist
                 ->open($path)
                 ->addVideoStream($path, $videoOutput)
                 ->addAudioStream($path, $audioOutput)
-                ->withHlsMasterPlaylist($playlist->getFileName());
+                ->withHlsMasterPlaylist($playlist->getFileName())
+                ->withSegmentDuration(Playlist::getSegmentDuration());
 
             // Add text tracks (captions) to the playlist if available
             $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
