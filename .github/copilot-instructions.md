@@ -1,3 +1,19 @@
+# Key Technologies & Packages
+
+This project uses the following core technologies and packages:
+
+- **Laravel 12.x** (application framework)
+- **Laravel Shaka** (HLS video packaging and streaming)
+- **Laravel Scout** (full-text search integration)
+- **Inertia.js 2.x** (SPA routing and server-driven UI)
+- **NuxtUI** (UI component library)
+- **Pest 4.x** (testing framework)
+- **Tailwind CSS 4.x** (utility-first CSS framework)
+- **Podman & Quadlet** (containerization and orchestration)
+- **Wayfinder, Fortify, Horizon, Octane, Reverb, Sanctum, Telescope, Pint, Larastan, Envoy, MCP, Prettier, ESLint** (see composer.json/package.json for versions)
+
+All instructions and conventions below are designed to align with these technologies and their best practices.
+
 # Laravel Boost Copilot Instructions (2025 Refresh)
 
 ## Core Principles
@@ -361,7 +377,7 @@ Route::get('/users', function () {
   it('returns all', function () {
   $response = $this->postJson('/api/docs', []);
 
-                                            $response->assertSuccessful();
+                                              $response->assertSuccessful();
 
     });
     </code-snippet>
@@ -520,13 +536,13 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 
 - When listing items, use gap utilities for spacing, don't use margins.
 
-                                          <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-                                              <div class="flex gap-8">
-                                                  <div>Superior</div>
-                                                  <div>Michigan</div>
-                                                  <div>Erie</div>
-                                              </div>
-                                          </code-snippet>
+                                            <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+                                                <div class="flex gap-8">
+                                                    <div>Superior</div>
+                                                    <div>Michigan</div>
+                                                    <div>Erie</div>
+                                                </div>
+                                            </code-snippet>
 
 ### Dark Mode
 
