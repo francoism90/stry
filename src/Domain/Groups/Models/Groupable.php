@@ -42,6 +42,15 @@ class Groupable extends MorphPivot
         ];
     }
 
+    public function newQueryForRestoration($ids)
+    {
+        logger($ids);
+
+        return is_array($ids)
+                ? $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids)
+                : $this->newQueryWithoutScopes()->whereKey($ids);
+    }
+
     public function groupable(): MorphTo
     {
         return $this->MorphTo();
