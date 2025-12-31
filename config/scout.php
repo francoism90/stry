@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
+use Domain\Groups\Models\Groupable;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -506,6 +507,51 @@ return [
                     'query_by' => 'name, content',
                     'facet_by' => 'state',
                 ],
+            ],
+
+            Groupable::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'group_id',
+                            'type' => 'int64',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'groupable_id',
+                            'type' => 'int64',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'groupable_type',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'default_sorting_field' => 'created_at',
+
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'groupable_type',
+                    'facet_by' => 'group_id, groupable_id, groupable_type',
+                ],
+
             ],
 
         ],

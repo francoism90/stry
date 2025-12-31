@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Laravel\Scout\Searchable;
 
 class Groupable extends MorphPivot
 {
+    use Searchable;
+
     /**
      * @var string
      */
@@ -42,5 +45,31 @@ class Groupable extends MorphPivot
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    public function getScoutKey(): mixed
+    {
+        return implode('-', [
+            $this->group_id,
+            $this->groupable_type,
+            $this->groupable_id,
+        ]);
+    }
+
+    public function getScoutKeyName(): string
+    {
+        return 'group_id';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'group_id' => $this->group_id,
+            'groupable_type' => $this->groupable_type,
+            'groupable_id' => $this->groupable_id,
+            'options' => $this->options,
+            'created_at' => $this->created_at->getTimestamp(),
+            'updated_at' => $this->updated_at->getTimestamp(),
+        ];
     }
 }
