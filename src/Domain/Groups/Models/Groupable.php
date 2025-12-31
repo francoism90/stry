@@ -68,12 +68,11 @@ class Groupable extends MorphPivot
     {
         return [
             'id' => (string) $this->getScoutKey(),
-            'group_id' => $this->group_id,
-            'groupable_type' => $this->groupable_type,
-            'groupable_id' => $this->groupable_id,
-            'options' => $this->options,
-            'created_at' => $this->created_at->getTimestamp(),
-            'updated_at' => $this->updated_at->getTimestamp(),
+            'group_id' =>  (string) $this->group_id,
+            'groupable_type' => (string) $this->groupable_type,
+            'groupable_id' => (string) $this->groupable_id,
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
     }
 }

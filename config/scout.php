@@ -518,12 +518,12 @@ return [
                         ],
                         [
                             'name' => 'group_id',
-                            'type' => 'int64',
-                            'facet' => true,
+                            'type' => 'string',
+                            'reference' => 'groups.id',
                         ],
                         [
                             'name' => 'groupable_id',
-                            'type' => 'int64',
+                            'type' => 'string',
                             'facet' => true,
                         ],
                         [
@@ -549,7 +549,7 @@ return [
 
                 'search-parameters' => [
                     'query_by' => 'groupable_type',
-                    'facet_by' => 'group_id, groupable_id, groupable_type',
+                    'facet_by' => 'groupable_id, groupable_type',
                 ],
 
             ],
