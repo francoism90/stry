@@ -20,6 +20,11 @@ class Groupable extends MorphPivot
     protected $table = 'groupables';
 
     /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [
@@ -47,23 +52,10 @@ class Groupable extends MorphPivot
         return $this->belongsTo(Group::class, 'group_id');
     }
 
-    public function getScoutKey(): mixed
-    {
-        return implode('-', [
-            $this->group_id,
-            $this->groupable_type,
-            $this->groupable_id,
-        ]);
-    }
-
-    public function getScoutKeyName(): string
-    {
-        return 'group_id';
-    }
-
     public function toSearchableArray(): array
     {
         return [
+            'id' => $this->getScoutKey(),
             'group_id' => $this->group_id,
             'groupable_type' => $this->groupable_type,
             'groupable_id' => $this->groupable_id,
