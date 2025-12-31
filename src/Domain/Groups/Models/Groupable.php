@@ -25,6 +25,11 @@ class Groupable extends MorphPivot
     protected $primaryKey = 'id';
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [
