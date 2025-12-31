@@ -55,7 +55,7 @@ class Groupable extends MorphPivot
     public function toSearchableArray(): array
     {
         return [
-            'id' => $this->getScoutKey(),
+            'id' => (string) $this->getScoutKey(),
             'group_id' => $this->group_id,
             'groupable_type' => $this->groupable_type,
             'groupable_id' => $this->groupable_id,
