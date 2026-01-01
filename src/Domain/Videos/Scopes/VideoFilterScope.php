@@ -23,8 +23,10 @@ readonly class VideoFilterScope
         // Determine if we should use placeholder results
         $defaultOrder = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
 
+        $options = $this->getOptions();
+
         $scout
-            ->query(fn ($query) => $this->applyQuery($query))
+            ->when($options, fn (Builder $scout) => $scout->options($options))
             ->when($defaultOrder, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
@@ -32,17 +34,29 @@ readonly class VideoFilterScope
             ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'));
     }
 
-    protected function applyQuery(EloquentBuilder $query): EloquentBuilder
+    protected function getOptions(): array
     {
-        // Get current user (if any)
+        $options = [];
+
+        // Get the current user (if any)
         $user = $this->getUser();
 
-        return match ($this->getFilter()) {
-            VideoFilter::Favorites => $query->favoriteBy($user),
-            VideoFilter::History => $query->viewedBy($user),
-            VideoFilter::Saved => $query->savedBy($user),
-            default => $query,
+        // Build group options
+        $group = match ($this->getFilter()) {
+            VideoFilter::Favorites => $user?->favoriteGroup(),
+            VideoFilter::Saved => $user?->savedGroup(),
+            VideoFilter::History => $user?->viewedGroup(),
         };
+
+        if ($group) {
+            $options['filter_by'] = sprintf('$groupables(group_id:%d)', $group->getKey());
+
+            if ($this->isOrderDefault()) {
+                $options['sort_by'] = '$groupables(updated_at:desc)';
+            }
+        }
+
+        return $options;
     }
 
     protected function getFilter(): VideoFilter
