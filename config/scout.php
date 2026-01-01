@@ -525,11 +525,6 @@ return [
                             'optional' => true,
                         ],
                         [
-                            'name' => 'type',
-                            'type' => 'string',
-                            'facet' => true,
-                        ],
-                        [
                             'name' => 'created_at',
                             'type' => 'int64',
                             'sort' => true,
@@ -546,7 +541,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'group_id, video_id, user_id, tag_id, type',
+                    'query_by' => 'group_id, video_id, user_id, tag_id',
                 ],
 
             ],
