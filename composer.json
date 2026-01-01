@@ -19,7 +19,7 @@
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2.1",
-        "inertiajs/inertia-laravel": "^2.0.17",
+        "inertiajs/inertia-laravel": "^2.0.18",
         "laravel/fortify": "^1.33.0",
         "laravel/framework": "^12.44.0",
         "laravel/horizon": "^5.41.0",
@@ -55,7 +55,7 @@
         "laravel/telescope": "^5.16.0",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.8.3",
-        "pestphp/pest": "^4.2.0",
+        "pestphp/pest": "^4.3.0",
         "pestphp/pest-plugin-laravel": "^4.0"
     },
     "autoload": {

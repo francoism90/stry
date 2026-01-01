@@ -74,7 +74,7 @@ class Groupable extends MorphPivot
             'group_id' => (string) $this->group_id,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
-            ...[$groupable_type => (string) $this->groupable_id]
+            ...[$groupable_type => (string) $this->groupable_id],
         ];
     }
 }
