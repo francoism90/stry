@@ -524,12 +524,11 @@ return [
                         [
                             'name' => 'groupable_id',
                             'type' => 'string',
-                            'facet' => true,
+                            'reference' => 'videos.id',
                         ],
                         [
                             'name' => 'groupable_type',
                             'type' => 'string',
-                            'facet' => true,
                         ],
                         [
                             'name' => 'created_at',
@@ -548,8 +547,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'groupable_type',
-                    'facet_by' => 'groupable_id, groupable_type',
+                    'query_by' => 'groupable_id, groupable_type',
                 ],
 
             ],
