@@ -23,9 +23,9 @@ const links: NavigationMenuItem[][] = [
       to: '/history',
     },
     {
-      label: 'Favorites',
+      label: 'Liked',
       icon: 'i-lucide-heart',
-      to: '/favorites',
+      to: '/liked',
     },
     {
       label: 'Saved',

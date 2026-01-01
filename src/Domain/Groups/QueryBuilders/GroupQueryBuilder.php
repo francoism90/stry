@@ -19,9 +19,9 @@ class GroupQueryBuilder extends Builder
         return $this->where('type', GroupType::Mixer);
     }
 
-    public function favorite(): self
+    public function liked(): self
     {
-        return $this->where('type', GroupType::Favorite);
+        return $this->where('type', GroupType::Liked);
     }
 
     public function saved(): self

@@ -19,13 +19,13 @@ it('can create a custom group', function () {
         ->and($group->type)->toBe(GroupType::Custom);
 });
 
-it('can create favorite group', function () {
+it('can create like group', function () {
     $user = User::factory()->create();
-    $group = $user->favoriteGroup();
+    $group = $user->likedGroup();
 
     expect($group->exists)->toBeTrue()
         ->and($group->user_id)->toBe($user->id)
-        ->and($group->type)->toBe(GroupType::Favorite);
+        ->and($group->type)->toBe(GroupType::Liked);
 });
 
 it('can attach and detach videos to saved group', function () {
@@ -48,21 +48,21 @@ it('can attach and detach videos to saved group', function () {
     expect($user->isSaved($video))->toBeFalse();
 });
 
-it('can attach and detach videos to favorite group', function () {
+it('can attach and detach videos to like group', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
 
     // Attach using HasGroups method
-    $user->markAsFavorite($video);
+    $user->markAsLiked($video);
 
-    $group = $user->favoriteGroup();
+    $group = $user->likedGroup();
     $group->refresh();
 
-    expect($user->isFavorite($video))->toBeTrue();
+    expect($user->isLiked($video))->toBeTrue();
 
     // Detach using HasGroups toggle method
-    $user->toggleFavorite($video);
+    $user->toggleLiked($video);
     $group->refresh();
 
-    expect($user->isFavorite($video))->toBeFalse();
+    expect($user->isLiked($video))->toBeFalse();
 });

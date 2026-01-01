@@ -67,7 +67,7 @@ export type Video = Model & {
   captions: Media[] | null
   tags: Tag[] | null
   expires_at: string | undefined
-  favorite: boolean | undefined
+  liked: boolean | undefined
   saved: boolean | undefined
   viewed: boolean | undefined
   published_at: string | undefined

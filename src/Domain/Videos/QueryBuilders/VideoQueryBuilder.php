@@ -38,9 +38,9 @@ class VideoQueryBuilder extends Builder
             ->latest();
     }
 
-    public function favoriteBy(?User $user = null): self
+    public function likedBy(?User $user = null): self
     {
-        return $this->inGroup($user, GroupType::Favorite);
+        return $this->inGroup($user, GroupType::Liked);
     }
 
     public function savedBy(?User $user = null): self

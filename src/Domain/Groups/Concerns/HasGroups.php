@@ -30,9 +30,9 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
-    public function isFavorite(Model $model): bool
+    public function isLiked(Model $model): bool
     {
-        return $this->groupHasModel($model, GroupType::Favorite);
+        return $this->groupHasModel($model, GroupType::Liked);
     }
 
     public function isSaved(Model $model): bool
@@ -53,9 +53,9 @@ trait HasGroups
         ]);
     }
 
-    public function favoriteGroup(): Group
+    public function likedGroup(): Group
     {
-        return $this->findOrCreateGroup(GroupType::Favorite);
+        return $this->findOrCreateGroup(GroupType::Liked);
     }
 
     public function savedGroup(): Group
@@ -68,9 +68,9 @@ trait HasGroups
         return $this->findOrCreateGroup(GroupType::Viewed);
     }
 
-    public function markAsFavorite(Model $model, ?array $options = null): Model
+    public function markAsLiked(Model $model, ?array $options = null): Model
     {
-        return $model->attachToGroup($this->favoriteGroup(), $options);
+        return $model->attachToGroup($this->likedGroup(), $options);
     }
 
     public function markAsSaved(Model $model, ?array $options = null): Model
@@ -83,9 +83,9 @@ trait HasGroups
         return $model->attachToGroup($this->viewedGroup(), $options);
     }
 
-    public function toggleFavorite(Model $model, ?array $options = null): Model
+    public function toggleLiked(Model $model, ?array $options = null): Model
     {
-        return $model->toggleGroup($this->favoriteGroup(), $options);
+        return $model->toggleGroup($this->likedGroup(), $options);
     }
 
     public function toggleSaved(Model $model, ?array $options = null): Model

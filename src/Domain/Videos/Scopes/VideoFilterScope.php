@@ -45,7 +45,7 @@ readonly class VideoFilterScope
 
         // Build group options
         $group = match ($this->getFilter()) {
-            VideoFilter::Favorites => $user?->favoriteGroup(),
+            VideoFilter::Liked => $user?->likedGroup(),
             VideoFilter::Saved => $user?->savedGroup(),
             VideoFilter::History => $user?->viewedGroup(),
             default => null,

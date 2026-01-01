@@ -34,7 +34,7 @@ class VideoGroupController extends Controller implements HasMiddleware
 
         // Toggle the group association based on the type
         match ($type) {
-            GroupType::Favorite => $user->toggleFavorite($video),
+            GroupType::Liked => $user->toggleLiked($video),
             GroupType::Saved => $user->toggleSaved($video),
             default => abort(403),
         };
