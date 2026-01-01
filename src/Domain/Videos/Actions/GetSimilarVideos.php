@@ -22,7 +22,7 @@ class GetSimilarVideos
             ...$this->phraseMatches($video),
             ...$this->tagMatches($video),
             ...$this->randomCandidates($video),
-        ])->unique('id')->take($limit ?? 16);
+        ])->unique('id')->take($limit ?? 18);
     }
 
     /**
