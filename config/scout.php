@@ -546,7 +546,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'video_id',
+                    'query_by' => 'group_id, video_id, user_id, tag_id, type',
                 ],
 
             ],
