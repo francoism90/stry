@@ -21,6 +21,11 @@ const back = () => (window && window.history?.length > 1 ? window.history.back()
 
 const links = computed<ButtonProps[]>(() => [
   {
+    label: 'Edit',
+    to: edit.url(props.video.id),
+    icon: 'i-lucide-clipboard-pen',
+  },
+  {
     label: props.video.favorite ? 'Unfavorite' : 'Favorite',
     icon: props.video.favorite ? 'i-lucide-heart' : 'i-lucide-heart-plus',
     onClick: () => toggleFavorite(props.video),
@@ -29,11 +34,6 @@ const links = computed<ButtonProps[]>(() => [
     label: props.video.saved ? 'Unsave' : 'Save',
     icon: props.video.saved ? 'i-lucide-bookmark' : 'i-lucide-bookmark-plus',
     onClick: () => toggleSaved(props.video),
-  },
-  {
-    label: 'Edit',
-    to: edit.url(props.video.id),
-    icon: 'i-lucide-clipboard-pen',
   },
 ])
 
