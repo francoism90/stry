@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Related extends Model
 {
     /**
+     * @var string
+     */
+    protected $table = 'related';
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [

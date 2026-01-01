@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
+use Domain\Groups\Models\Group;
 use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Laravel\Scout\Builder;
 
 readonly class VideoFilterScope
@@ -20,11 +20,14 @@ readonly class VideoFilterScope
 
     public function __invoke(Builder $scout): void
     {
+        // Get options based on current filter and user
+        $options = $this->getOptions();
+
         // Determine if we should use placeholder results
         $defaultOrder = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
 
         $scout
-            ->query(fn ($query) => $this->applyQuery($query))
+            ->when($options, fn (Builder $scout) => $scout->options($options))
             ->when($defaultOrder, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
@@ -32,17 +35,33 @@ readonly class VideoFilterScope
             ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'));
     }
 
-    protected function applyQuery(EloquentBuilder $query): EloquentBuilder
+    protected function getOptions(): array
     {
-        // Get current user (if any)
+        // Get the current user (if any)
         $user = $this->getUser();
 
-        return match ($this->getFilter()) {
-            VideoFilter::Favorites => $query->favoriteBy($user),
-            VideoFilter::History => $query->viewedBy($user),
-            VideoFilter::Saved => $query->savedBy($user),
-            default => $query,
+        // Initialize options array
+        $options = [];
+
+        // Build group options
+        $group = match ($this->getFilter()) {
+            VideoFilter::Favorites => $user?->favoriteGroup(),
+            VideoFilter::Saved => $user?->savedGroup(),
+            VideoFilter::History => $user?->viewedGroup(),
+            default => null,
         };
+
+        if ($group instanceof Group) {
+            // Set filter by group ID
+            $options['filter_by'] = sprintf('$groupables(group_id:%d)', $group->getKey());
+
+            // Set default sorting for certain filters
+            if ($this->isOrderDefault()) {
+                $options['sort_by'] = '$groupables(updated_at:desc)';
+            }
+        }
+
+        return $options;
     }
 
     protected function getFilter(): VideoFilter
