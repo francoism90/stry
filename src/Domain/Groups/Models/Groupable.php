@@ -75,7 +75,7 @@ class Groupable extends MorphPivot
             'user_id' => (string) $type === 'user' ? $this->groupable_id : null,
             'video_id' => (string) $type === 'video' ? $this->groupable_id : null,
             'tag_id' => (string) $type === 'tag' ? $this->groupable_id : null,
-            'type' => (string) $this->type,
+            'type' => (string) $type,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
