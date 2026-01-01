@@ -231,11 +231,6 @@ return [
                             'type' => 'int64',
                             'sort' => true,
                         ],
-                        [
-                            'name' => '__soft_deleted',
-                            'type' => 'int64',
-                            'optional' => true,
-                        ],
                     ],
 
                     'default_sorting_field' => 'created_at',
@@ -332,7 +327,7 @@ return [
                         ],
                         [
                             'name' => 'user_id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'name',
@@ -430,11 +425,6 @@ return [
                             'type' => 'int64',
                             'sort' => true,
                         ],
-                        [
-                            'name' => '__soft_deleted',
-                            'type' => 'int64',
-                            'optional' => true,
-                        ],
                     ],
 
                     'default_sorting_field' => 'created_at',
@@ -458,7 +448,7 @@ return [
                         ],
                         [
                             'name' => 'user_id',
-                            'type' => 'int64',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'name',
@@ -490,11 +480,6 @@ return [
                             'type' => 'int64',
                             'sort' => true,
                         ],
-                        [
-                            'name' => '__soft_deleted',
-                            'type' => 'int64',
-                            'optional' => true,
-                        ],
                     ],
 
                     'default_sorting_field' => 'created_at',
@@ -522,13 +507,27 @@ return [
                             'reference' => 'groups.id',
                         ],
                         [
-                            'name' => 'groupable_id',
+                            'name' => 'video_id',
                             'type' => 'string',
                             'reference' => 'videos.id',
+                            'optional' => true,
                         ],
                         [
-                            'name' => 'groupable_type',
+                            'name' => 'user_id',
                             'type' => 'string',
+                            'reference' => 'users.id',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'tag_id',
+                            'type' => 'string',
+                            'reference' => 'tags.id',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'type',
+                            'type' => 'string',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'created_at',
@@ -542,12 +541,12 @@ return [
                         ],
                     ],
 
-                    'default_sorting_field' => 'created_at',
+                    'default_sorting_field' => 'updated_at',
 
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'groupable_id, groupable_type',
+                    'query_by' => 'video_id',
                 ],
 
             ],

@@ -66,11 +66,16 @@ class Groupable extends MorphPivot
 
     public function toSearchableArray(): array
     {
+        // Type will be used to identify the related model (join purposes)
+        $type = $this->groupable_type;
+
         return [
             'id' => (string) $this->getScoutKey(),
             'group_id' =>  (string) $this->group_id,
-            'groupable_type' => (string) $this->groupable_type,
-            'groupable_id' => (string) $this->groupable_id,
+            'user_id' => (string) $type === 'user' ? $this->groupable_id : null,
+            'video_id' => (string) $type === 'video' ? $this->groupable_id : null,
+            'tag_id' => (string) $type === 'tag' ? $this->groupable_id : null,
+            'type' => (string) $this->type,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
