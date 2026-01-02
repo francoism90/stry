@@ -22,11 +22,14 @@ class CreateNewVideoPlaylist
                 return $next($video);
             }
 
-            // Get the first media item from the video
-            $media = $video->getClipCollection()->first();
+            // Get the media items from the video
+            $clips = $video->getClipCollection();
 
             // Get the path relative to the disk root
-            $path = $media->getPathRelativeToRoot();
+            $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
+
+            // Initialize Shaka Packager
+            $opener = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
             // Get encryption method from config
             $encryptionMethod = Playlist::getEncryptionMethod();
@@ -43,16 +46,21 @@ class CreateNewVideoPlaylist
                 'type' => 'clip',
             ]);
 
-            // Create HLS playlist - use TS segments for AES-128-CBC encryption compatibility
-            // fMP4 + cbc1 may not be supported; TS segments work reliably with AES-128
-            $videoOutput = $encryption ? 'video.ts' : 'video.mp4';
-            $audioOutput = $encryption ? 'audio.ts' : 'audio.mp4';
+            // Iterate through each clip and add to the playlist
+            $paths->each(function (string $path) use ($opener, $encryption) {
+                // Create HLS playlist - use TS segments for AES-128-CBC encryption compatibility
+                // fMP4 + cbc1 may not be supported; TS segments work reliably with AES-128
+                $videoExtension = $encryption ? 'ts' : 'mp4';
+                $audioExtension = $encryption ? 'ts' : 'mp4';
 
-            // Build Shaka Packager command
-            $opener = Shaka::fromDisk($media->disk)
-                ->open($path)
-                ->addVideoStream($path, $videoOutput)
-                ->addAudioStream($path, $audioOutput)
+                // Add video and audio streams for the clip
+                $opener
+                    ->addVideoStream($path, "{$media->uuid}_video.{$videoExtension}")
+                    ->addAudioStream($path, "{$media->uuid}_audio.{$audioExtension}");
+            });
+
+            // Configure HLS playlist settings
+            $opener
                 ->withHlsMasterPlaylist($playlist->getFileName())
                 ->withSegmentDuration(Playlist::getSegmentDuration());
 
