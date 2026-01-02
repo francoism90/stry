@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Client\Account\Controllers;
 
+use App\Api\Users\Resources\UserResource;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -25,6 +26,8 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        return Inertia::render('Client/Account/ProfileIndex');
+        return Inertia::render('Client/Account/ProfileIndex', [
+            'user' => fn () => UserResource::make($request->user()->append('email', 'avatar')),
+        ]);
     }
 }

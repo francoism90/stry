@@ -5,6 +5,7 @@ import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import { useVideos } from '@/composables/videos'
 import type { Video } from '@/types'
+import { back } from '@/utils/http'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
@@ -16,9 +17,6 @@ const props = defineProps<{
 }>()
 
 const { toggleLike, toggleSave } = useVideos()
-
-const back = () => (window && window.history?.length > 1 ? window.history.back() : router.visit('/'))
-
 const links = computed<ButtonProps[]>(() => [
   {
     label: 'Edit',

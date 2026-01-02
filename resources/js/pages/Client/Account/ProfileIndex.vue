@@ -1,5 +1,33 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3'
+import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
+import type { User } from '@/types'
+import { back } from '@/utils/http'
+import { Head } from '@inertiajs/vue3'
+import { useForm } from 'laravel-precognition-vue-inertia'
+
+const props = defineProps<{
+  user: User
+}>()
+
+const toast = useToast()
+
+const form = useForm('put', update.url(), {
+  name: props.user.name || '',
+  email: props.user.email || '',
+})
+
+const onSubmit = () =>
+  form.submit({
+    preserveState: true,
+    replace: true,
+    onSuccess: () =>
+      toast.add({
+        title: 'Success',
+        description: 'Profile updated successfully.',
+        icon: 'i-lucide-check',
+        color: 'success',
+      }),
+  })
 </script>
 
 <template>
@@ -8,18 +36,17 @@ import { Head, router } from '@inertiajs/vue3'
   <UDashboardPanel id="profile">
     <template #header>
       <UDashboardNavbar
-        title="Profile"
         :ui="{ root: 'h-20 gap-3 border-0 sm:h-24', left: 'w-full' }"
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>
           <UButton
             label="Back"
-            to="/"
+            @click="back"
             variant="outline"
             size="xs"
             color="neutral"
-            class="p-3"
+            class="px-3 py-2"
             icon="i-lucide-arrow-left"
           />
         </template>
@@ -27,23 +54,56 @@ import { Head, router } from '@inertiajs/vue3'
     </template>
 
     <template #body>
-      <UPage>
-        <UPageHeader
-          title="Account Profile"
-          description="Manage your account profile and settings (WIP)."
-          :ui="{
-            root: 'border-0 py-4',
-            title: 'font-serif text-xl sm:text-2xl',
-            description: 'text-base',
-          }"
-        />
+      <UForm
+        id="general"
+        :state="form"
+        class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
+        loading-auto
+        @submit="onSubmit"
+      >
+        <UPageCard
+          title="Your Profile"
+          variant="naked"
+          orientation="horizontal"
+        >
+          <div class="flex items-center gap-2 lg:ms-auto">
+            <UButton
+              form="general"
+              label="Save changes"
+              type="submit"
+              color="primary"
+              variant="soft"
+              loading-auto
+            />
+          </div>
+        </UPageCard>
 
-        <UButton
-          label="Logout"
-          variant="soft"
-          @click="() => router.post('/logout')"
-        />
-      </UPage>
+        <UPageCard variant="subtle">
+          <UFormField
+            label="Name"
+            required
+            :error="form.errors.name"
+          >
+            <UInput
+              v-model="form.name"
+              :model-modifiers="{ string: true, trim: true }"
+              autofocus
+              autocapitalize="words"
+            />
+          </UFormField>
+
+          <UFormField
+            label="Email"
+            required
+            :error="form.errors.email"
+          >
+            <UInput
+              v-model="form.email"
+              :model-modifiers="{ string: true, trim: true }"
+            />
+          </UFormField>
+        </UPageCard>
+      </UForm>
     </template>
   </UDashboardPanel>
 </template>
