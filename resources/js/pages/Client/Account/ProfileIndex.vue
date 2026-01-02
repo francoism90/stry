@@ -9,7 +9,7 @@ import { Head, router } from '@inertiajs/vue3'
     <template #header>
       <UDashboardNavbar
         title="Profile"
-        :ui="{ root: 'h-24 gap-3 border-0' }"
+        :ui="{ root: 'h-20 gap-3 border-0 sm:h-24', left: 'w-full' }"
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>

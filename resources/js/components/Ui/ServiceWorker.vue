@@ -17,14 +17,13 @@ const title = computed(() => (offlineReady.value ? 'App ready to work offline' :
 </script>
 
 <template>
-  <UContainer v-if="needRefresh">
-    <UBanner
-      :title="title"
-      :actions="actions"
-      icon="i-lucide-info"
-      color="secondary"
-      variant="soft"
-      class="rounded-none"
-    />
-  </UContainer>
+  <UBanner
+    v-if="needRefresh"
+    :title="title"
+    :actions="actions"
+    icon="i-lucide-info"
+    color="secondary"
+    variant="soft"
+    class="rounded-none"
+  />
 </template>
