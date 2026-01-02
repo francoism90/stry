@@ -58,7 +58,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
             variant="outline"
             size="xs"
             color="neutral"
-            class="p-3"
+            class="px-3 py-2"
             icon="i-lucide-arrow-left"
           />
         </template>
