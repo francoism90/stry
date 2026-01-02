@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
+import AppNavbar from '@/components/Ui/AppNavbar.vue'
 import type { User } from '@/types'
-import { back } from '@/utils/http'
 import { Head } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -40,15 +40,7 @@ const onSubmit = () =>
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>
-          <UButton
-            label="Back"
-            @click="back"
-            variant="outline"
-            size="xs"
-            color="neutral"
-            class="px-3 py-2"
-            icon="i-lucide-arrow-left"
-          />
+          <AppNavbar />
         </template>
       </UDashboardNavbar>
     </template>

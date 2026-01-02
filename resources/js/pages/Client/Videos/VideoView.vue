@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
+import AppNavbar from '@/components/Ui/AppNavbar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import { useVideos } from '@/composables/videos'
 import type { Video } from '@/types'
-import { back } from '@/utils/http'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
@@ -50,15 +50,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>
-          <UButton
-            label="Back"
-            @click="back"
-            variant="outline"
-            size="xs"
-            color="neutral"
-            class="px-3 py-2"
-            icon="i-lucide-arrow-left"
-          />
+          <AppNavbar />
         </template>
       </UDashboardNavbar>
     </template>
