@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserMenu from '@/components/Ui/UserMenu.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -63,13 +64,7 @@ watchDebounced(
         </template>
 
         <template #right>
-          <UButton
-            variant="soft"
-            size="xs"
-            color="neutral"
-            icon="i-lucide-settings"
-            class="p-3"
-          />
+          <UserMenu />
         </template>
       </UDashboardNavbar>
 

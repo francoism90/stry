@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TagList from '@/components/Tags/TagList.vue'
+import UserMenu from '@/components/Ui/UserMenu.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -62,13 +63,7 @@ watchDebounced(
         </template>
 
         <template #right>
-          <UButton
-            variant="soft"
-            size="xl"
-            color="neutral"
-            icon="i-lucide-settings"
-            :ui="{ base: 'p-3', leadingIcon: 'size-4' }"
-          />
+          <UserMenu />
         </template>
       </UDashboardNavbar>
 
