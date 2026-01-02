@@ -47,7 +47,10 @@ class CreateNewVideoPlaylist
             ]);
 
             // Iterate through each clip and add to the playlist
-            $paths->each(function (string $path) use ($opener, $encryption) {
+            $clips->each(function (Media $media) use ($opener, $encryption) {
+                // Get the path relative to the disk root
+                $path = $media->getPathRelativeToRoot();
+
                 // Create HLS playlist - use TS segments for AES-128-CBC encryption compatibility
                 // fMP4 + cbc1 may not be supported; TS segments work reliably with AES-128
                 $videoExtension = $encryption ? 'ts' : 'mp4';
