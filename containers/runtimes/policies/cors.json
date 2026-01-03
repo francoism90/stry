@@ -2,10 +2,10 @@
     "CORSRules": [
         {
             "AllowedOrigins": ["https://stry.test"],
-            "AllowedHeaders": ["Range", "Content-Type", "Authorization", "Content-MD5", "X-Amz-*"],
-            "AllowedMethods": ["GET", "HEAD", "PUT", "POST", "DELETE"],
-            "MaxAgeSeconds": 3600,
-            "ExposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges", "ETag", "x-amz-server-side-encryption"]
+            "AllowedMethods": ["GET", "HEAD"],
+            "AllowedHeaders": ["Range", "Content-Type", "Authorization"],
+            "ExposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges", "ETag"],
+            "MaxAgeSeconds": 3600
         }
     ]
 }
