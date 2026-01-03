@@ -44,7 +44,6 @@ phpstan.neon.dist
 phpunit.xml
 pint.json
 pnpm-debug.log*
-pnpm-workspace.yaml
 podman/
 public/build
 public/hot
