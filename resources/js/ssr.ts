@@ -2,7 +2,6 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import { configureEcho } from '@laravel/echo-vue'
 import ui from '@nuxt/ui/vue-plugin'
-import { createHead, renderSSRHead } from '@unhead/vue/server'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createSSRApp, h, type DefineComponent } from 'vue'
 import { renderToString } from 'vue/server-renderer'
@@ -21,7 +20,6 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
 createServer(
   (page) => {
-    const head = createHead()
     return createInertiaApp({
       page,
       render: renderToString,
@@ -30,12 +28,7 @@ createServer(
       setup: ({ App, props, plugin }) =>
         createSSRApp({ render: () => h(App, props) })
           .use(plugin)
-          .use(head)
           .use(ui),
-    }).then(async (app) => {
-      const payload = await renderSSRHead(head)
-      app.head.push(payload.headTags)
-      return app
     })
   },
   { cluster: true },
