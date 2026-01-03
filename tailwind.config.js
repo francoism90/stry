@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  plugins: [require('vidstack/tailwind.cjs')({ webComponents: true })],
+import vidstackPlugin from 'vidstack/tailwind.cjs'
+
+export default {
+  plugins: [vidstackPlugin({ webComponents: true })],
 }
