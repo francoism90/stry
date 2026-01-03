@@ -53,11 +53,7 @@ storage/**/*.blade.php
 storage/**/*.key
 storage/**/*.php
 storage/debugbar/*
-tailwind.config.js
 tests
 Thumbs.db
-tsconfig.*.json
-tsconfig.json
 UPGRADING.md
 vendor
-vite.config.ts
