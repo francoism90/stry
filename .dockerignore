@@ -27,6 +27,9 @@ boost.json
 bootstrap/cache/*.php
 components.d.ts
 containers/
+!containers/runtimes/entrypoint.sh
+!containers/runtimes/php-development.ini
+!containers/runtimes/php-production.ini
 !containers/runtimes/policies/cors.json
 Containerfile
 dist
