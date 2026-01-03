@@ -155,8 +155,10 @@ const onSubmit = () =>
           <UInput
             v-model="form.snapshot"
             :model-modifiers="{ nullable: true, number: true }"
+            :ui="{ trailing: 'pe-1' }"
             type="number"
             placeholder="3.00"
+            aria-label="Set by progress"
             step="0.01"
             min="0"
             :max="video.duration || undefined"
