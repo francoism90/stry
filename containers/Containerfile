@@ -35,6 +35,8 @@ RUN arch="$(uname -m)" && case "$arch" in \
 
 FROM docker.io/dunglas/frankenphp:latest AS base
 
+ARG BUILD_DATE
+ARG VCS_REF
 ARG UID=1000
 ARG GID=1000
 ARG USER=docker
@@ -99,20 +101,31 @@ RUN mkdir -p /app /config /data/{media,import} \
 RUN apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.revision="${VCS_REF}" \
+      org.opencontainers.image.source="https://github.com/francoism90/stry"
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS build
 
 WORKDIR /app
 
+# Copy dependency files first for better layer caching
+COPY composer.json composer.lock /app/
+RUN --mount=type=cache,target=/root/.composer/cache \
+    composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
+RUN --mount=type=cache,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+
 # Copy application source code
 COPY . /app
 
-# Install PHP and Node.js dependencies, build assets
-RUN --mount=type=cache,target=/root/.composer/cache \
-    --mount=type=cache,target=/pnpm/store \
-    composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction && \
-    pnpm install --frozen-lockfile && pnpm build:ssr && pnpm prune --prod
+# Complete composer setup and build assets
+RUN composer dump-autoload --optimize && \
+    pnpm build:ssr && pnpm prune --prod
 
 FROM base AS production
 
