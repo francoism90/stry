@@ -24,13 +24,12 @@ Schedule::command(SnapshotCommand::class)
     ->runInBackground();
 
 Schedule::command(PruneExpired::class, ['--hours=24'])
-    ->environments('development')
     ->withoutOverlapping()
     ->dailyAt('01:30')
     ->runInBackground();
 
 Schedule::command(PruneCommand::class)
-    ->environments('development')
+    ->environments('local')
     ->withoutOverlapping()
     ->dailyAt('02:00')
     ->runInBackground();
