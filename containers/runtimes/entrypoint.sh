@@ -45,30 +45,30 @@ fi
 if [ "${CONTAINER_ENV}" = "production" ]; then
     # Optimize application
     log "INFO" "Optimizing application..."
-    ${ARTISAN} optimize
+    exec ${ARTISAN} optimize
 
     # Link storage
     log "INFO" "Linking storage..."
-    ${ARTISAN} storage:link
+    exec ${ARTISAN} storage:link
 
     # Cache configurations
     log "INFO" "Caching configurations..."
-    ${ARTISAN} data:cache-structures
+    exec ${ARTISAN} data:cache-structures
 fi
 
 # Perform role-specific setup
 if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     # Ensure database is up to date
     log "INFO" "Running any pending migrations..."
-    ${ARTISAN} migrate --seed --force
+    exec ${ARTISAN} migrate --seed --force
 
     # Ensure assets are fetched
     log "INFO" "Fetching Google Fonts..."
-    ${ARTISAN} google-fonts:fetch
+    exec ${ARTISAN} google-fonts:fetch
 
     # Cache views
     log "INFO" "Caching views..."
-    ${ARTISAN} view:cache
+    exec ${ARTISAN} view:cache
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
@@ -92,6 +92,10 @@ case ${CONTAINER_ROLE} in
     reverb)
         log "INFO" "Starting Reverb..."
         exec ${ARTISAN} reverb:start
+        ;;
+    shell)
+        log "INFO" "Starting shell..."
+        exec /usr/bin/env bash
         ;;
     *)
         log "ERROR" "Unknown container role: ${CONTAINER_ROLE}"

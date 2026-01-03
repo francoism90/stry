@@ -1,11 +1,11 @@
 {
     "name": "stry-devcontainer",
-    "remoteUser": "docker",
     "containerUser": "docker",
     "containerEnv": {
-        "HOME": "/home/docker"
+        "HOME": "/home/docker",
+        "CONTAINER_ROLE": "shell"
     },
-    "runArgs": ["--entrypoint=/usr/bin/bash", "--userns=keep-id", "--network=systemd-stry"],
+    "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"],
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,consistency=cached"],
     "build": {
         "context": "./../",
