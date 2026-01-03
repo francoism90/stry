@@ -13,13 +13,10 @@
     },
     "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
     "files.associations": {
-        "*.blade.php": "blade",
         "*.css": "tailwindcss"
     },
     "html.customData": ["./node_modules/vidstack/vscode.html-data.json"],
-    "intelephense.telemetry.enabled": false,
     "tailwindCSS.classAttributes": ["class", "ui"],
-    "tailwindCSS.emmetCompletions": true,
     "tailwindCSS.experimental.classRegex": [
         ":\\s*?[\"'`]([^\"'`]*).*?,",
         "(?:const|let|var)\\s+[\\w$_][_\\w\\d]*\\s*=\\s*['\\\"](.*?)['\\\"]",
@@ -39,6 +36,5 @@
         "vue": "html",
         "vue-html": "html"
     },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "vue.server.hybridMode": true
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
