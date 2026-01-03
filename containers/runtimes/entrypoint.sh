@@ -45,30 +45,30 @@ fi
 if [ "${CONTAINER_ENV}" = "production" ]; then
     # Optimize application
     log "INFO" "Optimizing application..."
-    exec ${ARTISAN} optimize
+    ${ARTISAN} optimize
 
     # Link storage
     log "INFO" "Linking storage..."
-    exec ${ARTISAN} storage:link
+    ${ARTISAN} storage:link
 
     # Cache configurations
     log "INFO" "Caching configurations..."
-    exec ${ARTISAN} data:cache-structures
+    ${ARTISAN} data:cache-structures
 fi
 
 # Perform role-specific setup
 if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     # Ensure database is up to date
     log "INFO" "Running any pending migrations..."
-    exec ${ARTISAN} migrate --seed --force
+    ${ARTISAN} migrate --seed --force
 
     # Ensure assets are fetched
     log "INFO" "Fetching Google Fonts..."
-    exec ${ARTISAN} google-fonts:fetch
+    ${ARTISAN} google-fonts:fetch
 
     # Cache views
     log "INFO" "Caching views..."
-    exec ${ARTISAN} view:cache
+    ${ARTISAN} view:cache
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
