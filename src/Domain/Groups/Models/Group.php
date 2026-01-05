@@ -165,11 +165,6 @@ class Group extends Model implements HasMedia, Sortable
         return 'groups.'.$this->getRouteKey();
     }
 
-    public function broadcastChannelRoute(): string
-    {
-        return 'groups.{group}';
-    }
-
     public function broadcastAs(string $event): string
     {
         return "group.{$event}";

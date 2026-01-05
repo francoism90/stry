@@ -153,11 +153,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return 'users.'.$this->getRouteKey();
     }
 
-    public function broadcastChannelRoute(): string
-    {
-        return 'users.{playlist}';
-    }
-
     public function broadcastAs(string $event): string
     {
         return "user.{$event}";

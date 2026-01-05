@@ -130,11 +130,6 @@ class Playlist extends Model
         return 'playlists.'.$this->getRouteKey();
     }
 
-    public function broadcastChannelRoute(): string
-    {
-        return 'playlists.{playlist}';
-    }
-
     public function broadcastAs(string $event): string
     {
         return "playlist.{$event}";

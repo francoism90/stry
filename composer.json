@@ -35,7 +35,7 @@
         "pusher/pusher-php-server": "^7.2.7",
         "spatie/laravel-data": "^4.18",
         "spatie/laravel-google-fonts": "^1.4.4",
-        "spatie/laravel-medialibrary": "^11.17.7",
+        "spatie/laravel-medialibrary": "^11.17.8",
         "spatie/laravel-model-states": "^2.12.2",
         "spatie/laravel-permission": "^6.24.0",
         "spatie/laravel-rate-limited-job-middleware": "^2.8.2",
@@ -55,7 +55,7 @@
         "laravel/telescope": "^5.16.0",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.8.3",
-        "pestphp/pest": "^4.3.0",
+        "pestphp/pest": "^4.3.1",
         "pestphp/pest-plugin-laravel": "^4.0"
     },
     "autoload": {

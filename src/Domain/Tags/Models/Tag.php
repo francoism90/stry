@@ -163,11 +163,6 @@ class Tag extends BaseTag implements HasMedia
         return 'tags.'.$this->getRouteKey();
     }
 
-    public function broadcastChannelRoute(): string
-    {
-        return 'tags.{tag}';
-    }
-
     public function broadcastAs(string $event): string
     {
         return "tag.{$event}";

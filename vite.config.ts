@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       strictPort: true,
       hmr: { host: env.VITE_HMR_HOST, clientPort: 443, protocol: 'wss' },
+      watch: {
+        ignored: ['**/storage/framework/views/**'],
+      },
     },
     resolve: {
       alias: {

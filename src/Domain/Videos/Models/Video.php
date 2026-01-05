@@ -197,11 +197,6 @@ class Video extends Model implements HasMedia
         return 'videos.'.$this->getRouteKey();
     }
 
-    public function broadcastChannelRoute(): string
-    {
-        return 'videos.{video}';
-    }
-
     public function broadcastAs(string $event): string
     {
         return "video.{$event}";
