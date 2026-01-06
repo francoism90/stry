@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
 
     /*
@@ -26,7 +24,8 @@ return [
     | used by your application. An example configuration is provided for
     | each backend supported by Laravel. You're also free to add more.
     |
-    | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
+    | Drivers: "sync", "database", "beanstalkd", "sqs", "redis",
+    |          "deferred", "background", "failover", "null"
     |
     */
 
@@ -41,7 +40,7 @@ return [
             'connection' => env('DB_QUEUE_CONNECTION'),
             'table' => env('DB_QUEUE_TABLE', 'jobs'),
             'queue' => env('DB_QUEUE', 'default'),
-            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 60 * 60 * 24),
+            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 90),
             'after_commit' => true,
         ],
 
@@ -69,9 +68,25 @@ return [
             'driver' => 'redis',
             'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
             'queue' => env('REDIS_QUEUE', 'default'),
-            'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 60 * 60 * 24),
+            'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 3600),
             'block_for' => null,
             'after_commit' => true,
+        ],
+
+        'deferred' => [
+            'driver' => 'deferred',
+        ],
+
+        'background' => [
+            'driver' => 'background',
+        ],
+
+        'failover' => [
+            'driver' => 'failover',
+            'connections' => [
+                'database',
+                'deferred',
+            ],
         ],
 
     ],

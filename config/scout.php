@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
 use Domain\Tags\Models\Tag;

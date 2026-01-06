@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     /*
      * The package will use this format when working with dates. If this option
