@@ -163,7 +163,7 @@ return [
     |
     */
 
-    'fast_termination' => true,
+    'fast_termination' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -176,7 +176,7 @@ return [
     |
     */
 
-    'memory_limit' => 256,
+    'memory_limit' => 192,
 
     /*
     |--------------------------------------------------------------------------
@@ -216,11 +216,11 @@ return [
             'maxProcesses' => 10,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
-            'maxTime' => 1800,
+            'maxTime' => 3600,
             'maxJobs' => 500,
-            'memory' => 64,
+            'memory' => 128,
             'tries' => 3,
-            'timeout' => 120,
+            'timeout' => 180,
             'nice' => 0,
         ],
 

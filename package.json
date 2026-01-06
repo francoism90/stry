@@ -52,7 +52,7 @@
         "vite": "^7.3.0",
         "vite-plugin-pwa": "^1.2.0",
         "vite-plugin-vue-devtools": "^8.0.5",
-        "vue-tsc": "^3.2.1",
+        "vue-tsc": "^3.2.2",
         "workbox-window": "^7.4.0"
     }
 }
