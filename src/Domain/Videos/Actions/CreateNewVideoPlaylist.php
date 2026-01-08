@@ -65,7 +65,8 @@ class CreateNewVideoPlaylist
             // Configure HLS playlist settings
             $opener
                 ->withHlsMasterPlaylist($playlist->getFileName())
-                ->withSegmentDuration(Playlist::getSegmentDuration());
+                ->withSegmentDuration(Playlist::getSegmentDuration())
+                ->withOption('transport_stream_timestamp_offset_ms', 1000);
 
             // Add text tracks (captions) to the playlist if available
             $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
