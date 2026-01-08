@@ -22,8 +22,8 @@ defineProps<{
         root: 'gap-y-4 rounded-none',
         header: 'rounded-md shadow-none',
         body: 'p-0 sm:p-0 lg:px-0',
-        title: 'font-serif text-sm font-medium',
-        description: 'text-sm',
+        title: 'font-serif text-xs',
+        description: 'text-xs',
       }"
     >
       <template #description>
