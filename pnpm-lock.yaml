@@ -14,15 +14,9 @@ importers:
       '@laravel/echo-vue':
         specifier: ^2.2.7
         version: 2.2.7(pusher-js@8.4.0)(socket.io-client@4.8.1)(vue@3.5.26(typescript@5.9.3))
-      '@laravel/vite-plugin-wayfinder':
-        specifier: ^0.1.7
-        version: 0.1.7
       '@nuxt/ui':
         specifier: ^4.3.0
         version: 4.3.0(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@inertiajs/vue3@2.3.7(vue@3.5.26(typescript@5.9.3)))(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.15.3(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(axios@1.13.2)(change-case@5.4.4)(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.3))(zod@4.1.11)
-      '@tailwindcss/vite':
-        specifier: ^4.1.18
-        version: 4.1.18(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))
       '@vueuse/core':
         specifier: ^14.1.0
         version: 14.1.0(vue@3.5.26(typescript@5.9.3))
@@ -38,15 +32,9 @@ importers:
       laravel-precognition-vue-inertia:
         specifier: ^0.8.0
         version: 0.8.0(@inertiajs/vue3@2.3.7(vue@3.5.26(typescript@5.9.3)))(vue@3.5.26(typescript@5.9.3))
-      laravel-vite-plugin:
-        specifier: ^2.0.1
-        version: 2.0.1(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))
       pusher-js:
         specifier: ^8.4.0
         version: 8.4.0
-      tailwindcss:
-        specifier: ^4.1.18
-        version: 4.1.18
       vidstack:
         specifier: ^1.12.13
         version: 1.12.13
@@ -54,6 +42,12 @@ importers:
         specifier: ^3.5.26
         version: 3.5.26(typescript@5.9.3)
     devDependencies:
+      '@laravel/vite-plugin-wayfinder':
+        specifier: ^0.1.7
+        version: 0.1.7
+      '@tailwindcss/vite':
+        specifier: ^4.1.18
+        version: 4.1.18(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))
       '@tsconfig/node22':
         specifier: ^22.0.5
         version: 22.0.5
@@ -93,6 +87,9 @@ importers:
       jiti:
         specifier: ^2.6.1
         version: 2.6.1
+      laravel-vite-plugin:
+        specifier: ^2.0.1
+        version: 2.0.1(vite@7.3.1(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1))
       npm-run-all2:
         specifier: ^8.0.4
         version: 8.0.4
@@ -102,6 +99,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
         version: 0.7.2(@prettier/plugin-oxc@0.0.5)(prettier@3.7.4)
+      tailwindcss:
+        specifier: ^4.1.18
+        version: 4.1.18
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
