@@ -1,3 +1,5 @@
+# https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/
+
 replication_factor = 1
 consistency_mode = "consistent"
 
