@@ -15,7 +15,7 @@
         "format": "prettier --write ."
     },
     "dependencies": {
-        "@inertiajs/vue3": "^2.3.6",
+        "@inertiajs/vue3": "^2.3.7",
         "@laravel/echo-vue": "^2.2.7",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@nuxt/ui": "^4.3.0",
