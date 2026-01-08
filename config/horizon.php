@@ -207,7 +207,7 @@ return [
 
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['broadcasts', 'notifications'],
+            'queue' => ['broadcasts'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => 1,
