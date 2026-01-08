@@ -3,6 +3,11 @@ consistency_mode = "consistent"
 
 metadata_dir = "/var/lib/garage/meta"
 data_dir = "/var/lib/garage/data"
+metadata_snapshots_dir = "/var/lib/garage/snapshots"
+metadata_fsync = true
+data_fsync = false
+disable_scrub = false
+use_local_tz = false
 metadata_auto_snapshot_interval = "6h"
 
 db_engine = "lmdb"
@@ -17,7 +22,10 @@ compression_level = 1
 
 rpc_bind_addr = "[::]:3901"
 rpc_public_addr = "127.0.0.1:3901"
-rpc_secret = "$(openssl rand -hex 32)"
+rpc_secret = "GENERATE ME... (openssl rand -hex 32)"
+
+allow_world_readable_secrets = false
+allow_punycode = false
 
 [s3_api]
 api_bind_addr = "[::]:3900"
@@ -31,6 +39,6 @@ index = "index.html"
 
 [admin]
 api_bind_addr = "[::]:3903"
-metrics_token = "$(openssl rand -base64 32)"
+admin_token = "GENERATE ME... (openssl rand -base64 32)"
+metrics_token = "GENERATE ME... (openssl rand -base64 32)"
 metrics_require_token = true
-admin_token = "$(openssl rand -base64 32)"
