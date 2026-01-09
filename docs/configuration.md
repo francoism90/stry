@@ -27,6 +27,6 @@ The following configuration files are available for customization:
 
 | Config File                    | Description                 | Key Features                                                                                                |
 | ------------------------------ | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| 📹 `config/playlists.php`       | HLS playlist generation     | Encryption, disks, expire dates
+| 📹 `config/playlists.php`      | HLS playlist generation     | Encryption, disks, expire dates                                                                             |
 | 🎬 `config/laravel-ffmpeg.php` | FFmpeg video processing     | Temporary paths, thread count, encoding parameters                                                          |
 | 📦 `config/media-library.php`  | Media collection management | File handling, conversions. See [Spatie docs](https://spatie.be/docs/laravel-medialibrary/v11/introduction) |
