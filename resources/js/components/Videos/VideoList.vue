@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
-import type { Video } from '@/types'
+import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController';
+import type { Video } from '@/types';
 
 defineProps<{
   items: Video[] | undefined
@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="gap-4 lg:gap-y-8">
+  <UBlogPosts class="gap-3 gap-y-6 lg:gap-y-12">
     <UBlogPost
       v-for="item in items"
       :key="item.id"
@@ -16,7 +16,7 @@ defineProps<{
       :title="item.title"
       :image="item.thumb"
       :badge="item.timestamp"
-      :date="item.released_at || item.published_at || item.created_at"
+      :date="item.released_at ?? item.published_at ?? item.created_at"
       :to="VideoController.url(item.id)"
       :ui="{
         root: 'gap-y-4 rounded-none',
