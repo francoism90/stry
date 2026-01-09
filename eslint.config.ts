@@ -13,16 +13,25 @@ import { globalIgnores } from 'eslint/config'
 export default defineConfigWithVueTs(
   {
     name: 'app/files-to-lint',
-    files: ['**/*.{vue,ts,mts,tsx}'],
+    files: [
+      'resources/js/**/*.{vue,ts,mts,tsx}',
+      '*.config.{ts,mts}',
+      'env.d.ts',
+    ],
   },
 
   globalIgnores([
+    '**/node_modules/**',
     '**/vendor/**',
     '**/public/**',
     '**/storage/**',
-    '**/bootstrap/ssr/**',
+    '**/bootstrap/**',
+    '**/database/**',
     '**/resources/js/actions/**',
+    '**/resources/js/routes/**',
     '**/resources/js/wayfinder/**',
+    '**/*.d.ts',
+    '!env.d.ts',
   ]),
 
   ...pluginVue.configs['flat/essential'],
