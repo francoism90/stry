@@ -36,7 +36,7 @@ const onSubmit = () =>
   <UDashboardPanel id="profile">
     <template #header>
       <UDashboardNavbar
-        :ui="{ root: 'h-20 gap-3 border-0 sm:h-24', left: 'w-full' }"
+        :ui="{ root: 'gap-3 border-0', left: 'w-full' }"
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>

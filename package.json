@@ -11,7 +11,7 @@
         "build": "vite build",
         "build:ssr": "vite build && vite build --ssr",
         "type-check": "vue-tsc --build",
-        "lint": "eslint . --fix --cache",
+        "lint": "eslint resources/ --fix --cache",
         "format": "prettier --write ."
     },
     "dependencies": {

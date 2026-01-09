@@ -50,7 +50,6 @@ watchDebounced(
 
       <UDashboardToolbar
         id="tag-header"
-        class="min-h-20"
       >
         <template #left>
           <UFormField :error="form.errors.type">

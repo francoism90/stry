@@ -1,16 +1,10 @@
 {
     "editor.codeActionsOnSave": {
-        "source.fixAll": "always",
-        "source.organizeImports": "always",
-        "source.removeUnusedImports": "always",
-        "source.sortImports": "always"
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.quickSuggestions": {
-        "comments": "on",
-        "strings": "on"
-    },
     "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
     "files.associations": {
         "*.css": "tailwindcss"

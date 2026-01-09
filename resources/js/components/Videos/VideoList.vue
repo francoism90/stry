@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts>
+  <UBlogPosts class="gap-4 lg:gap-y-8">
     <UBlogPost
       v-for="item in items"
       :key="item.id"

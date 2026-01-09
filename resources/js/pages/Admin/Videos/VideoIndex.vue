@@ -51,7 +51,6 @@ watchDebounced(
 
       <UDashboardToolbar
         id="video-header"
-        class="min-h-20"
       >
         <template #left>
           <UFormField :error="form.errors.order">

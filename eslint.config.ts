@@ -9,9 +9,23 @@ export default defineConfigWithVueTs(
     files: ['**/*.{ts,mts,tsx,vue}'],
   },
 
-  globalIgnores(['**/vendor/**', '**/node_modules/**', '**/public/**', '**/bootstrap/ssr/**', '**/storage/**']),
+  globalIgnores([
+    '**/vendor/**',
+    '**/node_modules/**',
+    '**/public/**',
+    '**/bootstrap/ssr/**',
+    '**/resources/js/actions/**',
+    '**/resources/js/wayfinder/**',
+    '**/storage/**',
+    '**/dist/**',
+    '**/.git/**',
+    '**/.idea/**',
+    'package-lock.json',
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
+  ]),
 
   pluginVue.configs['flat/essential'],
-  vueTsConfigs.recommended,
+  vueTsConfigs.base,
   skipFormatting,
 )
