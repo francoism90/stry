@@ -29,9 +29,7 @@ export default defineConfigWithVueTs(
     '**/tests/**',
     '**/resources/js/actions/**',
     '**/resources/js/routes/**',
-    '**/resources/js/wayfinder/**',
-    '**/*.d.ts',
-    '!env.d.ts',
+    '**/resources/js/wayfinder/**'
   ]),
 
   ...pluginVue.configs['flat/essential'],
