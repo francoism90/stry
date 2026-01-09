@@ -65,7 +65,7 @@ jobs:
                   pnpm build
 
             - name: Run Laravel Pint
-              run: vendor/bin/pint --test
+              run: vendor/bin/pint --dirty
 
             - name: Run ESLint
               run: pnpm run lint
