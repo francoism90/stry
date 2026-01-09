@@ -39,7 +39,6 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG UID=1000
 ARG GID=1000
-ARG USER=docker
 ARG TZ=UTC
 ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
@@ -88,15 +87,16 @@ RUN install-php-extensions @composer apcu bcmath exif \
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
-    && corepack enable pnpm
+    && corepack enable && corepack prepare pnpm@latest --activate \
+    && pnpm config set store-dir ${PNPM_HOME}/store
 
 # Create non-root user
-RUN groupadd -g ${GID} ${USER} && \
-    useradd -u ${UID} -g ${USER} -d /home/${USER} -s /bin/bash -m ${USER}
+RUN groupadd -g ${GID} docker \
+    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
 RUN mkdir -p /app /config /data/{media,import} \
-    && chown -R ${USER}:${USER} /app /data /config
+    && chown -R docker:docker /app /data /config
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -112,17 +112,16 @@ FROM base AS build
 
 WORKDIR /app
 
-# Copy dependency files first for better layer caching
-COPY composer.json composer.lock /app/
+# Copy application source code
+COPY . /app
+
+# Install PHP dependencies
 RUN --mount=type=cache,target=/root/.composer/cache \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
+# Install Node.js dependencies
 RUN --mount=type=cache,target=/pnpm/store \
-    pnpm install --frozen-lockfile
-
-# Copy application source code
-COPY . /app
+    pnpm install --frozen-lockfile --offline
 
 # Complete composer setup and build assets
 RUN composer dump-autoload --optimize && \
@@ -136,13 +135,13 @@ WORKDIR /app
 COPY --from=build /app /app
 
 # Set proper ownership
-RUN chown -R ${USER}:${USER} /app
+RUN chown -R docker:docker /app
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
-USER ${USER}
+USER docker
 
 EXPOSE 6001 8000 13714
 
@@ -151,8 +150,8 @@ FROM base AS development
 WORKDIR /app
 
 # Set proper ownership
-RUN chown -R ${USER}:${USER} /app
+RUN chown -R docker:docker /app /pnpm
 
-USER ${USER}
+USER docker
 
 EXPOSE 5173 6001 8000

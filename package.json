@@ -14,7 +14,7 @@
         "type-check": "vue-tsc --build",
         "lint": "run-s lint:*",
         "lint:oxlint": "oxlint . --fix",
-        "lint:eslint": "eslint . --fix --cache",
+        "lint:eslint": "eslint . --fix --cache --debug",
         "format": "prettier --write --experimental-cli resources/"
     },
     "dependencies": {
