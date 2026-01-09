@@ -77,7 +77,7 @@ watchDebounced(
             v-show="items.data?.length"
             orientation="horizontal"
             label="Sort by"
-            :ui="{ label: 'text-xs text-secondary-400' }"
+            :ui="{ label: 'text-secondary-400 text-xs' }"
             :error="form.errors.order"
           >
             <USelect

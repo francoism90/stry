@@ -152,7 +152,7 @@ const onSubmit = () =>
     <UPageCard
       title="Delete tag"
       description="Once you delete a tag, there is no going back. Please be certain."
-      class="bg-linear-to-tl from-error/10 from-5% to-default"
+      class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
         <TagDeleteModal :item="tag" />

@@ -245,7 +245,7 @@ const onSubmit = () =>
     <UPageCard
       title="Delete Video"
       description="This will delete the video and all associated data. There is no going back. Please be certain."
-      class="bg-linear-to-tl from-error/10 from-5% to-default"
+      class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
         <VideoDeleteModal :item="video" />

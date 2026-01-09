@@ -75,7 +75,7 @@ watchDebounced(
           <UFormField
             orientation="horizontal"
             label="Type"
-            :ui="{ label: 'text-xs text-secondary-400' }"
+            :ui="{ label: 'text-secondary-400 text-xs' }"
             :error="form.errors.type"
           >
             <USelect

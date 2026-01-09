@@ -3,9 +3,8 @@
     "plugins": ["prettier-plugin-tailwindcss"],
     "semi": false,
     "singleQuote": true,
+    "singleAttributePerLine": true,
     "printWidth": 120,
     "tailwindAttributes": ["class", "className", "ui", ":ui"],
-    "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],
-    "tailwindConfig": "./tailwind.config.js",
-    "tailwindStylesheet": "./resources/css/app.css"
+    "tailwindFunctions": ["cva", "clsx", "ui", ":ui"]
 }

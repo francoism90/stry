@@ -81,7 +81,7 @@ const links: NavigationMenuItem[][] = [
     :default-size="16"
     :ui="{
       root: 'bg-elevated/25 lg:sticky lg:top-0 lg:max-h-dvh',
-      footer: 'lg:border-t lg:border-default',
+      footer: 'lg:border-default lg:border-t',
     }"
   >
     <template #header="{ collapsed }">
@@ -91,7 +91,7 @@ const links: NavigationMenuItem[][] = [
     <template #default="{ collapsed }">
       <UDashboardSearchButton
         :collapsed="collapsed"
-        class="bg-transparent ring-default"
+        class="ring-default bg-transparent"
       />
 
       <UNavigationMenu

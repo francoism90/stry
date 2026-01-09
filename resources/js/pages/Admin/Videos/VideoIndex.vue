@@ -49,9 +49,7 @@ watchDebounced(
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar
-        id="video-header"
-      >
+      <UDashboardToolbar id="video-header">
         <template #left>
           <UFormField :error="form.errors.order">
             <USelect

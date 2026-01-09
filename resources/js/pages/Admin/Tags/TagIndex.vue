@@ -48,9 +48,7 @@ watchDebounced(
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar
-        id="tag-header"
-      >
+      <UDashboardToolbar id="tag-header">
         <template #left>
           <UFormField :error="form.errors.type">
             <USelect

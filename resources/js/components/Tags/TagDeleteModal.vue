@@ -24,7 +24,9 @@ const remove = async () => router.delete(destroy.url(props.item.id))
     <template #body>
       <div class="flex h-24 flex-col gap-2">
         <h3>Are you sure you want to delete this tag?</h3>
-        <p class="text-sm text-neutral-500">This action cannot be undone. All associated data will be permanently removed.</p>
+        <p class="text-sm text-neutral-500">
+          This action cannot be undone. All associated data will be permanently removed.
+        </p>
       </div>
     </template>
 
