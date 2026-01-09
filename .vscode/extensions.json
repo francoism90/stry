@@ -5,8 +5,8 @@
         "dbaeumer.vscode-eslint",
         "devsense.composer-php-vscode",
         "EditorConfig.EditorConfig",
-        "esbenp.prettier-vscode",
+        "oxc.oxc-vscode",
         "laravel.vscode-laravel",
-        "vue.volar"
+        "Vue.volar"
     ]
 }

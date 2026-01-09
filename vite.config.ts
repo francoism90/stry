@@ -2,6 +2,7 @@ import { wayfinder } from '@laravel/vite-plugin-wayfinder'
 import ui from '@nuxt/ui/vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
+import vueDevTools from 'vite-plugin-vue-devtools'
 import laravel from 'laravel-vite-plugin'
 import { fileURLToPath, URL } from 'node:url'
 import { vite as vidstack } from 'vidstack/plugins'
@@ -46,6 +47,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
+      vueDevTools(),
       tailwindcss(),
       vidstack(),
       wayfinder(),

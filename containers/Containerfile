@@ -126,7 +126,7 @@ COPY . /app
 
 # Complete composer setup and build assets
 RUN composer dump-autoload --optimize && \
-    pnpm build:ssr && pnpm prune --prod
+    pnpm build && pnpm build:ssr && pnpm prune --prod
 
 FROM base AS production
 
