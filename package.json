@@ -14,8 +14,8 @@
         "type-check": "vue-tsc --build",
         "lint": "run-s lint:*",
         "lint:oxlint": "oxlint . --fix",
-        "lint:eslint": "eslint . --fix --cache --debug",
-        "format": "prettier . --write --experimental-cli"
+        "lint:eslint": "eslint . --fix --cache",
+        "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.3.7",
