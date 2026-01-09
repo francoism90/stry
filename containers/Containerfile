@@ -3,9 +3,7 @@ FROM docker.io/rust:latest AS builder
 WORKDIR /tmp
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl build-essential cmake ninja-build python3 musl-tools \
-    && apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    ca-certificates curl build-essential cmake ninja-build python3 musl-tools
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
@@ -32,6 +30,10 @@ RUN arch="$(uname -m)" && case "$arch" in \
 
 # ab-av1
 # RUN cargo install ab-av1
+
+# Clean up
+RUN apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 FROM docker.io/dunglas/frankenphp:latest AS base
 
