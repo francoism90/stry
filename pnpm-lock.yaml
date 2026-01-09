@@ -35,6 +35,9 @@ importers:
       pusher-js:
         specifier: ^8.4.0
         version: 8.4.0
+      tailwindcss:
+        specifier: ^4.1.18
+        version: 4.1.18
       vidstack:
         specifier: ^1.12.13
         version: 1.12.13
@@ -108,9 +111,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
         version: 0.7.2(prettier@3.7.4)
-      tailwindcss:
-        specifier: ^4.1.18
-        version: 4.1.18
       typescript:
         specifier: ~5.9.3
         version: 5.9.3

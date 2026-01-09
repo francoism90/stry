@@ -27,6 +27,7 @@
         "laravel-echo": "^2.2.7",
         "laravel-precognition-vue-inertia": "^0.8.0",
         "pusher-js": "^8.4.0",
+        "tailwindcss": "^4.1.18",
         "vidstack": "^1.12.13",
         "vue": "^3.5.26"
     },
@@ -53,7 +54,6 @@
         "oxlint": "~1.38.0",
         "prettier": "3.7.4",
         "prettier-plugin-tailwindcss": "^0.7.2",
-        "tailwindcss": "^4.1.18",
         "typescript": "~5.9.3",
         "vite": "^7.3.1",
         "vite-plugin-pwa": "^1.2.0",
