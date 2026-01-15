@@ -3,6 +3,8 @@
     "containerUser": "docker",
     "containerEnv": {
         "HOME": "/home/docker",
+        "UID": "60022", // id -u
+        "GID": "60022", // id -g
         "CONTAINER_ROLE": "shell"
     },
     "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"],
