@@ -62,6 +62,10 @@ if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     log "INFO" "Running any pending migrations..."
     ${ARTISAN} migrate --seed --force
 
+    # Ensure scout indexes are synced
+    log "INFO" "Syncing search indexes..."
+    ${ARTISAN} scout:sync
+
     # Ensure assets are fetched
     log "INFO" "Fetching Google Fonts..."
     ${ARTISAN} google-fonts:fetch
