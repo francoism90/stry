@@ -52,6 +52,14 @@ readonly class VideoFilterScope
         };
 
         if ($group instanceof Group) {
+            // Make sure the group has videos
+            if (! $group->videos()->exists()) {
+                // Return no results
+                $options['filter_by'] = 'id:0';
+
+                return $options;
+            }
+
             // Set filter by group ID
             $options['filter_by'] = sprintf('$groupables(group_id:%d)', $group->getKey());
 
