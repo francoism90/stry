@@ -18,8 +18,6 @@ _ide_helper.php
 *.key
 *.log
 *.sql
-*.sqlite
-!database/database.sqlite
 *.tar.gz
 *.zip
 auto-imports.d.ts
