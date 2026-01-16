@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController';
-import type { Video } from '@/types';
+import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
+import type { Video } from '@/types'
 
 defineProps<{
   items: Video[] | undefined
@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="gap-3 gap-y-6 lg:gap-y-12">
+  <UBlogPosts class="gap-3 gap-y-8 lg:gap-y-12">
     <UBlogPost
       v-for="item in items"
       :key="item.id"
