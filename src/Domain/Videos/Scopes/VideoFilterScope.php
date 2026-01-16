@@ -53,7 +53,7 @@ readonly class VideoFilterScope
 
         if ($group instanceof Group) {
             // Make sure the group has videos
-            if (! $group->videos()->exists()) {
+            if ($group->videos()->doesntExist()) {
                 // Return no results
                 $options['filter_by'] = 'id:0';
 
