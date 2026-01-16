@@ -64,27 +64,19 @@ Follow the [Proxy Setup](proxy.md) guide for detailed configuration.
 
 ## ⚡ Performance Optimization
 
-### HLS Encryption Key Rotation
+### Shaka Packager Configuration
 
-Control the balance between security and performance by adjusting the number of encryption key sections:
-
-```ini
-# In .env file
-PLAYLIST_ROTATION_KEYS_SECTIONS=5  # Default: balanced security/performance
-```
-
-**Understanding the Trade-off:**
-
-- **Lower values** (e.g., `3`): More encryption keys per playlist
-    - ✅ Stronger security (keys rotate more frequently)
-    - ⚠️ Slower performance (more key generation overhead)
-
-- **Higher values** (e.g., `10`): Fewer encryption keys per playlist
-    - ✅ Better performance (less key generation overhead)
-    - ⚠️ Potentially weaker security (keys rotate less frequently)
+Shaka Packager handles HLS video packaging and streaming.
 
 > [!TIP]
-> For most deployments, the default value of `5` provides a good balance. Only adjust if you have specific security requirements or performance constraints.
+> **Shaka Packager Benefits:**
+>
+> - ✅ Professional-grade HLS/DASH packaging
+> - ✅ Built-in encryption and key rotation
+> - ✅ Optimized for high-throughput streaming
+> - ✅ Handles multiple codec and bitrate profiles
+>
+> Review the [Laravel Shaka](https://github.com/foxws/laravel-shaka) documentation for advanced configuration options.
 
 ### Reduce Container Logging Overhead
 
@@ -112,6 +104,15 @@ LogDriver=none
 > - ⚠️ Use Laravel Telescope/Horizon for monitoring instead
 
 If you need selective logging, apply `LogDriver=none` only to high-throughput containers (e.g., `stry-queue.container`, `stry-reverb.container`) while keeping logs enabled for critical services.
+
+### Media Encoding and Processing
+
+For optimal video processing performance:
+
+- Ensure adequate CPU and memory allocation for encoding jobs
+- Consider using the queue system for large batch processing
+- Monitor FFmpeg resource usage during peak periods
+- Configure appropriate job timeouts in `config/queue.php`
 
 ---
 

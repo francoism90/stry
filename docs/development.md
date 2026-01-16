@@ -85,6 +85,7 @@ composer install
 php artisan storage:link
 php artisan key:generate
 php artisan migrate --seed
+php artisan scout:sync
 php artisan google-fonts:fetch
 pnpm install
 ```

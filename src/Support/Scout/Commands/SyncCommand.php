@@ -15,7 +15,7 @@ class SyncCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'scout:sync {--delete}';
+    protected $signature = 'scout:sync {--delete} {--import}';
 
     /**
      * @var string
@@ -40,7 +40,9 @@ class SyncCommand extends Command implements Isolatable
             $this->call('scout:index', ['name' => $model]);
 
             // Import records
-            $this->call('scout:import', ['model' => $model]);
+            if ($this->option('import')) {
+                $this->call('scout:import', ['model' => $model]);
+            }
         });
     }
 }
