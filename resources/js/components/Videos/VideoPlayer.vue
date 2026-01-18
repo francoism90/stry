@@ -9,7 +9,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { state, progress, store } = usePlayer()
+const { playlist, progress, store } = usePlayer()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -54,17 +54,17 @@ onBeforeUnmount(() => listener())
 <template>
   <div class="relative w-full flex-1">
     <UEmpty
-      v-if="!state"
+      v-if="!playlist?.valid"
       title="Preparing your video..."
-      description="Please wait while we load the video for you. This may take a few moments."
+      :description="`Please wait while we load the video for you. This may take a few moments. (${playlist?.state})`"
       icon="i-lucide-hard-drive-download"
       :actions="actions"
     />
 
     <media-player
       ref="player"
-      v-show="state"
-      .src="state?.asset || undefined"
+      v-show="playlist?.valid"
+      .src="playlist?.asset || undefined"
       .autoPlay="true"
       .playsInline="true"
       crossOrigin="anonymous"

@@ -18,8 +18,8 @@ class PlaylistResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'asset' => $this->getUrl(),
-            'type' => $this->type,
             'valid' => $this->isValid(),
+            'type' => $this->type,
             'state' => $this->state->label(),
             'expires_at' => $this->expires_at,
             'created_at' => $this->created_at,
