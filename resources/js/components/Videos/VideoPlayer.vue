@@ -56,7 +56,7 @@ onBeforeUnmount(() => listener())
     <UEmpty
       v-if="!playlist?.valid"
       title="Preparing your video..."
-      :description="`Please wait while we load the video for you. This may take a few moments. (${playlist?.state})`"
+      :description="`Please wait while we load the video for you. This may take a few moments. (${playlist?.state || 'Waiting'})`"
       icon="i-lucide-hard-drive-download"
       :actions="actions"
     />
