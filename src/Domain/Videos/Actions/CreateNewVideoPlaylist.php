@@ -45,13 +45,7 @@ class CreateNewVideoPlaylist
                 // Use cenc for key rotation support, or cbcs for FairPlay/Safari
                 $protectionScheme = Playlist::getProtectionScheme();
 
-                $keyData = $opener->withAESEncryption('key', $protectionScheme);
-
-                // Always save the base encryption key
-                $playlist->updateOrFail([
-                    'encryption_key_id' => $keyData['key_id'],
-                    'encryption_key' => $keyData['key'],
-                ]);
+                $opener->withAESEncryption('key', $protectionScheme);
 
                 if ($useKeyRotation) {
                     $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
