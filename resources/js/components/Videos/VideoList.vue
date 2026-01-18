@@ -34,7 +34,7 @@ defineProps<{
 
         <div
           v-if="item.tags?.length"
-          class="flex flex-wrap gap-x-2 overflow-auto"
+          class="mt-1.5 flex flex-wrap gap-1.5 overflow-auto"
         >
           <UButton
             v-for="tag in item.tags"
@@ -42,7 +42,6 @@ defineProps<{
             :label="tag.name"
             variant="outline"
             size="xs"
-            class="mt-2"
           />
         </div>
       </template>
