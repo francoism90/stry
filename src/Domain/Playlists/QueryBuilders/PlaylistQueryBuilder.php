@@ -31,7 +31,6 @@ class PlaylistQueryBuilder extends Builder
     public function active(): self
     {
         return $this
-            ->whereNot(fn ($query) => $query->failed())
             ->whereNot(fn ($query) => $query->expired())
             ->ordered();
     }

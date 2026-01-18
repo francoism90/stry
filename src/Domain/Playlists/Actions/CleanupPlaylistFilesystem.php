@@ -14,10 +14,5 @@ class CleanupPlaylistFilesystem
         if ($playlist->getFilesystem()->directoryExists($playlist->getPath())) {
             $playlist->getFilesystem()->deleteDirectory($playlist->getPath());
         }
-
-        // Delete the secrets directory (if exists)
-        if ($playlist->getSecretFilesystem()->directoryExists($playlist->getPath())) {
-            $playlist->getSecretFilesystem()->deleteDirectory($playlist->getPath());
-        }
     }
 }

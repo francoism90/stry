@@ -27,8 +27,7 @@ it('can create a playlist with required attributes', function () {
         ->and($playlist->playlistable_id)->toBe($video->getKey())
         ->and($playlist->playlistable_type)->toBe(Video::class)
         ->and($playlist->disk)->toBe('segments')
-        ->and($playlist->file_name)->toBe('playlist.m3u8')
-        ->and($playlist->secret_disk)->toBe('secrets');
+        ->and($playlist->file_name)->toBe('playlist.m3u8');
 });
 
 it('belongs to a user', function () {
@@ -119,11 +118,10 @@ it('hides sensitive attributes', function () {
     expect($array)->not->toHaveKey('user_id');
 });
 
-it('can get disk and secret disk', function () {
+it('can get disk', function () {
     $playlist = Playlist::factory()->create();
 
-    expect($playlist->getDisk())->toBe('segments')
-        ->and($playlist->getSecretDisk())->toBe('secrets');
+    expect($playlist->getDisk())->toBe('segments');
 });
 
 it('can get path', function () {

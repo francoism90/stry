@@ -24,7 +24,7 @@ class PlaylistFactory extends Factory
             'playlistable_id' => Video::factory(),
             'disk' => 'segments',
             'file_name' => fake()->uuid().'.m3u8',
-            'secret_disk' => 'secrets',
+            'secret_disk' => null,
             'state' => Pending::class,
         ];
     }

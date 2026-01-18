@@ -42,7 +42,7 @@ defineOptions({ layout: DashboardLayout })
             >
               <UUser
                 :name="item.id"
-                :description="`${item.percent}% • ${item.state}`"
+                :description="item.state"
                 :avatar="{
                   alt: item.id,
                   class: 'rounded-sm size-14 me-1',
