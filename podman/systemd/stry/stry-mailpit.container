@@ -15,10 +15,10 @@ ExposeHostPort=1025
 ExposeHostPort=8025
 
 [Service]
-Restart=on-failure
+Restart=always
 RestartSec=5
-TimeoutStartSec=90
-TimeoutStopSec=30
+TimeoutStartSec=60
+TimeoutStopSec=60
 
 [Install]
 WantedBy=multi-user.target default.target

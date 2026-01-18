@@ -13,9 +13,9 @@ ExposeHostPort=13714
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
-Restart=on-failure
+Restart=always
 RestartSec=5
-TimeoutStartSec=180
+TimeoutStartSec=300
 TimeoutStopSec=60
 
 [Install]

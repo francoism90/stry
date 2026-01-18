@@ -14,10 +14,10 @@ PublishPort=443:443
 PublishPort=443:443/udp
 
 [Service]
-Restart=on-failure
+Restart=always
 RestartSec=5
-TimeoutStartSec=90
-TimeoutStopSec=30
+TimeoutStartSec=30
+TimeoutStopSec=60
 
 [Install]
 WantedBy=multi-user.target default.target

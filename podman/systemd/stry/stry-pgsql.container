@@ -11,9 +11,9 @@ Network=stry.network
 ExposeHostPort=5432
 
 [Service]
-Restart=on-failure
+Restart=always
 RestartSec=5
-TimeoutStartSec=300
+TimeoutStartSec=120
 TimeoutStopSec=60
 
 [Install]

@@ -15,9 +15,9 @@ ExposeHostPort=3902
 ExposeHostPort=3903
 
 [Service]
-Restart=on-failure
+Restart=always
 RestartSec=5
-TimeoutStartSec=180
+TimeoutStartSec=300
 TimeoutStopSec=60
 
 [Install]
