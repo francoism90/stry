@@ -44,12 +44,23 @@ This guide assumes a **rootless** Podman setup (recommended for security):
 
 ### 1️⃣ Configure Container Files
 
-Copy the container configuration files:
+Copy the container configuration files to your systemd user directory:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/podman/systemd/stry ~/.config/containers/systemd/
 ```
+
+> [!TIP]
+> **Alternative (Podman 5.2+):**
+>
+> You can use `podman quadlet install` for individual unit files:
+>
+> ```bash
+> podman quadlet install ~/projects/stry/podman/systemd/stry/*.{container,build,network,volume}
+> ```
+>
+> However, `cp -r` is recommended as it preserves the `config/` subdirectory structure with environment files.
 
 ### 2️⃣ Adjust Container Configuration
 
