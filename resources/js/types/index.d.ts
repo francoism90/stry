@@ -22,8 +22,13 @@ export type UserCollection = Omit<Paginator, 'data'> & {
 export type Media = Model & {
   asset: string | undefined
   name: string
+  file_name: string
   mime_type: string
+  size: number
   file_size: string
+  collection_name: string
+  disk: string
+  conversions_disk: string
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
@@ -36,6 +41,7 @@ export type Tag = Model & {
   description: string | undefined
   category: string
   type: string | undefined
+  adult: boolean
   thumb: AvatarProps['src'] | null | undefined
   related: Tag[] | null | undefined
   videos: number | undefined
@@ -58,13 +64,13 @@ export type Video = Model & {
   season: string | null
   episode: string | null
   part: string | null
+  adult: boolean
   captioned: boolean
   thumb: string | undefined
   duration: number
   timestamp: string
   filesize: string | undefined
   snapshot: number | undefined
-  captions: Media[] | null
   tags: Tag[] | null
   expires_at: string | undefined
   liked: boolean | undefined
