@@ -246,6 +246,13 @@ class Playlist extends Model
         return Config::string('playlists.encryption', 'raw_key_encryption');
     }
 
+    public static function getProtectionScheme(): ?string
+    {
+        $scheme = Config::string('playlists.protection_scheme', 'cenc');
+
+        return $scheme === 'null' ? null : $scheme;
+    }
+
     public static function getKeyRotationEnabled(): bool
     {
         return Config::boolean('playlists.key_rotation_enabled', false);

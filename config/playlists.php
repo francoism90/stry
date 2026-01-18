@@ -23,9 +23,19 @@ return [
     'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
 
     /**
+     * Protection scheme for encryption.
+     *
+     * - 'cenc' (AES-CTR) for Widevine/PlayReady - best for key rotation
+     * - 'cbcs' (AES-CBC) for FairPlay/Safari
+     * - 'cbc1' legacy HLS, limited browser support
+     * - null (SAMPLE-AES) widest compatibility but NO key rotation support
+     */
+    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
+
+    /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
      */
-    'key_rotation_enabled' => (bool) env('PLAYLIST_KEY_ROTATION_ENABLED', true),
+    'key_rotation_enabled' => (bool) env('PLAYLIST_KEY_ROTATION_ENABLED', false),
 
     /**
      * Duration in seconds before rotating to a new encryption key.
