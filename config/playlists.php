@@ -25,7 +25,7 @@ return [
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
      */
-    'key_rotation_enabled' => (bool) env('PLAYLIST_KEY_ROTATION_ENABLED', false),
+    'key_rotation_enabled' => (bool) env('PLAYLIST_KEY_ROTATION_ENABLED', true),
 
     /**
      * Duration in seconds before rotating to a new encryption key.
