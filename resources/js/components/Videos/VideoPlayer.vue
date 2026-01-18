@@ -63,7 +63,7 @@ onBeforeUnmount(() => listener())
 
     <media-player
       ref="player"
-      v-show="playlist?.valid"
+      v-show="playlist?.valid || false"
       .src="playlist?.asset || undefined"
       .autoPlay="true"
       .playsInline="true"
