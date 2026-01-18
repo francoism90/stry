@@ -204,29 +204,24 @@ class Playlist extends Model
         return Storage::disk($this->getDisk());
     }
 
+    public function getUrlResolver(?string $path = null): string
+    {
+        return URL::temporarySignedRoute('api.playlists.playlist', now()->addHour(), [
+            'playlist' => $this,
+            'path' => $path,
+        ]);
+    }
+
     public function getMediaUrlResolver(string $path): string
     {
-        $expiration = once(fn () => now()->addDay());
+        $expiration = once(fn () => now()->addHour());
 
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        // Keys are accessed rarely, no need for once() caching
-        return URL::temporarySignedRoute('api.playlists.key', now()->addMinutes(30), [
-            'playlist' => $this,
-            'path' => $path,
-        ]);
-    }
-
-    public function getUrlResolver(?string $path = null): string
-    {
-        // Playlist files are accessed infrequently, no need for once() caching
-        return URL::temporarySignedRoute('api.playlists.playlist', now()->addMinutes(30), [
-            'playlist' => $this,
-            'path' => $path,
-        ]);
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
     }
 
     public static function getDestinationDisk(): string
