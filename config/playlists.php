@@ -14,19 +14,7 @@ return [
      */
     'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 6),
 
-    /**
-     * This setting is used to define the disk where the playlist encryption keys will be stored.
-     * The disk should be configured in the `filesystems.php` configuration file.
-     */
-    'secret_disk' => env('PLAYLIST_SECRET_DISK', 'secrets'),
-
-    /**
-     * This setting is used to define the encryption method for the playlist.
-     *
-     * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
-     * Set to 'none' or any other value to disable encryption.
-     */
-    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
+    'key_duration' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
 
     /**
      * This setting is used to define the time after which the playlist will expire.
