@@ -22,4 +22,5 @@ Route::get('/play/{video}', VideoController::class)->name('play');
 // Fallback
 Route::any('/{filter?}', HomeController::class)
     ->defaults('filter', 'all')
+    ->where('filter', '^(?!admin|api).*')
     ->name('home');
