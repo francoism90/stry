@@ -315,14 +315,4 @@ If you do not want a container to start automatically on boot, you can remove th
 > - **Permission issues**: Verify SELinux contexts and directory ownership
 > - **Timeout errors**: Increase timeout values in container files
 > - **Port conflicts**: Ensure no other services are using the same ports
-
-### Rebuild Containers
-
-If you need to rebuild the image after changes:
-
-```bash
-systemctl --user stop stry
-systemctl --user restart stry-build
-systemctl --user daemon-reload
-systemctl --user start stry
-```
+> - **Rebuild needed**: See the [Upgrading](#-upgrading) section above
