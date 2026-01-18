@@ -159,11 +159,6 @@ class Playlist extends Model
         return $this->disk;
     }
 
-    public function getSecretDisk(): ?string
-    {
-        return $this->secret_disk;
-    }
-
     public function getFileName(): string
     {
         return $this->file_name;
@@ -209,11 +204,6 @@ class Playlist extends Model
         return Storage::disk($this->getDisk());
     }
 
-    public function getSecretFilesystem(): FilesystemAdapter
-    {
-        return Storage::disk($this->getSecretDisk() ?? static::getSecretsDisk());
-    }
-
     public function getMediaUrlResolver(string $path): string
     {
         $expiration = once(fn () => now()->addDay());
@@ -249,11 +239,6 @@ class Playlist extends Model
         return Config::integer('playlists.segment_duration', 6);
     }
 
-    public static function getSecretsDisk(): string
-    {
-        return Config::string('playlists.secret_disk', 'secrets');
-    }
-
     public static function getExpiresAfter(): ?Carbon
     {
         $expires = Config::integer('playlists.expires_after');
@@ -264,5 +249,15 @@ class Playlist extends Model
     public static function getEncryptionMethod(): string
     {
         return Config::string('playlists.encryption', 'raw_key_encryption');
+    }
+
+    public static function getKeyRotationEnabled(): bool
+    {
+        return Config::boolean('playlists.key_rotation_enabled', false);
+    }
+
+    public static function getKeyRotationDuration(): int
+    {
+        return Config::integer('playlists.key_rotation_duration', 300);
     }
 }

@@ -14,7 +14,24 @@ return [
      */
     'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 6),
 
-    'key_duration' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
+    /**
+     * This setting is used to define the encryption method for the playlist.
+     *
+     * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
+     * Set to 'none' or any other value to disable encryption.
+     */
+    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
+
+    /**
+     * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
+     */
+    'key_rotation_enabled' => (bool) env('PLAYLIST_KEY_ROTATION_ENABLED', false),
+
+    /**
+     * Duration in seconds before rotating to a new encryption key.
+     * Common values: 60 (1 min), 300 (5 min), 600 (10 min), 1800 (30 min).
+     */
+    'key_rotation_duration' => (int) env('PLAYLIST_KEY_ROTATION_DURATION', 300),
 
     /**
      * This setting is used to define the time after which the playlist will expire.

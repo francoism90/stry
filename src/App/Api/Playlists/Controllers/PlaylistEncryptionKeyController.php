@@ -36,12 +36,12 @@ class PlaylistEncryptionKeyController extends Controller implements HasMiddlewar
         // Get the encryption key file from storage
         $keyPath = $playlist->getPath($path);
 
-        if (! Storage::disk($playlist->getSecretDisk())->exists($keyPath)) {
+        if (! Storage::disk($playlist->getDisk())->exists($keyPath)) {
             abort(404);
         }
 
         // Stream the key directly from storage (though 16 bytes is tiny, this is cleaner)
-        return Storage::disk($playlist->getSecretDisk())->response($keyPath, null, [
+        return Storage::disk($playlist->getDisk())->response($keyPath, null, [
             'Content-Type' => 'application/octet-stream',
             'Cache-Control' => 'private, max-age=300',
         ]);

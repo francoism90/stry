@@ -9,7 +9,6 @@ use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
-use Foxws\Shaka\Support\EncryptionKeyGenerator;
 use Illuminate\Support\Facades\DB;
 
 class CreateNewVideoPlaylist
@@ -31,30 +30,38 @@ class CreateNewVideoPlaylist
             // Initialize Shaka Packager
             $opener = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
-            // Get encryption method from config
-            $encryptionMethod = Playlist::getEncryptionMethod();
-
-            // Generate encryption keys if enabled
-            $encryption = $encryptionMethod === 'raw_key_encryption'
-                ? EncryptionKeyGenerator::generate()
-                : null;
+            // Check if encryption is enabled
+            $encryptionEnabled = Playlist::getEncryptionMethod() === 'raw_key_encryption';
 
             /** @var Playlist $playlist */
             $playlist = $video->createPlaylist([
-                'encryption_key_id' => $encryption['key_id'] ?? null,
-                'encryption_key' => $encryption['key'] ?? null,
                 'type' => 'clip',
             ]);
 
+            // Enable AES encryption with key rotation if configured
+            if ($encryptionEnabled) {
+                $keyData = $opener->withAESEncryption();
+
+                // Store encryption metadata
+                $playlist->update([
+                    'encryption_key_id' => $keyData['key_id'],
+                    'encryption_key' => $keyData['key'],
+                ]);
+
+                // Enable key rotation if configured
+                if (Playlist::getKeyRotationEnabled()) {
+                    $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+                }
+            }
+
             // Iterate through each clip and add to the playlist
-            $clips->each(function (Media $media) use ($opener, $encryption) {
+            $clips->each(function (Media $media) use ($opener, $encryptionEnabled) {
                 // Get the path relative to the disk root
                 $path = $media->getPathRelativeToRoot();
 
-                // Create HLS playlist - use TS segments for AES-128-CBC encryption compatibility
-                // fMP4 + cbc1 may not be supported; TS segments work reliably with AES-128
-                $videoExtension = $encryption ? 'ts' : 'mp4';
-                $audioExtension = $encryption ? 'ts' : 'mp4';
+                // Use TS segments for AES-128-CBC encryption, fMP4 otherwise
+                $videoExtension = $encryptionEnabled ? 'ts' : 'mp4';
+                $audioExtension = $encryptionEnabled ? 'ts' : 'mp4';
 
                 // Add video and audio streams for the clip
                 $opener
@@ -72,26 +79,6 @@ class CreateNewVideoPlaylist
             $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
                 'language' => $caption->getCustomProperty('language_code', 'en'),
             ]));
-
-            // Add AES-128-CBC encryption for browser compatibility
-            if ($encryption) {
-                // Store the encryption key file in the secrets disk
-                $keyPath = $playlist->getPath('encryption.key');
-
-                EncryptionKeyGenerator::writeKeyFile($playlist->getSecretDisk(), $keyPath, $encryption['key']);
-
-                // Note: hls_key_uri is not validated, so we merge it with encryption config
-                // The DynamicHLSPlaylist middleware will replace 'encryption.key' with the signed URL
-                $opener->withEncryption([
-                    'protection_scheme' => 'cbc1', // AES-128-CBC for browser compatibility
-                    'hls_key_uri' => 'encryption.key', // Placeholder URI that will be resolved dynamically
-                    'clear_lead' => 0, // Encrypt all segments including the first one (default is 5 seconds)
-                    'keys' => EncryptionKeyGenerator::formatForShaka(
-                        $encryption['key_id'],
-                        $encryption['key']
-                    ),
-                ]);
-            }
 
             // Export the playlist to the configured disk and path
             $opener

@@ -36,7 +36,6 @@ trait InteractsWithPlaylists
         return $this->playlists()->create([
             'file_name' => 'index.m3u8',
             'disk' => Playlist::getDestinationDisk(),
-            'secret_disk' => Playlist::getSecretsDisk(),
             'expires_at' => Playlist::getExpiresAfter(),
             'accessed_at' => now(),
             ...$attributes,
