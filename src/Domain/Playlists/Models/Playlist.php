@@ -253,13 +253,18 @@ class Playlist extends Model
         return $scheme === 'null' ? null : $scheme;
     }
 
-    public static function getKeyRotationEnabled(): bool
+    public static function getKeyRotation(): bool
     {
-        return Config::boolean('playlists.key_rotation_enabled', false);
+        return Config::boolean('playlists.key_rotation', false);
     }
 
     public static function getKeyRotationDuration(): int
     {
         return Config::integer('playlists.key_rotation_duration', 300);
+    }
+
+    public static function getPackagerOptions(): array
+    {
+        return Config::array('playlists.packager_options', []);
     }
 }

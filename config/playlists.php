@@ -35,7 +35,7 @@ return [
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
      */
-    'key_rotation_enabled' => (bool) env('PLAYLIST_KEY_ROTATION_ENABLED', false),
+    'key_rotation' => (bool) env('PLAYLIST_KEY_ROTATION', false),
 
     /**
      * Duration in seconds before rotating to a new encryption key.
@@ -49,5 +49,20 @@ return [
      * Set to 0 for no expiration.
      */
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 5), // 5 days
+
+    /**
+     * Shaka Packager options.
+     *
+     * @see https://shaka-project.github.io/shaka-packager/html/options.html
+     *
+     * - transport_stream_timestamp_offset_ms: Timestamp offset for transport streams (improves compatibility)
+     * - num_subsegments_per_sidx: Number of subsegments per SIDX box (0 = disable, reduces overhead)
+     * - fragment_sap_aligned: Align fragments to stream access points (improves seeking performance)
+     */
+    'packager_options' => [
+        'transport_stream_timestamp_offset_ms' => 1000,
+        'num_subsegments_per_sidx' => 0,
+        'fragment_sap_aligned' => true,
+    ],
 
 ];
