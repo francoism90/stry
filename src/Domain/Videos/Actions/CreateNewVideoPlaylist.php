@@ -31,7 +31,7 @@ class CreateNewVideoPlaylist
             $opener = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
             // Check if encryption is enabled
-            $encryptionEnabled = Playlist::getEncryptionMethod() === 'raw_key_encryption';
+            $useEncryption = Playlist::getEncryptionMethod() === 'raw_key_encryption';
 
             /** @var Playlist $playlist */
             $playlist = $video->createPlaylist([
@@ -39,29 +39,31 @@ class CreateNewVideoPlaylist
             ]);
 
             // Enable AES encryption with key rotation if configured
-            if ($encryptionEnabled) {
+            if ($useEncryption) {
+                $useKeyRotation = Playlist::getKeyRotationEnabled();
+
                 $keyData = $opener->withAESEncryption();
 
-                // Store encryption metadata
-                $playlist->update([
-                    'encryption_key_id' => $keyData['key_id'],
-                    'encryption_key' => $keyData['key'],
-                ]);
+                if (! $useKeyRotation) {
+                    $playlist->updateOrFail([
+                        'encryption_key_id' => $keyData['key_id'],
+                        'encryption_key' => $keyData['key'],
+                    ]);
+                }
 
-                // Enable key rotation if configured
-                if (Playlist::getKeyRotationEnabled()) {
+                if ($useKeyRotation) {
                     $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
                 }
             }
 
             // Iterate through each clip and add to the playlist
-            $clips->each(function (Media $media) use ($opener, $encryptionEnabled) {
+            $clips->each(function (Media $media) use ($opener, $useEncryption) {
                 // Get the path relative to the disk root
                 $path = $media->getPathRelativeToRoot();
 
                 // Use TS segments for AES-128-CBC encryption, fMP4 otherwise
-                $videoExtension = $encryptionEnabled ? 'ts' : 'mp4';
-                $audioExtension = $encryptionEnabled ? 'ts' : 'mp4';
+                $videoExtension = $useEncryption ? 'ts' : 'mp4';
+                $audioExtension = $useEncryption ? 'ts' : 'mp4';
 
                 // Add video and audio streams for the clip
                 $opener
