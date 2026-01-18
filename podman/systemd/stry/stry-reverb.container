@@ -5,7 +5,6 @@ Requires=stry.container
 
 [Container]
 Image=stry.build
-AutoUpdate=local
 Environment=CONTAINER_ROLE=reverb
 UserNS=keep-id
 Network=stry.network

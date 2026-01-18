@@ -5,7 +5,6 @@ Requires=stry.container
 
 [Container]
 Image=stry.build
-AutoUpdate=local
 Environment=CONTAINER_ROLE=scheduler
 UserNS=keep-id
 Volume=${MEDIA_PATH}:/data/media:rw,z

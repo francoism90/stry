@@ -216,6 +216,55 @@ journalctl --user -u stry -f
 
 ---
 
+## 🔄 Upgrading
+
+### Update Application Code
+
+Pull the latest changes from the repository:
+
+```bash
+cd ~/projects/stry
+git pull origin main
+```
+
+### Rebuild and Restart
+
+Rebuild the application image and restart all containers:
+
+```bash
+systemctl --user restart stry-build
+systemctl --user restart stry
+```
+
+> [!NOTE]
+> **When to rebuild:**
+>
+> - After pulling code changes from git
+> - After updating dependencies (composer.json or package.json)
+> - After modifying PHP extensions or container configuration
+> - After updating base images (FrankenPHP, PostgreSQL, etc.)
+>
+> **Simple container restarts** (`systemctl --user restart stry`) do **not** rebuild the image.
+
+### Update System Services
+
+If you modified Quadlet unit files (`.container`, `.network`, `.volume`, etc.):
+
+```bash
+systemctl --user daemon-reload
+systemctl --user restart stry
+```
+
+### Database Migrations
+
+After rebuilding, run any pending migrations:
+
+```bash
+podman exec systemd-stry php artisan migrate --force
+```
+
+---
+
 ## 🔧 Container Management
 
 ### Individual Container Control
