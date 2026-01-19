@@ -19,7 +19,7 @@ class MediaIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'search' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 }

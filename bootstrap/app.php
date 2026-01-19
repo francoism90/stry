@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
 use Support\Inertia\Middlewares\HandleInertiaRequests;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +23,22 @@ $app = Application::configure(basePath: $basePath)
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
+            // Global resource parameter mappings
+            Route::resourceParameters([
+                'media' => 'media',
+            ]);
+
+            // Rate limiting
+            RateLimiter::for('api', function (Request $request) {
+                return $request->user()
+                    ? Limit::perMinute(120)->by($request->user()->getKey())
+                    : Limit::perMinute(20)->by($request->ip());
+            });
+
+            RateLimiter::for('none', function (Request $request) {
+                return Limit::none();
+            });
+
             // Admin Routes
             Route::middleware(['web', 'verified', 'role:super-admin'])
                 ->prefix('admin')

@@ -16,16 +16,16 @@ const links: NavigationMenuItem[] = [
     exact: true,
   },
   {
-    label: 'Metadata',
-    icon: 'i-lucide-file-braces',
-  },
-  {
     label: 'Media',
     icon: 'i-lucide-images',
   },
   {
     label: 'Playlists',
     icon: 'i-lucide-list-video',
+  },
+  {
+    label: 'Metadata',
+    icon: 'i-lucide-file-braces',
   },
 ]
 </script>

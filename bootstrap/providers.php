@@ -9,6 +9,5 @@ return [
     Foundation\Providers\EventServiceProvider::class,
     Foundation\Providers\FortifyServiceProvider::class,
     Foundation\Providers\HorizonServiceProvider::class,
-    Foundation\Providers\RouteServiceProvider::class,
     Foundation\Providers\ViewServiceProvider::class,
 ];
