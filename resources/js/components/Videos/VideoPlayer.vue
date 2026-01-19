@@ -56,7 +56,9 @@ onBeforeUnmount(() => listener())
     <UEmpty
       v-if="!playlist?.valid"
       title="Preparing your video..."
-      :description="`Your video is being prepared. Status: ${playlist?.state || 'Initializing'}.`"
+      :description="
+        playlist?.failed ? 'There was an error processing your video.' : 'Please wait while we get everything ready.'
+      "
       icon="i-lucide-hard-drive-download"
       :actions="actions"
     />

@@ -8,6 +8,7 @@ use Database\Factories\PlaylistFactory;
 use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
+use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Users\Concerns\InteractsWithUser;
@@ -180,6 +181,11 @@ class Playlist extends Model
     public function isExpired(): bool
     {
         return filled($this->expires_at) && $this->expires_at->isPast();
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->state->equals(Failed::class);
     }
 
     public function isValid(): bool

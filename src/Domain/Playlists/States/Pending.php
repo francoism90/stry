@@ -10,6 +10,6 @@ class Pending extends PlaylistState
 
     public function label(): string
     {
-        return __('Processing');
+        return __('Pending');
     }
 }
