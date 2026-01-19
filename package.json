@@ -29,7 +29,7 @@
         "pusher-js": "^8.4.0",
         "tailwindcss": "^4.1.18",
         "vidstack": "^1.12.13",
-        "vue": "^3.5.26"
+        "vue": "^3.5.27"
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
@@ -46,12 +46,12 @@
         "chokidar": "^5.0.0",
         "concurrently": "^9.2.1",
         "eslint": "^9.39.2",
-        "eslint-plugin-oxlint": "~1.39.0",
+        "eslint-plugin-oxlint": "~1.40.0",
         "eslint-plugin-vue": "^10.7.0",
         "jiti": "^2.6.1",
         "laravel-vite-plugin": "^2.0.1",
         "npm-run-all2": "^8.0.4",
-        "oxlint": "~1.39.0",
+        "oxlint": "~1.40.0",
         "prettier": "3.8.0",
         "prettier-plugin-tailwindcss": "^0.7.2",
         "typescript": "~5.9.3",

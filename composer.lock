@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "856cbfb4a6789f29faff3d4bd674cdd1",
+    "content-hash": "02b3d5063d5ac4ba5f270814dc055628",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -7082,16 +7082,16 @@
         },
         {
             "name": "spatie/laravel-data",
-            "version": "4.18.0",
+            "version": "4.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-data.git",
-                "reference": "c10784f1133d540a702bd6db36ed659f4bc0606a"
+                "reference": "33ea9c6359015415bc46138eb256051ceff24a2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/c10784f1133d540a702bd6db36ed659f4bc0606a",
-                "reference": "c10784f1133d540a702bd6db36ed659f4bc0606a",
+                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/33ea9c6359015415bc46138eb256051ceff24a2e",
+                "reference": "33ea9c6359015415bc46138eb256051ceff24a2e",
                 "shasum": ""
             },
             "require": {
@@ -7108,13 +7108,12 @@
                 "livewire/livewire": "^3.0",
                 "mockery/mockery": "^1.6",
                 "nesbot/carbon": "^2.63|^3.0",
-                "orchestra/testbench": "^8.0|^9.0|^10.0",
-                "pestphp/pest": "^2.31|^3.0",
-                "pestphp/pest-plugin-laravel": "^2.0|^3.0",
-                "pestphp/pest-plugin-livewire": "^2.1|^3.0",
+                "orchestra/testbench": "^8.37.0|^9.16|^10.9",
+                "pestphp/pest": "^2.36|^3.8|^4.3",
+                "pestphp/pest-plugin-laravel": "^2.4|^3.0|^4.0",
+                "pestphp/pest-plugin-livewire": "^2.1|^3.0|^4.0",
                 "phpbench/phpbench": "^1.2",
                 "phpstan/extension-installer": "^1.1",
-                "phpunit/phpunit": "^10.0|^11.0|^12.0",
                 "spatie/invade": "^1.0",
                 "spatie/laravel-typescript-transformer": "^2.5",
                 "spatie/pest-plugin-snapshots": "^2.1",
@@ -7153,7 +7152,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-data/issues",
-                "source": "https://github.com/spatie/laravel-data/tree/4.18.0"
+                "source": "https://github.com/spatie/laravel-data/tree/4.19.0"
             },
             "funding": [
                 {
@@ -7161,7 +7160,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-16T16:44:07+00:00"
+            "time": "2026-01-19T09:47:31+00:00"
         },
         {
             "name": "spatie/laravel-google-fonts",
@@ -12079,16 +12078,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v3.8.1",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "ff3725291bc4c7e6032b5a54776e3e5104c86db9"
+                "reference": "82c18890d0d5b012bc39a3432531e5b6cd1b4b3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/ff3725291bc4c7e6032b5a54776e3e5104c86db9",
-                "reference": "ff3725291bc4c7e6032b5a54776e3e5104c86db9",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/82c18890d0d5b012bc39a3432531e5b6cd1b4b3a",
+                "reference": "82c18890d0d5b012bc39a3432531e5b6cd1b4b3a",
                 "shasum": ""
             },
             "require": {
@@ -12157,7 +12156,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v3.8.1"
+                "source": "https://github.com/larastan/larastan/tree/v3.9.0"
             },
             "funding": [
                 {
@@ -12165,7 +12164,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-11T16:37:35+00:00"
+            "time": "2026-01-17T23:00:37+00:00"
         },
         {
             "name": "laravel/boost",
