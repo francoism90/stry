@@ -47,7 +47,6 @@ ARG POSTGRES_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
-ENV CI=true
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
