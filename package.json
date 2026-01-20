@@ -46,7 +46,7 @@
         "chokidar": "^5.0.0",
         "concurrently": "^9.2.1",
         "eslint": "^9.39.2",
-        "eslint-plugin-oxlint": "~1.40.0",
+        "eslint-plugin-oxlint": "~1.41.0",
         "eslint-plugin-vue": "^10.7.0",
         "jiti": "^2.6.1",
         "laravel-vite-plugin": "^2.0.1",
