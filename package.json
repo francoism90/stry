@@ -51,7 +51,7 @@
         "jiti": "^2.6.1",
         "laravel-vite-plugin": "^2.0.1",
         "npm-run-all2": "^8.0.4",
-        "oxlint": "~1.40.0",
+        "oxlint": "~1.41.0",
         "prettier": "3.8.0",
         "prettier-plugin-tailwindcss": "^0.7.2",
         "typescript": "~5.9.3",
