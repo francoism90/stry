@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { destroy, update } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
+import { update } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
+import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Media, Video } from '@/types'
-import { router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
-import { ref } from 'vue'
 
 const props = defineProps<{
   video: Video
   media: Media
 }>()
 
-defineOptions({ layout: VideoLayout, name: 'VideoMediaEditPage' })
+defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
 const toast = useToast()
-const isDeleting = ref(false)
 
 const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
@@ -32,17 +31,6 @@ const onSubmit = () =>
         color: 'success',
       }),
   })
-
-const onDelete = async () => {
-  if (confirm('Are you sure you want to delete this media?')) {
-    isDeleting.value = true
-    router.delete(destroy.url([props.video.id, props.media.id]), {
-      onFinish: () => {
-        isDeleting.value = false
-      },
-    })
-  }
-}
 </script>
 
 <template>
@@ -91,12 +79,9 @@ const onDelete = async () => {
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <UButton
-          label="Delete Media"
-          color="error"
-          variant="soft"
-          :loading="isDeleting"
-          @click="onDelete"
+        <MediaDeleteModal
+          :video="video"
+          :item="media"
         />
       </template>
     </UPageCard>
