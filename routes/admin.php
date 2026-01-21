@@ -8,6 +8,7 @@ use App\Admin\Playlists\Controllers\PlaylistController;
 use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
+use App\Admin\Videos\Controllers\VideoMediaController;
 use Illuminate\Support\Facades\Route;
 
 // Home
@@ -17,7 +18,7 @@ Route::get('/', HomeController::class)->name('home');
 Route::resource('users', UserController::class);
 
 // Media
-Route::resource('media', MediaController::class);
+Route::resource('media', MediaController::class)->except(['create', 'store', 'show']);
 
 // Playlists
 Route::resource('playlists', PlaylistController::class);
@@ -27,3 +28,4 @@ Route::resource('tags', TagController::class);
 
 // Videos
 Route::resource('videos', VideoController::class);
+Route::resource('videos.media', VideoMediaController::class)->shallow();

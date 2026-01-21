@@ -8,6 +8,7 @@ use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
 use Domain\Media\Models\Media;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -28,12 +29,37 @@ class MediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Media::class);
 
-        // QueryBuilder
-        $scout = Media::query()
-            ->simplePaginate(16);
+        $media = Media::query()->simplePaginate(16);
 
         return Inertia::render('Admin/Media/MediaIndex', [
-            'items' => Inertia::scroll(fn () => MediaResource::collection($scout)),
+            'items' => Inertia::scroll(fn () => MediaResource::collection($media)),
         ]);
+    }
+
+    public function edit(Media $media): Response
+    {
+        Gate::authorize('update', $media);
+
+        return Inertia::render('Admin/Media/Edit', [
+            'media' => $media,
+        ]);
+    }
+
+    public function update(MediaIndexRequest $request, Media $media): RedirectResponse
+    {
+        Gate::authorize('update', $media);
+
+        $media->update($request->safe()->all());
+
+        return redirect()->route('admin.media.index');
+    }
+
+    public function destroy(Media $media): RedirectResponse
+    {
+        Gate::authorize('delete', $media);
+
+        $media->delete();
+
+        return redirect()->route('admin.media.index');
     }
 }
