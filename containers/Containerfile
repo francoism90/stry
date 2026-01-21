@@ -29,7 +29,7 @@ RUN arch="$(uname -m)" && case "$arch" in \
     && chmod +x /usr/local/bin/packager
 
 # ab-av1
-# RUN cargo install ab-av1
+RUN cargo install ab-av1
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -71,7 +71,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
-# COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
+COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
 
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
