@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { MediaCollection, Video } from '@/types'
@@ -56,7 +57,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
                     color="secondary"
                     variant="ghost"
                     size="sm"
-                    :to="`/admin/media/${item.id}/edit`"
+                    :to="edit.url({ video: video.id, media: item.id })"
                   />
 
                   <UButton

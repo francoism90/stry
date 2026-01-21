@@ -32,6 +32,7 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Media::class);
 
+        // Fetch media for the video
         $media = $video->media()->simplePaginate(16);
 
         return Inertia::render('Admin/Videos/Media/Index', [
@@ -56,5 +57,42 @@ class VideoMediaController extends Controller implements HasMiddleware
         $video->media()->create($request->safe()->all());
 
         return redirect()->route('admin.videos.media.index', $video);
+    }
+
+    public function show(Video $video, Media $media): Response
+    {
+        Gate::authorize('view', $media);
+
+        return Inertia::render('Admin/Videos/Media/Show', [
+            'media' => $media,
+        ]);
+    }
+
+    public function edit(Video $video, Media $media): Response
+    {
+        Gate::authorize('update', $media);
+
+        return Inertia::render('Admin/Videos/Media/Edit', [
+            'media' => $media,
+        ]);
+    }
+
+    public function update(MediaIndexRequest $request, Video $video, Media $media): RedirectResponse
+    {
+        Gate::authorize('update', $media);
+
+        $media->update($request->safe()->all());
+
+        return redirect()->route('admin.videos.media.index', $media->video_id);
+    }
+
+    public function destroy(Video $video, Media $media): RedirectResponse
+    {
+        Gate::authorize('delete', $media);
+
+        $videoId = $media->video_id;
+        $media->delete();
+
+        return redirect()->route('admin.videos.media.index', $videoId);
     }
 }

@@ -17,9 +17,6 @@ Route::get('/', HomeController::class)->name('home');
 // Users
 Route::resource('users', UserController::class);
 
-// Media
-Route::resource('media', MediaController::class)->except(['create', 'store', 'show']);
-
 // Playlists
 Route::resource('playlists', PlaylistController::class);
 
@@ -28,4 +25,4 @@ Route::resource('tags', TagController::class);
 
 // Videos
 Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class)->shallow();
+Route::resource('videos.media', VideoMediaController::class);
