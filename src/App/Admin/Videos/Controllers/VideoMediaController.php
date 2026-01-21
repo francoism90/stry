@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Admin\Videos\Controllers;
 
+use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
+use App\Api\Videos\Resources\VideoResource;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -33,7 +35,7 @@ class VideoMediaController extends Controller implements HasMiddleware
         $media = $video->media()->simplePaginate(16);
 
         return Inertia::render('Admin/Videos/Media/Index', [
-            'video' => $video,
+            'video' => fn () => new VideoResourceProperty(video: $video),
             'items' => Inertia::scroll(fn () => MediaResource::collection($media)),
         ]);
     }
