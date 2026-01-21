@@ -6,14 +6,13 @@ namespace App\Admin\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
-use Illuminate\Container\Attributes\RouteParameter;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
 readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        #[RouteParameter('video')] protected Video $video,
+        protected Video $video,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed

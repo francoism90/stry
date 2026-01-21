@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Videos\Controllers;
 
 use App\Admin\Videos\Responses\VideoResourceProperty;
+use App\Admin\Media\Responses\MediaResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
 use App\Api\Videos\Resources\VideoResource;
@@ -36,7 +37,7 @@ class VideoMediaController extends Controller implements HasMiddleware
         $media = $video->media()->simplePaginate(16);
 
         return Inertia::render('Admin/Videos/Media/Index', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
+            'video' => fn () => new VideoResourceProperty($video),
             'items' => Inertia::scroll(fn () => MediaResource::collection($media)),
         ]);
     }
@@ -46,7 +47,7 @@ class VideoMediaController extends Controller implements HasMiddleware
         Gate::authorize('create', Media::class);
 
         return Inertia::render('Admin/Videos/Media/Create', [
-            'video' => $video,
+            'video' => fn () => new VideoResourceProperty($video),
         ]);
     }
 
@@ -64,7 +65,8 @@ class VideoMediaController extends Controller implements HasMiddleware
         Gate::authorize('view', $media);
 
         return Inertia::render('Admin/Videos/Media/Show', [
-            'media' => $media,
+            'video' => fn () => new VideoResourceProperty(video: $video),
+            'media' => fn () => new MediaResourceProperty(media: $media),
         ]);
     }
 
@@ -73,7 +75,8 @@ class VideoMediaController extends Controller implements HasMiddleware
         Gate::authorize('update', $media);
 
         return Inertia::render('Admin/Videos/Media/Edit', [
-            'media' => $media,
+            'video' => fn () => new VideoResourceProperty(video: $video),
+            'media' => fn () => new MediaResourceProperty(media: $media),
         ]);
     }
 
