@@ -29,27 +29,27 @@ class CreateNewVideoPlaylist
         // Initialize Shaka Packager
         $opener = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
-        // Check if encryption is enabled
-        $useEncryption = Playlist::getEncryptionMethod() === 'raw_key_encryption';
-
         /** @var Playlist $playlist */
         $playlist = $video->createPlaylist([
             'type' => 'clip',
         ]);
 
+        // Check if encryption is enabled
+        $useEncryption = Playlist::getEncryptionMethod() === 'raw_key_encryption';
+
         // Enable AES encryption with key rotation if configured
-        // if ($useEncryption) {
-        //     $useKeyRotation = Playlist::getKeyRotation();
+        if ($useEncryption) {
+            // Get the protection scheme
+            $protectionScheme = Playlist::getProtectionScheme();
 
-        //     // Use cenc for key rotation support, or cbcs for FairPlay/Safari
-        //     $protectionScheme = Playlist::getProtectionScheme();
+            logger($protectionScheme);
 
-        //     $opener->withAESEncryption('key', $protectionScheme);
+            $opener->withAESEncryption('key', $protectionScheme);
 
-        //     if ($useKeyRotation) {
-        //         $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
-        //     }
-        // }
+            if (Playlist::getKeyRotation()) {
+                $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+            }
+        }
 
         // Iterate through each clip and add to the playlist
         $clips->each(function (Media $media) use ($opener) {
@@ -74,6 +74,7 @@ class CreateNewVideoPlaylist
         $opener
             ->withHlsMasterPlaylist($playlist->getFileName())
             ->withSegmentDuration(Playlist::getSegmentDuration())
+            ->withOption('hls_playlist_type', 'VOD')
             ->withOptions(Playlist::getPackagerOptions());
 
         // Add text tracks (captions) to the playlist if available

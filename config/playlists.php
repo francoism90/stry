@@ -18,7 +18,7 @@ return [
      * This setting is used to define the encryption method for the playlist.
      *
      * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
-     * Set to 'none' or any other value to disable encryption.
+     * Set to null to disable encryption.
      */
     'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
 
@@ -30,7 +30,7 @@ return [
      * - 'cbc1' legacy HLS, limited browser support
      * - null (SAMPLE-AES) widest compatibility but NO key rotation support
      */
-    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
+    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', null),
 
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
