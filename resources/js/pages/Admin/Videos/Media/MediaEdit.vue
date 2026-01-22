@@ -116,7 +116,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
             </div>
 
             <UButton
-              v-if="transcode.state === 'completed'"
+              v-if="transcode.completed"
               label="Replace Original"
               color="primary"
               variant="soft"

@@ -9,8 +9,9 @@ export type Model = {
 
 export type ModelState = {
   name: string
-  icon?: string
-  color?: string
+  label: string
+  icon: string
+  color: 'primary' | 'success' | 'warning' | 'danger' | 'neutral' | undefined
 }
 
 export type User = Model & {
@@ -45,6 +46,10 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 export type Transcode = Model & {
   media_id: number
   preset: string
+  pending: boolean
+  processing: boolean
+  completed: boolean
+  failed: boolean
   state: ModelState
   error_message: string | null
   retry_count: number

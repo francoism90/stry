@@ -37,7 +37,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
             <div class="flex items-center gap-2">
               <p class="font-semibold">{{ item.type }}</p>
               <UBadge
-                :label="item.state"
+                :label="item.state.name"
                 :color="item.valid ? 'success' : item.expired ? 'warning' : item.failed ? 'error' : 'neutral'"
               />
             </div>

@@ -19,6 +19,7 @@ abstract class TranscodeState extends State
     {
         return [
             'name' => $this->getValue(),
+            'label' => $this->label(),
             'icon' => $this->icon(),
             'color' => $this->color(),
         ];
