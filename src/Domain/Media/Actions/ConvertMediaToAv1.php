@@ -6,36 +6,26 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Transcode;
 use Foxws\AV1\Facades\AV1;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ConvertMediaToAv1
 {
     public function handle(Transcode $transcode): void
     {
         $media = $transcode->media;
-
         $options = $transcode->getOptions();
 
-        $inputPath = $media->getPath();
-
-        $directory = pathinfo($inputPath, PATHINFO_DIRNAME);
-        $filename = pathinfo($inputPath, PATHINFO_FILENAME).'_av1.mp4';
-        $outputPath = $directory.'/'.$filename;
+        $filename = pathinfo($media->getPath(), PATHINFO_FILENAME).'_av1.mp4';
+        $outputPath = Str::uuid().'/'.$filename;
 
         $result = AV1::fromDisk($media->disk)
-            ->open($inputPath)
+            ->open($media->getPathRelativeToRoot())
+            ->abav1()
             ->vmafEncode()
             ->preset((string) ($options['preset'] ?? '6'))
             ->minVmaf((int) ($options['min_vmaf'] ?? 95))
             ->export()
             ->toDisk(Transcode::getDisk())
-            ->afterSaving(function ($result, $path) use ($transcode) {
-                Log::info('AV1 encoding completed', [
-                    'transcode_id' => $transcode->id,
-                    'path' => $path,
-                    'exit_code' => $result->getExitCode(),
-                ]);
-            })
             ->save($outputPath);
 
         if (! $result->isSuccessful()) {

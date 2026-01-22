@@ -32,10 +32,11 @@ class ConvertMediaJob implements ShouldQueue
 
     public function handle(ConvertMediaToAv1 $action): void
     {
+        // Update state to processing
         $this->transcode->state->transitionTo(States\Processing::class);
-
         $this->transcode->updateOrFail(['started_at' => now()]);
 
+        // Perform conversion
         try {
             $action->handle($this->transcode);
 
