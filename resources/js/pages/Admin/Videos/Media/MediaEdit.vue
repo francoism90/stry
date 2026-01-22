@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
+import VideoMediaConvertController from '@/actions/App/Admin/Videos/Controllers/VideoMediaConvertController'
+import VideoMediaReplaceController from '@/actions/App/Admin/Videos/Controllers/VideoMediaReplaceController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Media, Video } from '@/types'
+import { router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -31,6 +34,53 @@ const onSubmit = () =>
         color: 'success',
       }),
   })
+
+const startConversion = () => {
+  router.post(
+    VideoMediaConvertController.url([props.video.id, props.media.id]),
+    {},
+    {
+      preserveState: true,
+      onSuccess: () =>
+        toast.add({
+          title: 'Conversion Started',
+          description: 'AV1 conversion has been queued.',
+          icon: 'i-lucide-play',
+          color: 'primary',
+        }),
+    },
+  )
+}
+
+const replaceWithTranscode = (transcodeId: number) => {
+  router.post(
+    VideoMediaReplaceController.url([props.video.id, props.media.id, transcodeId]),
+    {},
+    {
+      preserveState: true,
+      onSuccess: () =>
+        toast.add({
+          title: 'Media Replaced',
+          description: 'Original media has been replaced with AV1 version.',
+          icon: 'i-lucide-check',
+          color: 'success',
+        }),
+    },
+  )
+}
+
+const getStateColor = (state: string) => {
+  switch (state) {
+    case 'completed':
+      return 'success'
+    case 'processing':
+      return 'primary'
+    case 'failed':
+      return 'error'
+    default:
+      return 'neutral'
+  }
+}
 </script>
 
 <template>
@@ -71,6 +121,66 @@ const onSubmit = () =>
           autofocus
         />
       </UFormField>
+    </UPageCard>
+
+    <UPageCard
+      title="AV1 Conversion"
+      description="Convert this media to AV1 format for better compression and quality."
+      variant="subtle"
+    >
+      <div class="space-y-4">
+        <div
+          v-if="media.transcodes?.length"
+          class="space-y-3"
+        >
+          <div
+            v-for="transcode in media.transcodes"
+            :key="transcode.id"
+            class="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800"
+          >
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <UBadge :color="getStateColor(transcode.state)">
+                  {{ transcode.state }}
+                </UBadge>
+                <span class="text-sm text-gray-600 dark:text-gray-400">
+                  {{ transcode.codec.toUpperCase() }}
+                </span>
+              </div>
+              <div
+                v-if="transcode.state === 'processing'"
+                class="text-sm text-gray-500 dark:text-gray-400"
+              >
+                Progress: {{ transcode.progress }}%
+              </div>
+              <div
+                v-if="transcode.error_message"
+                class="text-error text-sm"
+              >
+                {{ transcode.error_message }}
+              </div>
+            </div>
+
+            <UButton
+              v-if="transcode.state === 'completed'"
+              label="Replace Original"
+              color="primary"
+              variant="soft"
+              icon="i-lucide-arrow-right-left"
+              @click="replaceWithTranscode(Number(transcode.id))"
+            />
+          </div>
+        </div>
+
+        <UButton
+          v-else
+          label="Start AV1 Conversion"
+          color="primary"
+          variant="soft"
+          icon="i-lucide-play"
+          @click="startConversion"
+        />
+      </div>
     </UPageCard>
 
     <UPageCard

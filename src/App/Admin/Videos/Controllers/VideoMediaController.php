@@ -74,6 +74,8 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $media);
 
+        $media->load('transcodes');
+
         return Inertia::render('Admin/Videos/Media/MediaEdit', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'media' => fn () => new MediaResourceProperty(media: $media),

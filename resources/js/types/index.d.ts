@@ -29,10 +29,24 @@ export type Media = Model & {
   collection_name: string
   disk: string
   conversions_disk: string
+  transcodes?: Transcode[]
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
   data: Media[] | undefined
+}
+
+export type Transcode = Model & {
+  video_id: number
+  media_id: number
+  codec: string
+  preset: string | null
+  state: 'pending' | 'processing' | 'completed' | 'failed'
+  progress: number
+  error_message: string | null
+  retry_count: number
+  started_at: string | null
+  completed_at: string | null
 }
 
 export type Tag = Model & {
