@@ -4,7 +4,7 @@ import type { Playlist, Video } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
-import { isHLSProvider, type MediaProviderAdapter, type MediaProviderChangeEvent } from 'vidstack'
+import { isHLSProvider, type MediaProviderAdapter } from 'vidstack'
 import { computed } from 'vue'
 
 export function usePlayer() {
@@ -25,7 +25,7 @@ export function usePlayer() {
   /**
    * Configure HLS provider for Clear Key DRM support
    */
-  const onProviderChange = (provider: MediaProviderAdapter | null, nativeEvent: MediaProviderChangeEvent) => {
+  const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (!provider || !isHLSProvider(provider)) {
       return
     }
