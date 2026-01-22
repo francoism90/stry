@@ -22,7 +22,7 @@ class TranscodeResource extends JsonResource
             'error_message' => $this->error_message,
             'retry_count' => $this->retry_count,
             'started_at' => $this->started_at,
-            'completed_at' => $this->completed_at,
+            'transcoded_at' => $this->transcoded_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -40,11 +40,13 @@ class ConvertMediaJob implements ShouldQueue
         try {
             $action->handle($this->transcode);
 
+            // Update state to completed
             $this->transcode->state->transitionTo(States\Completed::class);
-            $this->transcode->updateOrFail(['completed_at' => now()]);
+            $this->transcode->updateOrFail(['transcoded_at' => now()]);
         } catch (Throwable $e) {
             $this->transcode->state->transitionTo(States\Failed::class);
 
+            // Update error message and increment retry count
             $this->transcode->updateOrFail([
                 'error_message' => $e->getMessage(),
                 'retry_count' => $this->transcode->retry_count + 1,
