@@ -13,12 +13,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class TranscodeResource extends JsonResource
 {
+    /**
+     * @var bool
+     */
+    public $preserveKeys = true;
+
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->getRouteKey(),
             'preset' => $this->preset,
-            'state' => $this->state->getValue(),
+            'state' => $this->state->toArray(),
             'error_message' => $this->error_message,
             'retry_count' => $this->retry_count,
             'started_at' => $this->started_at,

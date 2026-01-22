@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Api\Media\Resources;
 
+use Domain\Media\Models\Media;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Media
+ */
 class MediaResource extends JsonResource
 {
     /**

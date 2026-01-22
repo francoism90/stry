@@ -23,7 +23,7 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
 })
 
-const { startConversion, replaceWithTranscode, getStateColor } = useMedia(props.video, props.media)
+const { startConversion, replaceWithTranscode } = useMedia(props.media)
 
 const onSubmit = () =>
   form.submit({
@@ -98,8 +98,8 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           >
             <div class="space-y-1">
               <div class="flex items-center gap-2">
-                <UBadge :color="getStateColor(transcode.state)">
-                  {{ transcode.state }}
+                <UBadge :color="transcode.state.color">
+                  {{ transcode.state.name }}
                 </UBadge>
 
                 <span class="text-sm text-gray-600 dark:text-gray-400">
@@ -121,7 +121,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
               color="primary"
               variant="soft"
               icon="i-lucide-arrow-right-left"
-              @click="replaceWithTranscode(Number(transcode.id))"
+              @click="replaceWithTranscode(transcode)"
             />
           </div>
         </div>

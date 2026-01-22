@@ -12,4 +12,14 @@ class Processing extends TranscodeState
     {
         return __('Processing');
     }
+
+    public function color(): string
+    {
+        return 'primary';
+    }
+
+    public function icon(): string
+    {
+        return 'i-lucide-loader-circle';
+    }
 }

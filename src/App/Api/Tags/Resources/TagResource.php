@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Api\Tags\Resources;
 
+use Domain\Tags\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Tag
+ */
 class TagResource extends JsonResource
 {
     /**

@@ -22,11 +22,12 @@ class ReplaceMediaWithTranscode
         $mediaDisk = Storage::disk($media->disk);
         $transcodeDisk = Storage::disk(Transcode::getDisk());
 
-        $originalPath = $media->getPath();
+        $originalPath = $media->getAbsolutePath();
         $transcodedPath = $transcode->getOutputPath();
 
         // Create backup of original file
         $backupPath = preg_replace('/(\.[^.]+)$/', '_original$1', $originalPath);
+
         $mediaDisk->copy($originalPath, $backupPath);
 
         // Replace original file with transcoded version

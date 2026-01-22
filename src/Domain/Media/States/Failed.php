@@ -12,4 +12,14 @@ class Failed extends TranscodeState
     {
         return __('Failed');
     }
+
+    public function color(): string
+    {
+        return 'error';
+    }
+
+    public function icon(): string
+    {
+        return 'i-lucide-x-circle';
+    }
 }

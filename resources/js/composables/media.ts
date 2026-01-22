@@ -1,9 +1,9 @@
 import MediaConvertController from '@/actions/App/Admin/Media/Controllers/MediaConvertController'
 import MediaTranscodeReplaceController from '@/actions/App/Admin/Media/Controllers/MediaTranscodeReplaceController'
-import type { Media, Video } from '@/types'
+import type { Media, Transcode } from '@/types'
 import { router } from '@inertiajs/vue3'
 
-export function useMedia(video: Video, media: Media) {
+export function useMedia(media: Media) {
   const toast = useToast()
 
   const startConversion = () => {
@@ -23,9 +23,9 @@ export function useMedia(video: Video, media: Media) {
     )
   }
 
-  const replaceWithTranscode = (transcodeId: number) => {
+  const replaceWithTranscode = (transcode: Transcode) => {
     router.post(
-      MediaTranscodeReplaceController.url([media.id, transcodeId]),
+      MediaTranscodeReplaceController.url([media.id, transcode.id]),
       {},
       {
         preserveState: true,
@@ -40,22 +40,8 @@ export function useMedia(video: Video, media: Media) {
     )
   }
 
-  const getStateColor = (state: string) => {
-    switch (state) {
-      case 'completed':
-        return 'success'
-      case 'processing':
-        return 'primary'
-      case 'failed':
-        return 'error'
-      default:
-        return 'neutral'
-    }
-  }
-
   return {
     startConversion,
     replaceWithTranscode,
-    getStateColor,
   }
 }

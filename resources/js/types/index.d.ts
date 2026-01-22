@@ -7,6 +7,12 @@ export type Model = {
   updated_at: string
 }
 
+export type ModelState = {
+  name: string
+  icon?: string
+  color?: string
+}
+
 export type User = Model & {
   name: string
   email: string | undefined
@@ -39,11 +45,11 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 export type Transcode = Model & {
   media_id: number
   preset: string
-  state: 'pending' | 'processing' | 'completed' | 'failed'
+  state: ModelState
   error_message: string | null
   retry_count: number
   started_at: string | null
-  completed_at: string | null
+  transcoded_at: string | null
 }
 
 export type Tag = Model & {
@@ -89,7 +95,7 @@ export type Video = Model & {
   viewed: boolean | undefined
   published_at: string | undefined
   released_at: string | undefined
-  state: string
+  state: ModelState
 }
 
 export type VideoCollection = Omit<Paginator, 'data'> & {
@@ -103,7 +109,7 @@ export type Playlist = Model & {
   valid: boolean
   type: string | undefined
   expires_at: string | null | undefined
-  state: string
+  state: ModelState
 }
 
 export type PlaylistCollection = Omit<Paginator, 'data'> & {

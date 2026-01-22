@@ -12,4 +12,14 @@ class Completed extends TranscodeState
     {
         return __('Completed');
     }
+
+    public function color(): string
+    {
+        return 'success';
+    }
+
+    public function icon(): string
+    {
+        return 'i-lucide-check-circle';
+    }
 }

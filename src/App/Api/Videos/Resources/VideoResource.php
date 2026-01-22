@@ -6,8 +6,12 @@ namespace App\Api\Videos\Resources;
 
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Users\Resources\UserResource;
+use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Video
+ */
 class VideoResource extends JsonResource
 {
     /**
