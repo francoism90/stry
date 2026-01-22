@@ -16,11 +16,13 @@ const remove = async () => router.delete(destroy.url([props.video.id, props.item
     :title="item.name"
     :ui="{ footer: 'justify-end' }"
   >
-    <UButton
-      label="Delete media"
-      color="error"
-      variant="soft"
-    />
+    <slot>
+      <UButton
+        label="Delete media"
+        color="error"
+        variant="soft"
+      />
+    </slot>
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">

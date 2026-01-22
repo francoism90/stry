@@ -11,7 +11,7 @@ export type ModelState = {
   name: string
   label: string
   icon: string
-  color: 'primary' | 'success' | 'warning' | 'danger' | 'neutral' | undefined
+  color: Badge['variants']['color']
 }
 
 export type User = Model & {

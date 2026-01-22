@@ -57,7 +57,10 @@ watchDebounced(
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar id="tag-header">
+      <UDashboardToolbar
+        id="tag-header"
+        class="min-h-16"
+      >
         <template #left>
           <UFormField :error="form.errors.search">
             <UInput

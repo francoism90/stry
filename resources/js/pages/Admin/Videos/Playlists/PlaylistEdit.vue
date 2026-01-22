@@ -50,8 +50,8 @@ const onSubmit = () =>
         <h2 class="text-lg font-semibold">Playlist</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">
           <UBadge
-            :label="playlist.state"
-            :color="playlist.valid ? 'success' : playlist.expired ? 'warning' : playlist.failed ? 'error' : 'neutral'"
+            :label="playlist.state.label"
+            :color="playlist.state.color"
           />
         </p>
       </div>

@@ -66,12 +66,7 @@ export default defineConfig(({ mode }) => {
           },
           dashboardNavbar: {
             slots: {
-              root: 'bg-default sticky top-0 z-50 min-h-18 w-full',
-            },
-          },
-          dashboardToolbar: {
-            slots: {
-              root: 'bg-default sticky top-20 z-40 min-h-18 w-full',
+              root: 'bg-default sticky top-0 z-50 w-full',
             },
           },
         },

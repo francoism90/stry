@@ -49,7 +49,10 @@ watchDebounced(
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar id="video-header">
+      <UDashboardToolbar
+        id="video-header"
+        class="min-h-16"
+      >
         <template #left>
           <UFormField :error="form.errors.search">
             <UInput
