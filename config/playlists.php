@@ -30,7 +30,7 @@ return [
      * - 'cbc1' legacy HLS, limited browser support
      * - null (SAMPLE-AES) widest compatibility but NO key rotation support
      */
-    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cbcs'),
+    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
 
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
@@ -55,6 +55,7 @@ return [
      *
      * @see https://shaka-project.github.io/shaka-packager/html/options.html
      *
+     * - hls_playlist_type: Set to 'VOD' for video on demand (required for fMP4/CMAF)
      * - transport_stream_timestamp_offset_ms: Timestamp offset for transport streams (improves compatibility)
      * - num_subsegments_per_sidx: Number of subsegments per SIDX box (0 = disable, reduces overhead)
      * - fragment_sap_aligned: Align fragments to stream access points (improves seeking performance)

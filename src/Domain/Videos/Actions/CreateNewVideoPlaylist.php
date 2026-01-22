@@ -38,38 +38,35 @@ class CreateNewVideoPlaylist
         ]);
 
         // Enable AES encryption with key rotation if configured
-        if ($useEncryption) {
-            $useKeyRotation = Playlist::getKeyRotation();
+        // if ($useEncryption) {
+        //     $useKeyRotation = Playlist::getKeyRotation();
 
-            // Use cenc for key rotation support, or cbcs for FairPlay/Safari
-            $protectionScheme = Playlist::getProtectionScheme();
+        //     // Use cenc for key rotation support, or cbcs for FairPlay/Safari
+        //     $protectionScheme = Playlist::getProtectionScheme();
 
-            $opener->withAESEncryption('key', $protectionScheme);
+        //     $opener->withAESEncryption('key', $protectionScheme);
 
-            if ($useKeyRotation) {
-                $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
-            }
-        }
+        //     if ($useKeyRotation) {
+        //         $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+        //     }
+        // }
 
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($opener, $useEncryption) {
+        $clips->each(function (Media $media) use ($opener) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
-
-            // Use TS segments for AES-128-CBC encryption, fMP4 otherwise
-            $videoExtension = $useEncryption ? 'ts' : 'mp4';
-            $audioExtension = $useEncryption ? 'ts' : 'mp4';
 
             // Detect available streams using FFMpeg
             $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
 
-            // Add streams only if they exist
+            // Use fMP4 (CMAF) segments for better codec support (AV1, HEVC, etc.)
+            // m4s extension works with both encrypted and unencrypted content
             if ($ffprobe->getVideoStream()) {
-                $opener->addVideoStream($path, "{$media->uuid}_video.{$videoExtension}");
+                $opener->addVideoStream($path, "{$media->uuid}_video.\$Number\$.m4s");
             }
 
             if ($ffprobe->getAudioStream()) {
-                $opener->addAudioStream($path, "{$media->uuid}_audio.{$audioExtension}");
+                $opener->addAudioStream($path, "{$media->uuid}_audio.\$Number\$.m4s");
             }
         });
 
