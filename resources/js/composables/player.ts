@@ -1,3 +1,4 @@
+import PlaylistLicenseController from '@/actions/App/Api/Playlists/Controllers/PlaylistLicenseController'
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import type { Playlist, Video } from '@/types'
 import { http } from '@/utils/http'
@@ -38,18 +39,8 @@ export function usePlayer() {
       drmSystems: {
         'org.w3.clearkey': {
           // License server endpoint
-          licenseUrl: playlist.value ? `/api/v1/drm/clearkey/license/${playlist.value.id}` : '',
-
-          // Add authentication headers
-          licenseHeaders: () => ({
-            Accept: 'application/json',
-          }),
+          licenseUrl: playlist.value ? PlaylistLicenseController.url(playlist.value.id) : '',
         },
-      },
-
-      // Optional: Add custom headers for HLS requests (e.g., signed URLs)
-      xhrSetup: (xhr: XMLHttpRequest, url: string) => {
-        // URLs are already signed by Laravel, no additional headers needed
       },
     }
   }

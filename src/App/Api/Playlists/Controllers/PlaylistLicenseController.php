@@ -11,7 +11,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class ClearKeyLicenseController extends Controller implements HasMiddleware
+class PlaylistLicenseController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
