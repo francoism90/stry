@@ -113,7 +113,7 @@ class Transcode extends Model
      */
     public function broadcastOn(string $event): array
     {
-        return array_filter([$this, $this->media]);
+        return array_filter([$this, $this->media, $this->media->model]);
     }
 
     public function broadcastChannel(): string

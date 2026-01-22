@@ -38,8 +38,8 @@ return [
     'presets' => [
         'ab-av1' => [
             'preset' => env('TRANSCODE_AV1_PRESET', '6'),
-            'min_vmaf' => env('TRANSCODE_AV1_MIN_VMAF', 90),
-            'max_encoded_percent' => env('TRANSCODE_AV1_MAX_PERCENT', 150),
+            'min_vmaf' => env('TRANSCODE_AV1_MIN_VMAF', 85),
+            'max_encoded_percent' => env('TRANSCODE_AV1_MAX_PERCENT', 300),
         ],
     ],
 

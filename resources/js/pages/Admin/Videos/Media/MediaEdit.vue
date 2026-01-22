@@ -38,12 +38,7 @@ const onSubmit = () =>
       }),
   })
 
-if (props.transcodes?.length) {
-  for (const transcode of props.transcodes) {
-    useEcho(`transcodes.${transcode.id}`, '.transcode.updated', () => router.reload({ only: ['transcodes'] }))
-    useEcho(`transcodes.${transcode.id}`, '.transcode.deleted', () => router.reload({ only: ['transcodes'] }))
-  }
-}
+useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.reload({ only: ['transcodes'] }))
 </script>
 
 <template>
