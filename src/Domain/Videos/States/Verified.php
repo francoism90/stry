@@ -12,4 +12,14 @@ class Verified extends VideoState
     {
         return __('Verified');
     }
+
+    public function color(): string
+    {
+        return 'success';
+    }
+
+    public function icon(): string
+    {
+        return 'i-lucide-check-circle';
+    }
 }
