@@ -33,7 +33,7 @@ class MediaConvertController extends Controller implements HasMiddleware
             'Media must be a video to convert.'
         );
 
-        app(CreateMediaTranscode::class)->handle($media->model, $media);
+        app(CreateMediaTranscode::class)->handle($media);
 
         return back();
     }

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Config;
 
 class CreateMediaTranscode
 {
-    public function handle(Video $video, Media $media, ?string $preset = null): Transcode
+    public function handle(Media $media, ?string $preset = null): Transcode
     {
         $transcode = Transcode::create([
             'media_id' => $media->id,

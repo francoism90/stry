@@ -22,6 +22,9 @@ class Transcode extends Model
     use HasStates;
     use HasUlids;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'media_id',
         'preset',
