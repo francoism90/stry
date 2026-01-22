@@ -9,6 +9,7 @@ use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateNewVideoPlaylist
 {
@@ -59,10 +60,17 @@ class CreateNewVideoPlaylist
             $videoExtension = $useEncryption ? 'ts' : 'mp4';
             $audioExtension = $useEncryption ? 'ts' : 'mp4';
 
-            // Add video and audio streams for the clip
-            $opener
-                ->addVideoStream($path, "{$media->uuid}_video.{$videoExtension}")
-                ->addAudioStream($path, "{$media->uuid}_audio.{$audioExtension}");
+            // Detect available streams using FFMpeg
+            $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
+
+            // Add streams only if they exist
+            if ($ffprobe->getVideoStream()) {
+                $opener->addVideoStream($path, "{$media->uuid}_video.{$videoExtension}");
+            }
+
+            if ($ffprobe->getAudioStream()) {
+                $opener->addAudioStream($path, "{$media->uuid}_audio.{$audioExtension}");
+            }
         });
 
         // Configure HLS playlist settings

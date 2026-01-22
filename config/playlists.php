@@ -20,7 +20,7 @@ return [
      * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
      * Set to 'none' or any other value to disable encryption.
      */
-    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
+    'encryption' => (string) env('PLAYLIST_ENCRYPTION'),
 
     /**
      * Protection scheme for encryption.

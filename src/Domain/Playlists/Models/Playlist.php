@@ -248,16 +248,14 @@ class Playlist extends Model
         return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getEncryptionMethod(): string
+    public static function getEncryptionMethod(): ?string
     {
-        return Config::string('playlists.encryption', 'raw_key_encryption');
+        return Config::string('playlists.encryption');
     }
 
     public static function getProtectionScheme(): ?string
     {
-        $scheme = Config::string('playlists.protection_scheme', 'cenc');
-
-        return $scheme === 'null' ? null : $scheme;
+        return Config::string('playlists.protection_scheme');
     }
 
     public static function getKeyRotation(): bool
