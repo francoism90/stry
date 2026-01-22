@@ -6,6 +6,7 @@ namespace App\Admin\Tags\Controllers;
 
 use App\Admin\Tags\Responses\TagResourceProperty;
 use App\Api\Tags\Requests\TagIndexRequest;
+use App\Api\Tags\Requests\TagStoreRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Actions\UpdateTagDetails;
@@ -47,6 +48,16 @@ class TagController extends Controller implements HasMiddleware
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),
         ]);
+    }
+
+    public function store(TagStoreRequest $request): RedirectResponse
+    {
+        Gate::authorize('create', Tag::class);
+
+        // Create the tag
+        $tag = Tag::create($request->safe()->all());
+
+        return redirect()->route('admin.tags.edit', $tag);
     }
 
     public function edit(Tag $tag): Response

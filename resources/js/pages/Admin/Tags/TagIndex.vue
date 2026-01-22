@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
+import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -46,6 +47,13 @@ watchDebounced(
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+
+        <template
+          v-if="types"
+          #right
+        >
+          <TagCreateModal :types="types" />
+        </template>
       </UDashboardNavbar>
 
       <UDashboardToolbar id="tag-header">
@@ -75,36 +83,34 @@ watchDebounced(
     </template>
 
     <template #body>
-      <UPage>
-        <InfiniteScroll
-          data="items"
-          start-element="#tag-header"
-          items-element="#tag-list"
-          :buffer="200"
+      <InfiniteScroll
+        data="items"
+        start-element="#tag-header"
+        items-element="#tag-list"
+        :buffer="200"
+      >
+        <UPageList
+          id="tag-list"
+          divide
         >
-          <UPageList
-            id="tag-list"
-            divide
+          <UPageCard
+            v-for="item in items?.data"
+            :key="item.id"
+            :to="edit.url(item.id)"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
           >
-            <UPageCard
-              v-for="item in items?.data"
-              :key="item.id"
-              :to="edit.url(item.id)"
-              variant="naked"
-              class="py-4 first:pt-0 last:pb-0"
-            >
-              <UUser
-                :name="item.name"
-                :description="`${item.category} • ${item.videos} videos`"
-                :avatar="{
-                  alt: item.name,
-                  class: 'rounded-sm size-14 me-1',
-                }"
-              />
-            </UPageCard>
-          </UPageList>
-        </InfiniteScroll>
-      </UPage>
+            <UUser
+              :name="item.name"
+              :description="`${item.category} • ${item.videos} videos`"
+              :avatar="{
+                alt: item.name,
+                class: 'rounded-sm size-14 me-1',
+              }"
+            />
+          </UPageCard>
+        </UPageList>
+      </InfiniteScroll>
     </template>
   </UDashboardPanel>
 </template>

@@ -76,39 +76,37 @@ watchDebounced(
     </template>
 
     <template #body>
-      <UPage>
-        <InfiniteScroll
-          data="items"
-          start-element="#video-header"
-          items-element="#video-list"
-          :buffer="200"
+      <InfiniteScroll
+        data="items"
+        start-element="#video-header"
+        items-element="#video-list"
+        :buffer="200"
+      >
+        <UPageList
+          id="video-list"
+          divide
         >
-          <UPageList
-            id="video-list"
-            divide
+          <UPageCard
+            v-for="item in items?.data"
+            :key="item.id"
+            :to="edit.url(item.id)"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
           >
-            <UPageCard
-              v-for="item in items?.data"
-              :key="item.id"
-              :to="edit.url(item.id)"
-              variant="naked"
-              class="py-4 first:pt-0 last:pb-0"
-            >
-              <UUser
-                :name="item.title"
-                :description="item.timestamp"
-                :avatar="{
-                  alt: item.name,
-                  src: item.thumb,
-                  loading: 'lazy',
-                  decoding: 'async',
-                  class: 'rounded-sm size-14 me-1',
-                }"
-              />
-            </UPageCard>
-          </UPageList>
-        </InfiniteScroll>
-      </UPage>
+            <UUser
+              :name="item.title"
+              :description="item.timestamp"
+              :avatar="{
+                alt: item.name,
+                src: item.thumb,
+                loading: 'lazy',
+                decoding: 'async',
+                class: 'rounded-sm size-14 me-1',
+              }"
+            />
+          </UPageCard>
+        </UPageList>
+      </InfiniteScroll>
     </template>
   </UDashboardPanel>
 </template>
