@@ -39,6 +39,7 @@ const initPlayer = async () => {
 
   // Initialize Shaka Player
   shakaPlayer.value = new shaka.Player()
+
   await shakaPlayer.value.attach(videoElement.value)
 
   // Configure Clear Key DRM
