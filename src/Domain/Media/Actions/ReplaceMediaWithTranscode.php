@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Transcode;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Model;
 
 class ReplaceMediaWithTranscode
 {
@@ -17,32 +17,22 @@ class ReplaceMediaWithTranscode
             'Cannot replace media with incomplete transcode'
         );
 
+        // Get media associated with the transcode
         $media = $transcode->media;
 
-        $mediaDisk = Storage::disk($media->disk);
-        $transcodeDisk = Storage::disk(Transcode::getDisk());
+        // Get model and storage disks
+        $model = $media->model;
 
-        $originalPath = $media->getAbsolutePath();
-        $transcodedPath = $transcode->getOutputPath();
+        if (! $model instanceof Model) {
+            return;
+        }
 
-        // Create backup of original file
-        $backupPath = preg_replace('/(\.[^.]+)$/', '_original$1', $originalPath);
+        // Add the transcoded media to the model's media collection
+        $model
+            ->addMediaFromDisk($transcode->getOutputPath(), Transcode::getDisk())
+            ->toMediaCollection('clips');
 
-        $mediaDisk->copy($originalPath, $backupPath);
-
-        // Replace original file with transcoded version
-        $mediaDisk->put($originalPath, $transcodeDisk->get($transcodedPath));
-
-        // Update media record with new file properties
-        $media->updateOrFail([
-            'mime_type' => 'video/mp4',
-            'size' => $mediaDisk->size($originalPath),
-        ]);
-
-        // Cleanup - remove backup, transcoded file, and transcode record
-        $mediaDisk->delete($backupPath);
-        $transcodeDisk->delete($transcodedPath);
-
-        $transcode->deleteOrFail();
+        // Delete the original media file from storage
+        $media->deleteOrFail();
     }
 }
