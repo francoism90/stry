@@ -23,7 +23,7 @@ class TagOrderController extends Controller implements HasMiddleware
 
     public function __invoke(): RedirectResponse
     {
-        Gate::authorize('viewAny', Tag::class);
+        Gate::authorize('create', Tag::class);
 
         app(SetTagsOrder::class)->handle();
 
