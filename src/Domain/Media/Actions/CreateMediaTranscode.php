@@ -8,7 +8,6 @@ use Domain\Media\Jobs\ConvertMediaJob;
 use Domain\Media\Models\Media;
 use Domain\Media\Models\Transcode;
 use Domain\Media\States\Pending;
-use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Config;
 
 class CreateMediaTranscode

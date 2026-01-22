@@ -2,14 +2,14 @@
 import { usePlayer } from '@/composables/player'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
-import type { MediaPlayer } from 'vidstack'
-import 'vidstack/bundle'
-import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import shaka from 'shaka-player'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-const player = shallowRef<MediaPlayer>()
+const videoElement = ref<HTMLVideoElement>()
+const shakaPlayer = ref<shaka.Player>()
 const seeked = ref(false)
 
-const { playlist, progress, store, onProviderChange } = usePlayer()
+const { playlist, progress, store } = usePlayer()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -29,26 +29,76 @@ const actions = ref<ButtonProps[]>([
   },
 ])
 
-const listener = () =>
-  player.value?.subscribe(({ canPlay, canSeek, currentTime }) => {
-    if (!seeked.value && canPlay && canSeek) {
-      if (progress.value && progress.value > 0) {
-        player.value!.currentTime = progress.value
-      }
+const initPlayer = async () => {
+  if (!videoElement.value || !playlist.value?.asset) return
 
-      seeked.value = true
-    }
+  // Initialize Shaka Player
+  shakaPlayer.value = new shaka.Player()
 
-    // Store current time periodically (skip first second)
-    if (seeked.value && currentTime > 0.1) {
-      store(currentTime)
-    }
+  await shakaPlayer.value.attach(videoElement.value)
 
-    return () => player.value
+  // Configure Clear Key DRM
+  shakaPlayer.value.configure({
+    drm: {
+      servers: {
+        'org.w3.clearkey': playlist.value.license || '',
+      },
+    },
   })
 
-onMounted(() => listener())
-onBeforeUnmount(() => listener())
+  // Load the manifest
+  try {
+    let src: string | undefined
+
+    if (typeof playlist.value.asset === 'string') {
+      src = playlist.value.asset
+    } else if (playlist.value.asset && 'src' in playlist.value.asset) {
+      const assetSrc = playlist.value.asset.src
+      src = typeof assetSrc === 'string' ? assetSrc : undefined
+    }
+
+    if (src) {
+      await shakaPlayer.value.load(src)
+    }
+  } catch (error) {
+    console.error('Error loading video:', error)
+  }
+}
+
+const handleTimeUpdate = () => {
+  if (!videoElement.value) return
+
+  const currentTime = videoElement.value.currentTime
+
+  // Seek to saved progress on first play
+  if (!seeked.value && videoElement.value.readyState >= 2 && progress.value && progress.value > 0) {
+    videoElement.value.currentTime = progress.value
+    seeked.value = true
+  }
+
+  // Store current time periodically (skip first second)
+  if (seeked.value && currentTime > 0.1) {
+    store(currentTime)
+  }
+}
+
+watch(
+  () => playlist.value?.asset,
+  (newAsset) => {
+    if (newAsset) {
+      initPlayer()
+    }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  shaka.polyfill.installAll()
+})
+
+onBeforeUnmount(() => {
+  shakaPlayer.value?.destroy()
+})
 </script>
 
 <template>
@@ -63,17 +113,15 @@ onBeforeUnmount(() => listener())
       :actions="actions"
     />
 
-    <media-player
-      ref="player"
+    <video
+      ref="videoElement"
       v-show="playlist?.valid || false"
-      .src="playlist?.asset || undefined"
-      .autoPlay="true"
-      .playsInline="true"
-      crossOrigin="anonymous"
-      @provider-change="onProviderChange"
-    >
-      <media-video-layout />
-      <media-provider />
-    </media-player>
+      class="h-full w-full"
+      controls
+      autoplay
+      playsinline
+      crossorigin="anonymous"
+      @timeupdate="handleTimeUpdate"
+    />
   </div>
 </template>

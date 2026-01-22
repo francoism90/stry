@@ -1,10 +1,8 @@
-import PlaylistLicenseController from '@/actions/App/Api/Playlists/Controllers/PlaylistLicenseController'
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import type { Playlist, Video } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
-import { isHLSProvider, type MediaProviderAdapter } from 'vidstack'
 import { computed } from 'vue'
 
 export function usePlayer() {
@@ -22,34 +20,10 @@ export function usePlayer() {
     }
   }, 2500)
 
-  /**
-   * Configure HLS provider for Clear Key DRM support
-   */
-  const onProviderChange = (provider: MediaProviderAdapter | null) => {
-    if (!provider || !isHLSProvider(provider)) {
-      return
-    }
-
-    // Configure hls.js for Clear Key EME support
-    provider.config = {
-      // Enable EME for encrypted content
-      emeEnabled: true,
-
-      // Clear Key DRM configuration
-      drmSystems: {
-        'org.w3.clearkey': {
-          // License server endpoint
-          licenseUrl: playlist.value ? PlaylistLicenseController.url(playlist.value.id) : '',
-        },
-      },
-    }
-  }
-
   return {
     playlist,
     video,
     progress,
     store,
-    onProviderChange,
   }
 }
