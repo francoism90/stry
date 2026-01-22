@@ -23,7 +23,8 @@ class ConvertMediaToAv1
             ->abav1()
             ->vmafEncode()
             ->preset((string) ($options['preset'] ?? '6'))
-            ->minVmaf((int) ($options['min_vmaf'] ?? 95))
+            ->minVmaf((int) ($options['min_vmaf'] ?? 90))
+            ->maxEncodedPercent((int) ($options['max_encoded_percent'] ?? 150))
             ->export()
             ->toDisk(Transcode::getDisk())
             ->save($outputPath);

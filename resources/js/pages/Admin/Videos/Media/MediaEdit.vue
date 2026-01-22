@@ -5,6 +5,8 @@ import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Media, Video } from '@/types'
+import { router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -34,6 +36,13 @@ const onSubmit = () =>
         color: 'success',
       }),
   })
+
+if (props.media.transcodes?.length) {
+  for (const transcode of props.media.transcodes) {
+    useEcho(`transcodes.${transcode.id}`, '.transcode.updated', () => router.reload({ only: ['media'] }))
+    useEcho(`transcodes.${transcode.id}`, '.transcode.deleted', () => router.reload({ only: ['media'] }))
+  }
+}
 </script>
 
 <template>

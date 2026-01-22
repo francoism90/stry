@@ -7,6 +7,7 @@ namespace Domain\Media\Models;
 use Domain\Media\States;
 use Domain\Media\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,7 @@ use Spatie\ModelStates\HasStates;
 
 class Transcode extends Model
 {
+    use BroadcastsEvents;
     use HasFactory;
     use HasStates;
 
@@ -71,5 +73,33 @@ class Transcode extends Model
     public static function getDisk(): string
     {
         return Config::string('transcodes.disk', 'transcodes');
+    }
+
+    /**
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn(string $event): array
+    {
+        return array_filter([$this, $this->media]);
+    }
+
+    public function broadcastChannel(): string
+    {
+        return 'transcodes.'.$this->getRouteKey();
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "transcode.{$event}";
+    }
+
+    public function broadcastWith(string $event): array
+    {
+        return ['id' => $this->getRouteKey()];
+    }
+
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
     }
 }
