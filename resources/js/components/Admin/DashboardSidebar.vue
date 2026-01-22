@@ -30,11 +30,6 @@ const links: NavigationMenuItem[][] = [
       to: '/admin/tags',
     },
     {
-      label: 'Playlists',
-      icon: 'i-lucide-image-play',
-      to: '/admin/playlists',
-    },
-    {
       label: 'Users',
       icon: 'i-lucide-users',
       to: '/admin/users',

@@ -11,6 +11,7 @@ use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -76,12 +77,12 @@ class Playlist extends Model
     protected function casts(): array
     {
         return [
-            'state' => PlaylistState::class,
             'progress' => AsArrayObject::class,
             'encryption_key' => 'encrypted',
-            'accessed_at' => 'datetime',
-            'expires_at' => 'datetime',
-            'transcoded_at' => 'datetime',
+            'accessed_at' => AsDateTime::class,
+            'expires_at' => AsDateTime::class,
+            'transcoded_at' => AsDateTime::class,
+            'state' => PlaylistState::class,
         ];
     }
 
@@ -180,7 +181,7 @@ class Playlist extends Model
 
     public function isExpired(): bool
     {
-        return filled($this->expires_at) && $this->expires_at->isPast();
+        return filled($this->expires_at) && Carbon::parse($this->expires_at)->isPast();
     }
 
     public function isFailed(): bool

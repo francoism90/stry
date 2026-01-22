@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import { index as media } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
+import { index as playlists } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
 import type { Video } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
@@ -24,6 +25,7 @@ const links: NavigationMenuItem[] = [
   {
     label: 'Playlists',
     icon: 'i-lucide-list-video',
+    to: playlists.url(props.video.id),
   },
   {
     label: 'Metadata',
