@@ -2,12 +2,12 @@ import { wayfinder } from '@laravel/vite-plugin-wayfinder'
 import ui from '@nuxt/ui/vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import laravel from 'laravel-vite-plugin'
 import { fileURLToPath, URL } from 'node:url'
 import { vite as vidstack } from 'vidstack/plugins'
 import { defineConfig, loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -66,7 +66,12 @@ export default defineConfig(({ mode }) => {
           },
           dashboardNavbar: {
             slots: {
-              root: 'bg-default sticky top-0 z-50 w-full',
+              root: 'bg-default sticky top-0 z-50 min-h-18 w-full',
+            },
+          },
+          dashboardToolbar: {
+            slots: {
+              root: 'bg-default sticky top-20 z-40 min-h-18 w-full',
             },
           },
         },

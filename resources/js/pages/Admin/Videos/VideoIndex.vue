@@ -51,6 +51,18 @@ watchDebounced(
 
       <UDashboardToolbar id="video-header">
         <template #left>
+          <UFormField :error="form.errors.search">
+            <UInput
+              v-model="form.search"
+              :model-modifiers="{ string: true, trim: true }"
+              color="neutral"
+              placeholder="Search..."
+              icon="i-lucide-search"
+            />
+          </UFormField>
+        </template>
+
+        <template #right>
           <UFormField :error="form.errors.order">
             <USelect
               v-model="form.order"
@@ -59,16 +71,6 @@ watchDebounced(
               label-key="label"
               value-key="value"
               @update:modelValue="onSubmit"
-            />
-          </UFormField>
-
-          <UFormField :error="form.errors.search">
-            <UInput
-              v-model="form.search"
-              :model-modifiers="{ string: true, trim: true }"
-              color="neutral"
-              placeholder="Search..."
-              icon="i-lucide-search"
             />
           </UFormField>
         </template>
