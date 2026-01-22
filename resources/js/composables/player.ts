@@ -3,6 +3,7 @@ import type { Playlist, Video } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
+import { isHLSProvider, type MediaProviderAdapter, type MediaProviderChangeEvent } from 'vidstack'
 import { computed } from 'vue'
 
 export function usePlayer() {
@@ -20,10 +21,44 @@ export function usePlayer() {
     }
   }, 2500)
 
+  /**
+   * Configure HLS provider for Clear Key DRM support
+   */
+  const onProviderChange = (provider: MediaProviderAdapter | null, nativeEvent: MediaProviderChangeEvent) => {
+    if (!provider || !isHLSProvider(provider)) {
+      return
+    }
+
+    // Configure hls.js for Clear Key EME support
+    provider.config = {
+      // Enable EME for encrypted content
+      emeEnabled: true,
+
+      // Clear Key DRM configuration
+      drmSystems: {
+        'org.w3.clearkey': {
+          // License server endpoint
+          licenseUrl: playlist.value ? `/api/v1/drm/clearkey/license/${playlist.value.id}` : '',
+
+          // Add authentication headers
+          licenseHeaders: () => ({
+            Accept: 'application/json',
+          }),
+        },
+      },
+
+      // Optional: Add custom headers for HLS requests (e.g., signed URLs)
+      xhrSetup: (xhr: XMLHttpRequest, url: string) => {
+        // URLs are already signed by Laravel, no additional headers needed
+      },
+    }
+  }
+
   return {
     playlist,
     video,
     progress,
     store,
+    onProviderChange,
   }
 }

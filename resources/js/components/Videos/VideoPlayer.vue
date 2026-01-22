@@ -9,7 +9,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 const player = shallowRef<MediaPlayer>()
 const seeked = ref(false)
 
-const { playlist, progress, store } = usePlayer()
+const { playlist, progress, store, onProviderChange } = usePlayer()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -70,6 +70,7 @@ onBeforeUnmount(() => listener())
       .autoPlay="true"
       .playsInline="true"
       crossOrigin="anonymous"
+      @provider-change="onProviderChange"
     >
       <media-video-layout />
       <media-provider />
