@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Requests;
+namespace App\Api\Media\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VideoStoreRequest extends FormRequest
+class MediaUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -19,7 +19,9 @@ class VideoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'email' => ['required', 'email', 'max:255'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'custom_properties' => ['sometimes', 'nullable', 'array'],
+            'order_column' => ['sometimes', 'nullable', 'integer', 'min:0'],
         ];
     }
 }

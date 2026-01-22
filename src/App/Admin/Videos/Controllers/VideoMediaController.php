@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Videos\Controllers;
 
-use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Admin\Media\Responses\MediaResourceProperty;
+use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
+use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;
-use App\Api\Videos\Resources\VideoResource;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -36,7 +36,7 @@ class VideoMediaController extends Controller implements HasMiddleware
         // Fetch media for the video
         $media = $video->media()->simplePaginate(16);
 
-        return Inertia::render('Admin/Videos/Media/Index', [
+        return Inertia::render('Admin/Videos/Media/MediaIndex', [
             'video' => fn () => new VideoResourceProperty($video),
             'items' => Inertia::scroll(fn () => MediaResource::collection($media)),
         ]);
@@ -74,28 +74,27 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $media);
 
-        return Inertia::render('Admin/Videos/Media/Edit', [
+        return Inertia::render('Admin/Videos/Media/MediaEdit', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'media' => fn () => new MediaResourceProperty(media: $media),
         ]);
     }
 
-    public function update(MediaIndexRequest $request, Video $video, Media $media): RedirectResponse
+    public function update(MediaUpdateRequest $request, Video $video, Media $media): RedirectResponse
     {
         Gate::authorize('update', $media);
 
-        $media->update($request->safe()->all());
+        $media->updateOrFail($request->safe()->all());
 
-        return redirect()->route('admin.videos.media.index', $media->video_id);
+        return back();
     }
 
     public function destroy(Video $video, Media $media): RedirectResponse
     {
         Gate::authorize('delete', $media);
 
-        $videoId = $media->video_id;
-        $media->delete();
+        $media->deleteOrFail();
 
-        return redirect()->route('admin.videos.media.index', $videoId);
+        return redirect()->route('admin.videos.media.index', $video);
     }
 }

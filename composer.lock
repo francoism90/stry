@@ -110,16 +110,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.16",
+            "version": "3.369.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f7ae10a0b691d40075c801e3ae8735a722debfac"
+                "reference": "8bdccd2f8e54c5cd170b22f52414171e19226fd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f7ae10a0b691d40075c801e3ae8735a722debfac",
-                "reference": "f7ae10a0b691d40075c801e3ae8735a722debfac",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8bdccd2f8e54c5cd170b22f52414171e19226fd1",
+                "reference": "8bdccd2f8e54c5cd170b22f52414171e19226fd1",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.16"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.17"
             },
-            "time": "2026-01-20T19:44:30+00:00"
+            "time": "2026-01-21T19:09:32+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1239,12 +1239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-av1.git",
-                "reference": "f262674864146cec4fcf71c2adbdf18c58ba90e4"
+                "reference": "79e16afd7d1eebf7cb8ec8801c40be787c06e48a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/f262674864146cec4fcf71c2adbdf18c58ba90e4",
-                "reference": "f262674864146cec4fcf71c2adbdf18c58ba90e4",
+                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/79e16afd7d1eebf7cb8ec8801c40be787c06e48a",
+                "reference": "79e16afd7d1eebf7cb8ec8801c40be787c06e48a",
                 "shasum": ""
             },
             "require": {
@@ -1319,7 +1319,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-21T13:19:13+00:00"
+            "time": "2026-01-21T13:27:23+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -13551,11 +13551,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.35",
+            "version": "2.1.36",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/72f843c7f59d3aac0b7510f5e70913a9b72a8e88",
-                "reference": "72f843c7f59d3aac0b7510f5e70913a9b72a8e88",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/2132e5e2361d11d40af4c17faa16f043269a4cf3",
+                "reference": "2132e5e2361d11d40af4c17faa16f043269a4cf3",
                 "shasum": ""
             },
             "require": {
@@ -13600,7 +13600,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-20T17:33:48+00:00"
+            "time": "2026-01-21T13:58:26+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
