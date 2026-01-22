@@ -40,7 +40,7 @@ const onSubmit = () =>
   <UForm
     id="general"
     :state="form"
-    class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
+    class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-4xl lg:py-3"
     loading-auto
     @submit="onSubmit"
   >
@@ -97,14 +97,8 @@ const onSubmit = () =>
                   {{ transcode.state }}
                 </UBadge>
                 <span class="text-sm text-gray-600 dark:text-gray-400">
-                  {{ transcode.codec.toUpperCase() }}
+                  {{ transcode.preset }}
                 </span>
-              </div>
-              <div
-                v-if="transcode.state === 'processing'"
-                class="text-sm text-gray-500 dark:text-gray-400"
-              >
-                Progress: {{ transcode.progress }}%
               </div>
               <div
                 v-if="transcode.error_message"

@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Videos\Controllers;
+namespace App\Admin\Media\Controllers;
 
-use Domain\Media\Jobs\ConvertMediaJob;
+use Domain\Media\Actions\CreateMediaTranscode;
 use Domain\Media\Models\Media;
-use Domain\Media\Models\Transcode;
-use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
-class VideoMediaConvertController extends Controller implements HasMiddleware
+class MediaConvertController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -24,18 +23,17 @@ class VideoMediaConvertController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Video $video, Media $media): RedirectResponse
+    public function __invoke(Media $media): RedirectResponse
     {
         Gate::authorize('update', $media);
 
-        $transcode = Transcode::create([
-            'video_id' => $video->id,
-            'media_id' => $media->id,
-            'codec' => 'av1',
-            'state' => 'pending',
-        ]);
+        abort_unless(
+            Str::startsWith($media->mime_type, 'video/'),
+            422,
+            'Media must be a video to convert.'
+        );
 
-        ConvertMediaJob::dispatch($transcode);
+        app(CreateMediaTranscode::class)->handle($media->model, $media);
 
         return back();
     }

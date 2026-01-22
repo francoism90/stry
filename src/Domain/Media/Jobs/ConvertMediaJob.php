@@ -6,12 +6,12 @@ namespace Domain\Media\Jobs;
 
 use Domain\Media\Actions\ConvertMediaToAv1;
 use Domain\Media\Models\Transcode;
+use Domain\Media\States;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class ConvertMediaJob implements ShouldQueue
@@ -32,31 +32,21 @@ class ConvertMediaJob implements ShouldQueue
 
     public function handle(ConvertMediaToAv1 $action): void
     {
-        $this->transcode->update([
-            'state' => 'processing',
-            'started_at' => now(),
-        ]);
+        $this->transcode->state->transitionTo(States\Processing::class);
+
+        $this->transcode->updateOrFail(['started_at' => now()]);
 
         try {
-            $action->handle($this->transcode, $this->preset);
+            $action->handle($this->transcode);
 
-            $this->transcode->update([
-                'state' => 'completed',
-                'progress' => 100,
-                'completed_at' => now(),
-            ]);
+            $this->transcode->state->transitionTo(States\Completed::class);
+            $this->transcode->updateOrFail(['completed_at' => now()]);
         } catch (Throwable $e) {
-            $this->transcode->update([
-                'state' => 'failed',
+            $this->transcode->state->transitionTo(States\Failed::class);
+
+            $this->transcode->updateOrFail([
                 'error_message' => $e->getMessage(),
                 'retry_count' => $this->transcode->retry_count + 1,
-            ]);
-
-            Log::error('Media conversion failed', [
-                'transcode_id' => $this->transcode->id,
-                'video_id' => $this->transcode->video_id,
-                'media_id' => $this->transcode->media_id,
-                'error' => $e->getMessage(),
             ]);
 
             throw $e;

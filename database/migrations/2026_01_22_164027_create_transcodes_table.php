@@ -12,18 +12,15 @@ return new class extends Migration
     {
         Schema::create('transcodes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('video_id')->constrained()->cascadeOnDelete();
             $table->foreignId('media_id')->constrained()->cascadeOnDelete();
-            $table->string('codec');
-            $table->string('preset')->nullable();
-            $table->string('state');
-            $table->unsignedInteger('progress')->default(0);
+            $table->string('preset');
             $table->text('error_message')->nullable();
             $table->unsignedTinyInteger('retry_count')->default(0);
+            $table->string('state');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
-            $table->index(['video_id', 'media_id']);
+            $table->index('media_id');
             $table->index('state');
         });
     }

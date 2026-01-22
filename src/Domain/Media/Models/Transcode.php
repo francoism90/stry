@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Domain\Media\Models;
 
-use Domain\Videos\Models\Video;
+use Domain\Media\States;
+use Domain\Media\States\TranscodeState;
+use Domain\Shared\Casts\AsDateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Config;
+use Spatie\ModelStates\HasStates;
 
 class Transcode extends Model
 {
     use HasFactory;
+    use HasStates;
 
     protected $fillable = [
-        'video_id',
         'media_id',
-        'codec',
         'preset',
         'state',
-        'progress',
         'error_message',
         'retry_count',
         'started_at',
@@ -29,16 +31,11 @@ class Transcode extends Model
     protected function casts(): array
     {
         return [
-            'progress' => 'integer',
             'retry_count' => 'integer',
-            'started_at' => 'datetime',
-            'completed_at' => 'datetime',
+            'started_at' => AsDateTime::class,
+            'completed_at' => AsDateTime::class,
+            'state' => TranscodeState::class,
         ];
-    }
-
-    public function video(): BelongsTo
-    {
-        return $this->belongsTo(Video::class);
     }
 
     public function media(): BelongsTo
@@ -48,21 +45,31 @@ class Transcode extends Model
 
     public function isPending(): bool
     {
-        return $this->state === 'pending';
+        return $this->state->equals(States\Pending::class);
     }
 
     public function isProcessing(): bool
     {
-        return $this->state === 'processing';
+        return $this->state->equals(States\Processing::class);
     }
 
     public function isCompleted(): bool
     {
-        return $this->state === 'completed';
+        return $this->state->equals(States\Completed::class);
     }
 
     public function isFailed(): bool
     {
-        return $this->state === 'failed';
+        return $this->state->equals(States\Failed::class);
+    }
+
+    public function getOptions(): array
+    {
+        return Config::array("transcodes.presets.{$this->preset}", []);
+    }
+
+    public static function getDisk(): string
+    {
+        return Config::string('transcodes.disk', 'transcodes');
     }
 }

@@ -1,5 +1,5 @@
-import VideoMediaConvertController from '@/actions/App/Admin/Videos/Controllers/VideoMediaConvertController'
-import VideoMediaReplaceController from '@/actions/App/Admin/Videos/Controllers/VideoMediaReplaceController'
+import MediaConvertController from '@/actions/App/Admin/Media/Controllers/MediaConvertController'
+import MediaTranscodeReplaceController from '@/actions/App/Admin/Media/Controllers/MediaTranscodeReplaceController'
 import type { Media, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
@@ -8,7 +8,7 @@ export function useMedia(video: Video, media: Media) {
 
   const startConversion = () => {
     router.post(
-      VideoMediaConvertController.url([video.id, media.id]),
+      MediaConvertController.url([media.id]),
       {},
       {
         preserveState: true,
@@ -25,7 +25,7 @@ export function useMedia(video: Video, media: Media) {
 
   const replaceWithTranscode = (transcodeId: number) => {
     router.post(
-      VideoMediaReplaceController.url([video.id, media.id, transcodeId]),
+      MediaTranscodeReplaceController.url([media.id, transcodeId]),
       {},
       {
         preserveState: true,

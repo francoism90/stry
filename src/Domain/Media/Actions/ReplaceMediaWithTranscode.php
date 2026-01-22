@@ -11,34 +11,38 @@ class ReplaceMediaWithTranscode
 {
     public function handle(Transcode $transcode): void
     {
-        if (! $transcode->isCompleted()) {
-            throw new \RuntimeException('Cannot replace media with incomplete transcode');
-        }
+        throw_unless(
+            $transcode->isCompleted(),
+            \RuntimeException::class,
+            'Cannot replace media with incomplete transcode'
+        );
 
         $media = $transcode->media;
+
         $disk = Storage::disk($media->disk);
+        $transcodeDisk = Storage::disk(Transcode::getDisk());
 
         $originalPath = $media->getPath();
-        $transcodedPath = pathinfo($originalPath, PATHINFO_DIRNAME).'/'.
-            pathinfo($originalPath, PATHINFO_FILENAME).'_av1.mp4';
+        $pathInfo = pathinfo($originalPath);
 
-        // Backup original
-        $backupPath = pathinfo($originalPath, PATHINFO_DIRNAME).'/'.
-            pathinfo($originalPath, PATHINFO_FILENAME).'_original.'.
-            pathinfo($originalPath, PATHINFO_EXTENSION);
+        $transcodedPath = $pathInfo['dirname'].'/'.$pathInfo['filename'].'_av1.mp4';
+        $backupPath = $pathInfo['dirname'].'/'.$pathInfo['filename'].'_original.'.$pathInfo['extension'];
 
+        // Backup original file
         $disk->move($originalPath, $backupPath);
 
-        // Replace with transcoded version
-        $disk->move($transcodedPath, $originalPath);
+        // Copy transcoded file from transcodes disk to media disk
+        $disk->put($originalPath, $transcodeDisk->get($transcodedPath));
+
+        $transcodeDisk->delete($transcodedPath);
 
         // Update media record
-        $media->update([
+        $media->updateOrFail([
             'mime_type' => 'video/mp4',
             'size' => $disk->size($originalPath),
         ]);
 
         // Delete transcode record
-        $transcode->delete();
+        $transcode->deleteOrFail();
     }
 }

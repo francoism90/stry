@@ -37,12 +37,9 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 }
 
 export type Transcode = Model & {
-  video_id: number
   media_id: number
-  codec: string
-  preset: string | null
+  preset: string
   state: 'pending' | 'processing' | 'completed' | 'failed'
-  progress: number
   error_message: string | null
   retry_count: number
   started_at: string | null
