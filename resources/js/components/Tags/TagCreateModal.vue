@@ -4,7 +4,7 @@ import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 defineProps<{
-  types: SelectMenuItem[]
+  types: SelectMenuItem[] | undefined
 }>()
 
 const isOpen = defineModel<boolean>({ default: false })
