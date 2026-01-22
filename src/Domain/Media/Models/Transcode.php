@@ -35,7 +35,7 @@ class Transcode extends Model
         'error_message',
         'retry_count',
         'started_at',
-        'completed_at',
+        'transcoded_at',
     ];
 
     protected function casts(): array
@@ -43,7 +43,7 @@ class Transcode extends Model
         return [
             'retry_count' => 'integer',
             'started_at' => AsDateTime::class,
-            'completed_at' => AsDateTime::class,
+            'transcoded_at' => AsDateTime::class,
             'state' => TranscodeState::class,
         ];
     }

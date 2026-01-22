@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('retry_count')->default(0);
             $table->string('state');
             $table->timestamp('started_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
+            $table->timestamp('transcoded_at')->nullable();
             $table->timestamps();
             $table->index('media_id');
             $table->index('state');
