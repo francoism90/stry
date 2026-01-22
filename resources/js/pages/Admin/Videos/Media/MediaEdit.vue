@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
-import VideoMediaConvertController from '@/actions/App/Admin/Videos/Controllers/VideoMediaConvertController'
-import VideoMediaReplaceController from '@/actions/App/Admin/Videos/Controllers/VideoMediaReplaceController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
+import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Media, Video } from '@/types'
-import { router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -22,6 +20,8 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
 })
 
+const { startConversion, replaceWithTranscode, getStateColor } = useMedia(props.video, props.media)
+
 const onSubmit = () =>
   form.submit({
     preserveState: true,
@@ -34,53 +34,6 @@ const onSubmit = () =>
         color: 'success',
       }),
   })
-
-const startConversion = () => {
-  router.post(
-    VideoMediaConvertController.url([props.video.id, props.media.id]),
-    {},
-    {
-      preserveState: true,
-      onSuccess: () =>
-        toast.add({
-          title: 'Conversion Started',
-          description: 'AV1 conversion has been queued.',
-          icon: 'i-lucide-play',
-          color: 'primary',
-        }),
-    },
-  )
-}
-
-const replaceWithTranscode = (transcodeId: number) => {
-  router.post(
-    VideoMediaReplaceController.url([props.video.id, props.media.id, transcodeId]),
-    {},
-    {
-      preserveState: true,
-      onSuccess: () =>
-        toast.add({
-          title: 'Media Replaced',
-          description: 'Original media has been replaced with AV1 version.',
-          icon: 'i-lucide-check',
-          color: 'success',
-        }),
-    },
-  )
-}
-
-const getStateColor = (state: string) => {
-  switch (state) {
-    case 'completed':
-      return 'success'
-    case 'processing':
-      return 'primary'
-    case 'failed':
-      return 'error'
-    default:
-      return 'neutral'
-  }
-}
 </script>
 
 <template>
