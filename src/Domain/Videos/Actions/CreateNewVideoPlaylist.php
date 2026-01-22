@@ -37,13 +37,11 @@ class CreateNewVideoPlaylist
         // Check if encryption is enabled
         $useEncryption = Playlist::getEncryptionMethod() === 'raw_key_encryption';
 
+        // Get the protection scheme
+        $protectionScheme = Playlist::getProtectionScheme();
+
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
-            // Get the protection scheme
-            $protectionScheme = Playlist::getProtectionScheme();
-
-            logger($protectionScheme);
-
             $opener->withAESEncryption('key', $protectionScheme);
 
             if (Playlist::getKeyRotation()) {
@@ -52,21 +50,24 @@ class CreateNewVideoPlaylist
         }
 
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($opener) {
+        $clips->each(function (Media $media) use ($opener, $useEncryption, $protectionScheme) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
             // Detect available streams using FFMpeg
             $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
 
-            // Use fMP4 (CMAF) segments for better codec support (AV1, HEVC, etc.)
-            // m4s extension works with both encrypted and unencrypted content
+            // Use TS segments for SAMPLE-AES encryption (protection_scheme = null)
+            // Use m4s segments for CENC/CBCS encryption (protection_scheme = 'cenc'/'cbcs')
+            $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
+
+            // Add streams only if they exist
             if ($ffprobe->getVideoStream()) {
-                $opener->addVideoStream($path, "{$media->uuid}_video.\$Number\$.m4s");
+                $opener->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
             }
 
             if ($ffprobe->getAudioStream()) {
-                $opener->addAudioStream($path, "{$media->uuid}_audio.\$Number\$.m4s");
+                $opener->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
 

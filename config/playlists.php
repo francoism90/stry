@@ -30,7 +30,7 @@ return [
      * - 'cbc1' legacy HLS, limited browser support
      * - null (SAMPLE-AES) widest compatibility but NO key rotation support
      */
-    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', null),
+    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cbcs'),
 
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
