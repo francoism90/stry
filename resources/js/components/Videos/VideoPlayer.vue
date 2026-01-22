@@ -32,9 +32,13 @@ const actions = ref<ButtonProps[]>([
 const initPlayer = async () => {
   if (!videoElement.value || !playlist.value?.asset) return
 
+  // Destroy existing player if any
+  if (shakaPlayer.value) {
+    await shakaPlayer.value.destroy()
+  }
+
   // Initialize Shaka Player
   shakaPlayer.value = new shaka.Player()
-
   await shakaPlayer.value.attach(videoElement.value)
 
   // Configure Clear Key DRM
@@ -59,6 +63,11 @@ const initPlayer = async () => {
 
     if (src) {
       await shakaPlayer.value.load(src)
+
+      // Start playback after loading
+      if (videoElement.value) {
+        videoElement.value.play()
+      }
     }
   } catch (error) {
     console.error('Error loading video:', error)
@@ -82,19 +91,23 @@ const handleTimeUpdate = () => {
   }
 }
 
+onMounted(() => {
+  shaka.polyfill.installAll()
+
+  // Initialize player once the video element is mounted
+  if (playlist.value?.asset) {
+    initPlayer()
+  }
+})
+
 watch(
   () => playlist.value?.asset,
   (newAsset) => {
-    if (newAsset) {
+    if (newAsset && videoElement.value) {
       initPlayer()
     }
   },
-  { immediate: true },
 )
-
-onMounted(() => {
-  shaka.polyfill.installAll()
-})
 
 onBeforeUnmount(() => {
   shakaPlayer.value?.destroy()
