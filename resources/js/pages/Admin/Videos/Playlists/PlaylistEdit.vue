@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
+import PlaylistDeleteModal from '@/components/Playlist/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Playlist, Video } from '@/types'
@@ -46,7 +47,7 @@ const onSubmit = () =>
       orientation="horizontal"
     >
       <div class="space-y-1">
-        <h2 class="text-lg font-semibold">{{ playlist.type }} Playlist</h2>
+        <h2 class="text-lg font-semibold">Playlist</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">
           <UBadge
             :label="playlist.state"
@@ -101,11 +102,9 @@ const onSubmit = () =>
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <UButton
-          icon="i-lucide-trash"
-          color="error"
-          variant="soft"
-          label="Delete Playlist"
+        <PlaylistDeleteModal
+          :video="video"
+          :item="playlist"
         />
       </template>
     </UPageCard>
