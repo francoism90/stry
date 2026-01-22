@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
+import TagOrderModal from '@/components/Tags/TagOrderModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -49,7 +50,10 @@ watchDebounced(
         </template>
 
         <template #right>
-          <TagCreateModal :types="types" />
+          <div class="flex items-center gap-2">
+            <TagOrderModal />
+            <TagCreateModal :types="types" />
+          </div>
         </template>
       </UDashboardNavbar>
 

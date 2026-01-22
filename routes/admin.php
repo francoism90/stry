@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Admin\Dashboard\Controllers\HomeController;
-use App\Admin\Playlists\Controllers\PlaylistController;
 use App\Admin\Tags\Controllers\TagController;
+use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
 use App\Admin\Videos\Controllers\VideoMediaController;
@@ -19,6 +19,7 @@ Route::resource('users', UserController::class);
 
 // Tags
 Route::resource('tags', TagController::class);
+Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
 
 // Videos
 Route::resource('videos', VideoController::class);
