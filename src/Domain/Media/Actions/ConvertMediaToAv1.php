@@ -6,17 +6,16 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Transcode;
 use Foxws\AV1\Facades\AV1;
-use Illuminate\Support\Str;
 
 class ConvertMediaToAv1
 {
     public function handle(Transcode $transcode): void
     {
         $media = $transcode->media;
+
         $options = $transcode->getOptions();
 
-        $filename = pathinfo($media->getPath(), PATHINFO_FILENAME).'_av1.mp4';
-        $outputPath = Str::uuid().'/'.$filename;
+        $outputPath = $transcode->getOutputPath();
 
         $result = AV1::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
@@ -29,10 +28,10 @@ class ConvertMediaToAv1
             ->toDisk(Transcode::getDisk())
             ->save($outputPath);
 
-        if (! $result->isSuccessful()) {
-            throw new \RuntimeException(
-                'AV1 encoding failed: '.$result->getErrorOutput()
-            );
-        }
+        throw_unless(
+            $result->isSuccessful(),
+            \RuntimeException::class,
+            'AV1 encoding failed: '.$result->getErrorOutput()
+        );
     }
 }

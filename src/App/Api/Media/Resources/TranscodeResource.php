@@ -16,7 +16,7 @@ class TranscodeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this->getRouteKey(),
             'preset' => $this->preset,
             'state' => $this->state->getValue(),
             'error_message' => $this->error_message,

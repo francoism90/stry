@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transcodes', function (Blueprint $table) {
-            $table->id();
+            $table->ulid()->primary();
             $table->foreignId('media_id')->constrained()->cascadeOnDelete();
             $table->string('preset');
             $table->text('error_message')->nullable();

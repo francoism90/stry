@@ -19,30 +19,29 @@ class ReplaceMediaWithTranscode
 
         $media = $transcode->media;
 
-        $disk = Storage::disk($media->disk);
+        $mediaDisk = Storage::disk($media->disk);
         $transcodeDisk = Storage::disk(Transcode::getDisk());
 
         $originalPath = $media->getPath();
-        $pathInfo = pathinfo($originalPath);
+        $transcodedPath = $transcode->getOutputPath();
 
-        $transcodedPath = $pathInfo['dirname'].'/'.$pathInfo['filename'].'_av1.mp4';
-        $backupPath = $pathInfo['dirname'].'/'.$pathInfo['filename'].'_original.'.$pathInfo['extension'];
+        // Create backup of original file
+        $backupPath = preg_replace('/(\.[^.]+)$/', '_original$1', $originalPath);
+        $mediaDisk->copy($originalPath, $backupPath);
 
-        // Backup original file
-        $disk->move($originalPath, $backupPath);
+        // Replace original file with transcoded version
+        $mediaDisk->put($originalPath, $transcodeDisk->get($transcodedPath));
 
-        // Copy transcoded file from transcodes disk to media disk
-        $disk->put($originalPath, $transcodeDisk->get($transcodedPath));
-
-        $transcodeDisk->delete($transcodedPath);
-
-        // Update media record
+        // Update media record with new file properties
         $media->updateOrFail([
             'mime_type' => 'video/mp4',
-            'size' => $disk->size($originalPath),
+            'size' => $mediaDisk->size($originalPath),
         ]);
 
-        // Delete transcode record
+        // Cleanup - remove backup, transcoded file, and transcode record
+        $mediaDisk->delete($backupPath);
+        $transcodeDisk->delete($transcodedPath);
+
         $transcode->deleteOrFail();
     }
 }

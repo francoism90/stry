@@ -8,6 +8,7 @@ use Domain\Media\States;
 use Domain\Media\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,7 @@ class Transcode extends Model
     use BroadcastsEvents;
     use HasFactory;
     use HasStates;
+    use HasUlids;
 
     protected $fillable = [
         'media_id',
@@ -43,6 +45,16 @@ class Transcode extends Model
     public function media(): BelongsTo
     {
         return $this->belongsTo(Media::class);
+    }
+
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
     }
 
     public function isPending(): bool
@@ -73,6 +85,21 @@ class Transcode extends Model
     public static function getDisk(): string
     {
         return Config::string('transcodes.disk', 'transcodes');
+    }
+
+    public function getPath(string $path = ''): string
+    {
+        return implode('/', array_filter([$this->ulid, $path]));
+    }
+
+    public function getFilename(): string
+    {
+        return pathinfo($this->media->getPath(), PATHINFO_FILENAME).'_av1.mp4';
+    }
+
+    public function getOutputPath(): string
+    {
+        return $this->getPath($this->getFilename());
     }
 
     /**
