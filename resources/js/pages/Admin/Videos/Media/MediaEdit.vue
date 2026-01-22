@@ -111,6 +111,13 @@ if (props.transcodes?.length) {
                   {{ transcode.preset }}
                 </span>
               </div>
+
+              <div
+                v-if="transcode.error_message"
+                class="text-error line-clamp-2 text-sm"
+              >
+                {{ transcode.error_message }}
+              </div>
             </div>
 
             <UButton
