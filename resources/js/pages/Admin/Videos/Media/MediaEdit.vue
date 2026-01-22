@@ -4,7 +4,7 @@ import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { Media, Video } from '@/types'
+import type { Media, Transcode, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -12,6 +12,7 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 const props = defineProps<{
   video: Video
   media: Media
+  transcodes: Transcode[]
 }>()
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
@@ -37,10 +38,10 @@ const onSubmit = () =>
       }),
   })
 
-if (props.media.transcodes?.length) {
-  for (const transcode of props.media.transcodes) {
-    useEcho(`transcodes.${transcode.id}`, '.transcode.updated', () => router.reload({ only: ['media'] }))
-    useEcho(`transcodes.${transcode.id}`, '.transcode.deleted', () => router.reload({ only: ['media'] }))
+if (props.transcodes?.length) {
+  for (const transcode of props.transcodes) {
+    useEcho(`transcodes.${transcode.id}`, '.transcode.updated', () => router.reload({ only: ['transcodes'] }))
+    useEcho(`transcodes.${transcode.id}`, '.transcode.deleted', () => router.reload({ only: ['transcodes'] }))
   }
 }
 </script>
@@ -92,11 +93,11 @@ if (props.media.transcodes?.length) {
     >
       <div class="space-y-4">
         <div
-          v-if="media.transcodes?.length"
+          v-if="transcodes?.length"
           class="space-y-3"
         >
           <div
-            v-for="transcode in media.transcodes"
+            v-for="transcode in transcodes"
             :key="transcode.id"
             class="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800"
           >
@@ -105,10 +106,12 @@ if (props.media.transcodes?.length) {
                 <UBadge :color="getStateColor(transcode.state)">
                   {{ transcode.state }}
                 </UBadge>
+
                 <span class="text-sm text-gray-600 dark:text-gray-400">
                   {{ transcode.preset }}
                 </span>
               </div>
+
               <div
                 v-if="transcode.error_message"
                 class="text-error text-sm"

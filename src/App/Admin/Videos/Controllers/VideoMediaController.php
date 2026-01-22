@@ -9,6 +9,7 @@ use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;
+use App\Api\Media\Resources\TranscodeResource;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -74,11 +75,10 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $media);
 
-        $media->load('transcodes');
-
         return Inertia::render('Admin/Videos/Media/MediaEdit', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'media' => fn () => new MediaResourceProperty(media: $media),
+            'transcodes' => fn () => TranscodeResource::collection($media->transcodes),
         ]);
     }
 
