@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
+import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { MediaCollection, Video } from '@/types'
@@ -51,12 +52,17 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
               :to="edit.url({ video: video.id, media: item.id })"
             />
 
-            <UButton
-              icon="i-lucide-trash"
-              color="error"
-              variant="ghost"
-              size="sm"
-            />
+            <MediaDeleteModal
+              :video="video"
+              :item="item"
+            >
+              <UButton
+                icon="i-lucide-trash"
+                color="error"
+                variant="ghost"
+                size="sm"
+              />
+            </MediaDeleteModal>
           </div>
         </div>
       </UPageCard>

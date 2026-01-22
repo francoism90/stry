@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
@@ -61,13 +60,6 @@ const onSubmit = () =>
       orientation="horizontal"
     >
       <div class="flex items-center gap-2 lg:ms-auto">
-        <UButton
-          label="View video"
-          :to="VideoController.url(video.id)"
-          color="neutral"
-          variant="soft"
-        />
-
         <UButton
           form="general"
           label="Save changes"
