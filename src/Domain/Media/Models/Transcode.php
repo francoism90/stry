@@ -7,6 +7,7 @@ namespace Domain\Media\Models;
 use Domain\Media\States;
 use Domain\Media\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,11 +22,13 @@ class Transcode extends Model
     use HasFactory;
     use HasStates;
     use HasUlids;
+    use InteractsWithUser;
 
     /**
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'media_id',
         'preset',
         'state',
