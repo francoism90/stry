@@ -34,11 +34,14 @@ class CreateNewVideoPlaylist
             'type' => 'clip',
         ]);
 
-        // Check if encryption is enabled
-        $useEncryption = Playlist::getEncryptionMethod() === 'raw_key_encryption';
+        // Check encryption method
+        $encryptionMethod = Playlist::getEncryptionMethod();
 
-        // Get the protection scheme
+        // Clear Key requires CENC, raw_key can use SAMPLE-AES (null) or CENC
         $protectionScheme = Playlist::getProtectionScheme();
+
+        // Check if we use encryption
+        $useEncryption = filled($encryptionMethod);
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {

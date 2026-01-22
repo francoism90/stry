@@ -17,20 +17,21 @@ return [
     /**
      * This setting is used to define the encryption method for the playlist.
      *
-     * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
-     * Set to null to disable encryption.
+     * - 'raw_key_encryption' → AES-128 (SAMPLE-AES, requires TS segments)
+     * - 'clearkey' → W3C Clear Key EME (works with fMP4, browser-native)
+     * - null → No encryption
      */
-    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
+    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'clearkey'),
 
     /**
      * Protection scheme for encryption.
      *
-     * - 'cenc' (AES-CTR) for Widevine/PlayReady - best for key rotation
-     * - 'cbcs' (AES-CBC) for FairPlay/Safari
+     * - 'cenc' (AES-CTR) for Widevine/PlayReady/Clear Key - best for HLS with fMP4 and key rotation
+     * - 'cbcs' (AES-CBC) for FairPlay/Safari - use with DASH, not HLS
      * - 'cbc1' legacy HLS, limited browser support
-     * - null (SAMPLE-AES) widest compatibility but NO key rotation support
+     * - null (SAMPLE-AES) widest compatibility with TS segments, NO key rotation support
      */
-    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cbcs'),
+    'protection_scheme' => env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
 
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.
