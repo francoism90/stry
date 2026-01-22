@@ -67,9 +67,9 @@ watchDebounced(
             <USelect
               v-model="form.order"
               :items="orders"
-              :ui="{ content: 'min-w-36' }"
               label-key="label"
               value-key="value"
+              class="min-w-36"
               @update:modelValue="onSubmit"
             />
           </UFormField>

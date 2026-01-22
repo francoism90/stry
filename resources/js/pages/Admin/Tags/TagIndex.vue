@@ -58,17 +58,6 @@ watchDebounced(
 
       <UDashboardToolbar id="tag-header">
         <template #left>
-          <UFormField :error="form.errors.type">
-            <USelect
-              v-model="form.type"
-              :items="types"
-              :ui="{ content: 'min-w-36' }"
-              label-key="label"
-              value-key="value"
-              @update:modelValue="onSubmit"
-            />
-          </UFormField>
-
           <UFormField :error="form.errors.search">
             <UInput
               v-model="form.search"
@@ -76,6 +65,19 @@ watchDebounced(
               color="neutral"
               placeholder="Search..."
               icon="i-lucide-search"
+            />
+          </UFormField>
+        </template>
+
+        <template #right>
+          <UFormField :error="form.errors.type">
+            <USelect
+              v-model="form.type"
+              :items="types"
+              label-key="label"
+              value-key="value"
+              class="min-w-36"
+              @update:modelValue="onSubmit"
             />
           </UFormField>
         </template>
