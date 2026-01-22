@@ -11,7 +11,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transcodes', function (Blueprint $table) {
-            $table->ulid()->primary();
+            $table->id();
+            $table->ulid()->unique();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('media_id')->constrained()->cascadeOnDelete();
             $table->string('preset');
