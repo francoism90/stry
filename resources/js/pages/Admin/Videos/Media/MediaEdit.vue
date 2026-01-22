@@ -132,7 +132,6 @@ if (props.transcodes?.length) {
         </div>
 
         <UButton
-          v-else
           label="Start AV1 Conversion"
           color="primary"
           variant="soft"
