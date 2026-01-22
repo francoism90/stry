@@ -48,10 +48,7 @@ watchDebounced(
           <UDashboardSidebarCollapse />
         </template>
 
-        <template
-          v-if="types"
-          #right
-        >
+        <template #right>
           <TagCreateModal :types="types" />
         </template>
       </UDashboardNavbar>
