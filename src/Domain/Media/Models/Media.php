@@ -6,7 +6,6 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -31,13 +30,6 @@ class Media extends BaseMedia
         'generated_conversions',
         'responsive_images',
         'order_column',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $with = [
-        'model',
     ];
 
     protected function casts(): array
@@ -68,12 +60,5 @@ class Media extends BaseMedia
     public function transcodes(): HasMany
     {
         return $this->hasMany(Transcode::class);
-    }
-
-    protected function asset(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => rescue(fn () => $this->getTemporaryUrl()),
-        )->shouldCache();
     }
 }

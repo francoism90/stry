@@ -10,6 +10,7 @@ use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;
+use Domain\Media\Actions\UpdateMediaDetails;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -88,7 +89,7 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $media);
 
-        $media->updateOrFail($request->safe()->all());
+        app(UpdateMediaDetails::class)->handle($media, $request->safe()->all());
 
         return back();
     }

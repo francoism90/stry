@@ -2,18 +2,14 @@ import MediaConvertedController from '@/actions/App/Admin/Media/Controllers/Medi
 import MediaTranscodeController from '@/actions/App/Admin/Media/Controllers/MediaTranscodeController'
 import type { Media } from '@/types'
 import { router } from '@inertiajs/vue3'
-import { computed } from 'vue'
 
 export function useMedia(media: Media) {
   const toast = useToast()
 
   const getVideoStream = () => media.custom_properties?.streams?.find((stream) => stream.codec_type === 'video')
 
-  const isTranscodeable = computed(() => {
-    const stream = getVideoStream()
-
-    return stream?.codec_name.toLowerCase() !== 'av1'
-  })
+  const getAv1Stream = () =>
+    media.custom_properties?.streams?.find((stream) => stream.codec_name.toLowerCase() === 'av1')
 
   const startConversion = () => {
     router.post(
@@ -87,6 +83,6 @@ export function useMedia(media: Media) {
     addTranscodes,
     getStreamInfo,
     getVideoStream,
-    isTranscodeable,
+    getAv1Stream,
   }
 }

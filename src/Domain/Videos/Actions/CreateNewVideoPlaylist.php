@@ -8,10 +8,7 @@ use Closure;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
-use Foxws\Shaka\Exporters\MediaExporter;
 use Foxws\Shaka\Facades\Shaka;
-use Foxws\Shaka\Support\PackagerResult;
-use Illuminate\Support\Arr;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateNewVideoPlaylist

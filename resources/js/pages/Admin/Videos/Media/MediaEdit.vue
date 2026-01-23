@@ -23,7 +23,7 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
 })
 
-const { startConversion, addTranscodes, getStreamInfo, isTranscodeable } = useMedia(props.media)
+const { startConversion, addTranscodes, getStreamInfo, getAv1Stream } = useMedia(props.media)
 
 const onSubmit = () =>
   form.submit({
@@ -123,7 +123,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
                   </UBadge>
 
                   <span class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ transcode.preset }}
+                    {{ transcode.encoder }}
                   </span>
 
                   <span
@@ -160,7 +160,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           />
 
           <UButton
-            v-else-if="!transcodes?.some((t) => t.processing || t.pending) && isTranscodeable"
+            v-else-if="getAv1Stream() === null && !transcodes?.some((t) => t.processing || t.pending)"
             label="Perform AV1 Conversion"
             color="primary"
             variant="soft"
@@ -168,13 +168,14 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           />
 
           <div
-            v-else-if="!isTranscodeable"
+            v-if="getAv1Stream() !== null || transcodes?.some((t) => t.completed)"
             class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
           >
             <UIcon
               name="i-lucide-check-circle"
               class="size-4"
             />
+
             <span>This media is already in AV1 format</span>
           </div>
         </div>

@@ -17,7 +17,7 @@ class AsDateTime implements CastsAttributes
             return null;
         }
 
-        return Carbon::parse($value)->toIso8601String();
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): ?string
