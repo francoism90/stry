@@ -37,7 +37,7 @@ export function useShaka() {
     // Create new Shaka Player
     player.value = new shaka.Player()
 
-    // Configure DRM if keys are present
+    // Apply configuration
     player.value.configure(config)
 
     // Add error listener
