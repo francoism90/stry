@@ -56,15 +56,20 @@ return [
      *
      * @see https://shaka-project.github.io/shaka-packager/html/options.html
      *
-     * - hls_playlist_type: Set to 'VOD' for video on demand (required for fMP4/CMAF)
-     * - transport_stream_timestamp_offset_ms: Timestamp offset for transport streams (improves compatibility)
      * - num_subsegments_per_sidx: Number of subsegments per SIDX box (0 = disable, reduces overhead)
      * - fragment_sap_aligned: Align fragments to stream access points (improves seeking performance)
+     * - mp4_include_pssh_in_stream: Include PSSH in stream for better DRM compatibility
+     * - generate_static_live_mpd: Generate static MPD for DASH (improves caching)
+     * - default_language: Default language for audio/subtitle tracks
+     * - force_cl_index: Force closed captions index for better HLS compatibility
      */
     'packager_options' => [
-        'transport_stream_timestamp_offset_ms' => 1000,
         'num_subsegments_per_sidx' => 0,
         'fragment_sap_aligned' => true,
+        'mp4_include_pssh_in_stream' => true,
+        'generate_static_live_mpd' => true,
+        'default_language' => 'en',
+        'force_cl_index' => true,
     ],
 
 ];
