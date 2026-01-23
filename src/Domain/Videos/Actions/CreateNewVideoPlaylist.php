@@ -27,7 +27,7 @@ class CreateNewVideoPlaylist
         $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
 
         // Initialize Shaka Packager
-        $opener = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
+        $packager = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
         /** @var Playlist $playlist */
         $playlist = $video->createPlaylist([
@@ -45,15 +45,15 @@ class CreateNewVideoPlaylist
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
-            $opener->withAESEncryption('key', $protectionScheme);
+            $packager->withAESEncryption('key', $protectionScheme);
 
             if (Playlist::getKeyRotation()) {
-                $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+                $packager->withKeyRotationDuration(Playlist::getKeyRotationDuration());
             }
         }
 
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($opener, $useEncryption, $protectionScheme) {
+        $clips->each(function (Media $media) use ($packager, $useEncryption, $protectionScheme) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
@@ -66,16 +66,16 @@ class CreateNewVideoPlaylist
 
             // Add streams only if they exist
             if ($ffprobe->getVideoStream()) {
-                $opener->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
+                $packager->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
             }
 
             if ($ffprobe->getAudioStream()) {
-                $opener->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
+                $packager->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
 
         // Configure HLS playlist settings
-        $opener
+        $packager
             ->withHlsMasterPlaylist($playlist->getFileName())
             ->withSegmentDuration(Playlist::getSegmentDuration())
             ->withOption('hls_playlist_type', 'VOD')
@@ -83,13 +83,13 @@ class CreateNewVideoPlaylist
 
         // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
+            $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
                 'language' => $caption->getCustomProperty('language_code', 'en'),
             ]));
         }
 
         // Export the playlist to the configured disk and path
-        $opener
+        $packager
             ->export()
             ->toDisk($playlist->getDisk())
             ->toPath($playlist->getPath())
@@ -99,7 +99,7 @@ class CreateNewVideoPlaylist
         $playlist->markAsReady();
 
         // Cleanup temporary files
-        $opener->cleanupTemporaryFiles();
+        $packager->cleanupTemporaryFiles();
 
         return $next($video);
     }

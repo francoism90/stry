@@ -17,7 +17,8 @@ class ConvertMediaToAv1
 
         $outputPath = $transcode->getOutputPath();
 
-        $result = AV1::fromDisk($media->disk)
+        // Perform AV1 encoding
+        $encoder = AV1::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->abav1()
             ->vmafEncode()
@@ -29,9 +30,12 @@ class ConvertMediaToAv1
             ->save($outputPath);
 
         throw_unless(
-            $result->isSuccessful(),
+            $encoder->isSuccessful(),
             \RuntimeException::class,
-            'AV1 encoding failed: '.$result->getErrorOutput()
+            'AV1 encoding failed: '.$encoder->getErrorOutput()
         );
+
+        // Clean up temporary files
+        $encoder->cleanupTemporaryFiles();
     }
 }
