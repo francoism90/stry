@@ -50,12 +50,12 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
     @submit="onSubmit"
   >
     <UPageCard
-      :title="media.name"
-      :description="`${media.mime_type} • ${media.file_size}`"
+      title="Media Details"
+      description="General information about the media asset"
       variant="naked"
       orientation="horizontal"
     >
-      <div class="ms-auto">
+      <div class="flex items-center gap-2 lg:ms-auto">
         <UButton
           form="general"
           label="Save changes"

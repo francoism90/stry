@@ -15,10 +15,6 @@ const links: NavigationMenuItem[] = [
     to: edit.url(props.tag.id),
     exact: true,
   },
-  {
-    label: 'Metadata',
-    icon: 'i-lucide-file-braces',
-  },
 ]
 </script>
 

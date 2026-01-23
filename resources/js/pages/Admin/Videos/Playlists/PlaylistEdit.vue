@@ -43,20 +43,12 @@ const onSubmit = () =>
     @submit="onSubmit"
   >
     <UPageCard
+      title="Playlist Details"
+      description="General information about the playlist"
       variant="naked"
       orientation="horizontal"
     >
-      <div class="space-y-1">
-        <h2 class="text-lg font-semibold">Playlist</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          <UBadge
-            :label="playlist.state.label"
-            :color="playlist.state.color"
-          />
-        </p>
-      </div>
-
-      <div class="ms-auto">
+      <div class="flex items-center gap-2 lg:ms-auto">
         <UButton
           form="general"
           label="Save changes"
