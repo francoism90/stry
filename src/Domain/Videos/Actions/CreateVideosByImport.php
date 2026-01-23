@@ -9,6 +9,7 @@ use Domain\Videos\Jobs\ImportVideo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 class CreateVideosByImport
@@ -27,9 +28,10 @@ class CreateVideosByImport
         }
 
         // Dispatch batch of import jobs
-        $batch = Bus::batch(
-            $files->map(fn (string $path) => new ImportVideo($user, $disk, $path))->all()
-        )->name('Video Import')->dispatch();
+        $batch = Bus::batch($files
+            ->map(fn (string $path) => new ImportVideo($user, $disk, $path))
+            ->all()
+        )->dispatch();
 
         return [
             'success' => true,
@@ -43,7 +45,8 @@ class CreateVideosByImport
     {
         return Collection::make($this->getFileSystem($disk)->allFiles())
             ->filter(fn (string $path) => rescue(fn () => str_starts_with($this->getFileSystem($disk)->mimeType($path), 'video/'), report: false))
-            ->sort();
+            ->sort()
+            ->take(Config::int('videos.import.max_files_per_batch', 100));
     }
 
     protected function getFileSystem(string $disk): FilesystemAdapter
