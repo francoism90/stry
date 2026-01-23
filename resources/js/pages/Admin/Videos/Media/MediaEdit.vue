@@ -87,46 +87,49 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
       variant="subtle"
     >
       <div class="space-y-4">
-        <div
+        <UPageList
           v-if="transcodes?.length"
-          class="space-y-3"
+          divide
         >
-          <div
+          <UPageCard
             v-for="transcode in transcodes"
             :key="transcode.id"
-            class="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
           >
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <UBadge :color="transcode.state.color">
-                  {{ transcode.state.name }}
-                </UBadge>
+            <div class="flex items-center justify-between">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <UBadge :color="transcode.state.color">
+                    {{ transcode.state.name }}
+                  </UBadge>
 
-                <span class="text-sm text-gray-600 dark:text-gray-400">
-                  {{ transcode.preset }}
-                </span>
-
-                <span
-                  v-if="transcode.file_size && transcode.completed"
-                  class="text-sm text-gray-600 dark:text-gray-400"
-                >
-                  {{ transcode.file_size_human }}
-
-                  <span class="text-success">
-                    ({{ Math.round(((media.size - transcode.file_size) / media.size) * 100) }}% smaller)
+                  <span class="text-sm text-gray-600 dark:text-gray-400">
+                    {{ transcode.preset }}
                   </span>
-                </span>
-              </div>
 
-              <div
-                v-if="transcode.error_message"
-                class="text-error line-clamp-2 text-sm"
-              >
-                {{ transcode.error_message }}
+                  <span
+                    v-if="transcode.file_size && transcode.completed"
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                  >
+                    {{ transcode.file_size_human }}
+
+                    <span class="text-success">
+                      ({{ Math.round(((media.size - transcode.file_size) / media.size) * 100) }}% smaller)
+                    </span>
+                  </span>
+                </div>
+
+                <div
+                  v-if="transcode.error_message"
+                  class="text-error line-clamp-2 text-sm"
+                >
+                  {{ transcode.error_message }}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </UPageCard>
+        </UPageList>
 
         <div class="flex items-center gap-3">
           <UButton
