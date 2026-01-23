@@ -60,6 +60,7 @@ watchDebounced(
               v-model="form.search"
               :model-modifiers="{ string: true, trim: true }"
               color="neutral"
+              class="min-w-64"
               placeholder="Search..."
               icon="i-lucide-search"
             />
