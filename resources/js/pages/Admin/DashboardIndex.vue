@@ -7,6 +7,7 @@ const props = defineProps<{
   videos: number
   tags: number
   users: number
+  media: string
 }>()
 
 defineOptions({ layout: DashboardLayout })
@@ -43,7 +44,7 @@ const stats = ref<Stat[]>([
   {
     title: 'Storage Used',
     icon: 'i-lucide-hard-drive',
-    value: '0 GB',
+    value: props.media,
     variation: 0,
   },
   {

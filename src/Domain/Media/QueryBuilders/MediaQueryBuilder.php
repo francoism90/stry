@@ -13,4 +13,9 @@ class MediaQueryBuilder extends Builder
     {
         return $this->where('uuid', $uuid)->firstOrFail();
     }
+
+    public function totalSize(): int
+    {
+        return (int) $this->sum('size');
+    }
 }

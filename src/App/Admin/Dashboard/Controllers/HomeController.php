@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Dashboard\Controllers;
 
+use Domain\Media\Models\Media;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -29,6 +30,7 @@ class HomeController extends Controller implements HasMiddleware
 
         return Inertia::render('Admin/DashboardIndex', [
             'videos' => Inertia::once(fn () => Video::count())->until(now()->addHour()),
+            'media' => Inertia::once(fn () => Media::totalUsage())->until(now()->addHour()),
             'tags' => Inertia::once(fn () => Tag::count())->until(now()->addHour()),
             'users' => Inertia::once(fn () => User::count())->until(now()->addHour()),
         ]);
