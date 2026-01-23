@@ -21,7 +21,7 @@ return [
      * - 'clearkey' → W3C Clear Key EME (works with fMP4, browser-native)
      * - null → No encryption
      */
-    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'clearkey'),
+    'encryption' => (string) env('PLAYLIST_ENCRYPTION', null),
 
     /**
      * Protection scheme for encryption.
@@ -31,7 +31,7 @@ return [
      * - 'cbc1' legacy HLS, limited browser support
      * - null (SAMPLE-AES) widest compatibility with TS segments, NO key rotation support
      */
-    'protection_scheme' => env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
+    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
 
     /**
      * Enable encryption key rotation. When enabled, new keys are generated at specified intervals.

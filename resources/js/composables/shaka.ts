@@ -14,7 +14,7 @@ export function useShaka(
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const initPlayer = async (manifestUri: string, licenseServer?: string | null) => {
+  const initPlayer = async (manifestUri: string) => {
     if (!videoElement.value) return
 
     loading.value = true
@@ -29,17 +29,6 @@ export function useShaka(
       // Create new player
       player.value = new shaka.Player()
       await player.value.attach(videoElement.value)
-
-      // Configure Clear Key DRM if license provided
-      if (licenseServer) {
-        player.value.configure({
-          drm: {
-            servers: {
-              'org.w3.clearkey': licenseServer,
-            },
-          },
-        })
-      }
 
       // Add error listener
       player.value.addEventListener('error', onErrorEvent)
@@ -79,7 +68,7 @@ export function useShaka(
 
     // Initialize player if playlist is available
     if (playlist.value?.asset) {
-      initPlayer(playlist.value.asset, playlist.value.license)
+      initPlayer(playlist.value.asset)
     }
   })
 
@@ -87,7 +76,7 @@ export function useShaka(
     () => playlist.value?.asset,
     (newAsset) => {
       if (newAsset) {
-        initPlayer(newAsset, playlist.value?.license)
+        initPlayer(newAsset)
       }
     },
   )
