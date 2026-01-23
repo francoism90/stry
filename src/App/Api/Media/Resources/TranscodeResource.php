@@ -22,7 +22,7 @@ class TranscodeResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
-            'preset' => $this->preset,
+            'encoder' => $this->encoder,
             'pending' => $this->isPending(),
             'processing' => $this->isProcessing(),
             'completed' => $this->isCompleted(),

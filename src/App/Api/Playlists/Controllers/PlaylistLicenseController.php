@@ -24,6 +24,8 @@ class PlaylistLicenseController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $playlist);
 
+        logger('license');
+
         // Get encryption key and key ID from playlist
         $keyId = base64_encode($playlist->encryption_key_id ?? random_bytes(16));
         $key = base64_encode($playlist->encryption_key ?? random_bytes(16));

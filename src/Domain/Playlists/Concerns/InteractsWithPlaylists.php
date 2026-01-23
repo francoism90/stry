@@ -34,7 +34,7 @@ trait InteractsWithPlaylists
     public function createPlaylist(array $attributes = []): Playlist
     {
         return $this->playlists()->create([
-            'file_name' => 'index.m3u8',
+            'file_name' => 'index.mpd',
             'disk' => Playlist::getDestinationDisk(),
             'expires_at' => Playlist::getExpiresAfter(),
             'accessed_at' => now(),

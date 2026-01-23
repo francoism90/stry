@@ -50,18 +50,18 @@ const handleTimeUpdate = () => {
 <template>
   <div class="relative w-full flex-1">
     <UEmpty
-      v-if="error"
-      title="Playback Error"
-      :description="error"
-      icon="i-lucide-alert-circle"
+      v-if="loading || !playlist?.valid"
+      title="Preparing your video..."
+      description="Please wait while we get everything ready."
+      icon="i-lucide-hard-drive-download"
       :actions="actions"
     />
 
     <UEmpty
-      v-else-if="loading || !playlist?.valid"
-      title="Preparing your video..."
-      description="Please wait while we get everything ready."
-      icon="i-lucide-hard-drive-download"
+      v-else-if="error"
+      title="Playback Error"
+      :description="error"
+      icon="i-lucide-alert-circle"
       :actions="actions"
     />
 

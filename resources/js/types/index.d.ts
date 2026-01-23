@@ -61,7 +61,7 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 
 export type Transcode = Model & {
   media_id: number
-  preset: string
+  encoder: string
   pending: boolean
   processing: boolean
   completed: boolean

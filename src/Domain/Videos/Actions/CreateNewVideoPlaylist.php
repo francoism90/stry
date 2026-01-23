@@ -72,11 +72,10 @@ class CreateNewVideoPlaylist
             }
         });
 
-        // Configure HLS playlist settings
+        // Configure DASH/MPD playlist settings
         $packager
-            ->withHlsMasterPlaylist($playlist->getFileName())
+            ->withMpdOutput($playlist->getFileName())
             ->withSegmentDuration(Playlist::getSegmentDuration())
-            ->withOption('hls_playlist_type', 'VOD')
             ->withOptions(Playlist::getPackagerOptions());
 
         // Add text tracks (captions) to the playlist if available
@@ -89,9 +88,7 @@ class CreateNewVideoPlaylist
         // Export the playlist to the configured disk and path
         $packager
             ->export()
-            ->toDisk($playlist->getDisk())
-            ->toPath($playlist->getPath())
-            ->save();
+            ->toDisk($playlist->getDisk(), null, true, $playlist->getPath());
 
         // Mark the playlist as ready
         $playlist->markAsReady();
