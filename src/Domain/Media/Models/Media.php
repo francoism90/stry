@@ -33,6 +33,13 @@ class Media extends BaseMedia
         'order_column',
     ];
 
+    /**
+     * @var array<int, string>
+     */
+    protected $with = [
+        'model',
+    ];
+
     protected function casts(): array
     {
         return [
