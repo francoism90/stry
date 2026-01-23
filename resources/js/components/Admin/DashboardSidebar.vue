@@ -11,12 +11,6 @@ const links: NavigationMenuItem[][] = [
       to: '/admin',
       exact: true,
     },
-    {
-      label: 'Inbox',
-      icon: 'i-lucide-inbox',
-      to: '/admin/inbox',
-      badge: '4',
-    },
   ],
   [
     {
