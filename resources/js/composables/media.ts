@@ -7,10 +7,11 @@ import { computed } from 'vue'
 export function useMedia(media: Media) {
   const toast = useToast()
 
-  const getFirstStream = () => media.custom_properties?.streams?.[0]
+  const getVideoStream = () => media.custom_properties?.streams?.find((stream) => stream.codec_type === 'video')
 
   const isTranscodeable = computed(() => {
-    const stream = getFirstStream()
+    const stream = getVideoStream()
+
     return stream?.codec_name.toLowerCase() !== 'av1'
   })
 
@@ -49,7 +50,7 @@ export function useMedia(media: Media) {
   }
 
   const getStreamInfo = () => {
-    const stream = getFirstStream()
+    const stream = getVideoStream()
 
     if (!stream) return []
 
@@ -85,7 +86,7 @@ export function useMedia(media: Media) {
     startConversion,
     addTranscodes,
     getStreamInfo,
-    getFirstStream,
+    getVideoStream,
     isTranscodeable,
   }
 }
