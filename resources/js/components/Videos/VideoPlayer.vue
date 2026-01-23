@@ -66,8 +66,8 @@ const handleTimeUpdate = () => {
     />
 
     <video
+      v-if="playlist?.valid && !loading && !error"
       ref="videoElement"
-      v-show="playlist?.valid && !loading && !error"
       class="aspect-video max-h-[50vh] w-full rounded-sm sm:max-h-[60vh] lg:max-h-[70vh]"
       controls
       autoplay

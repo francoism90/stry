@@ -88,7 +88,9 @@ class CreateNewVideoPlaylist
         // Export the playlist to the configured disk and path
         $packager
             ->export()
-            ->toDisk($playlist->getDisk(), null, true, $playlist->getPath());
+            ->toDisk($playlist->getDisk())
+            ->toPath($playlist->getPath())
+            ->save();
 
         // Mark the playlist as ready
         $playlist->markAsReady();
