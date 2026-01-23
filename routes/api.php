@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Api\Authentication\Controllers\HomeController;
-use App\Api\Playlists\Controllers\PlaylistLicenseController;
 use App\Api\Playlists\Controllers\PlaylistManifestController;
 use App\Api\Playlists\Controllers\PlaylistSessionController;
 use App\Api\Tags\Controllers\TagController;
