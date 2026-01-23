@@ -20,7 +20,8 @@ class AddMediaFromTranscode
         }
 
         // Get all completed transcodes for this media
-        $completedTranscodes = $media->transcodes()
+        $completedTranscodes = $media
+            ->transcodes()
             ->completed()
             ->get();
 
@@ -30,5 +31,8 @@ class AddMediaFromTranscode
                 ->addMediaFromDisk($transcode->getOutputPath(), Transcode::getDisk())
                 ->toMediaCollection('clips');
         }
+
+        // Delete all transcodes after adding them to the media collection
+        $media->transcodes()->delete();
     }
 }
