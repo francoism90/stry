@@ -79,11 +79,6 @@ const links: NavigationMenuItem[][] = [
     </template>
 
     <template #default="{ collapsed }">
-      <UDashboardSearchButton
-        :collapsed="collapsed"
-        class="ring-default bg-transparent"
-      />
-
       <UNavigationMenu
         :collapsed="collapsed"
         :ui="{ root: 'gap-3', link: 'py-2' }"

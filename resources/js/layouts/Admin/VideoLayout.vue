@@ -20,14 +20,14 @@ const links: NavigationMenuItem[][] = [
       exact: true,
     },
     {
-      label: 'Media',
-      icon: 'i-lucide-images',
-      to: media.url(props.video.id),
-    },
-    {
       label: 'Playlists',
       icon: 'i-lucide-list-video',
       to: playlists.url(props.video.id),
+    },
+    {
+      label: 'Media',
+      icon: 'i-lucide-images',
+      to: media.url(props.video.id),
     },
     {
       label: 'Metadata',

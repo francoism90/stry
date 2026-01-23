@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserCreateModal from '@/components/Users/UserCreateModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { UserCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -40,6 +41,10 @@ watchDebounced(
       <UDashboardNavbar title="Users">
         <template #leading>
           <UDashboardSidebarCollapse />
+        </template>
+
+        <template #right>
+          <UserCreateModal />
         </template>
       </UDashboardNavbar>
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
+import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -94,21 +96,42 @@ watchDebounced(
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"
-            :to="edit.url(item.id)"
             variant="naked"
             class="py-4 first:pt-0 last:pb-0"
           >
-            <UUser
-              :name="item.title"
-              :description="item.timestamp"
-              :avatar="{
-                alt: item.name,
-                src: item.thumb,
-                loading: 'lazy',
-                decoding: 'async',
-                class: 'rounded-sm size-14 me-1',
-              }"
-            />
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.title"
+                :description="item.timestamp"
+                :avatar="{
+                  alt: item.name,
+                  src: item.thumb,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'rounded-sm size-14 me-1',
+                }"
+                :to="edit.url(item.id)"
+              />
+
+              <div class="flex gap-2">
+                <UButton
+                  icon="i-lucide-eye"
+                  color="secondary"
+                  variant="ghost"
+                  size="sm"
+                  :to="VideoController.url(item.id)"
+                />
+
+                <VideoDeleteModal :item="item">
+                  <UButton
+                    icon="i-lucide-trash"
+                    color="error"
+                    variant="ghost"
+                    size="sm"
+                  />
+                </VideoDeleteModal>
+              </div>
+            </div>
           </UPageCard>
         </UPageList>
       </InfiniteScroll>

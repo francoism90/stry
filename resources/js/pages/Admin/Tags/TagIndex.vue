@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
+import TagDeleteModal from '@/components/Tags/TagDeleteModal.vue'
 import TagOrderModal from '@/components/Tags/TagOrderModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
@@ -102,18 +103,39 @@ watchDebounced(
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"
-            :to="edit.url(item.id)"
             variant="naked"
             class="py-4 first:pt-0 last:pb-0"
           >
-            <UUser
-              :name="item.name"
-              :description="`${item.category} • ${item.videos} videos`"
-              :avatar="{
-                alt: item.name,
-                class: 'rounded-sm size-14 me-1',
-              }"
-            />
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.name"
+                :description="`${item.category} • ${item.videos} videos`"
+                :avatar="{
+                  alt: item.name,
+                  class: 'rounded-sm size-14 me-1',
+                }"
+                :to="edit.url(item.id)"
+              />
+
+              <div class="flex gap-2">
+                <UButton
+                  icon="i-lucide-pencil"
+                  color="secondary"
+                  variant="ghost"
+                  size="sm"
+                  :to="edit.url(item.id)"
+                />
+
+                <TagDeleteModal :item="item">
+                  <UButton
+                    icon="i-lucide-trash"
+                    color="error"
+                    variant="ghost"
+                    size="sm"
+                  />
+                </TagDeleteModal>
+              </div>
+            </div>
           </UPageCard>
         </UPageList>
       </InfiniteScroll>

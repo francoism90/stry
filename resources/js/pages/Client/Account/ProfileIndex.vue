@@ -95,6 +95,22 @@ const onSubmit = () =>
             />
           </UFormField>
         </UPageCard>
+
+        <UPageCard
+          title="Administration"
+          description="Access the admin panel to manage videos, users, and settings."
+          variant="subtle"
+        >
+          <template #footer>
+            <UButton
+              label="Administration"
+              to="/admin"
+              color="primary"
+              variant="soft"
+              trailing
+            />
+          </template>
+        </UPageCard>
       </UForm>
     </template>
   </UDashboardPanel>
