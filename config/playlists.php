@@ -64,12 +64,12 @@ return [
      * - force_cl_index: Force closed captions index for better HLS compatibility
      */
     'packager_options' => [
-        'num_subsegments_per_sidx' => 0,
-        'fragment_sap_aligned' => true,
-        'mp4_include_pssh_in_stream' => true,
-        'generate_static_live_mpd' => true,
-        'default_language' => 'en',
-        'force_cl_index' => true,
+        // 'num_subsegments_per_sidx' => 0,
+        // 'fragment_sap_aligned' => true,
+        // 'mp4_include_pssh_in_stream' => true,
+        // // 'generate_static_live_mpd' => true,
+        // 'default_language' => 'en',
+        // 'force_cl_index' => true,
     ],
 
 ];

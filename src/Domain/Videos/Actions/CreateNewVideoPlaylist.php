@@ -72,11 +72,10 @@ class CreateNewVideoPlaylist
             }
         });
 
-        // Configure HLS playlist settings
+        // Configure DASH playlist settings
         $packager
-            ->withHlsMasterPlaylist($playlist->getFileName())
+            ->withMpdOutput($playlist->getFileName())
             ->withSegmentDuration(Playlist::getSegmentDuration())
-            ->withOption('hls_playlist_type', 'VOD')
             ->withOptions(Playlist::getPackagerOptions());
 
         // Add text tracks (captions) to the playlist if available
