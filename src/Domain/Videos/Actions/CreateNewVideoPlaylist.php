@@ -86,10 +86,11 @@ class CreateNewVideoPlaylist
         }
 
         // Export the playlist to the configured disk and path
-        $result = $packager->export();
-
-        // Manually upload files since vendor code may be cached
-        $this->uploadPackagerFiles($result, $playlist);
+        $packager
+            ->export()
+            ->toPath($playlist->getPath())
+            ->toDisk($playlist->getDisk())
+            ->save();
 
         // Mark the playlist as ready
         $playlist->markAsReady();
@@ -98,30 +99,5 @@ class CreateNewVideoPlaylist
         $packager->cleanupTemporaryFiles();
 
         return $next($video);
-    }
-
-    protected function uploadPackagerFiles($result, Playlist $playlist): void
-    {
-        \Log::info('Manual file upload starting', [
-            'playlist_id' => $playlist->id,
-            'disk' => $playlist->getDisk(),
-            'path' => $playlist->getPath(),
-            'result_class' => get_class($result),
-            'has_toDisk' => method_exists($result, 'toDisk'),
-            'has_toPath' => method_exists($result, 'toPath'),
-            'has_save' => method_exists($result, 'save'),
-        ]);
-
-        // Use the vendor method if it exists
-        if (method_exists($result, 'save')) {
-            \Log::info('Calling fluent upload methods');
-            $result->toDisk($playlist->getDisk())
-                   ->toPath($playlist->getPath())
-                   ->save();
-        } else {
-            \Log::error('save() method not found on PackagerResult - using fallback toDisk with path parameter');
-            // Fallback to old API if save() doesn't exist
-            $result->toDisk($playlist->getDisk(), null, true, $playlist->getPath() . '/');
-        }
     }
 }
