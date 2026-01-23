@@ -47,12 +47,12 @@ const links: NavigationMenuItem[][] = [
   <UDashboardSidebar
     id="default"
     collapsible
-    :min-size="16"
-    :max-size="16"
-    :default-size="16"
+    :min-size="15"
+    :max-size="15"
+    :default-size="15"
     :ui="{
       root: 'border-0 px-2 lg:sticky lg:top-0 lg:max-h-dvh',
-      header: 'flex items-center',
+      header: 'flex h-20 items-center',
       content: 'max-w-xs',
     }"
   >
