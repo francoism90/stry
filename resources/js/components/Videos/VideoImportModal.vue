@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVideos } from '@/composables/videos'
-import { usePage } from '@inertiajs/vue3'
-import { ref, watch } from 'vue'
+import { router, usePage } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 const isOpen = defineModel<boolean>({ default: false })
 const page = usePage()
@@ -19,16 +19,16 @@ const handleImport = () => {
   })
 }
 
-watch(
-  () => page.props.flash.toast,
-  (flash) =>
+router.on('flash', (event) => {
+  if (event.detail.flash) {
     toast.add({
-      title: 'Import Started',
-      description: flash?.message,
-      icon: 'i-lucide-check',
+      title: 'Import videos',
+      description: event.detail.flash.message as string,
+      icon: 'i-lucide-info',
       color: 'success',
-    }),
-)
+    })
+  }
+})
 </script>
 
 <template>
@@ -45,6 +45,13 @@ watch(
     />
 
     <template #body>
+      <div
+        v-if="page.flash"
+        class="toast"
+      >
+        {{ page.flash.message }}
+      </div>
+
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <h3 class="text-sm font-medium">Import videos from disk</h3>
