@@ -34,10 +34,8 @@ class CreateNewVideoPlaylist
             'type' => 'clip',
         ]);
 
-        // Check encryption method
+        // Get encryption configuration
         $encryptionMethod = Playlist::getEncryptionMethod();
-
-        // Clear Key requires CENC, raw_key can use SAMPLE-AES (null) or CENC
         $protectionScheme = Playlist::getProtectionScheme();
 
         // Check if we use encryption
