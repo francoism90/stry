@@ -53,22 +53,11 @@ const initPlayer = async () => {
 
   // Load the manifest
   try {
-    let src: string | undefined
+    await shakaPlayer.value.load(playlist.value.asset)
 
-    if (typeof playlist.value.asset === 'string') {
-      src = playlist.value.asset
-    } else if (playlist.value.asset && 'src' in playlist.value.asset) {
-      const assetSrc = playlist.value.asset.src
-      src = typeof assetSrc === 'string' ? assetSrc : undefined
-    }
-
-    if (src) {
-      await shakaPlayer.value.load(src)
-
-      // Start playback after loading
-      if (videoElement.value) {
-        videoElement.value.play()
-      }
+    // Start playback after loading
+    if (videoElement.value) {
+      videoElement.value.play()
     }
   } catch (error) {
     console.error('Error loading video:', error)
