@@ -6,7 +6,6 @@ namespace Domain\Media\Jobs;
 
 use Domain\Media\Actions\ConvertMediaToAv1;
 use Domain\Media\Models\Transcode;
-use Domain\Media\States;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -44,8 +43,7 @@ class ConvertMediaJob implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCo
     public function handle(ConvertMediaToAv1 $action): void
     {
         // Update state to processing
-        $this->transcode->state->transitionTo(States\Processing::class);
-        $this->transcode->touch('started_at');
+        $this->transcode->markAsProcessing();
 
         // Perform conversion
         try {
@@ -54,21 +52,10 @@ class ConvertMediaJob implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCo
             // Get file size and update state to completed
             $fileSize = $this->transcode->getFilesystem()->size($this->transcode->getOutputPath());
 
-            $this->transcode->state->transitionTo(States\Completed::class);
-
-            $this->transcode->updateOrFail([
-                'file_size' => $fileSize,
-                'transcoded_at' => now(),
-            ]);
+            $this->transcode->markAsCompleted($fileSize);
         } catch (Throwable $e) {
             // Update state to failed
-            $this->transcode->state->transitionTo(States\Failed::class);
-
-            // Update error message and increment retry count
-            $this->transcode->updateOrFail([
-                'error_message' => $e->getMessage(),
-                'retry_count' => $this->transcode->retry_count + 1,
-            ]);
+            $this->transcode->markAsFailed($e->getMessage());
 
             throw $e;
         }

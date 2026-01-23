@@ -24,15 +24,17 @@ class ConvertMediaToAv1
             ->vmafEncode()
             ->preset((string) ($options['preset'] ?? '6'))
             ->minVmaf((int) ($options['min_vmaf'] ?? 90))
-            ->maxEncodedPercent((int) ($options['max_encoded_percent'] ?? 150))
+            ->maxEncodedPercent((int) ($options['max_encoded_percent'] ?? 150));
+
+        $result = $encoder
             ->export()
             ->toDisk(Transcode::getDisk())
             ->save($outputPath);
 
         throw_unless(
-            $encoder->isSuccessful(),
+            $result->isSuccessful(),
             \RuntimeException::class,
-            'AV1 encoding failed: '.$encoder->getErrorOutput()
+            'AV1 encoding failed: '.$result->getErrorOutput()
         );
 
         // Clean up temporary files

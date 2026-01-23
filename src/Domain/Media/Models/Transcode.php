@@ -141,6 +141,33 @@ class Transcode extends Model
         return \Illuminate\Support\Number::fileSize($this->getFileSize());
     }
 
+    public function markAsProcessing(): void
+    {
+        $this->state->transitionTo(States\Processing::class);
+
+        $this->touch('started_at');
+    }
+
+    public function markAsCompleted(int $fileSize): void
+    {
+        $this->state->transitionTo(States\Completed::class);
+
+        $this->updateOrFail([
+            'file_size' => $fileSize,
+            'transcoded_at' => now(),
+        ]);
+    }
+
+    public function markAsFailed(string $errorMessage): void
+    {
+        $this->state->transitionTo(States\Failed::class);
+
+        $this->updateOrFail([
+            'error_message' => $errorMessage,
+            'retry_count' => $this->retry_count + 1,
+        ]);
+    }
+
     /**
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
