@@ -1,6 +1,6 @@
-import MediaConvertController from '@/actions/App/Admin/Media/Controllers/MediaConvertController'
-import MediaTranscodeReplaceController from '@/actions/App/Admin/Media/Controllers/MediaTranscodeReplaceController'
-import type { Media, Transcode } from '@/types'
+import MediaConvertedController from '@/actions/App/Admin/Media/Controllers/MediaConvertedController'
+import MediaTranscodeController from '@/actions/App/Admin/Media/Controllers/MediaTranscodeController'
+import type { Media } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 export function useMedia(media: Media) {
@@ -8,7 +8,7 @@ export function useMedia(media: Media) {
 
   const startConversion = () => {
     router.post(
-      MediaConvertController.url([media.id]),
+      MediaTranscodeController.url(media.id),
       {},
       {
         preserveState: true,
@@ -23,16 +23,16 @@ export function useMedia(media: Media) {
     )
   }
 
-  const replaceWithTranscode = (transcode: Transcode) => {
+  const addTranscodes = () => {
     router.post(
-      MediaTranscodeReplaceController.url([media.id, transcode.id]),
+      MediaConvertedController.url(media.id),
       {},
       {
         preserveState: true,
         onSuccess: () =>
           toast.add({
-            title: 'Media Replaced',
-            description: 'Original media has been replaced with AV1 version.',
+            title: 'Transcodes Added',
+            description: 'All successful transcodes have been added to the media library.',
             icon: 'i-lucide-check',
             color: 'success',
           }),
@@ -42,6 +42,6 @@ export function useMedia(media: Media) {
 
   return {
     startConversion,
-    replaceWithTranscode,
+    addTranscodes,
   }
 }

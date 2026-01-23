@@ -23,7 +23,7 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
 })
 
-const { startConversion, replaceWithTranscode } = useMedia(props.media)
+const { startConversion, addTranscodes } = useMedia(props.media)
 
 const onSubmit = () =>
   form.submit({
@@ -114,24 +114,27 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
                 {{ transcode.error_message }}
               </div>
             </div>
-
-            <UButton
-              v-if="transcode.completed"
-              label="Replace Original"
-              color="primary"
-              variant="soft"
-              icon="i-lucide-arrow-right-left"
-              @click="replaceWithTranscode(transcode)"
-            />
           </div>
         </div>
 
-        <UButton
-          label="Perform AV1 Conversion"
-          color="primary"
-          variant="soft"
-          @click="startConversion"
-        />
+        <div class="flex items-center gap-3">
+          <UButton
+            v-if="transcodes?.some((t) => t.completed)"
+            label="Add Transcodes"
+            color="primary"
+            variant="soft"
+            icon="i-lucide-plus"
+            @click="addTranscodes"
+          />
+
+          <UButton
+            v-else
+            label="Perform AV1 Conversion"
+            color="primary"
+            variant="soft"
+            @click="startConversion"
+          />
+        </div>
       </div>
     </UPageCard>
 
