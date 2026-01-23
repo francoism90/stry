@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Domain\Videos\Commands;
 
 use Domain\Users\Models\User;
+use Domain\Videos\Actions\CreateVideosByImport;
 use Domain\Videos\Jobs\ImportVideo;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
@@ -32,11 +32,13 @@ class ImportCommand extends Command implements Isolatable
      */
     protected $description = 'Import videos to the database';
 
-    public function handle(): void
+    public function handle(CreateVideosByImport $action): void
     {
+        $disk = $this->option('disk');
+
         $files = spin(
             message: 'Retrieving files...',
-            callback: fn () => $this->getCollection(),
+            callback: fn () => $action->getCollection($disk),
         );
 
         if ($files->isEmpty()) {
@@ -67,19 +69,12 @@ class ImportCommand extends Command implements Isolatable
         progress(
             label: 'Importing videos',
             steps: $files->getIterator(),
-            callback: function (string $path, $progress) use ($user) {
+            callback: function (string $path, $progress) use ($user, $disk) {
                 $progress->label("Importing {$path}");
 
-                return ImportVideo::dispatch($user, $this->option('disk'), $path);
+                return ImportVideo::dispatch($user, $disk, $path);
             },
         );
-    }
-
-    protected function getCollection(): Collection
-    {
-        return collect($this->getFileSystem()->allFiles())
-            ->filter(fn (string $path) => rescue(fn () => str_starts_with($this->getFileSystem()->mimeType($path), 'video/'), report: false))
-            ->sort();
     }
 
     protected function getFileSystem(): FilesystemAdapter

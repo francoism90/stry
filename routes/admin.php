@@ -9,6 +9,7 @@ use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
+use App\Admin\Videos\Controllers\VideoImportController;
 use App\Admin\Videos\Controllers\VideoMediaController;
 use App\Admin\Videos\Controllers\VideoPlaylistController;
 use Illuminate\Support\Facades\Route;
@@ -16,16 +17,17 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('/', HomeController::class)->name('home');
 
+// Inertia.js
+Route::post('media/{media}/import', MediaConvertedController::class)->name('media.converted');
+Route::post('media/{media}/transcode', MediaTranscodeController::class)->name('media.transcode');
+Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
+Route::post('videos/import', VideoImportController::class)->name('videos.import');
+
 // Users
 Route::resource('users', UserController::class);
 
-// Media
-Route::post('media/{media}/transcode', MediaTranscodeController::class)->name('media.transcode');
-Route::post('media/{media}/import', MediaConvertedController::class)->name('media.converted');
-
 // Tags
 Route::resource('tags', TagController::class);
-Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
 
 // Videos
 Route::resource('videos', VideoController::class);

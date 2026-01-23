@@ -2,6 +2,7 @@
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
+import VideoImportModal from '@/components/Videos/VideoImportModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -48,6 +49,10 @@ watchDebounced(
       <UDashboardNavbar title="Videos">
         <template #leading>
           <UDashboardSidebarCollapse />
+        </template>
+
+        <template #right>
+          <VideoImportModal />
         </template>
       </UDashboardNavbar>
 
