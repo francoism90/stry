@@ -106,7 +106,7 @@ class Transcode extends Model
 
     public function getFilename(): string
     {
-        return pathinfo($this->media->getPath(), PATHINFO_FILENAME).'_av1.mp4';
+        return pathinfo($this->media->getPath(), PATHINFO_FILENAME).'.mp4';
     }
 
     public function getOutputPath(): string
