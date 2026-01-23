@@ -3,29 +3,31 @@ import type { Playlist } from '@/types'
 import { router, usePage } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import shaka from 'shaka-player'
-import { computed, onBeforeUnmount, onMounted, ref, shallowRef, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
+import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef } from 'vue'
 
-export function useShaka(videoElement: MaybeRefOrGetter<HTMLMediaElement | undefined>) {
+export function useShaka() {
   const player = shallowRef<shaka.Player>()
   const error = ref<shaka.util.Error | null>(null)
+  const el = ref<HTMLMediaElement | null>(null)
   const ready = ref(false)
-  const el = toValue(videoElement)
 
   const playlist = computed(() => usePage().props.playlist as Playlist | null)
   const startTime = computed(() => usePage().props.progress as number | null)
 
-  const initialize = async () => {
+  const initialize = async (element: HTMLMediaElement | null) => {
+    el.value = element || null
+
     // Create player instance
     if (!player.value) {
       player.value = new shaka.Player()
     }
 
     // Attach video element
-    if (el) {
-      await player.value.attach(el)
+    if (el.value) {
+      await player.value.attach(el.value)
 
       // Add timeupdate listener
-      el.addEventListener('timeupdate', onTimeUpdate)
+      el.value.addEventListener('timeupdate', onTimeUpdate)
     }
 
     // Add error listener
@@ -33,13 +35,14 @@ export function useShaka(videoElement: MaybeRefOrGetter<HTMLMediaElement | undef
 
     // Load manifest
     const manifestUri = playlist.value?.asset
+    const isValid = playlist.value?.valid
 
-    if (manifestUri) {
+    if (manifestUri && isValid) {
       await player.value.load(manifestUri, startTime.value ?? 0)
     }
 
-    // Mark as ready
-    ready.value = true
+    // Set ready state
+    ready.value = isValid ?? false
   }
 
   const onErrorEvent = (event: Event) => {
@@ -47,7 +50,7 @@ export function useShaka(videoElement: MaybeRefOrGetter<HTMLMediaElement | undef
   }
 
   const onTimeUpdate = useDebounceFn(() => {
-    const currentTime = el?.currentTime ?? 0
+    const currentTime = el.value?.currentTime ?? 0
 
     // Round to 2 decimal places and ensure valid number
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
@@ -65,7 +68,7 @@ export function useShaka(videoElement: MaybeRefOrGetter<HTMLMediaElement | undef
         },
       )
     }
-  }, 1500)
+  }, 300)
 
   const destroy = async () => {
     if (player.value) {
@@ -78,15 +81,15 @@ export function useShaka(videoElement: MaybeRefOrGetter<HTMLMediaElement | undef
     error.value = null
 
     // Remove timeupdate listener
-    el?.removeEventListener('timeupdate', onTimeUpdate)
+    el.value?.removeEventListener('timeupdate', onTimeUpdate)
   }
 
-  watchEffect(() => initialize())
-  onMounted(() => shaka.polyfill.installAll())
+  onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
 
   return {
     player,
+    playlist,
     ready,
     error,
     initialize,

@@ -2,11 +2,11 @@
 import { useShaka } from '@/composables/shaka'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-const videoElement = ref<HTMLVideoElement>()
+const mediaElement = ref<HTMLMediaElement | null>(null)
 
-const { ready, error } = useShaka(videoElement)
+const { initialize, playlist, ready, error } = useShaka()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -25,10 +25,14 @@ const actions = ref<ButtonProps[]>([
     variant: 'subtle',
   },
 ])
+
+watch(mediaElement, (el) => initialize(el))
 </script>
 
 <template>
   <div class="relative w-full flex-1">
+    {{ playlist }}
+
     <UEmpty
       v-if="!ready"
       title="Preparing your video..."
@@ -47,7 +51,7 @@ const actions = ref<ButtonProps[]>([
 
     <video
       v-show="ready && !error"
-      ref="videoElement"
+      ref="mediaElement"
       class="aspect-video max-h-[50vh] w-full rounded-sm sm:max-h-[60vh] lg:max-h-[70vh]"
       controls
       autoplay
