@@ -1,7 +1,7 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import type { Playlist } from '@/types'
 import { router, usePage } from '@inertiajs/vue3'
-import { useDebounceFn } from '@vueuse/core'
+import { useThrottleFn } from '@vueuse/core'
 import shaka from 'shaka-player'
 import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef } from 'vue'
 
@@ -15,6 +15,7 @@ export function useShaka() {
   const startTime = computed(() => usePage().props.progress as number | null)
 
   const initialize = async (element: HTMLMediaElement | null) => {
+    // Set media element
     el.value = element || null
 
     // Create player instance
@@ -49,7 +50,7 @@ export function useShaka() {
     error.value = (event as CustomEvent).detail as shaka.util.Error
   }
 
-  const onTimeUpdate = useDebounceFn(() => {
+  const onTimeUpdate = useThrottleFn(() => {
     const currentTime = el.value?.currentTime ?? 0
 
     // Round to 2 decimal places and ensure valid number
@@ -68,7 +69,7 @@ export function useShaka() {
         },
       )
     }
-  }, 300)
+  }, 900)
 
   const destroy = async () => {
     if (player.value) {

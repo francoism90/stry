@@ -6,7 +6,7 @@ import { ref, watch } from 'vue'
 
 const mediaElement = ref<HTMLMediaElement | null>(null)
 
-const { initialize, playlist, ready, error } = useShaka()
+const { initialize, ready, error } = useShaka()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -31,8 +31,6 @@ watch(mediaElement, (el) => initialize(el))
 
 <template>
   <div class="relative w-full flex-1">
-    {{ playlist }}
-
     <UEmpty
       v-if="!ready"
       title="Preparing your video..."
