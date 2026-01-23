@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Admin/Videos/Controllers/VideoImportController'
+import VideoImportController from '@/actions/App/Admin/Videos/Controllers/VideoImportController'
 import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 const isOpen = defineModel<boolean>({ default: false })
 
@@ -9,7 +10,7 @@ const importing = ref(false)
 const startImport = () => {
   importing.value = true
   router.post(
-    store.url(),
+    VideoImportController.url(),
     {},
     {
       preserveScroll: true,
