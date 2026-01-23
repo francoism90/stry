@@ -7,6 +7,7 @@ namespace Domain\Users\Models;
 use Database\Factories\UserFactory;
 use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithSubscription;
@@ -80,10 +81,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'state' => UserState::class,
             'settings' => UserSettings::class.':default',
             'password' => 'hashed',
-            'email_verified_at' => 'datetime',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'email_verified_at' => AsDateTime::class,
+            'created_at' => AsDateTime::class,
+            'updated_at' => AsDateTime::class,
+            'deleted_at' => AsDateTime::class,
         ];
     }
 

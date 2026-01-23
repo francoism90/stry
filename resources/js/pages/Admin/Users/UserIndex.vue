@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Users/Controllers/UserController'
 import UserCreateModal from '@/components/Users/UserCreateModal.vue'
+import UserDeleteModal from '@/components/Users/UserDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { UserCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -83,16 +85,38 @@ watchDebounced(
             variant="naked"
             class="py-4 first:pt-0 last:pb-0"
           >
-            <UUser
-              :name="item.name"
-              :description="`${item.created_at}`"
-              :avatar="{
-                alt: item.name,
-                loading: 'lazy',
-                decoding: 'async',
-                class: 'rounded-sm size-14 me-1',
-              }"
-            />
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.name"
+                :description="`${item.created_at}`"
+                :avatar="{
+                  alt: item.name,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'rounded-sm size-14 me-1',
+                }"
+                :to="edit.url(item.id)"
+              />
+
+              <div class="flex gap-2">
+                <UButton
+                  icon="i-lucide-pencil"
+                  color="secondary"
+                  variant="ghost"
+                  size="sm"
+                  :to="edit.url(item.id)"
+                />
+
+                <UserDeleteModal :item="item">
+                  <UButton
+                    icon="i-lucide-trash"
+                    color="error"
+                    variant="ghost"
+                    size="sm"
+                  />
+                </UserDeleteModal>
+              </div>
+            </div>
           </UPageCard>
         </UPageList>
       </InfiniteScroll>

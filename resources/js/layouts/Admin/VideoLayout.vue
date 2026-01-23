@@ -49,7 +49,7 @@ const links: NavigationMenuItem[][] = [
 
   <UDashboardPanel id="video">
     <template #header>
-      <UDashboardNavbar title="Video">
+      <UDashboardNavbar :title="video.title">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
