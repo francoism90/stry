@@ -26,7 +26,7 @@ class Video extends ImageGenerator
 
         $video = $ffmpeg->open($file);
 
-        if (! ($video instanceof FFMpegVideo)) {
+        if (! $video instanceof FFMpegVideo) {
             return null;
         }
 

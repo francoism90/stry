@@ -27,7 +27,7 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
             'titles',
             'content',
             'summary',
-            'filesize',
+            'snapshot',
         ];
 
         return $this->video
