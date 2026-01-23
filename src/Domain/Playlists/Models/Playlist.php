@@ -213,13 +213,6 @@ class Playlist extends Model
         return Storage::disk($this->getDisk());
     }
 
-    public function getLicenseUrl(): ?string
-    {
-        return URL::temporarySignedRoute('api.playlists.license', now()->addHour(), [
-            'playlist' => $this,
-        ]);
-    }
-
     public function getUrlResolver(?string $path = null): string
     {
         return URL::temporarySignedRoute('api.playlists.playlist', now()->addHour(), [
