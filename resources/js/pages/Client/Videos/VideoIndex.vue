@@ -9,10 +9,10 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: VideoCollection
-  orders: SelectMenuItem[] | undefined
-  filter: string | undefined
-  search: string | undefined
-  order: string | undefined
+  orders: SelectMenuItem[]
+  filter: string
+  order?: string | undefined
+  search?: string | null
 }>()
 
 const form = useForm('get', '', {

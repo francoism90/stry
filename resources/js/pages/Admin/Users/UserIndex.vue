@@ -10,7 +10,7 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: UserCollection
-  search: string | null
+  search?: string | null
 }>()
 
 defineOptions({ layout: DashboardLayout })

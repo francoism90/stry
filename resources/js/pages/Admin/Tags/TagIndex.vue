@@ -12,9 +12,9 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: TagCollection
-  types: SelectMenuItem[] | undefined
-  search: string | undefined
-  type: string | undefined
+  types: SelectMenuItem[]
+  type?: string | undefined
+  search?: string | null
 }>()
 
 defineOptions({ layout: DashboardLayout })
