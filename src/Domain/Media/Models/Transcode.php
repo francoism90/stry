@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Media\Models;
 
+use Domain\Media\QueryBuilders\TranscodeQueryBuilder;
 use Domain\Media\States;
 use Domain\Media\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
@@ -46,6 +47,11 @@ class Transcode extends Model
             'transcoded_at' => AsDateTime::class,
             'state' => TranscodeState::class,
         ];
+    }
+
+    public function newEloquentBuilder($query): TranscodeQueryBuilder
+    {
+        return new TranscodeQueryBuilder($query);
     }
 
     public function media(): BelongsTo

@@ -83,7 +83,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
 
     <UPageCard
       title="AV1 Conversion"
-      description="Convert this media to AV1 format for better compression and quality."
+      description="Convert this media to AV1 format for better compression."
       variant="subtle"
     >
       <div class="space-y-4">
@@ -127,10 +127,9 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
         </div>
 
         <UButton
-          label="Start AV1 Conversion"
+          label="Perform AV1 Conversion"
           color="primary"
           variant="soft"
-          icon="i-lucide-play"
           @click="startConversion"
         />
       </div>

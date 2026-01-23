@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Admin\Dashboard\Controllers\HomeController;
-use App\Admin\Media\Controllers\MediaConvertController;
-use App\Admin\Media\Controllers\MediaTranscodeReplaceController;
+use App\Admin\Media\Controllers\MediaConvertedController;
+use App\Admin\Media\Controllers\MediaTranscodeController;
 use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
@@ -20,8 +20,8 @@ Route::get('/', HomeController::class)->name('home');
 Route::resource('users', UserController::class);
 
 // Media
-Route::post('media/{media}/convert', MediaConvertController::class)->name('media.convert');
-Route::post('media/{media}/transcodes/{transcode}/replace', MediaTranscodeReplaceController::class)->name('media.transcodes.replace');
+Route::post('media/{media}/transcode', MediaTranscodeController::class)->name('media.transcode');
+Route::post('media/{media}/import', MediaConvertedController::class)->name('media.converted');
 
 // Tags
 Route::resource('tags', TagController::class);

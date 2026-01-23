@@ -18,12 +18,10 @@ return new class extends Migration
             $table->string('preset');
             $table->text('error_message')->nullable();
             $table->unsignedTinyInteger('retry_count')->default(0);
-            $table->string('state');
+            $table->string('state')->index();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('transcoded_at')->nullable();
             $table->timestamps();
-            $table->index('media_id');
-            $table->index('state');
         });
     }
 
