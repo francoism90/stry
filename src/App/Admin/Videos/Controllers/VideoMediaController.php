@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Admin\Videos\Controllers;
 
 use App\Admin\Media\Responses\MediaResourceProperty;
+use App\Admin\Media\Responses\TranscodeResourceProperty;
 use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;
-use App\Api\Media\Resources\TranscodeResource;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -80,7 +80,7 @@ class VideoMediaController extends Controller implements HasMiddleware
         return Inertia::render('Admin/Videos/Media/MediaEdit', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'media' => fn () => new MediaResourceProperty(media: $media),
-            'transcodes' => fn () => TranscodeResource::collection($media->transcodes),
+            'transcodes' => fn () => new TranscodeResourceProperty(media: $media),
         ]);
     }
 

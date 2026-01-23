@@ -44,7 +44,7 @@ class Media extends BaseMedia
     {
         return [
             'manipulations' => 'array',
-            'custom_properties' => 'json',
+            'custom_properties' => 'array',
             'generated_conversions' => 'array',
             'responsive_images' => 'array',
         ];
