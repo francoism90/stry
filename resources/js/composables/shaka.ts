@@ -18,33 +18,39 @@ export function useShaka() {
     // Set media element
     el.value = element || null
 
-    // Create player instance
-    if (!player.value) {
-      player.value = new shaka.Player()
+    // Build configuration
+    const config: Partial<shaka.extern.PlayerConfiguration> = {}
 
-      const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
-      const key = playlist.value?.encryption_key?.toLowerCase() ?? ''
+    // Get encryption keys (if any)
+    const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
+    const keyContent = playlist.value?.encryption_key?.toLowerCase() ?? ''
 
-      // Configure DRM if keys are present
-      player.value.configure({
-        drm: {
-          clearKeys: {
-            [keyId]: key,
-          },
+    // Configure DRM with clear keys
+    if (keyId && keyContent) {
+      config.drm = {
+        clearKeys: {
+          [keyId]: keyContent,
         },
-      })
+      } as shaka.extern.DrmConfiguration
     }
+
+    // Create new Shaka Player
+    player.value = new shaka.Player()
+
+    // Configure DRM if keys are present
+    player.value.configure(config)
+
+    // Add error listener
+    player.value.addEventListener('error', onErrorEvent)
 
     // Attach video element
     if (el.value) {
       await player.value.attach(el.value)
 
       // Add timeupdate listener
+      el.value.removeEventListener('timeupdate', onTimeUpdate)
       el.value.addEventListener('timeupdate', onTimeUpdate)
     }
-
-    // Add error listener
-    player.value.addEventListener('error', onErrorEvent)
 
     // Check playlist state
     const isExpired = playlist.value?.expired
