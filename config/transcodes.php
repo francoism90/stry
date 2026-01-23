@@ -4,14 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Preset
+    | Default Encoder
     |--------------------------------------------------------------------------
     |
-    | The default preset to use for transcoding operations.
+    | The default encoder to use for transcoding operations.
     |
     */
 
-    'default' => env('TRANSCODE_DEFAULT_PRESET', 'ab-av1'),
+    'default' => env('TRANSCODE_DEFAULT_ENCODER', 'ab-av1'),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,15 +27,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Transcoding Presets
+    | Encoding Configurations
     |--------------------------------------------------------------------------
     |
-    | Define transcoding presets with their encoding options.
-    | Each preset contains encoder-specific settings.
+    | Define encoder configurations with their encoding options.
+    | Each encoder contains specific settings for the encoding process.
     |
     */
 
-    'presets' => [
+    'encoders' => [
         'ab-av1' => [
             'preset' => env('TRANSCODE_AV1_PRESET', '6'),
             'min_vmaf' => env('TRANSCODE_AV1_MIN_VMAF', 85),

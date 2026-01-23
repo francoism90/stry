@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid()->unique();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('media_id')->constrained()->cascadeOnDelete();
-            $table->string('preset');
+            $table->string('encoder');
             $table->unsignedBigInteger('file_size')->nullable();
             $table->text('error_message')->nullable();
             $table->unsignedTinyInteger('retry_count')->default(0);

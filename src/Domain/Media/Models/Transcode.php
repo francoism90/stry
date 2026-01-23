@@ -33,7 +33,7 @@ class Transcode extends Model
     protected $fillable = [
         'user_id',
         'media_id',
-        'preset',
+        'encoder',
         'state',
         'file_size',
         'error_message',
@@ -97,7 +97,7 @@ class Transcode extends Model
 
     public function getOptions(): array
     {
-        return Config::array("transcodes.presets.{$this->preset}", []);
+        return Config::array("transcodes.encoders.{$this->encoder}", []);
     }
 
     public static function getDisk(): string

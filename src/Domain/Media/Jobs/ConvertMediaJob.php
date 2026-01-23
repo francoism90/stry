@@ -35,7 +35,7 @@ class ConvertMediaJob implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCo
 
     public function __construct(
         public Transcode $transcode,
-        public ?string $preset = null,
+        public ?string $encoder = null,
     ) {
         $this->onQueue('processing');
     }

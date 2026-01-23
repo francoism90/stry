@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Config;
 
 class CreateMediaTranscode
 {
-    public function handle(Media $media, ?string $preset = null): Transcode
+    public function handle(Media $media, ?string $encoder = null): Transcode
     {
         // Check if there's already a pending or processing transcode for this media
         $existingTranscode = $media->transcodes()
@@ -25,7 +25,7 @@ class CreateMediaTranscode
 
         // Create a new transcode record
         $transcode = $media->transcodes()->create([
-            'preset' => $preset ?? Config::string('transcodes.default'),
+            'encoder' => $encoder ?? Config::string('transcodes.default'),
             'state' => Pending::class,
         ]);
 
