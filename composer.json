@@ -36,7 +36,7 @@
         "pusher/pusher-php-server": "^7.2.7",
         "spatie/laravel-data": "^4.19",
         "spatie/laravel-google-fonts": "^1.4.4",
-        "spatie/laravel-medialibrary": "^11.17.8",
+        "spatie/laravel-medialibrary": "^11.17.10",
         "spatie/laravel-model-states": "^2.12.2",
         "spatie/laravel-permission": "^6.24.0",
         "spatie/laravel-rate-limited-job-middleware": "^2.8.2",
