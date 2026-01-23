@@ -128,7 +128,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           />
 
           <UButton
-            v-else
+            v-else-if="!transcodes?.some((t) => t.processing || t.pending)"
             label="Perform AV1 Conversion"
             color="primary"
             variant="soft"
