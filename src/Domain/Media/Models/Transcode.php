@@ -49,6 +49,8 @@ class Transcode extends Model
             'retry_count' => 'integer',
             'started_at' => AsDateTime::class,
             'transcoded_at' => AsDateTime::class,
+            'created_at' => AsDateTime::class,
+            'updated_at' => AsDateTime::class,
             'state' => TranscodeState::class,
         ];
     }

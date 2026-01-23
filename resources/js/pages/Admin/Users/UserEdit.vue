@@ -42,8 +42,8 @@ const onSubmit = () =>
     @submit="onSubmit"
   >
     <UPageCard
-      :title="user.name"
-      :description="`Joined ${user.created_at}`"
+      title="General Details"
+      description="Update general details"
       variant="naked"
       orientation="horizontal"
     >

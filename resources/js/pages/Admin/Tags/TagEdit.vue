@@ -49,8 +49,8 @@ const onSubmit = () =>
     @submit="onSubmit"
   >
     <UPageCard
-      :title="tag.name"
-      :description="tag.category"
+      title="General Details"
+      description="Update general details"
       variant="naked"
       orientation="horizontal"
     >

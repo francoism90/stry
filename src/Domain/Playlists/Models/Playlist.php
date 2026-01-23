@@ -66,11 +66,6 @@ class Playlist extends Model
         'user_id',
     ];
 
-    protected static function newFactory(): PlaylistFactory
-    {
-        return PlaylistFactory::new();
-    }
-
     /**
      * @var array<string, string>
      */
@@ -82,6 +77,8 @@ class Playlist extends Model
             'accessed_at' => AsDateTime::class,
             'expires_at' => AsDateTime::class,
             'transcoded_at' => AsDateTime::class,
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
             'state' => PlaylistState::class,
         ];
     }
@@ -94,6 +91,11 @@ class Playlist extends Model
     public function newCollection(array $models = []): PlaylistCollection
     {
         return new PlaylistCollection($models);
+    }
+
+    protected static function newFactory(): PlaylistFactory
+    {
+        return PlaylistFactory::new();
     }
 
     public function uniqueIds(): array
