@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { usePlayer } from '@/composables/player'
+import { useShaka } from '@/composables/shaka'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
-import shaka from 'shaka-player'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const videoElement = ref<HTMLVideoElement>()
-const shakaPlayer = ref<shaka.Player>()
 const seeked = ref(false)
 
 const { playlist, progress, store } = usePlayer()
+const { loading, error } = useShaka(videoElement, playlist)
 
 const actions = ref<ButtonProps[]>([
   {
@@ -29,41 +29,6 @@ const actions = ref<ButtonProps[]>([
   },
 ])
 
-const initPlayer = async () => {
-  if (!videoElement.value || !playlist.value?.asset) return
-
-  // Destroy existing player if any
-  if (shakaPlayer.value) {
-    await shakaPlayer.value.destroy()
-  }
-
-  // Initialize Shaka Player
-  shakaPlayer.value = new shaka.Player()
-
-  await shakaPlayer.value.attach(videoElement.value)
-
-  // Configure Clear Key DRM
-  shakaPlayer.value.configure({
-    drm: {
-      servers: {
-        'org.w3.clearkey': playlist.value.license || '',
-      },
-    },
-  })
-
-  // Load the manifest
-  try {
-    await shakaPlayer.value.load(playlist.value.asset)
-
-    // Start playback after loading
-    if (videoElement.value) {
-      videoElement.value.play()
-    }
-  } catch (error) {
-    console.error('Error loading video:', error)
-  }
-}
-
 const handleTimeUpdate = () => {
   if (!videoElement.value) return
 
@@ -80,46 +45,30 @@ const handleTimeUpdate = () => {
     store(currentTime)
   }
 }
-
-onMounted(() => {
-  shaka.polyfill.installAll()
-
-  // Initialize player once the video element is mounted
-  if (playlist.value?.asset) {
-    initPlayer()
-  }
-})
-
-watch(
-  () => playlist.value?.asset,
-  (newAsset) => {
-    if (newAsset && videoElement.value) {
-      initPlayer()
-    }
-  },
-)
-
-onBeforeUnmount(() => {
-  shakaPlayer.value?.destroy()
-})
 </script>
 
 <template>
   <div class="relative w-full flex-1">
     <UEmpty
-      v-if="!playlist?.valid"
+      v-if="error"
+      title="Playback Error"
+      :description="error"
+      icon="i-lucide-alert-circle"
+      :actions="actions"
+    />
+
+    <UEmpty
+      v-else-if="loading || !playlist?.valid"
       title="Preparing your video..."
-      :description="
-        playlist?.failed ? 'There was an error processing your video.' : 'Please wait while we get everything ready.'
-      "
+      description="Please wait while we get everything ready."
       icon="i-lucide-hard-drive-download"
       :actions="actions"
     />
 
     <video
       ref="videoElement"
-      v-show="playlist?.valid || false"
-      class="h-full w-full"
+      v-show="playlist?.valid && !loading && !error"
+      class="aspect-video max-h-[50vh] w-full rounded-sm sm:max-h-[60vh] lg:max-h-[70vh]"
       controls
       autoplay
       playsinline
