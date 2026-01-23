@@ -36,4 +36,11 @@ class TranscodeQueryBuilder extends Builder
     {
         return $this->completed();
     }
+
+    public function inProgress(): self
+    {
+        return $this->where(function ($query) {
+            $query->pending()->orWhere->processing();
+        });
+    }
 }

@@ -14,12 +14,22 @@ class CreateMediaTranscode
 {
     public function handle(Media $media, ?string $preset = null): Transcode
     {
-        $transcode = Transcode::create([
-            'media_id' => $media->id,
+        // Check if there's already a pending or processing transcode for this media
+        $existingTranscode = $media->transcodes()
+            ->inProgress()
+            ->first();
+
+        if ($existingTranscode) {
+            return $existingTranscode;
+        }
+
+        // Create a new transcode record
+        $transcode = $media->transcodes()->create([
             'preset' => $preset ?? Config::string('transcodes.default'),
             'state' => Pending::class,
         ]);
 
+        // Dispatch the conversion job
         ConvertMediaJob::dispatch($transcode);
 
         return $transcode;
