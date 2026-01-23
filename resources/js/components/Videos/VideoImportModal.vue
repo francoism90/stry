@@ -22,7 +22,7 @@ const handleImport = () => {
 router.on('flash', (event) => {
   if (event.detail.flash) {
     toast.add({
-      title: 'Import videos',
+      title: 'Videos',
       description: event.detail.flash.message as string,
       icon: 'i-lucide-info',
       color: 'success',

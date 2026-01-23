@@ -21,7 +21,7 @@ const reorderTags = async (close: () => void) => {
 router.on('flash', (event) => {
   if (event.detail.flash) {
     toast.add({
-      title: 'Tag sorting',
+      title: 'Tags',
       description: event.detail.flash.message as string,
       icon: 'i-lucide-info',
       color: 'success',
