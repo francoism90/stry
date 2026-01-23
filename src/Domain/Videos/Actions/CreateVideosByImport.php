@@ -46,7 +46,7 @@ class CreateVideosByImport
         return Collection::make($this->getFileSystem($disk)->allFiles())
             ->filter(fn (string $path) => rescue(fn () => str_starts_with($this->getFileSystem($disk)->mimeType($path), 'video/'), report: false))
             ->sort()
-            ->take(Config::int('videos.import.max_files_per_batch', 100));
+            ->take(Config::integer('videos.import_batch_size', 100));
     }
 
     protected function getFileSystem(string $disk): FilesystemAdapter
