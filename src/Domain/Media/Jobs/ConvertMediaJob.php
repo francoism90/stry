@@ -51,10 +51,17 @@ class ConvertMediaJob implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCo
         try {
             $action->handle($this->transcode);
 
-            // Update state to completed
+            // Get file size and update state to completed
+            $fileSize = $this->transcode->getFilesystem()->size($this->transcode->getOutputPath());
+
             $this->transcode->state->transitionTo(States\Completed::class);
-            $this->transcode->touch('transcoded_at');
+
+            $this->transcode->updateOrFail([
+                'file_size' => $fileSize,
+                'transcoded_at' => now(),
+            ]);
         } catch (Throwable $e) {
+            // Update state to failed
             $this->transcode->state->transitionTo(States\Failed::class);
 
             // Update error message and increment retry count

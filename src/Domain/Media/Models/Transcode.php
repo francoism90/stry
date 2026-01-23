@@ -14,7 +14,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 use Spatie\ModelStates\HasStates;
 
 class Transcode extends Model
@@ -33,6 +35,7 @@ class Transcode extends Model
         'media_id',
         'preset',
         'state',
+        'file_size',
         'error_message',
         'retry_count',
         'started_at',
@@ -42,6 +45,7 @@ class Transcode extends Model
     protected function casts(): array
     {
         return [
+            'file_size' => 'integer',
             'retry_count' => 'integer',
             'started_at' => AsDateTime::class,
             'transcoded_at' => AsDateTime::class,
@@ -112,6 +116,29 @@ class Transcode extends Model
     public function getOutputPath(): string
     {
         return $this->getPath($this->getFilename());
+    }
+
+    public function getFilesystem(): FilesystemAdapter
+    {
+        return Storage::disk(static::getDisk());
+    }
+
+    public function getFileSize(): int
+    {
+        if ($this->file_size) {
+            return $this->file_size;
+        }
+
+        if (! $this->isCompleted()) {
+            return 0;
+        }
+
+        return $this->getFilesystem()->size($this->getOutputPath());
+    }
+
+    public function getHumanReadableFileSize(): string
+    {
+        return \Illuminate\Support\Number::fileSize($this->getFileSize());
     }
 
     /**

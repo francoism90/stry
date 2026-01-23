@@ -51,6 +51,8 @@ export type Transcode = Model & {
   completed: boolean
   failed: boolean
   state: ModelState
+  file_size: number
+  file_size_human: string
   error_message: string | null
   retry_count: number
   started_at: string | null

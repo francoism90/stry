@@ -28,6 +28,8 @@ class TranscodeResource extends JsonResource
             'completed' => $this->isCompleted(),
             'failed' => $this->isFailed(),
             'state' => $this->state->toArray(),
+            'file_size' => $this->getFileSize(),
+            'file_size_human' => $this->getHumanReadableFileSize(),
             'error_message' => $this->error_message,
             'retry_count' => $this->retry_count,
             'started_at' => $this->started_at,

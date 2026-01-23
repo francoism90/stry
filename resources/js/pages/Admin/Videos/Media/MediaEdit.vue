@@ -105,6 +105,17 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
                 <span class="text-sm text-gray-600 dark:text-gray-400">
                   {{ transcode.preset }}
                 </span>
+
+                <span
+                  v-if="transcode.file_size && transcode.completed"
+                  class="text-sm text-gray-600 dark:text-gray-400"
+                >
+                  {{ transcode.file_size_human }}
+
+                  <span class="text-success">
+                    ({{ Math.round(((media.size - transcode.file_size) / media.size) * 100) }}% smaller)
+                  </span>
+                </span>
               </div>
 
               <div
