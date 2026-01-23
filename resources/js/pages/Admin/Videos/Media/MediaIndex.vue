@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
+import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { MediaCollection, Video } from '@/types'
@@ -34,14 +35,31 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
         class="py-4 first:pt-0 last:pb-0"
       >
         <div class="flex items-center justify-between">
-          <UUser
-            :name="item.name"
-            :description="`${item.mime_type} • ${item.file_size}`"
-            :avatar="{
-              alt: item.name,
-              class: 'rounded-sm size-14 me-1',
-            }"
-          />
+          <div class="flex flex-col gap-1">
+            <UUser
+              :name="item.name"
+              :description="`${item.mime_type} • ${item.file_size}`"
+              :avatar="{
+                alt: item.name,
+                class: 'rounded-sm size-14 me-1',
+              }"
+            />
+
+            <div
+              v-if="item.custom_properties"
+              class="ms-18 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400"
+            >
+              <UBadge
+                v-for="(badge, index) in useMedia(item).getStreamInfo()"
+                :key="index"
+                :color="badge.color"
+                variant="subtle"
+                size="xs"
+              >
+                {{ badge.label }}
+              </UBadge>
+            </div>
+          </div>
 
           <div class="flex gap-2">
             <UButton

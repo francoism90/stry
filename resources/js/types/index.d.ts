@@ -26,6 +26,17 @@ export type UserCollection = Omit<Paginator, 'data'> & {
   data: User[] | undefined
 }
 
+export type MediaStream = {
+  index: number
+  width: number
+  height: number
+  bit_rate: string
+  duration: string
+  codec_name: string
+  codec_type: string
+  closed_captions: number
+}
+
 export type Media = Model & {
   asset: string | undefined
   name: string
@@ -36,6 +47,12 @@ export type Media = Model & {
   collection_name: string
   disk: string
   conversions_disk: string
+  custom_properties?: {
+    streams?: MediaStream[]
+    [key: string]: unknown
+  }
+  generated_conversions?: Record<string, unknown>
+  responsive_images?: Record<string, unknown>
   transcodes?: Transcode[]
 }
 

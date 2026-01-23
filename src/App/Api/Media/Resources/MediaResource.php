@@ -30,6 +30,9 @@ class MediaResource extends JsonResource
             'collection_name' => $this->collection_name,
             'disk' => $this->disk,
             'conversions_disk' => $this->conversions_disk,
+            'custom_properties' => $this->whenAppended('custom_properties'),
+            'generated_conversions' => $this->whenAppended('generated_conversions'),
+            'responsive_images' => $this->whenAppended('responsive_images'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -35,7 +35,9 @@ class VideoMediaController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Media::class);
 
         // Fetch media for the video
-        $media = $video->media()->simplePaginate(16);
+        $media = $video->media()
+            ->simplePaginate(16)
+            ->through(fn ($item) => $item->append(['custom_properties', 'generated_conversions']));
 
         return Inertia::render('Admin/Videos/Media/MediaIndex', [
             'video' => fn () => new VideoResourceProperty($video),
