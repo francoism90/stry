@@ -21,6 +21,18 @@ export function useShaka() {
     // Create player instance
     if (!player.value) {
       player.value = new shaka.Player()
+
+      const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
+      const key = playlist.value?.encryption_key?.toLowerCase() ?? ''
+
+      // Configure DRM if keys are present
+      player.value.configure({
+        drm: {
+          clearKeys: {
+            [keyId]: key,
+          },
+        },
+      })
     }
 
     // Attach video element
@@ -34,9 +46,29 @@ export function useShaka() {
     // Add error listener
     player.value.addEventListener('error', onErrorEvent)
 
+    // Check playlist state
+    const isExpired = playlist.value?.expired
+    const isFailed = playlist.value?.failed
+    const isValid = playlist.value?.valid
+
+    if (isFailed) {
+      error.value = new shaka.util.Error(
+        shaka.util.Error.Severity.CRITICAL,
+        shaka.util.Error.Category.MANIFEST,
+        shaka.util.Error.Code.MEDIA_SOURCE_OPERATION_FAILED,
+      )
+    }
+
+    if (isExpired) {
+      error.value = new shaka.util.Error(
+        shaka.util.Error.Severity.CRITICAL,
+        shaka.util.Error.Category.MANIFEST,
+        shaka.util.Error.Code.EXPIRED,
+      )
+    }
+
     // Load manifest
     const manifestUri = playlist.value?.asset
-    const isValid = playlist.value?.valid
 
     if (manifestUri && isValid) {
       await player.value.load(manifestUri, startTime.value ?? 0)

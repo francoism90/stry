@@ -127,6 +127,8 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 
 export type Playlist = Model & {
   asset: string | null
+  encryption_key_id: string | null
+  encryption_key: string | null
   expired: boolean
   failed: boolean
   valid: boolean

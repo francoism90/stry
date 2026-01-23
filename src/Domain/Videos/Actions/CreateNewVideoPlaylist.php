@@ -8,7 +8,10 @@ use Closure;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
+use Foxws\Shaka\Exporters\MediaExporter;
 use Foxws\Shaka\Facades\Shaka;
+use Foxws\Shaka\Support\PackagerResult;
+use Illuminate\Support\Arr;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateNewVideoPlaylist
@@ -29,11 +32,6 @@ class CreateNewVideoPlaylist
         // Initialize Shaka Packager
         $packager = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
-        /** @var Playlist $playlist */
-        $playlist = $video->createPlaylist([
-            'type' => 'clip',
-        ]);
-
         // Get encryption configuration
         $encryptionMethod = Playlist::getEncryptionMethod();
         $protectionScheme = Playlist::getProtectionScheme();
@@ -43,7 +41,7 @@ class CreateNewVideoPlaylist
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
-            $packager->withAESEncryption('key', $protectionScheme);
+            $keyData = $packager->withAESEncryption('key', $protectionScheme);
 
             if (Playlist::getKeyRotation()) {
                 $packager->withKeyRotationDuration(Playlist::getKeyRotationDuration());
@@ -71,6 +69,13 @@ class CreateNewVideoPlaylist
                 $packager->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
+
+        /** @var Playlist $playlist */
+        $playlist = $video->createPlaylist([
+            'encryption_key_id' => $keyData['key_id'] ?? null,
+            'encryption_key' => $keyData['key'] ?? null,
+            'type' => 'clip',
+        ]);
 
         // Configure DASH playlist settings
         $packager

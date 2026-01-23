@@ -21,7 +21,7 @@ return [
      * - 'clearkey' → W3C Clear Key EME (works with fMP4, browser-native)
      * - null → No encryption
      */
-    'encryption' => (string) env('PLAYLIST_ENCRYPTION', null),
+    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
 
     /**
      * Protection scheme for encryption.
