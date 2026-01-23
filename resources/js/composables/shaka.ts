@@ -48,7 +48,6 @@ export function useShaka() {
       await player.value.attach(el.value)
 
       // Add timeupdate listener
-      el.value.removeEventListener('timeupdate', onTimeUpdate)
       el.value.addEventListener('timeupdate', onTimeUpdate)
     }
 
