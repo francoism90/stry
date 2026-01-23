@@ -2,9 +2,9 @@
 import { useShaka } from '@/composables/shaka'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
-import { ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 
-const mediaElement = ref<HTMLMediaElement | null>(null)
+const el = ref<HTMLMediaElement | null>(null)
 
 const { initialize, ready, error } = useShaka()
 
@@ -26,7 +26,7 @@ const actions = ref<ButtonProps[]>([
   },
 ])
 
-watch(mediaElement, (el) => initialize(el))
+onMounted(() => initialize(el.value))
 </script>
 
 <template>
@@ -49,8 +49,8 @@ watch(mediaElement, (el) => initialize(el))
 
     <video
       v-show="ready && !error"
-      ref="mediaElement"
-      class="aspect-video max-h-[50vh] w-full rounded-sm sm:max-h-[60vh] lg:max-h-[70vh]"
+      ref="el"
+      class="aspect-video max-h-[50vh] w-full rounded-sm bg-transparent sm:max-h-[60vh] lg:max-h-[70vh]"
       controls
       autoplay
       playsinline

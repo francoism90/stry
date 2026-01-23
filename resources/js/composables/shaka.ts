@@ -3,7 +3,7 @@ import type { Playlist } from '@/types'
 import { router, usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
 import shaka from 'shaka-player'
-import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef } from 'vue'
+import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 
 export function useShaka() {
   const player = shallowRef<shaka.Player>()
@@ -56,8 +56,6 @@ export function useShaka() {
     // Round to 2 decimal places and ensure valid number
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
-    console.log('Time update:', time)
-
     // Only store if playlist exists and time has changed (> 0.25 seconds)
     if (playlist.value && Math.abs((startTime.value ?? 0) - time) > 0.25) {
       router.post(
@@ -87,6 +85,7 @@ export function useShaka() {
 
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
+  watch(playlist, () => initialize(el.value), { deep: true })
 
   return {
     player,
