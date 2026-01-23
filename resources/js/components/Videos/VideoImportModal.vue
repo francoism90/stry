@@ -1,25 +1,22 @@
 <script setup lang="ts">
-import VideoImportController from '@/actions/App/Admin/Videos/Controllers/VideoImportController'
-import { router } from '@inertiajs/vue3'
+import { useVideos } from '@/composables/videos'
 import { ref } from 'vue'
 
 const isOpen = defineModel<boolean>({ default: false })
 
 const importing = ref(false)
+const { importVideos } = useVideos()
 
 const startImport = () => {
   importing.value = true
-  router.post(
-    VideoImportController.url(),
-    {},
-    {
-      preserveScroll: true,
-      onSuccess: () => {
-        isOpen.value = false
-      },
-      onFinish: () => {
-        importing.value = false
-      },
+  importVideos(
+    () => {
+      isOpen.value = false
+      importing.value = false
+    },
+    () => {
+      isOpen.value = false
+      importing.value = false
     },
   )
 }
