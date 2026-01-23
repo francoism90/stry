@@ -1,5 +1,4 @@
 import type { AvatarProps, SelectMenuItem } from '@nuxt/ui'
-import type { PlayerSrc } from 'vidstack'
 
 export type Model = {
   id: string
@@ -127,7 +126,7 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 }
 
 export type Playlist = Model & {
-  asset: PlayerSrc | null
+  asset: string | null
   license: string | null
   expired: boolean
   failed: boolean

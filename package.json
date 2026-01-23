@@ -18,6 +18,7 @@
         "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
+        "@inertiajs/core": "^2.3.11",
         "@inertiajs/vue3": "^2.3.11",
         "@laravel/echo-vue": "^2.3.0",
         "@nuxt/ui": "^4.4.0",
@@ -29,7 +30,6 @@
         "pusher-js": "^8.4.0",
         "shaka-player": "^4.16.14",
         "tailwindcss": "^4.1.18",
-        "vidstack": "^1.12.13",
         "vue": "^3.5.27"
     },
     "devDependencies": {

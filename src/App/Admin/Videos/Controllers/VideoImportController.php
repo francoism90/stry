@@ -13,6 +13,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
 class VideoImportController extends Controller implements HasMiddleware
 {
@@ -30,12 +31,11 @@ class VideoImportController extends Controller implements HasMiddleware
         /** @var User $user */
         $user = Auth::user();
 
+        // Flash message based on result
         $result = $action->handle($user);
 
-        if (! $result['success']) {
-            return back()->with('error', $result['message']);
-        }
+        Inertia::flash('message', $result['message']);
 
-        return back()->with('success', "{$result['message']} Batch ID: {$result['batch_id']}");
+        return back();
     }
 }

@@ -1,25 +1,34 @@
 <script setup lang="ts">
 import { useVideos } from '@/composables/videos'
-import { ref } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+import { ref, watch } from 'vue'
 
 const isOpen = defineModel<boolean>({ default: false })
+const page = usePage()
+const toast = useToast()
 
 const importing = ref(false)
 const { importVideos } = useVideos()
 
-const startImport = () => {
+const handleImport = () => {
   importing.value = true
-  importVideos(
-    () => {
-      isOpen.value = false
-      importing.value = false
-    },
-    () => {
-      isOpen.value = false
-      importing.value = false
-    },
-  )
+
+  importVideos(() => {
+    importing.value = false
+    isOpen.value = false
+  })
 }
+
+watch(
+  () => page.props.flash.toast,
+  (flash) =>
+    toast.add({
+      title: 'Import Started',
+      description: flash?.message,
+      icon: 'i-lucide-check',
+      color: 'success',
+    }),
+)
 </script>
 
 <template>
@@ -75,7 +84,7 @@ const startImport = () => {
         variant="soft"
         color="primary"
         :loading="importing"
-        @click.prevent="startImport"
+        @click.prevent="handleImport"
       />
     </template>
   </UModal>
