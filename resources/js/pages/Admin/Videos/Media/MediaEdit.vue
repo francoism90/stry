@@ -23,7 +23,7 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
 })
 
-const { startConversion, addTranscodes } = useMedia(props.media)
+const { startConversion, addTranscodes, getStreamInfo, isTranscodeable } = useMedia(props.media)
 
 const onSubmit = () =>
   form.submit({
@@ -79,6 +79,24 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           autofocus
         />
       </UFormField>
+    </UPageCard>
+
+    <UPageCard
+      v-if="getStreamInfo().length"
+      title="Stream Information"
+      description="Technical details about the media file."
+      variant="subtle"
+    >
+      <div class="flex items-center gap-2">
+        <UBadge
+          v-for="(badge, index) in getStreamInfo()"
+          :key="index"
+          :color="badge.color"
+          variant="subtle"
+        >
+          {{ badge.label }}
+        </UBadge>
+      </div>
     </UPageCard>
 
     <UPageCard
@@ -142,12 +160,23 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           />
 
           <UButton
-            v-else-if="!transcodes?.some((t) => t.processing || t.pending)"
+            v-else-if="!transcodes?.some((t) => t.processing || t.pending) && isTranscodeable"
             label="Perform AV1 Conversion"
             color="primary"
             variant="soft"
             @click="startConversion"
           />
+
+          <div
+            v-else-if="!isTranscodeable"
+            class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
+          >
+            <UIcon
+              name="i-lucide-check-circle"
+              class="size-4"
+            />
+            <span>This media is already in AV1 format</span>
+          </div>
         </div>
       </div>
     </UPageCard>

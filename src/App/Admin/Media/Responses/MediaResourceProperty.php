@@ -22,6 +22,15 @@ readonly class MediaResourceProperty implements ProvidesInertiaProperty
 
     protected function getResource(): MediaResource
     {
-        return $this->media->toResource(MediaResource::class);
+        // Append necessary attributes for the edit form
+        $appends = [
+            'custom_properties',
+            'generated_conversions',
+            'responsive_images',
+        ];
+
+        return $this->media
+            ->append($appends)
+            ->toResource(MediaResource::class);
     }
 }
