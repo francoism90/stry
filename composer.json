@@ -15,8 +15,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "foxws/laravel-av1": "dev-main",
-        "foxws/laravel-shaka": "^0.7.0",
+        "foxws/laravel-av1": "^0.1.0",
+        "foxws/laravel-shaka": "^0.8.0",
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2.1",
@@ -31,7 +31,7 @@
         "laravel/scout": "^10.23.0",
         "laravel/tinker": "^2.11.0",
         "laravel/wayfinder": "^0.1.13",
-        "league/flysystem-aws-s3-v3": "^3.30.1",
+        "league/flysystem-aws-s3-v3": "^3.31.0",
         "pbmedia/laravel-ffmpeg": "^8.7.1",
         "pusher/pusher-php-server": "^7.2.7",
         "spatie/laravel-data": "^4.19",
@@ -130,6 +130,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

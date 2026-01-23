@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d3ea46e950dd34eb3cf78a3624206d1",
+    "content-hash": "f79d6750164b8e63fa4cdaa391d316a2",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -110,16 +110,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.18",
+            "version": "3.369.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "48d809eda94dd528ef539cff827e7542ac01cce6"
+                "reference": "32fee3a25290186724ede9ca177d5090f7c5a837"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/48d809eda94dd528ef539cff827e7542ac01cce6",
-                "reference": "48d809eda94dd528ef539cff827e7542ac01cce6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/32fee3a25290186724ede9ca177d5090f7c5a837",
+                "reference": "32fee3a25290186724ede9ca177d5090f7c5a837",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.18"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.19"
             },
-            "time": "2026-01-22T19:05:57+00:00"
+            "time": "2026-01-23T19:05:51+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1235,16 +1235,16 @@
         },
         {
             "name": "foxws/laravel-av1",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-av1.git",
-                "reference": "a8dba76ee022ae432bdadaad4ec087133f853304"
+                "reference": "a9b7717613ff46b14b8ea83d583ce3b3c564486a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/a8dba76ee022ae432bdadaad4ec087133f853304",
-                "reference": "a8dba76ee022ae432bdadaad4ec087133f853304",
+                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/a9b7717613ff46b14b8ea83d583ce3b3c564486a",
+                "reference": "a9b7717613ff46b14b8ea83d583ce3b3c564486a",
                 "shasum": ""
             },
             "require": {
@@ -1269,7 +1269,6 @@
                 "phpstan/phpstan-phpunit": "^2.0",
                 "spatie/laravel-ray": "^1.35"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1311,7 +1310,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-av1/issues",
-                "source": "https://github.com/foxws/laravel-av1/tree/main"
+                "source": "https://github.com/foxws/laravel-av1/tree/0.1.0"
             },
             "funding": [
                 {
@@ -1319,20 +1318,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-22T22:41:53+00:00"
+            "time": "2026-01-23T23:48:40+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "0.7.0",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "7c6248b652ce4dad05f30773494077f512ff4b77"
+                "reference": "86a85842534ee62360e66586d7438c2abf9c410b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/7c6248b652ce4dad05f30773494077f512ff4b77",
-                "reference": "7c6248b652ce4dad05f30773494077f512ff4b77",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/86a85842534ee62360e66586d7438c2abf9c410b",
+                "reference": "86a85842534ee62360e66586d7438c2abf9c410b",
                 "shasum": ""
             },
             "require": {
@@ -1399,7 +1398,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/0.7.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/0.8.0"
             },
             "funding": [
                 {
@@ -1407,7 +1406,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-18T14:46:42+00:00"
+            "time": "2026-01-23T12:32:35+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -3348,16 +3347,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.30.2",
+            "version": "3.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "5966a8ba23e62bdb518dd9e0e665c2dbd4b5b277"
+                "reference": "1717e0b3642b0df65ecb0cc89cdd99fa840672ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/5966a8ba23e62bdb518dd9e0e665c2dbd4b5b277",
-                "reference": "5966a8ba23e62bdb518dd9e0e665c2dbd4b5b277",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1717e0b3642b0df65ecb0cc89cdd99fa840672ff",
+                "reference": "1717e0b3642b0df65ecb0cc89cdd99fa840672ff",
                 "shasum": ""
             },
             "require": {
@@ -3425,22 +3424,22 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.30.2"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.31.0"
             },
-            "time": "2025-11-10T17:13:11+00:00"
+            "time": "2026-01-23T15:38:47+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "3.30.1",
+            "version": "3.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "d286e896083bed3190574b8b088b557b59eb66f5"
+                "reference": "e36a2bc60b06332c92e4435047797ded352b446f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/d286e896083bed3190574b8b088b557b59eb66f5",
-                "reference": "d286e896083bed3190574b8b088b557b59eb66f5",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/e36a2bc60b06332c92e4435047797ded352b446f",
+                "reference": "e36a2bc60b06332c92e4435047797ded352b446f",
                 "shasum": ""
             },
             "require": {
@@ -3480,22 +3479,22 @@
                 "storage"
             ],
             "support": {
-                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.30.1"
+                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.31.0"
             },
-            "time": "2025-10-20T15:27:33+00:00"
+            "time": "2026-01-23T15:30:45+00:00"
         },
         {
             "name": "league/flysystem-local",
-            "version": "3.30.2",
+            "version": "3.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-local.git",
-                "reference": "ab4f9d0d672f601b102936aa728801dd1a11968d"
+                "reference": "2f669db18a4c20c755c2bb7d3a7b0b2340488079"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/ab4f9d0d672f601b102936aa728801dd1a11968d",
-                "reference": "ab4f9d0d672f601b102936aa728801dd1a11968d",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/2f669db18a4c20c755c2bb7d3a7b0b2340488079",
+                "reference": "2f669db18a4c20c755c2bb7d3a7b0b2340488079",
                 "shasum": ""
             },
             "require": {
@@ -3529,9 +3528,9 @@
                 "local"
             ],
             "support": {
-                "source": "https://github.com/thephpleague/flysystem-local/tree/3.30.2"
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.31.0"
             },
-            "time": "2025-11-10T11:23:37+00:00"
+            "time": "2026-01-23T15:30:45+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -15178,9 +15177,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "foxws/laravel-av1": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
