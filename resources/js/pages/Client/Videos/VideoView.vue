@@ -88,7 +88,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           </template>
         </UPageHeader>
 
-        <UPageBody>
+        <UPageBody class="mt-4 space-y-4 pb-8">
           <Deferred data="queue">
             <template #fallback>
               <div class="sr-only">Loading queue...</div>
