@@ -3,7 +3,6 @@ import TagOrderController from '@/actions/App/Admin/Tags/Controllers/TagOrderCon
 import { router } from '@inertiajs/vue3'
 
 const isOpen = defineModel<boolean>({ default: false })
-
 const toast = useToast()
 
 const reorderTags = async (close: () => void) => {
@@ -13,25 +12,22 @@ const reorderTags = async (close: () => void) => {
     {
       preserveScroll: true,
       onSuccess: () => {
-        toast.add({
-          title: 'Success',
-          description: 'Tags have been reordered alphabetically.',
-          icon: 'i-lucide-check',
-          color: 'success',
-        })
         close()
-      },
-      onError: () => {
-        toast.add({
-          title: 'Error',
-          description: 'Failed to reorder tags.',
-          icon: 'i-lucide-alert-circle',
-          color: 'error',
-        })
       },
     },
   )
 }
+
+router.on('flash', (event) => {
+  if (event.detail.flash) {
+    toast.add({
+      title: 'Tag sorting',
+      description: event.detail.flash.message as string,
+      icon: 'i-lucide-info',
+      color: 'success',
+    })
+  }
+})
 </script>
 
 <template>

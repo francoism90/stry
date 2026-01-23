@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
 class TagOrderController extends Controller implements HasMiddleware
 {
@@ -25,8 +26,9 @@ class TagOrderController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Tag::class);
 
+        // Set the order
         app(SetTagsOrder::class)->handle();
 
-        return back();
+        return Inertia::flash('message', __('Order updated successfully.'))->back();
     }
 }

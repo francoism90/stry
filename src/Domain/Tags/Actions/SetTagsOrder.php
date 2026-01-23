@@ -6,7 +6,7 @@ namespace Domain\Tags\Actions;
 
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
-use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Collection;
 
 class SetTagsOrder
 {
@@ -21,11 +21,11 @@ class SetTagsOrder
         Tag::setNewOrder($items->pluck('id')->all());
     }
 
-    protected function getCollection(TagType $type): LazyCollection
+    protected function getCollection(TagType $type): Collection
     {
         return Tag::query()
             ->type($type)
-            ->cursor()
+            ->get()
             ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE);
     }
 }

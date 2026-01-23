@@ -17,19 +17,19 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('/', HomeController::class)->name('home');
 
-// Inertia.js
+// Media
 Route::post('media/{media}/import', MediaConvertedController::class)->name('media.converted');
 Route::post('media/{media}/transcode', MediaTranscodeController::class)->name('media.transcode');
-Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
-Route::post('videos/import', VideoImportController::class)->name('videos.import');
 
 // Users
 Route::resource('users', UserController::class);
 
 // Tags
+Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
 Route::resource('tags', TagController::class);
 
 // Videos
+Route::post('videos/import', VideoImportController::class)->name('videos.import');
 Route::resource('videos', VideoController::class);
 Route::resource('videos.media', VideoMediaController::class);
 Route::resource('videos.playlists', VideoPlaylistController::class);
