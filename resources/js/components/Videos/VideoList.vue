@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 
 defineProps<{
   items: Video[] | undefined
 }>()
+
+const url = (tag: string) => HomeController.url('all', { query: { tag } })
 </script>
 
 <template>
@@ -40,8 +43,10 @@ defineProps<{
             v-for="tag in item.tags"
             :key="tag.id"
             :label="tag.name"
+            :to="url(tag.id)"
             variant="outline"
             size="xs"
+            class="z-10"
           />
         </div>
       </template>
