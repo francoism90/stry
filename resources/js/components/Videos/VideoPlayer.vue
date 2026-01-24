@@ -32,7 +32,7 @@ onMounted(() => initialize(el.value))
 <template>
   <div class="relative w-full flex-1">
     <UEmpty
-      v-if="!ready"
+      v-if="!ready && !error"
       title="Preparing your video..."
       description="Please wait while we get everything ready."
       icon="i-lucide-hard-drive-download"
@@ -40,7 +40,7 @@ onMounted(() => initialize(el.value))
     />
 
     <UEmpty
-      v-else-if="error"
+      v-if="error"
       title="Playback Error"
       :description="error.message || 'An error occurred during video playback.'"
       icon="i-lucide-alert-circle"

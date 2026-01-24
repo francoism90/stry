@@ -81,7 +81,7 @@ export function useShaka() {
     }
 
     // Set ready state
-    ready.value = isValid ?? false
+    ready.value = true
   }
 
   const onErrorEvent = (event: Event) => {
