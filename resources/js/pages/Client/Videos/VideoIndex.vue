@@ -113,7 +113,7 @@ watchDebounced(
               :label="tag.name"
               color="primary"
               size="xs"
-              leading-icon="i-lucide-x"
+              trailing-icon="i-lucide-x"
               @click.prevent="clearTag"
             />
           </UFormField>
