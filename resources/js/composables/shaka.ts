@@ -1,6 +1,7 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import type { Playlist } from '@/types'
-import { router, usePage } from '@inertiajs/vue3'
+import { http } from '@/utils/http'
+import { usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
 import shaka from 'shaka-player'
 import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
@@ -95,14 +96,7 @@ export function useShaka() {
 
     // Only store if playlist exists and time has changed (> 0.25 seconds)
     if (playlist.value && Math.abs((startTime.value ?? 0) - time) > 0.25) {
-      router.post(
-        PlaylistSessionController.url(playlist.value.id),
-        { time },
-        {
-          preserveState: true,
-          only: ['progress'],
-        },
-      )
+      http.post(PlaylistSessionController.url(playlist.value.id), { time })
     }
   }, 900)
 
