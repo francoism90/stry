@@ -55,7 +55,7 @@ const onSubmit = () =>
   >
     <UPageCard
       title="General Details"
-      description="Edit the general information about this video"
+      description="General information about the video"
       variant="naked"
       orientation="horizontal"
     >

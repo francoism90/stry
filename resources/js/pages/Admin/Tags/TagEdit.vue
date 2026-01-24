@@ -50,7 +50,7 @@ const onSubmit = () =>
   >
     <UPageCard
       title="General Details"
-      description="Edit the general information about this tag"
+      description="General information about the tag"
       variant="naked"
       orientation="horizontal"
     >
