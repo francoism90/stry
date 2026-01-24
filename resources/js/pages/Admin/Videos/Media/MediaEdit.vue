@@ -160,7 +160,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           />
 
           <UButton
-            v-else-if="getAv1Stream() === null && !transcodes?.some((t) => t.processing || t.pending)"
+            v-else-if="!getAv1Stream() && !transcodes?.some((t) => t.processing || t.pending)"
             label="Perform AV1 Conversion"
             color="primary"
             variant="soft"
@@ -168,7 +168,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           />
 
           <div
-            v-if="getAv1Stream() !== null || transcodes?.some((t) => t.completed)"
+            v-if="getAv1Stream()"
             class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
           >
             <UIcon
