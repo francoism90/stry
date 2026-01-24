@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Controllers;
+namespace App\Client\Groups\Controllers;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
-class VideoGroupController extends Controller implements HasMiddleware
+class GroupToggleController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -25,7 +24,7 @@ class VideoGroupController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Video $video, GroupType $type, Request $request): Response|RedirectResponse
+    public function __invoke(GroupType $type, Video $video): RedirectResponse
     {
         Gate::authorize('view', $video);
 
@@ -33,14 +32,17 @@ class VideoGroupController extends Controller implements HasMiddleware
         $user = Auth::user();
 
         // Toggle the group association based on the type
-        match ($type) {
+        $group = match ($type) {
             GroupType::Liked => $user->toggleLiked($video),
             GroupType::Saved => $user->toggleSaved($video),
-            default => abort(403),
+            default => abort(422, 'Invalid group type provided.'),
         };
 
-        return $request->inertia()
-            ? redirect()->back()
-            : response()->noContent();
+        // Return back with a success message
+        $result = $group->hasGroupable($video)
+            ? __('Video added to :group group.', ['group' => $type->label()])
+            : __('Video removed from :group group.', ['group' => $type->label()]);
+
+        return Inertia::flash('message', $result)->back();
     }
 }

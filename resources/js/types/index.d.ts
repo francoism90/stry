@@ -13,6 +13,11 @@ export type ModelState = {
   color: Badge['variants']['color']
 }
 
+export type FilterOption = {
+  label: string
+  value: string
+}
+
 export type User = Model & {
   name: string
   email: string | undefined

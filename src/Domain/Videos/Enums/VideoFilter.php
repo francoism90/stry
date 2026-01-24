@@ -9,7 +9,7 @@ use Domain\Shared\Contracts\Enumerable;
 enum VideoFilter: string implements Enumerable
 {
     case Default = 'all';
-    case History = 'history';
+    case History = 'viewed';
     case Liked = 'liked';
     case Saved = 'saved';
 

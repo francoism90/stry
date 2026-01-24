@@ -31,11 +31,9 @@ class VideoImportController extends Controller implements HasMiddleware
         /** @var User $user */
         $user = Auth::user();
 
-        // Flash message based on result
+        // Perform the import action
         $result = $action->handle($user);
 
-        Inertia::flash('message', $result['message']);
-
-        return back();
+        return Inertia::flash('message', $result['message'] ?? __('Import failed'))->back();
     }
 }

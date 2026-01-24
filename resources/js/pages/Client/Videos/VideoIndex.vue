@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import UserMenu from '@/components/Ui/UserMenu.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { Tag, VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { useVideos } from '@/composables/videos'
+import type { FilterOption, Tag, VideoCollection } from '@/types'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -10,11 +11,14 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 const props = defineProps<{
   items: VideoCollection
   orders: SelectMenuItem[]
-  filter: string
+  filter: FilterOption
   tag?: Tag | undefined
   order?: string | undefined
   search?: string | null
 }>()
+
+const toast = useToast()
+const { clearGroup } = useVideos()
 
 const form = useForm('get', '', {
   search: props.search,
@@ -37,6 +41,17 @@ const clearTag = () => {
   onSubmit()
 }
 
+router.on('flash', (event) => {
+  if (event.detail.flash) {
+    toast.add({
+      title: 'Videos',
+      description: event.detail.flash.message as string,
+      icon: 'i-lucide-info',
+      color: 'success',
+    })
+  }
+})
+
 watchDebounced(
   () => form.search,
   () => onSubmit(),
@@ -45,7 +60,7 @@ watchDebounced(
 </script>
 
 <template>
-  <Head :title="filter" />
+  <Head :title="filter.label" />
 
   <UDashboardPanel id="library">
     <template #header>
@@ -61,7 +76,7 @@ watchDebounced(
             <UInput
               v-model="form.search"
               :model-modifiers="{ string: true, trim: true }"
-              :placeholder="`Search ${filter}...`"
+              :placeholder="`Search ${filter.label}...`"
               variant="soft"
               size="xl"
               color="neutral"
@@ -117,6 +132,15 @@ watchDebounced(
               @click.prevent="clearTag"
             />
           </UFormField>
+        </template>
+
+        <template #right>
+          <UButton
+            label="Clear List"
+            size="xs"
+            variant="ghost"
+            @click.prevent="clearGroup(filter.value)"
+          />
         </template>
       </UDashboardToolbar>
     </template>

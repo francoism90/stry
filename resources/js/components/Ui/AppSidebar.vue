@@ -20,7 +20,7 @@ const links: NavigationMenuItem[][] = [
     {
       label: 'History',
       icon: 'i-lucide-history',
-      to: '/history',
+      to: '/viewed',
     },
     {
       label: 'Liked',
