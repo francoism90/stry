@@ -70,11 +70,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'two_factor_confirmed_at',
     ];
 
-    protected static function newFactory(): UserFactory
-    {
-        return UserFactory::new();
-    }
-
     protected function casts(): array
     {
         return [
@@ -82,10 +77,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'settings' => UserSettings::class.':default',
             'password' => 'hashed',
             'email_verified_at' => AsDateTime::class,
-            'created_at' => AsDateTime::class,
-            'updated_at' => AsDateTime::class,
-            'deleted_at' => AsDateTime::class,
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 
     public function newEloquentBuilder($query): UserQueryBuilder
@@ -194,10 +194,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
             'email' => (string) $this->email,
-            'email_verified_at' => (int) $this->email_verified_at?->getTimestamp(),
             'state' => (string) $this->state,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'email_verified_at' => (string) $this->email_verified_at,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
         ];
     }
 

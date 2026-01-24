@@ -216,17 +216,18 @@ return [
                         ],
                         [
                             'name' => 'email_verified_at',
-                            'type' => 'int64',
+                            'type' => 'string',
                             'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'created_at',
-                            'type' => 'int64',
+                            'type' => 'string',
                             'sort' => true,
                         ],
                         [
                             'name' => 'updated_at',
-                            'type' => 'int64',
+                            'type' => 'string',
                             'sort' => true,
                         ],
                     ],
