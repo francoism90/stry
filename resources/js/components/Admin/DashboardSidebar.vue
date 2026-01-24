@@ -2,6 +2,7 @@
 import DashboardTenantMenu from '@/components/Admin/DashboardTenantMenu.vue'
 import DashboardUserMenu from '@/components/Admin/DashboardUserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
+import UserNotifications from '../Ui/UserNotifications.vue'
 
 const links: NavigationMenuItem[][] = [
   [
@@ -70,6 +71,7 @@ const links: NavigationMenuItem[][] = [
   >
     <template #header="{ collapsed }">
       <DashboardTenantMenu :collapsed="collapsed" />
+      <UserNotifications />
     </template>
 
     <template #default="{ collapsed }">

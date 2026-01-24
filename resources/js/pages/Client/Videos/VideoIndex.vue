@@ -3,7 +3,7 @@ import UserMenu from '@/components/Ui/UserMenu.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import { useGroups } from '@/composables/groups'
 import type { FilterOption, Tag, VideoCollection } from '@/types'
-import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -17,7 +17,6 @@ const props = defineProps<{
   search?: string | null
 }>()
 
-const toast = useToast()
 const { clearGroup } = useGroups()
 
 const form = useForm('get', '', {
@@ -40,17 +39,6 @@ const clearTag = () => {
   form.tag = undefined
   onSubmit()
 }
-
-router.on('flash', (event) => {
-  if (event.detail.flash) {
-    toast.add({
-      title: 'Videos',
-      description: event.detail.flash.message as string,
-      icon: 'i-lucide-info',
-      color: 'success',
-    })
-  }
-})
 
 watchDebounced(
   () => form.search,

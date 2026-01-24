@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useVideos } from '@/composables/videos'
-import { router, usePage } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 const isOpen = defineModel<boolean>({ default: false })
 const page = usePage()
-const toast = useToast()
 
 const importing = ref(false)
 const { importVideos } = useVideos()
@@ -18,17 +17,6 @@ const handleImport = () => {
     isOpen.value = false
   })
 }
-
-router.on('flash', (event) => {
-  if (event.detail.flash) {
-    toast.add({
-      title: 'Videos',
-      description: event.detail.flash.message as string,
-      icon: 'i-lucide-info',
-      color: 'success',
-    })
-  }
-})
 </script>
 
 <template>

@@ -2,11 +2,20 @@ import type { User } from '@/types'
 import type { Page } from '@inertiajs/core'
 
 declare module '@inertiajs/core' {
+  export interface InertiaConfig {
+    flashDataType: {
+      label: string | undefined
+      message: string | undefined
+      type: 'success' | 'error'
+      icon: string | undefined
+      color: Toast['variants']['color'] | undefined
+    }
+  }
+
   export interface PageProps {
     readonly app: string
     readonly locale: string
     readonly auth: User | undefined
-    readonly flash: { type: 'success' | 'error'; message: string }
   }
 }
 

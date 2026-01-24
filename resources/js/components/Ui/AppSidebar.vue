@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
+import UserNotifications from '@/components/Ui/UserNotifications.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const links: NavigationMenuItem[][] = [
@@ -58,6 +59,7 @@ const links: NavigationMenuItem[][] = [
   >
     <template #header>
       <AppLogo class="w-full" />
+      <UserNotifications />
     </template>
 
     <template #default="{ collapsed }">
