@@ -10,7 +10,7 @@ use Laravel\Scout\Builder;
 
 use function Illuminate\Support\enum_value;
 
-readonly class TagTypeScope
+readonly class TagFilterScope
 {
     public function __construct(
         public TagType|string|null $type = null,

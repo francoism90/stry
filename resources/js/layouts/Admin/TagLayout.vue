@@ -15,10 +15,6 @@ const links: NavigationMenuItem[] = [
     to: edit.url(props.tag.id),
     exact: true,
   },
-  {
-    label: 'Metadata',
-    icon: 'i-lucide-file-braces',
-  },
 ]
 </script>
 
@@ -27,7 +23,7 @@ const links: NavigationMenuItem[] = [
 
   <UDashboardPanel id="tag">
     <template #header>
-      <UDashboardNavbar title="Tag">
+      <UDashboardNavbar :title="tag.name">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>

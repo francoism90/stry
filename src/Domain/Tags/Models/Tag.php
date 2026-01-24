@@ -133,21 +133,19 @@ class Tag extends BaseTag implements HasMedia
         }
 
         return Collection::wrap($values)
-            ->map(fn (Tag|string $tag) => static::resolveTag($tag)?->getKey())
+            ->map(fn (Tag|string $tag) => static::findFromUlid($tag)?->getKey())
             ->filter()
             ->unique()
             ->values();
     }
 
-    public static function resolveTag(Tag|string $value): ?Tag
+    public static function findFromUlid(Tag|string $value): ?Tag
     {
         if ($value instanceof Tag) {
             return $value;
         }
 
-        return Tag::query()
-            ->where('ulid', $value)
-            ->first();
+        return Tag::query()->firstWhere('ulid', $value);
     }
 
     /**

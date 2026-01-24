@@ -6,29 +6,31 @@ namespace App\Admin\Videos\Responses;
 
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
-use Illuminate\Container\Attributes\RouteParameter;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
 readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        #[RouteParameter('video')] protected Video $video,
+        protected Video $video,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): VideoResource => $this->getResource());
+        return once(fn (): ?VideoResource => $this->getResource());
     }
 
-    protected function getResource(): VideoResource
+    protected function getResource(): ?VideoResource
     {
+        if (! $this->video) {
+            return null;
+        }
+
         // Append necessary attributes for the edit form
         $appends = [
             'titles',
             'content',
             'summary',
-            'filesize',
             'snapshot',
         ];
 

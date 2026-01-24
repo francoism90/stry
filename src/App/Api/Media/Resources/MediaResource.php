@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Api\Media\Resources;
 
+use Domain\Media\Models\Media;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Media
+ */
 class MediaResource extends JsonResource
 {
     /**
@@ -17,7 +21,6 @@ class MediaResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
-            'asset' => $this->asset,
             'name' => $this->name,
             'file_name' => $this->file_name,
             'mime_type' => $this->mime_type,
@@ -26,6 +29,9 @@ class MediaResource extends JsonResource
             'collection_name' => $this->collection_name,
             'disk' => $this->disk,
             'conversions_disk' => $this->conversions_disk,
+            'custom_properties' => $this->whenAppended('custom_properties'),
+            'generated_conversions' => $this->whenAppended('generated_conversions'),
+            'responsive_images' => $this->whenAppended('responsive_images'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

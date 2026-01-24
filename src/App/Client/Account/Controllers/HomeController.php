@@ -6,6 +6,10 @@ namespace App\Client\Account\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Client\Tags\Responses\TagResourceProperty;
+use App\Client\Videos\Responses\VideoFilterProperty;
+use App\Client\Videos\Responses\VideoOrderProperty;
+use App\Client\Videos\Responses\VideoOrdersProperty;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
@@ -33,17 +37,24 @@ class HomeController extends Controller implements HasMiddleware
 
         // Apply filters
         $search = $request->safe()->input('search');
+        $tag = $request->safe()->input('tag');
         $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
-        $scout = Video::search($search ?: '*')
-            ->tap(new VideoFilterScope(filter: $filter, order: $order, user: $request->user()))
+        $scout = Video::search($search)
+            ->tap(new VideoFilterScope(
+                user: $request->user(),
+                filter: $filter,
+                tag: $tag,
+                order: $order,
+            ))
             ->paginate(perPage: 18);
 
         return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'filter' => fn () => $filter->label(),
-            'orders' => fn () => VideoOrder::options(),
+            'orders' => fn () => new VideoOrdersProperty(),
+            'tag' => fn () => new TagResourceProperty($tag),
+            'filter' => fn () => new VideoFilterProperty($filter),
             'order' => fn () => $order,
             'search' => fn () => $search,
         ]);

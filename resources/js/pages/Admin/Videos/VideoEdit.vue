@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
@@ -50,24 +49,17 @@ const onSubmit = () =>
   <UForm
     id="general"
     :state="form"
-    class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
+    class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-4xl lg:py-3"
     loading-auto
     @submit="onSubmit"
   >
     <UPageCard
-      :title="video.title"
-      :description="`${video.filesize} • ${video.timestamp}`"
+      title="General Details"
+      description="Edit the general information about this video"
       variant="naked"
       orientation="horizontal"
     >
       <div class="flex items-center gap-2 lg:ms-auto">
-        <UButton
-          label="View video"
-          :to="VideoController.url(video.id)"
-          color="neutral"
-          variant="soft"
-        />
-
         <UButton
           form="general"
           label="Save changes"

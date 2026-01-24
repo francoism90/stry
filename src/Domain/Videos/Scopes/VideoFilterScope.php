@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Groups\Models\Group;
+use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
@@ -13,7 +14,8 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
-        public ?User $user = null,
+        public User|string|null $user = null,
+        public Tag|string|null $tag = null,
         public VideoFilter|string|null $filter = null,
         public VideoOrder|string|null $order = null,
     ) {}
@@ -29,6 +31,7 @@ readonly class VideoFilterScope
         $scout
             ->when($options, fn (Builder $scout) => $scout->options($options))
             ->when($defaultOrder, fn (Builder $scout) => $scout->randomOrder())
+            ->when($this->getTag(), fn (Builder $scout, Tag $tag) => $scout->whereIn('tagged', [$tag->getKey()]))
             ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
             ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
             ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
@@ -115,8 +118,21 @@ readonly class VideoFilterScope
         return $currentOrderer && in_array($currentOrderer, $values, true);
     }
 
+    protected function getTag(): ?Tag
+    {
+        if (! $this->tag) {
+            return null;
+        }
+
+        return Tag::findFromUlid($this->tag);
+    }
+
     protected function getUser(): ?User
     {
-        return $this->user;
+        if (! $this->user) {
+            return null;
+        }
+
+        return User::findFromUlid($this->user);
     }
 }

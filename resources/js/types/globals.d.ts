@@ -6,6 +6,7 @@ declare module '@inertiajs/core' {
     readonly app: string
     readonly locale: string
     readonly auth: User | undefined
+    readonly flash: { type: 'success' | 'error'; message: string }
   }
 }
 

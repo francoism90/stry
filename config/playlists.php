@@ -17,18 +17,19 @@ return [
     /**
      * This setting is used to define the encryption method for the playlist.
      *
-     * Set to 'raw_key_encryption' to enable AES-128-CBC encryption (browser-compatible)
-     * Set to 'none' or any other value to disable encryption.
+     * - 'raw_key_encryption' → AES-128 (SAMPLE-AES, requires TS segments)
+     * - 'clearkey' → W3C Clear Key EME (works with fMP4, browser-native)
+     * - null → No encryption
      */
     'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
 
     /**
      * Protection scheme for encryption.
      *
-     * - 'cenc' (AES-CTR) for Widevine/PlayReady - best for key rotation
-     * - 'cbcs' (AES-CBC) for FairPlay/Safari
+     * - 'cenc' (AES-CTR) for Widevine/PlayReady/Clear Key - best for HLS with fMP4 and key rotation
+     * - 'cbcs' (AES-CBC) for FairPlay/Safari - use with DASH, not HLS
      * - 'cbc1' legacy HLS, limited browser support
-     * - null (SAMPLE-AES) widest compatibility but NO key rotation support
+     * - null (SAMPLE-AES) widest compatibility with TS segments, NO key rotation support
      */
     'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
 
@@ -55,14 +56,20 @@ return [
      *
      * @see https://shaka-project.github.io/shaka-packager/html/options.html
      *
-     * - transport_stream_timestamp_offset_ms: Timestamp offset for transport streams (improves compatibility)
      * - num_subsegments_per_sidx: Number of subsegments per SIDX box (0 = disable, reduces overhead)
      * - fragment_sap_aligned: Align fragments to stream access points (improves seeking performance)
+     * - mp4_include_pssh_in_stream: Include PSSH in stream for better DRM compatibility
+     * - generate_static_live_mpd: Generate static MPD for DASH (improves caching)
+     * - default_language: Default language for audio/subtitle tracks
+     * - force_cl_index: Force closed captions index for better HLS compatibility
      */
     'packager_options' => [
-        'transport_stream_timestamp_offset_ms' => 1000,
         'num_subsegments_per_sidx' => 0,
         'fragment_sap_aligned' => true,
+        'mp4_include_pssh_in_stream' => true,
+        'generate_static_live_mpd' => true,
+        'default_language' => 'en',
+        'force_cl_index' => true,
     ],
 
 ];

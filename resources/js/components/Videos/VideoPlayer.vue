@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { usePlayer } from '@/composables/player'
+import { useShaka } from '@/composables/shaka'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
-import type { MediaPlayer } from 'vidstack'
-import 'vidstack/bundle'
-import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import { onMounted, ref } from 'vue'
 
-const player = shallowRef<MediaPlayer>()
-const seeked = ref(false)
+const el = ref<HTMLMediaElement | null>(null)
 
-const { playlist, progress, store } = usePlayer()
+const { initialize, ready, error } = useShaka()
 
 const actions = ref<ButtonProps[]>([
   {
@@ -18,7 +15,7 @@ const actions = ref<ButtonProps[]>([
     color: 'neutral',
     size: 'sm',
     variant: 'subtle',
-    onClick: () => router.reload({ only: ['playlist'] }),
+    onClick: () => router.reload({ only: ['playlist, progress'] }),
   },
   {
     icon: 'i-lucide-flag',
@@ -29,50 +26,35 @@ const actions = ref<ButtonProps[]>([
   },
 ])
 
-const listener = () =>
-  player.value?.subscribe(({ canPlay, canSeek, currentTime }) => {
-    if (!seeked.value && canPlay && canSeek) {
-      if (progress.value && progress.value > 0) {
-        player.value!.currentTime = progress.value
-      }
-
-      seeked.value = true
-    }
-
-    // Store current time periodically (skip first second)
-    if (seeked.value && currentTime > 0.1) {
-      store(currentTime)
-    }
-
-    return () => player.value
-  })
-
-onMounted(() => listener())
-onBeforeUnmount(() => listener())
+onMounted(() => initialize(el.value))
 </script>
 
 <template>
   <div class="relative w-full flex-1">
     <UEmpty
-      v-if="!playlist?.valid"
+      v-if="!ready"
       title="Preparing your video..."
-      :description="
-        playlist?.failed ? 'There was an error processing your video.' : 'Please wait while we get everything ready.'
-      "
+      description="Please wait while we get everything ready."
       icon="i-lucide-hard-drive-download"
       :actions="actions"
     />
 
-    <media-player
-      ref="player"
-      v-show="playlist?.valid || false"
-      .src="playlist?.asset || undefined"
-      .autoPlay="true"
-      .playsInline="true"
-      crossOrigin="anonymous"
-    >
-      <media-video-layout />
-      <media-provider />
-    </media-player>
+    <UEmpty
+      v-else-if="error"
+      title="Playback Error"
+      :description="error.message || 'An error occurred during video playback.'"
+      icon="i-lucide-alert-circle"
+      :actions="actions"
+    />
+
+    <video
+      v-show="ready && !error"
+      ref="el"
+      class="aspect-video max-h-[50vh] w-full rounded-sm bg-transparent sm:max-h-[60vh] lg:max-h-[70vh]"
+      controls
+      autoplay
+      playsinline
+      crossorigin="anonymous"
+    />
   </div>
 </template>

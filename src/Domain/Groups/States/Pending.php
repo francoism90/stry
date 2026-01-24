@@ -12,4 +12,14 @@ class Pending extends GroupState
     {
         return __('Pending');
     }
+
+    public function color(): string
+    {
+        return 'neutral';
+    }
+
+    public function icon(): string
+    {
+        return 'i-lucide-clock';
+    }
 }

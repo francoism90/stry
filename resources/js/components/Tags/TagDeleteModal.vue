@@ -15,11 +15,13 @@ const remove = async () => router.delete(destroy.url(props.item.id))
     :title="item.name"
     :ui="{ footer: 'justify-end' }"
   >
-    <UButton
-      label="Delete tag"
-      color="error"
-      variant="soft"
-    />
+    <slot>
+      <UButton
+        label="Delete tag"
+        color="error"
+        variant="soft"
+      />
+    </slot>
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">

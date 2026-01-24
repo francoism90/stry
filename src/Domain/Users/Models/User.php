@@ -7,6 +7,7 @@ namespace Domain\Users\Models;
 use Database\Factories\UserFactory;
 use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithSubscription;
@@ -69,22 +70,22 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'two_factor_confirmed_at',
     ];
 
-    protected static function newFactory(): UserFactory
-    {
-        return UserFactory::new();
-    }
-
     protected function casts(): array
     {
         return [
             'state' => UserState::class,
             'settings' => UserSettings::class.':default',
             'password' => 'hashed',
-            'email_verified_at' => 'datetime',
+            'email_verified_at' => AsDateTime::class,
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
         ];
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 
     public function newEloquentBuilder($query): UserQueryBuilder
@@ -140,6 +141,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->sharpen(10);
     }
 
+    public static function findFromUlid(User|string $value): ?User
+    {
+        if ($value instanceof User) {
+            return $value;
+        }
+
+        return User::query()->firstWhere('ulid', $value);
+    }
+
     /**
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
@@ -184,10 +194,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'id' => (string) $this->getScoutKey(),
             'name' => (string) $this->name,
             'email' => (string) $this->email,
-            'email_verified_at' => (int) $this->email_verified_at?->getTimestamp(),
             'state' => (string) $this->state,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'email_verified_at' => (string) $this->email_verified_at,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
         ];
     }
 

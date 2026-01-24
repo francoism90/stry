@@ -31,12 +31,12 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Profile" />
+  <Head title="Settings" />
 
-  <UDashboardPanel id="profile">
+  <UDashboardPanel id="settings">
     <template #header>
       <UDashboardNavbar
-        :ui="{ root: 'gap-3 border-0', left: 'w-full' }"
+        :ui="{ root: 'h-20 gap-3 border-0', left: 'w-full' }"
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>
@@ -54,7 +54,7 @@ const onSubmit = () =>
         @submit="onSubmit"
       >
         <UPageCard
-          title="Your Profile"
+          title="Default Settings"
           variant="naked"
           orientation="horizontal"
         >

@@ -20,8 +20,6 @@ import { Head } from '@inertiajs/vue3'
       >
         <DashboardSidebar />
 
-        <UDashboardSearch />
-
         <slot />
       </UDashboardGroup>
     </UApp>

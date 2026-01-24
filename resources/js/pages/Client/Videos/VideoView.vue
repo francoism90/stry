@@ -46,7 +46,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
   <UDashboardPanel id="play">
     <template #header>
       <UDashboardNavbar
-        :ui="{ root: 'gap-3 border-0', left: 'w-full' }"
+        :ui="{ root: 'h-20 gap-3 border-0', left: 'w-full' }"
         :toggle="{ variant: 'link', class: 'ps-0' }"
       >
         <template #right>
@@ -79,7 +79,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
                 v-for="tag in video.tags"
                 :key="tag.id"
                 :label="tag.name"
-                :to="HomeController.url('all', { query: { search: tag.name } })"
+                :to="HomeController.url('all', { query: { tag: tag.id } })"
                 variant="outline"
                 size="sm"
                 class="mt-2"
@@ -88,7 +88,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           </template>
         </UPageHeader>
 
-        <UPageBody>
+        <UPageBody class="mt-4 space-y-4 pb-8">
           <Deferred data="queue">
             <template #fallback>
               <div class="sr-only">Loading queue...</div>

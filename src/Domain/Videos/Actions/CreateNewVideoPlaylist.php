@@ -9,6 +9,7 @@ use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateNewVideoPlaylist
 {
@@ -26,60 +27,68 @@ class CreateNewVideoPlaylist
         $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
 
         // Initialize Shaka Packager
-        $opener = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
+        $packager = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
 
-        // Check if encryption is enabled
-        $useEncryption = Playlist::getEncryptionMethod() === 'raw_key_encryption';
+        // Get encryption configuration
+        $encryptionMethod = Playlist::getEncryptionMethod();
+        $protectionScheme = Playlist::getProtectionScheme();
 
-        /** @var Playlist $playlist */
-        $playlist = $video->createPlaylist([
-            'type' => 'clip',
-        ]);
+        // Check if we use encryption
+        $useEncryption = filled($encryptionMethod);
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
-            $useKeyRotation = Playlist::getKeyRotation();
+            $keyData = $packager->withAESEncryption('key', $protectionScheme);
 
-            // Use cenc for key rotation support, or cbcs for FairPlay/Safari
-            $protectionScheme = Playlist::getProtectionScheme();
-
-            $opener->withAESEncryption('key', $protectionScheme);
-
-            if ($useKeyRotation) {
-                $opener->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+            if (Playlist::getKeyRotation()) {
+                $packager->withKeyRotationDuration(Playlist::getKeyRotationDuration());
             }
         }
 
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($opener, $useEncryption) {
+        $clips->each(function (Media $media) use ($packager, $useEncryption, $protectionScheme) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
-            // Use TS segments for AES-128-CBC encryption, fMP4 otherwise
-            $videoExtension = $useEncryption ? 'ts' : 'mp4';
-            $audioExtension = $useEncryption ? 'ts' : 'mp4';
+            // Detect available streams using FFMpeg
+            $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
 
-            // Add video and audio streams for the clip
-            $opener
-                ->addVideoStream($path, "{$media->uuid}_video.{$videoExtension}")
-                ->addAudioStream($path, "{$media->uuid}_audio.{$audioExtension}");
+            // Use TS segments for SAMPLE-AES encryption (protection_scheme = null)
+            // Use m4s segments for CENC/CBCS encryption (protection_scheme = 'cenc'/'cbcs')
+            $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
+
+            // Add streams only if they exist
+            if ($ffprobe->getVideoStream()) {
+                $packager->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
+            }
+
+            if ($ffprobe->getAudioStream()) {
+                $packager->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
+            }
         });
 
-        // Configure HLS playlist settings
-        $opener
-            ->withHlsMasterPlaylist($playlist->getFileName())
+        /** @var Playlist $playlist */
+        $playlist = $video->createPlaylist([
+            'encryption_key_id' => $keyData['key_id'] ?? null,
+            'encryption_key' => $keyData['key'] ?? null,
+            'type' => 'clip',
+        ]);
+
+        // Configure DASH playlist settings
+        $packager
+            ->withMpdOutput($playlist->getFileName())
             ->withSegmentDuration(Playlist::getSegmentDuration())
             ->withOptions(Playlist::getPackagerOptions());
 
         // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $opener->addTextStream($caption->getPath(), $caption->file_name, [
+            $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
                 'language' => $caption->getCustomProperty('language_code', 'en'),
             ]));
         }
 
         // Export the playlist to the configured disk and path
-        $opener
+        $packager
             ->export()
             ->toDisk($playlist->getDisk())
             ->toPath($playlist->getPath())
@@ -89,7 +98,7 @@ class CreateNewVideoPlaylist
         $playlist->markAsReady();
 
         // Cleanup temporary files
-        $opener->cleanupTemporaryFiles();
+        $packager->cleanupTemporaryFiles();
 
         return $next($video);
     }

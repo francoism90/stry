@@ -66,13 +66,13 @@ trait InteractsWithGroups
         return $this;
     }
 
-    public function toggleGroup(Group $group, ?array $options = null): static
+    public function toggleGroup(Group $group, ?array $options = null): Group
     {
         $group->hasGroupable($this)
             ? $this->detachFromGroup($group)
             : $this->attachToGroup($group, $options);
 
-        return $this;
+        return $group;
     }
 
     public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection

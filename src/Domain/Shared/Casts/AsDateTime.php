@@ -7,6 +7,7 @@ namespace Domain\Shared\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class AsDateTime implements CastsAttributes
 {
@@ -25,6 +26,8 @@ class AsDateTime implements CastsAttributes
             return null;
         }
 
-        return Carbon::parse($value)->toDateTimeString();
+        return Carbon::parse($value)
+            ->timezone(Config::string('app.timezone', 'UTC'))
+            ->toDateTimeString();
     }
 }

@@ -1,10 +1,21 @@
 import type { AvatarProps, SelectMenuItem } from '@nuxt/ui'
-import type { PlayerSrc } from 'vidstack'
 
 export type Model = {
   id: string
   created_at: string
   updated_at: string
+}
+
+export type ModelState = {
+  name: string
+  label: string
+  icon: string
+  color: Badge['variants']['color']
+}
+
+export type FilterOption = {
+  label: string
+  value: string
 }
 
 export type User = Model & {
@@ -19,6 +30,17 @@ export type UserCollection = Omit<Paginator, 'data'> & {
   data: User[] | undefined
 }
 
+export type MediaStream = {
+  index: number
+  width: number
+  height: number
+  bit_rate: string
+  duration: string
+  codec_name: string
+  codec_type: string
+  closed_captions: number
+}
+
 export type Media = Model & {
   asset: string | undefined
   name: string
@@ -29,14 +51,38 @@ export type Media = Model & {
   collection_name: string
   disk: string
   conversions_disk: string
+  custom_properties?: {
+    streams?: MediaStream[]
+    [key: string]: unknown
+  }
+  generated_conversions?: Record<string, unknown>
+  responsive_images?: Record<string, unknown>
+  transcodes?: Transcode[]
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
   data: Media[] | undefined
 }
 
+export type Transcode = Model & {
+  media_id: number
+  encoder: string
+  pending: boolean
+  processing: boolean
+  completed: boolean
+  failed: boolean
+  state: ModelState
+  file_size: number
+  file_size_human: string
+  error_message: string | null
+  retry_count: number
+  started_at: string | null
+  transcoded_at: string | null
+}
+
 export type Tag = Model & {
   name: string
+  slug: string
   summary: string | undefined
   description: string | undefined
   category: string
@@ -78,7 +124,7 @@ export type Video = Model & {
   viewed: boolean | undefined
   published_at: string | undefined
   released_at: string | undefined
-  state: string
+  state: ModelState
 }
 
 export type VideoCollection = Omit<Paginator, 'data'> & {
@@ -86,13 +132,15 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 }
 
 export type Playlist = Model & {
-  asset: PlayerSrc | null
+  asset: string | null
+  encryption_key_id: string | null
+  encryption_key: string | null
   expired: boolean
   failed: boolean
   valid: boolean
   type: string | undefined
   expires_at: string | null | undefined
-  state: string
+  state: ModelState
 }
 
 export type PlaylistCollection = Omit<Paginator, 'data'> & {

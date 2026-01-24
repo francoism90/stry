@@ -11,6 +11,7 @@ use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -65,23 +66,20 @@ class Playlist extends Model
         'user_id',
     ];
 
-    protected static function newFactory(): PlaylistFactory
-    {
-        return PlaylistFactory::new();
-    }
-
     /**
      * @var array<string, string>
      */
     protected function casts(): array
     {
         return [
-            'state' => PlaylistState::class,
             'progress' => AsArrayObject::class,
             'encryption_key' => 'encrypted',
-            'accessed_at' => 'datetime',
-            'expires_at' => 'datetime',
-            'transcoded_at' => 'datetime',
+            'accessed_at' => AsDateTime::class,
+            'expires_at' => AsDateTime::class,
+            'transcoded_at' => AsDateTime::class,
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'state' => PlaylistState::class,
         ];
     }
 
@@ -93,6 +91,11 @@ class Playlist extends Model
     public function newCollection(array $models = []): PlaylistCollection
     {
         return new PlaylistCollection($models);
+    }
+
+    protected static function newFactory(): PlaylistFactory
+    {
+        return PlaylistFactory::new();
     }
 
     public function uniqueIds(): array
@@ -115,6 +118,15 @@ class Playlist extends Model
         return static::query()
             ->expired()
             ->orWhere(fn ($query) => $query->failed());
+    }
+
+    public static function findFromUlid(Playlist|string $value): ?Playlist
+    {
+        if ($value instanceof Playlist) {
+            return $value;
+        }
+
+        return Playlist::query()->firstWhere('ulid', $value);
     }
 
     /**
@@ -180,7 +192,7 @@ class Playlist extends Model
 
     public function isExpired(): bool
     {
-        return filled($this->expires_at) && $this->expires_at->isPast();
+        return filled($this->expires_at) && Carbon::parse($this->expires_at)->isPast();
     }
 
     public function isFailed(): bool
@@ -247,16 +259,14 @@ class Playlist extends Model
         return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
     }
 
-    public static function getEncryptionMethod(): string
+    public static function getEncryptionMethod(): ?string
     {
-        return Config::string('playlists.encryption', 'raw_key_encryption');
+        return Config::string('playlists.encryption');
     }
 
     public static function getProtectionScheme(): ?string
     {
-        $scheme = Config::string('playlists.protection_scheme', 'cenc');
-
-        return $scheme === 'null' ? null : $scheme;
+        return Config::string('playlists.protection_scheme');
     }
 
     public static function getKeyRotation(): bool

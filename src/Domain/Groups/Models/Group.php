@@ -152,6 +152,15 @@ class Group extends Model implements HasMedia, Sortable
             ->where('created_at', '<=', now()->subDay());
     }
 
+    public static function findFromUlid(Group|string $value): ?Group
+    {
+        if ($value instanceof Group) {
+            return $value;
+        }
+
+        return Group::query()->firstWhere('ulid', $value);
+    }
+
     /**
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */

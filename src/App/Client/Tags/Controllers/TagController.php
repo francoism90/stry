@@ -8,7 +8,7 @@ use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagTypeScope;
+use Domain\Tags\Scopes\TagFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -35,8 +35,8 @@ class TagController extends Controller implements HasMiddleware
         $type = $request->safe()->input('type', TagType::Genre);
 
         // Scout builder
-        $scout = Tag::search($search ?: '*')
-            ->tap(new TagTypeScope(type: $type))
+        $scout = Tag::search($search)
+            ->tap(new TagFilterScope(type: $type))
             ->paginate(perPage: 24);
 
         return Inertia::render('Client/Tags/TagIndex', [

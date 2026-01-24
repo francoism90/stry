@@ -9,6 +9,7 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -25,7 +26,7 @@ class PlaylistSessionController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Playlist $playlist, PlaylistViewRequest $request): Response
+    public function __invoke(Playlist $playlist, PlaylistViewRequest $request): Response|RedirectResponse
     {
         // Authorize the user to view the playlist
         Gate::authorize('view', [$model = $playlist->getModel(), $playlist]);
@@ -40,6 +41,8 @@ class PlaylistSessionController extends Controller implements HasMiddleware
             $request->safe()->only(['time']),
         );
 
-        return response()->noContent();
+        return $request->inertia()
+            ? redirect()->back()
+            : response()->noContent();
     }
 }

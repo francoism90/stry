@@ -6,7 +6,8 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
@@ -43,7 +44,7 @@ class Media extends BaseMedia
     {
         return [
             'manipulations' => 'array',
-            'custom_properties' => 'json',
+            'custom_properties' => 'array',
             'generated_conversions' => 'array',
             'responsive_images' => 'array',
         ];
@@ -64,10 +65,13 @@ class Media extends BaseMedia
         return 'uuid';
     }
 
-    protected function asset(): Attribute
+    public function transcodes(): HasMany
     {
-        return Attribute::make(
-            get: fn () => rescue(fn () => $this->getTemporaryUrl()),
-        )->shouldCache();
+        return $this->hasMany(Transcode::class);
+    }
+
+    public static function totalUsage(): string
+    {
+        return Number::fileSize(Media::query()->totalSize());
     }
 }

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Admin/Users/Controllers/UserController'
+import UserCreateModal from '@/components/Users/UserCreateModal.vue'
+import UserDeleteModal from '@/components/Users/UserDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { UserCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -7,7 +10,7 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   items: UserCollection
-  search: string | null
+  search?: string | null
 }>()
 
 defineOptions({ layout: DashboardLayout })
@@ -41,15 +44,23 @@ watchDebounced(
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+
+        <template #right>
+          <UserCreateModal />
+        </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar id="user-header">
+      <UDashboardToolbar
+        id="user-header"
+        class="min-h-16"
+      >
         <template #left>
           <UFormField :error="form.errors.search">
             <UInput
               v-model="form.search"
               :model-modifiers="{ string: true, trim: true }"
               color="neutral"
+              class="min-w-64"
               placeholder="Search..."
               icon="i-lucide-search"
             />
@@ -59,23 +70,23 @@ watchDebounced(
     </template>
 
     <template #body>
-      <UPage>
-        <InfiniteScroll
-          data="items"
-          start-element="#user-header"
-          items-element="#user-list"
-          :buffer="200"
+      <InfiniteScroll
+        data="items"
+        start-element="#user-header"
+        items-element="#user-list"
+        :buffer="200"
+      >
+        <UPageList
+          id="user-list"
+          divide
         >
-          <UPageList
-            id="user-list"
-            divide
+          <UPageCard
+            v-for="item in items?.data"
+            :key="item.id"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
           >
-            <UPageCard
-              v-for="item in items?.data"
-              :key="item.id"
-              variant="naked"
-              class="py-4 first:pt-0 last:pb-0"
-            >
+            <div class="flex items-center justify-between">
               <UUser
                 :name="item.name"
                 :description="`${item.created_at}`"
@@ -85,11 +96,31 @@ watchDebounced(
                   decoding: 'async',
                   class: 'rounded-sm size-14 me-1',
                 }"
+                :to="edit.url(item.id)"
               />
-            </UPageCard>
-          </UPageList>
-        </InfiniteScroll>
-      </UPage>
+
+              <div class="flex gap-2">
+                <UButton
+                  icon="i-lucide-pencil"
+                  color="secondary"
+                  variant="ghost"
+                  size="sm"
+                  :to="edit.url(item.id)"
+                />
+
+                <UserDeleteModal :item="item">
+                  <UButton
+                    icon="i-lucide-trash"
+                    color="error"
+                    variant="ghost"
+                    size="sm"
+                  />
+                </UserDeleteModal>
+              </div>
+            </div>
+          </UPageCard>
+        </UPageList>
+      </InfiniteScroll>
     </template>
   </UDashboardPanel>
 </template>

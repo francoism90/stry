@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Requests;
+namespace App\Api\Playlists\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VideoStoreRequest extends FormRequest
+class PlaylistUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -19,7 +19,8 @@ class VideoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'email' => ['required', 'email', 'max:255'],
+            'type' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'expires_at' => ['sometimes', 'nullable', 'date'],
         ];
     }
 }

@@ -3,27 +3,33 @@
 declare(strict_types=1);
 
 use App\Admin\Dashboard\Controllers\HomeController;
-use App\Admin\Media\Controllers\MediaController;
-use App\Admin\Playlists\Controllers\PlaylistController;
+use App\Admin\Media\Controllers\MediaConvertedController;
+use App\Admin\Media\Controllers\MediaTranscodeController;
 use App\Admin\Tags\Controllers\TagController;
+use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
+use App\Admin\Videos\Controllers\VideoImportController;
+use App\Admin\Videos\Controllers\VideoMediaController;
+use App\Admin\Videos\Controllers\VideoPlaylistController;
 use Illuminate\Support\Facades\Route;
 
 // Home
 Route::get('/', HomeController::class)->name('home');
 
+// Media
+Route::post('media/{media}/import', MediaConvertedController::class)->name('media.converted');
+Route::post('media/{media}/transcode', MediaTranscodeController::class)->name('media.transcode');
+
 // Users
 Route::resource('users', UserController::class);
 
-// Media
-Route::resource('media', MediaController::class);
-
-// Playlists
-Route::resource('playlists', PlaylistController::class);
-
 // Tags
+Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
 Route::resource('tags', TagController::class);
 
 // Videos
+Route::post('videos/import', VideoImportController::class)->name('videos.import');
 Route::resource('videos', VideoController::class);
+Route::resource('videos.media', VideoMediaController::class);
+Route::resource('videos.playlists', VideoPlaylistController::class);

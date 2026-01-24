@@ -11,12 +11,6 @@ const links: NavigationMenuItem[][] = [
       to: '/admin',
       exact: true,
     },
-    {
-      label: 'Inbox',
-      icon: 'i-lucide-inbox',
-      to: '/admin/inbox',
-      badge: '4',
-    },
   ],
   [
     {
@@ -28,16 +22,6 @@ const links: NavigationMenuItem[][] = [
       label: 'Tags',
       icon: 'i-lucide-tags',
       to: '/admin/tags',
-    },
-    {
-      label: 'Media',
-      icon: 'i-lucide-files',
-      to: '/admin/media',
-    },
-    {
-      label: 'Playlists',
-      icon: 'i-lucide-image-play',
-      to: '/admin/playlists',
     },
     {
       label: 'Users',
@@ -74,11 +58,11 @@ const links: NavigationMenuItem[][] = [
 
 <template>
   <UDashboardSidebar
-    id="default"
+    id="admin"
     collapsible
-    :min-size="16"
-    :max-size="16"
-    :default-size="16"
+    :min-size="15"
+    :max-size="15"
+    :default-size="15"
     :ui="{
       root: 'bg-elevated/25 lg:sticky lg:top-0 lg:max-h-dvh',
       footer: 'lg:border-default lg:border-t',
@@ -89,11 +73,6 @@ const links: NavigationMenuItem[][] = [
     </template>
 
     <template #default="{ collapsed }">
-      <UDashboardSearchButton
-        :collapsed="collapsed"
-        class="ring-default bg-transparent"
-      />
-
       <UNavigationMenu
         :collapsed="collapsed"
         :ui="{ root: 'gap-3', link: 'py-2' }"

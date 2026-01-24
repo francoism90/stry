@@ -96,11 +96,6 @@ class Video extends Model implements HasMedia
      */
     public $registerMediaConversionsUsingModelInstance = true;
 
-    protected static function newFactory(): VideoFactory
-    {
-        return VideoFactory::new();
-    }
-
     protected function casts(): array
     {
         return [
@@ -124,6 +119,11 @@ class Video extends Model implements HasMedia
     public function newCollection(array $models = []): VideoCollection
     {
         return new VideoCollection($models);
+    }
+
+    protected static function newFactory(): VideoFactory
+    {
+        return VideoFactory::new();
     }
 
     public function uniqueIds(): array
@@ -182,6 +182,15 @@ class Video extends Model implements HasMedia
             ->format('avif')
             ->withResponsiveImages()
             ->extractVideoFrameAtSecond((float) $this->snapshot ?: round($this->duration / 2));
+    }
+
+    public static function findFromUlid(Video|string $value): ?Video
+    {
+        if ($value instanceof Video) {
+            return $value;
+        }
+
+        return Video::query()->firstWhere('ulid', $value);
     }
 
     /**

@@ -24,7 +24,7 @@ return [
     /**
      * Log channel for packager output. Set to false to disable logging.
      */
-    'log_channel' => env('PACKAGER_LOG_CHANNEL', false),
+    'log_channel' => env('PACKAGER_LOG_CHANNEL', null),
 
     /**
      * Root directory for temporary files used during packaging.
