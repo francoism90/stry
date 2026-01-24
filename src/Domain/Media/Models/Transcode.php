@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Media\Models;
 
+use Domain\Media\Observers\TranscodeObserver;
 use Domain\Media\QueryBuilders\TranscodeQueryBuilder;
 use Domain\Media\States;
 use Domain\Media\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ModelStates\HasStates;
 
+#[ObservedBy(TranscodeObserver::class)]
 class Transcode extends Model
 {
     use BroadcastsEvents;
