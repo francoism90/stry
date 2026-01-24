@@ -3,5 +3,7 @@
 !public/
 !import/
 !media/
-!secrets/
+!packager/
+!av1/
+!transcodes/
 !.gitignore
