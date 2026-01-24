@@ -19,7 +19,10 @@ class ConvertMediaToAv1
         $encoder = AV1::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->abav1()
-            ->vmafEncode();
+            ->vmafEncode()
+            ->preset('6')
+            ->minVmaf(80)
+            ->maxEncodedPercent(300);
 
         $result = $encoder
             ->export()
