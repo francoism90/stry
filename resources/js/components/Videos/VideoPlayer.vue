@@ -40,7 +40,7 @@ onMounted(() => initialize(el.value))
     />
 
     <UEmpty
-      v-else-if="error"
+      v-if="error"
       title="Playback Error"
       :description="error.message || 'An error occurred during video playback.'"
       icon="i-lucide-alert-circle"
