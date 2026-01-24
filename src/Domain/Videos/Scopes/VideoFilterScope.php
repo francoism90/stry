@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Groups\Models\Group;
+use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
@@ -14,6 +15,7 @@ readonly class VideoFilterScope
 {
     public function __construct(
         public ?User $user = null,
+        public ?Tag $tag = null,
         public VideoFilter|string|null $filter = null,
         public VideoOrder|string|null $order = null,
     ) {}

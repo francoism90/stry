@@ -13,7 +13,7 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoProgressProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Video $video,
+        protected ?Video $video = null,
         protected ?User $user = null,
     ) {}
 
@@ -24,7 +24,7 @@ readonly class VideoProgressProperty implements ProvidesInertiaProperty
 
     protected function getProgress(): int|float
     {
-        if (! $this->user) {
+        if (! $this->video || ! $this->user) {
             return 0;
         }
 

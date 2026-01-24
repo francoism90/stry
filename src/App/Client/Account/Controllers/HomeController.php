@@ -33,17 +33,27 @@ class HomeController extends Controller implements HasMiddleware
 
         // Apply filters
         $search = $request->safe()->input('search');
+        $tag = $request->safe()->input('tag');
         $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
         $scout = Video::search($search ?: '*')
-            ->tap(new VideoFilterScope(filter: $filter, order: $order, user: $request->user()))
+            ->tap(new VideoFilterScope(
+                user: $request->user(),
+                filter: $filter,
+                tag: $tag,
+                order: $order,
+            ))
             ->paginate(perPage: 18);
 
         return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+
+
+
             'filter' => fn () => $filter->label(),
             'orders' => fn () => VideoOrder::options(),
+            'tag' => fn () => $tag,
             'order' => fn () => $order,
             'search' => fn () => $search,
         ]);

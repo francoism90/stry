@@ -12,18 +12,23 @@ use Inertia\ProvidesInertiaProperty;
 readonly class UserResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected User $user,
+        protected ?User $user = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): UserResource => $this->getResource());
+        return once(fn (): ?UserResource => $this->getResource());
     }
 
-    protected function getResource(): UserResource
+    protected function getResource(): ?UserResource
     {
+        if (! $this->user) {
+            return null;
+        }
+
         // Append necessary attributes for the edit form
         $appends = [
+            'avatar',
             'email',
         ];
 

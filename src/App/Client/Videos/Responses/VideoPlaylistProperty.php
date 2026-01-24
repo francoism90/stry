@@ -12,7 +12,7 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoPlaylistProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Video $video,
+        protected ?Video $video = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed

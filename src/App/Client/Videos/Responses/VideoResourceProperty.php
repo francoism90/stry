@@ -12,16 +12,20 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Video $video,
+        protected ?Video $video = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): VideoResource => $this->getResource());
+        return once(fn (): ?VideoResource => $this->getResource());
     }
 
-    protected function getResource(): VideoResource
+    protected function getResource(): ?VideoResource
     {
+        if (! $this->video) {
+            return null;
+        }
+
         return $this->video
             ->loadMissing('media', 'tags', 'user')
             ->toResource(VideoResource::class);

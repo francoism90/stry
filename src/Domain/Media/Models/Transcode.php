@@ -95,11 +95,6 @@ class Transcode extends Model
         return $this->state->equals(States\Failed::class);
     }
 
-    public function getOptions(): array
-    {
-        return Config::array("transcodes.encoders.{$this->encoder}", []);
-    }
-
     public static function getDisk(): string
     {
         return Config::string('transcodes.disk', 'transcodes');

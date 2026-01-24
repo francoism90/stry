@@ -12,16 +12,20 @@ use Inertia\ProvidesInertiaProperty;
 readonly class PlaylistResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Playlist $playlist,
+        protected ?Playlist $playlist = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): PlaylistResource => $this->getResource());
+        return once(fn (): ?PlaylistResource => $this->getResource());
     }
 
-    protected function getResource(): PlaylistResource
+    protected function getResource(): ?PlaylistResource
     {
+        if (! $this->playlist) {
+            return null;
+        }
+
         return $this
             ->playlist
             ->toResource(PlaylistResource::class);

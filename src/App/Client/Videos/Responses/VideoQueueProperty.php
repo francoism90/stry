@@ -14,7 +14,7 @@ use Inertia\ProvidesInertiaProperty;
 readonly class VideoQueueProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Video $video,
+        protected ?Video $video = null,
         protected ?int $limit = null,
     ) {}
 
@@ -25,6 +25,10 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
 
     protected function getCollection(): ResourceCollection
     {
+        if (! $this->video) {
+            return VideoResource::collection([]);
+        }
+
         return app(GetSimilarVideos::class)
             ->handle(video: $this->video, limit: $this->limit)
             ->loadMissing('tags')

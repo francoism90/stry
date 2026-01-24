@@ -12,16 +12,20 @@ use Inertia\ProvidesInertiaProperty;
 readonly class MediaResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Media $media,
+        protected ?Media $media = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): MediaResource => $this->getResource());
+        return once(fn (): ?MediaResource => $this->getResource());
     }
 
-    protected function getResource(): MediaResource
+    protected function getResource(): ?MediaResource
     {
+        if (! $this->media) {
+            return null;
+        }
+
         // Append necessary attributes for the edit form
         $appends = [
             'custom_properties',

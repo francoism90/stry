@@ -13,18 +13,18 @@ use Inertia\ProvidesInertiaProperty;
 readonly class TranscodeResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected Media $media,
+        protected ?Media $media = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn () => $this->getCollection());
+        return once(fn (): ResourceCollection => $this->getCollection());
     }
 
     protected function getCollection(): ResourceCollection
     {
         return TranscodeResource::collection(
-            $this->media->transcodes ?? []
+            $this->media?->transcodes ?? []
         );
     }
 }
