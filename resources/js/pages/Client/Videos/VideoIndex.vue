@@ -139,7 +139,7 @@ watchDebounced(
             v-if="items.data?.length && filter.value !== 'all'"
             label="Clear List"
             size="xs"
-            variant="ghost"
+            variant="link"
             @click.prevent="clearGroup(filter.value)"
           />
         </template>
