@@ -24,7 +24,6 @@ export function useVideos() {
       {},
       {
         preserveState: true,
-        only: ['video', 'group', 'items'],
       },
     )
 

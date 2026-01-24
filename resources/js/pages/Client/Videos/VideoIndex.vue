@@ -136,6 +136,7 @@ watchDebounced(
 
         <template #right>
           <UButton
+            v-if="items.data?.length && filter.value !== 'all'"
             label="Clear List"
             size="xs"
             variant="ghost"
