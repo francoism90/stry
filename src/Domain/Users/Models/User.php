@@ -141,6 +141,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->sharpen(10);
     }
 
+    public static function findFromUlid(User|string $value): ?User
+    {
+        if ($value instanceof User) {
+            return $value;
+        }
+
+        return User::query()->firstWhere('ulid', $value);
+    }
+
     /**
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */

@@ -184,6 +184,15 @@ class Video extends Model implements HasMedia
             ->extractVideoFrameAtSecond((float) $this->snapshot ?: round($this->duration / 2));
     }
 
+    public static function findFromUlid(Video|string $value): ?Video
+    {
+        if ($value instanceof Video) {
+            return $value;
+        }
+
+        return Video::query()->firstWhere('ulid', $value);
+    }
+
     /**
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */

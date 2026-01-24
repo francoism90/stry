@@ -12,7 +12,7 @@ use Inertia\ProvidesInertiaProperty;
 readonly class TagResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
-        protected ?Tag $tag = null,
+        protected Tag|string|null $tag = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
@@ -26,7 +26,9 @@ readonly class TagResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this->tag
+        $tag = Tag::findFromUlid($this->tag);
+
+        return $tag
             ->loadCount('videos')
             ->toResource(TagResource::class);
     }

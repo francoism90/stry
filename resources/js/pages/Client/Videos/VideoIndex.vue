@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UserMenu from '@/components/Ui/UserMenu.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { VideoCollection } from '@/types'
+import type { Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
@@ -11,6 +11,7 @@ const props = defineProps<{
   items: VideoCollection
   orders: SelectMenuItem[]
   filter: string
+  tag?: Tag | undefined
   order?: string | undefined
   search?: string | null
 }>()
@@ -18,6 +19,7 @@ const props = defineProps<{
 const form = useForm('get', '', {
   search: props.search,
   order: props.order,
+  tag: props.tag,
   page: 1,
 })
 

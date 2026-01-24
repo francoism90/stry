@@ -77,6 +77,7 @@ export type Transcode = Model & {
 
 export type Tag = Model & {
   name: string
+  slug: string
   summary: string | undefined
   description: string | undefined
   category: string

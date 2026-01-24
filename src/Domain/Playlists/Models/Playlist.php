@@ -120,6 +120,15 @@ class Playlist extends Model
             ->orWhere(fn ($query) => $query->failed());
     }
 
+    public static function findFromUlid(Playlist|string $value): ?Playlist
+    {
+        if ($value instanceof Playlist) {
+            return $value;
+        }
+
+        return Playlist::query()->firstWhere('ulid', $value);
+    }
+
     /**
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
