@@ -202,7 +202,7 @@ return [
             'memory' => 128,
             'tries' => 3,
             'timeout' => 300,
-            'nice' => 0,
+            'nice' => 1,
         ],
 
         'supervisor-2' => [
