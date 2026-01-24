@@ -42,7 +42,8 @@ class VideoController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Video::search($search)
             ->tap(new VideoFilterScope(order: $order))
-            ->paginate(perPage: 16);
+            ->paginate(perPage: 16)
+            ->through(fn ($video) => $video->append('timestamp', 'filesize'));
 
         return Inertia::render('Admin/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),

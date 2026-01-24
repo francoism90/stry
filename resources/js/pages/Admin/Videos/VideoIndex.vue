@@ -102,13 +102,14 @@ watchDebounced(
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"
+            :to="edit.url(item.id)"
             variant="naked"
             class="py-4 first:pt-0 last:pb-0"
           >
             <div class="flex items-center justify-between">
               <UUser
                 :name="item.title"
-                :description="item.timestamp"
+                :description="`${item.timestamp} • ${item.filesize}`"
                 :avatar="{
                   alt: item.name,
                   src: item.thumb,
@@ -116,10 +117,9 @@ watchDebounced(
                   decoding: 'async',
                   class: 'rounded-sm size-14 me-1',
                 }"
-                :to="edit.url(item.id)"
               />
 
-              <div class="flex gap-2">
+              <div class="z-10 flex items-center gap-2">
                 <UButton
                   icon="i-lucide-eye"
                   color="secondary"

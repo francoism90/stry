@@ -104,6 +104,7 @@ watchDebounced(
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"
+            :to="edit.url(item.id)"
             variant="naked"
             class="py-4 first:pt-0 last:pb-0"
           >
@@ -115,10 +116,9 @@ watchDebounced(
                   alt: item.name,
                   class: 'rounded-sm size-14 me-1',
                 }"
-                :to="edit.url(item.id)"
               />
 
-              <div class="flex gap-2">
+              <div class="z-10 flex items-center gap-2">
                 <UButton
                   icon="i-lucide-pencil"
                   color="secondary"
