@@ -40,7 +40,7 @@ class VideoController extends Controller implements HasMiddleware
         $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
-        $scout = Video::search($search ?: '*')
+        $scout = Video::search($search)
             ->tap(new VideoFilterScope(order: $order))
             ->paginate(perPage: 16);
 

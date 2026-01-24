@@ -33,7 +33,7 @@ class UserController extends Controller implements HasMiddleware
         $search = $request->safe()->input('search');
 
         // Scout builder
-        $scout = User::search($search ?: '*')
+        $scout = User::search($search)
             ->query(fn ($query) => $query->with('permissions', 'roles'))
             ->paginate(perPage: 16);
 

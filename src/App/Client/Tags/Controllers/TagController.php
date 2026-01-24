@@ -35,7 +35,7 @@ class TagController extends Controller implements HasMiddleware
         $type = $request->safe()->input('type', TagType::Genre);
 
         // Scout builder
-        $scout = Tag::search($search ?: '*')
+        $scout = Tag::search($search)
             ->tap(new TagTypeScope(type: $type))
             ->paginate(perPage: 24);
 
