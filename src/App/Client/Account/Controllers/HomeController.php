@@ -49,11 +49,9 @@ class HomeController extends Controller implements HasMiddleware
 
         return Inertia::render('Client/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'tag' => fn () => new TagResourceProperty($tag),
-
-            'filter' => fn () => $filter->label(),
             'orders' => fn () => VideoOrder::options(),
-
+            'tag' => fn () => new TagResourceProperty($tag),
+            'filter' => fn () => $filter->label(),
             'order' => fn () => $order,
             'search' => fn () => $search,
         ]);

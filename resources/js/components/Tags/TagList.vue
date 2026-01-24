@@ -6,7 +6,7 @@ defineProps<{
   items: Tag[] | undefined
 }>()
 
-const url = (search: string) => HomeController.url('all', { query: { search } })
+const url = (tag: string) => HomeController.url('all', { query: { tag } })
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const url = (search: string) => HomeController.url('all', { query: { search } })
       v-for="item in items"
       :key="item.id"
       :label="`# ${item.name}`"
-      :to="url(item.name)"
+      :to="url(item.id)"
       variant="soft"
       size="lg"
       color="secondary"

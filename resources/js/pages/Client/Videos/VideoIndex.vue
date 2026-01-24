@@ -19,7 +19,7 @@ const props = defineProps<{
 const form = useForm('get', '', {
   search: props.search,
   order: props.order,
-  tag: props.tag,
+  tag: props.tag?.id,
   page: 1,
 })
 
@@ -27,9 +27,14 @@ const onSubmit = () => {
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'search', 'order'],
+    only: ['items', 'search', 'order', 'tag'],
     reset: ['items'],
   })
+}
+
+const clearTag = () => {
+  form.tag = undefined
+  onSubmit()
 }
 
 watchDebounced(
@@ -56,10 +61,10 @@ watchDebounced(
             <UInput
               v-model="form.search"
               :model-modifiers="{ string: true, trim: true }"
+              :placeholder="`Search ${filter}...`"
               variant="soft"
               size="xl"
               color="neutral"
-              placeholder="Search..."
               icon="i-lucide-search"
             />
           </UFormField>
@@ -72,7 +77,10 @@ watchDebounced(
 
       <UDashboardToolbar
         id="video-header"
-        class="min-h-8 border-0"
+        :ui="{
+          root: 'min-h-4 border-0',
+          left: 'gap-3 *:inline-flex *:items-center',
+        }"
       >
         <template #left>
           <UFormField
@@ -93,24 +101,38 @@ watchDebounced(
               @update:modelValue="onSubmit"
             />
           </UFormField>
+
+          <UFormField
+            v-if="tag"
+            orientation="horizontal"
+            label="Tagged"
+            :ui="{ label: 'text-secondary-400 text-xs' }"
+            :error="form.errors.tag"
+          >
+            <UButton
+              :label="tag.name"
+              color="primary"
+              size="xs"
+              leading-icon="i-lucide-x"
+              @click.prevent="clearTag"
+            />
+          </UFormField>
         </template>
       </UDashboardToolbar>
     </template>
 
     <template #body>
-      <UPage>
-        <InfiniteScroll
-          data="items"
-          start-element="#video-header"
-          items-element="#video-list"
-          :buffer="200"
-        >
-          <VideoList
-            id="video-list"
-            :items="items?.data"
-          />
-        </InfiniteScroll>
-      </UPage>
+      <InfiniteScroll
+        data="items"
+        start-element="#video-header"
+        items-element="#video-list"
+        :buffer="200"
+      >
+        <VideoList
+          id="video-list"
+          :items="items?.data"
+        />
+      </InfiniteScroll>
     </template>
   </UDashboardPanel>
 </template>

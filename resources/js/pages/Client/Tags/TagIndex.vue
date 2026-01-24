@@ -56,7 +56,7 @@ watchDebounced(
               variant="soft"
               size="xl"
               color="neutral"
-              placeholder="Search..."
+              placeholder="Search Tags..."
               icon="i-lucide-search"
             />
           </UFormField>
@@ -69,7 +69,10 @@ watchDebounced(
 
       <UDashboardToolbar
         id="tag-header"
-        class="min-h-8 border-0"
+        :ui="{
+          root: 'min-h-4 border-0',
+          left: 'gap-3 *:inline-flex *:items-center',
+        }"
       >
         <template #left>
           <UFormField
