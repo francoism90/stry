@@ -31,9 +31,9 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Profile" />
+  <Head title="Settings" />
 
-  <UDashboardPanel id="profile">
+  <UDashboardPanel id="settings">
     <template #header>
       <UDashboardNavbar
         :ui="{ root: 'h-20 gap-3 border-0', left: 'w-full' }"
@@ -54,7 +54,7 @@ const onSubmit = () =>
         @submit="onSubmit"
       >
         <UPageCard
-          title="Your Profile"
+          title="Default Settings"
           variant="naked"
           orientation="horizontal"
         >
@@ -94,22 +94,6 @@ const onSubmit = () =>
               :model-modifiers="{ string: true, trim: true }"
             />
           </UFormField>
-        </UPageCard>
-
-        <UPageCard
-          title="Administration"
-          description="Access the admin panel to manage videos, users, and settings."
-          variant="subtle"
-        >
-          <template #footer>
-            <UButton
-              label="Administration"
-              to="/admin"
-              color="primary"
-              variant="soft"
-              trailing
-            />
-          </template>
         </UPageCard>
       </UForm>
     </template>
