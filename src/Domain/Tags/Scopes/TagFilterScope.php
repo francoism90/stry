@@ -18,9 +18,12 @@ readonly class TagFilterScope
 
     public function __invoke(Builder $scout): void
     {
+        // Determine if we should use placeholder results
+        $defaultOrder = blank($scout->query) || $scout->query === '*';
+
         $scout
             ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
-            ->when(blank($scout->query), fn (Builder $scout) => $scout->orderByDesc('videos'))
+            ->when($defaultOrder, fn (Builder $scout) => $scout->orderByDesc('videos'))
             ->when($this->getType(), fn (Builder $scout, TagType $type) => $scout->where('type', enum_value($type))->orderBy('name'));
     }
 
