@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UserMenu from '@/components/Ui/UserMenu.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import { useVideos } from '@/composables/videos'
+import { useGroups } from '@/composables/groups'
 import type { FilterOption, Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
@@ -18,7 +18,7 @@ const props = defineProps<{
 }>()
 
 const toast = useToast()
-const { clearGroup } = useVideos()
+const { clearGroup } = useGroups()
 
 const form = useForm('get', '', {
   search: props.search,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Media\Jobs;
 
-use Domain\Media\Actions\ConvertMediaToAv1;
+use Domain\Media\Actions\PerformMediaTranscode;
 use Domain\Media\Models\Transcode;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -16,14 +16,14 @@ use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Throwable;
 
-class ConvertMediaJob implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCommit
+class ConvertMedia implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCommit
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    public int $timeout = 7200;
+    public int $timeout = 14400;
 
     public int $tries = 1;
 
@@ -35,12 +35,11 @@ class ConvertMediaJob implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCo
 
     public function __construct(
         public Transcode $transcode,
-        public ?string $encoder = null,
     ) {
         $this->onQueue('processing');
     }
 
-    public function handle(ConvertMediaToAv1 $action): void
+    public function handle(PerformMediaTranscode $action): void
     {
         // Update state to processing
         $this->transcode->markAsProcessing();

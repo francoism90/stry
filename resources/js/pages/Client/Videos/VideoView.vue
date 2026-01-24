@@ -4,7 +4,7 @@ import HomeController from '@/actions/App/Client/Account/Controllers/HomeControl
 import AppNavbar from '@/components/Ui/AppNavbar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
-import { useVideos } from '@/composables/videos'
+import { useVideo } from '@/composables/video'
 import type { Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -16,7 +16,7 @@ const props = defineProps<{
   queue?: Video[]
 }>()
 
-const { toggleLike, toggleSave } = useVideos()
+const { toggleLike, toggleSave } = useVideo(props.video)
 const links = computed<ButtonProps[]>(() => [
   {
     label: 'Edit',
@@ -26,12 +26,12 @@ const links = computed<ButtonProps[]>(() => [
   {
     label: props.video.liked ? 'Unlike' : 'Like',
     icon: props.video.liked ? 'i-lucide-heart' : 'i-lucide-heart-plus',
-    onClick: () => toggleLike(props.video),
+    onClick: () => toggleLike(),
   },
   {
     label: props.video.saved ? 'Unsave' : 'Save',
     icon: props.video.saved ? 'i-lucide-bookmark' : 'i-lucide-bookmark-plus',
-    onClick: () => toggleSave(props.video),
+    onClick: () => toggleSave(),
   },
 ])
 

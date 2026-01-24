@@ -7,12 +7,18 @@ namespace Domain\Media\Actions;
 use Domain\Media\Models\Transcode;
 use Foxws\AV1\Facades\AV1;
 
-class ConvertMediaToAv1
+class PerformMediaTranscode
 {
     public function handle(Transcode $transcode): void
     {
+        if ($transcode->encoder !== 'ab-av1') {
+            throw new \InvalidArgumentException('Unsupported encoder: '.$transcode->encoder);
+        }
+
+        // Get associated media
         $media = $transcode->media;
 
+        // Define output path
         $outputPath = $transcode->getOutputPath();
 
         // Perform AV1 encoding
@@ -24,6 +30,7 @@ class ConvertMediaToAv1
             ->minVmaf(80)
             ->maxEncodedPercent(300);
 
+        // Save to the specified disk and path
         $result = $encoder
             ->export()
             ->toDisk(Transcode::getDisk())

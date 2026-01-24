@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Media\Actions;
 
-use Domain\Media\Jobs\ConvertMediaJob;
+use Domain\Media\Jobs\ConvertMedia;
 use Domain\Media\Models\Media;
 use Domain\Media\Models\Transcode;
 use Domain\Media\States\Pending;
@@ -30,7 +30,7 @@ class CreateMediaTranscode
         ]);
 
         // Dispatch the conversion job
-        ConvertMediaJob::dispatch($transcode);
+        ConvertMedia::dispatch($transcode);
 
         return $transcode;
     }

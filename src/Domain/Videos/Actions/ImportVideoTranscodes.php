@@ -2,32 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Actions;
+namespace Domain\Videos\Actions;
 
-use Domain\Media\Models\Media;
 use Domain\Media\Models\Transcode;
-use Illuminate\Database\Eloquent\Model;
+use Domain\Videos\Models\Video;
 
-class AddMediaFromTranscode
+class ImportVideoTranscodes
 {
-    public function handle(Media $media): void
+    public function handle(Video $video): void
     {
-        // Get the model associated with the media
-        $model = $media->model;
-
-        if (! $model instanceof Model) {
+        // Get the associated media
+        if (! $media = $video->media) {
             return;
         }
 
-        // Get all completed transcodes for this media
-        $completedTranscodes = $media
+        // Get all completed transcodes by (if any)
+        $transcodes = $media
             ->transcodes()
             ->completed()
             ->get();
 
         // Add each successful transcode to the model's media collection
-        foreach ($completedTranscodes as $transcode) {
-            $model
+        foreach ($transcodes as $transcode) {
+            $video
                 ->addMediaFromDisk($transcode->getOutputPath(), Transcode::getDisk())
                 ->toMediaCollection('clips');
         }

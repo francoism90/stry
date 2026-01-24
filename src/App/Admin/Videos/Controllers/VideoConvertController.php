@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Media\Controllers;
+namespace App\Admin\Videos\Controllers;
 
 use Domain\Media\Actions\CreateMediaTranscode;
 use Domain\Media\Models\Media;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
-class MediaTranscodeController extends Controller implements HasMiddleware
+class VideoConvertController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -23,15 +23,16 @@ class MediaTranscodeController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Media $media): RedirectResponse
+    public function __invoke(Video $video): RedirectResponse
     {
-        Gate::authorize('update', $media);
+        Gate::authorize('update', $video);
 
-        abort_unless(
-            Str::startsWith($media->mime_type, 'video/'),
-            422,
-            'Media must be a video to convert.'
-        );
+        // For simplicity, we will transcode the first clip only.
+        $media = $video->getClipCollection()->first();
+
+        if (! $media instanceof Media) {
+            abort(404, 'No media found for video.');
+        }
 
         app(CreateMediaTranscode::class)->handle($media);
 

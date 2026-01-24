@@ -2,6 +2,7 @@
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import { useMedia } from '@/composables/media'
+import { useVideo } from '@/composables/video'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Media, Transcode, Video } from '@/types'
@@ -23,7 +24,8 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
 })
 
-const { startConversion, addTranscodes, getStreamInfo, getAv1Stream } = useMedia(props.media)
+const { getStreamInfo, getAv1Stream } = useMedia(props.media)
+const { createConversion, importTranscoded } = useVideo(props.video)
 
 const onSubmit = () =>
   form.submit({
@@ -156,7 +158,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
             color="primary"
             variant="soft"
             icon="i-lucide-plus"
-            @click="addTranscodes"
+            @click="importTranscoded()"
           />
 
           <UButton
@@ -164,7 +166,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
             label="Perform AV1 Conversion"
             color="primary"
             variant="soft"
-            @click="startConversion"
+            @click="createConversion()"
           />
 
           <div
