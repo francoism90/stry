@@ -12,7 +12,7 @@ use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagTypeScope;
+use Domain\Tags\Scopes\TagFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -40,7 +40,7 @@ class TagController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = Tag::search($search)
-            ->tap(new TagTypeScope(type: $type))
+            ->tap(new TagFilterScope(type: $type))
             ->paginate(perPage: 16);
 
         return Inertia::render('Admin/Tags/TagIndex', [
