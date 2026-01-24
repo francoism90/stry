@@ -40,8 +40,9 @@ export function useMedia(media: Media) {
   }
 
   return {
-    getStreamInfo,
+    getStreams,
     getVideoStream,
     getAv1Stream,
+    getStreamInfo,
   }
 }

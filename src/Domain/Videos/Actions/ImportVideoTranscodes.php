@@ -12,7 +12,7 @@ class ImportVideoTranscodes
     public function handle(Video $video): void
     {
         // Get the associated media
-        if (! $media = $video->media) {
+        if (! $media = $video->getClipCollection()->first()) {
             return;
         }
 
