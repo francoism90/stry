@@ -30,7 +30,6 @@ readonly class MediaResourceProperty implements ProvidesInertiaProperty
         $appends = [
             'custom_properties',
             'generated_conversions',
-            'responsive_images',
         ];
 
         return $this->media

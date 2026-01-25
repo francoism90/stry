@@ -41,6 +41,11 @@ export type MediaStream = {
   closed_captions: number
 }
 
+export type MediaCustomProperties = {
+  streams: MediaStream[]
+  [key: string]: unknown
+}
+
 export type Media = Model & {
   asset: string | undefined
   name: string
@@ -51,12 +56,9 @@ export type Media = Model & {
   collection_name: string
   disk: string
   conversions_disk: string
-  custom_properties?: {
-    streams?: MediaStream[]
-    [key: string]: unknown
-  }
-  generated_conversions?: Record<string, unknown>
-  responsive_images?: Record<string, unknown>
+  custom_properties?: string | null
+  generated_conversions?: string | null
+  responsive_images?: string | null
   transcodes?: Transcode[]
 }
 

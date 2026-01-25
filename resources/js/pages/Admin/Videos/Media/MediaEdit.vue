@@ -22,6 +22,7 @@ const toast = useToast()
 
 const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
+  custom_properties: props.media.custom_properties,
 })
 
 const { getStreamInfo, getAv1Stream } = useMedia(props.media)
@@ -81,35 +82,19 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
           autofocus
         />
       </UFormField>
-    </UPageCard>
 
-    <UPageCard
-      title="Media Attributes"
-      description="File and storage details for this media."
-      variant="subtle"
-    >
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400">File Name</div>
-          <div class="font-mono text-sm">{{ media.file_name }}</div>
-        </div>
-        <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400">MIME Type</div>
-          <div class="font-mono text-sm">{{ media.mime_type }}</div>
-        </div>
-        <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400">Collection</div>
-          <div class="font-mono text-sm">{{ media.collection_name }}</div>
-        </div>
-        <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400">Disk</div>
-          <div class="font-mono text-sm">{{ media.disk }}</div>
-        </div>
-        <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400">Conversions Disk</div>
-          <div class="font-mono text-sm">{{ media.conversions_disk }}</div>
-        </div>
-      </div>
+      <UFormField
+        label="Custom Properties (JSON)"
+        :error="form.errors.custom_properties"
+      >
+        <UTextarea
+          v-model="form.custom_properties"
+          :model-modifiers="{ string: true, trim: true }"
+          :rows="8"
+          placeholder='{"key": "value"}'
+          class="w-full font-mono"
+        />
+      </UFormField>
     </UPageCard>
 
     <UPageCard
@@ -209,6 +194,35 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
 
             <span>This media is already in AV1 format</span>
           </div>
+        </div>
+      </div>
+    </UPageCard>
+
+    <UPageCard
+      title="Media Attributes"
+      description="File and storage details for this media."
+      variant="subtle"
+    >
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">File Name</div>
+          <div class="font-mono text-sm">{{ media.file_name }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">MIME Type</div>
+          <div class="font-mono text-sm">{{ media.mime_type }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Collection</div>
+          <div class="font-mono text-sm">{{ media.collection_name }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Disk</div>
+          <div class="font-mono text-sm">{{ media.disk }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Conversions Disk</div>
+          <div class="font-mono text-sm">{{ media.conversions_disk }}</div>
         </div>
       </div>
     </UPageCard>

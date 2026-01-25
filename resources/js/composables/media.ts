@@ -1,9 +1,14 @@
-import type { Media } from '@/types'
+import type { Media, MediaCustomProperties } from '@/types'
 
 export function useMedia(media: Media) {
-  const getStreams = () => media.custom_properties?.streams || []
+  const getStreams = () => {
+    const parsed = media.custom_properties as MediaCustomProperties | undefined
+
+    return parsed?.streams
+  }
 
   const getVideoStream = () => getStreams()?.find((stream) => stream.codec_type === 'video')
+
   const getAv1Stream = () => getStreams()?.find((stream) => stream.codec_name.toLowerCase() === 'av1')
 
   const getStreamInfo = () => {

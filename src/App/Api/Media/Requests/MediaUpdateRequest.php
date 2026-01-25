@@ -20,7 +20,7 @@ class MediaUpdateRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'custom_properties' => ['sometimes', 'nullable', 'array'],
+            'custom_properties' => ['sometimes', 'nullable', 'json'],
             'order_column' => ['sometimes', 'nullable', 'integer', 'min:0'],
         ];
     }
