@@ -9,8 +9,6 @@ const props = defineProps<{
   user: User
 }>()
 
-const toast = useToast()
-
 const form = useForm('put', update.url(), {
   name: props.user.name || '',
   email: props.user.email || '',
@@ -20,13 +18,6 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    onSuccess: () =>
-      toast.add({
-        title: 'Success',
-        description: 'Profile updated successfully.',
-        icon: 'i-lucide-check',
-        color: 'success',
-      }),
   })
 </script>
 

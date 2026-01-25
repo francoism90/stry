@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
 class VideoConvertController extends Controller implements HasMiddleware
 {
@@ -34,7 +35,11 @@ class VideoConvertController extends Controller implements HasMiddleware
             abort(404, 'No media found for video.');
         }
 
+        // Create transcode job
         app(CreateMediaTranscode::class)->handle($media);
+
+        // Flash message
+        Inertia::flash('message', __('Video conversion started successfully.'));
 
         return back();
     }

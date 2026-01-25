@@ -19,8 +19,6 @@ const props = defineProps<{
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
-const toast = useToast()
-
 const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
   custom_properties: props.media.custom_properties || {},
@@ -42,13 +40,6 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    onSuccess: () =>
-      toast.add({
-        title: 'Success',
-        description: 'The media has been updated.',
-        icon: 'i-lucide-check',
-        color: 'success',
-      }),
   })
 
 useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.reload({ only: ['transcodes'] }))

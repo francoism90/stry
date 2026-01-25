@@ -67,10 +67,14 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
+        // Update video details
         app(UpdateVideoDetails::class)->handle(
             video: $video,
             attributes: $request->safe()->all()
         );
+
+        // Flash message
+        Inertia::flash('message', __('The video has been updated.'));
 
         return back();
     }
@@ -81,6 +85,9 @@ class VideoController extends Controller implements HasMiddleware
 
         // Delete the video
         $video->deleteOrFail();
+
+        // Flash message
+        Inertia::flash('message', __('The video has been deleted.'));
 
         return redirect()->route('admin.videos.index');
     }

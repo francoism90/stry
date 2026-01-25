@@ -34,6 +34,9 @@ class VideoImportController extends Controller implements HasMiddleware
         // Perform the import action
         $result = $action->handle($user);
 
-        return Inertia::flash('message', $result['message'] ?? __('Import failed'))->back();
+        // Flash message
+        Inertia::flash('message', $result['message'] ?? __('Import failed'));
+
+        return back();
     }
 }

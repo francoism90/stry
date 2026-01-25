@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useVideos } from '@/composables/videos'
-import { usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 const isOpen = defineModel<boolean>({ default: false })
-const page = usePage()
 
 const importing = ref(false)
 const { importVideos } = useVideos()
@@ -33,13 +31,6 @@ const handleImport = () => {
     />
 
     <template #body>
-      <div
-        v-if="page.flash"
-        class="toast"
-      >
-        {{ page.flash.message }}
-      </div>
-
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <h3 class="text-sm font-medium">Import videos from disk</h3>

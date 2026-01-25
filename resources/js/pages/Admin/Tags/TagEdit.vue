@@ -17,7 +17,6 @@ const props = defineProps<{
 defineOptions({ layout: [DashboardLayout, TagLayout] })
 
 const { items, filter } = useTags(props.tag.related || [])
-const toast = useToast()
 
 const form = useForm('put', update.url(props.tag.id), {
   name: props.tag.name,
@@ -30,13 +29,6 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    onSuccess: () =>
-      toast.add({
-        title: 'Success',
-        description: 'The tag has been updated.',
-        icon: 'i-lucide-check',
-        color: 'success',
-      }),
   })
 </script>
 

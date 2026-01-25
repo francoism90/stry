@@ -29,6 +29,9 @@ class TagOrderController extends Controller implements HasMiddleware
         // Set the order
         app(SetTagsOrder::class)->handle();
 
-        return Inertia::flash('message', __('Order updated successfully.'))->back();
+        // Flash message
+        Inertia::flash('message', __('Tags order has been updated successfully.'));
+
+        return back();
     }
 }

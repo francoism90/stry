@@ -16,7 +16,6 @@ const props = defineProps<{
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
 const { items, filter } = useTags(props.video.tags || [])
-const toast = useToast()
 
 const form = useForm('put', update.url(props.video.id), {
   name: props.video.name,
@@ -35,13 +34,6 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    onSuccess: () =>
-      toast.add({
-        title: 'Success',
-        description: 'The video has been updated.',
-        icon: 'i-lucide-check',
-        color: 'success',
-      }),
   })
 </script>
 

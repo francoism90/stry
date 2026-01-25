@@ -12,8 +12,6 @@ const props = defineProps<{
 
 defineOptions({ layout: [DashboardLayout, UserLayout] })
 
-const toast = useToast()
-
 const form = useForm('put', update.url(props.user.id), {
   name: props.user.name,
   email: props.user.email,
@@ -23,13 +21,6 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    onSuccess: () =>
-      toast.add({
-        title: 'Success',
-        description: 'The user has been updated.',
-        icon: 'i-lucide-check',
-        color: 'success',
-      }),
   })
 </script>
 

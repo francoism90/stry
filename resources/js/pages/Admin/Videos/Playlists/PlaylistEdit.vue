@@ -13,8 +13,6 @@ const props = defineProps<{
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
-const toast = useToast()
-
 const form = useForm('put', update.url([props.video.id, props.playlist.id]), {
   type: props.playlist.type,
   expires_at: props.playlist.expires_at,
@@ -24,13 +22,6 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    onSuccess: () =>
-      toast.add({
-        title: 'Success',
-        description: 'The playlist has been updated.',
-        icon: 'i-lucide-check',
-        color: 'success',
-      }),
   })
 </script>
 

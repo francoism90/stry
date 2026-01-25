@@ -56,7 +56,11 @@ class VideoPlaylistController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $playlist);
 
+        // Update the playlist with validated data
         $playlist->updateOrFail($request->safe()->all());
+
+        // Flash message
+        Inertia::flash('message', __('Playlist updated successfully.'));
 
         return back();
     }
@@ -65,7 +69,11 @@ class VideoPlaylistController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $playlist);
 
+        // Delete the playlist
         $playlist->deleteOrFail();
+
+        // Flash message
+        Inertia::flash('message', __('Playlist deleted successfully.'));
 
         return redirect()->route('admin.videos.playlists.index', $video);
     }

@@ -55,7 +55,11 @@ class UserController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $user);
 
+        // Update user
         $user->updateOrFail($request->safe()->all());
+
+        // Flash message
+        Inertia::flash('message', __('The user has been updated.'));
 
         return back();
     }
@@ -64,7 +68,11 @@ class UserController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $user);
 
+        // Delete user
         $user->deleteOrFail();
+
+        // Flash message
+        Inertia::flash('message', __('The user has been deleted.'));
 
         return redirect()->route('admin.users.index');
     }

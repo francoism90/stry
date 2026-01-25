@@ -59,7 +59,11 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Media::class);
 
+        // Create new media for the video
         $video->media()->create($request->safe()->all());
+
+        // Flash message
+        Inertia::flash('message', __('Media created successfully.'));
 
         return redirect()->route('admin.videos.media.index', $video);
     }
@@ -89,7 +93,11 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $media);
 
+        // Update media details
         app(UpdateMediaDetails::class)->handle($media, $request->safe()->all());
+
+        // Flash message
+        Inertia::flash('message', __('Media updated successfully.'));
 
         return back();
     }
@@ -98,7 +106,11 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $media);
 
+        // Delete the media
         $media->deleteOrFail();
+
+        // Flash message
+        Inertia::flash('message', __('Media deleted successfully.'));
 
         return redirect()->route('admin.videos.media.index', $video);
     }
