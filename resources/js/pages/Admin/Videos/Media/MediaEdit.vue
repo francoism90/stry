@@ -42,6 +42,7 @@ const onSubmit = () =>
     replace: true,
   })
 
+useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['media'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.reload({ only: ['transcodes'] }))
 </script>
 
@@ -208,6 +209,10 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
         <div>
           <div class="text-xs text-gray-500 dark:text-gray-400">File Name</div>
           <div class="font-mono text-sm">{{ media.file_name }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">File Size</div>
+          <div class="font-mono text-sm">{{ media.file_size }}</div>
         </div>
         <div>
           <div class="text-xs text-gray-500 dark:text-gray-400">MIME Type</div>

@@ -2,7 +2,8 @@
 import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
 import AppNavbar from '@/components/Ui/AppNavbar.vue'
 import type { User } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -19,6 +20,8 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
+
+useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ only: ['user'] }))
 </script>
 
 <template>

@@ -4,6 +4,8 @@ import PlaylistDeleteModal from '@/components/Playlist/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Playlist, Video } from '@/types'
+import { router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -23,6 +25,8 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
+
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlists'] }))
 </script>
 
 <template>
