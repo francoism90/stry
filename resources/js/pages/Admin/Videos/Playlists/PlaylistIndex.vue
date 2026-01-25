@@ -30,6 +30,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"
+        :to="edit.url({ video: video.id, playlist: item.id })"
         variant="naked"
         class="py-4 first:pt-0 last:pb-0"
       >
@@ -45,15 +46,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
             <p class="text-sm text-gray-500 dark:text-gray-400">Created {{ item.created_at }}</p>
           </div>
 
-          <div class="flex gap-2">
-            <UButton
-              icon="i-lucide-pencil"
-              color="secondary"
-              variant="ghost"
-              size="sm"
-              :to="edit.url({ video: video.id, playlist: item.id })"
-            />
-
+          <div class="z-10 flex items-center gap-2">
             <PlaylistDeleteModal
               :video="video"
               :item="item"

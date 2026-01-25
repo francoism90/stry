@@ -31,6 +31,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"
+        :to="edit.url({ video: video.id, media: item.id })"
         variant="naked"
         class="py-4 first:pt-0 last:pb-0"
       >
@@ -58,15 +59,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
             </div>
           </div>
 
-          <div class="flex gap-2">
-            <UButton
-              icon="i-lucide-pencil"
-              color="secondary"
-              variant="ghost"
-              size="sm"
-              :to="edit.url({ video: video.id, media: item.id })"
-            />
-
+          <div class="z-10 flex items-center gap-2">
             <MediaDeleteModal
               :video="video"
               :item="item"

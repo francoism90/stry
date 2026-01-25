@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
+import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
 import TagDeleteModal from '@/components/Tags/TagDeleteModal.vue'
 import TagOrderModal from '@/components/Tags/TagOrderModal.vue'
@@ -120,11 +121,11 @@ watchDebounced(
 
               <div class="z-10 flex items-center gap-2">
                 <UButton
-                  icon="i-lucide-pencil"
+                  icon="i-lucide-eye"
                   color="secondary"
                   variant="ghost"
                   size="sm"
-                  :to="edit.url(item.id)"
+                  :to="HomeController.url('all', { query: { tag: item.id } })"
                 />
 
                 <TagDeleteModal :item="item">
