@@ -2,7 +2,7 @@
 Description=Garage container
 
 [Container]
-Image=docker.io/dxflrs/garage:v2.1.0
+Image=docker.io/dxflrs/garage:v2.2.0
 AutoUpdate=registry
 Volume=%h/.config/containers/systemd/stry/config/garage.toml:/etc/garage.toml:rw,Z,U
 Volume=stry-garage-meta:/var/lib/garage/meta:rw,Z,U
