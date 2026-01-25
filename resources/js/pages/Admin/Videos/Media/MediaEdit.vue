@@ -84,6 +84,35 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
     </UPageCard>
 
     <UPageCard
+      title="Media Attributes"
+      description="File and storage details for this media."
+      variant="subtle"
+    >
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">File Name</div>
+          <div class="font-mono text-sm">{{ media.file_name }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">MIME Type</div>
+          <div class="font-mono text-sm">{{ media.mime_type }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Collection</div>
+          <div class="font-mono text-sm">{{ media.collection_name }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Disk</div>
+          <div class="font-mono text-sm">{{ media.disk }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Conversions Disk</div>
+          <div class="font-mono text-sm">{{ media.conversions_disk }}</div>
+        </div>
+      </div>
+    </UPageCard>
+
+    <UPageCard
       v-if="getStreamInfo().length"
       title="Stream Information"
       description="Technical details about the media file."
