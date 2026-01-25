@@ -4,7 +4,8 @@ import { index as media } from '@/actions/App/Admin/Videos/Controllers/VideoMedi
 import { index as playlists } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
 import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
@@ -38,6 +39,8 @@ const links: NavigationMenuItem[][] = [
     },
   ],
 ]
+
+useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 </script>
 
 <template>

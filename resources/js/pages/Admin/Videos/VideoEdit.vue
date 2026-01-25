@@ -6,8 +6,6 @@ import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
-import { router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -37,8 +35,6 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
-
-useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 </script>
 
 <template>

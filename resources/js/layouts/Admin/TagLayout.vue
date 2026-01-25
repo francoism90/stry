@@ -2,7 +2,8 @@
 import { edit } from '@/actions/App/Admin/Tags/Controllers/TagController'
 import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import type { Tag } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
@@ -26,6 +27,8 @@ const links: NavigationMenuItem[][] = [
     },
   ],
 ]
+
+useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
 </script>
 
 <template>

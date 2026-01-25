@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Users/Controllers/UserController'
 import type { User } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
@@ -26,6 +27,8 @@ const links: NavigationMenuItem[][] = [
     },
   ],
 ]
+
+useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ only: ['user'] }))
 </script>
 
 <template>

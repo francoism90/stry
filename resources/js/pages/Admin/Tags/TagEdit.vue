@@ -6,8 +6,6 @@ import TagLayout from '@/layouts/Admin/TagLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Tag, TagMenuItem } from '@/types'
 import { capitalize } from '@/utils/case'
-import { router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -32,8 +30,6 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
-
-useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
 </script>
 
 <template>

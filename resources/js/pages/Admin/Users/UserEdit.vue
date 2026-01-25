@@ -4,8 +4,6 @@ import UserDeleteModal from '@/components/Users/UserDeleteModal.vue'
 import UserLayout from '@/layouts/Admin/UserLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { User } from '@/types'
-import { router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -24,8 +22,6 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
-
-useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ only: ['user'] }))
 </script>
 
 <template>
