@@ -9,6 +9,7 @@ import type { Media, Transcode, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
+import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
@@ -22,11 +23,20 @@ const toast = useToast()
 
 const form = useForm('put', update.url([props.video.id, props.media.id]), {
   name: props.media.name,
-  custom_properties: props.media.custom_properties,
+  custom_properties: props.media.custom_properties || {},
 })
 
 const { getStreamInfo, getAv1Stream } = useMedia(props.media)
 const { createConversion, importTranscoded } = useVideo(props.video)
+
+const customProperties = computed({
+  get: () => JSON.stringify(form.custom_properties),
+  set: (val) => {
+    try {
+      form.custom_properties = JSON.parse(val)
+    } catch {}
+  },
+})
 
 const onSubmit = () =>
   form.submit({
@@ -88,7 +98,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
         :error="form.errors.custom_properties"
       >
         <UTextarea
-          v-model="form.custom_properties"
+          v-model="customProperties"
           :model-modifiers="{ string: true, trim: true }"
           :rows="8"
           placeholder='{"key": "value"}'

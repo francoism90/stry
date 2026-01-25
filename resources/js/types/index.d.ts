@@ -56,9 +56,9 @@ export type Media = Model & {
   collection_name: string
   disk: string
   conversions_disk: string
-  custom_properties?: string | null
-  generated_conversions?: string | null
-  responsive_images?: string | null
+  custom_properties?: MediaCustomProperties | null
+  generated_conversions?: Record<string, unknown> | null
+  responsive_images?: Record<string, unknown> | null
   transcodes?: Transcode[]
 }
 
