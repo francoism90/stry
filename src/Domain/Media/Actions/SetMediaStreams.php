@@ -30,6 +30,7 @@ class SetMediaStreams
         // Map the streams to only include relevant keys
         $keys = $this->getStreamKeys();
 
+        // Collect the stream items
         $items = collect($streams)
             ->map(fn (Stream $stream) => collect($stream->all())->only($keys)->toArray())
             ->filter()
