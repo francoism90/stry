@@ -23,7 +23,7 @@
         "@laravel/echo-vue": "^2.3.0",
         "@nuxt/ui": "^4.4.0",
         "@vueuse/core": "^14.1.0",
-        "axios": "^1.13.2",
+        "axios": "^1.13.3",
         "hls.js": "^1.6.15",
         "laravel-echo": "^2.3.0",
         "laravel-precognition-vue-inertia": "^0.8.0",
@@ -60,7 +60,7 @@
         "vite-plugin-pwa": "^1.2.0",
         "vite-plugin-vue-devtools": "^8.0.5",
         "vitest": "^4.0.18",
-        "vue-tsc": "^3.2.3",
+        "vue-tsc": "^3.2.4",
         "workbox-window": "^7.4.0"
     }
 }
