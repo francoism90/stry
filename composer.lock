@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db7fccaf0104c301f632aa297da40e7a",
+    "content-hash": "ee4104e458a3ce9a19fe4d43f47eb971",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
