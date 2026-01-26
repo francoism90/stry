@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -47,11 +48,11 @@ class Groupable extends MorphPivot
         ];
     }
 
-    public function newQueryForRestoration($ids)
+    public function newQueryForRestoration($ids): Builder
     {
         return is_array($ids)
-                ? $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids)
-                : $this->newQueryWithoutScopes()->whereKey($ids);
+            ? $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids)
+            : $this->newQueryWithoutScopes()->whereKey($ids);
     }
 
     public function groupable(): MorphTo
