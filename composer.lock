@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc984dfaa8cf78bb083f7857fa5c7828",
+    "content-hash": "db7fccaf0104c301f632aa297da40e7a",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1235,24 +1235,24 @@
         },
         {
             "name": "foxws/laravel-av1",
-            "version": "0.2.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-av1.git",
-                "reference": "4c2012e603d931bb818417188c8248d64b99a2cf"
+                "reference": "e97ecf0cb999c183f49dc4c064ed7afd6637fb74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/4c2012e603d931bb818417188c8248d64b99a2cf",
-                "reference": "4c2012e603d931bb818417188c8248d64b99a2cf",
+                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/e97ecf0cb999c183f49dc4c064ed7afd6637fb74",
+                "reference": "e97ecf0cb999c183f49dc4c064ed7afd6637fb74",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^11.0||^12.0",
-                "illuminate/filesystem": "^11.0||^12.0",
-                "illuminate/process": "^11.0||^12.0",
-                "illuminate/support": "^11.0||^12.0",
-                "php": "^8.3||^8.4||^8.5",
+                "illuminate/contracts": "^11.0 || ^12.0",
+                "illuminate/filesystem": "^11.0 || ^12.0",
+                "illuminate/process": "^11.0 || ^12.0",
+                "illuminate/support": "^11.0 || ^12.0",
+                "php": "^8.2",
                 "psr/log": "^3.0",
                 "spatie/laravel-package-tools": "^1.16"
             },
@@ -1260,7 +1260,7 @@
                 "larastan/larastan": "^3.0",
                 "laravel/pint": "^1.14",
                 "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^10.0.0||^9.0.0",
+                "orchestra/testbench": "^9.0.0 || ^10.0.0",
                 "pestphp/pest": "^4.0",
                 "pestphp/pest-plugin-arch": "^4.0",
                 "pestphp/pest-plugin-laravel": "^4.0",
@@ -1310,7 +1310,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-av1/issues",
-                "source": "https://github.com/foxws/laravel-av1/tree/0.2.0"
+                "source": "https://github.com/foxws/laravel-av1/tree/0.4.0"
             },
             "funding": [
                 {
@@ -1318,28 +1318,28 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-24T10:01:21+00:00"
+            "time": "2026-01-26T18:03:48+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "0.8.0",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "86a85842534ee62360e66586d7438c2abf9c410b"
+                "reference": "01649d722b633ae5891131ebdd244b248c78d580"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/86a85842534ee62360e66586d7438c2abf9c410b",
-                "reference": "86a85842534ee62360e66586d7438c2abf9c410b",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/01649d722b633ae5891131ebdd244b248c78d580",
+                "reference": "01649d722b633ae5891131ebdd244b248c78d580",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^11.0||^12.0",
-                "illuminate/filesystem": "^11.0||^12.0",
-                "illuminate/process": "^11.0||^12.0",
-                "illuminate/support": "^11.0||^12.0",
-                "php": "^8.3||^8.4||^8.5",
+                "illuminate/contracts": "^11.0 || ^12.0",
+                "illuminate/filesystem": "^11.0 || ^12.0",
+                "illuminate/process": "^11.0 || ^12.0",
+                "illuminate/support": "^11.0 || ^12.0",
+                "php": "^8.3",
                 "psr/log": "^3.0",
                 "spatie/laravel-package-tools": "^1.16"
             },
@@ -1347,7 +1347,7 @@
                 "larastan/larastan": "^3.0",
                 "laravel/pint": "^1.14",
                 "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^10.0.0||^9.0.0",
+                "orchestra/testbench": "^9.0 || ^10.0",
                 "pestphp/pest": "^4.0",
                 "pestphp/pest-plugin-arch": "^4.0",
                 "pestphp/pest-plugin-laravel": "^4.0",
@@ -1398,7 +1398,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/0.8.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/0.9.0"
             },
             "funding": [
                 {
@@ -1406,7 +1406,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-23T12:32:35+00:00"
+            "time": "2026-01-26T17:58:15+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -5480,16 +5480,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374"
+                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
-                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a004701b11273a26cd7955a61d67a7f1e525a45a",
+                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a",
                 "shasum": ""
             },
             "require": {
@@ -5521,9 +5521,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.2"
             },
-            "time": "2026-01-12T11:33:04+00:00"
+            "time": "2026-01-25T14:56:51+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -12251,33 +12251,33 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v1.8.10",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "aad8b2a423b0a886c2ce7ee92abbfde69992ff32"
+                "reference": "59874334803197654c1e8de96547804465bbdd0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/aad8b2a423b0a886c2ce7ee92abbfde69992ff32",
-                "reference": "aad8b2a423b0a886c2ce7ee92abbfde69992ff32",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/59874334803197654c1e8de96547804465bbdd0c",
+                "reference": "59874334803197654c1e8de96547804465bbdd0c",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.9",
-                "illuminate/console": "^10.49.0|^11.45.3|^12.41.1",
-                "illuminate/contracts": "^10.49.0|^11.45.3|^12.41.1",
-                "illuminate/routing": "^10.49.0|^11.45.3|^12.41.1",
-                "illuminate/support": "^10.49.0|^11.45.3|^12.41.1",
+                "illuminate/console": "^11.45.3|^12.41.1",
+                "illuminate/contracts": "^11.45.3|^12.41.1",
+                "illuminate/routing": "^11.45.3|^12.41.1",
+                "illuminate/support": "^11.45.3|^12.41.1",
                 "laravel/mcp": "^0.5.1",
-                "laravel/prompts": "0.1.25|^0.3.6",
+                "laravel/prompts": "^0.3.10",
                 "laravel/roster": "^0.2.9",
-                "php": "^8.1"
+                "php": "^8.2"
             },
             "require-dev": {
-                "laravel/pint": "^1.20.0",
+                "laravel/pint": "^1.27.0",
                 "mockery/mockery": "^1.6.12",
-                "orchestra/testbench": "^8.36.0|^9.15.0|^10.6",
+                "orchestra/testbench": "^9.15.0|^10.6",
                 "pestphp/pest": "^2.36.0|^3.8.4|^4.1.5",
                 "phpstan/phpstan": "^2.1.27",
                 "rector/rector": "^2.1"
@@ -12313,7 +12313,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-01-14T14:51:16+00:00"
+            "time": "2026-01-26T16:36:25+00:00"
         },
         {
             "name": "laravel/envoy",

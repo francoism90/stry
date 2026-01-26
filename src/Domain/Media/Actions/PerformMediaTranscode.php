@@ -25,10 +25,7 @@ class PerformMediaTranscode
         $encoder = AV1::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->abav1()
-            ->vmafEncode()
-            ->preset('6')
-            ->minVmaf(80)
-            ->maxEncodedPercent(300);
+            ->vmafEncode();
 
         // Save to the specified disk and path
         $result = $encoder
