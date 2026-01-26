@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Videos\Controllers;
 
-use Domain\Videos\Actions\ImportVideoTranscodes;
+use Domain\Videos\Jobs\ImportTranscodes;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -28,10 +28,10 @@ class VideoTranscodedController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         // Import video transcodes
-        app(ImportVideoTranscodes::class)->handle($video);
+        ImportTranscodes::dispatch($video);
 
         // Flash message
-        Inertia::flash('message', __('Video transcodes imported successfully.'));
+        Inertia::flash('message', __('Transcodes will be imported shortly.'));
 
         return back();
     }
