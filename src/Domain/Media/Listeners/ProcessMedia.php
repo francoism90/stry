@@ -8,7 +8,6 @@ use Domain\Media\Actions\SetMediaStreams;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
-use Illuminate\Support\Facades\Pipeline;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class ProcessMedia implements ShouldQueueAfterCommit
@@ -47,11 +46,7 @@ class ProcessMedia implements ShouldQueueAfterCommit
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {
-        Pipeline::send($event->media)
-            ->through([
-                SetMediaStreams::class,
-            ])
-            ->thenReturn();
+        app(SetMediaStreams::class)->handle($event->media);
     }
 
     /**

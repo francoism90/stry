@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Media\Actions;
 
-use Closure;
 use Domain\Media\Models\Media;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
@@ -13,10 +12,10 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class SetMediaStreams
 {
-    public function handle(Media $media, Closure $next): mixed
+    public function handle(Media $media): void
     {
         if (! Str::startsWith($media->mime_type, ['audio/', 'video/'])) {
-            return $next($media);
+            return;
         }
 
         // Parse the media streams
@@ -54,8 +53,6 @@ class SetMediaStreams
         $media
             ->setCustomProperty('streams', $items->toArray())
             ->saveOrFail();
-
-        return $next($media);
     }
 
     protected function getStreamKeys(): array
