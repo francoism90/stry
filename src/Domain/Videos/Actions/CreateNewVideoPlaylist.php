@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use Closure;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
@@ -13,11 +12,11 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class CreateNewVideoPlaylist
 {
-    public function handle(Video $video, Closure $next): mixed
+    public function handle(Video $video): void
     {
         // Skip if there are no clips associated with the video
         if (! $video->hasMedia('clips')) {
-            return $next($video);
+            return;
         }
 
         // Get the collection of clips for the video
@@ -88,18 +87,23 @@ class CreateNewVideoPlaylist
         }
 
         // Export the playlist to the configured disk and path
-        $packager
-            ->export()
-            ->toDisk($playlist->getDisk())
-            ->toPath($playlist->getPath())
-            ->save();
+        try {
+            $packager
+                ->export()
+                ->toDisk($playlist->getDisk())
+                ->toPath($playlist->getPath())
+                ->save();
 
-        // Mark the playlist as ready
-        $playlist->markAsReady();
+            // Mark the playlist as ready
+            $playlist->markAsReady();
+        } catch (\Throwable $exception) {
+            // Mark the playlist as failed
+            $playlist->markAsFailed();
 
-        // Cleanup temporary files
-        $packager->cleanupTemporaryFiles();
-
-        return $next($video);
+            throw $exception;
+        } finally {
+            // Clean up temporary files
+            $packager->cleanupTemporaryFiles();
+        }
     }
 }

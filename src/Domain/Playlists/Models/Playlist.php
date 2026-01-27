@@ -190,6 +190,13 @@ class Playlist extends Model
         ]);
     }
 
+    public function markAsFailed(): void
+    {
+        $this->updateOrFail([
+            'state' => Failed::class,
+        ]);
+    }
+
     public function isExpired(): bool
     {
         return filled($this->expires_at) && Carbon::parse($this->expires_at)->isPast();

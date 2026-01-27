@@ -55,13 +55,9 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         $this->onQueue('processing');
     }
 
-    public function handle(): void
+    public function handle(CreateNewVideoPlaylist $action): void
     {
-        Pipeline::send($this->video)
-            ->through([
-                CreateNewVideoPlaylist::class,
-            ])
-            ->thenReturn();
+        $action->handle($this->video);
     }
 
     /**
