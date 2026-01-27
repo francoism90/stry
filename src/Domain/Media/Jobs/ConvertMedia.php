@@ -8,14 +8,13 @@ use Domain\Media\Actions\PerformMediaTranscode;
 use Domain\Media\Models\Transcode;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class ConvertMedia implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCommit
+class ConvertMedia implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Dispatchable;
     use InteractsWithQueue;
