@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Config;
@@ -29,6 +30,7 @@ class Transcode extends Model
     use HasStates;
     use HasUlids;
     use InteractsWithUser;
+    use Prunable;
 
     /**
      * @var array<int, string>
@@ -66,6 +68,13 @@ class Transcode extends Model
     public function media(): BelongsTo
     {
         return $this->belongsTo(Media::class);
+    }
+
+    public function prunable(): TranscodeQueryBuilder
+    {
+        return static::query()
+            ->where('state', States\Failed::class)
+            ->where('created_at', '<=', now()->subDays(7));
     }
 
     public function uniqueIds(): array

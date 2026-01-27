@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Domain\Groups\Models\Group;
-use Domain\Playlists\Models\Playlist;
 use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\PruneStaleTagsCommand;
 use Illuminate\Database\Console\PruneCommand;
@@ -30,8 +28,9 @@ Schedule::command(PruneExpired::class, ['--hours=24'])
 
 Schedule::command(PruneCommand::class, [
     '--model' => [
-        Group::class,
-        Playlist::class,
+        Domain\Groups\Models\Group::class,
+        Domain\Playlists\Models\Playlist::class,
+        Domain\Media\Models\Transcode::class,
     ]])
     ->withoutOverlapping()
     ->dailyAt('02:30')
