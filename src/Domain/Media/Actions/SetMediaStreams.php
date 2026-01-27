@@ -7,6 +7,7 @@ namespace Domain\Media\Actions;
 use Closure;
 use Domain\Media\Models\Media;
 use FFMpeg\FFProbe\DataMapping\Stream;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
@@ -31,13 +32,13 @@ class SetMediaStreams
         $keys = $this->getStreamKeys();
 
         // Collect the stream items
-        $items = collect($streams)
+        $items = Collection::make($streams)
             ->map(fn (Stream $stream) => collect($stream->all())->only($keys)->toArray())
             ->filter()
             ->values();
 
         // Fill missing key values in each stream from the format
-        collect($format->all())
+        Collection::make($format->all())
             ->only($keys)
             ->each(function ($value, $key) use ($items) {
                 $items->transform(function ($item) use ($key, $value) {

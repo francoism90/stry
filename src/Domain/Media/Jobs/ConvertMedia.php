@@ -14,7 +14,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
-use Throwable;
 
 class ConvertMedia implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCommit
 {
@@ -41,23 +40,7 @@ class ConvertMedia implements ShouldBeUnique, ShouldQueue, ShouldQueueAfterCommi
 
     public function handle(PerformMediaTranscode $action): void
     {
-        // Update state to processing
-        $this->transcode->markAsProcessing();
-
-        // Perform conversion
-        try {
-            $action->handle($this->transcode);
-
-            // Get file size and update state to completed
-            $fileSize = $this->transcode->getFilesystem()->size($this->transcode->getOutputPath());
-
-            $this->transcode->markAsCompleted($fileSize);
-        } catch (Throwable $e) {
-            // Update state to failed
-            $this->transcode->markAsFailed($e->getMessage());
-
-            throw $e;
-        }
+        $action->handle($this->transcode);
     }
 
     /**

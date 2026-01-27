@@ -9,6 +9,7 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Throwable;
 
 class CreateNewVideoPlaylist
 {
@@ -96,7 +97,7 @@ class CreateNewVideoPlaylist
 
             // Mark the playlist as ready
             $playlist->markAsReady();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             // Mark the playlist as failed
             $playlist->markAsFailed();
 

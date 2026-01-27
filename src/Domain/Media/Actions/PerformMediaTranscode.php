@@ -6,40 +6,53 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Transcode;
 use Foxws\AV1\Facades\AV1;
+use InvalidArgumentException;
+use Throwable;
 
 class PerformMediaTranscode
 {
     public function handle(Transcode $transcode): void
     {
-        if ($transcode->encoder !== 'ab-av1') {
-            throw new \InvalidArgumentException('Unsupported encoder: '.$transcode->encoder);
-        }
+        throw_if(
+            $transcode->encoder !== 'ab-av1',
+            new InvalidArgumentException('Unsupported encoder: '.$transcode->encoder)
+        );
 
-        // Get associated media
+        // Get the associated media
         $media = $transcode->media;
 
-        // Define output path
+        // Get the output path for the transcode
         $outputPath = $transcode->getOutputPath();
 
-        // Perform AV1 encoding
+        // Create the AV1 encoder instance
         $encoder = AV1::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
             ->abav1()
             ->vmafEncode();
 
-        // Save to the specified disk and path
-        $result = $encoder
-            ->export()
-            ->toDisk(Transcode::getDisk())
-            ->save($outputPath);
+        try {
+            // Mark the transcode as processing
+            $transcode->markAsProcessing();
 
-        throw_unless(
-            $result->isSuccessful(),
-            \RuntimeException::class,
-            'AV1 encoding failed: '.$result->getErrorOutput()
-        );
+            // Export the encoded media to the specified disk and path
+            $encoder
+                ->export()
+                ->toDisk(Transcode::getDisk())
+                ->save($outputPath);
 
-        // Clean up temporary files
-        $encoder->cleanupTemporaryFiles();
+            // Get the size of the output file
+            $fileSize = $transcode->getFilesystem()->size($transcode->getOutputPath());
+
+            // Mark the transcode as completed
+            $transcode->markAsCompleted($fileSize);
+        } catch (Throwable $exception) {
+            // Mark the transcode as failed
+            $transcode->markAsFailed($exception->getMessage());
+
+            throw $exception;
+        } finally {
+            // Clean up temporary files used during encoding
+            $encoder->cleanupTemporaryFiles();
+        }
     }
 }
