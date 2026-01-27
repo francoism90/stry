@@ -45,7 +45,7 @@ return [
     */
     'ab-av1' => [
         'timeout' => env('AB_AV1_TIMEOUT', 14400), // 4 hours
-        'preset' => env('AB_AV1_PRESET', 6),
+        'preset' => env('AB_AV1_PRESET', 5),
         'min_vmaf' => env('AB_AV1_MIN_VMAF', 80),
         'max_encoded_percent' => env('AB_AV1_MAX_PERCENT', 300),
     ],
