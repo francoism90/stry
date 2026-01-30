@@ -18,8 +18,8 @@
         "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
-        "@inertiajs/core": "^2.3.12",
-        "@inertiajs/vue3": "^2.3.12",
+        "@inertiajs/core": "^2.3.13",
+        "@inertiajs/vue3": "^2.3.13",
         "@laravel/echo-vue": "^2.3.0",
         "@nuxt/ui": "^4.4.0",
         "@vueuse/core": "^14.1.0",

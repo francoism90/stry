@@ -29,14 +29,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 
   <UDashboardPanel id="settings">
     <template #header>
-      <UDashboardNavbar
-        :ui="{ root: 'h-20 gap-3 border-0', left: 'w-full' }"
-        :toggle="{ variant: 'link', class: 'ps-0' }"
-      >
-        <template #right>
-          <AppNavbar />
-        </template>
-      </UDashboardNavbar>
+      <AppNavbar />
     </template>
 
     <template #body>
