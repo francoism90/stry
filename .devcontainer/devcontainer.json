@@ -5,15 +5,15 @@
         "HOME": "/home/docker",
         "CONTAINER_ROLE": "shell"
     },
-    "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"],
+    "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"], // Make sure to create the network with systemctl --user start stry-network
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,consistency=cached"],
     "build": {
         "context": "./../",
         "dockerfile": "./../containers/Containerfile",
         "target": "development",
         "args": {
-            "UID": "60022", // Replace with your desired UID (id -u)
-            "GID": "60022" // Replace with your desired GID (id -g)
+            "UID": "1000", // Replace with your desired UID (id -u)
+            "GID": "1000" // Replace with your desired GID (id -g)
         }
     }
 }

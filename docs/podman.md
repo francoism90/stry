@@ -38,6 +38,12 @@ This guide assumes a **rootless** Podman setup (recommended for security):
 > [!TIP]
 > Your distribution may have already configured rootless Podman for you.
 
+To allow GPU acceleration when using SELinux:
+
+```bash
+sudo setsebool -P container_use_dri_devices 1
+```
+
 ---
 
 ## 🛠️ Installation
