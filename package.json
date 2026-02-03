@@ -22,7 +22,7 @@
         "@inertiajs/vue3": "^2.3.13",
         "@laravel/echo-vue": "^2.3.0",
         "@nuxt/ui": "^4.4.0",
-        "@vueuse/core": "^14.1.0",
+        "@vueuse/core": "^14.2.0",
         "axios": "^1.13.4",
         "hls.js": "^1.6.15",
         "laravel-echo": "^2.3.0",
