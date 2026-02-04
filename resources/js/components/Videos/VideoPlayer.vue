@@ -6,7 +6,7 @@ import { onMounted, ref } from 'vue'
 
 const el = ref<HTMLMediaElement | undefined>()
 
-const { initialize, ready, error } = useShaka(el.value)
+const { initialize, ready, error } = useShaka(el)
 
 const actions = ref<ButtonProps[]>([
   {
