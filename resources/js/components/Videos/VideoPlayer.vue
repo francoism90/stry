@@ -4,9 +4,9 @@ import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { onMounted, ref } from 'vue'
 
-const el = ref<HTMLMediaElement | null>(null)
+const el = ref<HTMLMediaElement | undefined>()
 
-const { initialize, ready, error } = useShaka()
+const { initialize, ready, error } = useShaka(el.value)
 
 const actions = ref<ButtonProps[]>([
   {
@@ -26,7 +26,7 @@ const actions = ref<ButtonProps[]>([
   },
 ])
 
-onMounted(() => initialize(el.value))
+onMounted(() => initialize())
 </script>
 
 <template>
@@ -48,8 +48,8 @@ onMounted(() => initialize(el.value))
     />
 
     <video
-      v-show="ready && !error"
       ref="el"
+      v-show="ready && !error"
       class="aspect-video max-h-[50vh] w-full rounded-sm bg-transparent sm:max-h-[60vh] lg:max-h-[70vh]"
       controls
       autoplay

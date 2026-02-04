@@ -6,18 +6,20 @@ import { useThrottleFn } from '@vueuse/core'
 import shaka from 'shaka-player'
 import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 
-export function useShaka() {
+export function useShaka(element?: HTMLMediaElement) {
   const player = shallowRef<shaka.Player>()
   const error = ref<shaka.util.Error | null>(null)
-  const el = ref<HTMLMediaElement | null>(null)
   const ready = ref(false)
 
   const playlist = computed(() => usePage().props.playlist as Playlist | null)
   const startTime = computed(() => usePage().props.progress as number | null)
 
-  const initialize = async (element: HTMLMediaElement | null) => {
-    // Set media element
-    el.value = element || null
+  const initialize = async () => {
+    // Load manifest
+    const manifestUri = playlist.value?.asset
+
+    // Ensure we have a video element and manifest URI
+    if (!element || !manifestUri) return
 
     // Build configuration
     const config: Partial<shaka.extern.PlayerConfiguration> = {}
@@ -41,22 +43,21 @@ export function useShaka() {
     // Apply configuration
     player.value.configure(config)
 
+    // Attach player to video element
+    await player.value.attach(element)
+
+    // Add timeupdate listener
+    element.addEventListener('timeupdate', onTimeUpdate)
+
     // Add error listener
     player.value.addEventListener('error', onErrorEvent)
 
-    // Attach video element
-    if (el.value) {
-      await player.value.attach(el.value)
-
-      // Add timeupdate listener
-      el.value.addEventListener('timeupdate', onTimeUpdate)
-    }
-
     // Check playlist state
-    const isExpired = playlist.value?.expired
-    const isFailed = playlist.value?.failed
-    const isValid = playlist.value?.valid
+    const isExpired = playlist.value?.expired || false
+    const isFailed = playlist.value?.failed || false
+    const isValid = playlist.value?.valid || false
 
+    // Set error state if expired or failed
     if (isFailed) {
       error.value = new shaka.util.Error(
         shaka.util.Error.Severity.CRITICAL,
@@ -73,15 +74,13 @@ export function useShaka() {
       )
     }
 
-    // Load manifest
-    const manifestUri = playlist.value?.asset
-
-    if (manifestUri && isValid) {
+    // Load manifest if valid
+    if (isValid) {
       await player.value.load(manifestUri, startTime.value ?? 0)
     }
 
     // Set ready state
-    ready.value = isValid || false
+    ready.value = isValid
   }
 
   const onErrorEvent = (event: Event) => {
@@ -89,7 +88,7 @@ export function useShaka() {
   }
 
   const onTimeUpdate = useThrottleFn(() => {
-    const currentTime = el.value?.currentTime ?? 0
+    const currentTime = element?.currentTime ?? 0
 
     // Round to 2 decimal places and ensure valid number
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
@@ -111,12 +110,12 @@ export function useShaka() {
     error.value = null
 
     // Remove timeupdate listener
-    el.value?.removeEventListener('timeupdate', onTimeUpdate)
+    element?.removeEventListener('timeupdate', onTimeUpdate)
   }
 
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
-  watch(playlist, () => initialize(el.value), { deep: true })
+  watch(playlist, () => initialize(), { deep: true })
 
   return {
     player,

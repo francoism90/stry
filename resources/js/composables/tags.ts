@@ -8,27 +8,23 @@ import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } 
 export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   const state = ref<TagCollection>()
   const ready = ref(false)
-  const preselect = ref<Tag[]>([])
 
-  const items = computed(() => unique([...preselect.value, ...(state.value?.data || [])]))
-
-  const query = async (options?: RouteQueryOptions) => http.get<TagCollection>(index.url(options))
+  const items = computed(() => unique([...toValue(tags || []), ...(state.value?.data || [])]))
 
   const filter = async (options?: RouteQueryOptions) => {
     try {
-      const { data } = await query(options)
-      state.value = Object.assign(state.value || {}, data)
+      state.value = Object.assign(
+        state.value || {},
+        await http.get<TagCollection>(index.url(options)).then((r) => r.data),
+      )
     } finally {
       ready.value = true
     }
   }
 
-  watchEffect(async () => {
-    preselect.value = toValue(tags || [])
-
-    // Preload tags
+  watchEffect(() => {
     if (!ready.value) {
-      await filter()
+      filter()
     }
   })
 

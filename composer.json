@@ -48,8 +48,8 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6.1",
         "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.9.1",
-        "laravel/boost": "^2.0.4",
+        "larastan/larastan": "^3.9.2",
+        "laravel/boost": "^2.0.6",
         "laravel/envoy": "^2.10.2",
         "laravel/pail": "^1.2.4",
         "laravel/pint": "^1.27.0",
