@@ -29,6 +29,9 @@ class CreateNewVideoPlaylist
         // Initialize Streamer
         $streamer = Streamer::fromDisk($clips->first()->disk)->open($paths->toArray());
 
+        // Use system binaries
+        $streamer->useSystemBinaries();
+
         // Get encryption configuration
         $encryptionMethod = Playlist::getEncryptionMethod();
         $protectionScheme = Playlist::getProtectionScheme();
