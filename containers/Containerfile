@@ -72,10 +72,6 @@ RUN mkdir -p /app /config /data/{media,import} \
 RUN apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-LABEL org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.source="https://github.com/francoism90/stry"
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS build
@@ -111,6 +107,11 @@ RUN chown -R docker:docker /app
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
+LABEL org.opencontainers.image.variant="production" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.revision="${VCS_REF}" \
+      org.opencontainers.image.source="https://github.com/francoism90/stry"
+
 USER docker
 
 EXPOSE 6001 8000 13714
@@ -122,6 +123,7 @@ WORKDIR /app
 # Set proper ownership
 RUN chown -R docker:docker /app /pnpm
 
-USER docker
-
-EXPOSE 5173 6001 8000
+LABEL org.opencontainers.image.variant="development" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.revision="${VCS_REF}" \
+      org.opencontainers.image.source="https://github.com/francoism90/stry"
