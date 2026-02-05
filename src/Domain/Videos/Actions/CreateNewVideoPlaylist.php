@@ -7,7 +7,7 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
-use Foxws\Shaka\Facades\Shaka;
+use Foxws\Streamer\Facades\Streamer;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
@@ -26,8 +26,8 @@ class CreateNewVideoPlaylist
         // Get the path relative to the disk root
         $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
 
-        // Initialize Shaka Packager
-        $packager = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
+        // Initialize Streamer
+        $packager = Streamer::fromDisk($clips->first()->disk)->open($paths->toArray());
 
         // Get encryption configuration
         $encryptionMethod = Playlist::getEncryptionMethod();
