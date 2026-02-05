@@ -60,6 +60,7 @@ return [
      * - fragment_sap_aligned: Align fragments to stream access points (improves seeking performance)
      * - mp4_include_pssh_in_stream: Include PSSH in stream for better DRM compatibility
      * - generate_static_live_mpd: Generate static MPD for DASH (improves caching)
+     * - dash_force_segment_list: Use SegmentList instead of SegmentTemplate
      * - default_language: Default language for audio/subtitle tracks
      * - force_cl_index: Force closed captions index for better HLS compatibility
      */
@@ -68,6 +69,7 @@ return [
         'fragment_sap_aligned' => true,
         'mp4_include_pssh_in_stream' => true,
         'generate_static_live_mpd' => true,
+        'dash_force_segment_list' => true,
         'default_language' => 'en',
         'force_cl_index' => true,
     ],

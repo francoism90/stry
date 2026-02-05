@@ -8,6 +8,7 @@ use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
+use Illuminate\Support\Facades\Log;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
@@ -37,7 +38,9 @@ class CreateNewVideoPlaylist
         $protectionScheme = Playlist::getProtectionScheme();
 
         // Check if we use encryption
-        $useEncryption = filled($encryptionMethod);
+        // NOTE: Encryption is currently disabled due to Shaka Streamer configuration issues
+        // TODO: Fix encryption configuration to work with Shaka Streamer pipeline config
+        $useEncryption = false; // filled($encryptionMethod);
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
@@ -92,11 +95,34 @@ class CreateNewVideoPlaylist
 
         // Export the playlist to the configured disk and path
         try {
-            $streamer
+            $exporter = $streamer
                 ->export()
                 ->toDisk($playlist->getDisk())
-                ->toPath($playlist->getPath())
-                ->save();
+                ->toPath($playlist->getPath());
+
+            $result = $exporter->save();
+
+            // Check if copy operation had failures
+            if ($exporter->hasCopyFailures()) {
+                $failures = $exporter->getFailedFiles();
+                Log::error('Playlist export had file copy failures', [
+                    'playlist_id' => $playlist->id,
+                    'failures' => $failures,
+                    'summary' => $exporter->getCopySummary(),
+                ]);
+
+                throw new \RuntimeException(
+                    'Failed to copy '.count($failures).' files to storage. '.
+                    'See logs for details.'
+                );
+            }
+
+            // Log successful copy operation
+            $summary = $exporter->getCopySummary();
+            Log::info('Playlist exported successfully', [
+                'playlist_id' => $playlist->id,
+                'summary' => $summary,
+            ]);
 
             // Mark the playlist as ready
             $playlist->markAsReady();

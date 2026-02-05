@@ -239,14 +239,18 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        $expiration = once(fn () => now()->addHour());
-
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
+        return URL::temporarySignedRoute('api.playlists.segment', now()->addHour(), [
+            'playlist' => $this,
+            'path' => $path,
+        ]);
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
+        return URL::temporarySignedRoute('api.playlists.segment', now()->addHour(), [
+            'playlist' => $this,
+            'path' => $path,
+        ]);
     }
 
     public static function getDestinationDisk(): string

@@ -1326,12 +1326,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "031e24670e987984e89d0253af1983da1afcc7de"
+                "reference": "8f0c5187aeae1648760d2b43fc059a39fac16a7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/031e24670e987984e89d0253af1983da1afcc7de",
-                "reference": "031e24670e987984e89d0253af1983da1afcc7de",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/8f0c5187aeae1648760d2b43fc059a39fac16a7c",
+                "reference": "8f0c5187aeae1648760d2b43fc059a39fac16a7c",
                 "shasum": ""
             },
             "require": {
@@ -1407,7 +1407,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-05T15:15:57+00:00"
+            "time": "2026-02-05T16:05:18+00:00"
         },
         {
             "name": "fruitcake/php-cors",

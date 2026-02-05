@@ -31,6 +31,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         return Streamer::dynamicDASHManifest()
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
-            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
+            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+            ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
     }
 }
