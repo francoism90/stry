@@ -24,7 +24,8 @@ RUN mkdir -p ${PNPM_HOME}
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget unzip zip git \
     nano openssh-client postgresql-common awscli python3 python3-pip \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
+    intel-media-driver libva libva-drm libva-x11 libigc level-zero mesa-va-drivers \
+    libavif-bin jpegoptim optipng pngquant gifsicle imagemagick libheif0 \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
