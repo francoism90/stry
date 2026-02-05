@@ -53,7 +53,7 @@ RUN arch="$(uname -m)" && case "$arch" in \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
-    && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
+    && echo "${PACKAGER_SHA256} /usr/local/bin/packager" | sha256sum -c - \
     && chmod +x /usr/local/bin/packager
 
 # Install shaka-streamer via pip (without ffmpeg deps since we have our own)
