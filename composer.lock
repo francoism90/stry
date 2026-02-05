@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c1504dfa5fc96a3a749d40a4537f559",
+    "content-hash": "ce22e3626111be172a7dbd1ea5ad6f9c",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1321,105 +1321,17 @@
             "time": "2026-01-26T18:03:48+00:00"
         },
         {
-            "name": "foxws/laravel-shaka",
-            "version": "0.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "01649d722b633ae5891131ebdd244b248c78d580"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/01649d722b633ae5891131ebdd244b248c78d580",
-                "reference": "01649d722b633ae5891131ebdd244b248c78d580",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^11.0 || ^12.0",
-                "illuminate/filesystem": "^11.0 || ^12.0",
-                "illuminate/process": "^11.0 || ^12.0",
-                "illuminate/support": "^11.0 || ^12.0",
-                "php": "^8.3",
-                "psr/log": "^3.0",
-                "spatie/laravel-package-tools": "^1.16"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^9.0 || ^10.0",
-                "pestphp/pest": "^4.0",
-                "pestphp/pest-plugin-arch": "^4.0",
-                "pestphp/pest-plugin-laravel": "^4.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "spatie/laravel-ray": "^1.35"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Shaka": "Foxws\\Shaka\\Facades\\Shaka"
-                    },
-                    "providers": [
-                        "Foxws\\Shaka\\ShakaServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Foxws\\Shaka\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "francoism90",
-                    "email": "francoism90@users.noreply.github.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Laravel package to interact with Shaka Packager for media packaging.",
-            "homepage": "https://github.com/foxws/laravel-shaka",
-            "keywords": [
-                "audio",
-                "dash",
-                "hls",
-                "laravel",
-                "media",
-                "packager",
-                "shaka",
-                "streaming",
-                "video"
-            ],
-            "support": {
-                "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/0.9.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Foxws",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-01-26T17:58:15+00:00"
-        },
-        {
             "name": "foxws/laravel-streamer",
             "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "881ec2ce8faea8b5edacafe79b05564a9bd80aff"
+                "reference": "7df6925909ac8716d304732a33cf83ab26e45d50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/881ec2ce8faea8b5edacafe79b05564a9bd80aff",
-                "reference": "881ec2ce8faea8b5edacafe79b05564a9bd80aff",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/7df6925909ac8716d304732a33cf83ab26e45d50",
+                "reference": "7df6925909ac8716d304732a33cf83ab26e45d50",
                 "shasum": ""
             },
             "require": {
@@ -1496,7 +1408,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-05T13:52:38+00:00"
+            "time": "2026-02-05T14:39:34+00:00"
         },
         {
             "name": "fruitcake/php-cors",

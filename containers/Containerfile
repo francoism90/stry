@@ -43,7 +43,7 @@ RUN arch="$(uname -m)" && case "$arch" in \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
 # Install shaka-streamer via pip (without ffmpeg deps since we have our own)
-RUN pip3 install --no-cache-dir shaka-streamer --no-deps
+RUN pip3 install --break-system-packages shaka-streamer
 
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh

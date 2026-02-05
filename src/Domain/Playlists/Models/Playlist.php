@@ -286,8 +286,11 @@ class Playlist extends Model
         return Config::integer('playlists.key_rotation_duration', 300);
     }
 
-    public static function getPackagerOptions(): array
+    public static function getStreamerOptions(): array
     {
-        return Config::array('playlists.packager_options', []);
+        // TODO: Implement playlist-specific streamer options
+        return [];
+
+        // return Config::array('playlists.packager_options', []);
     }
 }
