@@ -17,15 +17,17 @@ ENV OCTANE="${ARTISAN} octane:frankenphp"
 
 WORKDIR /tmp
 
+# Set timezone
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
+# Create pnpm home directory
 RUN mkdir -p ${PNPM_HOME}
 
+# Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget unzip zip git \
     nano openssh-client postgresql-common awscli python3 python3-pip \
-    intel-media-driver libva libva-drm libigc level-zero mesa-va-drivers \
-    libavif-bin jpegoptim optipng pngquant gifsicle imagemagick libheif0 \
+    libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
