@@ -18,7 +18,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'playlists:clear {--type=clip}';
+    protected $signature = 'playlists:clear';
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class ClearCommand extends Command implements Isolatable
     {
         $playlists = spin(
             message: 'Retrieving playlists...',
-            callback: fn () => Playlist::type($this->option('type'))->lazy(),
+            callback: fn () => Playlist::lazy(),
         );
 
         if ($playlists->isEmpty()) {
