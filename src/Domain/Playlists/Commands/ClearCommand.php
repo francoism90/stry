@@ -18,7 +18,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'playlists:clear {--type=clip}';
+    protected $signature = 'playlists:clear';
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class ClearCommand extends Command implements Isolatable
     {
         $playlists = spin(
             message: 'Retrieving playlists...',
-            callback: fn () => Playlist::type($this->option('type'))->lazy(),
+            callback: fn () => Playlist::lazy(),
         );
 
         if ($playlists->isEmpty()) {
@@ -39,17 +39,16 @@ class ClearCommand extends Command implements Isolatable
         }
 
         table(
-            headers: ['ID', 'Type', 'State'],
+            headers: ['ID', 'State'],
             rows: $playlists->map(fn (Playlist $playlist) => [
                 (string) $playlist->getKey(),
-                (string) $playlist->type,
                 (string) $playlist->state,
             ])->all(),
         );
 
         if (confirm('Are you sure you want to delete these playlists?')) {
             $playlists->each(function (Playlist $playlist) {
-                info("deleting playlist `{$playlist->type}` ({$playlist->getKey()})");
+                info("deleting playlist ({$playlist->getKey()})");
 
                 $playlist->delete();
             });

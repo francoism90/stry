@@ -20,7 +20,8 @@
 
 ### ✨ Key Features
 
-- 🎥 **DASH Streaming** - Built-in DASH playlist generation with adaptive bitrate support
+- 🎥 **DASH Streaming** - Built-in DASH playlist generation
+- 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand
 - 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
 - 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
@@ -43,15 +44,16 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 ## 🛠️ Tech Stack
 
-| Category             | Technology                                                                |
-| -------------------- | ------------------------------------------------------------------------- |
-| **Backend**          | [Laravel 12.x](https://laravel.com/)                                      |
-| **Frontend**         | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/) |
-| **Database**         | [PostgreSQL 18.x](https://www.postgresql.org/)                            |
-| **Containers**       | [Podman 5.x](https://podman.io/)                                          |
-| **Search**           | [Typesense 29.x](https://typesense.org/)                                  |
-| **Video Processing** | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
-| **Video Streaming**  | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
+| Category              | Technology                                                                |
+| --------------------- | ------------------------------------------------------------------------- |
+| **Backend**           | [Laravel 12.x](https://laravel.com/)                                      |
+| **Frontend**          | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/) |
+| **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                            |
+| **Containers**        | [Podman 5.x](https://podman.io/)                                          |
+| **Search**            | [Typesense 29.x](https://typesense.org/)                                  |
+| **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
+| **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)            |
+| **Video Transcoding** | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
 
 ---
 
@@ -60,9 +62,11 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 **System Requirements:**
 
 - 🐧 Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
-- For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies. See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 - 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
 - 🛠️ Basic tools: `git`, `bash`
+
+For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies.
+See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 
 ---
 

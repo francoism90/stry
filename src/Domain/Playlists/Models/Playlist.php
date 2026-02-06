@@ -6,6 +6,7 @@ namespace Domain\Playlists\Models;
 
 use Database\Factories\PlaylistFactory;
 use Domain\Playlists\Collections\PlaylistCollection;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\Failed;
@@ -80,6 +81,7 @@ class Playlist extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'state' => PlaylistState::class,
+            'type' => PlaylistType::class,
         ];
     }
 
@@ -249,6 +251,11 @@ class Playlist extends Model
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
     }
 
+    public static function getDriver(): string
+    {
+        return Config::string('playlists.driver', 'packager');
+    }
+
     public static function getDestinationDisk(): string
     {
         return Config::string('playlists.disk_name', 'segments');
@@ -299,6 +306,11 @@ class Playlist extends Model
     public static function getKeyRotationDuration(): int
     {
         return Config::integer('playlists.key_rotation_duration', 300);
+    }
+
+    public static function getPackagerOptions(): array
+    {
+        return Config::array('playlists.packager_options', []);
     }
 
     public static function getStreamerOptions(): array

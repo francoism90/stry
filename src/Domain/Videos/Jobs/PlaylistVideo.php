@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Actions\CreateNewVideoPlaylist;
+use Domain\Videos\Actions\CreateNewVideoTranscode;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -31,7 +33,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 2;
+    public $timeout = 3600;
 
     /**
      * @var int
@@ -54,9 +56,16 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         $this->onQueue('processing');
     }
 
-    public function handle(CreateNewVideoPlaylist $action): void
+    public function handle(): void
     {
-        $action->handle($this->video);
+        // Determine the playlist driver
+        $driver = Playlist::getDriver();
+
+        match ($driver) {
+            'packager' => app(CreateNewVideoPlaylist::class)->handle($this->video),
+            'streamer' => app(CreateNewVideoTranscode::class)->handle($this->video),
+            default => throw new \InvalidArgumentException("Unsupported playlist driver: {$driver}"),
+        };
     }
 
     /**

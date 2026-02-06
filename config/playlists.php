@@ -3,6 +3,15 @@
 return [
 
     /**
+     * This setting is used to define the mode of playlist generation.
+     * The value can be either 'packager' or 'streamer'.
+     *
+     * - 'packager' → if you want to repurpose existing media files without re-encoding (fastest, requires supported input formats).
+     * - 'streamer' → if you want to generate playlists on-the-fly from source media (slower, but with more options).
+     */
+    'driver' => (string) env('PLAYLIST_DRIVER', 'packager'),
+
+    /**
      * This setting is used to define the disk where the playlists will be stored.
      * The disk should be configured in the `filesystems.php` configuration file.
      */
@@ -11,18 +20,21 @@ return [
     /**
      * Default audio codecs to use for the playlist.
      * This can be overridden on a per-stream basis when adding streams to the playlist.
+     * Note: This is only applicable when using Shaka Streamer.
      */
     'audio_codecs' => (array) env('PLAYLIST_AUDIO_CODECS', ['aac']),
 
     /**
      * Default video codecs to use for the playlist.
      * This can be overridden on a per-stream basis when adding streams to the playlist.
+     * Note: This is only applicable when using Shaka Streamer.
      */
     'video_codecs' => (array) env('PLAYLIST_VIDEO_CODECS', ['hw:h264']),
 
     /**
      * This setting is used to define the resolutions that will be generated for the playlist.
      * The value is an array of strings, where each string represents a resolution (e.g., '1080p', '720p', '480p').
+     * Note:This is only applicable when using Shaka Streamer.
      */
     'resolutions' => (array) env('PLAYLIST_RESOLUTIONS', []),
 
@@ -68,6 +80,27 @@ return [
      * Set to 0 for no expiration.
      */
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 14), // 14 days
+
+    /**
+     * Shaka Packager options.
+     *
+     * @see https://shaka-project.github.io/shaka-packager/html/options.html
+     *
+     * - num_subsegments_per_sidx: Number of subsegments per SIDX box (0 = disable, reduces overhead)
+     * - fragment_sap_aligned: Align fragments to stream access points (improves seeking performance)
+     * - mp4_include_pssh_in_stream: Include PSSH in stream for better DRM compatibility
+     * - generate_static_live_mpd: Generate static MPD for DASH (improves caching)
+     * - default_language: Default language for audio/subtitle tracks
+     * - force_cl_index: Force closed captions index for better HLS compatibility
+     */
+    'packager_options' => (array) env('PLAYLIST_PACKAGER_OPTIONS', [
+        'num_subsegments_per_sidx' => 0,
+        'fragment_sap_aligned' => true,
+        'mp4_include_pssh_in_stream' => true,
+        'generate_static_live_mpd' => true,
+        'default_language' => 'en',
+        'force_cl_index' => true,
+    ]),
 
     /**
      * Shaka Streamer options.
