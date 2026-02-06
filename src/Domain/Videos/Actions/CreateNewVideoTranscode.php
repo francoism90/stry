@@ -6,13 +6,14 @@ namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
 use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Exceptions\PlaylistExportException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
-use Foxws\Shaka\Facades\Shaka;
+use Foxws\Streamer\Facades\Streamer;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
-class CreateNewVideoPlaylist
+class CreateNewVideoTranscode
 {
     public function handle(Video $video): void
     {
@@ -27,8 +28,11 @@ class CreateNewVideoPlaylist
         // Get the path relative to the disk root
         $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
 
-        // Initialize Shaka Packager
-        $packager = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
+        // Initialize Streamer
+        $streamer = Streamer::fromDisk($clips->first()->disk)->open($paths->toArray());
+
+        // Use system binaries
+        $streamer->useSystemBinaries();
 
         // Get encryption configuration
         $encryptionMethod = Playlist::getEncryptionMethod();
@@ -39,15 +43,15 @@ class CreateNewVideoPlaylist
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
-            $keyData = $packager->withAESEncryption('key', $protectionScheme);
+            $keyData = $streamer->withAESEncryption('key', $protectionScheme);
 
             if (Playlist::getKeyRotation()) {
-                $packager->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+                $streamer->withKeyRotationDuration(Playlist::getKeyRotationDuration());
             }
         }
 
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($packager, $useEncryption, $protectionScheme) {
+        $clips->each(function (Media $media) use ($streamer, $useEncryption, $protectionScheme) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
@@ -60,11 +64,11 @@ class CreateNewVideoPlaylist
 
             // Add streams only if they exist
             if ($ffprobe->getVideoStream()) {
-                $packager->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
+                $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
             }
 
             if ($ffprobe->getAudioStream()) {
-                $packager->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
+                $streamer->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
 
@@ -72,29 +76,42 @@ class CreateNewVideoPlaylist
         $playlist = $video->createPlaylist([
             'encryption_key_id' => $keyData['key_id'] ?? null,
             'encryption_key' => $keyData['key'] ?? null,
-            'type' => PlaylistType::Packager,
+            'type' => PlaylistType::Streamer,
         ]);
 
         // Configure DASH playlist settings
-        $packager
+        $streamer
             ->withMpdOutput($playlist->getFileName())
+            ->withStreamingMode('vod')
+            ->withAudioCodecs(Playlist::getDefaultAudioCodecs())
+            ->withVideoCodecs(Playlist::getDefaultVideoCodecs())
+            ->withResolutions(Playlist::getResolutions())
+            ->withSegmentPerFile()
             ->withSegmentDuration(Playlist::getSegmentDuration())
-            ->withOptions(Playlist::getPackagerOptions());
+            ->withOptions(Playlist::getStreamerOptions());
 
         // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
+            $video->getCaptions()->each(fn (Media $caption) => $streamer->addTextStream($caption->getPath(), $caption->file_name, [
                 'language' => $caption->getCustomProperty('language_code', 'en'),
             ]));
         }
 
         // Export the playlist to the configured disk and path
         try {
-            $packager
+            // Prepare the exporter
+            $exporter = $streamer
                 ->export()
                 ->toDisk($playlist->getDisk())
-                ->toPath($playlist->getPath())
-                ->save();
+                ->toPath($playlist->getPath());
+
+            // Save the exported playlist
+            $exporter->save();
+
+            // Check if copy operation had failures
+            if ($exporter->hasCopyFailures()) {
+                throw PlaylistExportException::copyFailed(count($exporter->getFailedFiles()));
+            }
 
             // Mark the playlist as ready
             $playlist->markAsReady();
@@ -105,7 +122,7 @@ class CreateNewVideoPlaylist
             throw $exception;
         } finally {
             // Clean up temporary files
-            $packager->cleanupTemporaryFiles();
+            $streamer->cleanupTemporaryFiles();
         }
     }
 }

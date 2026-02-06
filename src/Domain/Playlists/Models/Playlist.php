@@ -6,6 +6,7 @@ namespace Domain\Playlists\Models;
 
 use Database\Factories\PlaylistFactory;
 use Domain\Playlists\Collections\PlaylistCollection;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
 use Domain\Playlists\States\Failed;
@@ -80,6 +81,7 @@ class Playlist extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'state' => PlaylistState::class,
+            'type' => PlaylistType::class,
         ];
     }
 
