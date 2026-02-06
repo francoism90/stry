@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
+use Domain\Playlists\Exceptions\PlaylistExportException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
-use Illuminate\Support\Facades\Log;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
@@ -101,31 +101,13 @@ class CreateNewVideoPlaylist
             $exporter = $streamer
                 ->export()
                 ->toDisk($playlist->getDisk())
-                ->toPath($playlist->getPath());
-
-            $result = $exporter->save();
+                ->toPath($playlist->getPath())
+                ->save();
 
             // Check if copy operation had failures
             if ($exporter->hasCopyFailures()) {
-                $failures = $exporter->getFailedFiles();
-                Log::error('Playlist export had file copy failures', [
-                    'playlist_id' => $playlist->id,
-                    'failures' => $failures,
-                    'summary' => $exporter->getCopySummary(),
-                ]);
-
-                throw new \RuntimeException(
-                    'Failed to copy '.count($failures).' files to storage. '.
-                    'See logs for details.'
-                );
+                throw PlaylistExportException::copyFailed(count($exporter->getFailedFiles()));
             }
-
-            // Log successful copy operation
-            $summary = $exporter->getCopySummary();
-            Log::info('Playlist exported successfully', [
-                'playlist_id' => $playlist->id,
-                'summary' => $summary,
-            ]);
 
             // Mark the playlist as ready
             $playlist->markAsReady();
