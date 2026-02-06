@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc0e111fb4140bba1614b555b7ce4b6a",
+    "content-hash": "102db3b53ee5ebf204047c95a744df10",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1235,16 +1235,16 @@
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "e8ea90ba2665534accb172ae5d37e1ea47ddb79a"
+                "reference": "12b8a1957a3d02116745cd1df6e3d948c3446f9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/e8ea90ba2665534accb172ae5d37e1ea47ddb79a",
-                "reference": "e8ea90ba2665534accb172ae5d37e1ea47ddb79a",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/12b8a1957a3d02116745cd1df6e3d948c3446f9f",
+                "reference": "12b8a1957a3d02116745cd1df6e3d948c3446f9f",
                 "shasum": ""
             },
             "require": {
@@ -1311,7 +1311,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/0.1.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/0.2.0"
             },
             "funding": [
                 {
@@ -1319,7 +1319,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-06T13:23:55+00:00"
+            "time": "2026-02-06T17:33:18+00:00"
         },
         {
             "name": "fruitcake/php-cors",
