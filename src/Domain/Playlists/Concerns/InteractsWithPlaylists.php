@@ -6,6 +6,7 @@ namespace Domain\Playlists\Concerns;
 
 use ArrayAccess;
 use Domain\Playlists\Collections\PlaylistCollection;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -42,22 +43,21 @@ trait InteractsWithPlaylists
         ]);
     }
 
-    public function getPlaylists(ArrayAccess|array|string $type): PlaylistCollection
+    public function getPlaylists(): PlaylistCollection
     {
         return $this
             ->playlists()
-            ->type($type)
             ->active()
             ->get();
     }
 
-    public function getFirstPlaylist(ArrayAccess|array|string $type): ?Playlist
+    public function getFirstPlaylist(): ?Playlist
     {
-        return $this->getPlaylists($type)->first();
+        return $this->getPlaylists()->first();
     }
 
-    public function hasPlaylist(ArrayAccess|array|string $type): bool
+    public function hasPlaylist(): bool
     {
-        return $this->getPlaylists($type)->isNotEmpty();
+        return $this->getPlaylists()->isNotEmpty();
     }
 }

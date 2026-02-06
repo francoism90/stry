@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Playlists\QueryBuilders;
 
 use ArrayAccess;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
@@ -35,7 +36,7 @@ class PlaylistQueryBuilder extends Builder
             ->ordered();
     }
 
-    public function type(ArrayAccess|array|string $type): self
+    public function type(ArrayAccess|array|PlaylistType $type): self
     {
         return $this->whereIn('type', Arr::wrap($type));
     }
