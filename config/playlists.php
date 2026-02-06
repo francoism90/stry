@@ -30,7 +30,7 @@ return [
      * This setting is used to define the duration of each segment in the playlist, in seconds.
      * A typical value is between 4 and 10 seconds.
      */
-    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 15),
+    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 10),
 
     /**
      * This setting is used to define the encryption method for the playlist.
