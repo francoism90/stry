@@ -26,6 +26,9 @@ RUN mkdir -p ${PNPM_HOME}
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
+# Prevent ffmpeg from being pulled (we install a specific version manually)
+RUN apt-mark hold ffmpeg
+
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget unzip zip git \
