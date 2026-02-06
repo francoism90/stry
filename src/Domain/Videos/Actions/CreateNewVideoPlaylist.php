@@ -38,9 +38,7 @@ class CreateNewVideoPlaylist
         $protectionScheme = Playlist::getProtectionScheme();
 
         // Check if we use encryption
-        // NOTE: Encryption is currently disabled due to Shaka Streamer configuration issues
-        // TODO: Fix encryption configuration to work with Shaka Streamer pipeline config
-        $useEncryption = false; // filled($encryptionMethod);
+        $useEncryption = filled($encryptionMethod);
 
         // Enable AES encryption with key rotation if configured
         if ($useEncryption) {
