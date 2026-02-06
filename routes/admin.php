@@ -7,11 +7,9 @@ use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
-use App\Admin\Videos\Controllers\VideoConvertController;
 use App\Admin\Videos\Controllers\VideoImportController;
 use App\Admin\Videos\Controllers\VideoMediaController;
 use App\Admin\Videos\Controllers\VideoPlaylistController;
-use App\Admin\Videos\Controllers\VideoTranscodedController;
 use Illuminate\Support\Facades\Route;
 
 // Home
