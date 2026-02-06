@@ -59,27 +59,10 @@ export type Media = Model & {
   custom_properties?: MediaCustomProperties | null
   generated_conversions?: Record<string, unknown> | null
   responsive_images?: Record<string, unknown> | null
-  transcodes?: Transcode[]
 }
 
 export type MediaCollection = Omit<Paginator, 'data'> & {
   data: Media[] | undefined
-}
-
-export type Transcode = Model & {
-  media_id: number
-  encoder: string
-  pending: boolean
-  processing: boolean
-  completed: boolean
-  failed: boolean
-  state: ModelState
-  file_size: number
-  file_size_human: string
-  error_message: string | null
-  retry_count: number
-  started_at: string | null
-  transcoded_at: string | null
 }
 
 export type Tag = Model & {
