@@ -12,7 +12,7 @@ return [
      * Default audio codecs to use for the playlist.
      * This can be overridden on a per-stream basis when adding streams to the playlist.
      */
-    'audio_codecs' => (array) env('PLAYLIST_AUDIO_CODECS', ['aac']),
+    'audio_codecs' => (array) env('PLAYLIST_AUDIO_CODECS', ['opus']),
 
     /**
      * Default video codecs to use for the playlist.
