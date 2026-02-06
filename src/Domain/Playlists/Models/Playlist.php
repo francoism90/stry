@@ -288,9 +288,8 @@ class Playlist extends Model
 
     public static function getStreamerOptions(): array
     {
-        // TODO: Implement playlist-specific streamer options
-        return [];
-
-        // return Config::array('playlists.packager_options', []);
+        return [
+            'segment_per_file' => true,
+        ];
     }
 }
