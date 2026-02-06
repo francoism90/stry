@@ -264,6 +264,11 @@ class Playlist extends Model
         return Config::array('playlists.video_codecs', ['h264']);
     }
 
+    public static function getResolutions(): array
+    {
+        return Config::array('playlists.resolutions', ['1080p', '720p', '480p']);
+    }
+
     public static function getSegmentDuration(): int
     {
         return Config::integer('playlists.segment_duration', 6);
@@ -298,8 +303,6 @@ class Playlist extends Model
 
     public static function getStreamerOptions(): array
     {
-        return [
-            'segment_per_file' => true,
-        ];
+        return Config::array('playlists.streamer_options', []);
     }
 }

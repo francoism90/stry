@@ -81,9 +81,11 @@ class CreateNewVideoPlaylist
         // Configure DASH playlist settings
         $streamer
             ->withMpdOutput($playlist->getFileName())
-            ->withSegmentPerFile()
+            ->withStreamingMode('vod')
             ->withAudioCodecs(Playlist::getDefaultAudioCodecs())
             ->withVideoCodecs(Playlist::getDefaultVideoCodecs())
+            ->withResolutions(Playlist::getResolutions())
+            ->withSegmentPerFile()
             ->withSegmentDuration(Playlist::getSegmentDuration())
             ->withOptions(Playlist::getStreamerOptions());
 
