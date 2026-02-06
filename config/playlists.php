@@ -18,19 +18,19 @@ return [
      * Default video codecs to use for the playlist.
      * This can be overridden on a per-stream basis when adding streams to the playlist.
      */
-    'video_codecs' => (array) env('PLAYLIST_VIDEO_CODECS', ['hw:av1']),
+    'video_codecs' => (array) env('PLAYLIST_VIDEO_CODECS', ['hw:h264']),
 
     /**
      * This setting is used to define the resolutions that will be generated for the playlist.
      * The value is an array of strings, where each string represents a resolution (e.g., '1080p', '720p', '480p').
      */
-    'resolutions' => (array) env('PLAYLIST_RESOLUTIONS', ['1080p', '720p', '480p']),
+    'resolutions' => (array) env('PLAYLIST_RESOLUTIONS', []),
 
     /**
      * This setting is used to define the duration of each segment in the playlist, in seconds.
      * A typical value is between 4 and 10 seconds.
      */
-    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 10),
+    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 15),
 
     /**
      * This setting is used to define the encryption method for the playlist.
