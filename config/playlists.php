@@ -3,6 +3,15 @@
 return [
 
     /**
+     * This setting is used to define the mode of playlist generation.
+     * The value can be either 'packager' or 'streamer'.
+     *
+     * - 'packager' → if you want to repurpose existing media files without re-encoding (fastest, requires supported input formats).
+     * - 'streamer' → if you want to generate playlists on-the-fly from source media (slower, but with more options).
+     */
+    'driver' => (string) env('PLAYLIST_DRIVER', 'packager'),
+
+    /**
      * This setting is used to define the disk where the playlists will be stored.
      * The disk should be configured in the `filesystems.php` configuration file.
      */

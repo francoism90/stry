@@ -251,6 +251,11 @@ class Playlist extends Model
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
     }
 
+    public static function getDriver(): string
+    {
+        return Config::string('playlists.driver', 'packager');
+    }
+
     public static function getDestinationDisk(): string
     {
         return Config::string('playlists.disk_name', 'segments');
