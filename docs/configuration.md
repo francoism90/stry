@@ -29,6 +29,7 @@ The following configuration files are available for customization:
 | ------------------------- | ------------------------ | ------------ |
 | 📹 `config/playlists.php` | DASH playlist generation |
 
+    - `driver`: Playlist generator (`packager` or `streamer`). Packager is faster for supported formats; Streamer offers more options.
     - `disk_name`: Storage disk for playlists (see `config/filesystems.php`).
     - `audio_codecs`: Default audio codecs (e.g. `['opus']`).
     - `video_codecs`: Default video codecs (e.g. `['hw:av1']`).
