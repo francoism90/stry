@@ -38,7 +38,7 @@ This guide assumes a **rootless** Podman setup (recommended for security):
 > [!TIP]
 > Your distribution may have already configured rootless Podman for you.
 
-To allow GPU acceleration when using SELinux:
+If you are using rootless Podman and want GPU acceleration with SELinux enabled:
 
 ```bash
 sudo setsebool -P container_use_dri_devices 1
@@ -48,7 +48,7 @@ sudo setsebool -P container_use_dri_devices 1
 
 ## 🛠️ Installation
 
-### 1️⃣ Configure Container Files
+### Configure Container Files
 
 Copy the container configuration files to your systemd user directory:
 
@@ -68,7 +68,7 @@ cp -r ~/projects/stry/podman/systemd/stry ~/.config/containers/systemd/
 >
 > However, `cp -r` is recommended as it preserves the `config/` subdirectory structure with environment files.
 
-### 2️⃣ Adjust Container Configuration
+### Adjust Container Configuration
 
 Edit the configuration files to match your environment:
 
@@ -85,7 +85,23 @@ cp ~/projects/stry/.env.example ~/projects/stry/.env
 vi ~/projects/stry/.env
 ```
 
-### 3️⃣ Setup Storage Paths
+### Hardware Acceleration (Optional)
+
+By default, hardware acceleration is supported via VAAPI (Intel), mesa (AMD), or NVENC (Nvidia) drivers. If you do **not** want to use hardware acceleration, you may opt out:
+
+- You do **not** need to install VAAPI, mesa, or NVENC drivers.
+- Remove or comment out the following line in your `podman-queue.container` (and any other relevant container files):
+
+    ```podman
+    AddDevice=/dev/dri/:/dev/dri/
+    ```
+
+This will prevent the container from accessing GPU devices for video encoding/decoding. Software encoding will be used instead.
+
+> [!NOTE]
+> Hardware acceleration is optional. If you encounter issues or do not require it, you can safely disable it as described above.
+
+### Setup Storage Paths
 
 Create the required data directories as defined in `app.env`:
 
@@ -179,7 +195,7 @@ systemctl --user daemon-reload
 systemctl --user restart stry
 ```
 
-### 4️⃣ Apply Configuration Changes
+### Apply Configuration Changes
 
 Reload systemd to recognize the new containers:
 
@@ -187,7 +203,7 @@ Reload systemd to recognize the new containers:
 systemctl --user daemon-reload
 ```
 
-### 5️⃣ Configure S3 Storage
+### Configure S3 Storage
 
 Follow the [S3 Object Storage](s3.md) setup guide.
 
