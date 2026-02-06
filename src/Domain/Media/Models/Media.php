@@ -6,7 +6,6 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -63,11 +62,6 @@ class Media extends BaseMedia
     public function getRouteKeyName(): string
     {
         return 'uuid';
-    }
-
-    public function transcodes(): HasMany
-    {
-        return $this->hasMany(Transcode::class);
     }
 
     public static function totalUsage(): string

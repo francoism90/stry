@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce22e3626111be172a7dbd1ea5ad6f9c",
+    "content-hash": "fd8071cff179d55613f88f4fa960999a",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1232,93 +1232,6 @@
                 "source": "https://github.com/facade/ignition-contracts/tree/1.0.2"
             },
             "time": "2020-10-16T08:27:54+00:00"
-        },
-        {
-            "name": "foxws/laravel-av1",
-            "version": "0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/foxws/laravel-av1.git",
-                "reference": "e97ecf0cb999c183f49dc4c064ed7afd6637fb74"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-av1/zipball/e97ecf0cb999c183f49dc4c064ed7afd6637fb74",
-                "reference": "e97ecf0cb999c183f49dc4c064ed7afd6637fb74",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^11.0 || ^12.0",
-                "illuminate/filesystem": "^11.0 || ^12.0",
-                "illuminate/process": "^11.0 || ^12.0",
-                "illuminate/support": "^11.0 || ^12.0",
-                "php": "^8.2",
-                "psr/log": "^3.0",
-                "spatie/laravel-package-tools": "^1.16"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^9.0.0 || ^10.0.0",
-                "pestphp/pest": "^4.0",
-                "pestphp/pest-plugin-arch": "^4.0",
-                "pestphp/pest-plugin-laravel": "^4.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "spatie/laravel-ray": "^1.35"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "AV1": "Foxws\\AV1\\Facades\\AV1"
-                    },
-                    "providers": [
-                        "Foxws\\AV1\\AV1ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Foxws\\AV1\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "francoism90",
-                    "email": "francoism90@users.noreply.github.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Laravel package for ab-av1 video encoding with AV1",
-            "homepage": "https://github.com/foxws/laravel-av1",
-            "keywords": [
-                "ab-av1",
-                "av1",
-                "compression",
-                "encoder",
-                "encoding",
-                "laravel",
-                "video",
-                "vmaf"
-            ],
-            "support": {
-                "issues": "https://github.com/foxws/laravel-av1/issues",
-                "source": "https://github.com/foxws/laravel-av1/tree/0.4.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/foxws",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-01-26T18:03:48+00:00"
         },
         {
             "name": "foxws/laravel-streamer",

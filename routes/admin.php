@@ -20,8 +20,6 @@ Route::get('/', HomeController::class)->name('home');
 // Interactions
 Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
 Route::post('videos/import', VideoImportController::class)->name('videos.import');
-Route::post('videos/{video}/convert', VideoConvertController::class)->name('video.convert');
-Route::post('videos/{video}/transcoded', VideoTranscodedController::class)->name('video.transcoded');
 
 // Users
 Route::resource('users', UserController::class);

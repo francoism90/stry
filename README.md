@@ -22,7 +22,6 @@
 
 - 🎥 **DASH Streaming** - Built-in DASH playlist generation with adaptive bitrate support
 - 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
-- 🎬 **AV1 Transcoding** - High-quality AV1 video encoding with ab-av1 for superior compression
 - 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
@@ -53,7 +52,6 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 | **Search**           | [Typesense 29.x](https://typesense.org/)                                  |
 | **Video Processing** | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
 | **Video Streaming**  | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
-| **Video Encoding**   | [Laravel AV1](https://github.com/foxws/laravel-av1) with ab-av1           |
 
 ---
 
