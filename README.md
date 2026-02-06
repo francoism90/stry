@@ -21,6 +21,7 @@
 ### ✨ Key Features
 
 - 🎥 **DASH Streaming** - Built-in DASH playlist generation
+- 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand
 - 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
 - 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
@@ -61,9 +62,11 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 **System Requirements:**
 
 - 🐧 Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
-- For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies. See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 - 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
 - 🛠️ Basic tools: `git`, `bash`
+
+For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies.
+See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 
 ---
 
