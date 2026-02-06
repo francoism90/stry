@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Concerns;
 
-use ArrayAccess;
 use Domain\Playlists\Collections\PlaylistCollection;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
