@@ -18,7 +18,7 @@ return [
      * Default video codecs to use for the playlist.
      * This can be overridden on a per-stream basis when adding streams to the playlist.
      */
-    'video_codecs' => (array) env('PLAYLIST_VIDEO_CODECS', ['hw:h264']),
+    'video_codecs' => (array) env('PLAYLIST_VIDEO_CODECS', ['hw:av1']),
 
     /**
      * This setting is used to define the resolutions that will be generated for the playlist.
