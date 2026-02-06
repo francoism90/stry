@@ -2,10 +2,9 @@
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import { useMedia } from '@/composables/media'
-import { useVideo } from '@/composables/video'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { Media, Transcode, Video } from '@/types'
+import type { Media, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -14,7 +13,6 @@ import { computed } from 'vue'
 const props = defineProps<{
   video: Video
   media: Media
-  transcodes: Transcode[]
 }>()
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
@@ -24,8 +22,7 @@ const form = useForm('put', update.url([props.video.id, props.media.id]), {
   custom_properties: props.media.custom_properties || {},
 })
 
-const { getStreamInfo, getAv1Stream } = useMedia(props.media)
-const { createConversion, importTranscoded } = useVideo(props.video)
+const { getStreamInfo } = useMedia(props.media)
 
 const customProperties = computed({
   get: () => JSON.stringify(form.custom_properties),
@@ -43,7 +40,6 @@ const onSubmit = () =>
   })
 
 useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['media'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.reload({ only: ['transcodes'] }))
 </script>
 
 <template>
@@ -114,89 +110,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.re
         >
           {{ badge.label }}
         </UBadge>
-      </div>
-    </UPageCard>
-
-    <UPageCard
-      title="AV1 Conversion"
-      description="Convert this media to AV1 format for better compression."
-      variant="subtle"
-    >
-      <div class="space-y-4">
-        <UPageList
-          v-if="transcodes?.length"
-          divide
-        >
-          <UPageCard
-            v-for="transcode in transcodes"
-            :key="transcode.id"
-            variant="naked"
-            class="py-4 first:pt-0 last:pb-0"
-          >
-            <div class="flex items-center justify-between">
-              <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                  <UBadge :color="transcode.state.color">
-                    {{ transcode.state.name }}
-                  </UBadge>
-
-                  <span class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ transcode.encoder }}
-                  </span>
-
-                  <span
-                    v-if="transcode.file_size && transcode.completed"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                  >
-                    {{ transcode.file_size_human }}
-
-                    <span class="text-success">
-                      ({{ Math.round(((media.size - transcode.file_size) / media.size) * 100) }}% smaller)
-                    </span>
-                  </span>
-                </div>
-
-                <div
-                  v-if="transcode.error_message"
-                  class="text-error line-clamp-2 text-sm"
-                >
-                  {{ transcode.error_message }}
-                </div>
-              </div>
-            </div>
-          </UPageCard>
-        </UPageList>
-
-        <div class="flex items-center gap-3">
-          <UButton
-            v-if="transcodes?.some((t) => t.completed)"
-            label="Add Transcodes"
-            color="primary"
-            variant="soft"
-            icon="i-lucide-plus"
-            @click="importTranscoded()"
-          />
-
-          <UButton
-            v-else-if="!getAv1Stream() && !transcodes?.some((t) => t.processing || t.pending)"
-            label="Perform AV1 Conversion"
-            color="primary"
-            variant="soft"
-            @click="createConversion()"
-          />
-
-          <div
-            v-if="getAv1Stream()"
-            class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
-          >
-            <UIcon
-              name="i-lucide-check-circle"
-              class="size-4"
-            />
-
-            <span>This media is already in AV1 format</span>
-          </div>
-        </div>
       </div>
     </UPageCard>
 

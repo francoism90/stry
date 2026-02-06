@@ -17,7 +17,12 @@ Route::name('api.')->prefix('v1')->group(function () {
 
     // Playlists
     Route::name('playlists.')->prefix('play')->group(function () {
-        Route::get('/{playlist}/playlist/{path}', PlaylistManifestController::class)->name('playlist');
+        // Playlist manifest and segments delivery
+        Route::get('/{playlist}/playlist/{path}', PlaylistManifestController::class)
+            ->where('path', '.*')
+            ->name('playlist');
+
+        // Playlist analytics and session management
         Route::post('/{playlist}/session', PlaylistSessionController::class)->name('session');
     });
 });

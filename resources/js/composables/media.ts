@@ -5,8 +5,6 @@ export function useMedia(media: Media) {
 
   const getVideoStream = () => getStreams()?.find((stream) => stream.codec_type === 'video')
 
-  const getAv1Stream = () => getStreams()?.find((stream) => stream.codec_name.toLowerCase() === 'av1')
-
   const getStreamInfo = () => {
     const stream = getVideoStream()
 
@@ -43,7 +41,6 @@ export function useMedia(media: Media) {
   return {
     getStreams,
     getVideoStream,
-    getAv1Stream,
     getStreamInfo,
   }
 }

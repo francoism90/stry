@@ -7,11 +7,9 @@ use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
-use App\Admin\Videos\Controllers\VideoConvertController;
 use App\Admin\Videos\Controllers\VideoImportController;
 use App\Admin\Videos\Controllers\VideoMediaController;
 use App\Admin\Videos\Controllers\VideoPlaylistController;
-use App\Admin\Videos\Controllers\VideoTranscodedController;
 use Illuminate\Support\Facades\Route;
 
 // Home
@@ -20,8 +18,6 @@ Route::get('/', HomeController::class)->name('home');
 // Interactions
 Route::post('tags/reorder', TagOrderController::class)->name('tags.reorder');
 Route::post('videos/import', VideoImportController::class)->name('videos.import');
-Route::post('videos/{video}/convert', VideoConvertController::class)->name('video.convert');
-Route::post('videos/{video}/transcoded', VideoTranscodedController::class)->name('video.transcoded');
 
 // Users
 Route::resource('users', UserController::class);

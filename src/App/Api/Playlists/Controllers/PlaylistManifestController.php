@@ -6,8 +6,8 @@ namespace App\Api\Playlists\Controllers;
 
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
-use Foxws\Shaka\Facades\Shaka;
-use Foxws\Shaka\Http\DynamicDASHManifest;
+use Foxws\Streamer\Facades\Streamer;
+use Foxws\Streamer\Http\DynamicDASHManifest;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -28,9 +28,10 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
 
-        return Shaka::dynamicDASHManifest()
+        return Streamer::dynamicDASHManifest()
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
+            ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
             ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
     }
 }

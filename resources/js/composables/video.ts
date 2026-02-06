@@ -1,5 +1,3 @@
-import VideoConvertController from '@/actions/App/Admin/Videos/Controllers/VideoConvertController'
-import VideoTranscodedController from '@/actions/App/Admin/Videos/Controllers/VideoTranscodedController'
 import GroupToggleController from '@/actions/App/Client/Groups/Controllers/GroupToggleController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
@@ -18,34 +16,8 @@ export function useVideo(video: Video) {
       },
     )
 
-  const importTranscoded = (onComplete?: () => void) =>
-    router.post(
-      VideoTranscodedController.url(video.id),
-      {},
-      {
-        preserveScroll: true,
-        onFinish: () => {
-          onComplete?.()
-        },
-      },
-    )
-
-  const createConversion = (onComplete?: () => void) =>
-    router.post(
-      VideoConvertController.url(video.id),
-      {},
-      {
-        preserveState: true,
-        onFinish: () => {
-          onComplete?.()
-        },
-      },
-    )
-
   return {
     toggleLike,
     toggleSave,
-    importTranscoded,
-    createConversion,
   }
 }

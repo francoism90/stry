@@ -23,11 +23,13 @@ class ExtractMediaCaptions
         $items = Collection::make($ffmpeg->getStreams())
             ->filter(fn (Stream $stream) => $stream->get('codec_type') === 'subtitle')
             ->map(function (Stream $stream) use ($ffmpeg, $media): ?string {
+                // Generate a unique filename for the extracted caption stream
                 $index = $stream->get('index', 0);
                 $language = data_get($stream->get('tags', []), 'language', 'und');
                 $path = "{$media->uuid}_{$index}_{$language}.vtt";
 
                 // Export the caption stream to a WebVTT file
+                // If the conversion fails (e.g., due to unsupported codec), return null for this stream
                 try {
                     $ffmpeg
                         ->export()

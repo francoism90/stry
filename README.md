@@ -20,13 +20,12 @@
 
 ### ✨ Key Features
 
-- 🎥 **HLS & DASH Streaming** - Built-in HLS and DASH playlist generation with adaptive bitrate support
+- 🎥 **DASH Streaming** - Built-in DASH playlist generation with adaptive bitrate support
 - 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
-- 🎬 **AV1 Transcoding** - High-quality AV1 video encoding with ab-av1 for superior compression
 - 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
-- 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
+  🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
 
 > [!NOTE]
 > This is a personal project that can be used personally or as a reference guide for building your own streaming platform.
@@ -52,8 +51,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 | **Containers**       | [Podman 5.x](https://podman.io/)                                          |
 | **Search**           | [Typesense 29.x](https://typesense.org/)                                  |
 | **Video Processing** | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
-| **Video Streaming**  | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (HLS & DASH)      |
-| **Video Encoding**   | [Laravel AV1](https://github.com/foxws/laravel-av1) with ab-av1           |
+| **Video Streaming**  | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
 
 ---
 
@@ -62,6 +60,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 **System Requirements:**
 
 - 🐧 Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
+- For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies. See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 - 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
 - 🛠️ Basic tools: `git`, `bash`
 

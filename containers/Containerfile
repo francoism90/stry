@@ -1,9 +1,41 @@
-FROM docker.io/rust:latest AS builder
+FROM docker.io/dunglas/frankenphp:latest AS base
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG UID=1000
+ARG GID=1000
+ARG TZ=UTC
+ARG NODE_VERSION=24
+ARG POSTGRES_VERSION=18
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=${TZ}
+ENV PNPM_HOME="/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
+ENV OCTANE="${ARTISAN} octane:frankenphp"
 
 WORKDIR /tmp
 
+# Set timezone
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+# Create pnpm home directory
+RUN mkdir -p ${PNPM_HOME}
+
+# Enable non-free and non-free-firmware repositories (for Intel VA drivers)
+RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
+
+# Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl build-essential cmake ninja-build python3 musl-tools
+    ca-certificates curl wget unzip zip git \
+    nano openssh-client postgresql-common awscli python3 python3-pip \
+    mesa-va-drivers mesa-vulkan-drivers intel-media-va-driver-non-free \
+    libva2 libva-drm2 libavif-bin jpegoptim optipng pngquant gifsicle \
+    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
+    && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
+    && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
@@ -25,53 +57,11 @@ RUN arch="$(uname -m)" && case "$arch" in \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
-    && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
+    && echo "${PACKAGER_SHA256} /usr/local/bin/packager" | sha256sum -c - \
     && chmod +x /usr/local/bin/packager
 
-# ab-av1
-RUN cargo install ab-av1
-
-# Clean up
-RUN apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-FROM docker.io/dunglas/frankenphp:latest AS base
-
-ARG BUILD_DATE
-ARG VCS_REF
-ARG UID=1000
-ARG GID=1000
-ARG TZ=UTC
-ARG NODE_VERSION=24
-ARG POSTGRES_VERSION=18
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=${TZ}
-ENV PNPM_HOME="/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
-ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
-ENV OCTANE="${ARTISAN} octane:frankenphp"
-
-WORKDIR /tmp
-
-RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
-
-RUN mkdir -p ${PNPM_HOME}
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl wget unzip zip git \
-    nano openssh-client postgresql-common awscli \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
-    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
-    && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
-    && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs
-
-# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
-COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
-COPY --from=builder /usr/local/cargo/bin/ab-av1 /usr/local/bin/ab-av1
+# Install shaka-streamer via pip (without ffmpeg deps since we have our own)
+RUN pip3 install --break-system-packages --upgrade shaka-streamer
 
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -102,10 +92,6 @@ RUN mkdir -p /app /config /data/{media,import} \
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-LABEL org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.source="https://github.com/francoism90/stry"
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
@@ -142,6 +128,11 @@ RUN chown -R docker:docker /app
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
+LABEL org.opencontainers.image.variant="production" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.revision="${VCS_REF}" \
+      org.opencontainers.image.source="https://github.com/francoism90/stry"
+
 USER docker
 
 EXPOSE 6001 8000 13714
@@ -153,6 +144,7 @@ WORKDIR /app
 # Set proper ownership
 RUN chown -R docker:docker /app /pnpm
 
-USER docker
-
-EXPOSE 5173 6001 8000
+LABEL org.opencontainers.image.variant="development" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.revision="${VCS_REF}" \
+      org.opencontainers.image.source="https://github.com/francoism90/stry"

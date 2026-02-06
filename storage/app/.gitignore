@@ -4,6 +4,6 @@
 !import/
 !media/
 !packager/
-!av1/
+!streamer/
 !transcodes/
 !.gitignore
