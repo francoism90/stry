@@ -1,7 +1,7 @@
 {
     "CORSRules": [
         {
-            "AllowedOrigins": ["https://stry.test"],
+            "AllowedOrigins": ["*"],
             "AllowedMethods": ["GET", "HEAD"],
             "AllowedHeaders": ["Range", "Content-Type", "Authorization"],
             "ExposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges", "ETag"],
