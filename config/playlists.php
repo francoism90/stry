@@ -18,7 +18,7 @@ return [
      * Default video codecs to use for the playlist.
      * This can be overridden on a per-stream basis when adding streams to the playlist.
      */
-    'video_codecs' => ['h264'],
+    'video_codecs' => ['hw:h264'],
 
     /**
      * This setting is used to define the duration of each segment in the playlist, in seconds.
