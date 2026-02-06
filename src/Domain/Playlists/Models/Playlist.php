@@ -254,6 +254,16 @@ class Playlist extends Model
         return Config::string('playlists.disk_name', 'segments');
     }
 
+    public static function getDefaultAudioCodecs(): array
+    {
+        return Config::array('playlists.audio_codecs', ['aac']);
+    }
+
+    public static function getDefaultVideoCodecs(): array
+    {
+        return Config::array('playlists.video_codecs', ['h264']);
+    }
+
     public static function getSegmentDuration(): int
     {
         return Config::integer('playlists.segment_duration', 6);

@@ -9,6 +9,18 @@ return [
     'disk_name' => env('PLAYLIST_DISK', 'segments'),
 
     /**
+     * Default audio codecs to use for the playlist.
+     * This can be overridden on a per-stream basis when adding streams to the playlist.
+     */
+    'audio_codecs' => ['aac'],
+
+    /**
+     * Default video codecs to use for the playlist.
+     * This can be overridden on a per-stream basis when adding streams to the playlist.
+     */
+    'video_codecs' => ['h264'],
+
+    /**
      * This setting is used to define the duration of each segment in the playlist, in seconds.
      * A typical value is between 4 and 10 seconds.
      */
