@@ -39,13 +39,10 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     }
 
     // Create new Shaka Player
-    player.value = new shaka.Player()
+    player.value = new shaka.Player(el.value)
 
     // Apply configuration
     player.value.configure(config)
-
-    // Attach player to video element
-    await player.value.attach(el.value)
 
     // Add timeupdate listener
     el.value.addEventListener('timeupdate', onTimeUpdate)
