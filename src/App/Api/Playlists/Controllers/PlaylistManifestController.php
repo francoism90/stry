@@ -28,12 +28,10 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
 
-        logger($playlist->getFilesystem()->temporaryUrl($playlist->getPath($path), now()->addMinutes(5)));
-
         return Streamer::dynamicDASHManifest()
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
-            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-            ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
+            ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
     }
 }

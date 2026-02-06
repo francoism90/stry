@@ -98,11 +98,14 @@ class CreateNewVideoPlaylist
 
         // Export the playlist to the configured disk and path
         try {
+            // Prepare the exporter
             $exporter = $streamer
                 ->export()
                 ->toDisk($playlist->getDisk())
-                ->toPath($playlist->getPath())
-                ->save();
+                ->toPath($playlist->getPath());
+
+            // Save the exported playlist
+            $exporter->save();
 
             // Check if copy operation had failures
             if ($exporter->hasCopyFailures()) {
