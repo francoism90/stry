@@ -23,11 +23,15 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 # Create pnpm home directory
 RUN mkdir -p ${PNPM_HOME}
 
+# Enable non-free and non-free-firmware repositories (for Intel VA drivers)
+RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
+
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget unzip zip git \
     nano openssh-client postgresql-common awscli python3 python3-pip \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
+    mesa-va-drivers mesa-vulkan-drivers intel-media-va-driver-non-free \
+    libva2 libva-drm2 libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
