@@ -107,11 +107,11 @@ Run `stry help` for a complete list. Here are the most commonly used:
 
 ### 📹 Playlist & Media
 
-| Command                                                      | Description                                    |
-| ------------------------------------------------------------ | ---------------------------------------------- |
-| `stry a playlists:clear`                                     | Remove generated HLS playlists from filesystem |
-| `stry a groups:clear`                                        | Detach all videos from groups of a given type  |
-| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions           |
+| Command                                                      | Description                                     |
+| ------------------------------------------------------------ | ----------------------------------------------- |
+| `stry a playlists:clear`                                     | Remove generated DASH playlists from filesystem |
+| `stry a groups:clear`                                        | Detach all videos from groups of a given type   |
+| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions            |
 
 ### 🔍 Search & Indexing
 
