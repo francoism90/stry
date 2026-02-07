@@ -7,13 +7,14 @@ import shaka from 'shaka-player'
 import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined>) {
+  const playlist = computed(() => usePage().props.playlist as Playlist | null)
+  const startTime = computed(() => usePage().props.progress as number | null)
+  const el = computed(() => toValue(element))
+
   const player = shallowRef<shaka.Player>()
   const error = ref<shaka.util.Error | null>(null)
   const ready = ref<boolean>(false)
-
-  const el = computed(() => toValue(element))
-  const playlist = computed(() => usePage().props.playlist as Playlist | null)
-  const startTime = computed(() => usePage().props.progress as number | null)
+  const ticker = ref<number>(startTime.value ?? 0)
 
   const initialize = async () => {
     // Load manifest
@@ -94,23 +95,28 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
     // Only store if playlist exists and time has changed (> 0.25 seconds)
-    if (playlist.value && Math.abs((startTime.value ?? 0) - time) > 0.25) {
-      http.post(PlaylistSessionController.url(playlist.value.id), { time })
+    if (playlist.value && Math.abs((ticker.value ?? 0) - time) > 0.25) {
+      http.post(PlaylistSessionController.url(playlist.value.id), { time }).then(() => {
+        ticker.value = time
+      })
     }
-  }, 900)
+  }, 500)
 
   const destroy = async () => {
-    if (player.value) {
-      await player.value.destroy()
+    try {
+      // Remove timeupdate listener
+      el.value?.removeEventListener('timeupdate', onTimeUpdate)
+
+      // Destroy Shaka player instance
+      await player.value?.destroy()
+    } catch (error) {
+      console.error('Error destroying Shaka player:', error)
     }
 
     // Reset state
     player.value = undefined
     ready.value = false
     error.value = null
-
-    // Remove timeupdate listener
-    el.value?.removeEventListener('timeupdate', onTimeUpdate)
   }
 
   onBeforeMount(() => shaka.polyfill.installAll())
