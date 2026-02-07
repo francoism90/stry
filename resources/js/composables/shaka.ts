@@ -89,6 +89,7 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     if (isValid) {
       await player.value.load(manifestUri, startTime.value ?? 0)
 
+      // Set ready state
       ready.value = true
     }
 
