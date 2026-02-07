@@ -128,6 +128,9 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
 
   const destroy = async () => {
     try {
+      // Pause video to stop playback and clean MediaSource state
+      el.value?.pause()
+
       // Remove timeupdate listener
       el.value?.removeEventListener('timeupdate', onTimeUpdate)
 
