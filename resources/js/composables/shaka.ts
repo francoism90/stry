@@ -146,9 +146,10 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
 
-  watchEffect(() => {
+  watchEffect(async () => {
     if (toValue(el) && playlist.value) {
-      initialize()
+      await destroy()
+      await initialize()
     }
   })
 
