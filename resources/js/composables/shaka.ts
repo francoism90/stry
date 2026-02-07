@@ -115,7 +115,7 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
         ticker.value = time
       })
     }
-  }, 500)
+  }, 900)
 
   const destroy = async () => {
     try {
