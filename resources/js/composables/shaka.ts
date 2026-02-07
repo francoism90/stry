@@ -139,7 +139,14 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
 
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
-  watch([el, playlist], () => initialize(), { deep: true })
+  watch(
+    [el, playlist],
+    async () => {
+      await destroy()
+      await initialize()
+    },
+    { deep: true },
+  )
 
   return {
     player,
