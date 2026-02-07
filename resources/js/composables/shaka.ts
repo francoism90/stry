@@ -4,7 +4,16 @@ import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
 import shaka from 'shaka-player'
-import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  toValue,
+  watchEffect,
+  type MaybeRefOrGetter,
+} from 'vue'
 
 export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined>) {
   const playlist = computed(() => usePage().props.playlist as Playlist | null)
@@ -88,7 +97,7 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     const shakaError = (event as CustomEvent).detail as shaka.util.Error
 
     // Only set error state for non-recoverable errors
-    if (shakaError.severity !== shaka.util.Error.Severity.RECOVERABLE) {
+    if (shakaError.severity === shaka.util.Error.Severity.CRITICAL) {
       error.value = shakaError
     }
 
@@ -128,7 +137,12 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
 
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
-  watch([el, playlist], () => initialize(), { deep: true })
+
+  watchEffect(() => {
+    if (toValue(el) && playlist.value) {
+      initialize()
+    }
+  })
 
   return {
     player,
