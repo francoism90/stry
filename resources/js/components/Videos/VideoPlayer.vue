@@ -54,6 +54,7 @@ onMounted(() => initialize())
       controls
       autoplay
       playsinline
+      preload="metadata"
       crossorigin="anonymous"
     />
   </div>
