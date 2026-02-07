@@ -85,7 +85,14 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
   }
 
   const onErrorEvent = (event: Event) => {
-    error.value = (event as CustomEvent).detail as shaka.util.Error
+    const shakaError = (event as CustomEvent).detail as shaka.util.Error
+
+    // Only set error state for non-recoverable errors
+    if (shakaError.severity !== shaka.util.Error.Severity.RECOVERABLE) {
+      error.value = shakaError
+    }
+
+    console.error('Shaka Player Error:', shakaError)
   }
 
   const onTimeUpdate = useThrottleFn(() => {
