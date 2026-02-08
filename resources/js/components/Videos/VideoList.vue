@@ -24,7 +24,7 @@ defineProps<{
         header: 'rounded-lg shadow-none',
         body: 'p-0 sm:p-0 lg:px-0',
         title: 'font-serif text-xs',
-        description: 'flex flex-col gap-2 text-xs',
+        description: 'mt-2 flex flex-col gap-3 text-xs',
       }"
     >
       <template #description>
