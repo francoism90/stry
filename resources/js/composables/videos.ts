@@ -15,8 +15,8 @@ export function useVideos() {
         VideoImportController.url(),
         {},
         {
-          preserveScroll: true,
           preserveState: true,
+          preserveScroll: true,
           onFinish: () => {
             importing.value = false
             onComplete?.()

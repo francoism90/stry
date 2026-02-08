@@ -12,6 +12,7 @@ export function useVideo(video: Video) {
       {},
       {
         preserveState: true,
+        preserveScroll: true,
         only: ['video', 'group', 'items'],
       },
     )

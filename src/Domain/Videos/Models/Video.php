@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Number;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -261,6 +262,21 @@ class Video extends Model implements HasMedia
         ];
     }
 
+    public static function getImportDisk(): string
+    {
+        return Config::string('videos.import_disk', 'import');
+    }
+
+    public static function getImportBatchSize(): int
+    {
+        return Config::integer('videos.import_batch_size', 20);
+    }
+
+    public static function getCompletionThreshold(): float
+    {
+        return Config::float('videos.completion_threshold', 0.95);
+    }
+
     public function getClipCollection(): MediaCollection
     {
         return $this->getMedia('clips')->sortBy([
@@ -300,7 +316,7 @@ class Video extends Model implements HasMedia
 
     public function durationInSeconds(): float
     {
-        return (float) $this->getStreams()->max('duration') ?: 0.0;
+        return (float) $this->getStreams()->max('duration') ?? 0.0;
     }
 
     protected function identifier(): Attribute

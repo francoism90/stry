@@ -8,6 +8,7 @@ export function useGroups() {
       {},
       {
         preserveState: true,
+        preserveScroll: true,
       },
     )
 

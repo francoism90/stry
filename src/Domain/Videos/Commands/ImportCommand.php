@@ -7,6 +7,7 @@ namespace Domain\Videos\Commands;
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\CreateVideosByImport;
 use Domain\Videos\Jobs\ImportVideo;
+use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -25,7 +26,7 @@ class ImportCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'videos:import {--disk=import}';
+    protected $signature = 'videos:import {--disk=}';
 
     /**
      * @var string
@@ -34,8 +35,10 @@ class ImportCommand extends Command implements Isolatable
 
     public function handle(CreateVideosByImport $action): void
     {
-        $disk = $this->option('disk');
+        // Determine the disk to use for importing videos
+        $disk = $this->option('disk') ?: Video::getImportDisk();
 
+        // Retrieve the collection of video files from the specified disk
         $files = spin(
             message: 'Retrieving files...',
             callback: fn () => $action->getCollection($disk),
@@ -55,6 +58,7 @@ class ImportCommand extends Command implements Isolatable
             ])->all(),
         );
 
+        // Prompt the user to select a user to assign the imported videos to
         $user = search(
             label: 'Select user to assign videos to',
             validate: ['id' => 'required|exists:users,id'],
@@ -66,6 +70,7 @@ class ImportCommand extends Command implements Isolatable
 
         $user = User::findOrFail($user);
 
+        // Process each video file and dispatch an import job for each one
         progress(
             label: 'Importing videos',
             steps: $files->getIterator(),

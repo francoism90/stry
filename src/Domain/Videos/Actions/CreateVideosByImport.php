@@ -6,10 +6,10 @@ namespace Domain\Videos\Actions;
 
 use Domain\Users\Models\User;
 use Domain\Videos\Jobs\ImportVideo;
+use Domain\Videos\Models\Video;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 class CreateVideosByImport
@@ -46,7 +46,7 @@ class CreateVideosByImport
         return Collection::make($this->getFileSystem($disk)->allFiles())
             ->filter(fn (string $path) => rescue(fn () => str_starts_with($this->getFileSystem($disk)->mimeType($path), 'video/'), report: false))
             ->sort()
-            ->take(Config::integer('videos.import_batch_size', 100));
+            ->take(Video::getImportBatchSize());
     }
 
     protected function getFileSystem(string $disk): FilesystemAdapter
