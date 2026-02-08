@@ -48,11 +48,11 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Attach player to video element
     await player.value.attach(el.value)
 
-    // Add timeupdate listener
-    el.value.addEventListener('timeupdate', onTimeUpdate)
-
     // Add error listener
     player.value.addEventListener('error', onErrorEvent)
+
+    // Add timeupdate listener
+    el.value.addEventListener('timeupdate', onTimeUpdate)
 
     // Check playlist state
     const isExpired = playlist.value?.expired
