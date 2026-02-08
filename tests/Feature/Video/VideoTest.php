@@ -159,7 +159,7 @@ it('generates title attribute correctly', function () {
     ]);
 
     expect($videoWithMetadata->identifier)->toBe('15')
-        ->and($videoWithMetadata->title)->toBe('15 · Episode Name · 2');
+        ->and($videoWithMetadata->title)->toBe('15 - Episode Name - 2');
 });
 
 it('can have tags', function () {
