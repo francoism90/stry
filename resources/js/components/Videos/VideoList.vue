@@ -25,7 +25,7 @@ defineProps<{
         title: 'font-serif text-xs',
         date: 'text-xs',
         body: 'p-0 sm:p-0 lg:px-0',
-        description: 'mt-2 flex flex-col gap-2 text-xs',
+        description: 'mt-2.5 flex flex-col gap-2 text-xs',
       }"
     >
       <template #description>
