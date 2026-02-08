@@ -50,7 +50,7 @@ onMounted(() => initialize())
     <video
       ref="el"
       v-show="ready && !error"
-      class="aspect-video max-h-[50vh] w-full rounded-sm bg-transparent sm:max-h-[60vh] lg:max-h-[70vh]"
+      class="bg-default/90 aspect-video max-h-[50vh] w-full rounded-lg sm:max-h-[60vh] lg:max-h-[70vh]"
       controls
       autoplay
       playsinline
