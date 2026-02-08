@@ -45,11 +45,11 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Apply configuration
     player.value.configure(config)
 
-    // Attach player to video element
-    await player.value.attach(el.value)
-
     // Add error listener
     player.value.addEventListener('error', onErrorEvent)
+
+    // Attach player to video element
+    await player.value.attach(el.value)
 
     // Add timeupdate listener
     el.value.addEventListener('timeupdate', onTimeUpdate)
