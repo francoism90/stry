@@ -10,15 +10,15 @@ const url = (tag: string) => HomeController.url('all', { query: { tag } })
 </script>
 
 <template>
-  <UBlogPosts class="grid-cols-1 gap-3 gap-y-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-4">
+  <UBlogPosts class="grid-cols-1 gap-3 gap-y-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-3">
     <UButton
       v-for="item in items"
       :key="item.id"
-      :label="`# ${item.name}`"
+      :label="`${item.name} (${item.videos ?? 0})`"
       :to="url(item.id)"
       variant="soft"
       size="lg"
-      color="secondary"
+      color="neutral"
     />
   </UBlogPosts>
 </template>

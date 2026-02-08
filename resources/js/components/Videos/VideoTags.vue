@@ -19,7 +19,7 @@ const url = (tag: string) => HomeController.url('all', { query: { tag } })
       :key="item.id"
       :label="item.name"
       :to="url(item.id)"
-      variant="outline"
+      variant="subtle"
       size="xs"
       class="z-10"
     />
