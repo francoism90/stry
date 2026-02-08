@@ -4055,7 +4055,6 @@ packages:
 
   shaka-player@5.0.0:
     resolution: {integrity: sha512-1mkRntMOYXGXbSBfS/IpMCbZl+lnlPai1E68jUh7Fh6+BroBNRDkfik79/iGWIoNICD27g6VrtuJtEBP99Icwg==}
-    engines: {node: '>=18'}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
