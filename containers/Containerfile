@@ -107,7 +107,8 @@ RUN --mount=type=cache,target=/root/.composer/cache \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Install Node.js dependencies
-RUN --mount=type=cache,target=/pnpm/store && pnpm install --frozen-lockfile
+RUN --mount=type=cache,target=/pnpm/store \
+    pnpm install --frozen-lockfile
 
 # Complete composer setup and build assets
 RUN composer dump-autoload --optimize && \
