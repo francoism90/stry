@@ -102,7 +102,7 @@ export type Video = Model & {
   timestamp: string
   filesize: string | undefined
   snapshot: number | undefined
-  tags: Tag[] | null
+  tags: Tag[] | undefined
   expires_at: string | undefined
   liked: boolean | undefined
   saved: boolean | undefined

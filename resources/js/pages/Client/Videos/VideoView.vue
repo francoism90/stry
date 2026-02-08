@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import AppNavbar from '@/components/Ui/AppNavbar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
+import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useVideo } from '@/composables/video'
 import type { Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
@@ -58,7 +58,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           :ui="{
             title: 'font-serif text-xl sm:text-2xl',
             links: 'flex-nowrap',
-            description: 'text-base',
+            description: 'flex flex-col gap-2 text-base',
           }"
         >
           <template #description>
@@ -67,17 +67,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
               v-html="video.description"
             />
 
-            <div class="flex items-center gap-2 overflow-auto">
-              <UButton
-                v-for="tag in video.tags"
-                :key="tag.id"
-                :label="tag.name"
-                :to="HomeController.url('all', { query: { tag: tag.id } })"
-                variant="outline"
-                size="sm"
-                class="mt-2"
-              />
-            </div>
+            <VideoTags :items="video.tags" />
           </template>
         </UPageHeader>
 

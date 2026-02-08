@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
+import VideoTags from '@/components/Videos/VideoTags.vue'
 import type { Video } from '@/types'
 
 defineProps<{
   items: Video[] | undefined
 }>()
-
-const url = (tag: string) => HomeController.url('all', { query: { tag } })
 </script>
 
 <template>
@@ -23,10 +21,10 @@ const url = (tag: string) => HomeController.url('all', { query: { tag } })
       :to="VideoController.url(item.id)"
       :ui="{
         root: 'gap-y-4 rounded-none',
-        header: 'rounded-md shadow-none',
+        header: 'rounded-lg shadow-none',
         body: 'p-0 sm:p-0 lg:px-0',
         title: 'font-serif text-xs',
-        description: 'text-xs',
+        description: 'flex flex-col gap-2 text-xs',
       }"
     >
       <template #description>
@@ -35,20 +33,7 @@ const url = (tag: string) => HomeController.url('all', { query: { tag } })
           v-html="item.description"
         />
 
-        <div
-          v-if="item.tags?.length"
-          class="mt-1.5 flex flex-wrap gap-1.5 overflow-auto"
-        >
-          <UButton
-            v-for="tag in item.tags"
-            :key="tag.id"
-            :label="tag.name"
-            :to="url(tag.id)"
-            variant="outline"
-            size="xs"
-            class="z-10"
-          />
-        </div>
+        <VideoTags :items="item.tags" />
       </template>
     </UBlogPost>
   </UBlogPosts>
