@@ -7,7 +7,6 @@ namespace Domain\Videos\Actions;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Number;
 
 class GetVideoProgress
