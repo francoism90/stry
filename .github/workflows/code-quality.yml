@@ -61,7 +61,7 @@ jobs:
                   cp .env.ci .env
                   php artisan key:generate
                   php artisan wayfinder:generate
-                  pnpm install --frozen-lockfile
+                  pnpm install --no-frozen-lockfile
                   pnpm build
 
             - name: Run Laravel Pint
