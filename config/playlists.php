@@ -91,7 +91,6 @@ return [
      * - mp4_include_pssh_in_stream: Include PSSH in stream for better DRM compatibility
      * - generate_static_live_mpd: Generate static MPD for DASH (improves caching)
      * - default_language: Default language for audio/subtitle tracks
-     * - force_cl_index: Force closed captions index for better HLS compatibility
      */
     'packager_options' => (array) env('PLAYLIST_PACKAGER_OPTIONS', [
         'num_subsegments_per_sidx' => 0,
@@ -99,7 +98,6 @@ return [
         'mp4_include_pssh_in_stream' => true,
         'generate_static_live_mpd' => true,
         'default_language' => 'en',
-        'force_cl_index' => true,
     ]),
 
     /**
