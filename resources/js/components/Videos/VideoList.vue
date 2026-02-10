@@ -17,7 +17,7 @@ defineProps<{
       :title="item.title"
       :image="item.thumb"
       :badge="item.timestamp"
-      :date="item.released_at ?? item.published_at ?? item.created_at"
+      :date="item.released"
       :to="VideoController.url(item.id)"
       :ui="{
         root: 'gap-y-4 rounded-none',

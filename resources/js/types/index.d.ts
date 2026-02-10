@@ -86,27 +86,29 @@ export type TagMenuItem = Tag & SelectMenuItem
 
 export type Video = Model & {
   user: User | undefined
+  tags: Tag[] | undefined
   name: string
   title: string
-  description: string | undefined
   titles: string[] | undefined
+  description: string | undefined
   content: string | undefined
   summary: string | undefined
+  identifier: string | undefined
   season: string | null
   episode: string | null
   part: string | null
-  adult: boolean
-  captioned: boolean
-  thumb: string | undefined
-  duration: number
-  timestamp: string
+  released: string | undefined
+  duration: number | undefined
+  timestamp: string | undefined
   filesize: string | undefined
   snapshot: number | undefined
-  tags: Tag[] | undefined
-  expires_at: string | undefined
+  thumb: string | undefined
+  adult: boolean | undefined
+  captioned: boolean | undefined
   liked: boolean | undefined
   saved: boolean | undefined
   viewed: boolean | undefined
+  expires_at: string | undefined
   published_at: string | undefined
   released_at: string | undefined
   state: ModelState

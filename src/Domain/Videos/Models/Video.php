@@ -249,6 +249,7 @@ class Video extends Model implements HasMedia
             'episode' => (string) $this->episode,
             'part' => (string) $this->part,
             'duration' => (float) $this->duration,
+            'released' => (string) $this->released,
             'captioned' => (bool) $this->captioned,
             'adult' => (bool) $this->adult,
             'tags' => (string) $this->tags->translated(),
@@ -366,6 +367,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): string => duration($this->durationInSeconds()),
+        )->shouldCache();
+    }
+
+    protected function released(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => Carbon::parse($this->released_at ?? $this->published_at ?? $this->created_at)->toDateString(),
         )->shouldCache();
     }
 

@@ -373,21 +373,6 @@ return [
                             'facet' => true,
                         ],
                         [
-                            'name' => 'duration',
-                            'type' => 'float',
-                            'sort' => true,
-                        ],
-                        [
-                            'name' => 'captioned',
-                            'type' => 'bool',
-                            'facet' => true,
-                        ],
-                        [
-                            'name' => 'adult',
-                            'type' => 'bool',
-                            'facet' => true,
-                        ],
-                        [
                             'name' => 'tags',
                             'type' => 'string',
                             'optional' => true,
@@ -401,6 +386,26 @@ return [
                             'name' => 'tagged',
                             'type' => 'int64[]',
                             'optional' => true,
+                        ],
+                        [
+                            'name' => 'duration',
+                            'type' => 'float',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'released',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'captioned',
+                            'type' => 'bool',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'adult',
+                            'type' => 'bool',
+                            'facet' => true,
                         ],
                         [
                             'name' => 'state',
@@ -449,7 +454,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, tags, synonyms, identifier, released_at',
+                    'query_by' => 'name, description, tags, synonyms, identifier, released',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],
