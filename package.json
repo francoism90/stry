@@ -29,7 +29,7 @@
         "pusher-js": "^8.4.0",
         "shaka-player": "^5.0.0",
         "tailwindcss": "^4.1.18",
-        "vue": "^3.5.27"
+        "vue": "^3.5.28"
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
