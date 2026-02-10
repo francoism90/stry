@@ -29,9 +29,9 @@ class PlaylistResource extends JsonResource
             'valid' => $this->isValid(),
             'type' => $this->type,
             'state' => $this->state->toArray(),
-            'expires_at' => $this->expires_at,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'expires_at' => $this->expires_at?->toDateTimeString(),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }

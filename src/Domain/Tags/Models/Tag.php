@@ -8,6 +8,7 @@ use ArrayAccess;
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Relates\Concerns\InteractsWithRelated;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
@@ -65,8 +66,8 @@ class Tag extends BaseTag implements HasMedia
         return [
             'type' => TagType::class,
             'adult' => 'boolean',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at' => AsDateTime::class,
+            'updated_at' => AsDateTime::class,
         ];
     }
 

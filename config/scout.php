@@ -216,18 +216,18 @@ return [
                         ],
                         [
                             'name' => 'email_verified_at',
-                            'type' => 'string',
+                            'type' => 'int64',
                             'optional' => true,
                             'sort' => true,
                         ],
                         [
                             'name' => 'created_at',
-                            'type' => 'string',
+                            'type' => 'int64',
                             'sort' => true,
                         ],
                         [
                             'name' => 'updated_at',
-                            'type' => 'string',
+                            'type' => 'int64',
                             'sort' => true,
                         ],
                         [
@@ -408,14 +408,20 @@ return [
                             'facet' => true,
                         ],
                         [
+                            'name' => 'expires_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'released_at',
-                            'type' => 'string',
+                            'type' => 'int64',
                             'optional' => true,
                             'sort' => true,
                         ],
                         [
                             'name' => 'published_at',
-                            'type' => 'string',
+                            'type' => 'int64',
                             'optional' => true,
                             'sort' => true,
                         ],

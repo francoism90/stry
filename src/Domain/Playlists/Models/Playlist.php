@@ -78,8 +78,8 @@ class Playlist extends Model
             'accessed_at' => AsDateTime::class,
             'expires_at' => AsDateTime::class,
             'transcoded_at' => AsDateTime::class,
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at' => AsDateTime::class,
+            'updated_at' => AsDateTime::class,
             'state' => PlaylistState::class,
             'type' => PlaylistType::class,
         ];

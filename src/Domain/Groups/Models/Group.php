@@ -10,6 +10,7 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -86,8 +87,8 @@ class Group extends Model implements HasMedia, Sortable
             'state' => GroupState::class,
             'type' => GroupType::class,
             'options' => AsArrayObject::class,
-            'expires_at' => 'datetime',
-            'published_at' => 'datetime',
+            'expires_at' => AsDateTime::class,
+            'published_at' => AsDateTime::class,
         ];
     }
 

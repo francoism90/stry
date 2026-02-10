@@ -77,9 +77,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'settings' => UserSettings::class.':default',
             'password' => 'hashed',
             'email_verified_at' => AsDateTime::class,
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'created_at' => AsDateTime::class,
+            'updated_at' => AsDateTime::class,
+            'deleted_at' => AsDateTime::class,
         ];
     }
 
@@ -195,9 +195,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'name' => (string) $this->name,
             'email' => (string) $this->email,
             'state' => (string) $this->state,
-            'email_verified_at' => (string) $this->email_verified_at,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            'email_verified_at' => (int) $this->email_verified_at?->getTimestamp(),
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
     }
 

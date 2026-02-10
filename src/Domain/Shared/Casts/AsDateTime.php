@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Config;
 
 class AsDateTime implements CastsAttributes
 {
-    public function get(Model $model, string $key, mixed $value, array $attributes): ?string
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?Carbon
     {
         if (blank($value)) {
             return null;
         }
 
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
+        return Carbon::parse($value);
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): ?string

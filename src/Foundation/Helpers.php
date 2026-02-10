@@ -17,8 +17,12 @@ if (! function_exists('duration')) {
 }
 
 if (! function_exists('markdown')) {
-    function markdown(string $value = ''): string
+    function markdown(?string $value = null): string
     {
+        if (blank($value)) {
+            return '';
+        }
+
         return Str::markdown($value, [
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
