@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'soft_delete' => false,
+    'soft_delete' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -187,7 +187,7 @@ return [
             'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
 
-        'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
+        'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1920),
 
         'model-settings' => [
 
@@ -229,6 +229,11 @@ return [
                             'name' => 'updated_at',
                             'type' => 'string',
                             'sort' => true,
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
                         ],
                     ],
 
@@ -424,6 +429,11 @@ return [
                             'type' => 'int64',
                             'sort' => true,
                         ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
+                        ],
                     ],
 
                     'default_sorting_field' => 'created_at',
@@ -478,6 +488,11 @@ return [
                             'name' => 'updated_at',
                             'type' => 'int64',
                             'sort' => true,
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int64',
+                            'optional' => true,
                         ],
                     ],
 
