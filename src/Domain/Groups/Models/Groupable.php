@@ -67,15 +67,20 @@ class Groupable extends MorphPivot
 
     public function toSearchableArray(): array
     {
-        // The foreign key field name based on the type
-        $groupable_type = "{$this->groupable_type}_id";
-
-        return [
+        // Build initial array with common fields
+        $array = [
             'id' => (string) $this->getScoutKey(),
             'group_id' => (string) $this->group_id,
+            'order_column' => (int) $this->order_column,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
-            ...[$groupable_type => (string) $this->groupable_id],
         ];
+
+        // Add polymorphic fields if the relationship exists
+        if ($this->groupable()->exists()) {
+            $array["{$this->groupable_type}_id"] = (string) $this->groupable_id;
+        }
+
+        return $array;
     }
 }

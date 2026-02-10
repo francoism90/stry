@@ -550,6 +550,12 @@ return [
                             'optional' => true,
                         ],
                         [
+                            'name' => 'order_column',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'created_at',
                             'type' => 'int64',
                             'sort' => true,
