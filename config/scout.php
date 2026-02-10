@@ -187,7 +187,7 @@ return [
             'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
         ],
 
-        'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1920),
+        'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 4500),
 
         'model-settings' => [
 
