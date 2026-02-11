@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Actions\CreateNewVideoPlaylist;
@@ -63,8 +64,8 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         $type = Playlist::getDefaultType();
 
         match ($type) {
-            'packager' => app(CreateNewVideoPlaylist::class)->handle($this->video),
-            'streamer' => app(CreateNewVideoTranscode::class)->handle($this->video),
+            PlaylistType::Packager => app(CreateNewVideoPlaylist::class)->handle($this->video),
+            PlaylistType::Streamer => app(CreateNewVideoTranscode::class)->handle($this->video),
             default => throw PlaylistTypeException::invalidType($type),
         };
     }
