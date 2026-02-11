@@ -9,7 +9,7 @@ return [
      * - 'packager' → if you want to repurpose existing media files without re-encoding (fastest, requires supported input formats).
      * - 'streamer' → if you want to generate playlists on-the-fly from source media (slower, but with more options).
      */
-    'driver' => (string) env('PLAYLIST_DRIVER', 'packager'),
+    'type' => (string) env('PLAYLIST_TYPE', 'packager'),
 
     /**
      * This setting is used to define the disk where the playlists will be stored.

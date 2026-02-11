@@ -65,6 +65,8 @@ class Playlist extends Model
      */
     protected $hidden = [
         'user_id',
+        'encryption_key_id',
+        'encryption_key',
     ];
 
     /**
@@ -169,16 +171,6 @@ class Playlist extends Model
         return $this->playlistable;
     }
 
-    public function getDisk(): string
-    {
-        return $this->disk;
-    }
-
-    public function getFileName(): string
-    {
-        return $this->file_name;
-    }
-
     public function getUrl(): string
     {
         return $this->getUrlResolver($this->file_name);
@@ -212,6 +204,21 @@ class Playlist extends Model
     public function isValid(): bool
     {
         return $this->state->equals(Verified::class);
+    }
+
+    public function getDisk(): string
+    {
+        return $this->disk;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->file_name;
+    }
+
+    public function getType(): PlaylistType
+    {
+        return $this->type ?? self::getDefaultType();
     }
 
     public function getPath(string $path = ''): string
@@ -251,11 +258,6 @@ class Playlist extends Model
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
     }
 
-    public static function getDriver(): string
-    {
-        return Config::string('playlists.driver', 'packager');
-    }
-
     public static function getDestinationDisk(): string
     {
         return Config::string('playlists.disk_name', 'segments');
@@ -269,6 +271,13 @@ class Playlist extends Model
     public static function getDefaultVideoCodecs(): array
     {
         return Config::array('playlists.video_codecs', ['h264']);
+    }
+
+    public static function getDefaultType(): PlaylistType
+    {
+        $value = Config::string('playlists.type', 'packager');
+
+        return PlaylistType::from($value);
     }
 
     public static function getResolutions(): array
