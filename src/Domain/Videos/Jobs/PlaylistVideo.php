@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Actions\CreateNewVideoPlaylist;
 use Domain\Videos\Actions\CreateNewVideoTranscode;
@@ -58,13 +59,13 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        // Determine the playlist driver
-        $driver = Playlist::getDriver();
+        // Determine the playlist type
+        $type = Playlist::getDefaultType();
 
-        match ($driver) {
+        match ($type) {
             'packager' => app(CreateNewVideoPlaylist::class)->handle($this->video),
             'streamer' => app(CreateNewVideoTranscode::class)->handle($this->video),
-            default => throw new \InvalidArgumentException("Unsupported playlist driver: {$driver}"),
+            default => throw PlaylistTypeException::invalidType($type),
         };
     }
 

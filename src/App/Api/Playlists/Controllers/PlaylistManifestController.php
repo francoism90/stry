@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Foxws\Shaka\Facades\Shaka;
@@ -31,9 +32,10 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         abort_if($playlist->isExpired(), 410);
 
         // Choose the appropriate manifest handler based on the playlist type
-        $manifestHandler = match ($playlist->type) {
+        $manifestHandler = match ($playlist->getType()) {
             PlaylistType::Streamer => Streamer::dynamicDASHManifest(),
-            default => Shaka::dynamicDASHManifest(),
+            PlaylistType::Packager => Shaka::dynamicDASHManifest(),
+            default => throw PlaylistTypeException::invalidType($playlist->getType()),
         };
 
         return $manifestHandler
