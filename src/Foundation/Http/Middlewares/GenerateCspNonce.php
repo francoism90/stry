@@ -7,7 +7,7 @@ namespace Foundation\Http\Middlewares;
 use Closure;
 use Illuminate\Support\Facades\Vite;
 
-class AddContentSecurityPolicyHeaders
+class GenerateCspNonce
 {
     public function handle($request, Closure $next, $options = []): mixed
     {

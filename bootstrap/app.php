@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Foundation\Http\Middlewares\AddContentSecurityPolicyHeaders;
+use Foundation\Http\Middlewares\GenerateCspNonce;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -78,7 +78,7 @@ $app = Application::configure(basePath: $basePath)
 
         // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading
         $middleware->web(append: [
-            AddContentSecurityPolicyHeaders::class,
+            GenerateCspNonce::class,
             AddCspHeaders::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
