@@ -19,7 +19,7 @@ tags:
 
 ## ⚙️ Setup Caddy Proxy
 
-### 1Install Container Files
+### Install Container Files
 
 Setup the Caddy container configuration:
 
