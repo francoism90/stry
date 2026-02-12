@@ -14,9 +14,6 @@ class DefaultPreset implements Preset
     public function configure(Policy $policy): void
     {
         $policy
-            ->add(Directive::SCRIPT, Keyword::SELF)
-            ->add(Directive::STYLE, Keyword::SELF)
-            ->addNonce(Directive::SCRIPT)
-            ->addNonce(Directive::STYLE);
+            ->add(Directive::CONNECT, 'api.iconify.design');
     }
 }
