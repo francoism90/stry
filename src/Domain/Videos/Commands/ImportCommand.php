@@ -54,7 +54,7 @@ class ImportCommand extends Command implements Isolatable
             headers: ['Filename', 'Filesize'],
             rows: collect($files->getIterator())->map(fn (string $path) => [
                 Str::limit($path),
-                Number::fileSize($this->getFileSystem()->size($path)),
+                Number::fileSize($this->getFileSystem($disk)->size($path)),
             ])->all(),
         );
 
@@ -82,8 +82,8 @@ class ImportCommand extends Command implements Isolatable
         );
     }
 
-    protected function getFileSystem(): FilesystemAdapter
+    protected function getFileSystem(string $disk): FilesystemAdapter
     {
-        return Storage::disk($this->option('disk'));
+        return Storage::disk($disk);
     }
 }
