@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Foundation\Http\Middlewares\GenerateCspNonce;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;

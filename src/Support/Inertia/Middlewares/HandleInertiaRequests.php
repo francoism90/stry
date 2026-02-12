@@ -22,7 +22,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'app' => Inertia::once(fn (): string => Config::string('app.name', 'Laravel')),
-            'nonce' => Inertia::once(fn (): string =>  app('csp-nonce')),
+            'nonce' => Inertia::once(fn (): string => app('csp-nonce')),
             'locale' => Inertia::once(fn (): string => $request->getLocale()),
             'auth' => Inertia::once(fn (): ?UserResource => $this->auth($request->user())),
         ]);
