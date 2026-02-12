@@ -11,6 +11,7 @@ return [
      */
     'presets' => [
         Spatie\Csp\Presets\Basic::class,
+        Support\Csp\Presets\DefaultPreset::class,
     ],
 
     /**
