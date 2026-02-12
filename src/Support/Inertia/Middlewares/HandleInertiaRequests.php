@@ -8,7 +8,6 @@ use App\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Vite;
 use Inertia\Inertia;
 use Inertia\Middleware;
 
@@ -22,10 +21,10 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'app' => Inertia::once(fn () => Config::string('app.name', 'Laravel')),
-            'nonce' => Inertia::once(fn () => app(\Spatie\Csp\Nonce\NonceGenerator::class)->generate()),
-            'locale' => Inertia::once(fn () => $request->getLocale()),
-            'auth' => Inertia::once(fn () => $this->auth($request->user())),
+            'app' => Inertia::once(fn (): string => Config::string('app.name', 'Laravel')),
+            'nonce' => Inertia::once(fn (): string =>  app('csp-nonce')),
+            'locale' => Inertia::once(fn (): string => $request->getLocale()),
+            'auth' => Inertia::once(fn (): ?UserResource => $this->auth($request->user())),
         ]);
     }
 
