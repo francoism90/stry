@@ -274,6 +274,11 @@ class Video extends Model implements HasMedia
         return Config::integer('videos.import_batch_size', 20);
     }
 
+    public static function shouldCreatePlaylist(): bool
+    {
+        return Config::boolean('videos.create_playlist', false);
+    }
+
     public static function getCompletionThreshold(): float
     {
         return Config::float('videos.completion_threshold', 0.95);
@@ -290,7 +295,7 @@ class Video extends Model implements HasMedia
 
     public function getThumb(): ?string
     {
-        return $this->getFirstTemporaryUrl(now()->addDays(3), 'clips', 'thumb');
+        return $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb');
     }
 
     public function getStreams(): Collection

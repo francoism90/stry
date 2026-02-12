@@ -41,21 +41,19 @@ trait InteractsWithPlaylists
         ]);
     }
 
-    public function getPlaylists(): PlaylistCollection
+    public function hasPlaylist(): bool
     {
         return $this
             ->playlists()
-            ->active()
-            ->get();
+            ->unexpired()
+            ->exists();
     }
 
-    public function getFirstPlaylist(): ?Playlist
+    public function getPlaylist(): ?Playlist
     {
-        return $this->getPlaylists()->first();
-    }
-
-    public function hasPlaylist(): bool
-    {
-        return $this->getPlaylists()->isNotEmpty();
+        return $this
+            ->playlists()
+            ->unexpired()
+            ->first();
     }
 }
