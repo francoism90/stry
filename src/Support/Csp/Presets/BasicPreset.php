@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Support\Csp\Presets;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Uri;
 use Spatie\Csp\Directive;
 use Spatie\Csp\Keyword;
 use Spatie\Csp\Policy;
@@ -44,8 +45,8 @@ class BasicPreset implements Preset
             ->addNonce(Directive::SCRIPT);
     }
 
-    protected function getHost(): string
+    protected function getHost(): ?string
     {
-        return parse_url(Config::string('app.url', 'localhost'), PHP_URL_HOST);
+        return Uri::of(Config::string('app.url', 'localhost'))->host();
     }
 }
