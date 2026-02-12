@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
+import { useAppearance } from '@/composables/appearance'
 import { Head } from '@inertiajs/vue3'
+
+const { nonce } = useAppearance()
 </script>
 
 <template>
@@ -15,7 +18,7 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <Suspense>
-    <UApp>
+    <UApp :nonce="nonce">
       <ServiceWorker />
 
       <UContainer class="flex h-dvh max-h-dvh flex-col items-center justify-center gap-3 py-4 sm:py-6">

@@ -16,8 +16,6 @@ const { nonce } = useAppearance()
     <UApp :nonce="nonce">
       <ServiceWorker />
 
-      {{ nonce }}
-
       <UDashboardGroup
         unit="rem"
         storage="local"
