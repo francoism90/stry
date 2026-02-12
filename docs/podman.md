@@ -11,7 +11,7 @@ tags:
 
 # 🐳 Podman Quadlet Setup
 
-## 📚 Introduction
+## Introduction
 
 Podman Quadlet provides systemd integration for managing containers. Learn more:
 
@@ -21,7 +21,7 @@ Podman Quadlet provides systemd integration for managing containers. Learn more:
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 **System Requirements:**
 

@@ -9,9 +9,9 @@ tags:
     - ai
 ---
 
-# 💻 Development Setup
+# Development Setup
 
-## 📋 Prerequisites
+## Prerequisites
 
 **Required Tools:**
 
@@ -22,9 +22,9 @@ tags:
 
 ---
 
-## 🚀 Installation
+## Installation
 
-### 1️⃣ Setup Project
+### Setup Project
 
 Clone the project to your working directory (e.g., `~/projects`):
 
@@ -33,7 +33,7 @@ cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-### 2️⃣ Configure Podman
+### Configure Podman
 
 > [!NOTE]
 > See the [Podman Quadlet](podman.md) guide for complete details.
@@ -70,7 +70,7 @@ Volume=${MEDIA_PATH}:/data/media:rw,z,U
 -Wants=stry-ssr.container
 ```
 
-### 3️⃣ Setup Development Container
+### Setup Development Container
 
 Open the cloned project in VSCode as a devcontainer (recommended) or enter the container:
 
@@ -90,11 +90,11 @@ php artisan google-fonts:fetch
 pnpm install
 ```
 
-### 4️⃣ Configure Proxy
+### Configure Proxy
 
 Follow the [Proxy Setup](proxy.md) guide to enable local HTTPS access.
 
-### 5️⃣ Start Development Watchers
+### Start Development Watchers
 
 Run the Vite development server:
 

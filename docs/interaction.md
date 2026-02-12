@@ -8,9 +8,9 @@ tags:
     - commands
 ---
 
-# 🎮 CLI Interaction
+# CLI Interaction
 
-## 📝 Introduction
+## Introduction
 
 **stry** provides a shell utility similar to [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail), adapted for Podman Quadlet.
 
@@ -19,7 +19,7 @@ tags:
 
 ---
 
-## ⚙️ Setup Shell Alias
+## Setup Shell Alias
 
 Create a shell alias for easy access. For [fish-shell](https://fishshell.com/docs/current/cmds/alias.html):
 
@@ -68,7 +68,7 @@ stry garage bucket list             # List S3 buckets
 
 ---
 
-## 🐳 Direct Podman Access
+## Direct Podman Access
 
 You can also interact with containers directly using Podman:
 
@@ -81,7 +81,7 @@ podman exec -ti systemd-stry-redis /bin/bash
 
 ---
 
-## 📋 Available Commands
+## Available Commands
 
 Run `stry help` for a complete list. Here are the most commonly used:
 

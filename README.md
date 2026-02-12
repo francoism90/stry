@@ -28,8 +28,8 @@
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
   🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
 
-> [!NOTE]
-> This is a personal project that can be used personally or as a reference guide for building your own streaming platform.
+> [!WARNING]
+> ⚠️ Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library.
 
 ---
 
@@ -58,6 +58,9 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 ---
 
 ## 📋 Prerequisites
+
+You need a basic knowledge of Laravel, Inertia.js, and containerization concepts.
+Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) is a plus.
 
 **System Requirements:**
 

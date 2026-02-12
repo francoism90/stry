@@ -7,9 +7,9 @@ tags:
     - usage
 ---
 
-# 🚀 Production Setup
+# Production Setup
 
-## 📋 Prerequisites
+## Prerequisites
 
 **System Requirements:**
 
@@ -21,9 +21,9 @@ tags:
 
 ---
 
-## 🛠️ Installation
+## Installation
 
-### 1️⃣ Clone the Project
+### Clone the Project
 
 Clone the repository to your working directory (e.g., `~/projects`):
 
@@ -32,14 +32,14 @@ cd ~/projects
 git clone git@github.com:francoism90/stry.git
 ```
 
-### 2️⃣ Configure Podman
+### Configure Podman
 
 Follow the comprehensive [Podman Quadlet](podman.md) guide for container setup.
 
 > [!TIP]
 > Make sure to review the Podman guide thoroughly to ensure proper configuration for production.
 
-### 3️⃣ Setup Proxy (Required)
+### Setup Proxy (Required)
 
 A reverse proxy is **required** to interact with the container services securely.
 
@@ -116,7 +116,7 @@ For optimal video processing performance:
 
 ---
 
-## 📊 Next Steps
+## Next Steps
 
 After installation:
 

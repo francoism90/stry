@@ -8,7 +8,7 @@ tags:
     - resources
 ---
 
-# 🔧 System Configuration
+# System Configuration
 
 ## 💻 Resource Limiting
 
