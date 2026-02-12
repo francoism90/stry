@@ -18,8 +18,8 @@
         "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
-        "@inertiajs/core": "^2.3.13",
-        "@inertiajs/vue3": "^2.3.13",
+        "@inertiajs/core": "^2.3.14",
+        "@inertiajs/vue3": "^2.3.14",
         "@laravel/echo-vue": "^2.3.0",
         "@nuxt/ui": "^4.4.0",
         "@vueuse/core": "^14.2.1",
@@ -51,7 +51,7 @@
         "jiti": "^2.6.1",
         "laravel-vite-plugin": "^2.1.0",
         "npm-run-all2": "^8.0.4",
-        "oxlint": "~1.46.0",
+        "oxlint": "~1.47.0",
         "prettier": "3.8.1",
         "prettier-plugin-tailwindcss": "^0.7.2",
         "typescript": "~5.9.3",
