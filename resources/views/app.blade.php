@@ -12,9 +12,9 @@
 <link rel="preconnect" href="https://api.iconify.design" crossorigin="anonymous">
 @vite('resources/js/app.ts')
 @inertiaHead
-@googlefonts(['nonce' => Vite::cspNonce()])
-@googlefonts(['font' => 'serif', 'nonce' => Vite::cspNonce()])
-@googlefonts(['font' => 'code', 'nonce' => Vite::cspNonce()])
+@googlefonts(['nonce' => app('csp-nonce')])
+@googlefonts(['font' => 'serif', 'nonce' => app('csp-nonce')])
+@googlefonts(['font' => 'code', 'nonce' => app('csp-nonce')])
 </head>
 
 <body class="antialiased">
