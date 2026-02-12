@@ -16,10 +16,10 @@ class BasicPreset implements Preset
 {
     public function configure(Policy $policy): void
     {
+        // Get the host from the app URL configuration
         $host = $this->getHost();
 
-        logger($host);
-
+        // Configure the CSP policy with directives and sources
         $policy
             ->add(Directive::UPGRADE_INSECURE_REQUESTS, Value::NO_VALUE)
             ->add(Directive::BLOCK_ALL_MIXED_CONTENT, Value::NO_VALUE)
