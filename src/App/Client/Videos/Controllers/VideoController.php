@@ -8,7 +8,6 @@ use App\Client\Videos\Responses\VideoPlaylistProperty;
 use App\Client\Videos\Responses\VideoProgressProperty;
 use App\Client\Videos\Responses\VideoQueueProperty;
 use App\Client\Videos\Responses\VideoResourceProperty;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
