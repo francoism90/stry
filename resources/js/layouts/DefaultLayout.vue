@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
+import { useAppearance } from '@/composables/appearance'
 import { Head } from '@inertiajs/vue3'
+
+const { nonce } = useAppearance()
 </script>
 
 <template>
@@ -10,8 +13,10 @@ import { Head } from '@inertiajs/vue3'
   </Head>
 
   <Suspense>
-    <UApp>
+    <UApp :nonce="nonce">
       <ServiceWorker />
+
+      {{ nonce }}
 
       <UDashboardGroup
         unit="rem"

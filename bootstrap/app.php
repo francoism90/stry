@@ -73,12 +73,8 @@ $app = Application::configure(basePath: $basePath)
             'subscribed' => \App\Api\Users\Middlewares\EnsureUserHasSubscription::class,
         ]);
 
-        // Add CSP headers globally
-        $middleware->append(AddCspHeaders::class);
-
         // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading
         $middleware->web(append: [
-            GenerateCspNonce::class,
             AddCspHeaders::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
