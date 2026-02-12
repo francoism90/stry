@@ -8,7 +8,7 @@ use Spatie\Csp\Directive;
 use Spatie\Csp\Policy;
 use Spatie\Csp\Preset;
 
-class DefaultPreset implements Preset
+class IconifyPreset implements Preset
 {
     public function configure(Policy $policy): void
     {

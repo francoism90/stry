@@ -7,7 +7,7 @@ namespace Support\Csp\Nonce;
 use Illuminate\Support\Facades\Vite;
 use Spatie\Csp\Nonce\NonceGenerator;
 
-class LaravelViteNonceGenerator implements NonceGenerator
+class ViteNonceGenerator implements NonceGenerator
 {
     public function generate(): string
     {

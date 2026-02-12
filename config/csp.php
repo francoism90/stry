@@ -11,7 +11,9 @@ return [
      */
     'presets' => [
         Spatie\Csp\Presets\Basic::class,
-        Support\Csp\Presets\DefaultPreset::class,
+        Support\Csp\Presets\BasicPreset::class,
+        Support\Csp\Presets\AssetPreset::class,
+        Support\Csp\Presets\IconifyPreset::class,
     ],
 
     /**
@@ -55,7 +57,7 @@ return [
     /*
      * The class responsible for generating the nonces used in inline tags and headers.
      */
-    'nonce_generator' => Support\Csp\Nonce\LaravelViteNonceGenerator::class,
+    'nonce_generator' => Support\Csp\Nonce\ViteNonceGenerator::class,
 
     /*
      * Set false to disable automatic nonce generation and handling.
