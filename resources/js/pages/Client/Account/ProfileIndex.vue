@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
 import AppNavbar from '@/components/Ui/AppNavbar.vue'
+import { logout } from '@/routes'
 import type { User } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -19,6 +20,8 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
+
+const onLogout = () => router.post(logout.url())
 </script>
 
 <template>
@@ -91,7 +94,21 @@ const onSubmit = () =>
               to="/admin"
               color="primary"
               variant="soft"
-              trailing
+            />
+          </template>
+        </UPageCard>
+
+        <UPageCard
+          title="Session"
+          description="Log out of your account."
+          variant="subtle"
+        >
+          <template #footer>
+            <UButton
+              label="Logout"
+              @click="onLogout"
+              color="primary"
+              variant="soft"
             />
           </template>
         </UPageCard>

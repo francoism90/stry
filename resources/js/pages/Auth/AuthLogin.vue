@@ -15,12 +15,11 @@ const form = useForm('post', props.action, {
   remember: false,
 })
 
-const onSubmit = async () => {
+const onSubmit = () =>
   form.submit({
     preserveState: true,
     onSuccess: () => form.reset('password'),
   })
-}
 </script>
 
 <template>

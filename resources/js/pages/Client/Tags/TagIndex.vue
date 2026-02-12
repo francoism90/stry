@@ -20,14 +20,13 @@ const form = useForm('get', '', {
   page: 1,
 })
 
-const onSubmit = () => {
+const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
     only: ['items', 'search', 'type'],
     reset: ['items'],
   })
-}
 
 watchDebounced(
   () => form.search,

@@ -22,6 +22,6 @@ class AddCspHeaders extends Middleware
 
     protected function shouldSkipCsp(Request $request): bool
     {
-        return $request->routeIs(['horizon.*', 'telescope.*']);
+        return $request->routeIs(['boost.*', 'horizon.*', 'telescope.*']);
     }
 }
