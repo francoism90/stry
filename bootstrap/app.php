@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Foundation\Http\Middlewares\AddCspHeaders;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -10,7 +11,6 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
-use Spatie\Csp\AddCspHeaders;
 use Support\Inertia\Middlewares\HandleInertiaRequests;
 use Symfony\Component\HttpFoundation\Response;
 

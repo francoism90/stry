@@ -12,7 +12,6 @@ return [
     'presets' => [
         Support\Csp\Presets\BasicPreset::class,
         Support\Csp\Presets\IconifyPreset::class,
-        Spatie\Csp\Presets\BunnyFonts::class,
     ],
 
     /**
