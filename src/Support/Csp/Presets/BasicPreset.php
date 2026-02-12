@@ -27,7 +27,6 @@ class BasicPreset implements Preset
             ->add([Directive::FRAME, Directive::SCRIPT, Directive::FONT, Directive::STYLE, Directive::IMG], "*.{$host}")
             ->add(Directive::BASE, Keyword::SELF)
             ->add(Directive::CONNECT, Keyword::SELF)
-            ->add(Directive::CONNECT, 'api.iconify.design')
             ->add(Directive::DEFAULT, Keyword::SELF)
             ->add(Directive::FONT, Keyword::SELF)
             ->add(Directive::FORM_ACTION, Keyword::SELF)
