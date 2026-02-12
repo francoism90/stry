@@ -32,6 +32,7 @@ class BasicPreset implements Preset
             ->add(Directive::FORM_ACTION, Keyword::SELF)
             ->add(Directive::FRAME, Keyword::SELF)
             ->add(Directive::IMG, Keyword::SELF)
+            ->add(Directive::IMG, Scheme::DATA)
             ->add(Directive::MEDIA, Keyword::SELF)
             ->add(Directive::MEDIA, Scheme::BLOB)
             ->add(Directive::OBJECT, Keyword::NONE)
