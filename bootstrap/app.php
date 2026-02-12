@@ -10,6 +10,7 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
+use Spatie\Csp\AddCspHeaders;
 use Support\Inertia\Middlewares\HandleInertiaRequests;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,6 +48,7 @@ $app = Application::configure(basePath: $basePath)
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Trust Proxies configuration
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
@@ -56,15 +58,7 @@ $app = Application::configure(basePath: $basePath)
                 Request::HEADER_X_FORWARDED_AWS_ELB,
         );
 
-        $middleware->web(append: [
-            HandleInertiaRequests::class,
-            AddLinkHeadersForPreloadedAssets::class,
-        ]);
-
-        $middleware->statefulApi();
-        $middleware->throttleWithRedis();
-        $middleware->redirectGuestsTo(fn () => route('login'));
-
+        // Global middleware aliases for convenient usage in routes and controllers
         $middleware->alias([
             'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
             'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
@@ -77,6 +71,20 @@ $app = Application::configure(basePath: $basePath)
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'subscribed' => \App\Api\Users\Middlewares\EnsureUserHasSubscription::class,
         ]);
+
+        // Add CSP headers globally
+        $middleware->append(AddCspHeaders::class);
+
+        // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading
+        $middleware->web(append: [
+            HandleInertiaRequests::class,
+            AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
+        // Sanctum middleware for API authentication and rate limiting
+        $middleware->statefulApi();
+        $middleware->throttleWithRedis();
+        $middleware->redirectGuestsTo(fn () => route('login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
