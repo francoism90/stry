@@ -54,7 +54,7 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Add timeupdate listener
     el.value.addEventListener('timeupdate', onTimeUpdate)
 
-    // Check playlist state
+    // Get playlist state
     const isExpired = playlist.value?.expired
     const isFailed = playlist.value?.failed
     const isValid = playlist.value?.valid
