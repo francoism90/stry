@@ -54,15 +54,17 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function __construct(
         public Video $video,
+        public ?PlaylistType $type = null,
     ) {
         $this->onQueue('processing');
     }
 
     public function handle(): void
     {
-        // Determine the playlist type
-        $type = Playlist::getDefaultType();
+        // Determine the playlist type to create
+        $type = $this->type ?? Playlist::getDefaultType();
 
+        // Create the appropriate playlist based on the type
         match ($type) {
             PlaylistType::Packager => app(CreateNewVideoPlaylist::class)->handle($this->video),
             PlaylistType::Streamer => app(CreateNewVideoTranscode::class)->handle($this->video),

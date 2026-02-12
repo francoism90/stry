@@ -6,9 +6,9 @@ tags:
     - caddy
 ---
 
-# 🌐 Proxy Configuration
+# Proxy Configuration
 
-## 📝 Introduction
+## Introduction
 
 [Caddy](https://caddyserver.com/) is the recommended reverse proxy for **stry**, providing automatic HTTPS and easy configuration.
 
@@ -19,7 +19,7 @@ tags:
 
 ## ⚙️ Setup Caddy Proxy
 
-### 1️⃣ Install Container Files
+### Install Container Files
 
 Setup the Caddy container configuration:
 
@@ -28,7 +28,7 @@ mkdir -p ~/.config/containers/systemd
 cp -r ~/projects/stry/podman/systemd/proxy ~/.config/containers/systemd/
 ```
 
-### 2️⃣ Configure Caddy
+### Configure Caddy
 
 Edit the Caddy configuration files:
 
@@ -60,7 +60,7 @@ journalctl --user -u proxy -f
 
 ---
 
-## 🌍 DNS Configuration
+## DNS Configuration
 
 ### Option 1: Local Development (Hosts File)
 
@@ -87,7 +87,7 @@ This provides network-wide access without modifying hosts files on each device.
 
 ---
 
-## 🔒 SSL Certificate Setup
+## SSL Certificate Setup
 
 ### Trust Self-Signed Certificate
 

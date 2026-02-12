@@ -29,13 +29,6 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', Verified::class);
     }
 
-    public function active(): self
-    {
-        return $this
-            ->whereNot(fn ($query) => $query->expired())
-            ->ordered();
-    }
-
     public function type(ArrayAccess|array|PlaylistType $type): self
     {
         return $this->whereIn('type', Arr::wrap($type));
@@ -46,6 +39,13 @@ class PlaylistQueryBuilder extends Builder
         return $this
             ->whereNotNull('expires_at')
             ->whereNowOrPast('expires_at');
+    }
+
+    public function unexpired(): self
+    {
+        return $this
+            ->whereNot(fn ($query) => $query->expired())
+            ->ordered();
     }
 
     public function ordered(): self

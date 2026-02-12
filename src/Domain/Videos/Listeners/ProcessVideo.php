@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
+use Domain\Videos\Actions\CreateVideoPlaylist;
 use Domain\Videos\Actions\ExtractVideoCaptions;
 use Domain\Videos\Actions\MarkVideoAsVerified;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
@@ -14,7 +15,7 @@ use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
 use Spatie\RateLimitedMiddleware\RateLimited;
 
-class SyncVideoMetadata implements ShouldQueueAfterCommit
+class ProcessVideo implements ShouldQueueAfterCommit
 {
     use InteractsWithQueue;
 
@@ -50,10 +51,12 @@ class SyncVideoMetadata implements ShouldQueueAfterCommit
 
     public function handle(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): void
     {
+        // Send the video through the pipeline of actions
         Pipeline::send($event->video)
             ->through([
                 ExtractVideoCaptions::class,
                 MarkVideoAsVerified::class,
+                CreateVideoPlaylist::class,
             ])
             ->thenReturn();
     }
