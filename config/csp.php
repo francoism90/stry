@@ -10,9 +10,7 @@ return [
      * any class that implements `Spatie\Csp\Preset`
      */
     'presets' => [
-        Spatie\Csp\Presets\Basic::class,
         Support\Csp\Presets\BasicPreset::class,
-        Support\Csp\Presets\AssetPreset::class,
         Support\Csp\Presets\IconifyPreset::class,
     ],
 
@@ -57,7 +55,7 @@ return [
     /*
      * The class responsible for generating the nonces used in inline tags and headers.
      */
-    'nonce_generator' => Spatie\Csp\Nonce\RandomString::class,
+    'nonce_generator' => Support\Csp\Nonce\ViteNonceGenerator::class,
 
     /*
      * Set false to disable automatic nonce generation and handling.

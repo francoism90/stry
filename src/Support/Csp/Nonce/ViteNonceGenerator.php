@@ -11,6 +11,6 @@ class ViteNonceGenerator implements NonceGenerator
 {
     public function generate(): string
     {
-        return Vite::cspNonce();
+        return Vite::useCspNonce();
     }
 }
