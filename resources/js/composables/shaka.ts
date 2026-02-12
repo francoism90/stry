@@ -54,7 +54,7 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Add timeupdate listener
     el.value.addEventListener('timeupdate', onTimeUpdate)
 
-    // Check playlist state
+    // Get playlist state
     const isExpired = playlist.value?.expired
     const isFailed = playlist.value?.failed
     const isValid = playlist.value?.valid
@@ -76,19 +76,26 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
       )
     }
 
-    // Load manifest if valid
+    // Only attempt to load if playlist is valid (not expired or failed)
     if (isValid) {
-      await player.value.load(manifestUri, startTime.value ?? 0)
+      try {
+        // Load the manifest with optional start time
+        await player.value.load(manifestUri, startTime.value ?? 0)
 
-      // Set ready state
-      ready.value = true
-    }
+        // Set ready state
+        ready.value = true
 
-    // Enable the first available subtitle track by default (if any)
-    const textTracks = player.value.getTextTracks()
+        // Enable the first available subtitle track by default (if any)
+        const textTracks = player.value.getTextTracks()
 
-    if (textTracks.length > 0) {
-      player.value.selectTextTrack(textTracks[0])
+        if (textTracks.length > 0) {
+          player.value.selectTextTrack(textTracks[0])
+        }
+      } catch {
+        // Handled by error event listener
+        // Reset ready state on load failure
+        ready.value = false
+      }
     }
   }
 

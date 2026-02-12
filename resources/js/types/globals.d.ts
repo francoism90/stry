@@ -14,6 +14,7 @@ declare module '@inertiajs/core' {
 
   export interface PageProps {
     readonly app: string
+    readonly nonce: string
     readonly locale: string
     readonly auth: User | undefined
   }

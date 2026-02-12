@@ -21,6 +21,7 @@ configureEcho({
 
 createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),
+  progress: false,
   resolve: async (name) => {
     const page = await resolvePageComponent(
       `./pages/${name}.vue`,
@@ -36,8 +37,5 @@ createInertiaApp({
       .use(plugin)
       .use(ui)
       .mount(el)
-  },
-  progress: {
-    color: '#ad46ff',
   },
 })
