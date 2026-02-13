@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Videos\Controllers;
 
-use App\Admin\Videos\Responses\PlaylistResourceProperty;
+use App\Admin\Playlists\Responses\PlaylistResourceProperty;
 use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
