@@ -6,6 +6,7 @@ Wants=stry-mailpit.container stry-reverb.container stry-queue.container stry-sch
 
 [Container]
 Image=stry.build
+AutoUpdate=local
 UserNS=keep-id
 Volume=${MEDIA_PATH}:/data/media:rw,z,U
 Volume=${IMPORT_PATH}:/data/import:rw,z,U

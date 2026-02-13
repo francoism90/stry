@@ -5,6 +5,7 @@ Requires=stry.container
 
 [Container]
 Image=stry.build
+AutoUpdate=local
 Environment=CONTAINER_ROLE=horizon
 ShmSize=256m
 UserNS=keep-id

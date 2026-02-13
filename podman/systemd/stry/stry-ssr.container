@@ -5,6 +5,7 @@ Requires=stry.container
 
 [Container]
 Image=stry.build
+AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
 UserNS=keep-id
 Network=stry.network
