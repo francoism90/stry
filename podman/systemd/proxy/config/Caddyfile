@@ -2,6 +2,7 @@
 	servers {
 		enable_full_duplex
 		trusted_proxies static private_ranges
+		protocols h1 h2 h3
 	}
 
 	# debug
@@ -11,10 +12,6 @@
 
 (pwa) {
 	header Service-Worker-Allowed "/"
-}
-
-(tls) {
-	tls internal
 }
 
 (compress) {
