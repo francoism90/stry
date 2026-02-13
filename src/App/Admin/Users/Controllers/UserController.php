@@ -20,7 +20,6 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }

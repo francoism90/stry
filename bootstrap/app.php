@@ -24,11 +24,6 @@ $app = Application::configure(basePath: $basePath)
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            // Global resource parameter mappings
-            Route::resourceParameters([
-                'media' => 'media',
-            ]);
-
             // Rate limiting
             RateLimiter::for('api', function (Request $request) {
                 return $request->user()
@@ -36,9 +31,10 @@ $app = Application::configure(basePath: $basePath)
                     : Limit::perMinute(30)->by($request->ip());
             });
 
-            RateLimiter::for('none', function (Request $request) {
-                return Limit::none();
-            });
+            // Global resource parameter mappings
+            Route::resourceParameters([
+                'media' => 'media',
+            ]);
 
             // Admin Routes
             Route::middleware(['web', 'verified', 'role:super-admin'])
