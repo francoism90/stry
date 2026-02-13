@@ -10,7 +10,7 @@ use Domain\Videos\Models\Video;
 
 class CreateVideoPlaylist
 {
-    public function handle(Video $video, Closure $next): array
+    public function handle(Video $video, Closure $next): mixed
     {
         // Check if we should create a playlist for this video
         if (! Video::shouldCreatePlaylist() || $video->hasPlaylist()) {
