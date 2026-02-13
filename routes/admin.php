@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Admin\Dashboard\Controllers\HomeController;
+use App\Admin\Playlists\Controllers\PlaylistController;
 use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Users\Controllers\UserController;
@@ -21,6 +22,9 @@ Route::post('videos/import', VideoImportController::class)->name('videos.import'
 
 // Users
 Route::resource('users', UserController::class);
+
+// Playlists
+Route::resource('playlists', PlaylistController::class);
 
 // Tags
 Route::resource('tags', TagController::class);

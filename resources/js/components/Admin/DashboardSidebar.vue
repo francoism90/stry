@@ -25,6 +25,11 @@ const links: NavigationMenuItem[][] = [
       to: '/admin/tags',
     },
     {
+      label: 'Playlists',
+      icon: 'i-lucide-list-video',
+      to: '/admin/playlists',
+    },
+    {
       label: 'Users',
       icon: 'i-lucide-users',
       to: '/admin/users',

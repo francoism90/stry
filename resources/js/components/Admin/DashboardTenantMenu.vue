@@ -10,14 +10,12 @@ const tenants = ref([
   {
     label: 'Vue',
     avatar: {
-      src: 'https://github.com/vuejs.png',
       alt: 'Vue',
     },
   },
   {
     label: 'Vite',
     avatar: {
-      src: 'https://github.com/vitejs.png',
       alt: 'Vite',
     },
   },

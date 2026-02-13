@@ -29,7 +29,7 @@ readonly class TagFilterScope
 
     protected function getType(): ?TagType
     {
-        $typeValue = $this->type ?? '';
+        $typeValue = $this->type ?? null;
 
         return is_string($typeValue) ? TagType::tryFrom($typeValue) : $typeValue;
     }

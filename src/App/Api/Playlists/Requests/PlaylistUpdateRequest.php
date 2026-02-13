@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Requests;
 
+use Domain\Playlists\Enums\PlaylistType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PlaylistUpdateRequest extends FormRequest
 {
@@ -19,8 +21,8 @@ class PlaylistUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'expires_at' => ['sometimes', 'nullable', 'date'],
+            'type' => ['sometimes', Rule::enum(PlaylistType::class)],
+            'expires_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
         ];
     }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
-import PlaylistDeleteModal from '@/components/Playlist/PlaylistDeleteModal.vue'
+import VideoPlaylistDeleteModal from '@/components/Videos/VideoPlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
@@ -47,7 +47,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
           </div>
 
           <div class="z-10 flex items-center gap-2">
-            <PlaylistDeleteModal
+            <VideoPlaylistDeleteModal
               :video="video"
               :item="item"
             >
@@ -57,7 +57,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
                 variant="ghost"
                 size="sm"
               />
-            </PlaylistDeleteModal>
+            </VideoPlaylistDeleteModal>
           </div>
         </div>
       </UPageCard>
