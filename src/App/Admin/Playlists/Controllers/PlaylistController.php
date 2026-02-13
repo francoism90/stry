@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Playlists\Controllers;
 
+use App\Admin\Playlists\Responses\PlaylistResourceProperty;
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
