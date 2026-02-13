@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
-import PlaylistDeleteModal from '@/components/Playlist/PlaylistDeleteModal.vue'
+import VideoPlaylistDeleteModal from '@/components/Videos/VideoPlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Playlist, Video } from '@/types'
@@ -89,7 +89,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <PlaylistDeleteModal
+        <VideoPlaylistDeleteModal
           :video="video"
           :item="playlist"
         />
