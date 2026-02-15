@@ -70,8 +70,8 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates libssl curl wget unzip zip git \
-    nano openssh-client postgresql-common awscli python3 python3-pip \
+    ca-certificates libssl3 curl wget unzip zip git \
+    nano openssh-client postgresql-common awscli python3 \
     mesa-va-drivers mesa-vulkan-drivers intel-media-va-driver-non-free \
     libva2 libva-drm2 libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
