@@ -8,7 +8,7 @@ use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Actions\CreateNewVideoPlaylist;
-use Domain\Videos\Actions\CreateNewVideoTranscode;
+use Domain\Videos\Actions\CreateNewVideoStream;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -67,7 +67,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         // Create the appropriate playlist based on the type
         match ($type) {
             PlaylistType::Packager => app(CreateNewVideoPlaylist::class)->handle($this->video),
-            PlaylistType::Streamer => app(CreateNewVideoTranscode::class)->handle($this->video),
+            PlaylistType::Streamer => app(CreateNewVideoStream::class)->handle($this->video),
             default => throw PlaylistTypeException::invalidType($type),
         };
     }

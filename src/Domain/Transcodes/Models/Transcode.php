@@ -9,6 +9,7 @@ use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
 use Domain\Transcodes\States;
 use Domain\Transcodes\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -53,6 +54,7 @@ class Transcode extends Model
         return [
             'file_size' => 'integer',
             'retry_count' => 'integer',
+            'encoder' => TranscodeEncoder::class,
             'started_at' => AsDateTime::class,
             'transcoded_at' => AsDateTime::class,
             'created_at' => AsDateTime::class,

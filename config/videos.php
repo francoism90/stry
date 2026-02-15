@@ -63,5 +63,5 @@ return [
     |
     */
 
-    'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'transcode'),
+    'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'transcodes'),
 ];
