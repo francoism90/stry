@@ -9,7 +9,6 @@ use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Enums\TranscodeEncoder;
-use Domain\Transcodes\Enums\TranscodeType;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\Scopes\TranscodeFilterScope;
 use Foundation\Http\Controllers\Controller;
