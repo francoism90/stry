@@ -16,19 +16,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Playlist Creation
-    |--------------------------------------------------------------------------
-    |
-    | This value determines whether a playlist should be automatically
-    | created for each video. If true, playlists are created immediately,
-    | allowing instant playback but requiring more processing and storage.
-    |
-    */
-
-    'create_playlist' => (bool) env('VIDEO_CREATE_PLAYLIST', false),
-
-    /*
-    |--------------------------------------------------------------------------
     | Import Batch Size
     |--------------------------------------------------------------------------
     |
@@ -39,6 +26,19 @@ return [
     */
 
     'import_batch_size' => (int) env('VIDEO_IMPORT_BATCH_SIZE', 20),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Playlist Creation
+    |--------------------------------------------------------------------------
+    |
+    | This value determines whether a playlist should be automatically
+    | created for each video. If true, playlists are created immediately,
+    | allowing instant playback but requiring more processing and storage.
+    |
+    */
+
+    'create_playlist' => (bool) env('VIDEO_CREATE_PLAYLIST', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,4 +53,15 @@ return [
 
     'completion_threshold' => (float) env('VIDEO_COMPLETION_THRESHOLD', 0.95),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Transcode Disk
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the disk used for storing transcoded videos.
+    | The disk should be configured in the filesystems configuration.
+    |
+    */
+
+    'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'transcode'),
 ];

@@ -1,3 +1,45 @@
+FROM docker.io/rust:latest AS builder
+
+WORKDIR /tmp
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl build-essential cmake ninja-build python3 python3-venv musl-tools \
+    pkg-config libssl-dev
+
+# FFmpeg
+RUN arch="$(uname -m)" && case "$arch" in \
+      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
+      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
+    && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
+
+# Shaka Packager
+RUN arch="$(uname -m)" && case "$arch" in \
+      x86_64) \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ; \
+        PACKAGER_SHA256="7bdefe5a25fe84535c6c1a425f4c3c6b65fa85c441c2aeba01254b3c0f4b1956" ;; \
+      aarch64) \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ; \
+        PACKAGER_SHA256="170ee824cc30a8ed7c7c22346c46bd614aa5532a4af16d9f3c8cfaed6eda268e" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
+    && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
+    && chmod +x /usr/local/bin/packager
+
+# Shaka Streamer
+RUN python3 -m venv /opt/shaka-streamer-env
+RUN /opt/shaka-streamer-env/bin/pip install shaka-streamer
+
+# ab-av1
+RUN cargo install ab-av1 --root /usr/local
+
+# Clean up
+RUN apt-get clean && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 FROM docker.io/dunglas/frankenphp:latest AS base
 
 ARG BUILD_DATE
@@ -28,7 +70,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl wget unzip zip git \
+    ca-certificates libssl curl wget unzip zip git \
     nano openssh-client postgresql-common awscli python3 python3-pip \
     mesa-va-drivers mesa-vulkan-drivers intel-media-va-driver-non-free \
     libva2 libva-drm2 libavif-bin jpegoptim optipng pngquant gifsicle \
@@ -37,31 +79,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y --no-install-recommends nodejs
 
-# FFmpeg
-RUN arch="$(uname -m)" && case "$arch" in \
-      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
-      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
-      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
-    esac \
-    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
-    && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
+# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
+COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
+COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
 
-# Shaka Packager
-RUN arch="$(uname -m)" && case "$arch" in \
-      x86_64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ; \
-        PACKAGER_SHA256="7bdefe5a25fe84535c6c1a425f4c3c6b65fa85c441c2aeba01254b3c0f4b1956" ;; \
-      aarch64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ; \
-        PACKAGER_SHA256="170ee824cc30a8ed7c7c22346c46bd614aa5532a4af16d9f3c8cfaed6eda268e" ;; \
-      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
-    esac \
-    && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
-    && echo "${PACKAGER_SHA256} /usr/local/bin/packager" | sha256sum -c - \
-    && chmod +x /usr/local/bin/packager
-
-# Install shaka-streamer via pip (without ffmpeg deps since we have our own)
-RUN pip3 install --break-system-packages --upgrade shaka-streamer
+# Copy Shaka Streamer virtual environment from builder stage
+COPY --from=builder /opt/shaka-streamer-env /opt/shaka-streamer-env
+RUN ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
 
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -83,7 +109,7 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 
 # Create non-root user
 RUN groupadd -g ${GID} docker \
-    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+    && useradd -u ${UID} -g docker -G video,render -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
 RUN mkdir -p /app /config /data/{media,import} \
