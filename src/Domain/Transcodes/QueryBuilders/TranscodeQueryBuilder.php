@@ -15,6 +15,11 @@ use Illuminate\Support\Arr;
 
 class TranscodeQueryBuilder extends Builder
 {
+    public function encoder(ArrayAccess|array|TranscodeEncoder $encoder): self
+    {
+        return $this->whereIn('encoder', Arr::wrap($encoder));
+    }
+
     public function pending(): self
     {
         return $this->whereState('state', Pending::class);
@@ -47,8 +52,10 @@ class TranscodeQueryBuilder extends Builder
             ->ordered();
     }
 
-    public function encoder(ArrayAccess|array|TranscodeEncoder $encoder): self
+    public function ordered(): self
     {
-        return $this->whereIn('encoder', Arr::wrap($encoder));
+        return $this
+            ->orderByDesc('transcoded_at')
+            ->latest();
     }
 }

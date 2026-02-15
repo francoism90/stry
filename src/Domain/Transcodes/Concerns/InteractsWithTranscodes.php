@@ -6,7 +6,7 @@ namespace Domain\Transcodes\Concerns;
 
 use Domain\Transcodes\Models\Transcode;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 trait InteractsWithTranscodes
@@ -24,9 +24,9 @@ trait InteractsWithTranscodes
         });
     }
 
-    public function transcodes(): HasMany
+    public function transcodes(): MorphMany
     {
-        return $this->hasMany(Transcode::class);
+        return $this->morphMany(Transcode::class, 'transcodable')->chaperone();
     }
 
     public function createTranscode(array $attributes = []): Transcode

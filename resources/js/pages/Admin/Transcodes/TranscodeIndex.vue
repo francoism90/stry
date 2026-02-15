@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
+import TranscodeCreateModal from '@/components/Transcodes/TranscodeCreateModal.vue'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TranscodeCollection } from '@/types'
@@ -37,6 +38,12 @@ const onSubmit = () =>
       <UDashboardNavbar title="Transcodes">
         <template #leading>
           <UDashboardSidebarCollapse />
+        </template>
+
+        <template #right>
+          <div class="flex items-center gap-2">
+            <TranscodeCreateModal />
+          </div>
         </template>
       </UDashboardNavbar>
 

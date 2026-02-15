@@ -12,7 +12,6 @@ use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
 use Domain\Transcodes\States;
 use Domain\Transcodes\States\TranscodeState;
 use Domain\Users\Concerns\InteractsWithUser;
-use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -20,7 +19,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
@@ -42,7 +41,8 @@ class Transcode extends Model
      */
     protected $fillable = [
         'user_id',
-        'video_id',
+        'transcodable_type',
+        'transcodable_id',
         'encoder',
         'state',
         'file_size',
@@ -50,6 +50,13 @@ class Transcode extends Model
         'retry_count',
         'started_at',
         'transcoded_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'user_id',
     ];
 
     protected function casts(): array
@@ -76,9 +83,9 @@ class Transcode extends Model
         return new TranscodeCollection($models);
     }
 
-    public function video(): BelongsTo
+    public function transcodable(): MorphTo
     {
-        return $this->belongsTo(Video::class);
+        return $this->morphTo();
     }
 
     public function prunable(): TranscodeQueryBuilder

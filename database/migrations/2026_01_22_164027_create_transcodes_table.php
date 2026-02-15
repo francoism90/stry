@@ -13,8 +13,13 @@ return new class extends Migration
         Schema::create('transcodes', function (Blueprint $table) {
             $table->id();
             $table->ulid()->unique();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('video_id')->constrained()->cascadeOnDelete();
+            $table
+                ->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->nullableMorphs('transcodable');
             $table->string('encoder');
             $table->unsignedBigInteger('file_size')->nullable();
             $table->text('error_message')->nullable();
