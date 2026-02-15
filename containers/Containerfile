@@ -109,7 +109,7 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 
 # Create non-root user
 RUN groupadd -g ${GID} docker \
-    && useradd -u ${UID} -g docker -G video,render -d /home/docker -s /bin/bash -m docker
+    && useradd -u ${UID} -g docker -G video -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
 RUN mkdir -p /app /config /data/{media,import} \

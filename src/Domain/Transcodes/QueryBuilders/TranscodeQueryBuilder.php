@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\QueryBuilders;
+namespace Domain\Transcodes\QueryBuilders;
 
-use Domain\Media\States\Completed;
-use Domain\Media\States\Failed;
-use Domain\Media\States\Pending;
-use Domain\Media\States\Processing;
+use Domain\Transcodes\States\Completed;
+use Domain\Transcodes\States\Failed;
+use Domain\Transcodes\States\Pending;
+use Domain\Transcodes\States\Processing;
 use Illuminate\Database\Eloquent\Builder;
 
 class TranscodeQueryBuilder extends Builder

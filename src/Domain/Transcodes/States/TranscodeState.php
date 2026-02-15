@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\States;
+namespace Domain\Transcodes\States;
 
 use Spatie\ModelStates\State;
 use Spatie\ModelStates\StateConfig;

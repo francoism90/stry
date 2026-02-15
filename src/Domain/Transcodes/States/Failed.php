@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\States;
+namespace Domain\Transcodes\States;
 
 class Failed extends TranscodeState
 {

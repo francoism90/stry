@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Actions;
+namespace Domain\Transcodes\Actions;
 
-use Domain\Media\Models\Transcode;
+use Domain\Transcodes\Models\Transcode;
 
 class CleanupTranscodeFilesystem
 {

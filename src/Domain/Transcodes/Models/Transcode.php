@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Models;
+namespace Domain\Transcodes\Models;
 
-use Domain\Media\Observers\TranscodeObserver;
-use Domain\Media\QueryBuilders\TranscodeQueryBuilder;
-use Domain\Media\States;
-use Domain\Media\States\TranscodeState;
+use Domain\Transcodes\Observers\TranscodeObserver;
+use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
+use Domain\Transcodes\States;
+use Domain\Transcodes\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -37,7 +38,7 @@ class Transcode extends Model
      */
     protected $fillable = [
         'user_id',
-        'media_id',
+        'video_id',
         'encoder',
         'state',
         'file_size',
@@ -65,9 +66,9 @@ class Transcode extends Model
         return new TranscodeQueryBuilder($query);
     }
 
-    public function media(): BelongsTo
+    public function video(): BelongsTo
     {
-        return $this->belongsTo(Media::class);
+        return $this->belongsTo(Video::class);
     }
 
     public function prunable(): TranscodeQueryBuilder
@@ -109,7 +110,7 @@ class Transcode extends Model
 
     public static function getDisk(): string
     {
-        return Config::string('transcodes.disk', 'transcodes');
+        return Config::string('videos.transcode_disk', 'transcodes');
     }
 
     public function getPath(string $path = ''): string
@@ -182,7 +183,7 @@ class Transcode extends Model
      */
     public function broadcastOn(string $event): array
     {
-        return array_filter([$this, $this->media, $this->media->model]);
+        return array_filter([$this, $this->media, $this->video]);
     }
 
     public function broadcastChannel(): string
