@@ -2,6 +2,7 @@
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import { index as media } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
 import { index as playlists } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
+import { index as transcodes } from '@/actions/App/Admin/Videos/Controllers/VideoTranscodeController'
 import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
@@ -24,6 +25,11 @@ const links: NavigationMenuItem[][] = [
       label: 'Media',
       icon: 'i-lucide-images',
       to: media.url(props.video.id),
+    },
+    {
+      label: 'Transcodes',
+      icon: 'i-lucide-cpu',
+      to: transcodes.url(props.video.id),
     },
     {
       label: 'Playlists',
