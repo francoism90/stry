@@ -31,9 +31,9 @@ class CreateNewVideoTranscode
         $encoder = AV1::fromDisk($clip->disk)
             ->open($clip->getPathRelativeToRoot())
             ->ffmpegEncode()
-            ->useHardwareAcceleration()
-            ->crf(28)
-            ->preset('6');
+            ->useHardwareAcceleration(Transcode::getHardwareAccelerationEnabled())
+            ->crf(Transcode::getCrf())
+            ->preset(Transcode::getPreset());
 
         try {
             // Mark the transcode as processing
