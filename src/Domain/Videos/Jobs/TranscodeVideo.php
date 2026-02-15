@@ -31,7 +31,7 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 3600;
+    public $timeout = 14400;
 
     /**
      * @var int

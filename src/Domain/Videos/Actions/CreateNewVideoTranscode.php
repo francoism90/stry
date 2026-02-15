@@ -30,8 +30,10 @@ class CreateNewVideoTranscode
         // Create the AV1 encoder instance
         $encoder = AV1::fromDisk($clip->disk)
             ->open($clip->getPathRelativeToRoot())
-            ->abav1()
-            ->vmafEncode();
+            ->ffmpegEncode()
+            ->useHardwareAcceleration()
+            ->crf(28)
+            ->preset('6');
 
         try {
             // Mark the transcode as processing
@@ -40,7 +42,7 @@ class CreateNewVideoTranscode
             // Export the encoded media to the specified disk and path
             $encoder
                 ->export()
-                ->toDisk(Transcode::getDisk())
+                ->toDisk($transcode->getDisk())
                 ->save($transcode->getOutputPath());
 
             // Get the size of the output file

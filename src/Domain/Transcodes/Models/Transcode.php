@@ -110,9 +110,9 @@ class Transcode extends Model
         return $this->state->equals(States\Failed::class);
     }
 
-    public static function getDisk(): string
+    public function getDisk(): string
     {
-        return Config::string('videos.transcode_disk', 'transcodes');
+        return $this->disk ?? static::getDestinationDisk();
     }
 
     public function getPath(string $path = ''): string
@@ -206,5 +206,25 @@ class Transcode extends Model
     public function broadcastQueue(): string
     {
         return 'broadcasts';
+    }
+
+    public static function getDestinationDisk(): string
+    {
+        return Config::string('videos.transcode_disk', 'transcodes');
+    }
+
+    public static function getHardwareAccelerationEnabled(): bool
+    {
+        return Config::bool('videos.transcode_hardware_acceleration', true);
+    }
+
+    public static function getCrf(): int
+    {
+        return Config::int('videos.transcode_crf', 28);
+    }
+
+    public static function getPreset(): string
+    {
+        return Config::string('videos.transcode_preset', '6');
     }
 }

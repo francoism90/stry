@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Import Disk
+    | Importing Videos
     |--------------------------------------------------------------------------
     |
     | This value determines the disk used when importing videos.
@@ -13,17 +13,6 @@ return [
     */
 
     'import_disk' => (string) env('VIDEO_IMPORT_DISK', 'import'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Import Batch Size
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the number of videos processed in a single
-    | batch during import operations. Set based on your server's
-    | capabilities to optimize performance and avoid timeouts.
-    |
-    */
 
     'import_batch_size' => (int) env('VIDEO_IMPORT_BATCH_SIZE', 20),
 
@@ -55,13 +44,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Transcode Disk
+    | Transcode Settings
     |--------------------------------------------------------------------------
     |
     | This value determines the disk used for storing transcoded videos.
     | The disk should be configured in the filesystems configuration.
+    | Additional settings for transcoding, such as hardware acceleration,
+    | CRF, and preset, can also be configured here.
     |
     */
 
     'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'transcodes'),
+
+    'transcode_hardware_acceleration' => (bool) env('VIDEO_TRANSCODE_HARDWARE_ACCELERATION', true),
+
+    'transcode_crf' => (int) env('VIDEO_TRANSCODE_CRF', 28),
+
+    'transcode_preset' => (string) env('VIDEO_TRANSCODE_PRESET', '6'),
+
 ];

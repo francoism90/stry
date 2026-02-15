@@ -208,7 +208,7 @@ class Playlist extends Model
 
     public function getDisk(): string
     {
-        return $this->disk;
+        return $this->disk ?? static::getDestinationDisk();
     }
 
     public function getFileName(): string
