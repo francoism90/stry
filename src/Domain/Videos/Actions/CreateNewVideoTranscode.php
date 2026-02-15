@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use Domain\Media\Models\Media;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
