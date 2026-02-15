@@ -15,7 +15,7 @@ class CreateNewVideoTranscode
     public function handle(Video $video): void
     {
         // Check if the video is currently transcoding or if it doesn't have any clips
-        if ($video->isTranscoding() || ! $video->hasMedia('clips')) {
+        if ($video->hasTranscode() || ! $video->hasMedia('clips')) {
             return;
         }
 

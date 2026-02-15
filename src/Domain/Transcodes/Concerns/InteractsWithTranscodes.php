@@ -36,8 +36,13 @@ trait InteractsWithTranscodes
         ]);
     }
 
-    public function isTranscoding(): bool
+    public function hasTranscode(): bool
     {
-        return $this->transcodes()->inProgress()->exists();
+        return $this->transcodes()->active()->exists();
+    }
+
+    public function getTranscode(): ?Transcode
+    {
+        return $this->transcodes()->active()->first();
     }
 }

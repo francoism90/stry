@@ -37,10 +37,10 @@ class TranscodeQueryBuilder extends Builder
         return $this->completed();
     }
 
-    public function inProgress(): self
+    public function active(): self
     {
-        return $this->where(function ($query) {
-            $query->pending()->orWhere->processing();
-        });
+        return $this
+            ->whereNot(fn ($query) => $query->failed())
+            ->ordered();
     }
 }
