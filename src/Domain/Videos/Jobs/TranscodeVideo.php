@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Exceptions\PlaylistTypeException;
-use Domain\Playlists\Models\Playlist;
-use Domain\Videos\Actions\CreateNewVideoPlaylist;
-use Domain\Videos\Actions\CreateNewVideoStream;
 use Domain\Videos\Actions\CreateNewVideoTranscode;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;

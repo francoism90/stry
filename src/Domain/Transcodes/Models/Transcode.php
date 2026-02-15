@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\Transcodes\Models;
 
+use Domain\Shared\Casts\AsDateTime;
+use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Observers\TranscodeObserver;
 use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
 use Domain\Transcodes\States;
 use Domain\Transcodes\States\TranscodeState;
-use Domain\Shared\Casts\AsDateTime;
-use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;

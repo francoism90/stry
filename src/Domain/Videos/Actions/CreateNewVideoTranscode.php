@@ -41,7 +41,7 @@ class CreateNewVideoTranscode
             $encoder
                 ->export()
                 ->toDisk(Transcode::getDisk())
-                ->save( $transcode->getOutputPath());
+                ->save($transcode->getOutputPath());
 
             // Get the size of the output file
             $fileSize = $transcode->getFilesystem()->size($transcode->getOutputPath());
