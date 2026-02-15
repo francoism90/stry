@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Playlists/Controllers/PlaylistController'
-import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
+import { edit } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
+import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { PlaylistCollection } from '@/types'
+import type { TranscodeCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
-  items: PlaylistCollection
-  types: SelectMenuItem[]
-  type?: string | undefined
+  items: TranscodeCollection
+  encoders: SelectMenuItem[]
+  encoder?: string | undefined
 }>()
 
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
-  type: props.type,
+  encoder: props.encoder,
   page: 1,
 })
 
@@ -24,32 +24,32 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
-    only: ['items', 'type'],
+    only: ['items', 'encoder'],
     reset: ['items'],
   })
 </script>
 
 <template>
-  <Head title="Playlists" />
+  <Head title="Transcodes" />
 
-  <UDashboardPanel id="playlists">
+  <UDashboardPanel id="transcodes">
     <template #header>
-      <UDashboardNavbar title="Playlists">
+      <UDashboardNavbar title="Transcodes">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
       </UDashboardNavbar>
 
       <UDashboardToolbar
-        id="playlist-header"
+        id="transcode-header"
         class="min-h-16"
       >
         <template #right>
-          <UFormField :error="form.errors.type">
+          <UFormField :error="form.errors.encoder">
             <USelect
-              v-model="form.type"
-              :items="types"
-              placeholder="Select type"
+              v-model="form.encoder"
+              :items="encoders"
+              placeholder="Select encoder"
               label-key="label"
               value-key="value"
               class="min-w-36"
@@ -63,12 +63,12 @@ const onSubmit = () =>
     <template #body>
       <InfiniteScroll
         data="items"
-        start-element="#playlist-header"
-        items-element="#playlist-list"
+        start-element="#transcode-header"
+        items-element="#transcode-list"
         :buffer="200"
       >
         <UPageList
-          id="playlist-list"
+          id="transcode-list"
           divide
         >
           <UPageCard
@@ -81,7 +81,7 @@ const onSubmit = () =>
             <div class="flex items-center justify-between">
               <UUser
                 :name="item.id"
-                :description="`${item.type} • ${item.state.name}`"
+                :description="`${item.encoder} • ${item.state.name}`"
                 :avatar="{
                   alt: item.id,
                   class: 'rounded-sm size-14 me-1',
@@ -89,14 +89,14 @@ const onSubmit = () =>
               />
 
               <div class="z-10 flex items-center gap-2">
-                <PlaylistDeleteModal :item="item">
+                <TranscodeDeleteModal :item="item">
                   <UButton
                     icon="i-lucide-trash"
                     color="error"
                     variant="ghost"
                     size="sm"
                   />
-                </PlaylistDeleteModal>
+                </TranscodeDeleteModal>
               </div>
             </div>
           </UPageCard>

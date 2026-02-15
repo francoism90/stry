@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Transcodes\Models;
 
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Transcodes\Collections\TranscodeCollection;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Observers\TranscodeObserver;
 use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
@@ -68,6 +69,11 @@ class Transcode extends Model
     public function newEloquentBuilder($query): TranscodeQueryBuilder
     {
         return new TranscodeQueryBuilder($query);
+    }
+
+    public function newCollection(array $models = []): TranscodeCollection
+    {
+        return new TranscodeCollection($models);
     }
 
     public function video(): BelongsTo

@@ -8,6 +8,7 @@ use App\Admin\Transcodes\Responses\TranscodeResourceProperty;
 use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
+use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Enums\TranscodeType;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\Scopes\TranscodeFilterScope;
@@ -33,17 +34,17 @@ class TranscodeController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Transcode::class);
 
         // Apply filters
-        $type = $request->safe()->input('type');
+        $encoder = $request->safe()->input('encoder');
 
         // Query builder
-        $scout = Transcode::query()
-            ->tap(new TranscodeFilterScope(type: $type))
+        $query = Transcode::query()
+            ->tap(new TranscodeFilterScope(encoder: $encoder))
             ->simplePaginate(16);
 
         return Inertia::render('Admin/Transcodes/TranscodeIndex', [
-            'items' => Inertia::scroll(fn () => TranscodeResource::collection($scout)),
-            'type' => fn () => $type,
-            'types' => fn () => TranscodeType::options(),
+            'items' => Inertia::scroll(fn () => TranscodeResource::collection($query)),
+            'encoder' => fn () => $encoder,
+            'encoders' => fn () => TranscodeEncoder::options(),
         ]);
     }
 
@@ -53,7 +54,7 @@ class TranscodeController extends Controller implements HasMiddleware
 
         return Inertia::render('Admin/Transcodes/TranscodeEdit', [
             'transcode' => fn () => new TranscodeResourceProperty($transcode),
-            'types' => fn () => TranscodeType::options(),
+            'encoders' => fn () => TranscodeEncoder::options(),
         ]);
     }
 
