@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\QueryBuilders;
+namespace Domain\Transcodes\QueryBuilders;
 
-use Domain\Media\States\Completed;
-use Domain\Media\States\Failed;
-use Domain\Media\States\Pending;
-use Domain\Media\States\Processing;
+use ArrayAccess;
+use Domain\Transcodes\Enums\TranscodeEncoder;
+use Domain\Transcodes\States\Completed;
+use Domain\Transcodes\States\Failed;
+use Domain\Transcodes\States\Pending;
+use Domain\Transcodes\States\Processing;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 class TranscodeQueryBuilder extends Builder
 {
@@ -37,10 +40,15 @@ class TranscodeQueryBuilder extends Builder
         return $this->completed();
     }
 
-    public function inProgress(): self
+    public function active(): self
     {
-        return $this->where(function ($query) {
-            $query->pending()->orWhere->processing();
-        });
+        return $this
+            ->whereNot(fn ($query) => $query->failed())
+            ->ordered();
+    }
+
+    public function encoder(ArrayAccess|array|TranscodeEncoder $encoder): self
+    {
+        return $this->whereIn('encoder', Arr::wrap($encoder));
     }
 }

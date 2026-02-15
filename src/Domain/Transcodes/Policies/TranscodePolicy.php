@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Policies;
+namespace Domain\Transcodes\Policies;
 
-use Domain\Media\Models\Transcode;
+use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 
 class TranscodePolicy

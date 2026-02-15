@@ -208,7 +208,7 @@ class Playlist extends Model
 
     public function getDisk(): string
     {
-        return $this->disk;
+        return $this->disk ?? static::getDestinationDisk();
     }
 
     public function getFileName(): string
@@ -240,7 +240,7 @@ class Playlist extends Model
 
     public function getUrlResolver(?string $path = null): string
     {
-        return URL::temporarySignedRoute('api.playlists.playlist', now()->addHour(), [
+        return URL::temporarySignedRoute('api.play.manifest', now()->addHour(), [
             'playlist' => $this,
             'path' => $path,
         ]);

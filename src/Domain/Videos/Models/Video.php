@@ -8,6 +8,7 @@ use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
@@ -44,6 +45,7 @@ class Video extends Model implements HasMedia
     use InteractsWithGroups;
     use InteractsWithMedia;
     use InteractsWithPlaylists;
+    use InteractsWithTranscodes;
     use InteractsWithUser;
     use Searchable;
     use SoftDeletes;

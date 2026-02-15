@@ -36,12 +36,12 @@ class PlaylistController extends Controller implements HasMiddleware
         $type = $request->safe()->input('type');
 
         // Query builder
-        $scout = Playlist::query()
+        $query = Playlist::query()
             ->tap(new PlaylistFilterScope(type: $type))
             ->simplePaginate(16);
 
         return Inertia::render('Admin/Playlists/PlaylistIndex', [
-            'items' => Inertia::scroll(fn () => PlaylistResource::collection($scout)),
+            'items' => Inertia::scroll(fn () => PlaylistResource::collection($query)),
             'type' => fn () => $type,
             'types' => fn () => PlaylistType::options(),
         ]);

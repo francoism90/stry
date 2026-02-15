@@ -134,6 +134,25 @@ export type PlaylistCollection = Omit<Paginator, 'data'> & {
   data: Playlist[] | undefined
 }
 
+export type Transcode = Model & {
+  video_id: number
+  encoder: string
+  processing: boolean
+  completed: boolean
+  failed: boolean
+  size: number
+  file_size: string
+  error_message: string | null
+  retry_count: number
+  started_at: string | null
+  transcoded_at: string | null
+  state: ModelState
+}
+
+export type TranscodeCollection = Omit<Paginator, 'data'> & {
+  data: Transcode[] | undefined
+}
+
 export type Paginator = {
   data: Model[] | undefined
   links: {

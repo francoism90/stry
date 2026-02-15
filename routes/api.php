@@ -15,14 +15,11 @@ Route::name('api.')->prefix('v1')->group(function () {
     // Tags
     Route::apiResource('tags', TagController::class)->only('index');
 
-    // Playlists
-    Route::name('playlists.')->prefix('play')->group(function () {
-        // Playlist manifest and segments delivery
-        Route::get('/{playlist}/playlist/{path}', PlaylistManifestController::class)
-            ->where('path', '.*')
-            ->name('playlist');
+    // VOD - Playlists
+    Route::get('/play/{playlist}/{path}', PlaylistManifestController::class)
+        ->where('path', '.*')
+        ->name('play.manifest');
 
-        // Playlist analytics and session management
-        Route::post('/{playlist}/session', PlaylistSessionController::class)->name('session');
-    });
+    // VOD - Analytics
+    Route::post('/record/{playlist}', PlaylistSessionController::class)->name('play.session');
 });

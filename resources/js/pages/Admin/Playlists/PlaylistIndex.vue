@@ -49,6 +49,7 @@ const onSubmit = () =>
             <USelect
               v-model="form.type"
               :items="types"
+              placeholder="Select type"
               label-key="label"
               value-key="value"
               class="min-w-36"

@@ -13,7 +13,7 @@ const links: NavigationMenuItem[][] = [
   [
     {
       label: 'General',
-      icon: 'i-lucide-playlist',
+      icon: 'i-lucide-film',
       to: edit.url(props.playlist.id),
       exact: true,
     },

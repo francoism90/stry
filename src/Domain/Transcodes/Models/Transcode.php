@@ -2,16 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Models;
+namespace Domain\Transcodes\Models;
 
-use Domain\Media\Observers\TranscodeObserver;
-use Domain\Media\QueryBuilders\TranscodeQueryBuilder;
-use Domain\Media\States;
-use Domain\Media\States\TranscodeState;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Transcodes\Collections\TranscodeCollection;
+use Domain\Transcodes\Enums\TranscodeEncoder;
+use Domain\Transcodes\Observers\TranscodeObserver;
+use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
+use Domain\Transcodes\States;
+use Domain\Transcodes\States\TranscodeState;
 use Domain\Users\Concerns\InteractsWithUser;
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Number;
 use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(TranscodeObserver::class)]
@@ -37,7 +42,7 @@ class Transcode extends Model
      */
     protected $fillable = [
         'user_id',
-        'media_id',
+        'video_id',
         'encoder',
         'state',
         'file_size',
@@ -52,6 +57,7 @@ class Transcode extends Model
         return [
             'file_size' => 'integer',
             'retry_count' => 'integer',
+            'encoder' => TranscodeEncoder::class,
             'started_at' => AsDateTime::class,
             'transcoded_at' => AsDateTime::class,
             'created_at' => AsDateTime::class,
@@ -65,9 +71,14 @@ class Transcode extends Model
         return new TranscodeQueryBuilder($query);
     }
 
-    public function media(): BelongsTo
+    public function newCollection(array $models = []): TranscodeCollection
     {
-        return $this->belongsTo(Media::class);
+        return new TranscodeCollection($models);
+    }
+
+    public function video(): BelongsTo
+    {
+        return $this->belongsTo(Video::class);
     }
 
     public function prunable(): TranscodeQueryBuilder
@@ -80,6 +91,43 @@ class Transcode extends Model
     public function uniqueIds(): array
     {
         return ['ulid'];
+    }
+
+    public static function findFromUlid(Transcode|string $value): ?Transcode
+    {
+        if ($value instanceof Transcode) {
+            return $value;
+        }
+
+        return Transcode::query()->firstWhere('ulid', $value);
+    }
+
+    /**
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn(string $event): array
+    {
+        return array_filter([$this, $this->media, $this->video]);
+    }
+
+    public function broadcastChannel(): string
+    {
+        return 'transcodes.'.$this->getRouteKey();
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "transcode.{$event}";
+    }
+
+    public function broadcastWith(string $event): array
+    {
+        return ['id' => $this->getRouteKey()];
+    }
+
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
     }
 
     public function getRouteKeyName(): string
@@ -107,9 +155,9 @@ class Transcode extends Model
         return $this->state->equals(States\Failed::class);
     }
 
-    public static function getDisk(): string
+    public function getDisk(): string
     {
-        return Config::string('transcodes.disk', 'transcodes');
+        return $this->disk ?? static::getDestinationDisk();
     }
 
     public function getPath(string $path = ''): string
@@ -145,11 +193,6 @@ class Transcode extends Model
         return $this->getFilesystem()->size($this->getOutputPath());
     }
 
-    public function getHumanReadableFileSize(): string
-    {
-        return \Illuminate\Support\Number::fileSize($this->getFileSize());
-    }
-
     public function markAsProcessing(): void
     {
         $this->state->transitionTo(States\Processing::class);
@@ -177,31 +220,30 @@ class Transcode extends Model
         ]);
     }
 
-    /**
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(string $event): array
+    protected function humanFileSize(): Attribute
     {
-        return array_filter([$this, $this->media, $this->media->model]);
+        return Attribute::make(
+            get: fn (): string => Number::fileSize($this->getFileSize()),
+        )->shouldCache();
     }
 
-    public function broadcastChannel(): string
+    public static function getDestinationDisk(): string
     {
-        return 'transcodes.'.$this->getRouteKey();
+        return Config::string('videos.transcode_disk', 'transcodes');
     }
 
-    public function broadcastAs(string $event): string
+    public static function getHardwareAccelerationEnabled(): bool
     {
-        return "transcode.{$event}";
+        return Config::bool('videos.transcode_hardware_acceleration', true);
     }
 
-    public function broadcastWith(string $event): array
+    public static function getCrf(): int
     {
-        return ['id' => $this->getRouteKey()];
+        return Config::int('videos.transcode_crf', 28);
     }
 
-    public function broadcastQueue(): string
+    public static function getPreset(): string
     {
-        return 'broadcasts';
+        return Config::string('videos.transcode_preset', '6');
     }
 }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\Media\Observers;
+namespace Domain\Transcodes\Observers;
 
-use Domain\Media\Actions\CleanupTranscodeFilesystem;
-use Domain\Media\Models\Transcode;
+use Domain\Transcodes\Actions\CleanupTranscodeFilesystem;
+use Domain\Transcodes\Models\Transcode;
 
 class TranscodeObserver
 {
