@@ -28,8 +28,10 @@ class CreateNewVideoTranscode
         ]);
 
         // Create the AV1 encoder instance
-        $encoder = AV1::fromDisk($clip->disk)
-            ->open($clip->getPathRelativeToRoot())
+        $encoder = AV1::fromDisk($clip->disk)->open($clip->getPathRelativeToRoot());
+
+        // Configure the AV1 encoder
+        $encoder
             ->ffmpegEncode()
             ->useHardwareAcceleration(Transcode::getHardwareAccelerationEnabled())
             ->crf(Transcode::getCrf())
