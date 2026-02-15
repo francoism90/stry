@@ -35,16 +35,16 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
         class="py-4 first:pt-0 last:pb-0"
       >
         <div class="flex items-center justify-between">
-          <div class="flex flex-1 flex-col gap-1">
-            <div class="flex items-center gap-2">
-              <p class="font-semibold">{{ item.type }}</p>
-              <UBadge
-                :label="item.state.name"
-                :color="item.valid ? 'success' : item.expired ? 'warning' : item.failed ? 'error' : 'neutral'"
-              />
-            </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Created {{ item.created_at }}</p>
-          </div>
+          <UUser
+            :name="item.id"
+            :description="`${item.state.label} • ${item.type}`"
+            :avatar="{
+              alt: item.id,
+              loading: 'lazy',
+              decoding: 'async',
+              class: 'rounded-sm size-12 me-1',
+            }"
+          />
 
           <div class="z-10 flex items-center gap-2">
             <VideoPlaylistDeleteModal

@@ -137,17 +137,16 @@ export type PlaylistCollection = Omit<Paginator, 'data'> & {
 export type Transcode = Model & {
   video_id: number
   encoder: string
-  pending: boolean
   processing: boolean
   completed: boolean
   failed: boolean
-  state: ModelState
-  file_size: number
-  file_size_human: string
+  size: number
+  file_size: string
   error_message: string | null
   retry_count: number
   started_at: string | null
   transcoded_at: string | null
+  state: ModelState
 }
 
 export type TranscodeCollection = Omit<Paginator, 'data'> & {

@@ -14,6 +14,7 @@ use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Number;
 use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(TranscodeObserver::class)]
@@ -83,6 +85,43 @@ class Transcode extends Model
     public function uniqueIds(): array
     {
         return ['ulid'];
+    }
+
+    public static function findFromUlid(Transcode|string $value): ?Transcode
+    {
+        if ($value instanceof Transcode) {
+            return $value;
+        }
+
+        return Transcode::query()->firstWhere('ulid', $value);
+    }
+
+    /**
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn(string $event): array
+    {
+        return array_filter([$this, $this->media, $this->video]);
+    }
+
+    public function broadcastChannel(): string
+    {
+        return 'transcodes.'.$this->getRouteKey();
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "transcode.{$event}";
+    }
+
+    public function broadcastWith(string $event): array
+    {
+        return ['id' => $this->getRouteKey()];
+    }
+
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
     }
 
     public function getRouteKeyName(): string
@@ -148,11 +187,6 @@ class Transcode extends Model
         return $this->getFilesystem()->size($this->getOutputPath());
     }
 
-    public function getHumanReadableFileSize(): string
-    {
-        return \Illuminate\Support\Number::fileSize($this->getFileSize());
-    }
-
     public function markAsProcessing(): void
     {
         $this->state->transitionTo(States\Processing::class);
@@ -180,32 +214,11 @@ class Transcode extends Model
         ]);
     }
 
-    /**
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(string $event): array
+    protected function humanFileSize(): Attribute
     {
-        return array_filter([$this, $this->media, $this->video]);
-    }
-
-    public function broadcastChannel(): string
-    {
-        return 'transcodes.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "transcode.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
+        return Attribute::make(
+            get: fn (): string => Number::fileSize($this->getFileSize()),
+        )->shouldCache();
     }
 
     public static function getDestinationDisk(): string

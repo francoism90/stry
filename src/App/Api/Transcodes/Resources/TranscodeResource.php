@@ -22,8 +22,14 @@ class TranscodeResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'encoder' => $this->encoder,
+            'size' => $this->file_size,
+            'file_size' => $this->human_file_size,
+            'failed' => $this->isFailed(),
+            'completed' => $this->isCompleted(),
+            'processing' => $this->isProcessing(),
             'state' => $this->state->toArray(),
-            'expires_at' => $this->expires_at?->toDateTimeString(),
+            'started_at' => $this->started_at?->toDateTimeString(),
+            'transcoded_at' => $this->transcoded_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

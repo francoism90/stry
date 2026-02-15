@@ -13,7 +13,7 @@ const remove = async () => router.delete(destroy.url([props.video.id, props.item
 
 <template>
   <UModal
-    :title="`${item.type} Playlist`"
+    :title="item.id"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>

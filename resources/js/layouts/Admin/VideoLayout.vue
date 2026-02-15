@@ -27,14 +27,14 @@ const links: NavigationMenuItem[][] = [
       to: media.url(props.video.id),
     },
     {
-      label: 'Transcodes',
-      icon: 'i-lucide-cpu',
-      to: transcodes.url(props.video.id),
-    },
-    {
       label: 'Playlists',
       icon: 'i-lucide-list-video',
       to: playlists.url(props.video.id),
+    },
+    {
+      label: 'Transcodes',
+      icon: 'i-lucide-cpu',
+      to: transcodes.url(props.video.id),
     },
   ],
   [
