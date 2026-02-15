@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/profile', ProfileController::class)->name('profile');
 Route::get('/settings', SettingsController::class)->name('settings');
 
-// Activities
+// Groups
 Route::post('/groups/{type}/clear', GroupClearController::class)->name('groups.clear');
 Route::post('/groups/{type}/{video}', GroupToggleController::class)->name('groups.toggle');
 

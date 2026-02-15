@@ -16,13 +16,13 @@ Route::name('api.')->prefix('v1')->group(function () {
     Route::apiResource('tags', TagController::class)->only('index');
 
     // Playlists
-    Route::name('playlists.')->prefix('play')->group(function () {
+    Route::prefix('play')->group(function () {
         // Playlist manifest and segments delivery
         Route::get('/{playlist}/playlist/{path}', PlaylistManifestController::class)
             ->where('path', '.*')
-            ->name('playlist');
+            ->name('play.manifest');
 
         // Playlist analytics and session management
-        Route::post('/{playlist}/session', PlaylistSessionController::class)->name('session');
+        Route::post('/{playlist}/session', PlaylistSessionController::class)->name('play.session');
     });
 });
