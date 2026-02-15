@@ -65,22 +65,6 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
   data: Media[] | undefined
 }
 
-export type Transcode = Model & {
-  video_id: number
-  encoder: string
-  pending: boolean
-  processing: boolean
-  completed: boolean
-  failed: boolean
-  state: ModelState
-  file_size: number
-  file_size_human: string
-  error_message: string | null
-  retry_count: number
-  started_at: string | null
-  transcoded_at: string | null
-}
-
 export type Tag = Model & {
   name: string
   slug: string
@@ -148,6 +132,26 @@ export type Playlist = Model & {
 
 export type PlaylistCollection = Omit<Paginator, 'data'> & {
   data: Playlist[] | undefined
+}
+
+export type Transcode = Model & {
+  video_id: number
+  encoder: string
+  pending: boolean
+  processing: boolean
+  completed: boolean
+  failed: boolean
+  state: ModelState
+  file_size: number
+  file_size_human: string
+  error_message: string | null
+  retry_count: number
+  started_at: string | null
+  transcoded_at: string | null
+}
+
+export type TranscodeCollection = Omit<Paginator, 'data'> & {
+  data: Transcode[] | undefined
 }
 
 export type Paginator = {
