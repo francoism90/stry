@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store as importTranscode } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeImportController'
+import TranscodeImportController from '@/actions/App/Api/Transcodes/Controllers/TranscodeImportController'
 import type { Transcode } from '@/types'
 import { router } from '@inertiajs/vue3'
 
@@ -7,7 +7,7 @@ const props = defineProps<{
   item: Transcode
 }>()
 
-const handleImport = async () => router.post(importTranscode.url(props.item.id))
+const handleImport = async () => router.post(TranscodeImportController.url(props.item.id))
 </script>
 
 <template>

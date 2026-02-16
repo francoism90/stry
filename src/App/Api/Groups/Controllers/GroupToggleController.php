@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Groups\Controllers;
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -25,22 +26,22 @@ class GroupToggleController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(GroupType $type, Model $model, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(GroupType $type, Video $video, Request $request): RedirectResponse|JsonResponse
     {
-        Gate::authorize('view', $model);
+        Gate::authorize('view', $video);
 
         // Get the currently authenticated user
         $user = $request->user();
 
         // Toggle the group association based on the type
         $group = match ($type) {
-            GroupType::Liked => $user->toggleLiked($model),
-            GroupType::Saved => $user->toggleSaved($model),
+            GroupType::Liked => $user->toggleLiked($video),
+            GroupType::Saved => $user->toggleSaved($video),
             default => abort(422, 'Invalid group type provided.'),
         };
 
         // Return back with a success message
-        $result = $group->hasGroupable($model)
+        $result = $group->hasGroupable($video)
             ? __('Added to :group group.', ['group' => $type->label()])
             : __('Removed from :group group.', ['group' => $type->label()]);
 
