@@ -9,7 +9,7 @@ use Domain\Videos\Jobs\ImportVideo;
 
 class ImportTranscode
 {
-    public function handle(Transcode $transcode): array
+    public function handle(Transcode $transcode): void
     {
         // Get associated model
         $model = $transcode->transcodable;
@@ -18,10 +18,5 @@ class ImportTranscode
             'video' => ImportVideo::dispatch($model, $transcode->getDisk(), $transcode->getOutputPath()),
             default => throw new \InvalidArgumentException('Unsupported transcodable type'),
         };
-
-        return [
-            'success' => true,
-            'message' => 'Transcode imported successfully.',
-        ];
     }
 }

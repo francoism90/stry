@@ -30,10 +30,10 @@ class TranscodeImportController extends Controller implements HasMiddleware
         Gate::authorize('update', $transcode);
 
         // Perform the import action
-        $result = $action->handle($transcode);
+        $action->handle($transcode);
 
         return $request->inertia()
-            ? Inertia::flash('message', $result['message'])->back()
-            : response()->json($result);
+            ? Inertia::flash('message', __('Transcode has been queued for import.'))->back()
+            : response()->json();
     }
 }
