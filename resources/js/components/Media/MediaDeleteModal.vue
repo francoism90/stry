@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController';
-import type { Media, Video } from '@/types';
-import { router } from '@inertiajs/vue3';
+import { destroy } from '@/actions/App/Admin/Media/Controllers/MediaController'
+import type { Media } from '@/types'
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
-  video: Video
   item: Media
 }>()
 
-const remove = async () => router.delete(destroy.url([props.video.id, props.item.id]))
+const remove = async () => router.delete(destroy.url({ media: props.item.id }))
 </script>
 
 <template>

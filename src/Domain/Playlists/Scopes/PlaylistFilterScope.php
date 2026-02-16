@@ -16,6 +16,7 @@ readonly class PlaylistFilterScope
     public function __invoke(Builder $query): void
     {
         $query
+            ->with('playlistable')
             ->when($this->getType(), fn (Builder $query, PlaylistType $type) => $query->type($type))
             ->latest();
     }

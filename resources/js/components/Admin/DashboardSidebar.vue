@@ -15,19 +15,19 @@ const links: NavigationMenuItem[][] = [
   ],
   [
     {
-      label: 'Videos',
-      icon: 'i-lucide-videotape',
-      to: '/admin/videos',
-    },
-    {
-      label: 'Tags',
-      icon: 'i-lucide-tags',
-      to: '/admin/tags',
+      label: 'Media',
+      icon: 'i-lucide-image',
+      to: '/admin/media',
     },
     {
       label: 'Playlists',
       icon: 'i-lucide-list-video',
       to: '/admin/playlists',
+    },
+    {
+      label: 'Tags',
+      icon: 'i-lucide-tags',
+      to: '/admin/tags',
     },
     {
       label: 'Transcodes',
@@ -38,6 +38,11 @@ const links: NavigationMenuItem[][] = [
       label: 'Users',
       icon: 'i-lucide-users',
       to: '/admin/users',
+    },
+    {
+      label: 'Videos',
+      icon: 'i-lucide-videotape',
+      to: '/admin/videos',
     },
   ],
   [

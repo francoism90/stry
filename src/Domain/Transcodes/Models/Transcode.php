@@ -224,15 +224,15 @@ class Transcode extends Model
         ]);
     }
 
+    public static function getDestinationDisk(): string
+    {
+        return Config::string('videos.transcode_disk', 'transcodes');
+    }
+
     protected function humanFileSize(): Attribute
     {
         return Attribute::make(
             get: fn (): string => Number::fileSize($this->getFileSize()),
         )->shouldCache();
-    }
-
-    public static function getDestinationDisk(): string
-    {
-        return Config::string('videos.transcode_disk', 'transcodes');
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Transcodes\Resources;
 
+use App\Api\Shared\Resources\ModelResource;
 use Domain\Transcodes\Models\Transcode;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class TranscodeResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
+            'resource' => ModelResource::make($this->whenLoaded('transcodable')),
             'encoder' => $this->encoder,
             'size' => $this->file_size,
             'file_size' => $this->human_file_size,

@@ -6,6 +6,12 @@ export type Model = {
   updated_at: string
 }
 
+export type ModelResource = Model & {
+  name?: string
+  label?: string
+  slug?: string
+}
+
 export type ModelState = {
   name: string
   label: string
@@ -119,6 +125,7 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 }
 
 export type Playlist = Model & {
+  resource?: ModelResource
   asset: string | null
   encryption_key_id: string | null
   encryption_key: string | null
@@ -135,7 +142,7 @@ export type PlaylistCollection = Omit<Paginator, 'data'> & {
 }
 
 export type Transcode = Model & {
-  video_id: number
+  resource?: ModelResource
   encoder: string
   processing: boolean
   completed: boolean

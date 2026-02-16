@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
-import TranscodeCreateModal from '@/components/Transcodes/TranscodeCreateModal.vue'
-import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import { edit } from '@/actions/App/Admin/Media/Controllers/MediaController'
+import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { TranscodeCollection } from '@/types'
+import type { MediaCollection } from '@/types'
 import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
-import { useForm } from 'laravel-precognition-vue-inertia'
 
-const props = defineProps<{
-  items: TranscodeCollection
-  encoders: SelectMenuItem[]
-  encoder?: string | undefined
+defineProps<{
+  items: MediaCollection
 }>()
 
 defineOptions({ layout: DashboardLayout })
@@ -20,34 +15,21 @@ usePoll(30000, {
   only: ['items'],
   reset: ['items'],
 })
-
-const form = useForm('get', '', {
-  encoder: props.encoder,
-  page: 1,
-})
-
-const onSubmit = () =>
-  form.submit({
-    preserveState: true,
-    replace: true,
-    only: ['items', 'encoder'],
-    reset: ['items'],
-  })
 </script>
 
 <template>
-  <Head title="Transcodes" />
+  <Head title="Media" />
 
   <UDashboardPanel id="transcodes">
     <template #header>
-      <UDashboardNavbar title="Transcodes">
+      <UDashboardNavbar title="Media">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
 
         <template #right>
           <div class="flex items-center gap-2">
-            <TranscodeCreateModal />
+            <MediaCreateModal />
           </div>
         </template>
       </UDashboardNavbar>
@@ -55,21 +37,7 @@ const onSubmit = () =>
       <UDashboardToolbar
         id="transcode-header"
         class="min-h-16"
-      >
-        <template #right>
-          <UFormField :error="form.errors.encoder">
-            <USelect
-              v-model="form.encoder"
-              :items="encoders"
-              placeholder="Select encoder"
-              label-key="label"
-              value-key="value"
-              class="min-w-36"
-              @update:modelValue="onSubmit"
-            />
-          </UFormField>
-        </template>
-      </UDashboardToolbar>
+      />
     </template>
 
     <template #body>
@@ -93,7 +61,7 @@ const onSubmit = () =>
             <div class="flex items-center justify-between">
               <UUser
                 :name="item.id"
-                :description="`${item.state.label} • ${item.resource?.name || item.resource?.label}`"
+                :description="`${item.file_size} • ${item.mime_type}`"
                 :avatar="{
                   alt: item.id,
                   class: 'rounded-sm size-14 me-1',
@@ -101,7 +69,7 @@ const onSubmit = () =>
               />
 
               <div class="z-10 flex items-center gap-2">
-                <TranscodeDeleteModal :item="item" />
+                <MediaDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

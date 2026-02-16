@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Admin\Dashboard\Controllers\HomeController;
+use App\Admin\Media\Controllers\MediaController;
 use App\Admin\Playlists\Controllers\PlaylistController;
 use App\Admin\Tags\Controllers\TagController;
 use App\Admin\Transcodes\Controllers\TranscodeController;
@@ -16,14 +17,14 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('/', HomeController::class)->name('home');
 
-// Users
-Route::resource('users', UserController::class);
-
-// Tags
-Route::resource('tags', TagController::class);
+// Media
+Route::resource('media', MediaController::class);
 
 // Playlists
 Route::resource('playlists', PlaylistController::class);
+
+// Tags
+Route::resource('tags', TagController::class);
 
 // Transcodes
 Route::resource('transcodes', TranscodeController::class);
@@ -33,3 +34,6 @@ Route::resource('videos', VideoController::class);
 Route::resource('videos.media', VideoMediaController::class);
 Route::resource('videos.playlists', VideoPlaylistController::class);
 Route::resource('videos.transcodes', VideoTranscodeController::class);
+
+// Users
+Route::resource('users', UserController::class);

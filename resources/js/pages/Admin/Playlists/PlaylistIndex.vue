@@ -86,7 +86,7 @@ const onSubmit = () =>
             <div class="flex items-center justify-between">
               <UUser
                 :name="item.id"
-                :description="`${item.type} • ${item.state.name}`"
+                :description="`${item.state.label} • ${item.resource?.name || item.resource?.label}`"
                 :avatar="{
                   alt: item.id,
                   class: 'rounded-sm size-14 me-1',
