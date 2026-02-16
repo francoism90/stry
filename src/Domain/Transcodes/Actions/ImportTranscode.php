@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Domain\Transcodes\Actions;
 
 use Domain\Transcodes\Models\Transcode;
-use Domain\Users\Models\User;
 use Domain\Videos\Jobs\ImportVideo;
 
 class ImportTranscode
 {
-    public function handle(User $user, Transcode $transcode): array
+    public function handle(Transcode $transcode): array
     {
-        $disk = $transcode->getDisk();
-        $path = $transcode->getOutputPath();
+        // Get associated model
+        $model = $transcode->transcodable;
 
-        match ($transcode->transcodable_type) {
-            'video' => ImportVideo::dispatch($user, $disk, $path),
-            default => throw new \InvalidArgumentException('Unsupported transcodable type: '.$transcode->transcodable_type),
+        match ($model->getMorphClass()) {
+            'video' => ImportVideo::dispatch($model, $transcode->getDisk(), $transcode->getOutputPath()),
+            default => throw new \InvalidArgumentException('Unsupported transcodable type'),
         };
 
         return [
