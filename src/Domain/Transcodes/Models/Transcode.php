@@ -114,7 +114,7 @@ class Transcode extends Model
      */
     public function broadcastOn(string $event): array
     {
-        return array_filter([$this, $this->model]);
+        return array_filter([$this, $this->transcodable]);
     }
 
     public function broadcastChannel(): string
