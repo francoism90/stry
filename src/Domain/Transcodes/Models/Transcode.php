@@ -43,9 +43,11 @@ class Transcode extends Model
         'user_id',
         'transcodable_type',
         'transcodable_id',
+        'disk',
+        'file_name',
+        'file_size',
         'encoder',
         'state',
-        'file_size',
         'error_message',
         'retry_count',
         'started_at',
@@ -170,6 +172,11 @@ class Transcode extends Model
     public function getPath(string $path = ''): string
     {
         return implode('/', array_filter([$this->ulid, $path]));
+    }
+
+    public function getOutputPath(): string
+    {
+        return $this->getPath($this->file_name);
     }
 
     public function getFilesystem(): FilesystemAdapter

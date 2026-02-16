@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Transcodes\Enums\TranscodeEncoder;
-use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 use Foxws\AbAv1\Facades\AbAv1;
 use Throwable;
@@ -24,6 +23,7 @@ class CreateNewVideoTranscode
 
         /** @var Playlist $playlist */
         $transcode = $video->createTranscode([
+            'file_name' => pathinfo($clip->file_name, PATHINFO_FILENAME).'.mp4',
             'encoder' => TranscodeEncoder::AV1,
         ]);
 
@@ -42,10 +42,10 @@ class CreateNewVideoTranscode
             $encoder
                 ->export()
                 ->toDisk($transcode->getDisk())
-                ->toPath($transcode->getPath())
+                ->toPath($transcode->getOutputPath())
                 ->save();
 
-            // Get the size of the output file
+            // Get the file size of the encoded video
             $fileSize = $transcode->getFilesystem()->size($transcode->getOutputPath());
 
             // Mark the transcode as completed
