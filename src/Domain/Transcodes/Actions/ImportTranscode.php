@@ -14,9 +14,13 @@ class ImportTranscode
         // Get associated model
         $model = $transcode->transcodable;
 
+        // Dispatch the appropriate import job based on the model type
         match ($model->getMorphClass()) {
             'video' => ImportVideo::dispatch($model, $transcode->getDisk(), $transcode->getOutputPath()),
             default => throw new \InvalidArgumentException('Unsupported transcodable type'),
         };
+
+        // Mark the transcode as imported
+        $transcode->markAsImported();
     }
 }
