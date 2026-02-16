@@ -29,10 +29,7 @@ class CreateNewVideoTranscode
 
         // Initialize the encoder
         $encoder = AbAv1::fromDisk($clip->disk)
-            ->open($clip->getPathRelativeToRoot())
-            ->withPreset(8)
-            ->withMinVMAF(95)
-            ->withMaxEncodedPercent(200);
+            ->open($clip->getPathRelativeToRoot());
 
         try {
             // Mark the transcode as processing
