@@ -133,14 +133,7 @@ watchDebounced(
                   :to="HomeController.url('all', { query: { tag: item.id } })"
                 />
 
-                <TagDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </TagDeleteModal>
+                <TagDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

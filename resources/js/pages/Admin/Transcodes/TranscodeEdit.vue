@@ -71,7 +71,13 @@ const onSubmit = () =>
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <TranscodeDeleteModal :item="transcode" />
+        <TranscodeDeleteModal :item="transcode">
+          <UButton
+            label="Delete transcode"
+            color="error"
+            variant="soft"
+          />
+        </TranscodeDeleteModal>
       </template>
     </UPageCard>
   </UForm>

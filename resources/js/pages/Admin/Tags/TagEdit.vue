@@ -147,7 +147,13 @@ const onSubmit = () =>
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <TagDeleteModal :item="tag" />
+        <TagDeleteModal :item="tag">
+          <UButton
+            label="Delete tag"
+            color="error"
+            variant="soft"
+          />
+        </TagDeleteModal>
       </template>
     </UPageCard>
   </UForm>

@@ -92,7 +92,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
         <VideoPlaylistDeleteModal
           :video="video"
           :item="playlist"
-        />
+        >
+          <UButton
+            label="Delete playlist"
+            color="error"
+            variant="soft"
+          />
+        </VideoPlaylistDeleteModal>
       </template>
     </UPageCard>
   </UForm>

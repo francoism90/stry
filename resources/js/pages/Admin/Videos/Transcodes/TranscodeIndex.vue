@@ -50,14 +50,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
             <VideoTranscodeDeleteModal
               :video="video"
               :item="item"
-            >
-              <UButton
-                icon="i-lucide-trash"
-                color="error"
-                variant="ghost"
-                size="sm"
-              />
-            </VideoTranscodeDeleteModal>
+            />
           </div>
         </div>
       </UPageCard>

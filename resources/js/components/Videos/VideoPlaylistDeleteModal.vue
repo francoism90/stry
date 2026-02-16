@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
-import type { Playlist, Video } from '@/types'
-import { router } from '@inertiajs/vue3'
+import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController';
+import type { Playlist, Video } from '@/types';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps<{
   video: Video
@@ -18,9 +18,10 @@ const remove = async () => router.delete(destroy.url([props.video.id, props.item
   >
     <slot>
       <UButton
-        label="Delete playlist"
+        icon="i-lucide-trash"
         color="error"
-        variant="soft"
+        variant="ghost"
+        size="sm"
       />
     </slot>
 

@@ -68,14 +68,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
             <MediaDeleteModal
               :video="video"
               :item="item"
-            >
-              <UButton
-                icon="i-lucide-trash"
-                color="error"
-                variant="ghost"
-                size="sm"
-              />
-            </MediaDeleteModal>
+            />
           </div>
         </div>
       </UPageCard>

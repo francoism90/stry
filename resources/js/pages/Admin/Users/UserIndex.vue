@@ -113,14 +113,7 @@ watchDebounced(
                   :to="edit.url(item.id)"
                 />
 
-                <UserDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </UserDeleteModal>
+                <UserDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

@@ -232,7 +232,13 @@ const onSubmit = () =>
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <VideoDeleteModal :item="video" />
+        <VideoDeleteModal :item="video">
+          <UButton
+            label="Delete video"
+            color="error"
+            variant="soft"
+          />
+        </VideoDeleteModal>
       </template>
     </UPageCard>
   </UForm>

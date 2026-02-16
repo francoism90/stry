@@ -18,9 +18,10 @@ const remove = async () => router.delete(destroy.url([props.video.id, props.item
   >
     <slot>
       <UButton
-        label="Delete transcode"
+        icon="i-lucide-trash"
         color="error"
-        variant="soft"
+        variant="ghost"
+        size="sm"
       />
     </slot>
 

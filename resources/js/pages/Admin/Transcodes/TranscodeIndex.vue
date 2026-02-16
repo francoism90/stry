@@ -101,14 +101,7 @@ const onSubmit = () =>
               />
 
               <div class="z-10 flex items-center gap-2">
-                <TranscodeDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </TranscodeDeleteModal>
+                <TranscodeDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

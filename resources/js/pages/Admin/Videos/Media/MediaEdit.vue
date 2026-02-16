@@ -155,7 +155,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload
         <MediaDeleteModal
           :video="video"
           :item="media"
-        />
+        >
+          <UButton
+            label="Delete media"
+            color="error"
+            variant="soft"
+          />
+        </MediaDeleteModal>
       </template>
     </UPageCard>
   </UForm>

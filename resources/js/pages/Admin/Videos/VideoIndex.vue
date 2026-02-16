@@ -133,14 +133,7 @@ watchDebounced(
                   :to="VideoController.url(item.id)"
                 />
 
-                <VideoDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </VideoDeleteModal>
+                <VideoDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

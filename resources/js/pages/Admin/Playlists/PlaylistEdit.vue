@@ -71,7 +71,13 @@ const onSubmit = () =>
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <PlaylistDeleteModal :item="playlist" />
+        <PlaylistDeleteModal :item="playlist">
+          <UButton
+            label="Delete playlist"
+            color="error"
+            variant="soft"
+          />
+        </PlaylistDeleteModal>
       </template>
     </UPageCard>
   </UForm>
