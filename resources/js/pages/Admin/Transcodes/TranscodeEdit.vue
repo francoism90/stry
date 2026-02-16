@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import TranscodeLayout from '@/layouts/Admin/TranscodeLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Transcode } from '@/types'
@@ -70,6 +71,22 @@ const onSubmit = () =>
           :disabled="true"
         />
       </UFormField>
+    </UPageCard>
+
+    <UPageCard
+      title="Import transcode"
+      :description="`Current state: ${transcode.state.label}`"
+    >
+      <template #footer>
+        <TranscodeImportModal :item="transcode">
+          <UButton
+            label="Import transcode"
+            :disabled="!transcode.completed"
+            color="primary"
+            variant="soft"
+          />
+        </TranscodeImportModal>
+      </template>
     </UPageCard>
 
     <UPageCard
