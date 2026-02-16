@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Controllers;
 
-use Domain\Videos\Actions\CreateVideosByImport;
+use Domain\Videos\Actions\ProcessVideoImport;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
@@ -25,12 +25,15 @@ class VideoImportController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(CreateVideosByImport $action, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(ProcessVideoImport $action, Request $request): RedirectResponse|JsonResponse
     {
         Gate::authorize('create', Video::class);
 
         // Perform the import action
-        $result = $action->handle($request->user());
+        $result = $action->handle(
+            disk: Video::getImportDisk(),
+            user: $request->user()
+        );
 
         return $request->inertia()
             ? Inertia::flash('message', $result['message'])->back()

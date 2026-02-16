@@ -7,19 +7,16 @@ namespace Domain\Videos\Actions;
 use Domain\Users\Models\User;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use SplFileInfo;
 
 class CreateNewVideoByImport
 {
     public function handle(User $user, string $disk, string $path): mixed
     {
         return DB::transaction(function () use ($user, $disk, $path) {
-            // Parse the file info
-            $fileInfo = new SplFileInfo($path);
-
             // Get the file name without extension
-            $fileName = $fileInfo->getBasename(".{$fileInfo->getExtension()}");
+            $fileName = File::name($path);
 
             // Create the video record
             $video = $user->videos()->create([

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Domain\Videos\Commands;
 
 use Domain\Users\Models\User;
-use Domain\Videos\Actions\CreateVideosByImport;
-use Domain\Videos\Jobs\ImportVideo;
+use Domain\Videos\Actions\FetchImportableVideos;
+use Domain\Videos\Jobs\CreateVideo;
 use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
@@ -33,7 +33,7 @@ class ImportCommand extends Command implements Isolatable
      */
     protected $description = 'Import videos to the database';
 
-    public function handle(CreateVideosByImport $action): void
+    public function handle(FetchImportableVideos $action): void
     {
         // Determine the disk to use for importing videos
         $disk = $this->option('disk') ?: Video::getImportDisk();
@@ -41,7 +41,7 @@ class ImportCommand extends Command implements Isolatable
         // Retrieve the collection of video files from the specified disk
         $files = spin(
             message: 'Retrieving files...',
-            callback: fn () => $action->getCollection($disk),
+            callback: fn () => $action->handle($disk),
         );
 
         if ($files->isEmpty()) {
@@ -77,7 +77,7 @@ class ImportCommand extends Command implements Isolatable
             callback: function (string $path, $progress) use ($user, $disk) {
                 $progress->label("Importing {$path}");
 
-                return ImportVideo::dispatch($user, $disk, $path);
+                return CreateVideo::dispatch($user, $disk, $path);
             },
         );
     }
