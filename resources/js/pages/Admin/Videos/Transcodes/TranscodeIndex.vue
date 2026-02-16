@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoTranscodeController'
-import VideoTranscodeDeleteModal from '@/components/Videos/VideoTranscodeDeleteModal.vue'
+import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TranscodeCollection, Video } from '@/types'
@@ -47,10 +48,8 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
           />
 
           <div class="z-10 flex items-center gap-2">
-            <VideoTranscodeDeleteModal
-              :video="video"
-              :item="item"
-            />
+            <TranscodeDeleteModal :item="item" />
+            <TranscodeImportModal :item="item" />
           </div>
         </div>
       </UPageCard>

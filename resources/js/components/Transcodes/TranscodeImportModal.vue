@@ -7,7 +7,15 @@ const props = defineProps<{
   item: Transcode
 }>()
 
-const handleImport = async () => router.post(TranscodeImportController.url(props.item.id))
+const handleImport = async (close: () => void) =>
+  router.post(
+    TranscodeImportController.url(props.item.id),
+    {},
+    {
+      preserveScroll: true,
+      onSuccess: () => close(),
+    },
+  )
 </script>
 
 <template>
@@ -17,8 +25,8 @@ const handleImport = async () => router.post(TranscodeImportController.url(props
   >
     <slot>
       <UButton
-        icon="i-lucide-trash"
-        color="error"
+        icon="i-lucide-import"
+        color="neutral"
         variant="ghost"
         size="sm"
       />
@@ -44,7 +52,7 @@ const handleImport = async () => router.post(TranscodeImportController.url(props
         variant="soft"
         color="error"
         loading-auto
-        @click.prevent="handleImport"
+        @click.prevent="() => handleImport(close)"
       />
     </template>
   </UModal>

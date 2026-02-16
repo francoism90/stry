@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace Domain\Transcodes\Actions;
 
 use Domain\Transcodes\Models\Transcode;
+use Domain\Users\Models\User;
+use Domain\Videos\Jobs\ImportVideo;
 
 class ImportTranscode
 {
-    public function handle(Transcode $transcode): array
+    public function handle(User $user, Transcode $transcode): array
     {
-        // TODO: Implement the import logic
-        // This could involve:
-        // - Moving the transcode file to the parent model's location
-        // - Updating the transcodable relationship
-        // - Triggering any necessary jobs or events
+        $disk = $transcode->getDisk();
+        $path = $transcode->getOutputPath();
+
+        match ($transcode->transcodable_type) {
+            'video' => ImportVideo::dispatch($user, $disk, $path),
+            default => throw new \InvalidArgumentException('Unsupported transcodable type: '.$transcode->transcodable_type),
+        };
 
         return [
             'success' => true,
