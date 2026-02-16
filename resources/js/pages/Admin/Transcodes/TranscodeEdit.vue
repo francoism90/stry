@@ -4,18 +4,17 @@ import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.v
 import TranscodeLayout from '@/layouts/Admin/TranscodeLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Transcode } from '@/types'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   transcode: Transcode
-  encoders: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: [DashboardLayout, TranscodeLayout] })
 
 const form = useForm('put', update.url(props.transcode.id), {
-  encoder: props.transcode.encoder,
+  transcodable_type: props.transcode.resource?.type,
+  transcodable_id: props.transcode.resource?.id,
 })
 
 const onSubmit = () =>
@@ -53,14 +52,22 @@ const onSubmit = () =>
 
     <UPageCard variant="subtle">
       <UFormField
-        label="Encoder"
-        :error="form.errors.encoder"
+        label="Transcodable Type"
+        :error="form.errors.transcodable_type"
       >
-        <USelectMenu
-          v-model="form.encoder"
-          value-key="value"
-          :items="encoders"
-          class="w-full"
+        <UInput
+          v-model="form.transcodable_type"
+          :disabled="true"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Transcodable ID"
+        :error="form.errors.transcodable_id"
+      >
+        <UInput
+          v-model="form.transcodable_id"
+          :disabled="true"
         />
       </UFormField>
     </UPageCard>

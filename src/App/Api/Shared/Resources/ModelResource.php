@@ -21,6 +21,7 @@ class ModelResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
+            'type' => $this->getMorphClass(),
             'slug' => $this->whenHas('slug'),
             'name' => $this->whenHas('name'),
             'label' => $this->whenHas('label'),

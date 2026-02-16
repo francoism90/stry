@@ -28,6 +28,7 @@ readonly class PlaylistResourceProperty implements ProvidesInertiaProperty
 
         return $this
             ->playlist
+            ->loadMissing('playlistable')
             ->toResource(PlaylistResource::class);
     }
 }

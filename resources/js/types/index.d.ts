@@ -7,6 +7,7 @@ export type Model = {
 }
 
 export type ModelResource = Model & {
+  type?: string
   name?: string
   label?: string
   slug?: string
