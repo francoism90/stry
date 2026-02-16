@@ -28,20 +28,16 @@ class CreateNewVideoTranscode
             'encoder' => TranscodeEncoder::AV1,
         ]);
 
-        // Create the AV1 encoder instance
-        $encoder = AbAv1::fromDisk($clip->disk)
-            ->open($clip->getPathRelativeToRoot())
-            ->withPreset(8)
-            ->withMinVMAF(95)
-            ->autoEncode();
-
         try {
             // Mark the transcode as processing
             $transcode->markAsProcessing();
 
             // Export the encoded media to the specified disk and path
-            $encoder
-                ->export()
+            $encoder = AbAv1::fromDisk($clip->disk)
+                ->open($clip->getPathRelativeToRoot())
+                ->withPreset(8)
+                ->withMinVMAF(95)
+                ->autoEncode()
                 ->toDisk($transcode->getDisk())
                 ->save($transcode->getPath());
 
