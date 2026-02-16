@@ -5,7 +5,8 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 const isOpen = defineModel<boolean>({ default: false })
 
 const form = useForm('post', store.url(), {
-  video_id: '',
+  transcodable_type: 'video',
+  transcodable_id: '',
 })
 
 const create = async (close: () => void) => {
@@ -38,15 +39,15 @@ const create = async (close: () => void) => {
         class="flex flex-col gap-4"
       >
         <UFormField
-          label="Name"
+          label="Video"
           required
-          :error="form.errors.video_id"
+          :error="form.errors.transcodable_id"
         >
           <UInput
-            v-model="form.video_id"
+            v-model="form.transcodable_id"
             :model-modifiers="{ string: true, trim: true }"
             autofocus
-            placeholder="Enter video ulid"
+            placeholder="Enter video ULID"
           />
         </UFormField>
       </UForm>

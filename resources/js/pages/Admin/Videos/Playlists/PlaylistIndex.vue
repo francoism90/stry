@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PlaylistController from '@/actions/App/Admin/Playlists/Controllers/PlaylistController'
+import { edit } from '@/actions/App/Admin/Playlists/Controllers/PlaylistController'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
@@ -30,7 +30,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"
-        :to="PlaylistController.edit(item.id)"
+        :to="edit.url(item.id)"
         variant="naked"
         class="py-4 first:pt-0 last:pb-0"
       >
