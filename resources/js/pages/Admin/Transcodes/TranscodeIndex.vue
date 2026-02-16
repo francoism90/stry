@@ -4,7 +4,7 @@ import TranscodeCreateModal from '@/components/Transcodes/TranscodeCreateModal.v
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TranscodeCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -15,6 +15,10 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: DashboardLayout })
+
+usePoll(5000, {
+  only: ['items'],
+})
 
 const form = useForm('get', '', {
   encoder: props.encoder,
