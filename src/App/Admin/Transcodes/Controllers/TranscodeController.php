@@ -54,8 +54,8 @@ class TranscodeController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Transcode::class);
 
-        // Get the video
-        $video = Video::findFromUlid($request->safe()->input('video_id'));
+        // Fetch the video
+        $video = Video::findFromUlid($request->safe()->input('transcodable_id'));
 
         // Create the transcode
         TranscodeVideo::dispatch($video);
