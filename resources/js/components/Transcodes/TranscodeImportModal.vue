@@ -1,34 +1,33 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoController'
-import type { Video } from '@/types'
+import { store as importTranscode } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeImportController'
+import type { Transcode } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
-  item: Video
+  item: Transcode
 }>()
 
-const remove = async () => router.delete(destroy.url(props.item.id))
+const handleImport = async () => router.post(importTranscode.url(props.item.id))
 </script>
 
 <template>
   <UModal
-    :title="item.title"
+    :title="item.id"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>
       <UButton
-        label="Delete video"
+        icon="i-lucide-trash"
         color="error"
-        variant="soft"
+        variant="ghost"
+        size="sm"
       />
     </slot>
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to delete this video?</h3>
-        <p class="text-sm text-neutral-500">
-          This action cannot be undone. All associated data will be permanently removed.
-        </p>
+        <h3>Are you sure you want to import this transcode?</h3>
+        <p class="text-sm text-neutral-500">This action will import the transcode into the parent model.</p>
       </div>
     </template>
 
@@ -41,11 +40,11 @@ const remove = async () => router.delete(destroy.url(props.item.id))
       />
 
       <UButton
-        label="Delete video"
+        label="Import transcode"
         variant="soft"
         color="error"
         loading-auto
-        @click.prevent="remove"
+        @click.prevent="handleImport"
       />
     </template>
   </UModal>

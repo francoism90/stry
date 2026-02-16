@@ -5,11 +5,9 @@ declare(strict_types=1);
 use App\Admin\Dashboard\Controllers\HomeController;
 use App\Admin\Playlists\Controllers\PlaylistController;
 use App\Admin\Tags\Controllers\TagController;
-use App\Admin\Tags\Controllers\TagOrderController;
 use App\Admin\Transcodes\Controllers\TranscodeController;
 use App\Admin\Users\Controllers\UserController;
 use App\Admin\Videos\Controllers\VideoController;
-use App\Admin\Videos\Controllers\VideoImportController;
 use App\Admin\Videos\Controllers\VideoMediaController;
 use App\Admin\Videos\Controllers\VideoPlaylistController;
 use App\Admin\Videos\Controllers\VideoTranscodeController;
@@ -17,12 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 // Home
 Route::get('/', HomeController::class)->name('home');
-
-// Actions
-Route::prefix('actions')->group(function () {
-    Route::post('/tags/order', TagOrderController::class)->name('tags.reorder');
-    Route::post('/videos/import', VideoImportController::class)->name('videos.import');
-});
 
 // Users
 Route::resource('users', UserController::class);

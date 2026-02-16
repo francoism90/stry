@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Videos\Controllers;
+namespace App\Api\Videos\Controllers;
 
 use Domain\Videos\Actions\CreateVideosByImport;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -19,20 +20,20 @@ class VideoImportController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('precognitive'),
+            new Middleware('auth:sanctum'),
+            new Middleware('role:super-admin'),
         ];
     }
 
-    public function __invoke(CreateVideosByImport $action, Request $request): RedirectResponse
+    public function __invoke(CreateVideosByImport $action, Request $request): RedirectResponse|JsonResponse
     {
         Gate::authorize('create', Video::class);
 
         // Perform the import action
         $result = $action->handle($request->user());
 
-        // Flash message
-        Inertia::flash('message', $result['message'] ?? __('Import failed'));
-
-        return back();
+        return $request->inertia()
+            ? Inertia::flash('message', $result['message'])->back()
+            : response()->json($result);
     }
 }
