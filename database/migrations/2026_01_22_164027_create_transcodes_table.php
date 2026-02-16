@@ -20,6 +20,8 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->nullableMorphs('transcodable');
+            $table->string('disk');
+            $table->string('file_name')->nullable();
             $table->string('encoder');
             $table->unsignedBigInteger('file_size')->nullable();
             $table->text('error_message')->nullable();

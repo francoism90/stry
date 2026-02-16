@@ -21,7 +21,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
             $table->nullableMorphs('playlistable');
             $table->string('disk');
-            $table->string('file_name');
+            $table->string('file_name')->nullable();
             $table->string('secret_disk')->nullable();
             $table->jsonb('progress')->nullable();
             $table->string('type')->nullable()->index();

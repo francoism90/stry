@@ -114,7 +114,7 @@ class Transcode extends Model
      */
     public function broadcastOn(string $event): array
     {
-        return array_filter([$this, $this->media, $this->video]);
+        return array_filter([$this, $this->model]);
     }
 
     public function broadcastChannel(): string
@@ -170,16 +170,6 @@ class Transcode extends Model
     public function getPath(string $path = ''): string
     {
         return implode('/', array_filter([$this->ulid, $path]));
-    }
-
-    public function getFilename(): string
-    {
-        return pathinfo($this->media->file_name, PATHINFO_FILENAME).'.mp4';
-    }
-
-    public function getOutputPath(): string
-    {
-        return $this->getPath($this->getFilename());
     }
 
     public function getFilesystem(): FilesystemAdapter

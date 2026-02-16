@@ -7,6 +7,7 @@ namespace Domain\Videos\Actions;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
+use Foxws\AbAv1\Facades\AbAv1;
 use Foxws\AV1\Facades\AV1;
 use Throwable;
 
@@ -28,14 +29,11 @@ class CreateNewVideoTranscode
         ]);
 
         // Create the AV1 encoder instance
-        $encoder = AV1::fromDisk($clip->disk)->open($clip->getPathRelativeToRoot());
-
-        // Configure the AV1 encoder
-        $encoder
-            ->ffmpegEncode()
-            ->useHardwareAcceleration(Transcode::getHardwareAccelerationEnabled())
-            ->crf(Transcode::getCrf())
-            ->preset(Transcode::getPreset());
+        $encoder = AbAv1::fromDisk($clip->disk)
+            ->open($clip->getPathRelativeToRoot())
+            ->withPreset(8)
+            ->withMinVMAF(95)
+            ->autoEncode();
 
         try {
             // Mark the transcode as processing
@@ -45,7 +43,7 @@ class CreateNewVideoTranscode
             $encoder
                 ->export()
                 ->toDisk($transcode->getDisk())
-                ->save($transcode->getOutputPath());
+                ->save($transcode->getPath());
 
             // Get the size of the output file
             $fileSize = $transcode->getFilesystem()->size($transcode->getOutputPath());
