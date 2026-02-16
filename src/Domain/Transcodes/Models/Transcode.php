@@ -164,6 +164,11 @@ class Transcode extends Model
         return $this->state->equals(States\Failed::class);
     }
 
+    public function isImported(): bool
+    {
+        return $this->state->equals(States\Imported::class);
+    }
+
     public function getDisk(): string
     {
         return $this->disk ?? static::getDestinationDisk();
@@ -222,6 +227,11 @@ class Transcode extends Model
             'error_message' => $errorMessage,
             'retry_count' => $this->retry_count + 1,
         ]);
+    }
+
+    public function markAsImported(): void
+    {
+        $this->state->transitionTo(States\Imported::class);
     }
 
     public static function getDestinationDisk(): string

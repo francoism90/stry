@@ -51,7 +51,7 @@ const onSubmit = () =>
 
     <UPageCard variant="subtle">
       <UFormField
-        label="Encoder"
+        label="Name"
         :error="form.errors.name"
       >
         <UInput

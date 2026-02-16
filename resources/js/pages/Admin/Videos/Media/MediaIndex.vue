@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoMediaController'
+import MediaController from '@/actions/App/Admin/Media/Controllers/MediaController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
@@ -31,7 +31,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"
-        :to="edit.url({ video: video.id, media: item.id })"
+        :to="MediaController.edit(item.id)"
         variant="naked"
         class="py-4 first:pt-0 last:pb-0"
       >
@@ -65,10 +65,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
           </UUser>
 
           <div class="z-10 flex items-center gap-2">
-            <MediaDeleteModal
-              :video="video"
-              :item="item"
-            />
+            <MediaDeleteModal :item="item" />
           </div>
         </div>
       </UPageCard>

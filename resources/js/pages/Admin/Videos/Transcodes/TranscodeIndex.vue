@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoTranscodeController'
+import TranscodeController from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
@@ -31,7 +31,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"
-        :to="edit.url({ video: video.id, transcode: item.id })"
+        :to="TranscodeController.edit(item.id)"
         variant="naked"
         class="py-4 first:pt-0 last:pb-0"
       >
