@@ -56,10 +56,4 @@ return [
 
     'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'transcodes'),
 
-    'transcode_hardware_acceleration' => (bool) env('VIDEO_TRANSCODE_HARDWARE_ACCELERATION', true),
-
-    'transcode_crf' => (int) env('VIDEO_TRANSCODE_CRF', 28),
-
-    'transcode_preset' => (string) env('VIDEO_TRANSCODE_PRESET', '6'),
-
 ];

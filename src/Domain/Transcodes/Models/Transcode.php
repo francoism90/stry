@@ -228,19 +228,4 @@ class Transcode extends Model
     {
         return Config::string('videos.transcode_disk', 'transcodes');
     }
-
-    public static function getHardwareAccelerationEnabled(): bool
-    {
-        return Config::bool('videos.transcode_hardware_acceleration', true);
-    }
-
-    public static function getCrf(): int
-    {
-        return Config::int('videos.transcode_crf', 28);
-    }
-
-    public static function getPreset(): string
-    {
-        return Config::string('videos.transcode_preset', '6');
-    }
 }
