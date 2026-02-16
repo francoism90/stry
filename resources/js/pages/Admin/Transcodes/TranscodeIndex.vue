@@ -16,7 +16,7 @@ const props = defineProps<{
 
 defineOptions({ layout: DashboardLayout })
 
-usePoll(5000, {
+usePoll(30000, {
   only: ['items'],
   reset: ['items'],
 })
