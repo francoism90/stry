@@ -21,6 +21,7 @@ defineOptions({ layout: DashboardLayout })
 
 usePoll(5000, {
   only: ['items'],
+  reset: ['items'],
 })
 
 const form = useForm('get', '', {
