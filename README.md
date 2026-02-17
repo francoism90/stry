@@ -54,7 +54,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 | **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
 | **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)            |
 | **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
-| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1)                 |
+| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)          |
 
 ---
 
