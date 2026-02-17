@@ -5,10 +5,12 @@
     "guidelines": true,
     "herd_mcp": false,
     "mcp": true,
+    "nightwatch_mcp": false,
     "packages": [
         "laravel/fortify",
         "spatie/laravel-medialibrary",
-        "spatie/laravel-permission"
+        "spatie/laravel-permission",
+        "spatie/laravel-responsecache"
     ],
     "sail": false,
     "skills": [
@@ -18,6 +20,7 @@
         "tailwindcss-development",
         "developing-with-fortify",
         "medialibrary-development",
-        "laravel-permission-development"
+        "laravel-permission-development",
+        "responsecache-development"
     ]
 }
