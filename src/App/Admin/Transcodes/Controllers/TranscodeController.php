@@ -50,24 +50,6 @@ class TranscodeController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function store(TranscodeStoreRequest $request): RedirectResponse
-    {
-        Gate::authorize('create', Transcode::class);
-
-        // Fetch the video
-        $video = Video::findFromUlid($request->safe()->input('transcodable_id'));
-
-        // Create the transcode
-        TranscodeVideo::dispatch($video);
-
-        // Flash message
-        Inertia::flash('message', __('The transcode for :video has been queued.', [
-            'video' => $video->title,
-        ]));
-
-        return redirect()->route('admin.transcodes.index');
-    }
-
     public function edit(Transcode $transcode): Response
     {
         Gate::authorize('update', $transcode);

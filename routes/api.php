@@ -11,6 +11,7 @@ use App\Api\Tags\Controllers\TagController;
 use App\Api\Tags\Controllers\TagOrderController;
 use App\Api\Transcodes\Controllers\TranscodeImportController;
 use App\Api\Videos\Controllers\VideoImportController;
+use App\Api\Videos\Controllers\VideoTranscodeController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->prefix('v1')->group(function () {
@@ -30,6 +31,7 @@ Route::name('api.')->prefix('v1')->group(function () {
 
     // Videos
     Route::post('/videos/import', VideoImportController::class)->name('videos.import');
+    Route::post('/videos/{video}/transcode', VideoTranscodeController::class)->name('videos.transcode');
 
     // VOD - Playlists
     Route::get('/play/{playlist}/{path}', PlaylistManifestController::class)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
+import VideoTranscodeModal from '@/components/Videos/VideoTranscodeModal.vue'
 import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
@@ -224,6 +225,22 @@ const onSubmit = () =>
           class="w-full"
         />
       </UFormField>
+    </UPageCard>
+
+    <UPageCard
+      title="Transcode Video"
+      description="This creates a new transcode job for the video. Possibly useful to reduce file size."
+      class="from-default/10 to-default bg-linear-to-tl from-5%"
+    >
+      <template #footer>
+        <VideoTranscodeModal :item="video">
+          <UButton
+            label="Transcode video"
+            color="primary"
+            variant="soft"
+          />
+        </VideoTranscodeModal>
+      </template>
     </UPageCard>
 
     <UPageCard

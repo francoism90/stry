@@ -33,7 +33,7 @@ class VideoController extends Controller implements HasMiddleware
 
         // Dispatch the job to create a playlist if necessary
         PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist() && $video->hasMedia('clips'),
+            ! $video->hasPlaylist(),
             $video,
         );
 
