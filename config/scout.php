@@ -394,7 +394,7 @@ return [
                         ],
                         [
                             'name' => 'filesize',
-                            'type' => 'float',
+                            'type' => 'int64',
                             'sort' => true,
                         ],
                         [
