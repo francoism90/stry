@@ -393,6 +393,11 @@ return [
                             'sort' => true,
                         ],
                         [
+                            'name' => 'filesize',
+                            'type' => 'float',
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'released',
                             'type' => 'string',
                             'sort' => true,

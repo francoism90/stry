@@ -253,6 +253,7 @@ class Video extends Model implements HasMedia
             'duration' => (float) $this->duration,
             'released' => (string) $this->released,
             'captioned' => (bool) $this->captioned,
+            'filesize' => (int) $this->filesize,
             'adult' => (bool) $this->adult,
             'tags' => (string) $this->tags->translated(),
             'tagged' => (array) $this->tags->modelKeys(),
