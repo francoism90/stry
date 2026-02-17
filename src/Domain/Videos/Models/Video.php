@@ -251,7 +251,7 @@ class Video extends Model implements HasMedia
             'episode' => (string) $this->episode,
             'part' => (string) $this->part,
             'duration' => (float) $this->duration,
-            'filesize' => (int) $this->filesize,
+            'filesize' => (int) $this->total_size,
             'released' => (string) $this->released,
             'captioned' => (bool) $this->captioned,
             'adult' => (bool) $this->adult,
@@ -357,10 +357,17 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    protected function totalSize(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): int => $this->getClipCollection()->totalSizeInBytes(),
+        )->shouldCache();
+    }
+
     protected function filesize(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => Number::fileSize($this->getClipCollection()->totalSizeInBytes()),
+            get: fn (): string => Number::fileSize((int) $this->totalSize),
         )->shouldCache();
     }
 
