@@ -118,10 +118,10 @@ AB_AV1_MIN_VMAF=80
 
 The following configuration files are available for customization:
 
-| Config File               | Description                                              | Key Features                                                                                                                                             |
-| ------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 📹 `config/playlists.php` | DASH/HLS playlist generation via Shaka Packager/Streamer | Type (packager/streamer), codecs, resolutions, segment duration, encryption (raw_key/clearkey), protection schemes (cenc/cbcs), key rotation, expiration |
-| 🎬 `config/videos.php`    | Video import and playback settings                       | Import disk, playlist creation toggle, import batch size, completion threshold                                                                           |
+| Config File               | Description                        | Key Features                                                                                                      |
+| ------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| 📹 `config/playlists.php` | Playlist generation settings       | Type (packager/streamer), encryption (raw_key/clearkey), protection schemes (cenc/cbcs), key rotation, expiration |
+| 🎬 `config/videos.php`    | Video import and playback settings | Import disk, batch size, playlist creation, completion threshold, transcode disk                                  |
 
 ### Package Configuration
 
