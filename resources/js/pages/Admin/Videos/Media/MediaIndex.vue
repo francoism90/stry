@@ -13,6 +13,8 @@ defineProps<{
 }>()
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
+
+const { getStreamInfo } = useMedia()
 </script>
 
 <template>
@@ -37,32 +39,15 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       >
         <div class="flex items-center justify-between">
           <UUser
-            :name="item.name"
+            :name="item.file_name"
+            :description="getStreamInfo(item).join(' • ') || item.mime_type"
             :avatar="{
-              alt: item.name,
+              alt: item.file_name,
               loading: 'lazy',
               decoding: 'async',
               class: 'rounded-sm size-12 me-1',
             }"
-          >
-            <template #description>
-              <p class="text-sm text-gray-500 dark:text-gray-400">{{ item.mime_type }} • {{ item.file_size }}</p>
-              <div
-                v-if="item.custom_properties"
-                class="flex items-center gap-1.5 pt-1"
-              >
-                <UBadge
-                  v-for="(badge, index) in useMedia(item).getStreamInfo()"
-                  :key="index"
-                  :color="badge.color"
-                  variant="subtle"
-                  size="xs"
-                >
-                  {{ badge.label }}
-                </UBadge>
-              </div>
-            </template>
-          </UUser>
+          />
 
           <div class="z-10 flex items-center gap-2">
             <MediaDeleteModal :item="item" />

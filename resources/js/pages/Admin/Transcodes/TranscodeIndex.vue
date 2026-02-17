@@ -92,10 +92,10 @@ const onSubmit = () =>
           >
             <div class="flex items-center justify-between">
               <UUser
-                :name="item.id"
-                :description="`${item.state.label} • ${item.resource?.name || item.resource?.label}`"
+                :name="item.resource?.name || item.resource?.label"
+                :description="`${item.file_size} • ${item.state.label}`"
                 :avatar="{
-                  alt: item.id,
+                  alt: item.resource?.name || item.id,
                   class: 'rounded-sm size-14 me-1',
                 }"
               />

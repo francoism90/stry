@@ -60,10 +60,10 @@ usePoll(30000, {
           >
             <div class="flex items-center justify-between">
               <UUser
-                :name="item.id"
+                :name="item.file_name"
                 :description="`${item.file_size} • ${item.mime_type}`"
                 :avatar="{
-                  alt: item.id,
+                  alt: item.file_name,
                   class: 'rounded-sm size-14 me-1',
                 }"
               />
