@@ -38,7 +38,8 @@ class PlaylistQueryBuilder extends Builder
     {
         return $this
             ->whereNotNull('expires_at')
-            ->whereNowOrPast('expires_at');
+            ->whereNowOrPast('expires_at')
+            ->orWhere(fn ($query) => $query->failed());
     }
 
     public function unexpired(): self

@@ -30,7 +30,7 @@ Schedule::command(PruneCommand::class, [
     '--model' => [
         Domain\Groups\Models\Group::class,
         Domain\Playlists\Models\Playlist::class,
-        Domain\Media\Models\Transcode::class,
+        Domain\Transcodes\Models\Transcode::class,
     ]])
     ->withoutOverlapping()
     ->dailyAt('02:30')

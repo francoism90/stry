@@ -92,9 +92,7 @@ class Transcode extends Model
 
     public function prunable(): TranscodeQueryBuilder
     {
-        return static::query()
-            ->where('state', States\Failed::class)
-            ->where('created_at', '<=', now()->subDays(7));
+        return static::query()->expired();
     }
 
     public function uniqueIds(): array

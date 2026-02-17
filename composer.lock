@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eb2c36a80b7a82adfde5ce636ca2c42",
+    "content-hash": "b816356b8486bad414474616b79a701d",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1235,16 +1235,16 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "7656211b0b80c76d44a1e6e56582efae6c583857"
+                "reference": "10f518b1d44ef607efdb23bfc9d4b262cf1cffd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/7656211b0b80c76d44a1e6e56582efae6c583857",
-                "reference": "7656211b0b80c76d44a1e6e56582efae6c583857",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/10f518b1d44ef607efdb23bfc9d4b262cf1cffd0",
+                "reference": "10f518b1d44ef607efdb23bfc9d4b262cf1cffd0",
                 "shasum": ""
             },
             "require": {
@@ -1304,7 +1304,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/0.1.0"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/0.2.0"
             },
             "funding": [
                 {
@@ -1312,20 +1312,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-17T09:52:48+00:00"
+            "time": "2026-02-17T12:38:20+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "72c6c518716ae1985c24d07d43fce3869cf0ccd3"
+                "reference": "159ed8025fb87dad7d35407b3fbee105153aab59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/72c6c518716ae1985c24d07d43fce3869cf0ccd3",
-                "reference": "72c6c518716ae1985c24d07d43fce3869cf0ccd3",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/159ed8025fb87dad7d35407b3fbee105153aab59",
+                "reference": "159ed8025fb87dad7d35407b3fbee105153aab59",
                 "shasum": ""
             },
             "require": {
@@ -1392,7 +1392,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/1.1.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/1.2.0"
             },
             "funding": [
                 {
@@ -1400,7 +1400,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-17T11:23:45+00:00"
+            "time": "2026-02-17T12:50:44+00:00"
         },
         {
             "name": "foxws/laravel-streamer",

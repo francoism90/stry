@@ -15,8 +15,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "foxws/laravel-ab-av1": "^0.1.0",
-        "foxws/laravel-shaka": "^1.1",
+        "foxws/laravel-ab-av1": "^0.2.0",
+        "foxws/laravel-shaka": "^1.2",
         "foxws/laravel-streamer": "^0.3.0",
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",

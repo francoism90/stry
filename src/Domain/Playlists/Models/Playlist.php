@@ -119,9 +119,7 @@ class Playlist extends Model
 
     public function prunable(): PlaylistQueryBuilder
     {
-        return static::query()
-            ->expired()
-            ->orWhere(fn ($query) => $query->failed());
+        return static::query()->expired();
     }
 
     public static function findFromUlid(Playlist|string $value): ?Playlist
