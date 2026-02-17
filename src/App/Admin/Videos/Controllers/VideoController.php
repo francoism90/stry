@@ -37,7 +37,7 @@ class VideoController extends Controller implements HasMiddleware
 
         // Apply filters
         $search = $request->safe()->input('search');
-        $order = $request->safe()->input('order', VideoOrder::Newest);
+        $order = $request->safe()->input('order', VideoOrder::Default);
 
         // Scout builder
         $scout = Video::search($search)
