@@ -263,31 +263,11 @@ class Playlist extends Model
         return Config::string('playlists.disk_name', 'segments');
     }
 
-    public static function getDefaultAudioCodecs(): array
-    {
-        return Config::array('playlists.audio_codecs', ['aac']);
-    }
-
-    public static function getDefaultVideoCodecs(): array
-    {
-        return Config::array('playlists.video_codecs', ['h264']);
-    }
-
     public static function getDefaultType(): PlaylistType
     {
         $value = Config::string('playlists.type', 'packager');
 
         return PlaylistType::from($value);
-    }
-
-    public static function getResolutions(): array
-    {
-        return Config::array('playlists.resolutions', ['1080p', '720p', '480p']);
-    }
-
-    public static function getSegmentDuration(): int
-    {
-        return Config::integer('playlists.segment_duration', 6);
     }
 
     public static function getExpiresAfter(): ?Carbon
@@ -315,15 +295,5 @@ class Playlist extends Model
     public static function getKeyRotationDuration(): int
     {
         return Config::integer('playlists.key_rotation_duration', 300);
-    }
-
-    public static function getPackagerOptions(): array
-    {
-        return Config::array('playlists.packager_options', []);
-    }
-
-    public static function getStreamerOptions(): array
-    {
-        return Config::array('playlists.streamer_options', []);
     }
 }

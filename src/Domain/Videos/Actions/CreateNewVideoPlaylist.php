@@ -77,9 +77,7 @@ class CreateNewVideoPlaylist
 
         // Configure DASH playlist settings
         $packager
-            ->withMpdOutput($playlist->getFileName())
-            ->withSegmentDuration(Playlist::getSegmentDuration())
-            ->withOptions(Playlist::getPackagerOptions());
+            ->withMpdOutput($playlist->getFileName());
 
         // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {

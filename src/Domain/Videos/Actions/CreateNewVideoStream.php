@@ -83,12 +83,7 @@ class CreateNewVideoStream
         $streamer
             ->withMpdOutput($playlist->getFileName())
             ->withStreamingMode('vod')
-            ->withAudioCodecs(Playlist::getDefaultAudioCodecs())
-            ->withVideoCodecs(Playlist::getDefaultVideoCodecs())
-            ->withResolutions(Playlist::getResolutions())
-            ->withSegmentPerFile()
-            ->withSegmentDuration(Playlist::getSegmentDuration())
-            ->withOptions(Playlist::getStreamerOptions());
+            ->withSegmentPerFile();
 
         // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {
