@@ -7,18 +7,15 @@ const props = defineProps<{
   item: Video
 }>()
 
-const transcode = (close: () => void) => {
+const transcode = async (close: () => void) =>
   router.post(
     VideoTranscodeController.url(props.item.id),
     {},
     {
       preserveScroll: true,
-      onSuccess: () => {
-        close()
-      },
+      onSuccess: () => close(),
     },
   )
-}
 </script>
 
 <template>
@@ -40,7 +37,7 @@ const transcode = (close: () => void) => {
         <h3>Are you sure you want to transcode this video?</h3>
         <p class="text-sm text-neutral-500">
           This action will queue a transcode for this video. Depending on the length of the video and your server's
-          resources, this may take some time to complete. You can monitor the progress in the transcodes section.
+          resources, this may take some time to complete.
         </p>
       </div>
     </template>
