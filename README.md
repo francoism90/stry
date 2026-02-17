@@ -50,10 +50,11 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 | **Frontend**          | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/) |
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                            |
 | **Containers**        | [Podman 5.x](https://podman.io/)                                          |
-| **Search**            | [Typesense 29.x](https://typesense.org/)                                  |
+| **Search**            | [Typesense 30.x](https://typesense.org/)                                  |
 | **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
 | **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)            |
-| **Video Transcoding** | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
+| **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
+| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1)                 |
 
 ---
 
