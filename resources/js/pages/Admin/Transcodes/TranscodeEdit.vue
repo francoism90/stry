@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import TranscodeLayout from '@/layouts/Admin/TranscodeLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { Transcode } from '@/types'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   transcode: Transcode
-  encoders: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: [DashboardLayout, TranscodeLayout] })
 
 const form = useForm('put', update.url(props.transcode.id), {
-  encoder: props.transcode.encoder,
+  transcodable_type: props.transcode.resource?.type,
+  transcodable_id: props.transcode.resource?.id,
 })
 
 const onSubmit = () =>
@@ -53,16 +53,40 @@ const onSubmit = () =>
 
     <UPageCard variant="subtle">
       <UFormField
-        label="Encoder"
-        :error="form.errors.encoder"
+        label="Transcodable Type"
+        :error="form.errors.transcodable_type"
       >
-        <USelectMenu
-          v-model="form.encoder"
-          value-key="value"
-          :items="encoders"
-          class="w-full"
+        <UInput
+          v-model="form.transcodable_type"
+          :disabled="true"
         />
       </UFormField>
+
+      <UFormField
+        label="Transcodable ID"
+        :error="form.errors.transcodable_id"
+      >
+        <UInput
+          v-model="form.transcodable_id"
+          :disabled="true"
+        />
+      </UFormField>
+    </UPageCard>
+
+    <UPageCard
+      title="Import transcode"
+      :description="`Current state: ${transcode.state.label}`"
+    >
+      <template #footer>
+        <TranscodeImportModal :item="transcode">
+          <UButton
+            label="Import transcode"
+            :disabled="!transcode.completed"
+            color="primary"
+            variant="soft"
+          />
+        </TranscodeImportModal>
+      </template>
     </UPageCard>
 
     <UPageCard
@@ -71,7 +95,13 @@ const onSubmit = () =>
       class="from-error/10 to-default bg-linear-to-tl from-5%"
     >
       <template #footer>
-        <TranscodeDeleteModal :item="transcode" />
+        <TranscodeDeleteModal :item="transcode">
+          <UButton
+            label="Delete transcode"
+            color="error"
+            variant="soft"
+          />
+        </TranscodeDeleteModal>
       </template>
     </UPageCard>
   </UForm>

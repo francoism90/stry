@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use Domain\Users\Models\User;
-use Domain\Videos\Actions\CreateNewVideoByImport;
+use Domain\Videos\Actions\ImportVideoFile;
+use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -49,7 +49,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public $deleteWhenMissingModels = true;
 
     public function __construct(
-        public User $user,
+        public Video $video,
         public string $disk,
         public string $path,
     ) {
@@ -58,7 +58,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(CreateNewVideoByImport::class)->handle($this->user, $this->disk, $this->path);
+        app(ImportVideoFile::class)->handle($this->video, $this->disk, $this->path);
     }
 
     /**

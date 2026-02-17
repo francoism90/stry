@@ -1,4 +1,4 @@
-import GroupClearController from '@/actions/App/Client/Groups/Controllers/GroupClearController'
+import GroupClearController from '@/actions/App/Api/Groups/Controllers/GroupClearController'
 import { router } from '@inertiajs/vue3'
 
 export function useGroups() {

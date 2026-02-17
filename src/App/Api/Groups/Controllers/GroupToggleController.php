@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Groups\Controllers;
+namespace App\Api\Groups\Controllers;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -24,12 +25,12 @@ class GroupToggleController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(GroupType $type, Video $video): RedirectResponse
+    public function __invoke(GroupType $type, Video $video, Request $request): RedirectResponse|JsonResponse
     {
         Gate::authorize('view', $video);
 
         // Get the currently authenticated user
-        $user = Auth::user();
+        $user = $request->user();
 
         // Toggle the group association based on the type
         $group = match ($type) {
@@ -40,9 +41,11 @@ class GroupToggleController extends Controller implements HasMiddleware
 
         // Return back with a success message
         $result = $group->hasGroupable($video)
-            ? __('Video added to :group group.', ['group' => $type->label()])
-            : __('Video removed from :group group.', ['group' => $type->label()]);
+            ? __('Added to :group group.', ['group' => $type->label()])
+            : __('Removed from :group group.', ['group' => $type->label()]);
 
-        return Inertia::flash('message', $result)->back();
+        return $request->inertia()
+            ? Inertia::flash('message', $result)->back()
+            : response()->json();
     }
 }

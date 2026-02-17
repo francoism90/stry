@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Users/Controllers/UserController'
-import type { User } from '@/types'
-import { router } from '@inertiajs/vue3'
+import { destroy } from '@/actions/App/Admin/Users/Controllers/UserController';
+import type { User } from '@/types';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps<{
   item: User
@@ -17,9 +17,10 @@ const remove = async () => router.delete(destroy.url(props.item.id))
   >
     <slot>
       <UButton
-        label="Delete user"
+        icon="i-lucide-trash"
         color="error"
-        variant="soft"
+        variant="ghost"
+        size="sm"
       />
     </slot>
 

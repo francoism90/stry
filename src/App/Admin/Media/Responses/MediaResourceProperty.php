@@ -33,6 +33,7 @@ readonly class MediaResourceProperty implements ProvidesInertiaProperty
         ];
 
         return $this->media
+            ->loadMissing('model')
             ->append($appends)
             ->toResource(MediaResource::class);
     }

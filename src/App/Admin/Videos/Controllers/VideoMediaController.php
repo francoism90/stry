@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Videos\Controllers;
 
-use App\Admin\Media\Responses\MediaResourceProperty;
 use App\Admin\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
-use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;
-use Domain\Media\Actions\UpdateMediaDetails;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -62,52 +59,6 @@ class VideoMediaController extends Controller implements HasMiddleware
 
         // Flash message
         Inertia::flash('message', __('Media created successfully.'));
-
-        return redirect()->route('admin.videos.media.index', $video);
-    }
-
-    public function show(Video $video, Media $media): Response
-    {
-        Gate::authorize('view', $media);
-
-        return Inertia::render('Admin/Videos/Media/Show', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
-            'media' => fn () => new MediaResourceProperty(media: $media),
-        ]);
-    }
-
-    public function edit(Video $video, Media $media): Response
-    {
-        Gate::authorize('update', $media);
-
-        return Inertia::render('Admin/Videos/Media/MediaEdit', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
-            'media' => fn () => new MediaResourceProperty(media: $media),
-        ]);
-    }
-
-    public function update(MediaUpdateRequest $request, Video $video, Media $media): RedirectResponse
-    {
-        Gate::authorize('update', $media);
-
-        // Update media details
-        app(UpdateMediaDetails::class)->handle($media, $request->safe()->all());
-
-        // Flash message
-        Inertia::flash('message', __('Media updated successfully.'));
-
-        return back();
-    }
-
-    public function destroy(Video $video, Media $media): RedirectResponse
-    {
-        Gate::authorize('delete', $media);
-
-        // Delete the media
-        $media->deleteOrFail();
-
-        // Flash message
-        Inertia::flash('message', __('Media deleted successfully.'));
 
         return redirect()->route('admin.videos.media.index', $video);
     }

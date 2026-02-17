@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
-import TranscodeCreateModal from '@/components/Transcodes/TranscodeCreateModal.vue'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TranscodeCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -15,6 +14,11 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: DashboardLayout })
+
+usePoll(30000, {
+  only: ['items'],
+  reset: ['items'],
+})
 
 const form = useForm('get', '', {
   encoder: props.encoder,
@@ -38,12 +42,6 @@ const onSubmit = () =>
       <UDashboardNavbar title="Transcodes">
         <template #leading>
           <UDashboardSidebarCollapse />
-        </template>
-
-        <template #right>
-          <div class="flex items-center gap-2">
-            <TranscodeCreateModal />
-          </div>
         </template>
       </UDashboardNavbar>
 
@@ -87,23 +85,16 @@ const onSubmit = () =>
           >
             <div class="flex items-center justify-between">
               <UUser
-                :name="item.id"
-                :description="`${item.encoder} • ${item.state.name}`"
+                :name="item.resource?.name || item.resource?.label"
+                :description="`${item.file_size} • ${item.state.label}`"
                 :avatar="{
-                  alt: item.id,
+                  alt: item.resource?.name || item.id,
                   class: 'rounded-sm size-14 me-1',
                 }"
               />
 
               <div class="z-10 flex items-center gap-2">
-                <TranscodeDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </TranscodeDeleteModal>
+                <TranscodeDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

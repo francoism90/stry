@@ -8,7 +8,7 @@ use Closure;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 
-class CreateVideoPlaylist
+class ProcessVideoPlaylist
 {
     public function handle(Video $video, Closure $next): mixed
     {

@@ -3,7 +3,7 @@ import { edit } from '@/actions/App/Admin/Playlists/Controllers/PlaylistControll
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { PlaylistCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -14,6 +14,11 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: DashboardLayout })
+
+usePoll(30000, {
+  only: ['items'],
+  reset: ['items'],
+})
 
 const form = useForm('get', '', {
   type: props.type,
@@ -80,23 +85,16 @@ const onSubmit = () =>
           >
             <div class="flex items-center justify-between">
               <UUser
-                :name="item.id"
-                :description="`${item.type} • ${item.state.name}`"
+                :name="item.resource?.name || item.resource?.label"
+                :description="`${item.expires_at ? `Expires ${item.expires_at}` : 'No expiration'} • ${item.state.label}`"
                 :avatar="{
-                  alt: item.id,
+                  alt: item.resource?.name || item.id,
                   class: 'rounded-sm size-14 me-1',
                 }"
               />
 
               <div class="z-10 flex items-center gap-2">
-                <PlaylistDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </PlaylistDeleteModal>
+                <PlaylistDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

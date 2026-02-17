@@ -32,6 +32,8 @@ trait InteractsWithTranscodes
     public function createTranscode(array $attributes = []): Transcode
     {
         return $this->transcodes()->create([
+            'file_name' => 'video_av1.mp4',
+            'disk' => Transcode::getDestinationDisk(),
             ...$attributes,
         ]);
     }

@@ -6,14 +6,11 @@ namespace App\Admin\Transcodes\Controllers;
 
 use App\Admin\Transcodes\Responses\TranscodeResourceProperty;
 use App\Api\Transcodes\Requests\TranscodeIndexRequest;
-use App\Api\Transcodes\Requests\TranscodeStoreRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\Scopes\TranscodeFilterScope;
-use Domain\Videos\Jobs\TranscodeVideo;
-use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -48,24 +45,6 @@ class TranscodeController extends Controller implements HasMiddleware
             'encoder' => fn () => $encoder,
             'encoders' => fn () => TranscodeEncoder::options(),
         ]);
-    }
-
-    public function store(TranscodeStoreRequest $request): RedirectResponse
-    {
-        Gate::authorize('create', Transcode::class);
-
-        // Get the video
-        $video = Video::findFromUlid($request->safe()->input('video_id'));
-
-        // Create the transcode
-        TranscodeVideo::dispatch($video);
-
-        // Flash message
-        Inertia::flash('message', __('The transcode for :video has been queued.', [
-            'video' => $video->title,
-        ]));
-
-        return redirect()->route('admin.transcodes.index');
     }
 
     public function edit(Transcode $transcode): Response

@@ -1,4 +1,4 @@
-import VideoImportController from '@/actions/App/Admin/Videos/Controllers/VideoImportController'
+import VideoImportController from '@/actions/App/Api/Videos/Controllers/VideoImportController'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 

@@ -17,7 +17,7 @@ class CreateNewVideoPlaylist
     public function handle(Video $video): void
     {
         // Skip if there are no clips associated with the video
-        if (! $video->hasMedia('clips')) {
+        if ($video->hasPlaylist() || ! $video->hasMedia('clips')) {
             return;
         }
 

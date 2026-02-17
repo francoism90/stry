@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DashboardSidebar from '@/components/Admin/DashboardSidebar.vue'
+import AppNotifications from '@/components/Ui/AppNotifications.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { useAppearance } from '@/composables/appearance'
 import { Head } from '@inertiajs/vue3'
@@ -14,6 +15,7 @@ const { nonce } = useAppearance()
 
   <Suspense>
     <UApp :nonce="nonce">
+      <AppNotifications />
       <ServiceWorker />
 
       <UDashboardGroup

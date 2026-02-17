@@ -15,9 +15,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "foxws/laravel-av1": "^0.5.0",
-        "foxws/laravel-shaka": "^1.0",
-        "foxws/laravel-streamer": "^0.2.0",
+        "foxws/laravel-ab-av1": "^0.1.0",
+        "foxws/laravel-shaka": "^1.1",
+        "foxws/laravel-streamer": "^0.3.0",
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2.1",
@@ -39,11 +39,11 @@
         "spatie/laravel-csp": "^3.22",
         "spatie/laravel-data": "^4.19.1",
         "spatie/laravel-google-fonts": "^1.4.4",
-        "spatie/laravel-medialibrary": "^11.19.0",
+        "spatie/laravel-medialibrary": "^11.20.0",
         "spatie/laravel-model-states": "^2.12.2",
         "spatie/laravel-permission": "^7.1",
         "spatie/laravel-rate-limited-job-middleware": "^2.8.2",
-        "spatie/laravel-responsecache": "^7.7.2",
+        "spatie/laravel-responsecache": "^8.1",
         "spatie/laravel-tags": "^4.10.2",
         "spatie/laravel-translatable": "^6.12.0",
         "typesense/typesense-php": "^6.0"
@@ -52,13 +52,13 @@
         "barryvdh/laravel-ide-helper": "^3.6.1",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.9.2",
-        "laravel/boost": "^2.1.4",
+        "laravel/boost": "^2.1.6",
         "laravel/envoy": "^2.10.2",
         "laravel/pail": "^1.2.6",
         "laravel/pint": "^1.27.1",
         "laravel/telescope": "^5.17.0",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.8.3",
+        "nunomaduro/collision": "^8.9.0",
         "pestphp/pest": "^4.3.2",
         "pestphp/pest-plugin-laravel": "^4.0"
     },
@@ -103,7 +103,8 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan boost:update --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -133,6 +134,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

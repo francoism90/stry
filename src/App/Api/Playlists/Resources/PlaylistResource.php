@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Resources;
 
+use App\Api\Shared\Resources\ModelResource;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class PlaylistResource extends JsonResource
     {
         return [
             'id' => $this->getRouteKey(),
+            'resource' => ModelResource::make($this->whenLoaded('playlistable')),
             'encryption_key_id' => $this->encryption_key_id,
             'encryption_key' => $this->encryption_key,
             'asset' => $this->getUrl(),

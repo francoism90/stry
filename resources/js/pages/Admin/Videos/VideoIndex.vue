@@ -5,7 +5,7 @@ import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import VideoImportModal from '@/components/Videos/VideoImportModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -18,6 +18,11 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: DashboardLayout })
+
+usePoll(30000, {
+  only: ['items'],
+  reset: ['items'],
+})
 
 const form = useForm('get', '', {
   search: props.search,
@@ -128,14 +133,7 @@ watchDebounced(
                   :to="VideoController.url(item.id)"
                 />
 
-                <VideoDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </VideoDeleteModal>
+                <VideoDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

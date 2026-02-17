@@ -6,7 +6,7 @@ import TagDeleteModal from '@/components/Tags/TagDeleteModal.vue'
 import TagOrderModal from '@/components/Tags/TagOrderModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -19,6 +19,11 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: DashboardLayout })
+
+usePoll(30000, {
+  only: ['items'],
+  reset: ['items'],
+})
 
 const form = useForm('get', '', {
   search: props.search,
@@ -128,14 +133,7 @@ watchDebounced(
                   :to="HomeController.url('all', { query: { tag: item.id } })"
                 />
 
-                <TagDeleteModal :item="item">
-                  <UButton
-                    icon="i-lucide-trash"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                  />
-                </TagDeleteModal>
+                <TagDeleteModal :item="item" />
               </div>
             </div>
           </UPageCard>

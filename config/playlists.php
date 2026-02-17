@@ -30,57 +30,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Audio Codecs
-    |--------------------------------------------------------------------------
-    |
-    | Default audio codecs to use for the playlist. This can be overridden
-    | on a per-stream basis when adding streams to the playlist.
-    | Note: Only applicable when using Shaka Streamer.
-    |
-    */
-
-    'audio_codecs' => (array) env('PLAYLIST_AUDIO_CODECS', ['aac']),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Video Codecs
-    |--------------------------------------------------------------------------
-    |
-    | Default video codecs to use for the playlist. This can be overridden
-    | on a per-stream basis when adding streams to the playlist.
-    | Note: Only applicable when using Shaka Streamer.
-    |
-    */
-
-    'video_codecs' => (array) env('PLAYLIST_VIDEO_CODECS', ['hw:h264']),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Resolutions
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the resolutions generated for the playlist.
-    | An array of strings, each representing a resolution (e.g., '1080p').
-    | Note: Only applicable when using Shaka Streamer.
-    |
-    */
-
-    'resolutions' => (array) env('PLAYLIST_RESOLUTIONS', []),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Segment Duration
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the duration of each segment in the playlist,
-    | in seconds. A typical value is between 4 and 10 seconds.
-    |
-    */
-
-    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 10),
-
-    /*
-    |--------------------------------------------------------------------------
     | Encryption Method
     |--------------------------------------------------------------------------
     |
@@ -145,45 +94,5 @@ return [
     */
 
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 14), // 14 days
-
-    /*
-    |--------------------------------------------------------------------------
-    | Shaka Packager Options
-    |--------------------------------------------------------------------------
-    |
-    | Configuration options for Shaka Packager.
-    | See: https://shaka-project.github.io/shaka-packager/html/options.html
-    |
-    | - num_subsegments_per_sidx: Number of subsegments per SIDX box
-    |   (0 = disable, reduces overhead)
-    | - fragment_sap_aligned: Align fragments to stream access points
-    |   (improves seeking performance)
-    | - mp4_include_pssh_in_stream: Include PSSH in stream for better
-    |   DRM compatibility
-    | - generate_static_live_mpd: Generate static MPD for DASH
-    |   (improves caching)
-    | - default_language: Default language for audio/subtitle tracks
-    |
-    */
-
-    'packager_options' => (array) env('PLAYLIST_PACKAGER_OPTIONS', [
-        'num_subsegments_per_sidx' => 0,
-        'fragment_sap_aligned' => true,
-        'mp4_include_pssh_in_stream' => true,
-        'generate_static_live_mpd' => true,
-        'default_language' => 'en',
-    ]),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Shaka Streamer Options
-    |--------------------------------------------------------------------------
-    |
-    | Configuration options for Shaka Streamer.
-    | See: https://shaka-project.github.io/shaka-streamer/configuration_fields.html
-    |
-    */
-
-    'streamer_options' => (array) env('PLAYLIST_STREAMER_OPTIONS', []),
 
 ];

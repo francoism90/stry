@@ -16,6 +16,7 @@ readonly class TranscodeFilterScope
     public function __invoke(Builder $query): void
     {
         $query
+            ->with('transcodable')
             ->when($this->getEncoder(), fn (Builder $query, TranscodeEncoder $encoder) => $query->encoder($encoder))
             ->latest();
     }

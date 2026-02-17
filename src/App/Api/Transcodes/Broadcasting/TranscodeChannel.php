@@ -9,8 +9,8 @@ use Domain\Users\Models\User;
 
 class TranscodeChannel
 {
-    public function join(User $user, Transcode $playlist): bool
+    public function join(User $user, Transcode $transcode): bool
     {
-        return $user->can('view', $playlist);
+        return $user->can('view', $transcode);
     }
 }

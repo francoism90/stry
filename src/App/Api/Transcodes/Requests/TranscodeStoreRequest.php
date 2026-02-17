@@ -19,7 +19,8 @@ class TranscodeStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'video_id' => ['required', 'string', 'exists:videos,ulid'],
+            'transcodable_type' => ['required', 'string', 'in:video'],
+            'transcodable_id' => ['required', 'string', 'exists:videos,ulid'],
         ];
     }
 }

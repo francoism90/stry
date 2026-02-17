@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import VideoTranscodeController from '@/actions/App/Api/Videos/Controllers/VideoTranscodeController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
@@ -7,7 +7,15 @@ const props = defineProps<{
   item: Video
 }>()
 
-const remove = async () => router.delete(destroy.url(props.item.id))
+const submit = async (close: () => void) =>
+  router.post(
+    VideoTranscodeController.url(props.item.id),
+    {},
+    {
+      preserveScroll: true,
+      onSuccess: () => close(),
+    },
+  )
 </script>
 
 <template>
@@ -17,17 +25,19 @@ const remove = async () => router.delete(destroy.url(props.item.id))
   >
     <slot>
       <UButton
-        label="Delete video"
+        icon="i-lucide-trash"
         color="error"
-        variant="soft"
+        variant="ghost"
+        size="sm"
       />
     </slot>
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to delete this video?</h3>
+        <h3>Are you sure you want to transcode this video?</h3>
         <p class="text-sm text-neutral-500">
-          This action cannot be undone. All associated data will be permanently removed.
+          This action will queue a transcode for this video. Depending on the length of the video and your server's
+          resources, this may take some time to complete.
         </p>
       </div>
     </template>
@@ -41,11 +51,11 @@ const remove = async () => router.delete(destroy.url(props.item.id))
       />
 
       <UButton
-        label="Delete video"
+        label="Transcode video"
         variant="soft"
-        color="error"
+        color="primary"
         loading-auto
-        @click.prevent="remove"
+        @click.prevent="() => submit(close)"
       />
     </template>
   </UModal>

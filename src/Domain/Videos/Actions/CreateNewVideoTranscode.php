@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Transcodes\Enums\TranscodeEncoder;
-use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
-use Foxws\AV1\Facades\AV1;
+use Foxws\AbAv1\Facades\AbAv1;
 use Throwable;
 
 class CreateNewVideoTranscode
@@ -24,30 +23,26 @@ class CreateNewVideoTranscode
 
         /** @var Playlist $playlist */
         $transcode = $video->createTranscode([
+            'file_name' => pathinfo($clip->file_name, PATHINFO_FILENAME).'.mp4',
             'encoder' => TranscodeEncoder::AV1,
         ]);
 
-        // Create the AV1 encoder instance
-        $encoder = AV1::fromDisk($clip->disk)->open($clip->getPathRelativeToRoot());
-
-        // Configure the AV1 encoder
-        $encoder
-            ->ffmpegEncode()
-            ->useHardwareAcceleration(Transcode::getHardwareAccelerationEnabled())
-            ->crf(Transcode::getCrf())
-            ->preset(Transcode::getPreset());
+        // Initialize the encoder
+        $encoder = AbAv1::fromDisk($clip->disk)
+            ->open($clip->getPathRelativeToRoot());
 
         try {
             // Mark the transcode as processing
             $transcode->markAsProcessing();
 
-            // Export the encoded media to the specified disk and path
+            // Encode and export (like Laravel Streamer - export() starts the process)
             $encoder
                 ->export()
                 ->toDisk($transcode->getDisk())
-                ->save($transcode->getOutputPath());
+                ->toPath($transcode->getOutputPath())
+                ->save();
 
-            // Get the size of the output file
+            // Get the file size of the encoded video
             $fileSize = $transcode->getFilesystem()->size($transcode->getOutputPath());
 
             // Mark the transcode as completed

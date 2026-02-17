@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoPlaylistController'
-import VideoPlaylistDeleteModal from '@/components/Videos/VideoPlaylistDeleteModal.vue'
+import { edit } from '@/actions/App/Admin/Playlists/Controllers/PlaylistController'
+import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
@@ -30,7 +30,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"
-        :to="edit.url({ video: video.id, playlist: item.id })"
+        :to="edit.url(item.id)"
         variant="naked"
         class="py-4 first:pt-0 last:pb-0"
       >
@@ -47,17 +47,7 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
           />
 
           <div class="z-10 flex items-center gap-2">
-            <VideoPlaylistDeleteModal
-              :video="video"
-              :item="item"
-            >
-              <UButton
-                icon="i-lucide-trash"
-                color="error"
-                variant="ghost"
-                size="sm"
-              />
-            </VideoPlaylistDeleteModal>
+            <PlaylistDeleteModal :item="item" />
           </div>
         </div>
       </UPageCard>

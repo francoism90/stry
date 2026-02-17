@@ -1,4 +1,4 @@
-import GroupToggleController from '@/actions/App/Client/Groups/Controllers/GroupToggleController'
+import GroupToggleController from '@/actions/App/Api/Groups/Controllers/GroupToggleController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 

@@ -43,9 +43,11 @@ class Transcode extends Model
         'user_id',
         'transcodable_type',
         'transcodable_id',
+        'disk',
+        'file_name',
+        'file_size',
         'encoder',
         'state',
-        'file_size',
         'error_message',
         'retry_count',
         'started_at',
@@ -114,7 +116,7 @@ class Transcode extends Model
      */
     public function broadcastOn(string $event): array
     {
-        return array_filter([$this, $this->media, $this->video]);
+        return array_filter([$this, $this->transcodable]);
     }
 
     public function broadcastChannel(): string
@@ -162,6 +164,11 @@ class Transcode extends Model
         return $this->state->equals(States\Failed::class);
     }
 
+    public function isImported(): bool
+    {
+        return $this->state->equals(States\Imported::class);
+    }
+
     public function getDisk(): string
     {
         return $this->disk ?? static::getDestinationDisk();
@@ -172,14 +179,9 @@ class Transcode extends Model
         return implode('/', array_filter([$this->ulid, $path]));
     }
 
-    public function getFilename(): string
-    {
-        return pathinfo($this->media->file_name, PATHINFO_FILENAME).'.mp4';
-    }
-
     public function getOutputPath(): string
     {
-        return $this->getPath($this->getFilename());
+        return $this->getPath($this->file_name);
     }
 
     public function getFilesystem(): FilesystemAdapter
@@ -227,11 +229,9 @@ class Transcode extends Model
         ]);
     }
 
-    protected function humanFileSize(): Attribute
+    public function markAsImported(): void
     {
-        return Attribute::make(
-            get: fn (): string => Number::fileSize($this->getFileSize()),
-        )->shouldCache();
+        $this->state->transitionTo(States\Imported::class);
     }
 
     public static function getDestinationDisk(): string
@@ -239,18 +239,10 @@ class Transcode extends Model
         return Config::string('videos.transcode_disk', 'transcodes');
     }
 
-    public static function getHardwareAccelerationEnabled(): bool
+    protected function humanFileSize(): Attribute
     {
-        return Config::bool('videos.transcode_hardware_acceleration', true);
-    }
-
-    public static function getCrf(): int
-    {
-        return Config::int('videos.transcode_crf', 28);
-    }
-
-    public static function getPreset(): string
-    {
-        return Config::string('videos.transcode_preset', '6');
+        return Attribute::make(
+            get: fn (): string => Number::fileSize($this->getFileSize()),
+        )->shouldCache();
     }
 }
