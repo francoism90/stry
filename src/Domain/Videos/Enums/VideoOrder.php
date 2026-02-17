@@ -13,6 +13,7 @@ enum VideoOrder: string implements Enumerable
     case Ordered = 'ordered';
     case Longest = 'longest';
     case Shortest = 'shortest';
+    case Filesize = 'filesize';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum VideoOrder: string implements Enumerable
             self::Ordered => __('Ordered'),
             self::Longest => __('Longest'),
             self::Shortest => __('Shortest'),
+            self::Filesize => __('Filesize'),
         };
     }
 
