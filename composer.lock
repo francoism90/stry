@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c45257c9eb670b71ef2cfc2bd198be0",
+    "content-hash": "6e17dbe444105761d9bea50a694c14e0",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1235,16 +1235,16 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "667396c88780320a0325dd8315bb5dac7c28b2d0"
+                "reference": "7656211b0b80c76d44a1e6e56582efae6c583857"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/667396c88780320a0325dd8315bb5dac7c28b2d0",
-                "reference": "667396c88780320a0325dd8315bb5dac7c28b2d0",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/7656211b0b80c76d44a1e6e56582efae6c583857",
+                "reference": "7656211b0b80c76d44a1e6e56582efae6c583857",
                 "shasum": ""
             },
             "require": {
@@ -1262,10 +1262,8 @@
                 "pestphp/pest-plugin-laravel": "^4.0",
                 "phpstan/extension-installer": "^1.4",
                 "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "spatie/laravel-ray": "^1.35"
+                "phpstan/phpstan-phpunit": "^2.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1279,8 +1277,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Foxws\\AbAv1\\": "src/",
-                    "Foxws\\AbAv1\\Database\\Factories\\": "database/factories/"
+                    "Foxws\\AbAv1\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1294,16 +1291,20 @@
                     "role": "Developer"
                 }
             ],
-            "description": "This is my package laravel-ab-av1",
+            "description": "A Laravel package for encoding videos to AV1 format using ab-av1.",
             "homepage": "https://github.com/foxws/laravel-ab-av1",
             "keywords": [
+                "ab-av1",
+                "av1",
+                "encoding",
+                "ffmpeg",
                 "foxws",
                 "laravel",
-                "laravel-ab-av1"
+                "video"
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/main"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/0.1.0"
             },
             "funding": [
                 {
@@ -1311,7 +1312,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-16T08:43:36+00:00"
+            "time": "2026-02-17T09:52:48+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -15358,9 +15359,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "foxws/laravel-ab-av1": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
