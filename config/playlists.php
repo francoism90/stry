@@ -95,32 +95,4 @@ return [
 
     'expires_after' => (int) env('PLAYLIST_EXPIRES_AFTER', 60 * 60 * 24 * 14), // 14 days
 
-    /*
-    |--------------------------------------------------------------------------
-    | Shaka Packager Options
-    |--------------------------------------------------------------------------
-    |
-    | Configuration options for Shaka Packager.
-    | See: https://shaka-project.github.io/shaka-packager/html/options.html
-    |
-    | - num_subsegments_per_sidx: Number of subsegments per SIDX box
-    |   (0 = disable, reduces overhead)
-    | - fragment_sap_aligned: Align fragments to stream access points
-    |   (improves seeking performance)
-    | - mp4_include_pssh_in_stream: Include PSSH in stream for better
-    |   DRM compatibility
-    | - generate_static_live_mpd: Generate static MPD for DASH
-    |   (improves caching)
-    | - default_language: Default language for audio/subtitle tracks
-    |
-    */
-
-    'packager_options' => (array) env('PLAYLIST_PACKAGER_OPTIONS', [
-        'num_subsegments_per_sidx' => 0,
-        'fragment_sap_aligned' => true,
-        'mp4_include_pssh_in_stream' => true,
-        'generate_static_live_mpd' => true,
-        'default_language' => 'en',
-    ]),
-
 ];
