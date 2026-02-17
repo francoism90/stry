@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppNotifications from '@/components/Ui/AppNotifications.vue'
 import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { useAppearance } from '@/composables/appearance'
@@ -14,6 +15,7 @@ const { nonce } = useAppearance()
 
   <Suspense>
     <UApp :nonce="nonce">
+      <AppNotifications />
       <ServiceWorker />
 
       <UDashboardGroup

@@ -6,14 +6,11 @@ namespace App\Admin\Transcodes\Controllers;
 
 use App\Admin\Transcodes\Responses\TranscodeResourceProperty;
 use App\Api\Transcodes\Requests\TranscodeIndexRequest;
-use App\Api\Transcodes\Requests\TranscodeStoreRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\Scopes\TranscodeFilterScope;
-use Domain\Videos\Jobs\TranscodeVideo;
-use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
