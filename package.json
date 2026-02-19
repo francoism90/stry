@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
-        "@tailwindcss/vite": "^4.1.18",
+        "@tailwindcss/vite": "^4.2.0",
         "@tsconfig/node24": "^24.0.4",
         "@types/jsdom": "^27.0.0",
         "@types/node": "^25.2.3",
