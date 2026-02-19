@@ -28,7 +28,7 @@
         "laravel-precognition-vue-inertia": "^0.8.0",
         "pusher-js": "^8.4.0",
         "shaka-player": "^5.0.2",
-        "tailwindcss": "^4.1.18",
+        "tailwindcss": "^4.2.0",
         "vue": "^3.5.28"
     },
     "devDependencies": {
