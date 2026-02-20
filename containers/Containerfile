@@ -72,8 +72,10 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates libssl3 curl wget unzip zip git \
     nano openssh-client postgresql-common awscli python3 \
-    mesa-va-drivers mesa-vulkan-drivers intel-media-va-driver-non-free \
-    libva2 libva-drm2 libavif-bin jpegoptim optipng pngquant gifsicle \
+    mesa-va-drivers mesa-vulkan-drivers \
+    libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
+    intel-media-va-driver-non-free \
+    libavif-bin jpegoptim optipng pngquant gifsicle \
     && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
     && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
@@ -109,7 +111,7 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 
 # Create non-root user
 RUN groupadd -g ${GID} docker \
-    && useradd -u ${UID} -g docker -G video -d /home/docker -s /bin/bash -m docker
+    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
 RUN mkdir -p /app /config /data/{media,import} \

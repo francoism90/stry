@@ -9,6 +9,7 @@ AutoUpdate=local
 Environment=CONTAINER_ROLE=horizon
 ShmSize=256m
 UserNS=keep-id
+GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
 Volume=${MEDIA_PATH}:/data/media:rw,z
 Volume=${IMPORT_PATH}:/data/import:rw,z

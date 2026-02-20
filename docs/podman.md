@@ -38,10 +38,26 @@ This guide assumes a **rootless** Podman setup (recommended for security):
 > [!TIP]
 > Your distribution may have already configured rootless Podman for you.
 
+> [!NOTE]
+> To keep the containers running when the user logs out, ensure you have lingering enabled for your user:
+
+```bash
+sudo loginctl enable-linger $USER
+```
+
+#### GPU Acceleration
+
 If you are using rootless Podman and want GPU acceleration with SELinux enabled:
 
 ```bash
 sudo setsebool -P container_use_dri_devices 1
+```
+
+Make sure your user is in the `render` and `video` groups to access GPU devices:
+
+```bash
+sudo usermod -aG render,video $USER
+sudo reboot
 ```
 
 ---
@@ -89,11 +105,11 @@ vi ~/projects/stry/.env
 
 By default, hardware acceleration is supported via VAAPI (Intel), mesa (AMD), or NVENC (Nvidia) drivers. If you do **not** want to use hardware acceleration, you may opt out:
 
-- You do **not** need to install VAAPI, mesa, or NVENC drivers.
-- Remove or comment out the following line in your `podman-queue.container` (and any other relevant container files):
+- Remove or comment out the following line in your `stry-queue.container` (and any other relevant container files):
 
     ```podman
     AddDevice=/dev/dri/:/dev/dri/
+    GroupAdd=keep-groups
     ```
 
 This will prevent the container from accessing GPU devices for video encoding/decoding. Software encoding will be used instead.
