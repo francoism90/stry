@@ -21,6 +21,7 @@ const { nonce } = useAppearance()
       <UDashboardGroup
         unit="rem"
         storage="local"
+        storage-key="dashboard"
         class="relative w-full overflow-clip"
       >
         <DashboardSidebar />

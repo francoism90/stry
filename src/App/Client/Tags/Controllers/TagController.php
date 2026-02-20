@@ -37,7 +37,7 @@ class TagController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Tag::search($search)
             ->tap(new TagFilterScope(type: $type))
-            ->paginate(perPage: 24);
+            ->simplePaginate(perPage: 24);
 
         return Inertia::render('Client/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),

@@ -38,7 +38,7 @@ watchDebounced(
 <template>
   <Head title="Tags" />
 
-  <UDashboardPanel id="taggables">
+  <UDashboardPanel id="tagged">
     <template #header>
       <UDashboardNavbar
         :ui="{ root: 'gap-3 border-0', left: 'w-full' }"

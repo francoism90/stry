@@ -28,7 +28,7 @@ useEcho<Transcode>(`transcodes.${props.transcode.id}`, '.transcode.updated', () 
 <template>
   <Head :title="transcode.id" />
 
-  <UDashboardPanel id="transcode">
+  <UDashboardPanel id="transcode-resource">
     <template #header>
       <UDashboardNavbar :title="transcode.id">
         <template #leading>

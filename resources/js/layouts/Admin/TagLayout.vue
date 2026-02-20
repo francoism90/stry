@@ -34,7 +34,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
 <template>
   <Head :title="tag.name" />
 
-  <UDashboardPanel id="tag">
+  <UDashboardPanel id="tag-resource">
     <template #header>
       <UDashboardNavbar :title="tag.name">
         <template #leading>

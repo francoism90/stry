@@ -20,7 +20,7 @@ usePoll(30000, {
 <template>
   <Head title="Media" />
 
-  <UDashboardPanel id="transcodes">
+  <UDashboardPanel id="media">
     <template #header>
       <UDashboardNavbar title="Media">
         <template #leading>

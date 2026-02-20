@@ -50,7 +50,7 @@ watchDebounced(
 <template>
   <Head :title="filter.label" />
 
-  <UDashboardPanel id="library">
+  <UDashboardPanel id="feed">
     <template #header>
       <UDashboardNavbar
         :ui="{ root: 'gap-3 border-0', left: 'w-full' }"
@@ -141,10 +141,7 @@ watchDebounced(
         items-element="#video-list"
         :buffer="200"
       >
-        <VideoList
-          id="video-list"
-          :items="items?.data"
-        />
+        <VideoList :items="items?.data" />
       </InfiniteScroll>
     </template>
   </UDashboardPanel>

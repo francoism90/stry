@@ -21,6 +21,7 @@ const { nonce } = useAppearance()
       <UDashboardGroup
         unit="rem"
         storage="local"
+        storage-key="app"
         class="relative mx-auto w-full max-w-(--ui-container) overflow-clip"
       >
         <AppSidebar />

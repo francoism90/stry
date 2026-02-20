@@ -34,7 +34,7 @@ useEcho<Playlist>(`playlists.${props.playlist.id}`, '.playlist.updated', () => r
 <template>
   <Head :title="playlist.id" />
 
-  <UDashboardPanel id="playlist">
+  <UDashboardPanel id="playlist-resource">
     <template #header>
       <UDashboardNavbar :title="playlist.id">
         <template #leading>

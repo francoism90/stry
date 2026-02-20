@@ -34,7 +34,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 <template>
   <Head :title="user.name" />
 
-  <UDashboardPanel id="user">
+  <UDashboardPanel id="user-resource">
     <template #header>
       <UDashboardNavbar :title="user.name">
         <template #leading>

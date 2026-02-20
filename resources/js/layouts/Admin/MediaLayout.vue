@@ -26,7 +26,7 @@ useEcho<Media>(`medias.${props.media.id}`, '.media.updated', () => router.reload
 <template>
   <Head :title="media.id" />
 
-  <UDashboardPanel id="media">
+  <UDashboardPanel id="media-resource">
     <template #header>
       <UDashboardNavbar :title="media.id">
         <template #leading>

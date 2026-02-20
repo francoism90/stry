@@ -71,7 +71,7 @@ const recentActivity = ref<Activity[]>([
 <template>
   <Head title="Dashboard" />
 
-  <UDashboardPanel id="dashboard">
+  <UDashboardPanel id="dashboard-index">
     <template #header>
       <UDashboardNavbar title="Dashboard">
         <template #leading>

@@ -52,7 +52,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload
 <template>
   <Head :title="video.title" />
 
-  <UDashboardPanel id="video">
+  <UDashboardPanel id="video-resource">
     <template #header>
       <UDashboardNavbar :title="video.title">
         <template #leading>
