@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d433479d7753bf2220a52fb6f3a1466",
+    "content-hash": "98a2c57625c9dffe903c1c13b8dd76de",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -110,16 +110,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.35",
+            "version": "3.369.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0f3e296342fe965271b5dd0bded4a18bdab8aba5"
+                "reference": "6b39dcc5284fae1a1f7e5d4fd64878092a56594b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0f3e296342fe965271b5dd0bded4a18bdab8aba5",
-                "reference": "0f3e296342fe965271b5dd0bded4a18bdab8aba5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6b39dcc5284fae1a1f7e5d4fd64878092a56594b",
+                "reference": "6b39dcc5284fae1a1f7e5d4fd64878092a56594b",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.35"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.38"
             },
-            "time": "2026-02-16T19:15:41+00:00"
+            "time": "2026-02-19T19:06:55+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -7750,16 +7750,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "7.1.0",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "34bf23c9e541a5434e0898c7172fb6647d23889d"
+                "reference": "7d5ca47515fcba891cd18a769de0b6f0aa2555d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/34bf23c9e541a5434e0898c7172fb6647d23889d",
-                "reference": "34bf23c9e541a5434e0898c7172fb6647d23889d",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/7d5ca47515fcba891cd18a769de0b6f0aa2555d8",
+                "reference": "7d5ca47515fcba891cd18a769de0b6f0aa2555d8",
                 "shasum": ""
             },
             "require": {
@@ -7825,7 +7825,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/7.1.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/7.2.0"
             },
             "funding": [
                 {
@@ -7833,7 +7833,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-14T17:17:28+00:00"
+            "time": "2026-02-16T22:23:26+00:00"
         },
         {
             "name": "spatie/laravel-rate-limited-job-middleware",
@@ -12424,16 +12424,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.1.6",
+            "version": "v2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "b8923e6131e5b705da299891284d327562445618"
+                "reference": "a475ecb520c94357201c70039e984bce6c67c917"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/b8923e6131e5b705da299891284d327562445618",
-                "reference": "b8923e6131e5b705da299891284d327562445618",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/a475ecb520c94357201c70039e984bce6c67c917",
+                "reference": "a475ecb520c94357201c70039e984bce6c67c917",
                 "shasum": ""
             },
             "require": {
@@ -12486,7 +12486,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-02-16T23:53:14+00:00"
+            "time": "2026-02-20T08:12:25+00:00"
         },
         {
             "name": "laravel/envoy",
@@ -12553,16 +12553,16 @@
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.5.8",
+            "version": "v0.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "cf9b0ccaed2cec3c50595e3a21421c84a4ed99b3"
+                "reference": "39e8da60eb7bce4737c5d868d35a3fe78938c129"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/cf9b0ccaed2cec3c50595e3a21421c84a4ed99b3",
-                "reference": "cf9b0ccaed2cec3c50595e3a21421c84a4ed99b3",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/39e8da60eb7bce4737c5d868d35a3fe78938c129",
+                "reference": "39e8da60eb7bce4737c5d868d35a3fe78938c129",
                 "shasum": ""
             },
             "require": {
@@ -12622,7 +12622,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-02-16T18:48:41+00:00"
+            "time": "2026-02-17T19:05:53+00:00"
         },
         {
             "name": "laravel/pail",
