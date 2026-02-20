@@ -61,7 +61,7 @@ usePoll(30000, {
             <div class="flex items-center justify-between">
               <UUser
                 :name="item.file_name"
-                :description="`${item.file_size} • ${item.mime_type}`"
+                :description="`${item.file_size} • ${item.disk} • ${item.mime_type}`"
                 :avatar="{
                   alt: item.file_name,
                   class: 'rounded-sm size-14 me-1',

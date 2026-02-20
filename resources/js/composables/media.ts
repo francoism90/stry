@@ -6,11 +6,15 @@ export function useMedia() {
   const getVideoStream = (media: Media) => getStreams(media)?.find((stream) => stream.codec_type === 'video')
 
   const getStreamInfo = (media: Media) => {
+    const properties = [media.file_size, media.disk]
     const stream = getVideoStream(media)
 
-    if (!stream) return []
+    if (!stream) {
+      return properties
+    }
 
     return [
+      ...properties,
       stream.codec_name?.toUpperCase(),
       `${stream.width}×${stream.height}`,
       `${Math.round(Number(stream.bit_rate) / 1000)}kbps`,

@@ -40,7 +40,7 @@ const { getStreamInfo } = useMedia()
         <div class="flex items-center justify-between">
           <UUser
             :name="item.file_name"
-            :description="getStreamInfo(item).join(' • ') || item.mime_type"
+            :description="getStreamInfo(item).join(' • ')"
             :avatar="{
               alt: item.file_name,
               loading: 'lazy',
