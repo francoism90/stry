@@ -40,11 +40,16 @@ trait InteractsWithTranscodes
 
     public function hasTranscode(): bool
     {
-        return $this->transcodes()->active()->exists();
+        return $this
+            ->transcodes()
+            ->exists();
     }
 
     public function getTranscode(): ?Transcode
     {
-        return $this->transcodes()->active()->first();
+        return $this
+            ->transcodes()
+            ->active()
+            ->first();
     }
 }

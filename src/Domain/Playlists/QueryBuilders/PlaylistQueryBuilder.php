@@ -42,7 +42,7 @@ class PlaylistQueryBuilder extends Builder
             ->orWhere(fn ($query) => $query->failed());
     }
 
-    public function unexpired(): self
+    public function active(): self
     {
         return $this
             ->whereNot(fn ($query) => $query->expired())
