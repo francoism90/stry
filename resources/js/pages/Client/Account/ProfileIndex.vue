@@ -46,7 +46,6 @@ const onLogout = () => router.post(logout.url())
         >
           <div class="flex items-center gap-2 lg:ms-auto">
             <UButton
-              form="general"
               label="Save changes"
               type="submit"
               color="primary"
