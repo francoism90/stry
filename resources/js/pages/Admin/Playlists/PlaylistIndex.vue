@@ -3,7 +3,7 @@ import { edit } from '@/actions/App/Admin/Playlists/Controllers/PlaylistControll
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { PlaylistCollection } from '@/types'
-import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
@@ -14,11 +14,6 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: DashboardLayout })
-
-usePoll(30000, {
-  only: ['items'],
-  reset: ['items'],
-})
 
 const form = useForm('get', '', {
   type: props.type,

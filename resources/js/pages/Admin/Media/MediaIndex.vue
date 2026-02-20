@@ -3,18 +3,13 @@ import { edit } from '@/actions/App/Admin/Media/Controllers/MediaController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { MediaCollection } from '@/types'
-import { Head, InfiniteScroll, usePoll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 defineProps<{
   items: MediaCollection
 }>()
 
 defineOptions({ layout: DashboardLayout })
-
-usePoll(30000, {
-  only: ['items'],
-  reset: ['items'],
-})
 </script>
 
 <template>
