@@ -19,5 +19,5 @@ ExposeHostPort=5173
 EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
 Restart=always
 RestartSec=5
-TimeoutStartSec=300
+TimeoutStartSec=600
 TimeoutStopSec=30
