@@ -19,14 +19,9 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
   <InfiniteScroll
     data="items"
-    start-element="#video-playlist-header"
-    items-element="#video-playlist-list"
     :buffer="200"
   >
-    <UPageList
-      id="video-playlist-list"
-      divide
-    >
+    <UPageList divide>
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"

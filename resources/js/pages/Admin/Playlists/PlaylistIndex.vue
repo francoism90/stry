@@ -45,10 +45,7 @@ const onSubmit = () =>
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar
-        id="playlist-header"
-        class="min-h-16"
-      >
+      <UDashboardToolbar class="min-h-16">
         <template #right>
           <UFormField :error="form.errors.type">
             <USelect
@@ -68,14 +65,9 @@ const onSubmit = () =>
     <template #body>
       <InfiniteScroll
         data="items"
-        start-element="#playlist-header"
-        items-element="#playlist-list"
         :buffer="200"
       >
-        <UPageList
-          id="playlist-list"
-          divide
-        >
+        <UPageList divide>
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"

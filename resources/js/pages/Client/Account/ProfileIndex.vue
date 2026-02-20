@@ -34,7 +34,6 @@ const onLogout = () => router.post(logout.url())
 
     <template #body>
       <UForm
-        id="general"
         :state="form"
         class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
         loading-auto

@@ -67,7 +67,6 @@ watchDebounced(
       </UDashboardNavbar>
 
       <UDashboardToolbar
-        id="tag-header"
         :ui="{
           root: 'min-h-4 border-0',
           left: 'gap-3 *:inline-flex *:items-center',
@@ -99,14 +98,9 @@ watchDebounced(
       <UPage>
         <InfiniteScroll
           data="items"
-          start-element="#tag-header"
-          items-element="#tag-list"
           :buffer="200"
         >
-          <TagList
-            id="tag-list"
-            :items="items?.data"
-          />
+          <TagList :items="items?.data" />
         </InfiniteScroll>
       </UPage>
     </template>

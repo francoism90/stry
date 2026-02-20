@@ -34,23 +34,15 @@ usePoll(30000, {
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar
-        id="transcode-header"
-        class="min-h-16"
-      />
+      <UDashboardToolbar class="min-h-16" />
     </template>
 
     <template #body>
       <InfiniteScroll
         data="items"
-        start-element="#transcode-header"
-        items-element="#transcode-list"
         :buffer="200"
       >
-        <UPageList
-          id="transcode-list"
-          divide
-        >
+        <UPageList divide>
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"

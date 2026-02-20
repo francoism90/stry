@@ -22,14 +22,9 @@ const { getStreamInfo } = useMedia()
 
   <InfiniteScroll
     data="items"
-    start-element="#video-media-header"
-    items-element="#video-media-list"
     :buffer="200"
   >
-    <UPageList
-      id="video-media-list"
-      divide
-    >
+    <UPageList divide>
       <UPageCard
         v-for="item in items?.data"
         :key="item.id"

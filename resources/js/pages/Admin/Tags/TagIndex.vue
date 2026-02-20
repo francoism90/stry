@@ -64,10 +64,7 @@ watchDebounced(
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar
-        id="tag-header"
-        class="min-h-16"
-      >
+      <UDashboardToolbar class="min-h-16">
         <template #left>
           <UFormField :error="form.errors.search">
             <UInput
@@ -99,14 +96,9 @@ watchDebounced(
     <template #body>
       <InfiniteScroll
         data="items"
-        start-element="#tag-header"
-        items-element="#tag-list"
         :buffer="200"
       >
-        <UPageList
-          id="tag-list"
-          divide
-        >
+        <UPageList divide>
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"

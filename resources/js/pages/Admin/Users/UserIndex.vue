@@ -55,10 +55,7 @@ watchDebounced(
         </template>
       </UDashboardNavbar>
 
-      <UDashboardToolbar
-        id="user-header"
-        class="min-h-16"
-      >
+      <UDashboardToolbar class="min-h-16">
         <template #left>
           <UFormField :error="form.errors.search">
             <UInput
@@ -77,14 +74,9 @@ watchDebounced(
     <template #body>
       <InfiniteScroll
         data="items"
-        start-element="#user-header"
-        items-element="#user-list"
         :buffer="200"
       >
-        <UPageList
-          id="user-list"
-          divide
-        >
+        <UPageList divide>
           <UPageCard
             v-for="item in items?.data"
             :key="item.id"

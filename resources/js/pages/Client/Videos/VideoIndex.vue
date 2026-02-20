@@ -79,7 +79,6 @@ watchDebounced(
       </UDashboardNavbar>
 
       <UDashboardToolbar
-        id="video-header"
         :ui="{
           root: 'min-h-4 border-0',
           left: 'gap-3 *:inline-flex *:items-center',
@@ -137,8 +136,6 @@ watchDebounced(
     <template #body>
       <InfiniteScroll
         data="items"
-        start-element="#video-header"
-        items-element="#video-list"
         :buffer="200"
       >
         <VideoList :items="items?.data" />
