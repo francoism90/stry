@@ -49,7 +49,7 @@ return [
 
         'cache' => [
             'driver' => 'local',
-            'root' => env('FILESYSTEM_CACHE_PATH', '/storage/cache'),
+            'root' => '/storage/cache',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -57,7 +57,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => env('FILESYSTEM_MEDIA_PATH', '/storage/media'),
+            'root' => '/storage/media',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -65,7 +65,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => env('FILESYSTEM_IMPORT_PATH', '/storage/import'),
+            'root' => '/storage/import',
             'serve' => false,
             'throw' => true,
             'report' => true,
