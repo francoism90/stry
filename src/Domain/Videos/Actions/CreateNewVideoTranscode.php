@@ -28,8 +28,7 @@ class CreateNewVideoTranscode
         ]);
 
         // Initialize the encoder
-        $encoder = AbAv1::fromDisk($clip->disk)
-            ->open($clip->getPathRelativeToRoot());
+        $encoder = AbAv1::fromDisk($clip->disk)->open($clip->getPathRelativeToRoot());
 
         try {
             // Mark the transcode as processing

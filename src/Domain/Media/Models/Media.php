@@ -6,6 +6,7 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -30,13 +31,6 @@ class Media extends BaseMedia
         'generated_conversions',
         'responsive_images',
         'order_column',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $with = [
-        'model',
     ];
 
     protected function casts(): array
@@ -67,5 +61,20 @@ class Media extends BaseMedia
     public static function totalUsage(): string
     {
         return Number::fileSize(Media::query()->totalSize());
+    }
+
+    public function getStreams(): array
+    {
+        return $this->getCustomProperty('streams', []);
+    }
+
+    public function hasVideoStream(): bool
+    {
+        return Collection::make($this->getStreams())->contains('codec_type', 'video');
+    }
+
+    public function hasAudioStream(): bool
+    {
+        return Collection::make($this->getStreams())->contains('codec_type', 'audio');
     }
 }

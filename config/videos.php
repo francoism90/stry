@@ -15,7 +15,7 @@ return [
 
     'import_disk' => (string) env('VIDEO_IMPORT_DISK', 'import'),
 
-    'import_batch_size' => (int) env('VIDEO_IMPORT_BATCH_SIZE', 20),
+    'import_batch_size' => (int) env('VIDEO_IMPORT_BATCH_SIZE', 10),
 
     'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'cache'),
 

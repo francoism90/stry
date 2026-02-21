@@ -161,7 +161,7 @@ return [
     |
     */
 
-    'fast_termination' => false,
+    'fast_termination' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -202,12 +202,12 @@ return [
             'memory' => 128,
             'tries' => 3,
             'timeout' => 300,
-            'nice' => 1,
+            'nice' => 0,
         ],
 
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['broadcasts'],
+            'queue' => ['assets'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => 1,
@@ -216,10 +216,10 @@ return [
             'balanceCooldown' => 3,
             'maxTime' => 3600,
             'maxJobs' => 200,
-            'memory' => 128,
+            'memory' => 256,
             'tries' => 3,
-            'timeout' => 180,
-            'nice' => 0,
+            'timeout' => 600,
+            'nice' => 15,
         ],
 
         'supervisor-3' => [
@@ -228,9 +228,9 @@ return [
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
             'minProcesses' => 1,
-            'maxProcesses' => 10,
+            'maxProcesses' => 5,
             'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
+            'balanceCooldown' => 10,
             'maxTime' => 14400,
             'maxJobs' => 50,
             'memory' => 2048,

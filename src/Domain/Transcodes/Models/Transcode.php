@@ -132,11 +132,6 @@ class Transcode extends Model
         return ['id' => $this->getRouteKey()];
     }
 
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
-    }
-
     public function getRouteKeyName(): string
     {
         return 'ulid';
