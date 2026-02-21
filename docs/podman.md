@@ -136,7 +136,7 @@ If using SELinux, configure the proper permissions. Use:
 Example:
 
 ```ini
-Volume=${MEDIA_PATH}:/data/media:rw,z,U
+Volume=${MEDIA_PATH}:/storage/media:rw,z,U
 ```
 
 ### Environment Variables (`app.env`)

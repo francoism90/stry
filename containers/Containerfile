@@ -114,8 +114,8 @@ RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
-RUN mkdir -p /app /config /data/{media,import} \
-    && chown -R docker:docker /app /data /config
+RUN mkdir -p /app /config /data /storage/{media,import} \
+    && chown -R docker:docker /app /config /data /storage
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \

@@ -58,7 +58,7 @@ Add this line to each container file:
 
 ```diff
 +Volume=${APP_PATH}:/app:rw,z,U
-Volume=${MEDIA_PATH}:/data/media:rw,z,U
+Volume=${MEDIA_PATH}:/storage/media:rw,z,U
 ```
 
 > [!IMPORTANT]

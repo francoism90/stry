@@ -11,8 +11,8 @@ ShmSize=256m
 UserNS=keep-id
 GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
-Volume=${MEDIA_PATH}:/data/media:rw,z
-Volume=${IMPORT_PATH}:/data/import:rw,z
+Volume=${MEDIA_PATH}:/storage/media:rw,z
+Volume=${IMPORT_PATH}:/storage/import:rw,z
 Network=stry.network
 
 [Service]
