@@ -173,11 +173,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return ['id' => $this->getRouteKey()];
     }
 
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
-    }
-
     public function broadcastAfterCommit(): bool
     {
         return true;

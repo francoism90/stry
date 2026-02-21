@@ -10,7 +10,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
 - php - 8.5.2
-- inertiajs/inertia-laravel (INERTIA) - v2
+- inertiajs/inertia-laravel (INERTIA_LARAVEL) - v2
 - laravel/fortify (FORTIFY) - v1
 - laravel/framework (LARAVEL) - v12
 - laravel/horizon (HORIZON) - v5
@@ -29,11 +29,11 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/telescope (TELESCOPE) - v5
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
-- @inertiajs/vue3 (INERTIA) - v2
+- @inertiajs/vue3 (INERTIA_VUE) - v2
 - laravel-echo (ECHO) - v2
 - tailwindcss (TAILWINDCSS) - v4
 - vue (VUE) - v3
-- @laravel/vite-plugin-wayfinder (WAYFINDER) - v0
+- @laravel/vite-plugin-wayfinder (WAYFINDER_VITE) - v0
 - eslint (ESLINT) - v10
 - prettier (PRETTIER) - v3
 
@@ -161,7 +161,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
 
-=== inertia-laravel/core rules ===
+=== inertia-laravel/v2 rules ===
 
 # Inertia
 
@@ -169,8 +169,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Components live in `resources/js/pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
 - IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
-
-=== inertia-laravel/v2 rules ===
 
 # Inertia v2
 

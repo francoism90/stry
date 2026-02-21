@@ -55,19 +55,16 @@ class CreateNewVideoStream
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
-            // Detect available streams using FFMpeg
-            $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
-
             // Use TS segments for SAMPLE-AES encryption (protection_scheme = null)
             // Use m4s segments for CENC/CBCS encryption (protection_scheme = 'cenc'/'cbcs')
             $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
 
             // Add streams only if they exist
-            if ($ffprobe->getVideoStream()) {
+            if ($media->hasVideoStream()) {
                 $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
             }
 
-            if ($ffprobe->getAudioStream()) {
+            if ($media->hasAudioStream()) {
                 $streamer->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
