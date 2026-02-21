@@ -4,11 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Importing Videos
+    | Disk Configuration
     |--------------------------------------------------------------------------
     |
-    | This value determines the disk used when importing videos.
-    | The disk should be configured in the filesystems configuration.
+    | The following options control which disks are used for video import and
+    | transcoding operations. You can specify any disk defined in your
+    | `filesystems.php` configuration file, or add new disks as needed.
     |
     */
 
@@ -16,44 +17,19 @@ return [
 
     'import_batch_size' => (int) env('VIDEO_IMPORT_BATCH_SIZE', 20),
 
+    'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'cache'),
+
     /*
     |--------------------------------------------------------------------------
-    | Playlist Creation
+    | Playlist Configuration
     |--------------------------------------------------------------------------
     |
-    | This value determines whether a playlist should be automatically
-    | created for each video. If true, playlists are created immediately,
-    | allowing instant playback but requiring more processing and storage.
+    | The following options control playlist creation and completion thresholds.
     |
     */
 
     'create_playlist' => (bool) env('VIDEO_CREATE_PLAYLIST', false),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Completion Threshold
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the percentage of a video that must be
-    | watched before it is considered fully watched. Used to determine
-    | when to reset progress to 0.
-    |
-    */
-
     'completion_threshold' => (float) env('VIDEO_COMPLETION_THRESHOLD', 0.95),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Transcode Settings
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the disk used for storing transcoded videos.
-    | The disk should be configured in the filesystems configuration.
-    | Additional settings for transcoding, such as hardware acceleration,
-    | CRF, and preset, can also be configured here.
-    |
-    */
-
-    'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'transcodes'),
 
 ];

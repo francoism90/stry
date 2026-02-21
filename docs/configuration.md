@@ -68,9 +68,6 @@ VIDEO_CREATE_PLAYLIST=false
 
 # Percentage of video watched before marking as complete (0.0-1.0)
 VIDEO_COMPLETION_THRESHOLD=0.95
-
-# Disk where transcoded videos are stored
-VIDEO_TRANSCODE_DISK=transcodes
 ```
 
 ### Shaka Packager

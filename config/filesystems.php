@@ -47,9 +47,9 @@ return [
             'report' => true,
         ],
 
-        'transcodes' => [
+        'cache' => [
             'driver' => 'local',
-            'root' => storage_path('app/transcodes'),
+            'root' => env('FILESYSTEM_CACHE_PATH', '/storage/cache'),
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -57,7 +57,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => '/storage/media',
+            'root' => env('FILESYSTEM_MEDIA_PATH', '/storage/media'),
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -65,7 +65,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => '/storage/import',
+            'root' => env('FILESYSTEM_IMPORT_PATH', '/storage/import'),
             'serve' => false,
             'throw' => true,
             'report' => true,

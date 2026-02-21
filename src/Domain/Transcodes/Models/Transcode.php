@@ -234,7 +234,7 @@ class Transcode extends Model
 
     public static function getDestinationDisk(): string
     {
-        return Config::string('videos.transcode_disk', 'transcodes');
+        return Config::string('videos.transcode_disk', 'cache');
     }
 
     protected function humanFileSize(): Attribute

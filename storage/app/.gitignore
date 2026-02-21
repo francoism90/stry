@@ -1,10 +1,10 @@
 *
 !private/
 !public/
-!import/
+!cache/
 !media/
+!import/
 !ab-av1/
 !packager/
 !streamer/
-!transcodes/
 !.gitignore

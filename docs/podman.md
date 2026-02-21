@@ -121,8 +121,18 @@ This will prevent the container from accessing GPU devices for video encoding/de
 
 Create the required data directories as defined in `app.env`:
 
+**Single Disk (using `STORAGE_PATH`):**
+
 ```bash
-mkdir -p /home/user/data/stry/{media,import}
+mkdir -p /home/user/data/stry/{media,cache,import}
+# Then set STORAGE_PATH=/home/user/data/stry
+```
+
+**Multiple Disks (individual paths):**
+
+```bash
+mkdir -p /mnt/disk1/media /mnt/disk2/cache /mnt/disk3/import
+# Then set MEDIA_PATH, CACHE_PATH, and IMPORT_PATH separately
 ```
 
 ### SELinux & Volume Flags (if applicable)
@@ -146,10 +156,22 @@ Volume=${MEDIA_PATH}:/storage/media:rw,z,U
 | `UID`, `GID`    | Mapped user/group IDs for rootless container processes    |
 | `CONTAINER_ENV` | Application environment (e.g. production)                 |
 | `APP_PATH`      | Host path of source checkout (bind if enabling live code) |
+| `STORAGE_PATH`  | Base host data directory (used if individual paths unset) |
 | `MEDIA_PATH`    | Host data directory containing media subfolders           |
+| `CACHE_PATH`    | Host data directory for cache storage                     |
 | `IMPORT_PATH`   | Host data directory containing files to be imported       |
 
-Ensure both paths exist and are owned by the matching UID/GID:
+**Storage Path Strategy:**
+
+You can use either approach:
+
+- **Single Disk**: Set `STORAGE_PATH` and omit individual paths—media, cache, and import will use subdirectories under `STORAGE_PATH`
+- **Multiple Disks**: Define `MEDIA_PATH`, `CACHE_PATH`, and `IMPORT_PATH` individually to use different storage locations per container
+
+> > [!IMPORTANT]
+> > **For Multiple Disks:** If using individual paths, you must also update your `.container` files to replace `${STORAGE_PATH}` with the individual variables (e.g., `${MEDIA_PATH}`, `${CACHE_PATH}`, `${IMPORT_PATH}`) in the `Volume=` directives. For example, change `Volume=${STORAGE_PATH}/media:/storage/media:rw,z,U` to `Volume=${MEDIA_PATH}:/storage/media:rw,z,U`.
+
+Ensure paths exist and are owned by the matching UID/GID:
 
 ```bash
 chown -R 1000:1000 /home/user/projects/stry /home/user/data/stry

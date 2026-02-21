@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
+use Domain\Transcodes\Models\Transcode;
 use Exception;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
@@ -33,7 +34,7 @@ class ExtractMediaCaptions
                 try {
                     $ffmpeg
                         ->export()
-                        ->toDisk('transcodes')
+                        ->toDisk(Transcode::getDestinationDisk())
                         ->inFormat(new WebVTT)
                         ->addFilter(['-map', "0:{$index}"])
                         ->save($path);
