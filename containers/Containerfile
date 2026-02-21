@@ -99,10 +99,11 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
-RUN install-php-extensions @composer apcu bcmath exif \
-    gd igbinary imagick inotify intl memcached msgpack \
-    opcache pcntl pdo_mysql pdo_pgsql pgsql redis \
-    sockets uv zip
+# Install PHP extensions
+run install-php-extensions @composer \
+    apcu bcmath ctype curl dom exif ffi fileinfo filter gd \
+    igbinary imagick inotify intl mbstring opcache pcntl \
+    pdo_pgsql redis sockets tokenizer uv xml zip
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
