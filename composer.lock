@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f1100aa8f2c088b6cac07fe5983f6ed",
+    "content-hash": "77d425808efd2ac509240a7abb7ad555",
     "packages": [
         {
             "name": "artisansdk/ratelimiter",
@@ -1316,16 +1316,16 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "51dbcb60d12308fcdf4c84836895aab853ac3e9f"
+                "reference": "8a61480373d841b3878dd13894de257586ba056c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/51dbcb60d12308fcdf4c84836895aab853ac3e9f",
-                "reference": "51dbcb60d12308fcdf4c84836895aab853ac3e9f",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/8a61480373d841b3878dd13894de257586ba056c",
+                "reference": "8a61480373d841b3878dd13894de257586ba056c",
                 "shasum": ""
             },
             "require": {
@@ -1392,7 +1392,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/1.3.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/1.4.0"
             },
             "funding": [
                 {
@@ -1400,20 +1400,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-21T20:08:56+00:00"
+            "time": "2026-02-21T22:38:31+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "86e86ec2091ec43365c74ff966b6c57aa7cb28e4"
+                "reference": "4c8110de666ee94c94d2118e54d39bf6ec91ab63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/86e86ec2091ec43365c74ff966b6c57aa7cb28e4",
-                "reference": "86e86ec2091ec43365c74ff966b6c57aa7cb28e4",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/4c8110de666ee94c94d2118e54d39bf6ec91ab63",
+                "reference": "4c8110de666ee94c94d2118e54d39bf6ec91ab63",
                 "shasum": ""
             },
             "require": {
@@ -1480,7 +1480,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/0.4.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/0.5.0"
             },
             "funding": [
                 {
@@ -1488,7 +1488,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-21T20:26:52+00:00"
+            "time": "2026-02-21T22:39:56+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -7048,28 +7048,28 @@
         },
         {
             "name": "spatie/eloquent-sortable",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/eloquent-sortable.git",
-                "reference": "354f531d9ab00537e2bc3ad89cd83be846b29817"
+                "reference": "caf2596e5df0260d0e2863e89b750611eef2fc59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/354f531d9ab00537e2bc3ad89cd83be846b29817",
-                "reference": "354f531d9ab00537e2bc3ad89cd83be846b29817",
+                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/caf2596e5df0260d0e2863e89b750611eef2fc59",
+                "reference": "caf2596e5df0260d0e2863e89b750611eef2fc59",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^10.0|^11.0|^12.0",
-                "illuminate/support": "^10.0|^11.0|^12.0",
+                "illuminate/database": "^10.0|^11.0|^12.0|^13.0",
+                "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
                 "nesbot/carbon": "^2.63|^3.0",
                 "php": "^8.2",
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "orchestra/testbench": "^8.0|^9.6|^10.0",
-                "phpunit/phpunit": "^10.0|^11.5.3"
+                "orchestra/testbench": "^8.0|^9.6|^10.0|^11.0",
+                "phpunit/phpunit": "^10.0|^11.5.3|^12.0"
             },
             "type": "library",
             "extra": {
@@ -7106,7 +7106,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/eloquent-sortable/issues",
-                "source": "https://github.com/spatie/eloquent-sortable/tree/5.0.0"
+                "source": "https://github.com/spatie/eloquent-sortable/tree/5.0.1"
             },
             "funding": [
                 {
@@ -7118,7 +7118,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-12T10:06:29+00:00"
+            "time": "2026-02-21T21:26:43+00:00"
         },
         {
             "name": "spatie/image",
