@@ -1,6 +1,6 @@
 # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/
 
-replication_factor = 1
+replication_factor = 1 # Consider replication for production
 consistency_mode = "consistent"
 
 metadata_dir = "/var/lib/garage/meta"
@@ -16,12 +16,12 @@ db_engine = "lmdb"
 
 block_size = "1M"
 block_ram_buffer_max = "1GiB" # Consider 1-2GiB for heavy load
-block_max_concurrent_reads = 64 # Increase to 64+ for concurrent requests
-block_max_concurrent_writes_per_request = 20 # Boost to 20-30 for heavy load
+block_max_concurrent_reads = 48 # Boost to 64-128 for concurrent requests
+block_max_concurrent_writes_per_request = 20 # Set to 32-64 for heavy load
 
 lmdb_map_size = "1T"
 
-compression_level = 3
+compression_level = "none" # Data is mostly compressed, set to 1 if you also store uncompressed files
 
 rpc_bind_addr = "[::]:3901"
 rpc_public_addr = "127.0.0.1:3901"
