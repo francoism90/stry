@@ -17,35 +17,18 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
   const ticker = ref<number>(startTime.value ?? 0)
 
   const initialize = async () => {
-    // Load manifest
-    const manifestUri = playlist.value?.asset
-
-    // Ensure we have a video element and manifest URI
-    if (!el.value || !manifestUri) return
-
-    // Build configuration
-    const config: Partial<shaka.extern.PlayerConfiguration> = {}
-
-    // Get encryption keys (if any)
-    const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
-    const keyContent = playlist.value?.encryption_key?.toLowerCase() ?? ''
-
-    // Configure DRM with clear keys
-    if (keyId && keyContent) {
-      config.drm = {
-        clearKeys: {
-          [keyId]: keyContent,
-        },
-      } as shaka.extern.DrmConfiguration
+    // If a player instance already exists, destroy it before re-initializing
+    if (player.value) {
+      await destroy()
     }
+
+    // Ensure video element is available before creating player
+    if (!el.value) return
 
     // Create new Shaka Player
     player.value = new shaka.Player()
 
-    // Apply configuration
-    player.value.configure(config)
-
-    // Add error listener
+    // Add error event listener
     player.value.addEventListener('error', onErrorEvent)
 
     // Attach player to video element
@@ -54,36 +37,72 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Add timeupdate listener
     el.value.addEventListener('timeupdate', onTimeUpdate)
 
-    // Get playlist state
-    const isExpired = playlist.value?.expired
-    const isFailed = playlist.value?.failed
-    const isValid = playlist.value?.valid
+    // Load the manifest and start playback
+    await load()
+  }
 
-    // Set error state if expired or failed
-    if (isFailed) {
+  const load = async () => {
+    // Reset error state before evaluating new playlist
+    error.value = null
+
+    // On failed set critical error state
+    if (playlist.value?.failed) {
       error.value = new shaka.util.Error(
         shaka.util.Error.Severity.CRITICAL,
         shaka.util.Error.Category.MANIFEST,
         shaka.util.Error.Code.MEDIA_SOURCE_OPERATION_FAILED,
       )
+
+      return
     }
 
-    if (isExpired) {
+    // On expired set critical error state
+    if (playlist.value?.expired) {
       error.value = new shaka.util.Error(
         shaka.util.Error.Severity.CRITICAL,
         shaka.util.Error.Category.MANIFEST,
         shaka.util.Error.Code.EXPIRED,
       )
+
+      return
+    }
+
+    // Get manifest URI from playlist asset
+    const manifestUri = playlist.value?.asset ?? null
+
+    // Ensure manifest URI and video element are available before attempting to load
+    if (!manifestUri || !el.value) return
+
+    // If player instance doesn't exist, initialize it first (will call load again on completion)
+    if (!player.value) {
+      await initialize()
+      return
     }
 
     // Only attempt to load if playlist is valid (not expired or failed)
-    if (isValid) {
+    if (playlist.value?.valid) {
+      // Build configuration
+      const config: Partial<shaka.extern.PlayerConfiguration> = {}
+
+      // Configure DRM with clear keys (if available)
+      const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
+      const keyContent = playlist.value?.encryption_key?.toLowerCase() ?? ''
+
+      if (keyId && keyContent) {
+        config.drm = {
+          clearKeys: {
+            [keyId]: keyContent,
+          },
+        } as shaka.extern.DrmConfiguration
+      }
+
+      // Attempt to load manifest and start playback
       try {
+        // Apply configuration to player
+        player.value.configure(config)
+
         // Load the manifest with optional start time
         await player.value.load(manifestUri, startTime.value ?? 0)
-
-        // Set ready state
-        ready.value = true
 
         // Enable the first available subtitle track by default (if any)
         const textTracks = player.value.getTextTracks()
@@ -91,6 +110,9 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
         if (textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
+
+        // Set ready state
+        ready.value = true
       } catch {
         // Handled by error event listener
         // Reset ready state on load failure
@@ -116,8 +138,8 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Round to 2 decimal places and ensure valid number
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
-    // Only store if playlist exists and time has changed (> 0.25 seconds)
-    if (playlist.value && Math.abs((ticker.value ?? 0) - time) > 0.25) {
+    // Only store if playlist valid and time has changed (> 0.25 seconds)
+    if (playlist.value?.valid && Math.abs((ticker.value ?? 0) - time) > 0.25) {
       http.post(PlaylistSessionController.url(playlist.value.id), { time }).then(() => {
         ticker.value = time
       })
@@ -146,14 +168,9 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
 
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
-  watch(
-    [el, playlist],
-    async () => {
-      await destroy()
-      await initialize()
-    },
-    { deep: true },
-  )
+
+  watch(el, () => initialize(), { immediate: true })
+  watch(playlist, () => load(), { deep: true })
 
   return {
     player,
