@@ -9,14 +9,14 @@ use Domain\Videos\DataObjects\VideoFileData;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
+class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -33,6 +33,11 @@ class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
      * @var int
      */
     public $timeout = 14400;
+
+    /**
+     * @var int
+     */
+    public $uniqueFor = 90;
 
     /**
      * @var int
