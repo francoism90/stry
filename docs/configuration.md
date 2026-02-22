@@ -76,7 +76,7 @@ VIDEO_COMPLETION_THRESHOLD=0.95
 # Segment duration for HLS/DASH segments (in seconds)
 PACKAGER_SEGMENT_DURATION=10
 
-# Number of concurrent workers for the HLS packager. Default: 10
+# Number of concurrent write workers for s3. Default: 10
 PACKAGER_CONCURRENCY_WORKERS=16
 ```
 
@@ -95,7 +95,7 @@ STREAMER_RESOLUTIONS=1080p,720p,480p
 # Segment duration for streaming (in seconds)
 STREAMER_SEGMENT_DURATION=10
 
-# Number of concurrent workers for the video streamer. Default: 10
+# Number of concurrent write workers for s3. Default: 10
 STREAMER_CONCURRENCY_WORKERS=16
 ```
 
