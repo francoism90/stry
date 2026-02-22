@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Storage;
 
 class FetchImportableVideos
 {
-    public function handle(?string $disk = null): Collection
+    public function handle(string $disk): Collection
     {
         // Get a filesystem instance for the specified disk
-        $filesystem = Storage::disk($disk ?? Video::getImportDisk());
+        $filesystem = Storage::disk($disk);
 
         return Collection::make($filesystem->allFiles())
             ->take(Video::getImportBatchSize())

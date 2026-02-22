@@ -8,8 +8,10 @@ use Domain\Users\Models\User;
 use Domain\Videos\Actions\FetchImportableVideos;
 use Domain\Videos\DataObjects\VideoFileData;
 use Domain\Videos\Jobs\CreateVideo;
+use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 
@@ -37,7 +39,7 @@ class ImportCommand extends Command implements Isolatable
         $files = spin(
             message: 'Retrieving files...',
             callback: fn () => app(FetchImportableVideos::class)->handle(
-                $this->option('disk')
+                $this->option('disk') ?: Video::getImportDisk()
             ),
         );
 
@@ -49,7 +51,7 @@ class ImportCommand extends Command implements Isolatable
 
         table(
             headers: ['Filename', 'Filesize'],
-            rows: $files->map(fn (VideoFileData $file) => [
+            rows: Collection::make($files)->map(fn (VideoFileData $file) => [
                 Str::limit($file->name, 50),
                 Number::fileSize($file->size),
             ])->all(),

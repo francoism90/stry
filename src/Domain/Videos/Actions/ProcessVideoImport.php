@@ -7,12 +7,11 @@ namespace Domain\Videos\Actions;
 use Domain\Users\Models\User;
 use Domain\Videos\DataObjects\VideoFileData;
 use Domain\Videos\Jobs\CreateVideo;
-use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Bus;
 
 class ProcessVideoImport
 {
-    public function handle(User $user, ?string $disk = null): void
+    public function handle(User $user, string $disk): void
     {
         // Fetch the collection of video files from the specified disk
         $files = app(FetchImportableVideos::class)->handle($disk);
