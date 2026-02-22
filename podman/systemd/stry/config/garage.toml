@@ -16,8 +16,8 @@ db_engine = "lmdb"
 
 block_size = "1M"
 block_ram_buffer_max = "1GiB" # Consider 1-2GiB for heavy load
-block_max_concurrent_reads = 48 # Boost to 64-128 for concurrent requests
-block_max_concurrent_writes_per_request = 20 # Set to 32-64 for heavy load
+block_max_concurrent_reads = 32 # Boost to 64+ for concurrent requests
+block_max_concurrent_writes_per_request = 8 # Set to 20+ for heavy load
 
 lmdb_map_size = "1T"
 
