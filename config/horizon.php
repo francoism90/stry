@@ -219,7 +219,7 @@ return [
             'memory' => 256,
             'tries' => 3,
             'timeout' => 600,
-            'nice' => 15,
+            'nice' => 12,
         ],
 
         'supervisor-3' => [
@@ -228,7 +228,7 @@ return [
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
             'minProcesses' => 1,
-            'maxProcesses' => 5,
+            'maxProcesses' => 10,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 10,
             'maxTime' => 14400,
@@ -236,7 +236,7 @@ return [
             'memory' => 2048,
             'tries' => 1,
             'timeout' => 14400,
-            'nice' => 3,
+            'nice' => 1,
         ],
     ],
 
