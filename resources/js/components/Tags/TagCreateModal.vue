@@ -7,15 +7,13 @@ defineProps<{
   types: SelectMenuItem[] | undefined
 }>()
 
-const isOpen = defineModel<boolean>({ default: false })
-
 const form = useForm('post', store.url(), {
   name: '',
   type: null,
   description: null,
 })
 
-const create = async (close: () => void) => {
+const create = async (close: () => void) =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => {
@@ -23,21 +21,21 @@ const create = async (close: () => void) => {
       close()
     },
   })
-}
 </script>
 
 <template>
   <UModal
-    v-model="isOpen"
     title="Create Tag"
     :ui="{ footer: 'justify-end' }"
   >
-    <UButton
-      label="Create tag"
-      color="primary"
-      variant="soft"
-      icon="i-lucide-plus"
-    />
+    <slot>
+      <UButton
+        label="Create tag"
+        color="primary"
+        variant="soft"
+        icon="i-lucide-plus"
+      />
+    </slot>
 
     <template #body>
       <UForm

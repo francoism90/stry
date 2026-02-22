@@ -36,6 +36,11 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
+    public $uniqueFor = 90;
+
+    /**
+     * @var int
+     */
     public $maxExceptions = 1;
 
     /**
@@ -65,12 +70,12 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
+            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
         ];
     }
 
     public function uniqueId(): string
     {
-        return hash('xxh128', "playlist:{$this->video->getKey()}");
+        return (string) $this->video->getKey();
     }
 }

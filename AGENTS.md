@@ -9,7 +9,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.5.3
+- php - 8.5.2
 - inertiajs/inertia-laravel (INERTIA_LARAVEL) - v2
 - laravel/fortify (FORTIFY) - v1
 - laravel/framework (LARAVEL) - v12
@@ -135,7 +135,6 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Use appropriate PHP type hints for method parameters.
 
 <!-- Explicit Return Types and Method Params -->
-
 ```php
 protected function isAccessible(User $user, ?string $path = null): bool
 {
@@ -291,7 +290,6 @@ Wayfinder generates TypeScript functions for Laravel routes. Import from `@/acti
 # Inertia + Vue
 
 Vue components must have a single root element.
-
 - IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 === tailwindcss/core rules ===

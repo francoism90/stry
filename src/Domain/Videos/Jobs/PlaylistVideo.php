@@ -19,6 +19,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
+use function Illuminate\Support\enum_value;
+
 class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 {
     use Batchable;
@@ -35,7 +37,12 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 3600;
+    public $timeout = 14400;
+
+    /**
+     * @var int
+     */
+    public $uniqueFor = 90;
 
     /**
      * @var int
@@ -78,12 +85,14 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
+            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
         ];
     }
 
     public function uniqueId(): string
     {
-        return hash('xxh128', "playlist:{$this->video->getKey()}");
+        $type = enum_value($this->type, 'default');
+
+        return "{$this->video->getKey()}:{$type}";
     }
 }

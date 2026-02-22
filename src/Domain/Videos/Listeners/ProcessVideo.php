@@ -6,14 +6,12 @@ namespace Domain\Videos\Listeners;
 
 use Domain\Videos\Actions\ExtractVideoCaptions;
 use Domain\Videos\Actions\MarkVideoAsVerified;
-use Domain\Videos\Actions\ProcessVideoPlaylist;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Pipeline;
-use Spatie\RateLimitedMiddleware\RateLimited;
 
 class ProcessVideo implements ShouldQueueAfterCommit
 {
@@ -37,7 +35,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 30;
+    public $timeout = 1800;
 
     /**
      * @var bool
@@ -56,7 +54,6 @@ class ProcessVideo implements ShouldQueueAfterCommit
             ->through([
                 ExtractVideoCaptions::class,
                 MarkVideoAsVerified::class,
-                ProcessVideoPlaylist::class,
             ])
             ->thenReturn();
     }
@@ -67,7 +64,6 @@ class ProcessVideo implements ShouldQueueAfterCommit
     public function middleware(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): array
     {
         return [
-            (new RateLimited)->allow(30)->everySeconds(60)->releaseAfterRandomSeconds(10),
             (new WithoutOverlapping($event->video->getKey()))->releaseAfter(10),
         ];
     }

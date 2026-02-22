@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Jobs;
 
 use Domain\Videos\Actions\ImportVideoFile;
+use Domain\Videos\DataObjects\VideoFileData;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -31,7 +32,12 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 60 * 4;
+    public $timeout = 14400;
+
+    /**
+     * @var int
+     */
+    public $uniqueFor = 90;
 
     /**
      * @var int
@@ -50,15 +56,17 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function __construct(
         public Video $video,
-        public string $disk,
-        public string $path,
+        public VideoFileData $file,
     ) {
         $this->onQueue('processing');
     }
 
     public function handle(): void
     {
-        app(ImportVideoFile::class)->handle($this->video, $this->disk, $this->path);
+        app(ImportVideoFile::class)->handle(
+            $this->video,
+            $this->file
+        );
     }
 
     /**
@@ -73,6 +81,6 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function uniqueId(): string
     {
-        return hash('xxh128', implode(':', [$this->disk, $this->path]));
+        return (string) "{$this->file->disk}:{$this->file->path}";
     }
 }

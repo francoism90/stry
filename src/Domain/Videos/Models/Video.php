@@ -274,7 +274,7 @@ class Video extends Model implements HasMedia
 
     public static function shouldCreatePlaylist(): bool
     {
-        return Config::boolean('videos.create_playlist', false);
+        return Config::boolean('videos.create_playlists', false);
     }
 
     public static function getCompletionThreshold(): float

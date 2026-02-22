@@ -7,7 +7,7 @@ const props = defineProps<{
   item: Transcode
 }>()
 
-const submit = async (close: () => void) =>
+const handle = async (close: () => void) =>
   router.post(
     TranscodeImportController.url(props.item.id),
     {},
@@ -52,7 +52,7 @@ const submit = async (close: () => void) =>
         variant="soft"
         color="error"
         loading-auto
-        @click.prevent="() => submit(close)"
+        @click.prevent="handle(close)"
       />
     </template>
   </UModal>

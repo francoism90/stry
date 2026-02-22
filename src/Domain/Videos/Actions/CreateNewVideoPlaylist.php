@@ -9,7 +9,6 @@ use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
 class CreateNewVideoPlaylist
@@ -73,8 +72,7 @@ class CreateNewVideoPlaylist
         ]);
 
         // Configure DASH playlist settings
-        $packager
-            ->withMpdOutput($playlist->getFileName());
+        $packager->withMpdOutput($playlist->getFileName());
 
         // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {

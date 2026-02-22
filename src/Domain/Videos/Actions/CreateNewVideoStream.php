@@ -10,7 +10,6 @@ use Domain\Playlists\Exceptions\PlaylistExportException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
 class CreateNewVideoStream
