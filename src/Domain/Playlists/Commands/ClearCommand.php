@@ -18,7 +18,7 @@ class ClearCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'playlists:clear';
+    protected $signature = 'playlists:clear {--failed : Only delete playlists with a failed state}';
 
     /**
      * @var string
@@ -27,13 +27,15 @@ class ClearCommand extends Command implements Isolatable
 
     public function handle(): void
     {
+        $onlyFailed = $this->option('failed');
+
         $playlists = spin(
             message: 'Retrieving playlists...',
-            callback: fn () => Playlist::lazy(),
+            callback: fn () => Playlist::query()->when($onlyFailed, fn ($query) => $query->failed())->lazy(),
         );
 
         if ($playlists->isEmpty()) {
-            info('No playlists found.');
+            info($onlyFailed ? 'No failed playlists found.' : 'No playlists found.');
 
             return;
         }
