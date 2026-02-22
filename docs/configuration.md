@@ -75,6 +75,9 @@ VIDEO_COMPLETION_THRESHOLD=0.95
 ```env
 # Segment duration for HLS/DASH segments (in seconds)
 PACKAGER_SEGMENT_DURATION=10
+
+# Number of concurrent workers for the HLS packager. Default: 10
+PACKAGER_CONCURRENCY_WORKERS=16
 ```
 
 ### Shaka Streamer
@@ -91,6 +94,9 @@ STREAMER_RESOLUTIONS=1080p,720p,480p
 
 # Segment duration for streaming (in seconds)
 STREAMER_SEGMENT_DURATION=10
+
+# Number of concurrent workers for the video streamer. Default: 10
+STREAMER_CONCURRENCY_WORKERS=16
 ```
 
 ### ab-av1 Encoder
@@ -99,10 +105,13 @@ STREAMER_SEGMENT_DURATION=10
 # Encoding preset (0-12, higher = slower but better quality)
 AB_AV1_PRESET=6
 
-# AV1 encoder to use (av1, av1_qsv, av1_vaapi, etc.)
+# AV1 encoder to use. Leave unset to use ab-av1's software default.
+# Options: av1_svtenc (CPU), av1_qsv (Intel QuickSync), av1_vaapi (AMD/Intel VAAPI)
 AB_AV1_ENCODER=av1_vaapi
 
-# FFmpeg input options for hardware acceleration
+# FFmpeg input options passed before the input file, typically for hardware acceleration.
+# Intel QSV example: "hwaccel=qsv qsv_device=/dev/dri/renderD128"
+# AMD/Intel VAAPI:   "hwaccel=vaapi hwaccel_output_format=vaapi"
 AB_AV1_FFMPEG_INPUT_OPTIONS="hwaccel=vaapi hwaccel_output_format=vaapi"
 
 # Minimum VMAF quality score (0-100)
