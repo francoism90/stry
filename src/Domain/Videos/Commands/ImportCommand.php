@@ -71,7 +71,7 @@ class ImportCommand extends Command implements Isolatable
         // Process each video file and dispatch an import job for each one
         progress(
             label: 'Importing videos',
-            steps: $files->count(),
+            steps: $files->getIterator(),
             callback: function (VideoFileData $file, $progress) use ($user) {
                 $progress->label("Importing {$file->path}...");
 
