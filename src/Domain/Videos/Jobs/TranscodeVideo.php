@@ -8,14 +8,14 @@ use Domain\Videos\Actions\CreateNewVideoTranscode;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -65,12 +65,12 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->video->getKey()))->dontRelease(),
+            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
         ];
     }
 
     public function uniqueId(): string
     {
-        return hash('xxh128', "playlist:{$this->video->getKey()}");
+        return (string) $this->video->getKey();
     }
 }

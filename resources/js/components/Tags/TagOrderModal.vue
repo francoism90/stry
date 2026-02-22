@@ -2,34 +2,30 @@
 import TagOrderController from '@/actions/App/Api/Tags/Controllers/TagOrderController'
 import { router } from '@inertiajs/vue3'
 
-const isOpen = defineModel<boolean>({ default: false })
-
-const reorderTags = async (close: () => void) => {
+const handle = async (close: () => void) =>
   router.post(
     TagOrderController.url(),
     {},
     {
       preserveScroll: true,
-      onSuccess: () => {
-        close()
-      },
+      onSuccess: () => close(),
     },
   )
-}
 </script>
 
 <template>
   <UModal
-    v-model="isOpen"
     title="Reorder Tags"
     :ui="{ footer: 'justify-end' }"
   >
-    <UButton
-      label="Reorder tags"
-      color="neutral"
-      variant="soft"
-      icon="i-lucide-arrow-up-down"
-    />
+    <slot>
+      <UButton
+        label="Reorder tags"
+        color="neutral"
+        variant="soft"
+        icon="i-lucide-arrow-up-down"
+      />
+    </slot>
 
     <template #body>
       <div class="flex flex-col gap-2">
@@ -54,7 +50,7 @@ const reorderTags = async (close: () => void) => {
         color="primary"
         icon="i-lucide-arrow-up-down"
         loading-auto
-        @click.prevent="reorderTags(close)"
+        @click.prevent="handle(close)"
       />
     </template>
   </UModal>

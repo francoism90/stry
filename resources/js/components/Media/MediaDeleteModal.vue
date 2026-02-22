@@ -7,7 +7,7 @@ const props = defineProps<{
   item: Media
 }>()
 
-const remove = async () => router.delete(destroy.url({ media: props.item.id }))
+const handle = async () => router.delete(destroy.url({ media: props.item.id }))
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const remove = async () => router.delete(destroy.url({ media: props.item.id }))
         variant="soft"
         color="error"
         loading-auto
-        @click.prevent="remove"
+        @click.prevent="handle"
       />
     </template>
   </UModal>

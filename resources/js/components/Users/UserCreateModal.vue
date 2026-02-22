@@ -2,8 +2,6 @@
 import { store } from '@/actions/App/Admin/Users/Controllers/UserController'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
-const isOpen = defineModel<boolean>({ default: false })
-
 const form = useForm('post', store.url(), {
   name: '',
   email: '',
@@ -11,7 +9,7 @@ const form = useForm('post', store.url(), {
   password_confirmation: '',
 })
 
-const create = async (close: () => void) => {
+const handle = async (close: () => void) => {
   form.submit({
     preserveScroll: true,
     onSuccess: () => {
@@ -24,16 +22,17 @@ const create = async (close: () => void) => {
 
 <template>
   <UModal
-    v-model="isOpen"
     title="Create User"
     :ui="{ footer: 'justify-end' }"
   >
-    <UButton
-      label="Create user"
-      color="primary"
-      variant="soft"
-      icon="i-lucide-plus"
-    />
+    <slot>
+      <UButton
+        label="Create user"
+        color="primary"
+        variant="soft"
+        icon="i-lucide-plus"
+      />
+    </slot>
 
     <template #body>
       <UForm
@@ -106,7 +105,7 @@ const create = async (close: () => void) => {
         variant="soft"
         color="primary"
         loading-auto
-        @click.prevent="create(close)"
+        @click.prevent="handle(close)"
       />
     </template>
   </UModal>

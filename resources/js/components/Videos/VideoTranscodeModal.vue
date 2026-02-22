@@ -7,7 +7,7 @@ const props = defineProps<{
   item: Video
 }>()
 
-const submit = async (close: () => void) =>
+const handle = async (close: () => void) =>
   router.post(
     VideoTranscodeController.url(props.item.id),
     {},
@@ -55,7 +55,7 @@ const submit = async (close: () => void) =>
         variant="soft"
         color="primary"
         loading-auto
-        @click.prevent="() => submit(close)"
+        @click.prevent="handle(close)"
       />
     </template>
   </UModal>

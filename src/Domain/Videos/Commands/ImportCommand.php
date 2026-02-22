@@ -6,12 +6,10 @@ namespace Domain\Videos\Commands;
 
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\FetchImportableVideos;
+use Domain\Videos\DataObjects\VideoFileData;
 use Domain\Videos\Jobs\CreateVideo;
-use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 
@@ -33,15 +31,14 @@ class ImportCommand extends Command implements Isolatable
      */
     protected $description = 'Import videos to the database';
 
-    public function handle(FetchImportableVideos $action): void
+    public function handle(): void
     {
-        // Determine the disk to use for importing videos
-        $disk = $this->option('disk') ?: Video::getImportDisk();
-
         // Retrieve the collection of video files from the specified disk
         $files = spin(
             message: 'Retrieving files...',
-            callback: fn () => $action->handle($disk),
+            callback: fn () => app(FetchImportableVideos::class)->handle(
+                $this->option('disk')
+            ),
         );
 
         if ($files->isEmpty()) {
@@ -52,9 +49,9 @@ class ImportCommand extends Command implements Isolatable
 
         table(
             headers: ['Filename', 'Filesize'],
-            rows: collect($files->getIterator())->map(fn (string $path) => [
-                Str::limit($path),
-                Number::fileSize($this->getFileSystem($disk)->size($path)),
+            rows: $files->map(fn (VideoFileData $file) => [
+                Str::limit($file->name, 50),
+                Number::fileSize($file->size),
             ])->all(),
         );
 
@@ -68,22 +65,18 @@ class ImportCommand extends Command implements Isolatable
                 : User::limit(10)->pluck('email', 'id')->all(),
         );
 
+        // Fetch the user model based on the selected user ID
         $user = User::findOrFail($user);
 
         // Process each video file and dispatch an import job for each one
         progress(
             label: 'Importing videos',
-            steps: $files->getIterator(),
-            callback: function (string $path, $progress) use ($user, $disk) {
-                $progress->label("Importing {$path}");
+            steps: $files->count(),
+            callback: function (VideoFileData $file, $progress) use ($user) {
+                $progress->label("Importing {$file->path}...");
 
-                return CreateVideo::dispatch($user, $disk, $path);
+                return CreateVideo::dispatch($user, $file);
             },
         );
-    }
-
-    protected function getFileSystem(string $disk): FilesystemAdapter
-    {
-        return Storage::disk($disk);
     }
 }
