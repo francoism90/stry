@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdd376255aa0a5c0a1c475f02d1d251c",
+    "content-hash": "56a91cd3b7a999eb31e794504b0a3bc2",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.370.0",
+            "version": "3.370.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3cfb2c787c43efa546ba3b6b596956cbef5cdd53"
+                "reference": "273a9bbed9e73016be390b8428f7925f15ea053e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3cfb2c787c43efa546ba3b6b596956cbef5cdd53",
-                "reference": "3cfb2c787c43efa546ba3b6b596956cbef5cdd53",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/273a9bbed9e73016be390b8428f7925f15ea053e",
+                "reference": "273a9bbed9e73016be390b8428f7925f15ea053e",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.370.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.370.1"
             },
-            "time": "2026-02-20T19:09:33+00:00"
+            "time": "2026-02-23T19:05:30+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1268,26 +1268,27 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "257a2809cd4f8ce565c4e80940cbb960d091736c"
+                "reference": "384bddc7cb2cb5dbfd683cd5bfcb958ea0e66614"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/257a2809cd4f8ce565c4e80940cbb960d091736c",
-                "reference": "257a2809cd4f8ce565c4e80940cbb960d091736c",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/384bddc7cb2cb5dbfd683cd5bfcb958ea0e66614",
+                "reference": "384bddc7cb2cb5dbfd683cd5bfcb958ea0e66614",
                 "shasum": ""
             },
             "require": {
+                "aws/aws-sdk-php": "^3.295",
+                "guzzlehttp/promises": "^2.0",
                 "illuminate/contracts": "^11.0 || ^12.0",
                 "illuminate/filesystem": "^11.0 || ^12.0",
                 "illuminate/process": "^11.0 || ^12.0",
                 "illuminate/support": "^11.0 || ^12.0",
                 "php": "^8.3",
                 "psr/log": "^3.0",
-                "spatie/fork": "^1.2",
                 "spatie/laravel-package-tools": "^1.16"
             },
             "require-dev": {
@@ -1345,7 +1346,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/1.6.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/1.7.0"
             },
             "funding": [
                 {
@@ -1353,30 +1354,31 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-23T12:53:50+00:00"
+            "time": "2026-02-23T20:08:03+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "0.9.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "775d0e17b872b21425689713551cc48216fbf8c9"
+                "reference": "9dd9c42eb84942cb5961310cf57914dfbec3d0d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/775d0e17b872b21425689713551cc48216fbf8c9",
-                "reference": "775d0e17b872b21425689713551cc48216fbf8c9",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/9dd9c42eb84942cb5961310cf57914dfbec3d0d3",
+                "reference": "9dd9c42eb84942cb5961310cf57914dfbec3d0d3",
                 "shasum": ""
             },
             "require": {
+                "aws/aws-sdk-php": "^3.295",
+                "guzzlehttp/promises": "^2.0",
                 "illuminate/contracts": "^11.0 || ^12.0",
                 "illuminate/filesystem": "^11.0 || ^12.0",
                 "illuminate/process": "^11.0 || ^12.0",
                 "illuminate/support": "^11.0 || ^12.0",
                 "php": "^8.3",
                 "psr/log": "^3.0",
-                "spatie/fork": "^1.2",
                 "spatie/laravel-package-tools": "^1.16"
             },
             "require-dev": {
@@ -1434,7 +1436,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/0.9.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1442,7 +1444,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-23T17:07:32+00:00"
+            "time": "2026-02-23T20:10:59+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -7075,71 +7077,6 @@
                 }
             ],
             "time": "2026-02-21T21:26:43+00:00"
-        },
-        {
-            "name": "spatie/fork",
-            "version": "1.2.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/fork.git",
-                "reference": "bde768a99be8cff41b8ec4991b016dcb58f414e8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/fork/zipball/bde768a99be8cff41b8ec4991b016dcb58f414e8",
-                "reference": "bde768a99be8cff41b8ec4991b016dcb58f414e8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pcntl": "*",
-                "ext-sockets": "*",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "nesbot/carbon": "^2.66",
-                "pestphp/pest": "^1.23",
-                "phpunit/phpunit": "^9.5",
-                "spatie/ray": "^1.10"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Fork\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Brent Roose",
-                    "email": "brent@spatie.be",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A lightweight solution for running code concurrently in PHP",
-            "homepage": "https://github.com/spatie/fork",
-            "keywords": [
-                "fork",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/fork/issues",
-                "source": "https://github.com/spatie/fork/tree/1.2.5"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-04-24T08:58:04+00:00"
         },
         {
             "name": "spatie/image",
