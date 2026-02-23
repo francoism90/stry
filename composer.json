@@ -16,8 +16,8 @@
     "require": {
         "php": "^8.2",
         "foxws/laravel-ab-av1": "^0.4.0",
-        "foxws/laravel-shaka": "^1.6",
-        "foxws/laravel-streamer": "^0.9.0",
+        "foxws/laravel-shaka": "^1.7",
+        "foxws/laravel-streamer": "^1.0",
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2.1",
@@ -36,7 +36,6 @@
         "pbmedia/laravel-ffmpeg": "^8.7.1",
         "pusher/pusher-php-server": "^7.2.7",
         "spatie/eloquent-sortable": "^5.0.1",
-        "spatie/fork": "^1.2.5",
         "spatie/laravel-csp": "^3.23",
         "spatie/laravel-data": "^4.19.1",
         "spatie/laravel-google-fonts": "^1.5.0",
