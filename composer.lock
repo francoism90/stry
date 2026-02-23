@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cff3dd892f07b847a4f952308ab59a9",
+    "content-hash": "36a2a9e1793c1b446a39066fc5b0bd82",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1268,16 +1268,16 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "eb7af552ac73dc2c3ddc28a6eb170fdb7071668b"
+                "reference": "257a2809cd4f8ce565c4e80940cbb960d091736c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/eb7af552ac73dc2c3ddc28a6eb170fdb7071668b",
-                "reference": "eb7af552ac73dc2c3ddc28a6eb170fdb7071668b",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/257a2809cd4f8ce565c4e80940cbb960d091736c",
+                "reference": "257a2809cd4f8ce565c4e80940cbb960d091736c",
                 "shasum": ""
             },
             "require": {
@@ -1345,7 +1345,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/1.5.0"
+                "source": "https://github.com/foxws/laravel-shaka/tree/1.6.0"
             },
             "funding": [
                 {
@@ -1353,7 +1353,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-22T09:21:41+00:00"
+            "time": "2026-02-23T12:53:50+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
@@ -4157,16 +4157,16 @@
         },
         {
             "name": "nette/schema",
-            "version": "v1.3.4",
+            "version": "v1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/schema.git",
-                "reference": "086497a2f34b82fede9b5a41cc8e131d087cd8f7"
+                "reference": "f0ab1a3cda782dbc5da270d28545236aa80c4002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/schema/zipball/086497a2f34b82fede9b5a41cc8e131d087cd8f7",
-                "reference": "086497a2f34b82fede9b5a41cc8e131d087cd8f7",
+                "url": "https://api.github.com/repos/nette/schema/zipball/f0ab1a3cda782dbc5da270d28545236aa80c4002",
+                "reference": "f0ab1a3cda782dbc5da270d28545236aa80c4002",
                 "shasum": ""
             },
             "require": {
@@ -4174,8 +4174,10 @@
                 "php": "8.1 - 8.5"
             },
             "require-dev": {
+                "nette/phpstan-rules": "^1.0",
                 "nette/tester": "^2.6",
-                "phpstan/phpstan": "^2.0@stable",
+                "phpstan/extension-installer": "^1.4@stable",
+                "phpstan/phpstan": "^2.1.39@stable",
                 "tracy/tracy": "^2.8"
             },
             "type": "library",
@@ -4216,9 +4218,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/schema/issues",
-                "source": "https://github.com/nette/schema/tree/v1.3.4"
+                "source": "https://github.com/nette/schema/tree/v1.3.5"
             },
-            "time": "2026-02-08T02:54:00+00:00"
+            "time": "2026-02-23T03:47:12+00:00"
         },
         {
             "name": "nette/utils",
@@ -7628,16 +7630,16 @@
         },
         {
             "name": "spatie/laravel-model-states",
-            "version": "2.13.0",
+            "version": "2.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-model-states.git",
-                "reference": "521cd40f1c485a7cc0f0dc91d02dde46ad306fd2"
+                "reference": "954b11f680bdb0bc5a845c300be2d598b35be59c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/521cd40f1c485a7cc0f0dc91d02dde46ad306fd2",
-                "reference": "521cd40f1c485a7cc0f0dc91d02dde46ad306fd2",
+                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/954b11f680bdb0bc5a845c300be2d598b35be59c",
+                "reference": "954b11f680bdb0bc5a845c300be2d598b35be59c",
                 "shasum": ""
             },
             "require": {
@@ -7648,6 +7650,7 @@
                 "illuminate/support": "^12.0|^13.0",
                 "php": "^8.4",
                 "spatie/laravel-package-tools": "^1.19",
+                "spatie/php-attribute-reader": "^1.0",
                 "spatie/php-structure-discoverer": "^2.3.1"
             },
             "require-dev": {
@@ -7692,7 +7695,7 @@
                 "state"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-model-states/tree/2.13.0"
+                "source": "https://github.com/spatie/laravel-model-states/tree/2.13.1"
             },
             "funding": [
                 {
@@ -7704,7 +7707,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-21T16:08:27+00:00"
+            "time": "2026-02-22T23:11:43+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -7856,34 +7859,35 @@
         },
         {
             "name": "spatie/laravel-responsecache",
-            "version": "8.1.0",
+            "version": "8.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-responsecache.git",
-                "reference": "22c1964b4ebe650219294b73cbeeb0fa04daaac9"
+                "reference": "0303fd523b98b51ecba0a04ad6d37bd2875bc9a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/22c1964b4ebe650219294b73cbeeb0fa04daaac9",
-                "reference": "22c1964b4ebe650219294b73cbeeb0fa04daaac9",
+                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/0303fd523b98b51ecba0a04ad6d37bd2875bc9a2",
+                "reference": "0303fd523b98b51ecba0a04ad6d37bd2875bc9a2",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cache": "^12.0",
-                "illuminate/console": "^12.0",
-                "illuminate/container": "^12.0",
-                "illuminate/http": "^12.0",
-                "illuminate/support": "^12.0",
+                "illuminate/cache": "^12.0|^13.0",
+                "illuminate/console": "^12.0|^13.0",
+                "illuminate/container": "^12.0|^13.0",
+                "illuminate/http": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
                 "nesbot/carbon": "^3.0",
                 "php": "^8.4",
-                "spatie/laravel-package-tools": "^1.9"
+                "spatie/laravel-package-tools": "^1.9",
+                "spatie/php-attribute-reader": "^1.0"
             },
             "require-dev": {
                 "larastan/larastan": "^3.9",
-                "laravel/framework": "^12.0",
+                "laravel/framework": "^12.0|^13.0",
                 "laravel/pint": "^1.13.7",
                 "mockery/mockery": "^1.6",
-                "orchestra/testbench": "^10.0",
+                "orchestra/testbench": "^10.0|^11.0",
                 "pestphp/pest": "^4.0"
             },
             "type": "library",
@@ -7926,7 +7930,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-responsecache/issues",
-                "source": "https://github.com/spatie/laravel-responsecache/tree/8.1.0"
+                "source": "https://github.com/spatie/laravel-responsecache/tree/8.2.0"
             },
             "funding": [
                 {
@@ -7938,7 +7942,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-16T16:44:46+00:00"
+            "time": "2026-02-22T23:18:33+00:00"
         },
         {
             "name": "spatie/laravel-tags",
@@ -8092,6 +8096,64 @@
                 }
             ],
             "time": "2026-02-21T14:20:19+00:00"
+        },
+        {
+            "name": "spatie/php-attribute-reader",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/php-attribute-reader.git",
+                "reference": "46e7484d7b51f5b22d672745c541e48c5a385404"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/php-attribute-reader/zipball/46e7484d7b51f5b22d672745c541e48c5a385404",
+                "reference": "46e7484d7b51f5b22d672745c541e48c5a385404",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.0|^2.0|^3.0|^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Attributes\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A clean API for working with PHP attributes",
+            "homepage": "https://github.com/spatie/php-attribute-reader",
+            "keywords": [
+                "attributes",
+                "php-attribute-reader",
+                "reflection",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/php-attribute-reader/issues",
+                "source": "https://github.com/spatie/php-attribute-reader/tree/1.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-02-23T09:01:55+00:00"
         },
         {
             "name": "spatie/php-structure-discoverer",
