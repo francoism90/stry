@@ -7,7 +7,6 @@ export function useGroups() {
       GroupClearController.url({ type }),
       {},
       {
-        preserveState: true,
         preserveScroll: true,
       },
     )

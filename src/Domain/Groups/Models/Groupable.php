@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 
 class Groupable extends MorphPivot
@@ -77,10 +78,20 @@ class Groupable extends MorphPivot
         ];
 
         // Add polymorphic fields if the relationship exists
-        if ($this->groupable()->exists()) {
+        if ($this->groupable?->exists()) {
             $array["{$this->groupable_type}_id"] = (string) $this->groupable_id;
         }
 
         return $array;
+    }
+
+    public function makeSearchableUsing(Collection $models): Collection
+    {
+        return $models->loadMissing('groupable');
+    }
+
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with('groupable');
     }
 }

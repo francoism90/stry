@@ -80,13 +80,6 @@ class Video extends Model implements HasMedia
     /**
      * @var array<int, string>
      */
-    protected $with = [
-        'tags',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
     protected $translatable = [
         'name',
         'titles',
@@ -262,6 +255,16 @@ class Video extends Model implements HasMedia
         ];
     }
 
+    public function makeSearchableUsing(VideoCollection $models): VideoCollection
+    {
+        return $models->loadMissing('media', 'tags');
+    }
+
+    protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
+    {
+        return $query->with(['media', 'tags']);
+    }
+
     public static function getImportDisk(): string
     {
         return Config::string('videos.import_disk', 'import');
@@ -269,7 +272,7 @@ class Video extends Model implements HasMedia
 
     public static function getImportBatchSize(): int
     {
-        return Config::integer('videos.import_batch_size', 20);
+        return Config::integer('videos.import_batch_size', 10);
     }
 
     public static function shouldCreatePlaylist(): bool
