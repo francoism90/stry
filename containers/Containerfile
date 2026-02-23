@@ -75,10 +75,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
-    && /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
-    && apt-get install -y postgresql-client-${POSTGRES_VERSION} \
-    && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    libavif-bin jpegoptim optipng pngquant gifsicle
+
+# Add PostgreSQL APT repository and install client
+RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
+    && apt-get install -y postgresql-client-${POSTGRES_VERSION}
+
+# Add NodeSource APT repository and install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y --no-install-recommends nodejs
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
