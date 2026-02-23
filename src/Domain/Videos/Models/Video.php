@@ -288,9 +288,8 @@ class Video extends Model implements HasMedia
     public function getClipCollection(): MediaCollection
     {
         return $this->getMedia('clips')->sortBy([
-            ['custom_properties->streams->bit_rate', 'desc'],
-            ['custom_properties->streams->width', 'desc'],
             ['custom_properties->streams->height', 'desc'],
+            ['custom_properties->streams->width', 'desc'],
         ]);
     }
 

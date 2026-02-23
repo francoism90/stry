@@ -64,12 +64,18 @@ class CreateNewVideoStream
 
             // Add streams only if they exist
             if ($ffprobe->getVideoStream()) {
-                // Determine the resolution of the video stream to set appropriate output naming
-                $resolution = VideoResolution::make($media->disk, $path)->first($media->disk, $path);
+                // Add video stream with the appropriate output filename pattern
+                $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
 
-                $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}", array_filter([
-                    'resolution' => $resolution,
-                ]));
+                // Set pipeline resolutions from the highest supported resolution of the first clip
+                if (! $streamer->builder()->getOptions()->has('resolutions')) {
+                    // Find the highest supported resolution for the video stream
+                    $resolution = VideoResolution::make($media->disk, $path)->first($media->disk, $path);
+
+                    if ($resolution) {
+                        $streamer->withResolutions([$resolution]);
+                    }
+                }
             }
 
             if ($ffprobe->getAudioStream()) {
