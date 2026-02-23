@@ -78,7 +78,7 @@ class Groupable extends MorphPivot
         ];
 
         // Add polymorphic fields if the relationship exists
-        if ($this->groupable->exists()) {
+        if ($this->groupable?->exists()) {
             $array["{$this->groupable_type}_id"] = (string) $this->groupable_id;
         }
 
