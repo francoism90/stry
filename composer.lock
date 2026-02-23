@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7e41804ddc1e1970168fd1e1bf3e016",
+    "content-hash": "e940119843d8e9f6a3dcc22b7a838299",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1357,16 +1357,16 @@
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "0.7.0",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "e19e553b94f1cc698c205a55eefedd414132b13b"
+                "reference": "775d0e17b872b21425689713551cc48216fbf8c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/e19e553b94f1cc698c205a55eefedd414132b13b",
-                "reference": "e19e553b94f1cc698c205a55eefedd414132b13b",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/775d0e17b872b21425689713551cc48216fbf8c9",
+                "reference": "775d0e17b872b21425689713551cc48216fbf8c9",
                 "shasum": ""
             },
             "require": {
@@ -1434,7 +1434,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/0.7.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/0.9.0"
             },
             "funding": [
                 {
@@ -1442,7 +1442,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-22T09:30:03+00:00"
+            "time": "2026-02-23T17:07:32+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -13739,11 +13739,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.39",
+            "version": "2.1.40",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c6f73a2af4cbcd99c931d0fb8f08548cc0fa8224",
-                "reference": "c6f73a2af4cbcd99c931d0fb8f08548cc0fa8224",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9b2c7aeb83a75d8680ea5e7c9b7fca88052b766b",
+                "reference": "9b2c7aeb83a75d8680ea5e7c9b7fca88052b766b",
                 "shasum": ""
             },
             "require": {
@@ -13788,7 +13788,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-11T14:48:56+00:00"
+            "time": "2026-02-23T15:04:35+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
