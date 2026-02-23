@@ -386,7 +386,7 @@ class Video extends Model implements HasMedia
     protected function released(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => Carbon::parse($this->released_at ?? $this->published_at ?? $this->created_at)->toDateString(),
+            get: fn (): string => Carbon::parse($this->released_at ?: $this->created_at)->toDateString(),
         )->shouldCache();
     }
 
