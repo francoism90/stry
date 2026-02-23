@@ -10,6 +10,7 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Support\Streamer\VideoResolution;
 use Throwable;
 
 class CreateNewVideoStream
@@ -63,7 +64,12 @@ class CreateNewVideoStream
 
             // Add streams only if they exist
             if ($ffprobe->getVideoStream()) {
-                $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
+                // Determine the resolution of the video stream to set appropriate output naming
+                $resolution = VideoResolution::make($media->disk, $path)->first($media->disk, $path);
+
+                $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}", array_filter([
+                    'resolution' => $resolution,
+                ]));
             }
 
             if ($ffprobe->getAudioStream()) {
