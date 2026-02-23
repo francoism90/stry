@@ -7,7 +7,7 @@ Requires=stry.container
 Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=horizon
-ShmSize=256m
+ShmSize=128m
 UserNS=keep-id
 GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
