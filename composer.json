@@ -17,7 +17,7 @@
         "php": "^8.2",
         "foxws/laravel-ab-av1": "^0.4.0",
         "foxws/laravel-shaka": "^1.6",
-        "foxws/laravel-streamer": "^0.7.0",
+        "foxws/laravel-streamer": "^0.9.0",
         "guzzlehttp/guzzle": "^7.10.0",
         "hosni/laravel-temporary-urls-minio": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2.1",
