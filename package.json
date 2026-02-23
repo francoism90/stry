@@ -28,12 +28,12 @@
         "laravel-precognition-vue-inertia": "^0.8.0",
         "pusher-js": "^8.4.0",
         "shaka-player": "^5.0.3",
-        "tailwindcss": "^4.2.0",
+        "tailwindcss": "^4.2.1",
         "vue": "^3.5.28"
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
-        "@tailwindcss/vite": "^4.2.0",
+        "@tailwindcss/vite": "^4.2.1",
         "@tsconfig/node24": "^24.0.4",
         "@types/jsdom": "^27.0.0",
         "@types/node": "^25.3.0",
