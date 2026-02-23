@@ -255,14 +255,14 @@ class Video extends Model implements HasMedia
         ];
     }
 
-    protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
-    {
-        return $query->with(['media', 'tags']);
-    }
-
     public function makeSearchableUsing(VideoCollection $models): VideoCollection
     {
         return $models->loadMissing('media', 'tags');
+    }
+
+    protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
+    {
+        return $query->with(['media', 'tags']);
     }
 
     public static function getImportDisk(): string

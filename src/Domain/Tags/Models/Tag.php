@@ -194,6 +194,11 @@ class Tag extends BaseTag implements HasMedia
         ];
     }
 
+    protected function makeAllSearchableUsing(TagQueryBuilder $query): TagQueryBuilder
+    {
+        return $query->withCount('videos');
+    }
+
     protected function summary(): Attribute
     {
         return Attribute::make(
