@@ -7,6 +7,7 @@ namespace Domain\Videos\Actions;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Models\Video;
+use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\LazyCollection;
@@ -43,6 +44,7 @@ class GetSimilarVideos
 
             // Search for videos matching the phrase
             $results = Video::search($phrase)
+                ->query(fn (VideoQueryBuilder $query) => $query->with('tags'))
                 ->whereNotIn('id', [$video->getKey()])
                 ->where('state', 'verified')
                 ->take(6)
@@ -73,6 +75,7 @@ class GetSimilarVideos
         // Find videos sharing tags with the given video
         return Video::query()
             ->whereKeyNot($video)
+            ->with('tags')
             ->verified()
             ->withAnyTagsOfAnyType([
                 ...$tags,
