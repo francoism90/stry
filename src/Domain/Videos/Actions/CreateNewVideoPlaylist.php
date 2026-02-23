@@ -9,6 +9,7 @@ use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
 class CreateNewVideoPlaylist
@@ -50,16 +51,19 @@ class CreateNewVideoPlaylist
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
+            // Detect available streams using FFMpeg
+            $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
+
             // Use TS segments for SAMPLE-AES encryption (protection_scheme = null)
             // Use m4s segments for CENC/CBCS encryption (protection_scheme = 'cenc'/'cbcs')
             $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
 
             // Add streams only if they exist
-            if ($media->hasVideoStream()) {
+            if ($ffprobe->getVideoStream()) {
                 $packager->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
             }
 
-            if ($media->hasAudioStream()) {
+            if ($ffprobe->getAudioStream()) {
                 $packager->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
