@@ -196,7 +196,9 @@ class Tag extends BaseTag implements HasMedia
 
     public function makeSearchableUsing(TagCollection $models): TagCollection
     {
-        return $models->loadMissing('related');
+        return $models
+            ->loadMissing('related')
+            ->loadCount('videos');
     }
 
     protected function makeAllSearchableUsing(TagQueryBuilder $query): TagQueryBuilder
