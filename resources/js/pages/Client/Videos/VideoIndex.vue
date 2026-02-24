@@ -20,7 +20,7 @@ const props = defineProps<{
 const { clearGroup } = useGroups()
 
 const form = useForm('get', '', {
-  search: props.search,
+  search: props.search ?? '',
   order: props.order,
   tag: props.tag?.id,
   page: 1,

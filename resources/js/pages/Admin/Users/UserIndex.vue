@@ -16,7 +16,7 @@ const props = defineProps<{
 defineOptions({ layout: DashboardLayout })
 
 const form = useForm('get', '', {
-  search: props.search,
+  search: props.search ?? '',
   page: 1,
 })
 
