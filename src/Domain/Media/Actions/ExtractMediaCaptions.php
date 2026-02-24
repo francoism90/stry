@@ -6,11 +6,11 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use Domain\Transcodes\Models\Transcode;
-use Exception;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Support\FFMpeg\Format\Video\WebVTT;
+use Throwable;
 
 class ExtractMediaCaptions
 {
@@ -38,7 +38,7 @@ class ExtractMediaCaptions
                         ->inFormat(new WebVTT)
                         ->addFilter(['-map', "0:{$index}"])
                         ->save($path);
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     return null;
                 }
 
