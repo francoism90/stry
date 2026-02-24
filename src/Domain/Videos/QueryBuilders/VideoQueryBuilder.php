@@ -6,20 +6,19 @@ namespace Domain\Videos\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
-use Domain\Videos\States\Failed;
-use Domain\Videos\States\Verified;
+use Domain\Videos\States;
 use Illuminate\Database\Eloquent\Builder;
 
 class VideoQueryBuilder extends Builder
 {
     public function failed(): self
     {
-        return $this->whereState('state', Failed::class);
+        return $this->whereState('state', States\Failed::class);
     }
 
     public function verified(): self
     {
-        return $this->whereState('state', Verified::class);
+        return $this->whereState('state', States\Verified::class);
     }
 
     public function published(): self
@@ -61,11 +60,13 @@ class VideoQueryBuilder extends Builder
 
         return $this
             ->select('videos.*')
+            ->distinct()
             ->join('groupables', 'videos.id', '=', 'groupables.groupable_id')
             ->join('groups', 'groupables.group_id', '=', 'groups.id')
             ->where('groupables.groupable_type', 'video')
             ->whereNotNull('groupables.group_id')
             ->where('groups.type', $type->value)
+            ->where('groups.user_id', $user->getKey())
             ->orderByDesc('groupables.created_at');
     }
 }

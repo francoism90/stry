@@ -36,10 +36,13 @@ class PlaylistQueryBuilder extends Builder
 
     public function expired(): self
     {
-        return $this
-            ->whereNotNull('expires_at')
-            ->whereNowOrPast('expires_at')
-            ->orWhere(fn ($query) => $query->failed());
+        return $this->where(fn ($query) => $query
+            ->where(fn ($q) => $q
+                ->whereNotNull('expires_at')
+                ->whereNowOrPast('expires_at')
+            )
+            ->orWhere(fn ($q) => $q->failed())
+        );
     }
 
     public function active(): self

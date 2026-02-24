@@ -68,7 +68,7 @@ class CreateNewVideoPlaylist
             }
         });
 
-         // Add text tracks (captions) to the playlist if available
+        // Add text tracks (captions) to the playlist if available
         if ($video->getCaptions()->isNotEmpty()) {
             $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
                 'language' => $caption->getCustomProperty('language_code', 'en'),
