@@ -29,7 +29,7 @@
         "pusher-js": "^8.4.0",
         "shaka-player": "^5.0.3",
         "tailwindcss": "^4.2.1",
-        "vue": "^3.5.28"
+        "vue": "^3.5.29"
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
@@ -45,7 +45,7 @@
         "@vue/tsconfig": "^0.8.1",
         "chokidar": "^5.0.0",
         "concurrently": "^9.2.1",
-        "eslint": "^10.0.1",
+        "eslint": "^10.0.2",
         "eslint-plugin-oxlint": "~1.50.0",
         "eslint-plugin-vue": "^10.8.0",
         "jiti": "^2.6.1",

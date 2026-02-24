@@ -68,6 +68,13 @@ class CreateNewVideoPlaylist
             }
         });
 
+         // Add text tracks (captions) to the playlist if available
+        if ($video->getCaptions()->isNotEmpty()) {
+            $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
+                'language' => $caption->getCustomProperty('language_code', 'en'),
+            ]));
+        }
+
         /** @var Playlist $playlist */
         $playlist = $video->createPlaylist([
             'encryption_key_id' => $keyData['key_id'] ?? null,
@@ -77,13 +84,6 @@ class CreateNewVideoPlaylist
 
         // Configure DASH playlist settings
         $packager->withMpdOutput($playlist->getFileName());
-
-        // Add text tracks (captions) to the playlist if available
-        if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
-                'language' => $caption->getCustomProperty('language_code', 'en'),
-            ]));
-        }
 
         try {
             // Export the playlist to the configured disk and path

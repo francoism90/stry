@@ -9,8 +9,8 @@ use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
+use Foxws\Streamer\Support\VideoResolution;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Support\Streamer\VideoResolution;
 use Throwable;
 
 class CreateNewVideoStream
@@ -50,8 +50,11 @@ class CreateNewVideoStream
             }
         }
 
+        // Initialize an array to keep track of added resolutions for the playlist
+        $resolutions = [];
+
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($streamer, $useEncryption, $protectionScheme) {
+        $clips->each(function (Media $media) use ($streamer, $resolutions, $useEncryption, $protectionScheme) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
@@ -63,18 +66,15 @@ class CreateNewVideoStream
             $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
 
             // Add streams only if they exist
-            if ($ffprobe->getVideoStream()) {
+            if ($videoStream = $ffprobe->getVideoStream()) {
                 // Add video stream with the appropriate output filename pattern
                 $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
 
-                // Set pipeline resolutions from the highest supported resolution of the first clip
-                if (! $streamer->builder()->getOptions()->has('resolutions')) {
-                    // Find the highest supported resolution for the video stream
-                    $resolution = VideoResolution::make($media->disk, $path)->first($media->disk, $path);
+                // Find the highest supported resolution for the video stream
+                $resolution = VideoResolution::make($videoStream->getDimensions()->getHeight())->first();
 
-                    if ($resolution) {
-                        $streamer->withResolutions([$resolution]);
-                    }
+                if ($resolution && ! in_array($resolution, $resolutions, strict: true)) {
+                    $resolutions[] = $resolution;
                 }
             }
 
@@ -82,6 +82,18 @@ class CreateNewVideoStream
                 $streamer->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
             }
         });
+
+        // Add text tracks (captions) to the playlist if available
+        if ($video->getCaptions()->isNotEmpty()) {
+            $video->getCaptions()->each(fn (Media $caption) => $streamer->addTextStream($caption->getPath(), $caption->file_name, [
+                'language' => $caption->getCustomProperty('language_code', 'en'),
+            ]));
+        }
+
+        // Add available resolutions (if any)
+        if (filled($resolutions)) {
+            $streamer->withResolutions($resolutions);
+        }
 
         /** @var Playlist $playlist */
         $playlist = $video->createPlaylist([
@@ -95,13 +107,6 @@ class CreateNewVideoStream
             ->withMpdOutput($playlist->getFileName())
             ->withStreamingMode('vod')
             ->withSegmentPerFile();
-
-        // Add text tracks (captions) to the playlist if available
-        if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $streamer->addTextStream($caption->getPath(), $caption->file_name, [
-                'language' => $caption->getCustomProperty('language_code', 'en'),
-            ]));
-        }
 
         // Export the playlist to the configured disk and path
         try {
