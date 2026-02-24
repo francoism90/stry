@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e5e77a551a3e2802826065beb3c0bd5",
+    "content-hash": "7faa5429dee945f923af74ff48617de9",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1268,16 +1268,16 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "1.8.2",
+            "version": "1.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "c5ac697e52fb93b06d3a945f497a0e480bb5a9e9"
+                "reference": "28bb854b82c691d4ffc9f32f83140760fd83da38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/c5ac697e52fb93b06d3a945f497a0e480bb5a9e9",
-                "reference": "c5ac697e52fb93b06d3a945f497a0e480bb5a9e9",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/28bb854b82c691d4ffc9f32f83140760fd83da38",
+                "reference": "28bb854b82c691d4ffc9f32f83140760fd83da38",
                 "shasum": ""
             },
             "require": {
@@ -1346,7 +1346,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/1.8.2"
+                "source": "https://github.com/foxws/laravel-shaka/tree/1.8.3"
             },
             "funding": [
                 {
@@ -1354,20 +1354,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-24T19:29:41+00:00"
+            "time": "2026-02-24T19:41:45+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "42160c9f703c17ef940366eb445dbe40c005c504"
+                "reference": "cf7d858cd5fd2bba45c0d7524523e2c167bcc7de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/42160c9f703c17ef940366eb445dbe40c005c504",
-                "reference": "42160c9f703c17ef940366eb445dbe40c005c504",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/cf7d858cd5fd2bba45c0d7524523e2c167bcc7de",
+                "reference": "cf7d858cd5fd2bba45c0d7524523e2c167bcc7de",
                 "shasum": ""
             },
             "require": {
@@ -1436,7 +1436,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/1.3.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/1.4.0"
             },
             "funding": [
                 {
@@ -1444,7 +1444,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-24T11:58:54+00:00"
+            "time": "2026-02-24T19:45:29+00:00"
         },
         {
             "name": "fruitcake/php-cors",
