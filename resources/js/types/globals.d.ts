@@ -1,5 +1,5 @@
 import type { User } from '@/types'
-import type { Page } from '@inertiajs/core'
+import type { Page } from '@inertiajs/vue3'
 
 declare module '@inertiajs/core' {
   export interface InertiaConfig {
