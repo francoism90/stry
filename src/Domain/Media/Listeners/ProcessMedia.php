@@ -32,7 +32,7 @@ class ProcessMedia implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 60 * 30;
+    public $timeout = 600;
 
     /**
      * @var bool
@@ -55,7 +55,7 @@ class ProcessMedia implements ShouldQueueAfterCommit
     public function middleware(MediaHasBeenAddedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->media->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($event->media->getKey()))->dontRelease(),
         ];
     }
 }

@@ -32,7 +32,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int
@@ -63,7 +63,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
         public Video $video,
         public ?PlaylistType $type = null,
     ) {
-        $this->onQueue('processing');
+        $this->onQueue('transcoding');
     }
 
     public function handle(): void

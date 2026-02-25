@@ -207,9 +207,9 @@ return [
 
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['assets'],
+            'queue' => ['processing'],
             'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
+            'autoScalingStrategy' => 'size',
             'minProcesses' => 1,
             'maxProcesses' => 10,
             'balanceMaxShift' => 1,
@@ -218,13 +218,13 @@ return [
             'maxJobs' => 200,
             'memory' => 256,
             'tries' => 3,
-            'timeout' => 600,
-            'nice' => 12,
+            'timeout' => 3600,
+            'nice' => 9,
         ],
 
         'supervisor-3' => [
             'connection' => 'redis',
-            'queue' => ['processing'],
+            'queue' => ['transcoding'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
             'minProcesses' => 1,

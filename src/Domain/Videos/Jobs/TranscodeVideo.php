@@ -36,7 +36,7 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $uniqueFor = 90;
+    public $uniqueFor = 60;
 
     /**
      * @var int
@@ -56,7 +56,7 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     public function __construct(
         public Video $video,
     ) {
-        $this->onQueue('processing');
+        $this->onQueue('transcoding');
     }
 
     public function handle(): void
