@@ -47,24 +47,20 @@ class CreateNewVideoPlaylist
         }
 
         // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($packager, $useEncryption, $protectionScheme) {
+        $clips->each(function (Media $media) use ($packager) {
             // Get the path relative to the disk root
             $path = $media->getPathRelativeToRoot();
 
             // Detect available streams using FFMpeg
             $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
 
-            // Use TS segments for SAMPLE-AES encryption (protection_scheme = null)
-            // Use m4s segments for CENC/CBCS encryption (protection_scheme = 'cenc'/'cbcs')
-            $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
-
             // Add streams only if they exist
             if ($ffprobe->getVideoStream()) {
-                $packager->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
+                $packager->addVideoStream($path, "{$media->getKey()}_video.mp4");
             }
 
             if ($ffprobe->getAudioStream()) {
-                $packager->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
+                $packager->addAudioStream($path, "{$media->getKey()}_audio.mp4");
             }
         });
 
@@ -83,7 +79,11 @@ class CreateNewVideoPlaylist
         ]);
 
         // Configure DASH playlist settings
-        $packager->withMpdOutput($playlist->getFileName());
+        $packager
+            ->withMpdOutput($playlist->getFileName())
+            ->withAllowCodecSwitching()
+            ->withSegmentDuration(10)
+            ->withFragmentDuration(2);
 
         try {
             // Export the playlist to the configured disk and path

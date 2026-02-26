@@ -42,8 +42,6 @@ RUN apt-get clean && apt-get autoremove -y \
 
 FROM docker.io/dunglas/frankenphp:latest AS base
 
-ARG BUILD_DATE
-ARG VCS_REF
 ARG UID=1000
 ARG GID=1000
 ARG TZ=UTC
@@ -162,8 +160,6 @@ RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 LABEL org.opencontainers.image.variant="production" \
-      org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.source="https://github.com/francoism90/stry"
 
 USER docker
@@ -178,6 +174,4 @@ WORKDIR /app
 RUN chown -R docker:docker /app /pnpm
 
 LABEL org.opencontainers.image.variant="development" \
-      org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.source="https://github.com/francoism90/stry"
