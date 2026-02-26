@@ -36,7 +36,7 @@ const onSubmit = () =>
 watchDebounced(
   () => form.search,
   () => onSubmit(),
-  { debounce: 300, maxWait: 1000 },
+  { debounce: 350, maxWait: 1000 },
 )
 </script>
 
