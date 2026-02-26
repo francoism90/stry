@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <ULink
-    class="font-serif text-sm font-bold text-neutral-400 uppercase"
+    class="w-full font-serif text-sm font-bold text-neutral-400 uppercase"
     :to="location || '/'"
   >
     <span>stry</span>

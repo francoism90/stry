@@ -46,7 +46,6 @@ const links: NavigationMenuItem[][] = [
 <template>
   <UDashboardSidebar
     id="default"
-    collapsible
     :min-size="15"
     :max-size="15"
     :default-size="15"
