@@ -217,6 +217,11 @@ class Video extends Model implements HasMedia
         return true;
     }
 
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
+    }
+
     public function isExpired(): bool
     {
         return filled($this->expires_at) && Carbon::parse($this->expires_at)->isPast();

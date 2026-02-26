@@ -190,6 +190,11 @@ class Group extends Model implements HasMedia, Sortable
         return true;
     }
 
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
+    }
+
     public function toSearchableArray(): array
     {
         return [

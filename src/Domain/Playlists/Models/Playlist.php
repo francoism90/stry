@@ -159,6 +159,11 @@ class Playlist extends Model
         return true;
     }
 
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
+    }
+
     public function getModel(): ?Model
     {
         return $this->playlistable;

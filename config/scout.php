@@ -48,7 +48,7 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', false),
+    'queue' => env('SCOUT_QUEUE', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
     |
     */
 
-    'after_commit' => true,
+    'after_commit' => env('SCOUT_AFTER_COMMIT', false),
 
     /*
     |--------------------------------------------------------------------------

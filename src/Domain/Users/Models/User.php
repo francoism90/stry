@@ -178,6 +178,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return true;
     }
 
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
+    }
+
     public function receivesBroadcastNotificationsOn(): string
     {
         return $this->broadcastChannel();

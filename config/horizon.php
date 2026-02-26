@@ -207,6 +207,23 @@ return [
 
         'supervisor-2' => [
             'connection' => 'redis',
+            'queue' => ['broadcasts'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+            'maxTime' => 3600,
+            'maxJobs' => 500,
+            'memory' => 128,
+            'tries' => 3,
+            'timeout' => 300,
+            'nice' => 0,
+        ],
+
+        'supervisor-3' => [
+            'connection' => 'redis',
             'queue' => ['processing'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
@@ -222,7 +239,7 @@ return [
             'nice' => 9,
         ],
 
-        'supervisor-3' => [
+        'supervisor-4' => [
             'connection' => 'redis',
             'queue' => ['transcoding'],
             'balance' => 'auto',
@@ -245,18 +262,21 @@ return [
             'supervisor-1' => [],
             'supervisor-2' => [],
             'supervisor-3' => [],
+            'supervisor-4' => [],
         ],
 
         'staging' => [
             'supervisor-1' => [],
             'supervisor-2' => [],
             'supervisor-3' => [],
+            'supervisor-4' => [],
         ],
 
         'local' => [
             'supervisor-1' => [],
             'supervisor-2' => [],
             'supervisor-3' => [],
+            'supervisor-4' => [],
         ],
     ],
 ];
