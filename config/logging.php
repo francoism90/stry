@@ -123,13 +123,6 @@ return [
             'handler' => NullHandler::class,
         ],
 
-        'deprecations' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/deprecations.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'replace_placeholders' => true,
-        ],
-
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
