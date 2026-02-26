@@ -89,6 +89,9 @@ return [
 
     'waits' => [
         'redis:default' => 60,
+        'redis:broadcasts' => 5,
+        'redis:processing' => 60,
+        'redis:transcoding' => 300,
     ],
 
     /*
@@ -215,10 +218,10 @@ return [
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
             'maxTime' => 3600,
-            'maxJobs' => 500,
+            'maxJobs' => 1000,
             'memory' => 128,
             'tries' => 3,
-            'timeout' => 300,
+            'timeout' => 30,
             'nice' => 0,
         ],
 
@@ -232,7 +235,7 @@ return [
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
             'maxTime' => 3600,
-            'maxJobs' => 200,
+            'maxJobs' => 50,
             'memory' => 256,
             'tries' => 3,
             'backoff' => 60,
@@ -250,7 +253,7 @@ return [
             'balanceMaxShift' => 1,
             'balanceCooldown' => 10,
             'maxTime' => 14400,
-            'maxJobs' => 50,
+            'maxJobs' => 10,
             'memory' => 2048,
             'tries' => 3,
             'backoff' => 60,
