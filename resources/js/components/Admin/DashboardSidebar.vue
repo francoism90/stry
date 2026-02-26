@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import DashboardTenantMenu from '@/components/Admin/DashboardTenantMenu.vue'
 import DashboardUserMenu from '@/components/Admin/DashboardUserMenu.vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
+import AppLogo from '../Ui/AppLogo.vue'
 
 const links: NavigationMenuItem[][] = [
   [
@@ -83,8 +83,8 @@ const links: NavigationMenuItem[][] = [
       footer: 'lg:border-default lg:border-t',
     }"
   >
-    <template #header="{ collapsed }">
-      <DashboardTenantMenu :collapsed="collapsed" />
+    <template #header>
+      <AppLogo />
     </template>
 
     <template #default="{ collapsed }">
