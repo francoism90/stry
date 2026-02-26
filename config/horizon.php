@@ -164,7 +164,7 @@ return [
     |
     */
 
-    'fast_termination' => true,
+    'fast_termination' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -200,8 +200,8 @@ return [
             'maxProcesses' => 10,
             'balanceMaxShift' => 1,
             'balanceCooldown' => 3,
-            'maxTime' => 3600,
-            'maxJobs' => 500,
+            'maxTime' => 0,
+            'maxJobs' => 0,
             'memory' => 128,
             'tries' => 3,
             'timeout' => 300,
@@ -213,12 +213,12 @@ return [
             'queue' => ['broadcasts'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
-            'minProcesses' => 1,
-            'maxProcesses' => 10,
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'maxTime' => 3600,
-            'maxJobs' => 1000,
+            'minProcesses' => 3,
+            'maxProcesses' => 15,
+            'balanceMaxShift' => 5,
+            'balanceCooldown' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
             'memory' => 128,
             'tries' => 3,
             'timeout' => 30,
@@ -240,7 +240,7 @@ return [
             'tries' => 3,
             'backoff' => 60,
             'timeout' => 3600,
-            'nice' => 9,
+            'nice' => 19,
         ],
 
         'supervisor-4' => [
@@ -251,14 +251,14 @@ return [
             'minProcesses' => 1,
             'maxProcesses' => 10,
             'balanceMaxShift' => 1,
-            'balanceCooldown' => 10,
+            'balanceCooldown' => 3,
             'maxTime' => 14400,
             'maxJobs' => 10,
             'memory' => 2048,
             'tries' => 3,
             'backoff' => 60,
             'timeout' => 14400,
-            'nice' => 1,
+            'nice' => 10,
         ],
     ],
 
