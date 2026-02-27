@@ -40,8 +40,19 @@ trait InteractsWithPlaylists
         ]);
     }
 
+    public function getPlaylist(?PlaylistType $type = null): ?Playlist
+    {
+        return $this->playlists()
+            ->type($type)
+            ->ordered()
+            ->first();
+    }
+
     public function hasPlaylist(?PlaylistType $type = null): bool
     {
-        return $this->playlists()->type($type)->exists();
+        return $this->playlists()
+            ->type($type)
+            ->active()
+            ->exists();
     }
 }
