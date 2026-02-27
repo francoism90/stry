@@ -8,6 +8,7 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=reverb
 UserNS=keep-id
+Ulimit=nofile=1000:10000
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001
