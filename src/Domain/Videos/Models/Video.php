@@ -303,6 +303,13 @@ class Video extends Model implements HasMedia
         return $this->getMedia('captions');
     }
 
+    public function getStreams(): Collection
+    {
+        return $this
+            ->getClips()
+            ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
+    }
+
     public function hasCaptions(): bool
     {
         if ($this->getCaptions()->isNotEmpty()) {
