@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Actions;
+namespace Domain\Videos\Pipes;
 
 use Closure;
 use Domain\Media\Actions\ExtractMediaCaptions;

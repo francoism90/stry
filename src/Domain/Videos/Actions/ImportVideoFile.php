@@ -7,20 +7,17 @@ namespace Domain\Videos\Actions;
 use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Models\Video;
-use Illuminate\Support\Facades\DB;
 
 class ImportVideoFile
 {
-    public function handle(Video $video, VideoFile $file): mixed
+    public function handle(Video $video, VideoFile $file): void
     {
-        return DB::transaction(function () use ($video, $file) {
-            // Attach the video clip
-            $video
-                ->addMediaFromDisk($file->path, $file->disk)
-                ->toMediaCollection('clips');
+        // Attach the video clip
+        $video
+            ->addMediaFromDisk($file->path, $file->disk)
+            ->toMediaCollection('clips');
 
-            // Dispatch an event to trigger any necessary processing
-            VideoHasBeenUpdatedEvent::dispatch($video);
-        });
+        // Dispatch an event to trigger any necessary processing
+        VideoHasBeenUpdatedEvent::dispatch($video);
     }
 }
