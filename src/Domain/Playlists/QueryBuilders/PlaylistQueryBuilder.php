@@ -6,32 +6,30 @@ namespace Domain\Playlists\QueryBuilders;
 
 use ArrayAccess;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\States\Failed;
-use Domain\Playlists\States\Pending;
-use Domain\Playlists\States\Verified;
+use Domain\Playlists\States;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
 class PlaylistQueryBuilder extends Builder
 {
+    public function type(PlaylistType|ArrayAccess|array|null $type = null): self
+    {
+        return $this->when($type, fn ($query) => $query->whereIn('type', Arr::wrap($type)));
+    }
+
     public function failed(): self
     {
-        return $this->whereState('state', Failed::class);
+        return $this->whereState('state', States\Failed::class);
     }
 
     public function pending(): self
     {
-        return $this->whereState('state', Pending::class);
+        return $this->whereState('state', States\Pending::class);
     }
 
     public function verified(): self
     {
-        return $this->whereState('state', Verified::class);
-    }
-
-    public function type(ArrayAccess|array|PlaylistType $type): self
-    {
-        return $this->whereIn('type', Arr::wrap($type));
+        return $this->whereState('state', States\Verified::class);
     }
 
     public function expired(): self
@@ -43,13 +41,6 @@ class PlaylistQueryBuilder extends Builder
             )
             ->orWhere(fn ($q) => $q->failed())
         );
-    }
-
-    public function active(): self
-    {
-        return $this
-            ->whereNot(fn ($query) => $query->expired())
-            ->ordered();
     }
 
     public function ordered(): self

@@ -23,7 +23,7 @@ class CreateNewVideoStream
         }
 
         // Get the collection of clips for the video
-        $clips = $video->getClipCollection();
+        $clips = $video->getClips();
 
         // Get the path relative to the disk root
         $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());

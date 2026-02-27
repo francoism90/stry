@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Concerns;
 
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -32,26 +33,15 @@ trait InteractsWithPlaylists
     public function createPlaylist(array $attributes = []): Playlist
     {
         return $this->playlists()->create([
-            'file_name' => 'index.mpd',
             'disk' => Playlist::getDestinationDisk(),
+            'type' => Playlist::getDefaultType(),
             'expires_at' => Playlist::getExpiresAfter(),
-            'accessed_at' => now(),
             ...$attributes,
         ]);
     }
 
-    public function hasPlaylist(): bool
+    public function hasPlaylist(?PlaylistType $type = null): bool
     {
-        return $this
-            ->playlists()
-            ->exists();
-    }
-
-    public function getPlaylist(): ?Playlist
-    {
-        return $this
-            ->playlists()
-            ->active()
-            ->first();
+        return $this->playlists()->type($type)->exists();
     }
 }

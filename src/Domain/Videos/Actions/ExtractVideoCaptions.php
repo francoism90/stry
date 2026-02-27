@@ -18,7 +18,7 @@ class ExtractVideoCaptions
         }
 
         // Get the first media item from the video
-        $media = $video->getClipCollection()->first();
+        $media = $video->getClips()->first();
 
         // Extract captions from the media
         $conversion = app(ExtractMediaCaptions::class)->handle($media);
