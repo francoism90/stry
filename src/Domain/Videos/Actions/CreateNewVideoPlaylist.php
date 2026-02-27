@@ -7,6 +7,7 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
 use Domain\Playlists\DataObjects\PlaylistSettings;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
@@ -20,7 +21,7 @@ class CreateNewVideoPlaylist
     public function handle(Video $video): Collection
     {
         // Get the playlist settings from the configuration
-        $settings = PlaylistSettings::from();
+        $settings = PlaylistSettings::from(PlaylistType::Streamer);
 
         // Skip if there are no clips associated with the video
         if ($video->hasPlaylist($settings->type) || ! $video->hasMedia('clips')) {
@@ -87,8 +88,8 @@ class CreateNewVideoPlaylist
                 ->withSegmentDuration($settings->segmentDuration)
                 ->withFragmentDuration($settings->fragmentDuration);
 
+             // Export the playlist to the configured disk and path
             try {
-                // Export the playlist to the configured disk and path
                 $packager
                     ->export()
                     ->toDisk($playlist->getDisk())

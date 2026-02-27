@@ -28,14 +28,14 @@ class PlaylistSettings extends Dto
 
     public ?int $keyRotationDuration;
 
-    public function __construct()
+    public function __construct(?PlaylistType $type = null)
     {
+        $this->type = $type ?? Playlist::getDefaultType();
         $this->disk = Playlist::getDestinationDisk();
         $this->segmentDuration = Playlist::getSegmentDuration();
         $this->fragmentDuration = Playlist::getFragmentDuration();
         $this->encryption = Playlist::shouldUseEncryption();
         $this->keyRotation = Playlist::shouldUseKeyRotation();
-        $this->type = Playlist::getDefaultType();
         $this->encryptionMethod = Playlist::getEncryptionMethod();
         $this->protectionScheme = Playlist::getProtectionScheme();
         $this->keyRotationDuration = Playlist::getKeyRotationDuration();
