@@ -87,13 +87,16 @@ class CreateNewVideoPlaylist
                 ->withSegmentDuration(10)
                 ->withFragmentDuration(2);
 
-            // Export the playlist to the configured disk and path
             try {
+                 // Export the playlist to the configured disk and path
                 $packager
                     ->export()
                     ->toDisk($playlist->getDisk())
                     ->toPath($playlist->getPath())
                     ->save();
+
+                // Mark the playlist as completed after successful packaging
+                $playlist->markAsCompleted();
             } catch (Throwable $exception) {
                 // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
                 $playlist->markAsFailed();
