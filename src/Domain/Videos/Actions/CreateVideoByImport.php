@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Pipes;
+namespace Domain\Videos\Actions;
 
-use Closure;
 use Domain\Users\Models\User;
 use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
@@ -14,9 +13,9 @@ use Illuminate\Support\Str;
 
 class CreateNewVideoByImport
 {
-    public function handle(User $user, VideoFile $file, Closure $next): mixed
+    public function handle(User $user, VideoFile $file): mixed
     {
-        return DB::transaction(function () use ($user, $file, $next) {
+        return DB::transaction(function () use ($user, $file) {
             // Get the file name without extension
             $fileName = File::name($file->path);
 
@@ -32,8 +31,6 @@ class CreateNewVideoByImport
 
             // Dispatch the added event
             VideoHasBeenAddedEvent::dispatch($video);
-
-            return $next($video);
         });
     }
 }

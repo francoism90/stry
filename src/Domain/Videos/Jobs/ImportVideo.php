@@ -68,10 +68,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(ImportVideoFile::class)->handle(
-            $this->video,
-            $this->file
-        );
+        app(ImportVideoFile::class)->handle($this->video, $this->file);
     }
 
     /**
