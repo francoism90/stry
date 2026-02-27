@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@inertiajs/vue3':
-        specifier: ^2.3.16
-        version: 2.3.16(vue@3.5.29(typescript@5.9.3))
+        specifier: ^2.3.17
+        version: 2.3.17(vue@3.5.29(typescript@5.9.3))
       '@laravel/echo-vue':
         specifier: ^2.3.0
         version: 2.3.0(pusher-js@8.4.0)(socket.io-client@4.8.3)(vue@3.5.29(typescript@5.9.3))
       '@nuxt/ui':
         specifier: ^4.5.0
-        version: 4.5.0(@inertiajs/vue3@2.3.16(vue@3.5.29(typescript@5.9.3)))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.5)(embla-carousel@8.6.0)(tailwindcss@4.2.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0))(vue@3.5.29(typescript@5.9.3))(yjs@13.6.29)
+        version: 4.5.0(@inertiajs/vue3@2.3.17(vue@3.5.29(typescript@5.9.3)))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.5)(embla-carousel@8.6.0)(tailwindcss@4.2.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0))(vue@3.5.29(typescript@5.9.3))(yjs@13.6.29)
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.29(typescript@5.9.3))
@@ -28,7 +28,7 @@ importers:
         version: 2.3.0(pusher-js@8.4.0)(socket.io-client@4.8.3)
       laravel-precognition-vue-inertia:
         specifier: ^0.8.0
-        version: 0.8.0(@inertiajs/vue3@2.3.16(vue@3.5.29(typescript@5.9.3)))(vue@3.5.29(typescript@5.9.3))
+        version: 0.8.0(@inertiajs/vue3@2.3.17(vue@3.5.29(typescript@5.9.3)))(vue@3.5.29(typescript@5.9.3))
       pusher-js:
         specifier: ^8.4.0
         version: 8.4.0
@@ -907,11 +907,11 @@ packages:
     peerDependencies:
       vue: '>=3'
 
-  '@inertiajs/core@2.3.16':
-    resolution: {integrity: sha512-yshF85m7Ge3IhCdwpiWRTZ5+1fzo7BK/32XWonGKsCHmHUouy2/jUasNqaQX/FnkuL0UDrstnMIZjrFQ1hscaQ==}
+  '@inertiajs/core@2.3.17':
+    resolution: {integrity: sha512-CELuVhq2cBVrqxmrbRKqseuIQPBA6PcgDU7EPkPQxK02Lxxg7wTZWZZ5omaGBT+5mQtr0bkEUqUF2vxYbu4ogw==}
 
-  '@inertiajs/vue3@2.3.16':
-    resolution: {integrity: sha512-R0FgIFtVQX7PwHlXUR0iesol/uk32g2NanGqqEx5L5DSd+3mcX5K7CqUOBIjCP/7ti/8K9YzihtEWaAgSh/yQg==}
+  '@inertiajs/vue3@2.3.17':
+    resolution: {integrity: sha512-ZepsiOeEZElDQl+dcPdxN2/mtR067BpFRgzmha4VKnGUE6+BR8VLxKnFy1rleH/wmPI8WviZgBs4jmIKMcyghg==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -1080,56 +1080,48 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@oxlint/binding-linux-arm64-musl@1.50.0':
     resolution: {integrity: sha512-++B3k/HEPFVlj89cOz8kWfQccMZB/aWL9AhsW7jPIkG++63Mpwb2cE9XOEsd0PATbIan78k2Gky+09uWM1d/gQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@oxlint/binding-linux-ppc64-gnu@1.50.0':
     resolution: {integrity: sha512-Z9b/KpFMkx66w3gVBqjIC1AJBTZAGoI9+U+K5L4QM0CB/G0JSNC1es9b3Y0Vcrlvtdn8A+IQTkYjd/Q0uCSaZw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@oxlint/binding-linux-riscv64-gnu@1.50.0':
     resolution: {integrity: sha512-jvmuIw8wRSohsQlFNIST5uUwkEtEJmOQYr33bf/K2FrFPXHhM4KqGekI3ShYJemFS/gARVacQFgBzzJKCAyJjg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@oxlint/binding-linux-riscv64-musl@1.50.0':
     resolution: {integrity: sha512-x+UrN47oYNh90nmAAyql8eQaaRpHbDPu5guasDg10+OpszUQ3/1+1J6zFMmV4xfIEgTcUXG/oI5fxJhF4eWCNA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [riscv64]
     os: [linux]
-    libc: [musl]
 
   '@oxlint/binding-linux-s390x-gnu@1.50.0':
     resolution: {integrity: sha512-i/JLi2ljLUIVfekMj4ISmdt+Hn11wzYUdRRrkVUYsCWw7zAy5xV7X9iA+KMyM156LTFympa7s3oKBjuCLoTAUQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@oxlint/binding-linux-x64-gnu@1.50.0':
     resolution: {integrity: sha512-/C7brhn6c6UUPccgSPCcpLQXcp+xKIW/3sji/5VZ8/OItL3tQ2U7KalHz887UxxSQeEOmd1kY6lrpuwFnmNqOA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@oxlint/binding-linux-x64-musl@1.50.0':
     resolution: {integrity: sha512-oDR1f+bGOYU8LfgtEW8XtotWGB63ghtcxk5Jm6IDTCk++rTA/IRMsjOid2iMd+1bW+nP9Mdsmcdc7VbPD3+iyQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@oxlint/binding-openharmony-arm64@1.50.0':
     resolution: {integrity: sha512-4CmRGPp5UpvXyu4jjP9Tey/SrXDQLRvZXm4pb4vdZBxAzbFZkCyh0KyRy4txld/kZKTJlW4TO8N1JKrNEk+mWw==}
@@ -1255,79 +1247,66 @@ packages:
     resolution: {integrity: sha512-t4ONHboXi/3E0rT6OZl1pKbl2Vgxf9vJfWgmUoCEVQVxhW6Cw/c8I6hbbu7DAvgp82RKiH7TpLwxnJeKv2pbsw==}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.59.0':
     resolution: {integrity: sha512-CikFT7aYPA2ufMD086cVORBYGHffBo4K8MQ4uPS/ZnY54GKj36i196u8U+aDVT2LX4eSMbyHtyOh7D7Zvk2VvA==}
     cpu: [arm]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.59.0':
     resolution: {integrity: sha512-jYgUGk5aLd1nUb1CtQ8E+t5JhLc9x5WdBKew9ZgAXg7DBk0ZHErLHdXM24rfX+bKrFe+Xp5YuJo54I5HFjGDAA==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.59.0':
     resolution: {integrity: sha512-peZRVEdnFWZ5Bh2KeumKG9ty7aCXzzEsHShOZEFiCQlDEepP1dpUl/SrUNXNg13UmZl+gzVDPsiCwnV1uI0RUA==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-loong64-gnu@4.59.0':
     resolution: {integrity: sha512-gbUSW/97f7+r4gHy3Jlup8zDG190AuodsWnNiXErp9mT90iCy9NKKU0Xwx5k8VlRAIV2uU9CsMnEFg/xXaOfXg==}
     cpu: [loong64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-loong64-musl@4.59.0':
     resolution: {integrity: sha512-yTRONe79E+o0FWFijasoTjtzG9EBedFXJMl888NBEDCDV9I2wGbFFfJQQe63OijbFCUZqxpHz1GzpbtSFikJ4Q==}
     cpu: [loong64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-ppc64-gnu@4.59.0':
     resolution: {integrity: sha512-sw1o3tfyk12k3OEpRddF68a1unZ5VCN7zoTNtSn2KndUE+ea3m3ROOKRCZxEpmT9nsGnogpFP9x6mnLTCaoLkA==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-ppc64-musl@4.59.0':
     resolution: {integrity: sha512-+2kLtQ4xT3AiIxkzFVFXfsmlZiG5FXYW7ZyIIvGA7Bdeuh9Z0aN4hVyXS/G1E9bTP/vqszNIN/pUKCk/BTHsKA==}
     cpu: [ppc64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-riscv64-gnu@4.59.0':
     resolution: {integrity: sha512-NDYMpsXYJJaj+I7UdwIuHHNxXZ/b/N2hR15NyH3m2qAtb/hHPA4g4SuuvrdxetTdndfj9b1WOmy73kcPRoERUg==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-musl@4.59.0':
     resolution: {integrity: sha512-nLckB8WOqHIf1bhymk+oHxvM9D3tyPndZH8i8+35p/1YiVoVswPid2yLzgX7ZJP0KQvnkhM4H6QZ5m0LzbyIAg==}
     cpu: [riscv64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-s390x-gnu@4.59.0':
     resolution: {integrity: sha512-oF87Ie3uAIvORFBpwnCvUzdeYUqi2wY6jRFWJAy1qus/udHFYIkplYRW+wo+GRUP4sKzYdmE1Y3+rY5Gc4ZO+w==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.59.0':
     resolution: {integrity: sha512-3AHmtQq/ppNuUspKAlvA8HtLybkDflkMuLK4DPo77DfthRb71V84/c4MlWJXixZz4uruIH4uaa07IqoAkG64fg==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.59.0':
     resolution: {integrity: sha512-2UdiwS/9cTAx7qIUZB/fWtToJwvt0Vbo0zmnYt7ED35KPg13Q0ym1g442THLC7VyI6JfYTP4PiSOWyoMdV2/xg==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-openbsd-x64@4.59.0':
     resolution: {integrity: sha512-M3bLRAVk6GOwFlPTIxVBSYKUaqfLrn8l0psKinkCFxl4lQvOSz8ZrKDz2gxcBwHFpci0B6rttydI4IpS4IS/jQ==}
@@ -1409,28 +1388,24 @@ packages:
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@tailwindcss/oxide-linux-arm64-musl@4.2.1':
     resolution: {integrity: sha512-WZA0CHRL/SP1TRbA5mp9htsppSEkWuQ4KsSUumYQnyl8ZdT39ntwqmz4IUHGN6p4XdSlYfJwM4rRzZLShHsGAQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@tailwindcss/oxide-linux-x64-gnu@4.2.1':
     resolution: {integrity: sha512-qMFzxI2YlBOLW5PhblzuSWlWfwLHaneBE0xHzLrBgNtqN6mWfs+qYbhryGSXQjFYB1Dzf5w+LN5qbUTPhW7Y5g==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@tailwindcss/oxide-linux-x64-musl@4.2.1':
     resolution: {integrity: sha512-5r1X2FKnCMUPlXTWRYpHdPYUY6a1Ar/t7P24OuiEdEOmms5lyqjDRvVY1yy9Rmioh+AunQ0rWiOTPE8F9A3v5g==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@tailwindcss/oxide-wasm32-wasi@4.2.1':
     resolution: {integrity: sha512-MGFB5cVPvshR85MTJkEvqDUnuNoysrsRxd6vnk1Lf2tbiqNlXpHYZqkqOQalydienEWOHHFyyuTSYRsLfxFJ2Q==}
@@ -3191,28 +3166,24 @@ packages:
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   lightningcss-linux-arm64-musl@1.31.1:
     resolution: {integrity: sha512-mVZ7Pg2zIbe3XlNbZJdjs86YViQFoJSpc41CbVmKBPiGmC4YrfeOyz65ms2qpAobVd7WQsbW4PdsSJEMymyIMg==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   lightningcss-linux-x64-gnu@1.31.1:
     resolution: {integrity: sha512-xGlFWRMl+0KvUhgySdIaReQdB4FNudfUTARn7q0hh/V67PVGCs3ADFjw+6++kG1RNd0zdGRlEKa+T13/tQjPMA==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   lightningcss-linux-x64-musl@1.31.1:
     resolution: {integrity: sha512-eowF8PrKHw9LpoZii5tdZwnBcYDxRw2rRCyvAXLi34iyeYfqCQNA9rmUM0ce62NlPhCvof1+9ivRaTY6pSKDaA==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   lightningcss-win32-arm64-msvc@1.31.1:
     resolution: {integrity: sha512-aJReEbSEQzx1uBlQizAOBSjcmr9dCdL3XuC/6HLXAxmtErsj2ICo5yYggg1qOODQMtnjNQv2UHb9NpOuFtYe4w==}
@@ -5500,7 +5471,7 @@ snapshots:
       '@iconify/types': 2.0.0
       vue: 3.5.29(typescript@5.9.3)
 
-  '@inertiajs/core@2.3.16':
+  '@inertiajs/core@2.3.17':
     dependencies:
       '@types/lodash-es': 4.17.12
       axios: 1.13.5
@@ -5510,9 +5481,9 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@inertiajs/vue3@2.3.16(vue@3.5.29(typescript@5.9.3))':
+  '@inertiajs/vue3@2.3.17(vue@3.5.29(typescript@5.9.3))':
     dependencies:
-      '@inertiajs/core': 2.3.16
+      '@inertiajs/core': 2.3.17
       '@types/lodash-es': 4.17.12
       laravel-precognition: 1.0.2
       lodash-es: 4.17.23
@@ -5711,7 +5682,7 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 3.10.0
 
-  '@nuxt/ui@4.5.0(@inertiajs/vue3@2.3.16(vue@3.5.29(typescript@5.9.3)))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.5)(embla-carousel@8.6.0)(tailwindcss@4.2.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0))(vue@3.5.29(typescript@5.9.3))(yjs@13.6.29)':
+  '@nuxt/ui@4.5.0(@inertiajs/vue3@2.3.17(vue@3.5.29(typescript@5.9.3)))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.5)(embla-carousel@8.6.0)(tailwindcss@4.2.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0))(vue@3.5.29(typescript@5.9.3))(yjs@13.6.29)':
     dependencies:
       '@floating-ui/dom': 1.7.5
       '@iconify/vue': 5.0.0(vue@3.5.29(typescript@5.9.3))
@@ -5780,7 +5751,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.8.2(vue@3.5.29(typescript@5.9.3)))(vue@3.5.29(typescript@5.9.3))
       vue-component-type-helpers: 3.2.5
     optionalDependencies:
-      '@inertiajs/vue3': 2.3.16(vue@3.5.29(typescript@5.9.3))
+      '@inertiajs/vue3': 2.3.17(vue@3.5.29(typescript@5.9.3))
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -7930,9 +7901,9 @@ snapshots:
       pusher-js: 8.4.0
       socket.io-client: 4.8.3
 
-  laravel-precognition-vue-inertia@0.8.0(@inertiajs/vue3@2.3.16(vue@3.5.29(typescript@5.9.3)))(vue@3.5.29(typescript@5.9.3)):
+  laravel-precognition-vue-inertia@0.8.0(@inertiajs/vue3@2.3.17(vue@3.5.29(typescript@5.9.3)))(vue@3.5.29(typescript@5.9.3)):
     dependencies:
-      '@inertiajs/vue3': 2.3.16(vue@3.5.29(typescript@5.9.3))
+      '@inertiajs/vue3': 2.3.17(vue@3.5.29(typescript@5.9.3))
       laravel-precognition: 0.8.0
       laravel-precognition-vue: 0.8.0(vue@3.5.29(typescript@5.9.3))
       vue: 3.5.29(typescript@5.9.3)
