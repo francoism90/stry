@@ -104,15 +104,15 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
         // Load the manifest with optional start time
         await player.value.load(manifestUri, startTime.value ?? 0)
 
+        // Set ready state
+        ready.value = true
+
         // Enable the first available subtitle track by default (if any)
         const textTracks = player.value.getTextTracks()
 
         if (textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
-
-        // Set ready state
-        ready.value = true
       } catch {
         // Handled by error event listener
         // Reset ready state on load failure

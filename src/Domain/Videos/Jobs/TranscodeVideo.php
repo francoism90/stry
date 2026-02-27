@@ -26,12 +26,7 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
-
-    /**
-     * @var int
-     */
-    public $backoff = 60;
+    public $tries = 1;
 
     /**
      * @var int
@@ -41,7 +36,7 @@ class TranscodeVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $uniqueFor = 60;
+    public $uniqueFor = 30;
 
     /**
      * @var int

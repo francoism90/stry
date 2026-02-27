@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
-use Domain\Videos\DataObjects\VideoFileData;
+use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -20,7 +20,7 @@ class FetchImportableVideos
         return Collection::make($filesystem->allFiles())
             ->take(Video::getImportBatchSize())
             ->filter(fn (string $path) => rescue(fn () => str_starts_with($filesystem->mimeType($path), 'video/'), report: false))
-            ->map(fn (string $path) => VideoFileData::from([
+            ->map(fn (string $path) => VideoFile::from([
                 'disk' => $disk,
                 'path' => $path,
                 'name' => File::name($path),

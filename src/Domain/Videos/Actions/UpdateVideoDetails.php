@@ -31,7 +31,7 @@ class UpdateVideoDetails
             // Regenerate media conversions if snapshot changed or thumb conversion is missing
             if ($video->wasChanged('snapshot') && $video->hasMedia('clips')) {
                 // Get all media IDs associated with the video's clips
-                $mediaIds = implode(',', $video->getClipCollection()->modelKeys());
+                $mediaIds = implode(',', $video->getClips()->modelKeys());
 
                 Artisan::call('media-library:regenerate', [
                     '--ids' => $mediaIds,

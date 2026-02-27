@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Transcodes\Actions;
 
 use Domain\Transcodes\Models\Transcode;
-use Domain\Videos\DataObjects\VideoFileData;
+use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Jobs\ImportVideo;
 
 class ImportTranscode
@@ -16,7 +16,7 @@ class ImportTranscode
         $model = $transcode->transcodable;
 
         // Create a data object for the transcode file
-        $file = VideoFileData::from([
+        $file = VideoFile::from([
             'disk' => $transcode->getDisk(),
             'path' => $transcode->getOutputPath(),
         ]);

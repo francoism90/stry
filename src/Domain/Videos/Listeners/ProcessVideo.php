@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
-use Domain\Videos\Actions\ExtractVideoCaptions;
-use Domain\Videos\Actions\MarkVideoAsVerified;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
+use Domain\Videos\Pipes\ExtractVideoCaptions;
+use Domain\Videos\Pipes\MarkVideoAsVerified;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
@@ -25,7 +25,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int
@@ -64,7 +64,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     public function middleware(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(30),
         ];
     }
 }

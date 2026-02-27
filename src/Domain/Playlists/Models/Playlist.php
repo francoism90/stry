@@ -256,16 +256,26 @@ class Playlist extends Model
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
     }
 
+    public static function getDefaultType(): PlaylistType
+    {
+        $type = Config::string('playlists.type', 'packager');
+
+        return PlaylistType::from($type);
+    }
+
     public static function getDestinationDisk(): string
     {
         return Config::string('playlists.disk_name', 'segments');
     }
 
-    public static function getDefaultType(): PlaylistType
+    public static function getSegmentDuration(): int
     {
-        $value = Config::string('playlists.type', 'packager');
+        return Config::integer('playlists.segment_duration', 10);
+    }
 
-        return PlaylistType::from($value);
+    public static function getFragmentDuration(): int
+    {
+        return Config::integer('playlists.fragment_duration', 2);
     }
 
     public static function getExpiresAfter(): ?Carbon
@@ -285,13 +295,18 @@ class Playlist extends Model
         return Config::string('playlists.protection_scheme');
     }
 
-    public static function getKeyRotation(): bool
-    {
-        return Config::boolean('playlists.key_rotation', false);
-    }
-
-    public static function getKeyRotationDuration(): int
+    public static function getKeyRotationDuration(): ?int
     {
         return Config::integer('playlists.key_rotation_duration', 300);
+    }
+
+    public static function shouldUseEncryption(): bool
+    {
+        return filled(static::getEncryptionMethod());
+    }
+
+    public static function shouldUseKeyRotation(): bool
+    {
+        return Config::boolean('playlists.key_rotation', false);
     }
 }

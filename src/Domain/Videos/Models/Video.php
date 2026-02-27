@@ -290,7 +290,7 @@ class Video extends Model implements HasMedia
         return Config::float('videos.completion_threshold', 0.95);
     }
 
-    public function getClipCollection(): MediaCollection
+    public function getClips(): MediaCollection
     {
         return $this->getMedia('clips')->sortBy([
             ['custom_properties->streams->height', 'desc'],
@@ -298,21 +298,16 @@ class Video extends Model implements HasMedia
         ]);
     }
 
-    public function getThumb(): ?string
+    public function getCaptions(): MediaCollection
     {
-        return $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb');
+        return $this->getMedia('captions');
     }
 
     public function getStreams(): Collection
     {
         return $this
-            ->getClipCollection()
+            ->getClips()
             ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
-    }
-
-    public function getCaptions(): MediaCollection
-    {
-        return $this->getMedia('captions');
     }
 
     public function hasCaptions(): bool
@@ -324,6 +319,11 @@ class Video extends Model implements HasMedia
         return (bool) $this->getStreams()
             ->filter(fn (array $stream) => $stream['codec_type'] === 'subtitle' || data_get($stream, 'closed_captions'))
             ->isNotEmpty();
+    }
+
+    public function thumbnailUrl(): ?string
+    {
+        return $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb');
     }
 
     public function durationInSeconds(): float
@@ -355,14 +355,14 @@ class Video extends Model implements HasMedia
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn (): ?string => $this->getThumb(), report: false),
+            get: fn () => rescue(fn (): ?string => $this->thumbnailUrl(), report: false),
         )->shouldCache();
     }
 
     protected function totalSize(): Attribute
     {
         return Attribute::make(
-            get: fn (): int => $this->getClipCollection()->totalSizeInBytes(),
+            get: fn (): int => $this->getClips()->totalSizeInBytes(),
         )->shouldCache();
     }
 
@@ -398,13 +398,6 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): bool => $this->hasCaptions(),
-        )->shouldCache();
-    }
-
-    protected function captions(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): MediaCollection => $this->getCaptions(),
         )->shouldCache();
     }
 }

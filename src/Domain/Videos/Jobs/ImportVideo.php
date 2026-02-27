@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Jobs;
 
 use Domain\Videos\Actions\ImportVideoFile;
-use Domain\Videos\DataObjects\VideoFileData;
+use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -27,12 +27,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
-
-    /**
-     * @var int
-     */
-    public $backoff = 60;
+    public $tries = 1;
 
     /**
      * @var int
@@ -42,7 +37,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $uniqueFor = 60;
+    public $uniqueFor = 30;
 
     /**
      * @var int
@@ -61,17 +56,14 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function __construct(
         public Video $video,
-        public VideoFileData $file,
+        public VideoFile $file,
     ) {
         $this->onQueue('processing');
     }
 
     public function handle(): void
     {
-        app(ImportVideoFile::class)->handle(
-            $this->video,
-            $this->file
-        );
+        app(ImportVideoFile::class)->handle($this->video, $this->file);
     }
 
     /**

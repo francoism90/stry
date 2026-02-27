@@ -5,104 +5,111 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
+use Domain\Playlists\DataObjects\CaptionStream;
+use Domain\Playlists\DataObjects\PlaylistSettings;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
+use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Throwable;
 
 class CreateNewVideoPlaylist
 {
-    public function handle(Video $video): void
+    public function handle(Video $video): Collection
     {
+        // Get the playlist type from the configuration
+        $type = PlaylistType::Packager;
+
+        // Get the playlist settings from the configuration
+        $settings = PlaylistSettings::from();
+
         // Skip if there are no clips associated with the video
-        if ($video->hasPlaylist() || ! $video->hasMedia('clips')) {
-            return;
+        if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
+            return Collection::empty();
         }
 
-        // Get the collection of clips for the video
-        $clips = $video->getClipCollection();
+        // Get the collection of clips for the video, grouped by disk
+        $clips = $video->getClips()->groupBy('disk');
 
-        // Get the path relative to the disk root
-        $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
+        // Get the collection of captions for the video (if any)
+        $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionStream::from([
+            'disk' => $caption->disk,
+            'path' => $caption->getPathRelativeToRoot(),
+            'language' => $caption->getCustomProperty('language_code', 'en'),
+        ]));
 
-        // Initialize Shaka Packager
-        $packager = Shaka::fromDisk($clips->first()->disk)->open($paths->toArray());
+        return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
+            // Get all the paths for the media in this collection
+            $paths = $mediaCollection->map(fn (Media $media) => $media->getPathRelativeToRoot());
 
-        // Get encryption configuration
-        $encryptionMethod = Playlist::getEncryptionMethod();
-        $protectionScheme = Playlist::getProtectionScheme();
+            // Initialize Shaka Packager
+            $packager = Shaka::fromDisk($disk)->open($paths->toArray());
 
-        // Check if we use encryption
-        $useEncryption = filled($encryptionMethod);
+            // Add video and audio streams to the packager based on the available streams in each clip
+            $paths->each(function (string $path, int $index) use ($packager, $disk) {
+                // Detect available streams using FFMpeg
+                $ffprobe = FFMpeg::fromDisk($disk)->open($path);
 
-        // Enable AES encryption with key rotation if configured
-        if ($useEncryption) {
-            $keyData = $packager->withAESEncryption('key', $protectionScheme);
+                if ($ffprobe->getVideoStream()) {
+                    $packager->addVideoStream($path, "{$index}_video.mp4");
+                }
 
-            if (Playlist::getKeyRotation()) {
-                $packager->withKeyRotationDuration(Playlist::getKeyRotationDuration());
-            }
-        }
+                if ($ffprobe->getAudioStream()) {
+                    $packager->addAudioStream($path, "{$index}_audio.mp4");
+                }
+            });
 
-        // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($packager) {
-            // Get the path relative to the disk root
-            $path = $media->getPathRelativeToRoot();
-
-            // Detect available streams using FFMpeg
-            $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
-
-            // Add streams only if they exist
-            if ($ffprobe->getVideoStream()) {
-                $packager->addVideoStream($path, "{$media->getKey()}_video.mp4");
-            }
-
-            if ($ffprobe->getAudioStream()) {
-                $packager->addAudioStream($path, "{$media->getKey()}_audio.mp4");
-            }
-        });
-
-        // Add text tracks (captions) to the playlist if available
-        if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $packager->addTextStream($caption->getPath(), $caption->file_name, [
-                'language' => $caption->getCustomProperty('language_code', 'en'),
+            // Add text streams for captions if they exist
+            $captions->each(fn (CaptionStream $caption) => $packager->addTextStream($caption->path, $caption->disk, [
+                'language' => $caption->language,
             ]));
-        }
 
-        /** @var Playlist $playlist */
-        $playlist = $video->createPlaylist([
-            'encryption_key_id' => $keyData['key_id'] ?? null,
-            'encryption_key' => $keyData['key'] ?? null,
-            'type' => PlaylistType::Packager,
-        ]);
+            // Enable AES encryption with key rotation if configured
+            if ($settings->encryption) {
+                $keyData = $packager->withAESEncryption('key', $settings->protectionScheme);
 
-        // Configure DASH playlist settings
-        $packager
-            ->withMpdOutput($playlist->getFileName())
-            ->withAllowCodecSwitching()
-            ->withSegmentDuration(10)
-            ->withFragmentDuration(2);
+                if ($settings->keyRotation) {
+                    $packager->withKeyRotationDuration($settings->keyRotationDuration);
+                }
+            }
 
-        try {
-            // Export the playlist to the configured disk and path
+            /** @var Playlist $playlist */
+            $playlist = $video->createPlaylist([
+                'file_name' => 'index.mpd',
+                'encryption_key_id' => $keyData['key_id'] ?? null,
+                'encryption_key' => $keyData['key'] ?? null,
+                'type' => $type,
+            ]);
+
+            // Configure the packager with common settings
             $packager
-                ->export()
-                ->toDisk($playlist->getDisk())
-                ->toPath($playlist->getPath())
-                ->save();
+                ->withMpdOutput($playlist->file_name)
+                ->withAllowCodecSwitching()
+                ->withSegmentDuration($settings->segmentDuration)
+                ->withFragmentDuration($settings->fragmentDuration);
 
-            // Mark the playlist as ready
-            $playlist->markAsReady();
-        } catch (Throwable $exception) {
-            // Mark the playlist as failed
-            $playlist->markAsFailed();
+            // Export the playlist to the configured disk and path
+            try {
+                $packager
+                    ->export()
+                    ->toDisk($playlist->getDisk())
+                    ->toPath($playlist->getPath())
+                    ->afterSaving(fn () => $playlist->markAsReady())
+                    ->save();
+            } catch (Throwable $exception) {
+                // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
+                $playlist->markAsFailed();
 
-            throw $exception;
-        } finally {
-            // Clean up temporary files
-            $packager->cleanupTemporaryFiles();
-        }
+                throw $exception;
+            } finally {
+                // Clean up any temporary files created during packaging
+                $packager->cleanupTemporaryFiles();
+            }
+
+            return $playlist;
+        });
     }
 }

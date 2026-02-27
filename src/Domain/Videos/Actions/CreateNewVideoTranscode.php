@@ -19,7 +19,7 @@ class CreateNewVideoTranscode
         }
 
         // Get the first clip associated with the video
-        $clip = $video->getClipCollection()->first();
+        $clip = $video->getClips()->first();
 
         /** @var Playlist $playlist */
         $transcode = $video->createTranscode([

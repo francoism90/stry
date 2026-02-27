@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Videos\DataObjects;
 
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Dto;
 
-class VideoFileData extends Data
+class VideoFile extends Dto
 {
     public function __construct(
         public ?string $disk = null,

@@ -5,130 +5,132 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
+use Domain\Playlists\DataObjects\CaptionStream;
+use Domain\Playlists\DataObjects\PlaylistSettings;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
 use Foxws\Streamer\Support\VideoResolution;
+use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Throwable;
 
 class CreateNewVideoStream
 {
-    public function handle(Video $video): void
+    public function handle(Video $video): Collection
     {
+        // Get the playlist type from the configuration
+        $type = PlaylistType::Streamer;
+
+        // Get the playlist settings from the configuration
+        $settings = PlaylistSettings::from();
+
         // Skip if there are no clips associated with the video
-        if ($video->hasPlaylist() || ! $video->hasMedia('clips')) {
-            return;
+        if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
+            return Collection::empty();
         }
 
-        // Get the collection of clips for the video
-        $clips = $video->getClipCollection();
+        // Get the collection of clips for the video, grouped by disk
+        $clips = $video->getClips()->groupBy('disk');
 
-        // Get the path relative to the disk root
-        $paths = $clips->map(fn (Media $clip) => $clip->getPathRelativeToRoot());
+        // Get the collection of captions for the video (if any)
+        $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionStream::from([
+            'disk' => $caption->disk,
+            'path' => $caption->getPathRelativeToRoot(),
+            'language' => $caption->getCustomProperty('language_code', 'en'),
+        ]));
 
-        // Initialize Streamer
-        $streamer = Streamer::fromDisk($clips->first()->disk)->open($paths->toArray());
+        return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
+            // Get all the paths for the media in this collection
+            $paths = $mediaCollection->map(fn (Media $media) => $media->getPathRelativeToRoot());
 
-        // Use system binaries
-        $streamer->useSystemBinaries();
+            // Initialize Streamer
+            $streamer = Streamer::fromDisk($disk)->open($paths->toArray());
 
-        // Get encryption configuration
-        $encryptionMethod = Playlist::getEncryptionMethod();
-        $protectionScheme = Playlist::getProtectionScheme();
+            // Use system binaries
+            $streamer->useSystemBinaries();
 
-        // Check if we use encryption
-        $useEncryption = filled($encryptionMethod);
+            // Initialize an array to keep track of added resolutions for the playlist
+            $resolutions = [];
 
-        // Enable AES encryption with key rotation if configured
-        if ($useEncryption) {
-            $keyData = $streamer->withAESEncryption('key', $protectionScheme);
+            // Iterate through each clip and add to the playlist
+            $mediaCollection->each(function (Media $media, int $index) use ($streamer, &$resolutions) {
+                // Get the path relative to the disk root
+                $path = $media->getPathRelativeToRoot();
 
-            if (Playlist::getKeyRotation()) {
-                $streamer->withKeyRotationDuration(Playlist::getKeyRotationDuration());
+                // Detect available streams using FFMpeg
+                $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
+
+                // Add streams only if they exist
+                if ($videoStream = $ffprobe->getVideoStream()) {
+                    $streamer->addVideoStream($path, "{$index}_video.mp4");
+
+                    // Find the highest supported resolution for the video stream
+                    $resolution = VideoResolution::make(
+                        $videoStream->getDimensions()->getHeight()
+                    )->first();
+
+                    if ($resolution && ! in_array($resolution, $resolutions, strict: true)) {
+                        $resolutions[] = $resolution;
+                    }
+                }
+
+                if ($ffprobe->getAudioStream()) {
+                    $streamer->addAudioStream($path, "{$index}_audio.mp4");
+                }
+            });
+
+            // Add available resolutions (if any)
+            if (filled($resolutions)) {
+                $streamer->withResolutions($resolutions);
             }
-        }
 
-        // Initialize an array to keep track of added resolutions for the playlist
-        $resolutions = [];
+            // Add text streams for captions if they exist
+            $captions->each(fn (CaptionStream $caption) => $streamer->addTextStream($caption->path, basename((string) $caption->path), [
+                'language' => $caption->language,
+            ]));
 
-        // Iterate through each clip and add to the playlist
-        $clips->each(function (Media $media) use ($streamer, $resolutions, $useEncryption, $protectionScheme) {
-            // Get the path relative to the disk root
-            $path = $media->getPathRelativeToRoot();
+            // Enable AES encryption with key rotation if configured
+            if ($settings->encryption) {
+                $keyData = $streamer->withAESEncryption('key', $settings->protectionScheme);
 
-            // Detect available streams using FFMpeg
-            $ffprobe = FFMpeg::fromDisk($media->disk)->open($path);
-
-            // Use TS segments for SAMPLE-AES encryption (protection_scheme = null)
-            // Use m4s segments for CENC/CBCS encryption (protection_scheme = 'cenc'/'cbcs')
-            $extension = $useEncryption && $protectionScheme === null ? 'ts' : 'm4s';
-
-            // Add streams only if they exist
-            if ($videoStream = $ffprobe->getVideoStream()) {
-                // Add video stream with the appropriate output filename pattern
-                $streamer->addVideoStream($path, "{$media->getKey()}_video.\$Number\$.{$extension}");
-
-                // Find the highest supported resolution for the video stream
-                $resolution = VideoResolution::make($videoStream->getDimensions()->getHeight())->first();
-
-                if ($resolution && ! in_array($resolution, $resolutions, strict: true)) {
-                    $resolutions[] = $resolution;
+                if ($settings->keyRotation) {
+                    $streamer->withKeyRotationDuration($settings->keyRotationDuration);
                 }
             }
 
-            if ($ffprobe->getAudioStream()) {
-                $streamer->addAudioStream($path, "{$media->getKey()}_audio.\$Number\$.{$extension}");
+            /** @var Playlist $playlist */
+            $playlist = $video->createPlaylist([
+                'encryption_key_id' => $keyData['key_id'] ?? null,
+                'encryption_key' => $keyData['key'] ?? null,
+                'type' => $type,
+            ]);
+
+            // Configure DASH playlist settings
+            $streamer
+                ->withMpdOutput($playlist->getFileName())
+                ->withStreamingMode('vod')
+                ->withSegmentPerFile();
+
+            try {
+                $streamer
+                    ->export()
+                    ->toDisk($playlist->getDisk())
+                    ->toPath($playlist->getPath())
+                    ->afterSaving(fn () => $playlist->markAsReady())
+                    ->save();
+            } catch (Throwable $exception) {
+                // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
+                $playlist->markAsFailed();
+
+                throw $exception;
+            } finally {
+                $streamer->cleanupTemporaryFiles();
             }
+
+            return $playlist;
         });
-
-        // Add text tracks (captions) to the playlist if available
-        if ($video->getCaptions()->isNotEmpty()) {
-            $video->getCaptions()->each(fn (Media $caption) => $streamer->addTextStream($caption->getPath(), $caption->file_name, [
-                'language' => $caption->getCustomProperty('language_code', 'en'),
-            ]));
-        }
-
-        // Add available resolutions (if any)
-        if (filled($resolutions)) {
-            $streamer->withResolutions($resolutions);
-        }
-
-        /** @var Playlist $playlist */
-        $playlist = $video->createPlaylist([
-            'encryption_key_id' => $keyData['key_id'] ?? null,
-            'encryption_key' => $keyData['key'] ?? null,
-            'type' => PlaylistType::Streamer,
-        ]);
-
-        // Configure DASH playlist settings
-        $streamer
-            ->withMpdOutput($playlist->getFileName())
-            ->withStreamingMode('vod')
-            ->withSegmentPerFile();
-
-        // Export the playlist to the configured disk and path
-        try {
-            // Prepare the exporter
-            $exporter = $streamer
-                ->export()
-                ->toDisk($playlist->getDisk())
-                ->toPath($playlist->getPath());
-
-            // Save the exported playlist
-            $exporter->save();
-
-            // Mark the playlist as ready
-            $playlist->markAsReady();
-        } catch (Throwable $exception) {
-            // Mark the playlist as failed
-            $playlist->markAsFailed();
-
-            throw $exception;
-        } finally {
-            // Clean up temporary files
-            $streamer->cleanupTemporaryFiles();
-        }
     }
 }
