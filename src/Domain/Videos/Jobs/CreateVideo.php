@@ -32,17 +32,12 @@ class CreateVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $backoff = 60;
-
-    /**
-     * @var int
-     */
     public $timeout = 3600;
 
     /**
      * @var int
      */
-    public $uniqueFor = 60;
+    public $uniqueFor = 30;
 
     /**
      * @var int
