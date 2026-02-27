@@ -21,9 +21,7 @@ class SetVideoProgress
         $cacheKey = $user->generateCacheKey("video:progress:{$video->getKey()}");
 
         // Extract the current progress time from attributes (if provided)
-        $time = (float) data_get($attributes ?? [], 'time', 0);
-
-        $time = $this->normalizeProgress($video, $time);
+        $time = $this->normalizeProgress($video, $attributes);
 
         // Only mark as viewed if the user hasn't already viewed the video
         if (Cache::missing($cacheKey) || ! $user->isViewed($video)) {
@@ -31,13 +29,16 @@ class SetVideoProgress
         }
 
         // Always cache the progress for quick retrieval
-        Cache::put($cacheKey, $time, now()->addMinutes(20));
+        Cache::put($cacheKey, $time, now()->addHour());
     }
 
-    protected function normalizeProgress(Video $video, ?float $time = null): float
+    protected function normalizeProgress(Video $video, ?array $attributes = null): float
     {
+        // Extract the current progress time from attributes (if provided)
+        $value = (float) data_get($attributes ?? [], 'time', 0);
+
         // Round the progress to 2 decimal places for consistency
-        $time = round($time ?? 0, 2);
+        $time = round($value ?? 0, 2);
 
         return Number::clamp($time, 0, $video->duration ?? 0);
     }
