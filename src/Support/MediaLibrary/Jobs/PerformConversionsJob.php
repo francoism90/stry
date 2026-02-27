@@ -23,7 +23,7 @@ class PerformConversionsJob extends BasePerformConversionsJob implements ShouldQ
     /**
      * @var int
      */
-    public $timeout = 60 * 20;
+    public $timeout = 600;
 
     /**
      * @var bool
@@ -41,7 +41,7 @@ class PerformConversionsJob extends BasePerformConversionsJob implements ShouldQ
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(30),
         ];
     }
 }

@@ -95,8 +95,8 @@ class CreateNewVideoPlaylist
                     ->toPath($playlist->getPath())
                     ->save();
 
-                // Mark the playlist as completed after successful packaging
-                $playlist->markAsCompleted();
+                // Mark the playlist as ready after successful packaging
+                $playlist->markAsReady();
             } catch (Throwable $exception) {
                 // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
                 $playlist->markAsFailed();

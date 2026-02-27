@@ -25,7 +25,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int
