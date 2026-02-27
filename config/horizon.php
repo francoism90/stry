@@ -213,7 +213,7 @@ return [
             'queue' => ['broadcasts'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
-            'minProcesses' => 3,
+            'minProcesses' => 1,
             'maxProcesses' => 15,
             'balanceMaxShift' => 5,
             'balanceCooldown' => 1,

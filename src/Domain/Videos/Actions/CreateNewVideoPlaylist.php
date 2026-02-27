@@ -93,10 +93,8 @@ class CreateNewVideoPlaylist
                     ->export()
                     ->toDisk($playlist->getDisk())
                     ->toPath($playlist->getPath())
+                    ->afterSaving(fn () => $playlist->markAsCompleted())
                     ->save();
-
-                // Mark the playlist as ready after successful packaging
-                $playlist->markAsReady();
             } catch (Throwable $exception) {
                 // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
                 $playlist->markAsFailed();

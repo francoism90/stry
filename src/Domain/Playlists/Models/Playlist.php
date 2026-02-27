@@ -154,6 +154,11 @@ class Playlist extends Model
         return ['id' => $this->getRouteKey()];
     }
 
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
+    }
+
     public function broadcastQueue(): string
     {
         return 'broadcasts';
