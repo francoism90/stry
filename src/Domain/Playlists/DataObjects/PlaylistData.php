@@ -12,6 +12,8 @@ class PlaylistData extends Dto
 {
     public function __construct(
         public string $disk = Playlist::getDestinationDisk(),
+        public int $segmentDuration = Playlist::getSegmentDuration(),
+        public int $fragmentDuration = Playlist::getFragmentDuration(),
         public bool $encryption = Playlist::shouldUseEncryption(),
         public bool $keyRotation = Playlist::shouldUseKeyRotation(),
         public PlaylistType $type = Playlist::getDefaultType(),

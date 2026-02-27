@@ -84,8 +84,8 @@ class CreateNewVideoPlaylist
             $packager
                 ->withMpdOutput($playlist->file_name)
                 ->withAllowCodecSwitching()
-                ->withSegmentDuration(10)
-                ->withFragmentDuration(2);
+                ->withSegmentDuration($settings->segmentDuration)
+                ->withFragmentDuration($settings->fragmentDuration);
 
             try {
                  // Export the playlist to the configured disk and path
