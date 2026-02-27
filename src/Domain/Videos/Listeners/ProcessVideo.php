@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Listeners;
 
-use Domain\Videos\Pipes\ExtractVideoCaptions;
-use Domain\Videos\Pipes\MarkVideoAsVerified;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
+use Domain\Videos\Pipes\ExtractVideoCaptions;
+use Domain\Videos\Pipes\MarkVideoAsVerified;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;

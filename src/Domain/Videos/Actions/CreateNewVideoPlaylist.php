@@ -88,7 +88,7 @@ class CreateNewVideoPlaylist
                 ->withSegmentDuration($settings->segmentDuration)
                 ->withFragmentDuration($settings->fragmentDuration);
 
-             // Export the playlist to the configured disk and path
+            // Export the playlist to the configured disk and path
             try {
                 $packager
                     ->export()

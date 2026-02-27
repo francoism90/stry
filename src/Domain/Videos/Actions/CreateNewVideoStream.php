@@ -52,7 +52,7 @@ class CreateNewVideoStream
             $resolutions = [];
 
             // Iterate through each clip and add to the playlist
-            $mediaCollection->each(function (Media $media, int $index) use ($streamer, &$resolutions, $settings) {
+            $mediaCollection->each(function (Media $media, int $index) use ($streamer, &$resolutions) {
                 // Get the path relative to the disk root
                 $path = $media->getPathRelativeToRoot();
 
@@ -61,10 +61,12 @@ class CreateNewVideoStream
 
                 // Add streams only if they exist
                 if ($videoStream = $ffprobe->getVideoStream()) {
-                    $streamer->addVideoStream($path, "{$index}_video.mp4"));
+                    $streamer->addVideoStream($path, "{$index}_video.mp4");
 
                     // Find the highest supported resolution for the video stream
-                    $resolution = VideoResolution::make($videoStream->getDimensions()->getHeight())->first();
+                    $resolution = VideoResolution::make(
+                        $videoStream->getDimensions()->getHeight()
+                    )->first();
 
                     if ($resolution && ! in_array($resolution, $resolutions, strict: true)) {
                         $resolutions[] = $resolution;
