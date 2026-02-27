@@ -6,7 +6,7 @@ namespace Domain\Videos\Jobs;
 
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\CreateNewVideoByImport;
-use Domain\Videos\DataObjects\VideoFileData;
+use Domain\Videos\DataObjects\VideoFile;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -27,7 +27,7 @@ class CreateVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int
@@ -61,7 +61,7 @@ class CreateVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function __construct(
         public User $user,
-        public VideoFileData $file,
+        public VideoFile $file,
     ) {
         $this->onQueue('processing');
     }

@@ -6,7 +6,7 @@ namespace Domain\Videos\Commands;
 
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\FetchImportableVideos;
-use Domain\Videos\DataObjects\VideoFileData;
+use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Jobs\CreateVideo;
 use Domain\Videos\Models\Video;
 use Illuminate\Console\Command;
@@ -51,7 +51,7 @@ class ImportCommand extends Command implements Isolatable
 
         table(
             headers: ['Filename', 'Filesize'],
-            rows: Collection::make($files)->map(fn (VideoFileData $file) => [
+            rows: Collection::make($files)->map(fn (VideoFile $file) => [
                 Str::limit($file->name, 50),
                 Number::fileSize($file->size),
             ])->all(),
@@ -74,7 +74,7 @@ class ImportCommand extends Command implements Isolatable
         progress(
             label: 'Importing videos',
             steps: $files->getIterator(),
-            callback: function (VideoFileData $file, $progress) use ($user) {
+            callback: function (VideoFile $file, $progress) use ($user) {
                 $progress->label("Importing {$file->path}...");
 
                 return CreateVideo::dispatch($user, $file);
