@@ -7,6 +7,7 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
 use Domain\Playlists\DataObjects\PlaylistSettings;
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
@@ -20,11 +21,14 @@ class CreateNewVideoStream
 {
     public function handle(Video $video): Collection
     {
+        // Get the playlist type from the configuration
+        $type = PlaylistType::Streamer;
+
         // Get the playlist settings from the configuration
         $settings = PlaylistSettings::from();
 
         // Skip if there are no clips associated with the video
-        if ($video->hasPlaylist($settings->type) || ! $video->hasMedia('clips')) {
+        if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
             return Collection::empty();
         }
 
@@ -38,7 +42,7 @@ class CreateNewVideoStream
             'language' => $caption->getCustomProperty('language_code', 'en'),
         ]));
 
-        return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings) {
+        return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
             // Get all the paths for the media in this collection
             $paths = $mediaCollection->map(fn (Media $media) => $media->getPathRelativeToRoot());
 
@@ -101,7 +105,7 @@ class CreateNewVideoStream
             $playlist = $video->createPlaylist([
                 'encryption_key_id' => $keyData['key_id'] ?? null,
                 'encryption_key' => $keyData['key'] ?? null,
-                'type' => $settings->type,
+                'type' => $type,
             ]);
 
             // Configure DASH playlist settings

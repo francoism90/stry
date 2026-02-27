@@ -20,11 +20,14 @@ class CreateNewVideoPlaylist
 {
     public function handle(Video $video): Collection
     {
+        // Get the playlist type from the configuration
+        $type = PlaylistType::Packager;
+
         // Get the playlist settings from the configuration
-        $settings = PlaylistSettings::from(PlaylistType::Streamer);
+        $settings = PlaylistSettings::from();
 
         // Skip if there are no clips associated with the video
-        if ($video->hasPlaylist($settings->type) || ! $video->hasMedia('clips')) {
+        if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
             return Collection::empty();
         }
 
@@ -38,7 +41,7 @@ class CreateNewVideoPlaylist
             'language' => $caption->getCustomProperty('language_code', 'en'),
         ]));
 
-        return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings) {
+        return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
             // Get all the paths for the media in this collection
             $paths = $mediaCollection->map(fn (Media $media) => $media->getPathRelativeToRoot());
 
@@ -78,7 +81,7 @@ class CreateNewVideoPlaylist
                 'file_name' => 'index.mpd',
                 'encryption_key_id' => $keyData['key_id'] ?? null,
                 'encryption_key' => $keyData['key'] ?? null,
-                'type' => $settings->type,
+                'type' => $type,
             ]);
 
             // Configure the packager with common settings
@@ -94,7 +97,7 @@ class CreateNewVideoPlaylist
                     ->export()
                     ->toDisk($playlist->getDisk())
                     ->toPath($playlist->getPath())
-                    ->afterSaving(fn () => $playlist->markAsCompleted())
+                    ->afterSaving(fn () => $playlist->markAsReady())
                     ->save();
             } catch (Throwable $exception) {
                 // If an error occurs during packaging, mark the playlist as failed and rethrow the exception

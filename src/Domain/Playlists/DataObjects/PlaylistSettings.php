@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\DataObjects;
 
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Spatie\LaravelData\Dto;
 
@@ -20,17 +19,14 @@ class PlaylistSettings extends Dto
 
     public bool $keyRotation;
 
-    public PlaylistType $type;
-
     public ?string $encryptionMethod;
 
     public ?string $protectionScheme;
 
     public ?int $keyRotationDuration;
 
-    public function __construct(?PlaylistType $type = null)
+    public function __construct()
     {
-        $this->type = $type ?? Playlist::getDefaultType();
         $this->disk = Playlist::getDestinationDisk();
         $this->segmentDuration = Playlist::getSegmentDuration();
         $this->fragmentDuration = Playlist::getFragmentDuration();
