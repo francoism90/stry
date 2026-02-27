@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Jobs;
 
 use Domain\Users\Models\User;
-use Domain\Videos\Actions\CreateNewVideoByImport;
+use Domain\Videos\Actions\CreateVideoByImport;
 use Domain\Videos\DataObjects\VideoFile;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -68,7 +68,7 @@ class CreateVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        app(CreateNewVideoByImport::class)->handle($this->user, $this->file);
+        app(CreateVideoByImport::class)->handle($this->user, $this->file);
     }
 
     /**
