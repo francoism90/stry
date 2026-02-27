@@ -6,7 +6,7 @@ namespace Domain\Playlists\DataObjects;
 
 use Spatie\LaravelData\Dto;
 
-class CaptionData extends Dto
+class CaptionStream extends Dto
 {
     public function __construct(
         public ?string $disk = null,

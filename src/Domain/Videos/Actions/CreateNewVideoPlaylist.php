@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
-use Domain\Playlists\DataObjects\CaptionData;
-use Domain\Playlists\DataObjects\PlaylistData;
+use Domain\Playlists\DataObjects\CaptionStream;
+use Domain\Playlists\DataObjects\PlaylistSettings;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
@@ -20,7 +20,7 @@ class CreateNewVideoPlaylist
     public function handle(Video $video): Collection
     {
         // Get the playlist settings from the configuration
-        $settings = PlaylistData::from();
+        $settings = PlaylistSettings::from();
 
         // Skip if there are no clips associated with the video
         if ($video->hasPlaylist($settings->type) || ! $video->hasMedia('clips')) {
@@ -31,7 +31,7 @@ class CreateNewVideoPlaylist
         $clips = $video->getClips()->groupBy('disk');
 
         // Get the collection of captions for the video (if any)
-        $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionData::from([
+        $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionStream::from([
             'disk' => $caption->disk,
             'path' => $caption->getPathRelativeToRoot(),
             'language' => $caption->getCustomProperty('language_code', 'en'),
@@ -59,7 +59,7 @@ class CreateNewVideoPlaylist
             });
 
             // Add text streams for captions if they exist
-            $captions->each(fn (CaptionData $caption) => $packager->addTextStream($caption->path, $caption->disk, [
+            $captions->each(fn (CaptionStream $caption) => $packager->addTextStream($caption->path, $caption->disk, [
                 'language' => $caption->language,
             ]));
 
@@ -88,7 +88,7 @@ class CreateNewVideoPlaylist
                 ->withFragmentDuration($settings->fragmentDuration);
 
             try {
-                 // Export the playlist to the configured disk and path
+                // Export the playlist to the configured disk and path
                 $packager
                     ->export()
                     ->toDisk($playlist->getDisk())
