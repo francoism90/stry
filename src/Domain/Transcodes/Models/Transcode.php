@@ -212,12 +212,12 @@ class Transcode extends Model
         $this->touch('started_at');
     }
 
-    public function markAsCompleted(int $fileSize): void
+    public function markAsCompleted(): void
     {
         $this->state->transitionTo(States\Completed::class);
 
         $this->updateOrFail([
-            'file_size' => $fileSize,
+            'file_size' => $this->getFileSize(),
             'transcoded_at' => now(),
         ]);
     }
