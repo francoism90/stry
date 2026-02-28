@@ -100,6 +100,11 @@ class Transcode extends Model
         return ['ulid'];
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
+
     public static function findFromUlid(Transcode|string $value): ?Transcode
     {
         if ($value instanceof Transcode) {
@@ -140,11 +145,6 @@ class Transcode extends Model
     public function broadcastQueue(): string
     {
         return 'broadcasts';
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
     }
 
     public function isPending(): bool
