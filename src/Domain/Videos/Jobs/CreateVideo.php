@@ -27,7 +27,7 @@ class CreateVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 1;
+    public $tries = 3;
 
     /**
      * @var int
