@@ -162,9 +162,6 @@ RUN chown -R docker:docker /config /data /storage
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
-LABEL org.opencontainers.image.variant="production" \
-      org.opencontainers.image.source="https://github.com/francoism90/stry"
-
 USER docker
 
 EXPOSE 6001 8000 13714
@@ -176,5 +173,6 @@ WORKDIR /app
 # Set proper ownership
 RUN chown -R docker:docker /app /pnpm /config /data /storage
 
-LABEL org.opencontainers.image.variant="development" \
-      org.opencontainers.image.source="https://github.com/francoism90/stry"
+USER docker
+
+EXPOSE 5173 6001 8000 13714
