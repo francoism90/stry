@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="/app"
 CORS_POLICY="${ROOT_DIR}/containers/runtimes/policies/cors.json"
 
 # Source .env if env vars are not already set...
@@ -18,7 +18,7 @@ export AWS_ENDPOINT_URL="${AWS_ENDPOINT}"
 : "${AWS_SECRET_ACCESS_KEY:?Required: AWS_SECRET_ACCESS_KEY}"
 
 BUCKETS=(local assets conversions segments secrets)
-PUBLIC_BUCKETS=(assets conversions segments)
+PUBLIC_BUCKETS=(assets conversions segments secrets)
 
 # Create buckets...
 echo "Creating buckets..."
