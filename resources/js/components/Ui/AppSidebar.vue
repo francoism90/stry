@@ -59,9 +59,8 @@ const links: NavigationMenuItem[][] = [
       <AppLogo class="w-full" />
     </template>
 
-    <template #default="{ collapsed }">
+    <template #default>
       <UNavigationMenu
-        :collapsed="collapsed"
         :items="links"
         :ui="{
           root: 'gap-3',

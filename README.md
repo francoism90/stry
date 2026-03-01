@@ -104,6 +104,12 @@ systemctl --user start stry proxy
 
 The instance will be available at: **<https://stry.test>**
 
+### Seed Database
+
+```bash
+stry a db:seed --force
+```
+
 ### Creating an Admin User
 
 For testing purposes only, seed a super-admin user:

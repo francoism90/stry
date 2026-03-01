@@ -53,8 +53,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-ENV ARTISAN="php -d variables_order=EGPCS /app/artisan"
-ENV OCTANE="${ARTISAN} octane:frankenphp"
+ENV PHP_CLI="php -d variables_order=EGPCS"
+ENV FRANKEN_CLI="frankenphp php-cli"
+ENV ARTISAN="${FRANKEN_CLI} /app/artisan"
+ENV OCTANE="${FRANKEN_CLI} /app/artisan octane:frankenphp --host=0.0.0.0 --port=8000"
 
 WORKDIR /tmp
 
@@ -105,9 +107,9 @@ COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-us
 
 # Install PHP extensions
 run install-php-extensions @composer \
-    apcu bcmath ctype curl dom exif ffi fileinfo filter gd \
-    igbinary imagick inotify intl mbstring opcache pcntl \
-    pdo_pgsql redis sockets tokenizer uv xml zip
+    apcu bcmath ctype exif ffi gd \
+    igbinary imagick inotify intl opcache pcntl \
+    pdo_pgsql redis sockets uv zip
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
@@ -119,8 +121,7 @@ RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
-RUN mkdir -p /app /config /data /storage/{media,cache,import} \
-    && chown -R docker:docker /app /config /data /storage
+RUN mkdir -p /app /config /data /storage/{media,cache,import}
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -152,17 +153,14 @@ FROM base AS production
 WORKDIR /app
 
 # Copy application from build stage
-COPY --from=build /app /app
+COPY --chown=docker:docker --from=build /app /app
 
 # Set proper ownership
-RUN chown -R docker:docker /app
+RUN chown -R docker:docker /config /data /storage
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-
-LABEL org.opencontainers.image.variant="production" \
-      org.opencontainers.image.source="https://github.com/francoism90/stry"
 
 USER docker
 
@@ -173,7 +171,8 @@ FROM base AS development
 WORKDIR /app
 
 # Set proper ownership
-RUN chown -R docker:docker /app /pnpm
+RUN chown -R docker:docker /app /pnpm /config /data /storage
 
-LABEL org.opencontainers.image.variant="development" \
-      org.opencontainers.image.source="https://github.com/francoism90/stry"
+USER docker
+
+EXPOSE 5173 6001 8000 13714
