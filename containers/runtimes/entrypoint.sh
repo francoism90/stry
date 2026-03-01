@@ -60,7 +60,7 @@ fi
 if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
     # Ensure database is up to date
     log "INFO" "Running any pending migrations..."
-    ${ARTISAN} migrate --seed --force
+    ${ARTISAN} migrate --force
 
     # Ensure scout indexes are synced
     log "INFO" "Syncing search indexes..."
@@ -87,15 +87,15 @@ case ${CONTAINER_ROLE} in
         ;;
     horizon)
         log "INFO" "Starting Horizon..."
-        exec ${ARTISAN} horizon
-        ;;
-    scheduler)
-        log "INFO" "Starting Scheduler..."
-        exec ${ARTISAN} schedule:work
+        exec ${PHP_CLI} /app/artisan horizon
         ;;
     reverb)
         log "INFO" "Starting Reverb..."
-        exec ${ARTISAN} reverb:start
+        exec ${PHP_CLI} /app/artisan reverb:start
+        ;;
+    scheduler)
+        log "INFO" "Starting Scheduler..."
+        exec ${PHP_CLI} /app/artisan schedule:work
         ;;
     shell)
         log "INFO" "Starting shell..."
