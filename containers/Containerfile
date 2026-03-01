@@ -107,9 +107,9 @@ COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-us
 
 # Install PHP extensions
 run install-php-extensions @composer \
-    apcu bcmath ctype curl dom exif ffi fileinfo filter gd \
-    igbinary imagick inotify intl mbstring opcache pcntl \
-    pdo_pgsql redis sockets tokenizer uv xml zip
+    apcu bcmath ctype exif ffi gd \
+    igbinary imagick inotify intl opcache pcntl \
+    pdo_pgsql redis sockets uv zip
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
