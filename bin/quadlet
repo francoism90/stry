@@ -68,7 +68,7 @@ function display_help {
     echo "  ${GREEN}redis${NC}     Start a Redis CLI session within the 'redis' container"
     echo
     echo "${YELLOW}Object Storage Commands:${NC}"
-    echo "  ${GREEN}garage${NC}    Start a Garage S3 CLI session within the 'garage' container"
+    echo "  ${GREEN}rustfs${NC}    Start a RustFS S3 CLI session within the 'rustfs' container"
     echo
     echo "${YELLOW}Debugging:${NC}"
     echo "  ${GREEN}debug ...${NC}          Run an Artisan command in debug mode"
@@ -388,14 +388,14 @@ elif [ "$1" == "redis" ]; then
         container_is_not_running
     fi
 
-# Initiate a Garage CLI terminal session within the "garage" container...
-elif [ "$1" == "garage" ]; then
+# Initiate a RustFS CLI terminal session within the "rustfs" container...
+elif [ "$1" == "rustfs" ]; then
     shift 1
 
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=(systemd-stry-garage /garage)
+        ARGS+=(systemd-stry-rustfs sh)
     else
         container_is_not_running
     fi
