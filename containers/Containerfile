@@ -73,7 +73,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     python3 ca-certificates libssl3 curl wget unzip zip git \
-    nano openssh-client postgresql-common awscli rclone \
+    nano openssh-client postgresql-common awscli \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
