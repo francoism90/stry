@@ -53,9 +53,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=${TZ}
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-ENV PHP_CLI="php -d variables_order=EGPCS"
-ENV FRANKEN_CLI="frankenphp php-cli"
-ENV ARTISAN="${FRANKEN_CLI} /app/artisan"
+ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
+ENV FRANKEN_CLI="frankenphp php-cli /app/artisan"
+ENV ARTISAN="${FRANKEN_CLI}"
 ENV OCTANE="${FRANKEN_CLI} octane:frankenphp --host=0.0.0.0 --port=8000"
 
 WORKDIR /tmp
