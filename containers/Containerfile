@@ -121,8 +121,7 @@ RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
-RUN mkdir -p /app /config /data /storage/{media,cache,import} \
-    && chown -R docker:docker /app /config /data /storage
+RUN mkdir -p /app /config /data /storage/{media,cache,import}
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -154,10 +153,10 @@ FROM base AS production
 WORKDIR /app
 
 # Copy application from build stage
-COPY --from=build /app /app
+COPY --chown=docker:docker --from=build /app /app
 
 # Set proper ownership
-RUN chown -R docker:docker /app
+RUN chown -R docker:docker /config /data /storage
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
@@ -175,7 +174,7 @@ FROM base AS development
 WORKDIR /app
 
 # Set proper ownership
-RUN chown -R docker:docker /app /pnpm
+RUN chown -R docker:docker /app /pnpm /config /data /storage
 
 LABEL org.opencontainers.image.variant="development" \
       org.opencontainers.image.source="https://github.com/francoism90/stry"
