@@ -3,6 +3,7 @@ set -e
 
 ROOT_DIR="/app"
 CORS_POLICY="${ROOT_DIR}/containers/runtimes/policies/cors.json"
+ASSETS_POLICY="${ROOT_DIR}/containers/runtimes/policies/assets.json"
 
 # Source .env if env vars are not already set...
 if [ -z "${AWS_ENDPOINT}" ] && [ -f "${ROOT_DIR}/.env" ]; then
@@ -35,5 +36,9 @@ for bucket in "${PUBLIC_BUCKETS[@]}"; do
         --bucket "${bucket}" \
         --cors-configuration "file://${CORS_POLICY}"
 done
+
+# Allow anonymous read on assets (fonts, icons)...
+echo "Applying anonymous read policy to assets..."
+aws s3api put-bucket-policy --bucket assets --policy "file://${ASSETS_POLICY}"
 
 echo "Done."
