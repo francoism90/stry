@@ -16,7 +16,7 @@ return [
      * This disk will be used to store local Google Fonts. The public disk
      * is the default because it can be served over HTTP with storage:link.
      */
-    'disk' => 'public',
+    'disk' => 'assets',
 
     /*
      * Prepend all files that are written to the selected disk with this path.
