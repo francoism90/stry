@@ -66,12 +66,12 @@ Follow the [Proxy Setup](proxy.md) guide for detailed configuration.
 
 ### Shaka Packager Configuration
 
-Shaka Packager handles HLS video packaging and streaming.
+Shaka Packager handles DASH/HLS video packaging and streaming.
 
 > [!TIP]
 > **Shaka Packager Benefits:**
 >
-> - ✅ Professional-grade HLS/DASH packaging
+> - ✅ Professional-grade DASH/HLS packaging
 > - ✅ Built-in encryption and key rotation
 > - ✅ Optimized for high-throughput streaming
 > - ✅ Handles multiple codec and bitrate profiles

@@ -73,7 +73,7 @@ VIDEO_COMPLETION_THRESHOLD=0.95
 ### Shaka Packager
 
 ```env
-# Segment duration for HLS/DASH segments (in seconds)
+# Segment duration for DASH/HLS segments (in seconds)
 PACKAGER_SEGMENT_DURATION=10
 
 # Number of concurrent write workers for s3. Default: 10
