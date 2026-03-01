@@ -15,9 +15,9 @@ ws.stry.test {
 }
 
 s3.stry.test {
-	reverse_proxy systemd-stry-garage:3900
+	reverse_proxy systemd-stry-rustfs:9000
 }
 
-web.stry.test {
-	reverse_proxy systemd-stry-garage:3902
+fs.stry.test {
+    reverse_proxy systemd-stry-rustfs:9001
 }

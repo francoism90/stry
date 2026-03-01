@@ -192,7 +192,7 @@ Primary application & services expose:
 | PostgreSQL   | 5432      |
 | Redis        | 6379      |
 | Typesense    | 8108      |
-| Garage       | 3900–3903 |
+| RustFS       | 9000-9001 |
 
 Ensure these are free on the host or adjust the `ExposeHostPort` lines in the respective container unit files.
 

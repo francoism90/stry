@@ -63,7 +63,7 @@ stry a videos:import                # Import videos
 
 ```bash
 stry redis flushall                 # Flush Redis cache
-stry garage bucket list             # List S3 buckets
+stry rustfs bucket list             # List S3 buckets
 ```
 
 ---
