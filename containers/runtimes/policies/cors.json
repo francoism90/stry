@@ -3,9 +3,9 @@
         {
             "AllowedOrigins": ["*"],
             "AllowedMethods": ["GET", "HEAD"],
-            "AllowedHeaders": ["Range", "Content-Type", "Authorization"],
+            "AllowedHeaders": ["Range", "Content-Type"],
             "ExposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges", "ETag"],
-            "MaxAgeSeconds": 3600
+            "MaxAgeSeconds": 7200
         }
     ]
 }

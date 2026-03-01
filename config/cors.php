@@ -32,7 +32,7 @@ return [
         'X-RateLimit-Remaining',
     ],
 
-    'max_age' => 86400, // 24 hours
+    'max_age' => 7200, // 2 hours
 
     'supports_credentials' => true,
 
