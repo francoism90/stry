@@ -9,6 +9,7 @@ ASSETS_POLICY="${ROOT_DIR}/containers/runtimes/policies/assets.json"
 if [ -z "${AWS_ENDPOINT}" ] && [ -f "${ROOT_DIR}/.env" ]; then
     # shellcheck source=/dev/null
     source "${ROOT_DIR}/.env"
+    export AWS_ENDPOINT AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 fi
 
 # AWS CLI expects AWS_ENDPOINT_URL...
