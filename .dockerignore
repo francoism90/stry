@@ -29,6 +29,7 @@ containers/
 !containers/runtimes/php-development.ini
 !containers/runtimes/php-production.ini
 !containers/runtimes/policies/cors.json
+!containers/runtimes/policies/assets.json
 Containerfile
 dist
 docs
