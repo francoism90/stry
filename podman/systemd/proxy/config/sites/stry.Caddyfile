@@ -19,5 +19,5 @@ s3.stry.test {
 }
 
 fs.stry.test {
-    reverse_proxy systemd-stry-rustfs:9001
+	reverse_proxy systemd-stry-rustfs:9001
 }
