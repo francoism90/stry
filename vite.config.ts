@@ -63,7 +63,7 @@ export default defineConfig(({ mode }) => {
           },
           dashboardPanel: {
             slots: {
-              body: 'overflow-clip',
+              body: 'overflow-y-clip',
             },
           },
           dashboardNavbar: {

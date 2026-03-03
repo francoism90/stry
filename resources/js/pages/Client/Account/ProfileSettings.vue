@@ -33,54 +33,56 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
     </template>
 
     <template #body>
-      <UForm
-        :state="form"
-        class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
-        loading-auto
-        @submit="onSubmit"
-      >
-        <UPageCard
-          title="Default Settings"
-          variant="naked"
-          orientation="horizontal"
+      <UPage>
+        <UForm
+          :state="form"
+          class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
+          loading-auto
+          @submit="onSubmit"
         >
-          <div class="flex items-center gap-2 lg:ms-auto">
-            <UButton
-              label="Save changes"
-              type="submit"
-              color="primary"
-              variant="soft"
-              loading-auto
-            />
-          </div>
-        </UPageCard>
-
-        <UPageCard variant="subtle">
-          <UFormField
-            label="Name"
-            required
-            :error="form.errors.name"
+          <UPageCard
+            title="Default Settings"
+            variant="naked"
+            orientation="horizontal"
           >
-            <UInput
-              v-model="form.name"
-              :model-modifiers="{ string: true, trim: true }"
-              autofocus
-              autocapitalize="words"
-            />
-          </UFormField>
+            <div class="flex items-center gap-2 lg:ms-auto">
+              <UButton
+                label="Save changes"
+                type="submit"
+                color="primary"
+                variant="soft"
+                loading-auto
+              />
+            </div>
+          </UPageCard>
 
-          <UFormField
-            label="Email"
-            required
-            :error="form.errors.email"
-          >
-            <UInput
-              v-model="form.email"
-              :model-modifiers="{ string: true, trim: true }"
-            />
-          </UFormField>
-        </UPageCard>
-      </UForm>
+          <UPageCard variant="subtle">
+            <UFormField
+              label="Name"
+              required
+              :error="form.errors.name"
+            >
+              <UInput
+                v-model="form.name"
+                :model-modifiers="{ string: true, trim: true }"
+                autofocus
+                autocapitalize="words"
+              />
+            </UFormField>
+
+            <UFormField
+              label="Email"
+              required
+              :error="form.errors.email"
+            >
+              <UInput
+                v-model="form.email"
+                :model-modifiers="{ string: true, trim: true }"
+              />
+            </UFormField>
+          </UPageCard>
+        </UForm>
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>
