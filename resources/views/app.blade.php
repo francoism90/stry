@@ -7,7 +7,6 @@
 <meta name="color-scheme" content="dark">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="manifest" href="{{ asset('build/manifest.webmanifest') }}">
 <link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" crossorigin="anonymous">
 <link rel="preconnect" href="https://api.iconify.design" crossorigin="anonymous">
 @vite('resources/js/app.ts')
