@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "pwa-1772577670";
+const CACHE_KEY = "sw-1772578231";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {
@@ -8,7 +8,7 @@ self.addEventListener("install", (event) => {
     // If the file does not exist the install still succeeds.
     event.waitUntil(
         caches
-            .open(CACHE_NAME)
+            .open(CACHE_KEY)
             .then((cache) => cache.add(OFFLINE_URL).catch(() => {}))
             .then(() => self.skipWaiting()),
     );
@@ -21,7 +21,7 @@ self.addEventListener("activate", (event) => {
             .then((keys) =>
                 Promise.all(
                     keys
-                        .filter((key) => key !== CACHE_NAME)
+                        .filter((key) => key !== CACHE_KEY)
                         .map((key) => caches.delete(key)),
                 ),
             )
@@ -88,7 +88,7 @@ self.addEventListener("fetch", (event) => {
                         const clone = response.clone();
 
                         caches
-                            .open(CACHE_NAME)
+                            .open(CACHE_KEY)
                             .then((cache) => cache.put(event.request, clone));
                     }
 

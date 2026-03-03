@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e911b9c04babc324c9ec88841e3905a",
+    "content-hash": "ebe409decb864277c6aa4c07c7a2f3dc",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.371.3",
+            "version": "3.371.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d300ec1c861e52dc8f17ca3d75dc754da949f065"
+                "reference": "957f8a5ecc30670c95dfc37a9d04660899fc44e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d300ec1c861e52dc8f17ca3d75dc754da949f065",
-                "reference": "d300ec1c861e52dc8f17ca3d75dc754da949f065",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/957f8a5ecc30670c95dfc37a9d04660899fc44e0",
+                "reference": "957f8a5ecc30670c95dfc37a9d04660899fc44e0",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.371.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.371.4"
             },
-            "time": "2026-02-27T19:05:40+00:00"
+            "time": "2026-03-03T19:52:06+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1272,16 +1272,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "0cc77d28727f96812276bc61c36148820ac26902"
+                "reference": "b7bf2574674d0be31bd987df4b886c8e570eccb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/0cc77d28727f96812276bc61c36148820ac26902",
-                "reference": "0cc77d28727f96812276bc61c36148820ac26902",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/b7bf2574674d0be31bd987df4b886c8e570eccb4",
+                "reference": "b7bf2574674d0be31bd987df4b886c8e570eccb4",
                 "shasum": ""
             },
             "require": {
@@ -1342,7 +1342,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.1"
+                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.3"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-03T22:39:11+00:00"
+            "time": "2026-03-03T22:49:03+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -7941,16 +7941,16 @@
         },
         {
             "name": "spatie/laravel-responsecache",
-            "version": "8.2.0",
+            "version": "8.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-responsecache.git",
-                "reference": "0303fd523b98b51ecba0a04ad6d37bd2875bc9a2"
+                "reference": "7f5be36713076d3164949f21768b53b236eecf03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/0303fd523b98b51ecba0a04ad6d37bd2875bc9a2",
-                "reference": "0303fd523b98b51ecba0a04ad6d37bd2875bc9a2",
+                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/7f5be36713076d3164949f21768b53b236eecf03",
+                "reference": "7f5be36713076d3164949f21768b53b236eecf03",
                 "shasum": ""
             },
             "require": {
@@ -8012,7 +8012,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-responsecache/issues",
-                "source": "https://github.com/spatie/laravel-responsecache/tree/8.2.0"
+                "source": "https://github.com/spatie/laravel-responsecache/tree/8.3.0"
             },
             "funding": [
                 {
@@ -8024,7 +8024,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-22T23:18:33+00:00"
+            "time": "2026-03-03T19:51:38+00:00"
         },
         {
             "name": "spatie/laravel-tags",

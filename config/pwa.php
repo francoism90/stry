@@ -79,7 +79,7 @@ return [
             'type' => env('PWA_ICON_MOBILE_TYPE', 'image/png'),
         ],
         [
-            'disk' => env('PWA_ICON_DESKTOP_DISK', 'public'),
+            'disk' => env('PWA_ICON_DISK', 'public'),
             'path' => env('PWA_ICON_DESKTOP_PATH', 'images/icons/icon-512x512.png'),
             'sizes' => env('PWA_ICON_DESKTOP_SIZES', '512x512'),
             'type' => env('PWA_ICON_DESKTOP_TYPE', 'image/png'),
