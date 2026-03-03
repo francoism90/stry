@@ -25,8 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     protected function configurePolicyAutoDiscovery(): void
     {
         Gate::guessPolicyNamesUsing(function (string $modelClass) {
+            // Get the base name of the model class (e.g., "User" from "App\Models\User")
             $className = class_basename($modelClass);
 
+            // Pluralize the class name to determine the namespace (e.g., "Users" for "User")
             $namespace = Str::pluralStudly($className);
 
             return Str::of("{$className}Policy")
