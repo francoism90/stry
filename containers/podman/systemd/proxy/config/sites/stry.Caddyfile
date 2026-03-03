@@ -1,6 +1,5 @@
 stry.test {
 	import compress
-	import pwa
 	reverse_proxy systemd-stry:8000
 }
 

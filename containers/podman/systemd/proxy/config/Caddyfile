@@ -10,10 +10,6 @@
 	admin off
 }
 
-(pwa) {
-	header Service-Worker-Allowed "/"
-}
-
 (compress) {
 	encode zstd gzip
 }
