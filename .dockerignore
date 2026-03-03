@@ -24,7 +24,7 @@ auto-imports.d.ts
 boost.json
 bootstrap/cache/*.php
 components.d.ts
-containers
+containers/**
 !containers/runtimes/**
 Containerfile
 dist
@@ -39,7 +39,6 @@ phpstan.neon.dist
 phpunit.xml
 pint.json
 pnpm-debug.log*
-podman/
 public/build
 public/hot
 public/storage

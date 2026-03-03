@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppNotifications from '@/components/Ui/AppNotifications.vue'
 import AppSidebar from '@/components/Ui/AppSidebar.vue'
-import ServiceWorker from '@/components/Ui/ServiceWorker.vue'
 import { useAppearance } from '@/composables/appearance'
 import { Head } from '@inertiajs/vue3'
 
@@ -15,17 +14,14 @@ const { nonce } = useAppearance()
 
   <Suspense>
     <UApp :nonce="nonce">
-      <AppNotifications />
-      <ServiceWorker />
-
       <UDashboardGroup
         unit="rem"
         storage="local"
         storage-key="app"
         class="relative mx-auto w-full max-w-(--ui-container) overflow-clip"
       >
+        <AppNotifications />
         <AppSidebar />
-
         <slot />
       </UDashboardGroup>
     </UApp>
