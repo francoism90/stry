@@ -36,9 +36,6 @@ export default defineConfig(({ mode }) => {
       }),
       vue({
         template: {
-          compilerOptions: {
-            isCustomElement: (tag) => tag.startsWith('media-'),
-          },
           transformAssetUrls: {
             base: null,
             includeAbsolute: false,

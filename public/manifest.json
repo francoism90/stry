@@ -1,16 +1,22 @@
 {
+    "id": "/",
     "name": "stry",
     "short_name": "stry",
-    "background_color": "#1b1718",
-    "display": "fullscreen",
-    "description": "Stream videos, television shows and movies.",
-    "theme_color": "#ad46ff",
+    "description": "A streaming service for videos, movies and TV shows.",
     "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#ffffff",
+    "theme_color": "#18181b",
+    "lang": "en",
+    "dir": "ltr",
     "icons": [
         {
-            "src": "logo.png",
+            "src": "/storage/images/icons/icon-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ]
 }

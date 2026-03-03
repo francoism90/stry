@@ -15,8 +15,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "erag/laravel-pwa": "^1.9",
         "foxws/laravel-ab-av1": "^0.7.0",
+        "foxws/laravel-pwa": "^0.0.2",
         "foxws/laravel-shaka": "^1.9.0",
         "foxws/laravel-streamer": "^1.5",
         "guzzlehttp/guzzle": "^7.10.0",
@@ -52,7 +52,7 @@
         "barryvdh/laravel-ide-helper": "^3.6.1",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.9.3",
-        "laravel/boost": "^2.2.1",
+        "laravel/boost": "^2.2.2",
         "laravel/envoy": "^2.10.2",
         "laravel/pail": "^1.2.6",
         "laravel/pint": "^1.27.1",

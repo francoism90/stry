@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://api.iconify.design" crossorigin="anonymous">
 @vite('resources/js/app.ts')
 @inertiaHead
-@PwaHead
+@pwa
 @googlefonts(['nonce' => app('csp-nonce')])
 @googlefonts(['font' => 'serif', 'nonce' => app('csp-nonce')])
 @googlefonts(['font' => 'code', 'nonce' => app('csp-nonce')])
@@ -23,7 +23,7 @@
         @inertia
     </div>
 
-    @RegisterServiceWorkerScript
+    @sw
 
 </body>
 </html>
