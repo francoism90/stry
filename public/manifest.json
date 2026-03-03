@@ -1,0 +1,16 @@
+{
+    "name": "stry",
+    "short_name": "stry",
+    "background_color": "#1b1718",
+    "display": "fullscreen",
+    "description": "Stream videos, television shows and movies.",
+    "theme_color": "#ad46ff",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

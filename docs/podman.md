@@ -70,7 +70,7 @@ Copy the container configuration files to your systemd user directory:
 
 ```bash
 mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/podman/systemd/stry ~/.config/containers/systemd/
+cp -r ~/projects/stry/containers/podman/systemd/stry ~/.config/containers/systemd/
 ```
 
 > [!TIP]
@@ -79,7 +79,7 @@ cp -r ~/projects/stry/podman/systemd/stry ~/.config/containers/systemd/
 > You can use `podman quadlet install` for individual unit files:
 >
 > ```bash
-> podman quadlet install ~/projects/stry/podman/systemd/stry/*.{container,build,network,volume}
+> podman quadlet install ~/projects/stry/containers/podman/systemd/stry/*.{container,build,network,volume}
 > ```
 >
 > However, `cp -r` is recommended as it preserves the `config/` subdirectory structure with environment files.

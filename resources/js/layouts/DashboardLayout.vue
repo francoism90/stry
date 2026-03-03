@@ -14,31 +14,16 @@ const { nonce } = useAppearance()
 
   <Suspense>
     <UApp :nonce="nonce">
-      <UTheme
-        :ui="{
-          dashboardPanel: {
-            slots: {
-              body: 'overflow-clip',
-            },
-          },
-          dashboardNavbar: {
-            slots: {
-              root: 'bg-default sticky top-0 z-50 w-full',
-            },
-          },
-        }"
+      <UDashboardGroup
+        unit="rem"
+        storage="local"
+        storage-key="dashboard"
+        class="relative w-full overflow-clip"
       >
-        <UDashboardGroup
-          unit="rem"
-          storage="local"
-          storage-key="dashboard"
-          class="relative w-full overflow-clip"
-        >
-          <AppNotifications />
-          <DashboardSidebar />
-          <slot />
-        </UDashboardGroup>
-      </UTheme>
+        <AppNotifications />
+        <DashboardSidebar />
+        <slot />
+      </UDashboardGroup>
     </UApp>
   </Suspense>
 </template>
