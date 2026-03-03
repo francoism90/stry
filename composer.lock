@@ -1272,16 +1272,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "faef40f8e36a4af4365973ee634c778498284514"
+                "reference": "0cc77d28727f96812276bc61c36148820ac26902"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/faef40f8e36a4af4365973ee634c778498284514",
-                "reference": "faef40f8e36a4af4365973ee634c778498284514",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/0cc77d28727f96812276bc61c36148820ac26902",
+                "reference": "0cc77d28727f96812276bc61c36148820ac26902",
                 "shasum": ""
             },
             "require": {
@@ -1342,7 +1342,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.0"
+                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.1"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-03T21:31:52+00:00"
+            "time": "2026-03-03T22:39:11+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
