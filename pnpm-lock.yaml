@@ -33,8 +33,8 @@ importers:
         specifier: ^8.4.0
         version: 8.4.0
       shaka-player:
-        specifier: ^5.0.3
-        version: 5.0.3
+        specifier: ^5.0.4
+        version: 5.0.4
       tailwindcss:
         specifier: ^4.2.1
         version: 4.2.1
@@ -3835,8 +3835,8 @@ packages:
     resolution: {integrity: sha512-RJRdvCo6IAnPdsvP/7m6bsQqNnn1FCBX5ZNtFL98MmFF/4xAIJTIg1YbHW5DC2W5SKZanrC6i4HsJqlajw/dZw==}
     engines: {node: '>= 0.4'}
 
-  shaka-player@5.0.3:
-    resolution: {integrity: sha512-ZmhTbI5A/mE0C8tF5z/eaaW553OA25NHH/458L1a178bfy7+bTn8hWokrmLMibHCAw/SpQHlYlZ8QuCeWhKj5g==}
+  shaka-player@5.0.4:
+    resolution: {integrity: sha512-Fuctx77d2iQCrThCcUQkuDtuAu7amomFgRGY9eV3O67/Jojg5mY8xnipSrjHez+HiHqTuXcWpeWRWzHYHKVGVQ==}
     engines: {node: '>=18'}
 
   shebang-command@2.0.0:
@@ -8634,7 +8634,7 @@ snapshots:
       es-errors: 1.3.0
       es-object-atoms: 1.1.1
 
-  shaka-player@5.0.3: {}
+  shaka-player@5.0.4: {}
 
   shebang-command@2.0.0:
     dependencies:
