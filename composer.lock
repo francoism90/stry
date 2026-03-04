@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2f4282cea4be678a624512d67d10a06",
+    "content-hash": "5202a7940dd7926333ddeaefe0dcf388",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1272,16 +1272,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "e2bcd319d621b3e41d083cc128d1cc18b046cfd2"
+                "reference": "3b6c90ea5232609af4ed4b132643780724ba3a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/e2bcd319d621b3e41d083cc128d1cc18b046cfd2",
-                "reference": "e2bcd319d621b3e41d083cc128d1cc18b046cfd2",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/3b6c90ea5232609af4ed4b132643780724ba3a1f",
+                "reference": "3b6c90ea5232609af4ed4b132643780724ba3a1f",
                 "shasum": ""
             },
             "require": {
@@ -1342,7 +1342,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.5"
+                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.6"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-04T07:54:40+00:00"
+            "time": "2026-03-04T11:48:33+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
