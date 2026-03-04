@@ -16,7 +16,7 @@
     "require": {
         "php": "^8.2",
         "foxws/laravel-ab-av1": "^0.7.0",
-        "foxws/laravel-pwa": "^1.0.3",
+        "foxws/laravel-pwa": "^1.0.5",
         "foxws/laravel-shaka": "^1.9.0",
         "foxws/laravel-streamer": "^1.5",
         "guzzlehttp/guzzle": "^7.10.0",

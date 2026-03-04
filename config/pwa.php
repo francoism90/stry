@@ -53,7 +53,7 @@ return [
         'display' => env('PWA_DISPLAY', 'fullscreen'),
         'orientation' => env('PWA_ORIENTATION', 'any'),
         'background_color' => env('PWA_BACKGROUND_COLOR', '#18181B'),
-        'theme_color' => env('PWA_THEME_COLOR', '#D8B4FE'),
+        'theme_color' => env('PWA_THEME_COLOR', '#18181B'),
         'lang' => env('PWA_LANG', 'en'),
         'dir' => env('PWA_DIR', 'ltr'),
     ],
@@ -73,17 +73,22 @@ return [
 
     'icons' => [
         [
-            'disk' => env('PWA_ICON_DISK', 'public'),
-            'path' => env('PWA_ICON_MOBILE_PATH', 'images/icons/icon-192x192.png'),
+            'disk' => env('PWA_ICON_DISK', null),
+            'path' => env('PWA_ICON_MOBILE_PATH', '/storage/images/icons/icon-192x192.png'),
             'sizes' => env('PWA_ICON_MOBILE_SIZES', '192x192'),
             'type' => env('PWA_ICON_MOBILE_TYPE', 'image/png'),
         ],
         [
-            'disk' => env('PWA_ICON_DISK', 'public'),
-            'path' => env('PWA_ICON_DESKTOP_PATH', 'images/icons/icon-512x512.png'),
+            'disk' => env('PWA_ICON_DISK', null),
+            'path' => env('PWA_ICON_DESKTOP_PATH', '/storage/images/icons/icon-512x512.png'),
             'sizes' => env('PWA_ICON_DESKTOP_SIZES', '512x512'),
             'type' => env('PWA_ICON_DESKTOP_TYPE', 'image/png'),
         ],
     ],
+
+    /**
+     * The Apple Touch Icon is used by iOS devices when a user adds the web application to their home screen.
+     */
+    'apple_touch_icon' => env('PWA_APPLE_TOUCH_ICON', '/storage/images/icons/apple-touch-icon.png'),
 
 ];

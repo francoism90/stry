@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_KEY = "sw-1772578231";
+const CACHE_KEY = "sw-1772611047";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {
