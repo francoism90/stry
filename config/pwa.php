@@ -15,7 +15,20 @@ return [
     |
     */
 
-    'manifest_path' => env('PWA_MANIFEST_PATH', 'manifest.json'),
+    'manifest_path' => (string) env('PWA_MANIFEST_PATH', 'manifest.json'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | PWA Service Worker Ignored Paths
+    |--------------------------------------------------------------------------
+    |
+    | Define URL path prefixes that the service worker should never intercept
+    | or cache. Any request whose pathname starts with one of these values
+    | will be passed directly to the network, bypassing all SW logic.
+    |
+    */
+
+    'ignore_paths' => (array) env('PWA_IGNORE_PATHS', ['/api/', '/livewire/', '/_inertia/']),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +41,7 @@ return [
     |
     */
 
-    'sw_path' => env('PWA_SW_PATH', 'sw.js'),
+    'sw_path' => (string) env('PWA_SW_PATH', 'sw.js'),
 
     /*
     |--------------------------------------------------------------------------
@@ -89,6 +102,6 @@ return [
     /**
      * The Apple Touch Icon is used by iOS devices when a user adds the web application to their home screen.
      */
-    'apple_touch_icon' => env('PWA_APPLE_TOUCH_ICON', '/storage/images/icons/apple-touch-icon.png'),
+    'apple_touch_icon' => (string) env('PWA_APPLE_TOUCH_ICON', '/storage/images/icons/apple-touch-icon.png'),
 
 ];

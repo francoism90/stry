@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 CONTAINER_ENV=${CONTAINER_ENV:-'production'}
 CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
@@ -22,18 +22,6 @@ if [ ! -f "database/database.sqlite" ]; then
     touch database/database.sqlite
 fi
 
-# Install PHP dependencies via Composer
-if [ ! -d "vendor" ]; then
-    log "INFO" "Installing PHP dependencies..."
-    composer install
-fi
-
-# Install Node.js dependencies via pnpm
-if [ ! -d "node_modules" ]; then
-    log "INFO" "Installing Node.js dependencies..."
-    pnpm install
-fi
-
 # Set up environment configuration
 if [ ! -f ".env" ]; then
     log "INFO" "Creating environment configuration..."
@@ -43,36 +31,40 @@ fi
 
 # Set up application
 if [ "${CONTAINER_ENV}" = "production" ]; then
-    # Optimize application
-    log "INFO" "Optimizing application..."
-    ${ARTISAN} optimize
+    # Clear current cache
+    log "INFO" "Clearing cache..."
+    ${ARTISAN} optimize:clear
 
     # Link storage
     log "INFO" "Linking storage..."
     ${ARTISAN} storage:link
 
-    # Cache configurations
-    log "INFO" "Caching configurations..."
+    # Handle assets
+    if [[ "${CONTAINER_ROLE}" = "app" || "${CONTAINER_ROLE}" = "ssr" ]]; then
+        # Fetch Google Fonts
+        log "INFO" "Fetching Google Fonts..."
+        ${ARTISAN} google-fonts:fetch
+
+        # Regenerate PWA assets
+        log "INFO" "Generating PWA assets..."
+        ${ARTISAN} pwa:generate
+    fi
+
+    # Application-specific setup
+    if [ "${CONTAINER_ROLE}" = "app" ]; then
+        # Ensure migrations are up to date
+        log "INFO" "Running any pending migrations..."
+        ${ARTISAN} migrate --force
+
+        # Ensure scout settings are synced
+        log "INFO" "Syncing scout settings..."
+        ${ARTISAN} scout:sync
+    fi
+
+    # Optimize application
+    log "INFO" "Optimizing application..."
+    ${ARTISAN} optimize
     ${ARTISAN} data:cache-structures
-fi
-
-# Perform role-specific setup
-if [[ "${CONTAINER_ROLE}" = "app" && "${CONTAINER_ENV}" = "production" ]]; then
-    # Ensure database is up to date
-    log "INFO" "Running any pending migrations..."
-    ${ARTISAN} migrate --force
-
-    # Ensure scout indexes are synced
-    log "INFO" "Syncing search indexes..."
-    ${ARTISAN} scout:sync
-
-    # Ensure assets are fetched
-    log "INFO" "Fetching Google Fonts..."
-    ${ARTISAN} google-fonts:fetch
-
-    # Cache views
-    log "INFO" "Caching views..."
-    ${ARTISAN} view:cache
 fi
 
 log "INFO" "Container role: ${CONTAINER_ROLE}"
