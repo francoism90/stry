@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db7626ffe18d22d9bd55c543356cd4e3",
+    "content-hash": "30a1a46e6658d2b3976d82666458db5f",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1272,16 +1272,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "6685a5b37c89179ee87278b019da32af630c9f15"
+                "reference": "2929f6ef688025ea67a5c22ac1989f0e48deadc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/6685a5b37c89179ee87278b019da32af630c9f15",
-                "reference": "6685a5b37c89179ee87278b019da32af630c9f15",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/2929f6ef688025ea67a5c22ac1989f0e48deadc3",
+                "reference": "2929f6ef688025ea67a5c22ac1989f0e48deadc3",
                 "shasum": ""
             },
             "require": {
@@ -1342,7 +1342,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.7"
+                "source": "https://github.com/foxws/laravel-pwa/tree/1.0.8"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-04T12:28:11+00:00"
+            "time": "2026-03-07T11:05:53+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -2639,16 +2639,16 @@
         },
         {
             "name": "laravel/horizon",
-            "version": "v5.45.0",
+            "version": "v5.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "7126ddf27fe9750c43ab0b567085dee3917d0510"
+                "reference": "637e065ae0a704288595b896ad1c7c3c9741869b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/7126ddf27fe9750c43ab0b567085dee3917d0510",
-                "reference": "7126ddf27fe9750c43ab0b567085dee3917d0510",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/637e065ae0a704288595b896ad1c7c3c9741869b",
+                "reference": "637e065ae0a704288595b896ad1c7c3c9741869b",
                 "shasum": ""
             },
             "require": {
@@ -2713,9 +2713,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/horizon/issues",
-                "source": "https://github.com/laravel/horizon/tree/v5.45.0"
+                "source": "https://github.com/laravel/horizon/tree/v5.45.1"
             },
-            "time": "2026-02-21T14:20:09+00:00"
+            "time": "2026-03-06T15:31:27+00:00"
         },
         {
             "name": "laravel/octane",

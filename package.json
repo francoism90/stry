@@ -27,9 +27,9 @@
         "laravel-echo": "^2.3.0",
         "laravel-precognition-vue-inertia": "^0.8.0",
         "pusher-js": "^8.4.0",
-        "shaka-player": "^5.0.4",
+        "shaka-player": "^5.0.5",
         "tailwindcss": "^4.2.1",
-        "vue": "^3.5.29"
+        "vue": "^3.5.30"
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",

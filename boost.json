@@ -14,6 +14,7 @@
     ],
     "sail": false,
     "skills": [
+        "configuring-horizon",
         "wayfinder-development",
         "pest-testing",
         "inertia-vue-development",
