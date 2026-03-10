@@ -34,6 +34,6 @@ class TagOrderController extends Controller implements HasMiddleware
 
         return $request->inertia()
             ? Inertia::flash('message', __('Tags order has been updated successfully.'))->back()
-            : response()->json(['message' => __('Tags order has been updated successfully.')]);
+            : response()->json();
     }
 }

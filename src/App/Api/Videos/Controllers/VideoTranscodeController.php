@@ -36,7 +36,7 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         );
 
         return $request->inertia()
-            ? Inertia::flash('message', __('The transcode has been queued.'))->back()
+            ? Inertia::flash('message', __('Transcode has been queued.'))->back()
             : response()->json();
     }
 }

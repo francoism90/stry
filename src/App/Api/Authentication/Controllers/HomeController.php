@@ -6,18 +6,11 @@ namespace App\Api\Authentication\Controllers;
 
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
+use Spatie\ResponseCache\Attributes\Cache;
 
-class HomeController extends Controller implements HasMiddleware
+#[Cache(lifetime: 10 * 60, tags: ['api'])]
+class HomeController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('cache_response:600'),
-        ];
-    }
-
     public function __invoke(): JsonResponse
     {
         return response()->json([

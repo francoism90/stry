@@ -30,13 +30,13 @@ class VideoImportController extends Controller implements HasMiddleware
         Gate::authorize('create', Video::class);
 
         // Perform the import action
-        $result = app(ProcessVideoImport::class)->handle(
+        app(ProcessVideoImport::class)->handle(
             user: $request->user(),
             disk: Video::getImportDisk()
         );
 
         return $request->inertia()
             ? Inertia::flash('message', __('Video import has been initiated.'))->back()
-            : response()->json($result);
+            : response()->json();
     }
 }

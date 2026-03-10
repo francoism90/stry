@@ -36,8 +36,8 @@ class HomeController extends Controller implements HasMiddleware
 
         // Apply filters
         $search = $request->safe()->input('search');
-        $tag = $request->safe()->input('tag');
         $order = $request->safe()->input('order', VideoOrder::Default);
+        $tag = $request->safe()->input('tag');
 
         // Scout builder
         $scout = Video::search($search)

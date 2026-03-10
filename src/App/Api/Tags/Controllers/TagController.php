@@ -13,6 +13,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Spatie\ResponseCache\Attributes\Cache;
 
 class TagController extends Controller implements HasMiddleware
 {
@@ -25,6 +26,7 @@ class TagController extends Controller implements HasMiddleware
         ];
     }
 
+    #[Cache(lifetime: 10 * 60, tags: ['tags'])]
     public function index(TagIndexRequest $request): Paginator
     {
         Gate::authorize('viewAny', Tag::class);
