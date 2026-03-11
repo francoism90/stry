@@ -71,5 +71,15 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            player: ['shaka-player', 'shaka-player/dist/shaka-player.ui'],
+            vue: ['vue', '@inertiajs/vue3', '@vueuse/core'],
+          },
+        },
+      },
+    },
   }
 })
