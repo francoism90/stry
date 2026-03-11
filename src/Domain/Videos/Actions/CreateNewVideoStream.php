@@ -88,7 +88,7 @@ class CreateNewVideoStream
             }
 
             // Add text streams for captions if they exist
-            $captions->each(fn (CaptionStream $caption) => $streamer->addTextStream($caption->path, basename((string) $caption->path), [
+            $captions->each(fn (CaptionStream $caption, int $index) => $streamer->addTextStream($caption->path, "caption_{$index}.vtt", [
                 'language' => $caption->language,
             ]));
 

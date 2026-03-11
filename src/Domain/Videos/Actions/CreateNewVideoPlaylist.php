@@ -63,7 +63,7 @@ class CreateNewVideoPlaylist
             });
 
             // Add text streams for captions if they exist
-            $captions->each(fn (CaptionStream $caption) => $packager->addTextStream($caption->path, $caption->disk, [
+            $captions->each(fn (CaptionStream $caption, int $index) => $packager->addTextStream($caption->path, "caption_{$index}.vtt", [
                 'language' => $caption->language,
             ]));
 
