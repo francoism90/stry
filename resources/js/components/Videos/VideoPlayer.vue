@@ -31,10 +31,7 @@ onMounted(() => initialize())
 </script>
 
 <template>
-  <div
-    ref="ui"
-    class="relative w-full flex-1"
-  >
+  <div class="relative w-full flex-1">
     <UEmpty
       v-if="!ready && !error"
       title="Preparing your video..."
@@ -51,14 +48,16 @@ onMounted(() => initialize())
       :actions="actions"
     />
 
-    <video
-      ref="el"
-      v-show="ready && !error"
-      class="bg-default/90 aspect-video max-h-[50vh] w-full rounded-lg sm:max-h-[60vh] lg:max-h-[70vh]"
-      preload="metadata"
-      crossorigin="anonymous"
-      playsinline
-      autoplay
-    />
+    <div ref="ui">
+      <video
+        ref="el"
+        v-show="ready && !error"
+        class="bg-default/90 aspect-video max-h-[50vh] w-full rounded-lg sm:max-h-[60vh] lg:max-h-[70vh]"
+        preload="metadata"
+        crossorigin="anonymous"
+        playsinline
+        autoplay
+      />
+    </div>
   </div>
 </template>
