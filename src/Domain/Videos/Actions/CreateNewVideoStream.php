@@ -37,8 +37,9 @@ class CreateNewVideoStream
 
         // Get the collection of captions for the video (if any)
         $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionStream::from([
+            'id' => $caption->getKey(),
             'disk' => $caption->disk,
-            'path' => $caption->getPathRelativeToRoot(),
+            'path' => $caption->getPath(),
             'language' => $caption->getCustomProperty('language_code', 'en'),
         ]));
 
@@ -88,7 +89,7 @@ class CreateNewVideoStream
             }
 
             // Add text streams for captions if they exist
-            $captions->each(fn (CaptionStream $caption, int $index) => $streamer->addTextStream($caption->path, "caption_{$index}.vtt", [
+            $captions->each(fn (CaptionStream $caption) => $streamer->addTextStream($caption->path, "{$caption->id}_caption.vtt", [
                 'language' => $caption->language,
             ]));
 
