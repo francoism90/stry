@@ -54,7 +54,7 @@ onMounted(() => initialize())
     >
       <video
         ref="el"
-        class="bg-default/90 aspect-video max-h-[50vh] w-full rounded-lg sm:max-h-[60vh] lg:max-h-[70vh]"
+        class="bg-default/90 w-full rounded-lg"
         preload="metadata"
         crossorigin="anonymous"
         playsinline
