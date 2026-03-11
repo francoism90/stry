@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3'
-import AppLogo from './AppLogo.vue'
-
-const back = () => (window && window.history?.length > 1 ? window.history.back() : router.visit('/'))
+import AppLogo from '@/components/Ui/AppLogo.vue'
 </script>
 
 <template>
@@ -15,15 +12,21 @@ const back = () => (window && window.history?.length > 1 ? window.history.back()
     </template>
 
     <template #right>
-      <UButton
-        variant="link"
-        size="sm"
-        color="neutral"
-        label="Back"
-        class="px-0"
-        icon="i-lucide-circle-arrow-left"
-        @click="back"
-      />
+      <div class="flex items-center gap-3">
+        <UButton
+          variant="link"
+          color="neutral"
+          class="px-0"
+          icon="i-lucide-bell"
+        />
+
+        <UButton
+          variant="link"
+          color="neutral"
+          class="px-0"
+          icon="i-lucide-user"
+        />
+      </div>
     </template>
   </UDashboardNavbar>
 </template>
