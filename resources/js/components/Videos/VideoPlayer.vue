@@ -48,10 +48,12 @@ onMounted(() => initialize())
       :actions="actions"
     />
 
-    <div ref="ui">
+    <div
+      ref="ui"
+      v-show="ready && !error"
+    >
       <video
         ref="el"
-        v-show="ready && !error"
         class="bg-default/90 aspect-video max-h-[50vh] w-full rounded-lg sm:max-h-[60vh] lg:max-h-[70vh]"
         preload="metadata"
         crossorigin="anonymous"
