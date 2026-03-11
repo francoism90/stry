@@ -55,8 +55,14 @@ class VideoMediaController extends Controller implements HasMiddleware
         Gate::authorize('create', Media::class);
 
         // Create new media for the video
-        $video->media()->create($request->safe()->all());
+        $media = $video->media()->create($request->safe()->all());
 
-        return Inertia::flash('message', __('The media has been added to the video.'))->back();
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $media->name,
+            'description' => __('The media has been added to the video.'),
+        ]);
+
+        return back();
     }
 }

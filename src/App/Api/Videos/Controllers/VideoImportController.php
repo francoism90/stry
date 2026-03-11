@@ -35,8 +35,16 @@ class VideoImportController extends Controller implements HasMiddleware
             disk: Video::getImportDisk()
         );
 
-        return $request->inertia()
-            ? Inertia::flash('message', __('Video import has been initiated.'))->back()
-            : response()->json();
+        if ($request->inertia()) {
+            // Notify the user
+            Inertia::flash([
+                'title' => __('Video import initiated'),
+                'description' => __('Files are being processed in the background.'),
+            ]);
+
+            return back();
+        }
+
+        return response()->json();
     }
 }

@@ -58,7 +58,13 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         // Update the transcode with validated data
         $transcode->updateOrFail($request->safe()->all());
 
-        return Inertia::flash('message', __('The transcode has been updated.'))->back();
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $transcode->file_name,
+            'description' => __('The transcode has been updated.'),
+        ]);
+
+        return back();
     }
 
     public function destroy(Video $video, Transcode $transcode): RedirectResponse
@@ -68,6 +74,12 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         // Delete the transcode
         $transcode->deleteOrFail();
 
-        return Inertia::flash('message', __('Transcode deleted successfully.'))->back();
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $transcode->file_name,
+            'description' => __('The transcode has been deleted.'),
+        ]);
+
+        return back();
     }
 }

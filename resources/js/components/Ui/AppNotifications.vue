@@ -6,12 +6,10 @@ const toast = useToast()
 
 onUnmounted(
   router.on('flash', (event) => {
-    console.debug('Received flash event:', event.detail)
-
     if (event.detail.flash) {
       toast.add({
-        title: event.detail.flash.label ?? 'Notice',
-        description: event.detail.flash.message ?? 'No message provided.',
+        title: event.detail.flash.title ?? 'Notice',
+        description: event.detail.flash.description ?? 'No message provided.',
         color: event.detail.flash.color ?? 'primary',
         icon: event.detail.flash.icon ?? 'i-lucide-info',
       })

@@ -39,13 +39,20 @@ class GroupToggleController extends Controller implements HasMiddleware
             default => abort(422, 'Invalid group type provided.'),
         };
 
-        // Return back with a success message
         $result = $group->hasGroupable($video)
             ? __('Added to :group.', ['group' => $type->label()])
             : __('Removed from :group.', ['group' => $type->label()]);
 
-        return $request->inertia()
-            ? Inertia::flash('message', $result)->back()
-            : response()->json();
+        if ($request->inertia()) {
+            // Notify the user
+            Inertia::flash([
+                'title' => (string) $video->name,
+                'description' => $result,
+            ]);
+
+            return back();
+        }
+
+        return response()->json();
     }
 }

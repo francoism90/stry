@@ -42,8 +42,16 @@ class GroupClearController extends Controller implements HasMiddleware
         // Detach all videos from the group
         defer(fn () => $group->videos()->detach());
 
-        return $request->inertia()
-            ? Inertia::flash('message', 'Videos will be detached from the group shortly.')->back()
-            : response()->json();
+        if ($request->inertia()) {
+            // Notify the user
+            Inertia::flash([
+                'title' => $type->label(),
+                'description' => __('All videos will be detached shortly.'),
+            ]);
+
+            return back();
+        }
+
+        return response()->json();
     }
 }

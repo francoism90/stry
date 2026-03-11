@@ -32,8 +32,16 @@ class TranscodeImportController extends Controller implements HasMiddleware
         // Perform the import action
         app(ImportTranscode::class)->handle($transcode);
 
-        return $request->inertia()
-            ? Inertia::flash('message', __('Transcode has been queued for import.'))->back()
-            : response()->json();
+        if ($request->inertia()) {
+            // Notify the user
+            Inertia::flash([
+                'title' => (string) $transcode->file_name,
+                'description' => __('Queued for import.'),
+            ]);
+
+            return back();
+        }
+
+        return response()->json();
     }
 }

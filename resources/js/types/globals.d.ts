@@ -1,15 +1,10 @@
 import type { User } from '@/types'
 import type { Page } from '@inertiajs/vue3'
+import type { ToastProps } from '@nuxt/ui'
 
 declare module '@inertiajs/core' {
   export interface InertiaConfig {
-    flashDataType: {
-      label: string | undefined
-      message: string | undefined
-      type: 'success' | 'error'
-      icon: string | undefined
-      color: Toast['variants']['color'] | undefined
-    }
+    readonly flashDataType: ToastProps
   }
 
   export interface PageProps {

@@ -7,9 +7,9 @@ namespace App\Api\Tags\Controllers;
 use Domain\Tags\Actions\SetTagsOrder;
 use Domain\Tags\Models\Tag;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -25,15 +25,23 @@ class TagOrderController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request): RedirectResponse|JsonResource
+    public function __invoke(Request $request): RedirectResponse|JsonResponse
     {
         Gate::authorize('create', Tag::class);
 
         // Set the order
         app(SetTagsOrder::class)->handle();
 
-        return $request->inertia()
-            ? Inertia::flash('message', __('Tags order has been updated successfully.'))->back()
-            : response()->json();
+        if ($request->inertia()) {
+            // Notify the user
+            Inertia::flash([
+                'title' => __('Tags reordered'),
+                'description' => __('The display order has been updated.'),
+            ]);
+
+            return back();
+        }
+
+        return response()->json();
     }
 }

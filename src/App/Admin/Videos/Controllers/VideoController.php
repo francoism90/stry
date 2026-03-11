@@ -73,7 +73,13 @@ class VideoController extends Controller implements HasMiddleware
             attributes: $request->safe()->all()
         );
 
-        return Inertia::flash('message', __('The video has been updated.'))->back();
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $video->name,
+            'description' => __('The video has been updated.'),
+        ]);
+
+        return back();
     }
 
     public function destroy(Video $video): RedirectResponse
@@ -83,6 +89,12 @@ class VideoController extends Controller implements HasMiddleware
         // Delete the video
         $video->deleteOrFail();
 
-        return Inertia::flash('message', __('The video has been deleted.'))->back();
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $video->name,
+            'description' => __('The video has been deleted.'),
+        ]);
+
+        return back();
     }
 }
