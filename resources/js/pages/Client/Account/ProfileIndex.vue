@@ -83,21 +83,6 @@ const onLogout = () => router.post(logout.url())
           </UPageCard>
 
           <UPageCard
-            title="Administration"
-            description="Access the admin panel to manage videos, users, and settings."
-            variant="subtle"
-          >
-            <template #footer>
-              <UButton
-                label="Administration"
-                to="/admin"
-                color="primary"
-                variant="soft"
-              />
-            </template>
-          </UPageCard>
-
-          <UPageCard
             title="Session"
             description="Log out of your account."
             variant="subtle"

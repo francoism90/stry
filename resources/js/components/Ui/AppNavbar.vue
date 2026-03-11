@@ -25,6 +25,7 @@ import AppLogo from '@/components/Ui/AppLogo.vue'
           color="neutral"
           class="px-0"
           icon="i-lucide-user"
+          to="/admin"
         />
       </div>
     </template>
