@@ -162,7 +162,7 @@ if [ "$1" == "php" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" "frankenphp" "php-cli")
+        ARGS+=("$APP_SERVICE" "php")
     else
         container_is_not_running
     fi
@@ -226,7 +226,7 @@ elif [ "$1" == "artisan" ] || [ "$1" == "art" ] || [ "$1" == "a" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli artisan)
+        ARGS+=("$APP_SERVICE" php artisan)
     else
         container_is_not_running
     fi
@@ -238,7 +238,7 @@ elif [ "$1" == "debug" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it -e XDEBUG_TRIGGER=1)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli artisan)
+        ARGS+=("$APP_SERVICE" php artisan)
     else
         container_is_not_running
     fi
@@ -250,7 +250,7 @@ elif [ "$1" == "test" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli artisan test)
+        ARGS+=("$APP_SERVICE" php artisan test)
     else
         container_is_not_running
     fi
@@ -262,7 +262,7 @@ elif [ "$1" == "phpunit" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli vendor/bin/phpunit)
+        ARGS+=("$APP_SERVICE" php vendor/bin/phpunit)
     else
         container_is_not_running
     fi
@@ -274,7 +274,7 @@ elif [ "$1" == "pest" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli vendor/bin/pest)
+        ARGS+=("$APP_SERVICE" php vendor/bin/pest)
     else
         container_is_not_running
     fi
@@ -286,7 +286,7 @@ elif [ "$1" == "pint" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli vendor/bin/pint)
+        ARGS+=("$APP_SERVICE" php vendor/bin/pint)
     else
         container_is_not_running
     fi
@@ -298,7 +298,7 @@ elif [ "$1" == "tinker" ]; then
     if [ "$EXEC" == "yes" ]; then
         ARGS+=(exec -it)
         [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" frankenphp php-cli artisan tinker)
+        ARGS+=("$APP_SERVICE" php artisan tinker)
     else
         container_is_not_running
     fi
