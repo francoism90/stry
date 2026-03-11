@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Config;
 
 use function Laravel\Prompts\info;
 
-class SyncCommand extends Command implements Isolatable
+class SyncScoutCommand extends Command implements Isolatable
 {
     /**
      * @var string

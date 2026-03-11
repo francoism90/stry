@@ -1,5 +1,9 @@
 <?php
 
+use Support\Csp\Nonce\ViteNonceGenerator;
+use Support\Csp\Presets\BasicPreset;
+use Support\Csp\Presets\IconifyPreset;
+
 // use Spatie\Csp\Directive;
 // use Spatie\Csp\Keyword;
 
@@ -10,8 +14,8 @@ return [
      * any class that implements `Spatie\Csp\Preset`
      */
     'presets' => [
-        Support\Csp\Presets\BasicPreset::class,
-        Support\Csp\Presets\IconifyPreset::class,
+        BasicPreset::class,
+        IconifyPreset::class,
     ],
 
     /**
@@ -55,7 +59,7 @@ return [
     /*
      * The class responsible for generating the nonces used in inline tags and headers.
      */
-    'nonce_generator' => Support\Csp\Nonce\ViteNonceGenerator::class,
+    'nonce_generator' => ViteNonceGenerator::class,
 
     /*
      * Set false to disable automatic nonce generation and handling.

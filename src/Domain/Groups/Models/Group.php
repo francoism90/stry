@@ -13,6 +13,7 @@ use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -163,7 +164,7 @@ class Group extends Model implements HasMedia, Sortable
     }
 
     /**
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, Channel>
      */
     public function broadcastOn(string $event): array
     {

@@ -13,7 +13,7 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-class CreateCommand extends Command implements Isolatable
+class CreateTagCommand extends Command implements Isolatable
 {
     /**
      * @var string

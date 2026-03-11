@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Playlists\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PlaylistViewRequest extends FormRequest
@@ -14,7 +15,7 @@ class PlaylistViewRequest extends FormRequest
     }
 
     /**
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

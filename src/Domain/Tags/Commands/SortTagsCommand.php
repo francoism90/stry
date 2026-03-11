@@ -10,7 +10,7 @@ use Illuminate\Contracts\Console\Isolatable;
 
 use function Laravel\Prompts\info;
 
-class SortCommand extends Command implements Isolatable
+class SortTagsCommand extends Command implements Isolatable
 {
     /**
      * @var string
@@ -22,10 +22,10 @@ class SortCommand extends Command implements Isolatable
      */
     protected $description = 'Set tags in order';
 
-    public function handle(): void
+    public function handle(SetTagsOrder $action): void
     {
-        app(SetTagsOrder::class)->handle();
-
-        info('Tags have been sorted successfully.');
+        if ($action->handle()) {
+            info('Tags have been sorted successfully.');
+        }
     }
 }

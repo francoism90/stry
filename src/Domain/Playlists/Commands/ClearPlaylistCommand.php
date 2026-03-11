@@ -13,12 +13,13 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 
-class ClearCommand extends Command implements Isolatable
+class ClearPlaylistCommand extends Command implements Isolatable
 {
     /**
      * @var string
      */
-    protected $signature = 'playlists:clear {--failed : Only delete playlists with a failed state}';
+    protected $signature = 'playlists:clear
+        {--all : Clear all playlists, including those that are not expired}';
 
     /**
      * @var string
@@ -27,15 +28,15 @@ class ClearCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $onlyFailed = $this->option('failed');
+        $onlyFailed = ! $this->option('all');
 
         $playlists = spin(
             message: 'Retrieving playlists...',
-            callback: fn () => Playlist::query()->when($onlyFailed, fn ($query) => $query->failed())->lazy(),
+            callback: fn () => Playlist::query()->when($onlyFailed, fn ($query) => $query->expired())->lazy(),
         );
 
         if ($playlists->isEmpty()) {
-            info($onlyFailed ? 'No failed playlists found.' : 'No playlists found.');
+            info('No playlists found to delete.');
 
             return;
         }

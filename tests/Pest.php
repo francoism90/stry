@@ -5,6 +5,11 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Tests\CreatesApplication;
 
 expect()
@@ -16,11 +21,11 @@ uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)
         throw_if(app()->environment() === 'production');
 
         // Fake instances
-        \Illuminate\Support\Facades\Bus::fake();
-        \Illuminate\Support\Facades\Mail::fake();
-        \Illuminate\Support\Facades\Notification::fake();
-        \Illuminate\Support\Facades\Queue::fake();
-        \Illuminate\Support\Facades\Storage::fake();
+        Bus::fake();
+        Mail::fake();
+        Notification::fake();
+        Queue::fake();
+        Storage::fake();
 
         // Setup database
         $this->seed();

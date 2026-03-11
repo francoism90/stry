@@ -6,9 +6,11 @@ namespace App\Admin\Users\Controllers;
 
 use App\Admin\Users\Responses\UserResourceProperty;
 use App\Api\Users\Requests\UserIndexRequest;
+use App\Api\Users\Requests\UserUpdateRequest;
 use App\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -50,7 +52,7 @@ class UserController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function update(User $user, \App\Api\Users\Requests\UserUpdateRequest $request): \Illuminate\Http\RedirectResponse
+    public function update(User $user, UserUpdateRequest $request): RedirectResponse
     {
         Gate::authorize('update', $user);
 
@@ -63,7 +65,7 @@ class UserController extends Controller implements HasMiddleware
         return back();
     }
 
-    public function destroy(User $user): \Illuminate\Http\RedirectResponse
+    public function destroy(User $user): RedirectResponse
     {
         Gate::authorize('delete', $user);
 

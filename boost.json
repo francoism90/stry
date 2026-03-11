@@ -19,6 +19,8 @@
         "wayfinder-development",
         "pest-testing",
         "inertia-vue-development",
+        "echo-vue-development",
+        "echo-development",
         "tailwindcss-development",
         "fortify-development",
         "medialibrary-development",

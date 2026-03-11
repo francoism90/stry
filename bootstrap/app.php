@@ -2,16 +2,33 @@
 
 declare(strict_types=1);
 
+use App\Api\Users\Middlewares\EnsureUserHasSubscription;
+use Domain\Playlists\Commands\ClearPlaylistCommand;
+use Domain\Tags\Commands\CreateTagCommand;
+use Domain\Tags\Commands\SortTagsCommand;
+use Domain\Users\Commands\CreateUserCommand;
+use Domain\Videos\Commands\ClearVideoCommand;
+use Domain\Videos\Commands\ImportVideoCommand;
 use Foundation\Http\Middlewares\AddCspHeaders;
+use Foundation\Http\Middlewares\EnsureRequestHasPrivateSubnet;
+use Foundation\Http\Middlewares\SetCacheHeaders;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
+use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Support\Inertia\Middlewares\HandleInertiaRequests;
+use Support\Scout\Commands\SyncScoutCommand;
 use Symfony\Component\HttpFoundation\Response;
 
 $basePath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
@@ -55,16 +72,16 @@ $app = Application::configure(basePath: $basePath)
 
         // Global middleware aliases for convenient usage in routes and controllers
         $middleware->alias([
-            'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
-            'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
-            'cache' => \Foundation\Http\Middlewares\SetCacheHeaders::class,
-            'cache.bypass' => \Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class,
-            'private' => \Foundation\Http\Middlewares\EnsureRequestHasPrivateSubnet::class,
-            'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
-            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'subscribed' => \App\Api\Users\Middlewares\EnsureUserHasSubscription::class,
+            'abilities' => CheckAbilities::class,
+            'ability' => CheckForAnyAbility::class,
+            'cache' => SetCacheHeaders::class,
+            'cache.bypass' => DoNotCacheResponse::class,
+            'private' => EnsureRequestHasPrivateSubnet::class,
+            'precognitive' => HandlePrecognitiveRequests::class,
+            'permission' => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'role' => RoleMiddleware::class,
+            'subscribed' => EnsureUserHasSubscription::class,
         ]);
 
         // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading
@@ -98,13 +115,13 @@ $app = Application::configure(basePath: $basePath)
         base_path('src/Domain/*/Listeners'),
     ])
     ->withCommands([
-        \Domain\Playlists\Commands\ClearCommand::class,
-        \Domain\Tags\Commands\CreateCommand::class,
-        \Domain\Tags\Commands\SortCommand::class,
-        \Domain\Users\Commands\CreateCommand::class,
-        \Domain\Videos\Commands\ClearCommand::class,
-        \Domain\Videos\Commands\ImportCommand::class,
-        \Support\Scout\Commands\SyncCommand::class,
+        ClearPlaylistCommand::class,
+        CreateTagCommand::class,
+        SortTagsCommand::class,
+        CreateUserCommand::class,
+        ClearVideoCommand::class,
+        ImportVideoCommand::class,
+        SyncScoutCommand::class,
     ])
     ->create();
 

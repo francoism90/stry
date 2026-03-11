@@ -2,12 +2,20 @@
 
 declare(strict_types=1);
 
+use Foundation\Providers\AppServiceProvider;
+use Foundation\Providers\AuthServiceProvider;
+use Foundation\Providers\BroadcastServiceProvider;
+use Foundation\Providers\EventServiceProvider;
+use Foundation\Providers\FortifyServiceProvider;
+use Foundation\Providers\HorizonServiceProvider;
+use Foundation\Providers\ViewServiceProvider;
+
 return [
-    Foundation\Providers\AppServiceProvider::class,
-    Foundation\Providers\AuthServiceProvider::class,
-    Foundation\Providers\BroadcastServiceProvider::class,
-    Foundation\Providers\EventServiceProvider::class,
-    Foundation\Providers\FortifyServiceProvider::class,
-    Foundation\Providers\HorizonServiceProvider::class,
-    Foundation\Providers\ViewServiceProvider::class,
+    AppServiceProvider::class,
+    AuthServiceProvider::class,
+    BroadcastServiceProvider::class,
+    EventServiceProvider::class,
+    FortifyServiceProvider::class,
+    HorizonServiceProvider::class,
+    ViewServiceProvider::class,
 ];

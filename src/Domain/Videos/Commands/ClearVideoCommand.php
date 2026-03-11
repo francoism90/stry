@@ -13,7 +13,7 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 
-class ClearCommand extends Command implements Isolatable
+class ClearVideoCommand extends Command implements Isolatable
 {
     /**
      * @var string

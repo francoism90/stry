@@ -21,7 +21,7 @@ use function Laravel\Prompts\search;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 
-class ImportCommand extends Command implements Isolatable
+class ImportVideoCommand extends Command implements Isolatable
 {
     /**
      * @var string
