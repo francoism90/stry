@@ -3,15 +3,19 @@ import type { Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useThrottleFn } from '@vueuse/core'
-import shaka from 'shaka-player'
+import shaka from 'shaka-player/dist/shaka-player.ui'
 import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
 
-export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined>) {
+export function useShaka(
+  container?: MaybeRefOrGetter<HTMLElement | undefined>,
+  element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
+) {
   const playlist = computed(() => usePage().props.playlist as Playlist | null)
   const startTime = computed(() => usePage().props.progress as number | null)
   const el = computed(() => toValue(element))
 
   const player = shallowRef<shaka.Player>()
+  const ui = shallowRef<shaka.ui.Overlay>()
   const error = ref<shaka.util.Error | null>(null)
   const ready = ref<boolean>(false)
   const ticker = ref<number>(startTime.value ?? 0)
@@ -27,6 +31,13 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
 
     // Create new Shaka Player
     player.value = new shaka.Player()
+
+    // Create UI overlay for player controls
+    ui.value = new shaka.ui.Overlay(
+      player.value,
+      toValue(container) as HTMLElement,
+      toValue(element) as HTMLMediaElement,
+    )
 
     // Add error event listener
     player.value.addEventListener('error', onErrorEvent)
@@ -82,7 +93,10 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     // Only attempt to load if playlist is valid (not expired or failed)
     if (playlist.value?.valid) {
       // Build configuration
-      const config: Partial<shaka.extern.PlayerConfiguration> = {}
+      const config: Partial<shaka.extern.PlayerConfiguration> = {
+        preferredAudioLanguage: 'en',
+        preferredTextLanguage: 'en',
+      }
 
       // Configure DRM with clear keys (if available)
       const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
@@ -154,6 +168,9 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
       // Remove timeupdate listener
       el.value?.removeEventListener('timeupdate', onTimeUpdate)
 
+      // Destroy UI overlay before the player
+      await ui.value?.destroy()
+
       // Destroy Shaka player instance
       await player.value?.destroy()
     } catch (error) {
@@ -161,6 +178,7 @@ export function useShaka(element?: MaybeRefOrGetter<HTMLMediaElement | undefined
     }
 
     // Reset state
+    ui.value = undefined
     player.value = undefined
     ready.value = false
     error.value = null

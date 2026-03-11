@@ -20,8 +20,9 @@ export AWS_PAGER=""
 : "${AWS_ACCESS_KEY_ID:?Required: AWS_ACCESS_KEY_ID}"
 : "${AWS_SECRET_ACCESS_KEY:?Required: AWS_SECRET_ACCESS_KEY}"
 
-BUCKETS=(local assets conversions segments secrets)
-PUBLIC_BUCKETS=(assets conversions segments secrets)
+CORS_BUCKETS=(assets conversions segments secrets)
+PUBLIC_BUCKETS=(assets)
+BUCKETS=(local "${CORS_BUCKETS[@]}")
 
 # Create buckets...
 echo "Creating buckets..."
@@ -32,7 +33,7 @@ done
 
 # Apply CORS policy...
 echo "Applying CORS policy..."
-for bucket in "${PUBLIC_BUCKETS[@]}"; do
+for bucket in "${CORS_BUCKETS[@]}"; do
     echo "  -> ${bucket}"
     aws s3api put-bucket-cors \
         --bucket "${bucket}" \

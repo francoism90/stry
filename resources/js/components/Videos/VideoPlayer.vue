@@ -4,9 +4,10 @@ import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { onMounted, ref } from 'vue'
 
+const ui = ref<HTMLDivElement | undefined>()
 const el = ref<HTMLMediaElement | undefined>()
 
-const { initialize, ready, error } = useShaka(el)
+const { initialize, ready, error } = useShaka(ui, el)
 
 const actions = ref<ButtonProps[]>([
   {
@@ -30,7 +31,10 @@ onMounted(() => initialize())
 </script>
 
 <template>
-  <div class="relative w-full flex-1">
+  <div
+    ref="ui"
+    class="relative w-full flex-1"
+  >
     <UEmpty
       v-if="!ready && !error"
       title="Preparing your video..."
@@ -51,11 +55,10 @@ onMounted(() => initialize())
       ref="el"
       v-show="ready && !error"
       class="bg-default/90 aspect-video max-h-[50vh] w-full rounded-lg sm:max-h-[60vh] lg:max-h-[70vh]"
-      controls
-      autoplay
-      playsinline
       preload="metadata"
       crossorigin="anonymous"
+      playsinline
+      autoplay
     />
   </div>
 </template>
