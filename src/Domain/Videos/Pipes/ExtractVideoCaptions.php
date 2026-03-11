@@ -6,6 +6,7 @@ namespace Domain\Videos\Pipes;
 
 use Closure;
 use Domain\Media\Actions\ExtractMediaCaptions;
+use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 
 class ExtractVideoCaptions
@@ -25,7 +26,7 @@ class ExtractVideoCaptions
 
         // Add the caption media to the video
         $conversion->each(fn (string $path) => $video
-            ->addMediaFromDisk($path, 'transcodes')
+            ->addMediaFromDisk($path, Transcode::getDestinationDisk())
             ->toMediaCollection('captions')
             ->saveOrFail(),
         );
