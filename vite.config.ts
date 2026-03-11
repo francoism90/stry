@@ -74,9 +74,17 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks: {
-            player: ['shaka-player', 'shaka-player/dist/shaka-player.ui'],
-            vue: ['vue', '@inertiajs/vue3', '@vueuse/core'],
+          manualChunks(id) {
+            const chunk = (name: string, packages: string[]) =>
+              packages.some((pkg) => id.includes(`node_modules/${pkg}`)) ? name : undefined
+
+            return (
+              chunk('player', ['shaka-player']) ??
+              chunk('ui', ['@nuxt/ui', '@nuxt/icon', 'reka-ui', '@internationalized']) ??
+              chunk('core', ['vue', '@inertiajs', '@vueuse']) ??
+              chunk('broadcasting', ['pusher-js', 'laravel-echo', '@laravel/echo-vue']) ??
+              chunk('http', ['axios'])
+            )
           },
         },
       },
