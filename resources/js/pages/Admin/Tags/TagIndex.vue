@@ -88,43 +88,45 @@ watchDebounced(
     </template>
 
     <template #body>
-      <InfiniteScroll
-        data="items"
-        :buffer="200"
-      >
-        <UPageList divide>
-          <UPageCard
-            v-for="item in items?.data"
-            :key="item.id"
-            :to="edit.url(item.id)"
-            variant="naked"
-            class="py-4 first:pt-0 last:pb-0"
-          >
-            <div class="flex items-center justify-between">
-              <UUser
-                :name="item.name"
-                :description="`${item.category} • ${item.videos} videos`"
-                :avatar="{
-                  alt: item.name,
-                  class: 'rounded-sm size-14 me-1',
-                }"
-              />
-
-              <div class="z-10 flex items-center gap-2">
-                <UButton
-                  icon="i-lucide-eye"
-                  color="secondary"
-                  variant="ghost"
-                  size="sm"
-                  :to="HomeController.url('all', { query: { tag: item.id } })"
+      <UPage>
+        <InfiniteScroll
+          data="items"
+          :buffer="200"
+        >
+          <UPageList divide>
+            <UPageCard
+              v-for="item in items?.data"
+              :key="item.id"
+              :to="edit.url(item.id)"
+              variant="naked"
+              class="py-4 first:pt-0 last:pb-0"
+            >
+              <div class="flex items-center justify-between">
+                <UUser
+                  :name="item.name"
+                  :description="`${item.category} • ${item.videos} videos`"
+                  :avatar="{
+                    alt: item.name,
+                    class: 'rounded-sm size-14 me-1',
+                  }"
                 />
 
-                <TagDeleteModal :item="item" />
+                <div class="z-10 flex items-center gap-2">
+                  <UButton
+                    icon="i-lucide-eye"
+                    color="secondary"
+                    variant="ghost"
+                    size="sm"
+                    :to="HomeController.url('all', { query: { tag: item.id } })"
+                  />
+
+                  <TagDeleteModal :item="item" />
+                </div>
               </div>
-            </div>
-          </UPageCard>
-        </UPageList>
-      </InfiniteScroll>
+            </UPageCard>
+          </UPageList>
+        </InfiniteScroll>
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>

@@ -27,10 +27,10 @@ export type FilterOption = {
 
 export type User = Model & {
   name: string
-  email: string | undefined
-  avatar: AvatarProps['src'] | null | undefined
-  roles: string[] | undefined
-  permissions: string[] | undefined
+  email?: string
+  avatar?: AvatarProps['src'] | null
+  roles?: string[]
+  permissions?: string[]
 }
 
 export type UserCollection = Omit<Paginator, 'data'> & {
@@ -54,7 +54,7 @@ export type MediaCustomProperties = {
 }
 
 export type Media = Model & {
-  asset: string | undefined
+  asset?: string
   name: string
   file_name: string
   mime_type: string
@@ -75,14 +75,14 @@ export type MediaCollection = Omit<Paginator, 'data'> & {
 export type Tag = Model & {
   name: string
   slug: string
-  summary: string | undefined
-  description: string | undefined
+  summary: string | null
+  description?: string
   category: string
-  type: string | undefined
+  type: string | null
   adult: boolean
-  thumb: AvatarProps['src'] | null | undefined
-  related: Tag[] | null | undefined
-  videos: number | undefined
+  thumb?: AvatarProps['src'] | null
+  related?: Tag[]
+  videos?: number
 }
 
 export type TagCollection = Omit<Paginator, 'data'> & {
@@ -92,32 +92,32 @@ export type TagCollection = Omit<Paginator, 'data'> & {
 export type TagMenuItem = Tag & SelectMenuItem
 
 export type Video = Model & {
-  user: User | undefined
-  tags: Tag[] | undefined
+  user?: User
+  tags?: Tag[]
   name: string
   title: string
-  titles: string[] | undefined
-  description: string | undefined
-  content: string | undefined
-  summary: string | undefined
-  identifier: string | undefined
+  titles?: string[]
+  description: string | null
+  content?: string
+  summary?: string
+  identifier: string | null
   season: string | null
   episode: string | null
   part: string | null
-  released: string | undefined
-  duration: number | undefined
-  timestamp: string | undefined
-  filesize: string | undefined
-  snapshot: number | undefined
-  thumb: string | undefined
-  adult: boolean | undefined
-  captioned: boolean | undefined
-  liked: boolean | undefined
-  saved: boolean | undefined
-  viewed: boolean | undefined
-  expires_at: string | undefined
-  published_at: string | undefined
-  released_at: string | undefined
+  released: string | null
+  duration: number | null
+  timestamp: string | null
+  filesize?: string
+  snapshot?: number
+  thumb: string | null
+  adult: boolean
+  captioned: boolean
+  liked: boolean | null
+  saved: boolean | null
+  viewed: boolean | null
+  expires_at: string | null
+  published_at: string | null
+  released_at: string | null
   state: ModelState
 }
 
@@ -133,8 +133,8 @@ export type Playlist = Model & {
   expired: boolean
   failed: boolean
   valid: boolean
-  type: string | undefined
-  expires_at: string | null | undefined
+  type: string | null
+  expires_at: string | null
   state: ModelState
 }
 

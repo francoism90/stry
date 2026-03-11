@@ -85,46 +85,48 @@ watchDebounced(
     </template>
 
     <template #body>
-      <InfiniteScroll
-        data="items"
-        :buffer="200"
-      >
-        <UPageList divide>
-          <UPageCard
-            v-for="item in items?.data"
-            :key="item.id"
-            :to="edit.url(item.id)"
-            variant="naked"
-            class="py-4 first:pt-0 last:pb-0"
-          >
-            <div class="flex items-center justify-between">
-              <UUser
-                :name="item.title"
-                :description="`${item.timestamp} • ${item.filesize}`"
-                :avatar="{
-                  alt: item.name,
-                  src: item.thumb,
-                  loading: 'lazy',
-                  decoding: 'async',
-                  class: 'rounded-sm size-14 me-1',
-                }"
-              />
-
-              <div class="z-10 flex items-center gap-2">
-                <UButton
-                  icon="i-lucide-eye"
-                  color="secondary"
-                  variant="ghost"
-                  size="sm"
-                  :to="VideoController.url(item.id)"
+      <UPage>
+        <InfiniteScroll
+          data="items"
+          :buffer="200"
+        >
+          <UPageList divide>
+            <UPageCard
+              v-for="item in items?.data"
+              :key="item.id"
+              :to="edit.url(item.id)"
+              variant="naked"
+              class="py-4 first:pt-0 last:pb-0"
+            >
+              <div class="flex items-center justify-between">
+                <UUser
+                  :name="item.title"
+                  :description="`${item.timestamp} • ${item.filesize}`"
+                  :avatar="{
+                    alt: item.name,
+                    src: item.thumb ?? undefined,
+                    loading: 'lazy',
+                    decoding: 'async',
+                    class: 'rounded-sm size-14 me-1',
+                  }"
                 />
 
-                <VideoDeleteModal :item="item" />
+                <div class="z-10 flex items-center gap-2">
+                  <UButton
+                    icon="i-lucide-eye"
+                    color="secondary"
+                    variant="ghost"
+                    size="sm"
+                    :to="VideoController.url(item.id)"
+                  />
+
+                  <VideoDeleteModal :item="item" />
+                </div>
               </div>
-            </div>
-          </UPageCard>
-        </UPageList>
-      </InfiniteScroll>
+            </UPageCard>
+          </UPageList>
+        </InfiniteScroll>
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>

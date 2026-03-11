@@ -57,35 +57,37 @@ const onSubmit = () =>
     </template>
 
     <template #body>
-      <InfiniteScroll
-        data="items"
-        :buffer="200"
-      >
-        <UPageList divide>
-          <UPageCard
-            v-for="item in items?.data"
-            :key="item.id"
-            :to="edit.url(item.id)"
-            variant="naked"
-            class="py-4 first:pt-0 last:pb-0"
-          >
-            <div class="flex items-center justify-between">
-              <UUser
-                :name="item.resource?.name || item.resource?.label"
-                :description="`${item.expires_at ? `Expires ${item.expires_at}` : 'No expiration'} • ${item.state.label}`"
-                :avatar="{
-                  alt: item.resource?.name || item.id,
-                  class: 'rounded-sm size-14 me-1',
-                }"
-              />
+      <UPage>
+        <InfiniteScroll
+          data="items"
+          :buffer="200"
+        >
+          <UPageList divide>
+            <UPageCard
+              v-for="item in items?.data"
+              :key="item.id"
+              :to="edit.url(item.id)"
+              variant="naked"
+              class="py-4 first:pt-0 last:pb-0"
+            >
+              <div class="flex items-center justify-between">
+                <UUser
+                  :name="item.resource?.name || item.resource?.label"
+                  :description="`${item.expires_at ? `Expires ${item.expires_at}` : 'No expiration'} • ${item.state.label}`"
+                  :avatar="{
+                    alt: item.resource?.name || item.id,
+                    class: 'rounded-sm size-14 me-1',
+                  }"
+                />
 
-              <div class="z-10 flex items-center gap-2">
-                <PlaylistDeleteModal :item="item" />
+                <div class="z-10 flex items-center gap-2">
+                  <PlaylistDeleteModal :item="item" />
+                </div>
               </div>
-            </div>
-          </UPageCard>
-        </UPageList>
-      </InfiniteScroll>
+            </UPageCard>
+          </UPageList>
+        </InfiniteScroll>
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>

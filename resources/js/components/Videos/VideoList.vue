@@ -15,9 +15,9 @@ defineProps<{
       :key="item.id"
       variant="naked"
       :title="item.title"
-      :image="item.thumb"
-      :badge="item.timestamp"
-      :date="item.released"
+      :image="item.thumb ?? undefined"
+      :badge="item.timestamp ?? undefined"
+      :date="item.released ?? undefined"
       :to="VideoController.url(item.id)"
       :ui="{
         root: 'gap-y-4 rounded-none',

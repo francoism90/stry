@@ -20,35 +20,37 @@ const { getStreamInfo } = useMedia()
 <template>
   <Head :title="`${video.title} - Media`" />
 
-  <InfiniteScroll
-    data="items"
-    :buffer="200"
-  >
-    <UPageList divide>
-      <UPageCard
-        v-for="item in items?.data"
-        :key="item.id"
-        :to="edit.url(item.id)"
-        variant="naked"
-        class="py-4 first:pt-0 last:pb-0"
-      >
-        <div class="flex items-center justify-between">
-          <UUser
-            :name="item.file_name"
-            :description="getStreamInfo(item).join(' • ')"
-            :avatar="{
-              alt: item.file_name,
-              loading: 'lazy',
-              decoding: 'async',
-              class: 'rounded-sm size-12 me-1',
-            }"
-          />
+  <UPage>
+    <InfiniteScroll
+      data="items"
+      :buffer="200"
+    >
+      <UPageList divide>
+        <UPageCard
+          v-for="item in items?.data"
+          :key="item.id"
+          :to="edit.url(item.id)"
+          variant="naked"
+          class="py-4 first:pt-0 last:pb-0"
+        >
+          <div class="flex items-center justify-between">
+            <UUser
+              :name="item.file_name"
+              :description="getStreamInfo(item).join(' • ')"
+              :avatar="{
+                alt: item.file_name,
+                loading: 'lazy',
+                decoding: 'async',
+                class: 'rounded-sm size-12 me-1',
+              }"
+            />
 
-          <div class="z-10 flex items-center gap-2">
-            <MediaDeleteModal :item="item" />
+            <div class="z-10 flex items-center gap-2">
+              <MediaDeleteModal :item="item" />
+            </div>
           </div>
-        </div>
-      </UPageCard>
-    </UPageList>
-  </InfiniteScroll>
+        </UPageCard>
+      </UPageList>
+    </InfiniteScroll>
+  </UPage>
 </template>
