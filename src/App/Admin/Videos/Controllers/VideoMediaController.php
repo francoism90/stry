@@ -45,7 +45,7 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Media::class);
 
-        return Inertia::render('Admin/Videos/Media/Create', [
+        return Inertia::render('Admin/Videos/Media/MediaCreate', [
             'video' => fn () => new VideoResourceProperty($video),
         ]);
     }
@@ -57,9 +57,6 @@ class VideoMediaController extends Controller implements HasMiddleware
         // Create new media for the video
         $video->media()->create($request->safe()->all());
 
-        // Flash message
-        Inertia::flash('message', __('Media created successfully.'));
-
-        return redirect()->route('admin.videos.media.index', $video);
+        return Inertia::flash('message', __('The media has been added to the video.'))->back();
     }
 }

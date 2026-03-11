@@ -31,9 +31,9 @@ Route::resource('transcodes', TranscodeController::class);
 
 // Videos
 Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class);
-Route::resource('videos.playlists', VideoPlaylistController::class);
-Route::resource('videos.transcodes', VideoTranscodeController::class);
+Route::resource('videos.media', VideoMediaController::class)->shallow();
+Route::resource('videos.playlists', VideoPlaylistController::class)->shallow();
+Route::resource('videos.transcodes', VideoTranscodeController::class)->shallow();
 
 // Users
 Route::resource('users', UserController::class);

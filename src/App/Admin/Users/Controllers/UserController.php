@@ -59,10 +59,7 @@ class UserController extends Controller implements HasMiddleware
         // Update user
         $user->updateOrFail($request->safe()->all());
 
-        // Flash message
-        Inertia::flash('message', __('The user has been updated.'));
-
-        return back();
+        return Inertia::flash('message', __('The user has been updated.'))->back();
     }
 
     public function destroy(User $user): RedirectResponse
@@ -72,9 +69,6 @@ class UserController extends Controller implements HasMiddleware
         // Delete user
         $user->deleteOrFail();
 
-        // Flash message
-        Inertia::flash('message', __('The user has been deleted.'));
-
-        return redirect()->route('admin.users.index');
+        return Inertia::flash('message', __('The user has been deleted.'))->back();
     }
 }

@@ -55,12 +55,9 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('create', Tag::class);
 
         // Create the tag
-        $tag = Tag::create($request->safe()->all());
+        Tag::create($request->safe()->all());
 
-        // Flash message
-        Inertia::flash('message', __('The tag has been created.'));
-
-        return redirect()->route('admin.tags.edit', $tag);
+        return Inertia::flash('message', __('The tag has been created.'))->back();
     }
 
     public function edit(Tag $tag): Response
@@ -83,10 +80,7 @@ class TagController extends Controller implements HasMiddleware
             attributes: $request->safe()->all()
         );
 
-        // Flash message
-        Inertia::flash('message', __('The tag has been updated.'));
-
-        return back();
+        return Inertia::flash('message', __('The tag has been updated.'))->back();
     }
 
     public function destroy(Tag $tag): RedirectResponse
@@ -97,8 +91,6 @@ class TagController extends Controller implements HasMiddleware
         $tag->deleteOrFail();
 
         // Flash message
-        Inertia::flash('message', __('The tag has been deleted.'));
-
-        return redirect()->route('admin.tags.index');
+        return Inertia::flash('message', __('The tag has been deleted.'))->back();
     }
 }

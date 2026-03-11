@@ -58,9 +58,7 @@ class MediaController extends Controller implements HasMiddleware
         $media->updateOrFail($request->safe()->all());
 
         // Flash message
-        Inertia::flash('message', __('The media has been updated.'));
-
-        return back();
+        return Inertia::flash('message', __('The media has been updated.'))->back();
     }
 
     public function destroy(Media $media): RedirectResponse
@@ -70,9 +68,6 @@ class MediaController extends Controller implements HasMiddleware
         // Delete the media
         $media->deleteOrFail();
 
-        // Flash message
-        Inertia::flash('message', __('The media has been deleted.'));
-
-        return redirect()->route('admin.media.index');
+        return Inertia::flash('message', __('The media has been deleted.'))->back();
     }
 }

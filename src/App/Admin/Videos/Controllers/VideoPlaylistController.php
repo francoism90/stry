@@ -58,10 +58,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         // Update the playlist with validated data
         $playlist->updateOrFail($request->safe()->all());
 
-        // Flash message
-        Inertia::flash('message', __('Playlist updated successfully.'));
-
-        return back();
+        return Inertia::flash('message', __('The playlist has been updated.'))->back();
     }
 
     public function destroy(Video $video, Playlist $playlist): RedirectResponse
@@ -71,9 +68,6 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         // Delete the playlist
         $playlist->deleteOrFail();
 
-        // Flash message
-        Inertia::flash('message', __('Playlist deleted successfully.'));
-
-        return redirect()->route('admin.videos.playlists.index', $video);
+        return Inertia::flash('message', __('The playlist has been deleted.'))->back();
     }
 }

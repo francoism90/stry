@@ -41,8 +41,8 @@ class GroupToggleController extends Controller implements HasMiddleware
 
         // Return back with a success message
         $result = $group->hasGroupable($video)
-            ? __('Added to :group group.', ['group' => $type->label()])
-            : __('Removed from :group group.', ['group' => $type->label()]);
+            ? __('Added to :group.', ['group' => $type->label()])
+            : __('Removed from :group.', ['group' => $type->label()]);
 
         return $request->inertia()
             ? Inertia::flash('message', $result)->back()
