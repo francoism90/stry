@@ -50,7 +50,7 @@ Before installing, check if Scout is already in the project — look for `larave
 
 ```bash
 composer require laravel/scout
-php artisan vendor:publish --provider=&quot;Laravel\Scout\ScoutServiceProvider&quot;
+php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
 ### 2. Add the Searchable trait
@@ -154,9 +154,9 @@ Use `search-docs` for advanced querying — `whereIn`, `whereNotIn`, soft delete
 
 | Command | Purpose |
 |---------|---------|
-| `php artisan scout:import &quot;App\Models\Post&quot;` | Import model records into search index |
-| `php artisan scout:queue-import &quot;App\Models\Post&quot;` | Import via queued jobs (large datasets) |
-| `php artisan scout:flush &quot;App\Models\Post&quot;` | Remove all model records from search index |
+| `php artisan scout:import "App\Models\Post"` | Import model records into search index |
+| `php artisan scout:queue-import "App\Models\Post"` | Import via queued jobs (large datasets) |
+| `php artisan scout:flush "App\Models\Post"` | Remove all model records from search index |
 | `php artisan scout:sync-index-settings` | Sync index settings to the search engine |
 | `php artisan scout:index posts` | Create a search index |
 | `php artisan scout:delete-index posts` | Delete a search index |
