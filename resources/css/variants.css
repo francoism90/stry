@@ -1,0 +1,6 @@
+@custom-variant fullscreen {
+  &:fullscreen,
+  &:-webkit-full-screen {
+    @slot;
+  }
+}

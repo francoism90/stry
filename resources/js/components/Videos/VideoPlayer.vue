@@ -51,10 +51,11 @@ onMounted(() => initialize())
     <div
       ref="ui"
       v-show="ready && !error"
+      class="fullscreen:aspect-auto fullscreen:max-h-none fullscreen:rounded-none aspect-video max-h-[50dvh] w-full overflow-hidden rounded-lg md:max-h-[70dvh] lg:max-h-[85dvh]"
     >
       <video
         ref="el"
-        class="bg-default/90 w-full rounded-lg"
+        class="bg-default/90 size-full"
         preload="metadata"
         crossorigin="anonymous"
         playsinline
