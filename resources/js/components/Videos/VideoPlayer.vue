@@ -55,7 +55,7 @@ onMounted(() => initialize())
     >
       <video
         ref="el"
-        class="bg-default/90 size-full"
+        class="size-full bg-black"
         preload="metadata"
         crossorigin="anonymous"
         playsinline
