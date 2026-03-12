@@ -48,6 +48,7 @@ class VideoResource extends JsonResource
             'published_at' => $this->published_at?->toDateTimeString(),
             'released_at' => $this->released_at?->toDateTimeString(),
             'expires_at' => $this->expires_at?->toDateTimeString(),
+            'deleted_at' => $this->deleted_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
