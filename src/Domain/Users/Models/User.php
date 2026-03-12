@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -207,24 +208,29 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasAnyRole('admin', 'super-admin');
     }
 
+    public function thumbnailUrl(): ?string
+    {
+        return rescue(fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'thumb'));
+    }
+
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'avatar', 'thumb')),
+            get: fn (): ?string => $this->thumbnailUrl(),
         )->shouldCache();
     }
 
     protected function assignedRoles(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getRoleNames(),
+            get: fn (): Collection => $this->getRoleNames(),
         )->shouldCache();
     }
 
     protected function assignedPermissions(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getAllPermissions()->pluck('name'),
+            get: fn (): Collection => $this->getAllPermissions()->pluck('name'),
         )->shouldCache();
     }
 }

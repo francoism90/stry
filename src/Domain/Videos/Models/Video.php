@@ -324,7 +324,7 @@ class Video extends Model implements HasMedia
 
     public function thumbnailUrl(): ?string
     {
-        return $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb');
+        return rescue(fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb'));
     }
 
     public function durationInSeconds(): float
@@ -335,14 +335,14 @@ class Video extends Model implements HasMedia
     protected function identifier(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode('', array_filter([$this->season, $this->episode])),
+            get: fn (): string => implode('', array_filter([$this->season, $this->episode])),
         )->shouldCache();
     }
 
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => implode(' - ', array_filter([$this->identifier, $this->name, $this->part])),
+            get: fn (): string => implode(' - ', array_filter([$this->identifier, $this->name, $this->part])),
         )->shouldCache();
     }
 
@@ -356,7 +356,7 @@ class Video extends Model implements HasMedia
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn () => rescue(fn (): ?string => $this->thumbnailUrl(), report: false),
+            get: fn (): ?string => $this->thumbnailUrl(),
         )->shouldCache();
     }
 

@@ -30,7 +30,7 @@ readonly class VideoFilterScope
         $defaultOrder = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
 
         $scout
-            ->query(fn (VideoQueryBuilder $query) => $query->with('tags'))
+            ->query(fn (VideoQueryBuilder $query) => $query->with('media', 'tags'))
             ->when($options, fn (Builder $scout) => $scout->options($options))
             ->when($defaultOrder, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->getTag(), fn (Builder $scout, Tag $tag) => $scout->whereIn('tagged', [$tag->getKey()]))
