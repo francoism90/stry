@@ -2,12 +2,15 @@
 import { update } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import VideoTranscodeModal from '@/components/Videos/VideoTranscodeModal.vue'
+import { useDateTime } from '@/composables/datetime'
 import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
+import type { CalendarDateTime } from '@internationalized/date'
 import { useForm } from 'laravel-precognition-vue-inertia'
+import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
@@ -16,6 +19,7 @@ const props = defineProps<{
 
 defineOptions({ layout: [DashboardLayout, VideoLayout] })
 
+const { toDateTime, fromDateTime, nowDateTime } = useDateTime()
 const { items, filter } = useTags(props.video.tags || [])
 
 const form = useForm('put', update.url(props.video.id), {
@@ -36,6 +40,20 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
+
+const publishedAt = computed({
+  get: () => toDateTime(form.published_at),
+  set: (value: CalendarDateTime | null) => {
+    form.published_at = fromDateTime(value)
+  },
+})
+
+const releasedAt = computed({
+  get: () => toDateTime(form.released_at),
+  set: (value: CalendarDateTime | null) => {
+    form.released_at = fromDateTime(value)
+  },
+})
 </script>
 
 <template>
@@ -163,22 +181,44 @@ const onSubmit = () =>
           label="Published"
           :error="form.errors.published_at"
         >
-          <UInput
-            v-model="form.published_at"
-            :model-modifiers="{ nullable: true, string: true, trim: true }"
-            placeholder="YYYY-MM-DD HH:mm:ss"
-          />
+          <UInputDate
+            v-model="publishedAt"
+            granularity="second"
+            :ui="{ trailing: 'pe-1' }"
+          >
+            <template #trailing>
+              <UButton
+                color="neutral"
+                variant="link"
+                size="sm"
+                icon="i-lucide-calendar-clock"
+                aria-label="Set to now"
+                @click.prevent="publishedAt = nowDateTime()"
+              />
+            </template>
+          </UInputDate>
         </UFormField>
 
         <UFormField
           label="Released"
           :error="form.errors.released_at"
         >
-          <UInput
-            v-model="form.released_at"
-            :model-modifiers="{ nullable: true, string: true, trim: true }"
-            placeholder="YYYY-MM-DD HH:mm:ss"
-          />
+          <UInputDate
+            v-model="releasedAt"
+            granularity="second"
+            :ui="{ trailing: 'pe-1' }"
+          >
+            <template #trailing>
+              <UButton
+                color="neutral"
+                variant="link"
+                size="sm"
+                icon="i-lucide-calendar-clock"
+                aria-label="Set to now"
+                @click.prevent="releasedAt = nowDateTime()"
+              />
+            </template>
+          </UInputDate>
         </UFormField>
       </div>
 
