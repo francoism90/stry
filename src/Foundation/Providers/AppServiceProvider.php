@@ -52,7 +52,9 @@ class AppServiceProvider extends ServiceProvider
     protected function configureModels(): void
     {
         Model::automaticallyEagerLoadRelationships();
-        Model::shouldBeStrict();
+        Model::shouldBeStrict(
+            ! $this->app->environment('production')
+        );
     }
 
     protected function configureMorphMap(): void
