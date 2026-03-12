@@ -5,11 +5,13 @@
 /* Shaka Player UI */
 @import 'shaka-player/dist/controls.css';
 
+/* Blade & Vue */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.ts';
 @source '../**/*.vue';
 
+/* Custom */
 @import './variables.css';
 @import './variants.css';
