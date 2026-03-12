@@ -9,8 +9,8 @@ RUN apt-get update && apt-get upgrade -y \
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
-      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz" ;; \
-      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz" ;; \
+      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linux64-gpl-8.0.tar.xz" ;; \
+      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linuxarm64-gpl-8.0.tar.xz" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
@@ -19,11 +19,11 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # Shaka Packager
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-x64" ; \
-        PACKAGER_SHA256="7bdefe5a25fe84535c6c1a425f4c3c6b65fa85c441c2aeba01254b3c0f4b1956" ;; \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.6.0/packager-linux-x64" ; \
+        PACKAGER_SHA256="a5d66a6c2d802f3394a951a008d2e227edf487e2c56dac2430d2a2ff1994ce11" ;; \
       aarch64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.4.2/packager-linux-arm64" ; \
-        PACKAGER_SHA256="170ee824cc30a8ed7c7c22346c46bd614aa5532a4af16d9f3c8cfaed6eda268e" ;; \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.6.0/packager-linux-arm64" ; \
+        PACKAGER_SHA256="cb05d6ff9a3df66e1e6d6d5111214e96ff99ccff6bfed9491be1dabce6a9b048" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
