@@ -21,15 +21,15 @@ const { nonce } = useAppearance()
         <UTheme
           :ui="{
             dashboardPanel: {
-              root: 'relative flex min-h-svh w-full flex-col',
+              root: 'relative flex min-h-svh w-full flex-col gap-4',
               body: 'flex w-full max-w-(--ui-container) flex-1 flex-col gap-4 self-center sm:gap-6',
+            },
+            dashboardNavbar: {
+              root: 'bg-default sticky top-0 z-50 w-full',
             },
             dashboardToolbar: {
               root: 'flex min-h-4 w-full max-w-(--ui-container) shrink-0 items-center justify-between gap-1.5 self-center overflow-x-auto border-0 px-4 sm:px-6',
               left: 'flex items-center gap-3 *:inline-flex *:items-center',
-            },
-            dashboardNavbar: {
-              root: 'bg-default sticky top-0 z-50 w-full',
             },
           }"
         >

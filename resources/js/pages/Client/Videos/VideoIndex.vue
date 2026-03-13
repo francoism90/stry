@@ -95,12 +95,14 @@ const clearTag = () => {
     </template>
 
     <template #body>
-      <InfiniteScroll
-        data="items"
-        :buffer="200"
-      >
-        <VideoList :items="items?.data" />
-      </InfiniteScroll>
+      <UPage>
+        <InfiniteScroll
+          data="items"
+          :buffer="200"
+        >
+          <VideoList :items="items?.data" />
+        </InfiniteScroll>
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>

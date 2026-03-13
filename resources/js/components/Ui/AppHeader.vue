@@ -49,7 +49,12 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
 </script>
 
 <template>
-  <UHeader :ui="{ root: 'border-(--ui-border)', left: 'gap-4 *:inline-flex *:items-center' }">
+  <UHeader
+    :ui="{
+      root: 'border-(--ui-border) bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
+      left: 'gap-4 *:inline-flex *:items-center',
+    }"
+  >
     <template #left>
       <AppLogo />
 
