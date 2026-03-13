@@ -68,6 +68,13 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       <UButton
         variant="ghost"
         color="neutral"
+        icon="i-lucide-search"
+        to="/search"
+      />
+
+      <UButton
+        variant="ghost"
+        color="neutral"
         icon="i-lucide-bell"
       />
 

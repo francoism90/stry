@@ -1,31 +1,23 @@
 <script setup lang="ts">
-import type { Tag } from '@/types'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   orders: SelectMenuItem[]
-  tag?: Tag | undefined
   order?: string | undefined
 }>()
 
 const form = useForm('get', '/', {
   order: props.order,
-  tag: props.tag?.id,
   page: 1,
 })
 
 const onSubmit = () => {
   form.submit({
-    preserveState: true,
-    only: ['items', 'order', 'tag'],
+    only: ['items', 'order'],
     reset: ['items'],
+    preserveState: true,
   })
-}
-
-const clearTag = () => {
-  form.tag = undefined
-  onSubmit()
 }
 </script>
 
@@ -36,21 +28,11 @@ const clearTag = () => {
         v-show="!!orders.length"
         v-model="form.order"
         :items="orders"
-        :ui="{ content: 'min-w-36' }"
+        :ui="{ base: 'px-0', content: 'min-w-36' }"
         label-key="label"
         value-key="value"
-        variant="soft"
-        size="sm"
+        variant="none"
         @update:modelValue="onSubmit"
-      />
-
-      <UButton
-        v-if="tag"
-        :label="tag.name"
-        color="primary"
-        size="xs"
-        trailing-icon="i-lucide-x"
-        @click.prevent="clearTag"
       />
     </template>
   </UDashboardToolbar>
