@@ -35,15 +35,14 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         // Apply filters
-        $search = $request->safe()->input('search');
         $type = $request->safe()->input('type', TagType::Genre);
 
         // Scout builder
-        $scout = Tag::search($search)
+        $scout = Tag::search()
             ->tap(new TagFilterScope(type: $type))
             ->simplePaginate(perPage: 16);
 
-        return Inertia::render('Admin/Tags/TagIndex', [
+        return Inertia::render('App/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),
@@ -70,7 +69,7 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $tag);
 
-        return Inertia::render('Admin/Tags/TagEdit', [
+        return Inertia::render('App/Tags/TagEdit', [
             'tag' => fn () => new TagResourceProperty($tag),
             'types' => fn () => TagType::options(),
         ]);

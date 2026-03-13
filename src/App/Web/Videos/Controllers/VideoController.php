@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
+use App\Api\Videos\Requests\VideoIndexRequest;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Api\Videos\Requests\VideoUpdateRequest;
+use App\Api\Videos\Resources\VideoResource;
+use Domain\Shared\Scopes\OrderedScope;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -29,6 +33,25 @@ class VideoController extends Controller implements HasMiddleware
             new Middleware('verified'),
             new Middleware('precognitive'),
         ];
+    }
+
+    public function index(VideoIndexRequest $request): Response
+    {
+        Gate::authorize('viewAny', Video::class);
+
+        // Scout builder
+        $scout = Video::search()
+            ->tap(new OrderedScope(
+                order: $request->safe()->input('order'),
+                direction: $request->safe()->input('direction'),
+            ))
+            ->simplePaginate(perPage: 18);
+
+        return Inertia::render('App/Videos/VideoIndex', [
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'orders' => fn () => VideoOrder::options(),
+        ]);
     }
 
     public function show(Video $video): Response

@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
+import TagCard from '@/components/Tags/TagCard.vue'
 import type { Tag } from '@/types'
 
 defineProps<{
   items: Tag[] | undefined
 }>()
-
-const url = (tag: string) => HomeController.url('all', { query: { tag } })
 </script>
 
 <template>
-  <UBlogPosts class="grid-cols-1 gap-3 gap-y-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-3">
-    <UButton
+  <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <TagCard
       v-for="item in items"
       :key="item.id"
-      :label="`${item.name} (${item.videos ?? 0})`"
-      :to="url(item.id)"
-      variant="soft"
-      size="lg"
-      color="neutral"
+      :item="item"
     />
-  </UBlogPosts>
+  </div>
 </template>

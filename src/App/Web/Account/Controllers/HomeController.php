@@ -31,7 +31,7 @@ class HomeController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Video::class);
 
         // Scout builder
-        $scout = Video::search($request->safe()->input('search'))
+        $scout = Video::search()
             ->tap(new OrderedScope(
                 order: $request->safe()->input('order'),
                 direction: $request->safe()->input('direction'),
@@ -40,9 +40,8 @@ class HomeController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'orders' => fn () => VideoOrder::options(),
             'order' => fn () => $request->safe()->input('order', 'recommended'),
-            'search' => fn () => $request->safe()->input('search', ''),
+            'orders' => fn () => VideoOrder::options(),
         ]);
     }
 }
