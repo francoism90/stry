@@ -9,11 +9,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" crossorigin="anonymous">
 <link rel="preconnect" href="https://api.iconify.design" crossorigin="anonymous">
+@googlefonts(['nonce' => app('csp-nonce')])
+@googlefonts(['font' => 'code', 'nonce' => app('csp-nonce')])
 @vite('resources/js/app.ts')
 @inertiaHead
 @pwaHead
-@googlefonts(['nonce' => app('csp-nonce')])
-@googlefonts(['font' => 'code', 'nonce' => app('csp-nonce')])
 </head>
 
 <body class="antialiased">

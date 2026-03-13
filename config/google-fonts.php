@@ -34,7 +34,7 @@ return [
      * in the HTML output to instruct the browser to start fetching the
      * font files as early as possible, even before the CSS is fully parsed.
      */
-    'preload' => false,
+    'preload' => true,
 
     /*
      * When something goes wrong fonts are loaded directly from Google.
