@@ -44,12 +44,7 @@ const clearTag = () => {
     <template #header>
       <AppHeader />
 
-      <UDashboardToolbar
-        :ui="{
-          root: 'min-h-4 border-0',
-          left: 'gap-3 *:inline-flex *:items-center',
-        }"
-      >
+      <UDashboardToolbar>
         <template #left>
           <UFormField
             v-show="items.data?.length"
@@ -100,14 +95,12 @@ const clearTag = () => {
     </template>
 
     <template #body>
-      <UPage>
-        <InfiniteScroll
-          data="items"
-          :buffer="200"
-        >
-          <VideoList :items="items?.data" />
-        </InfiniteScroll>
-      </UPage>
+      <InfiniteScroll
+        data="items"
+        :buffer="200"
+      >
+        <VideoList :items="items?.data" />
+      </InfiniteScroll>
     </template>
   </UDashboardPanel>
 </template>

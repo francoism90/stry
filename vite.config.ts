@@ -58,16 +58,6 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
-          dashboardPanel: {
-            slots: {
-              body: 'overflow-y-clip',
-            },
-          },
-          dashboardNavbar: {
-            slots: {
-              root: 'bg-default sticky top-0 z-50 w-full',
-            },
-          },
         },
       }),
     ],
