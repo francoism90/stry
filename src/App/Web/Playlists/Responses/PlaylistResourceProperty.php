@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Playlists\Responses;
+namespace App\Web\Playlists\Responses;
 
 use App\Api\Playlists\Resources\PlaylistResource;
 use Domain\Playlists\Models\Playlist;

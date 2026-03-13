@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Users\Controllers;
+namespace App\Web\Users\Controllers;
 
-use App\Admin\Users\Responses\UserResourceProperty;
+use App\Web\Users\Responses\UserResourceProperty;
 use App\Api\Users\Requests\UserIndexRequest;
 use App\Api\Users\Requests\UserUpdateRequest;
 use App\Api\Users\Resources\UserResource;

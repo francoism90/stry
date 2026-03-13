@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Users\Responses;
+namespace App\Web\Users\Responses;
 
 use App\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Transcodes\Controllers;
+namespace App\Web\Videos\Controllers;
 
-use App\Admin\Transcodes\Responses\TranscodeResourceProperty;
+use App\Web\Transcodes\Responses\TranscodeResourceProperty;
+use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
-use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
-use Domain\Transcodes\Scopes\TranscodeFilterScope;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TranscodeController extends Controller implements HasMiddleware
+class VideoTranscodeController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -28,40 +28,34 @@ class TranscodeController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(TranscodeIndexRequest $request): Response
+    public function index(TranscodeIndexRequest $request, Video $video): Response
     {
         Gate::authorize('viewAny', Transcode::class);
 
-        // Apply filters
-        $encoder = $request->safe()->input('encoder');
+        // Fetch transcodes for the video
+        $transcodes = $video->transcodes()->simplePaginate(16);
 
-        // Query builder
-        $query = Transcode::query()
-            ->tap(new TranscodeFilterScope(encoder: $encoder))
-            ->simplePaginate(16);
-
-        return Inertia::render('Admin/Transcodes/TranscodeIndex', [
-            'items' => Inertia::scroll(fn () => TranscodeResource::collection($query)),
-            'encoder' => fn () => $encoder,
-            'encoders' => fn () => TranscodeEncoder::options(),
+        return Inertia::render('Admin/Videos/Transcodes/TranscodeIndex', [
+            'video' => fn () => new VideoResourceProperty($video),
+            'items' => Inertia::scroll(fn () => TranscodeResource::collection($transcodes)),
         ]);
     }
 
-    public function edit(Transcode $transcode): Response
+    public function edit(Video $video, Transcode $transcode): Response
     {
         Gate::authorize('update', $transcode);
 
-        return Inertia::render('Admin/Transcodes/TranscodeEdit', [
+        return Inertia::render('Admin/Videos/Transcodes/TranscodeEdit', [
+            'video' => fn () => new VideoResourceProperty($video),
             'transcode' => fn () => new TranscodeResourceProperty($transcode),
-            'encoders' => fn () => TranscodeEncoder::options(),
         ]);
     }
 
-    public function update(Transcode $transcode, TranscodeUpdateRequest $request): RedirectResponse
+    public function update(TranscodeUpdateRequest $request, Video $video, Transcode $transcode): RedirectResponse
     {
         Gate::authorize('update', $transcode);
 
-        // Update transcode details
+        // Update the transcode with validated data
         $transcode->updateOrFail($request->safe()->all());
 
         // Notify the user
@@ -73,7 +67,7 @@ class TranscodeController extends Controller implements HasMiddleware
         return back();
     }
 
-    public function destroy(Transcode $transcode): RedirectResponse
+    public function destroy(Video $video, Transcode $transcode): RedirectResponse
     {
         Gate::authorize('delete', $transcode);
 

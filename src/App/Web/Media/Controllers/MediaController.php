@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Media\Controllers;
+namespace App\Web\Media\Controllers;
 
-use App\Admin\Media\Responses\MediaResourceProperty;
+use App\Web\Media\Responses\MediaResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;

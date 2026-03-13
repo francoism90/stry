@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Media\Responses;
+namespace App\Web\Media\Responses;
 
 use App\Api\Media\Resources\MediaResource;
 use Domain\Media\Models\Media;

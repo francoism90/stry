@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Videos\Controllers;
+namespace App\Web\Videos\Controllers;
 
-use App\Admin\Videos\Responses\VideoResourceProperty;
+use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
 use Domain\Media\Models\Media;

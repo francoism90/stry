@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Playlists\Controllers;
+namespace App\Web\Videos\Controllers;
 
-use App\Admin\Playlists\Responses\PlaylistResourceProperty;
+use App\Web\Playlists\Responses\PlaylistResourceProperty;
+use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
-use Domain\Playlists\Scopes\PlaylistFilterScope;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class PlaylistController extends Controller implements HasMiddleware
+class VideoPlaylistController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -28,40 +28,34 @@ class PlaylistController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(PlaylistIndexRequest $request): Response
+    public function index(PlaylistIndexRequest $request, Video $video): Response
     {
         Gate::authorize('viewAny', Playlist::class);
 
-        // Apply filters
-        $type = $request->safe()->input('type');
+        // Fetch playlists for the video
+        $playlists = $video->playlists()->simplePaginate(16);
 
-        // Query builder
-        $query = Playlist::query()
-            ->tap(new PlaylistFilterScope(type: $type))
-            ->simplePaginate(16);
-
-        return Inertia::render('Admin/Playlists/PlaylistIndex', [
-            'items' => Inertia::scroll(fn () => PlaylistResource::collection($query)),
-            'type' => fn () => $type,
-            'types' => fn () => PlaylistType::options(),
+        return Inertia::render('Admin/Videos/Playlists/PlaylistIndex', [
+            'video' => fn () => new VideoResourceProperty($video),
+            'items' => Inertia::scroll(fn () => PlaylistResource::collection($playlists)),
         ]);
     }
 
-    public function edit(Playlist $playlist): Response
+    public function edit(Video $video, Playlist $playlist): Response
     {
         Gate::authorize('update', $playlist);
 
-        return Inertia::render('Admin/Playlists/PlaylistEdit', [
+        return Inertia::render('Admin/Videos/Playlists/PlaylistEdit', [
+            'video' => fn () => new VideoResourceProperty($video),
             'playlist' => fn () => new PlaylistResourceProperty($playlist),
-            'types' => fn () => PlaylistType::options(),
         ]);
     }
 
-    public function update(Playlist $playlist, PlaylistUpdateRequest $request): RedirectResponse
+    public function update(PlaylistUpdateRequest $request, Video $video, Playlist $playlist): RedirectResponse
     {
         Gate::authorize('update', $playlist);
 
-        // Update playlist details
+        // Update the playlist with validated data
         $playlist->updateOrFail($request->safe()->all());
 
         // Notify the user
@@ -73,7 +67,7 @@ class PlaylistController extends Controller implements HasMiddleware
         return back();
     }
 
-    public function destroy(Playlist $playlist): RedirectResponse
+    public function destroy(Video $video, Playlist $playlist): RedirectResponse
     {
         Gate::authorize('delete', $playlist);
 

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
+use App\Web\Tags\Responses\TagResourceProperty;
 use App\Api\Tags\Requests\TagIndexRequest;
+use App\Api\Tags\Requests\TagStoreRequest;
+use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
+use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -21,12 +26,11 @@ class TagController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
 
-    public function __invoke(TagIndexRequest $request): Response
+    public function index(TagIndexRequest $request): Response
     {
         Gate::authorize('viewAny', Tag::class);
 
@@ -37,13 +41,73 @@ class TagController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Tag::search($search)
             ->tap(new TagFilterScope(type: $type))
-            ->simplePaginate(perPage: 24);
+            ->simplePaginate(perPage: 16);
 
-        return Inertia::render('Client/Tags/TagIndex', [
+        return Inertia::render('Admin/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
-            'types' => fn () => TagType::options(),
-            'search' => fn () => $search,
             'type' => fn () => $type,
+            'types' => fn () => TagType::options(),
         ]);
+    }
+
+    public function store(TagStoreRequest $request): RedirectResponse
+    {
+        Gate::authorize('create', Tag::class);
+
+        // Create the tag
+        $tag = Tag::create($request->safe()->all());
+
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $tag->name,
+            'description' => __('The tag has been created.'),
+        ]);
+
+        return back();
+    }
+
+    public function edit(Tag $tag): Response
+    {
+        Gate::authorize('update', $tag);
+
+        return Inertia::render('Admin/Tags/TagEdit', [
+            'tag' => fn () => new TagResourceProperty($tag),
+            'types' => fn () => TagType::options(),
+        ]);
+    }
+
+    public function update(Tag $tag, TagUpdateRequest $request): RedirectResponse
+    {
+        Gate::authorize('update', $tag);
+
+        // Update tag details
+        app(UpdateTagDetails::class)->handle(
+            tag: $tag,
+            attributes: $request->safe()->all()
+        );
+
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $tag->name,
+            'description' => __('The tag has been updated.'),
+        ]);
+
+        return back();
+    }
+
+    public function destroy(Tag $tag): RedirectResponse
+    {
+        Gate::authorize('delete', $tag);
+
+        // Delete the tag
+        $tag->deleteOrFail();
+
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $tag->name,
+            'description' => __('The tag has been deleted.'),
+        ]);
+
+        return back();
     }
 }
