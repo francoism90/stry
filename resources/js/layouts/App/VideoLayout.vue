@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index as media } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
 import { index as playlists } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import { index as transcodes } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
@@ -14,7 +14,15 @@ const props = defineProps<{
   video: Video
 }>()
 
-const items: NavigationMenuItem[] = [
+const links: NavigationMenuItem[] = [
+  {
+    label: 'View video',
+    icon: 'i-lucide-eye',
+    to: show.url(props.video.id),
+  },
+]
+
+const tabs: NavigationMenuItem[] = [
   {
     label: 'General',
     icon: 'i-lucide-film',
@@ -56,7 +64,10 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload
 
     <template #body>
       <UPage>
-        <UPageHeader :title="video.title">
+        <UPageHeader
+          :title="video.title"
+          :links="links"
+        >
           <template #description>
             <div class="dot-separated text-muted flex flex-wrap items-center text-sm">
               <span
@@ -70,7 +81,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload
         </UPageHeader>
 
         <UNavigationMenu
-          :items="items"
+          :items="tabs"
           variant="link"
           highlight
           :ui="{

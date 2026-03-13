@@ -13,6 +13,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
+  progress: number | null
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
@@ -27,7 +28,7 @@ const form = useForm('put', update.url(props.video.id), {
   part: props.video.part || null,
   summary: props.video.summary || null,
   tags: props.video.tags || [],
-  expires_at: props.video.expires_at || null,
+  snapshot: props.video.snapshot || null,
   published_at: props.video.published_at || null,
   released_at: props.video.released_at || null,
 })
@@ -147,6 +148,34 @@ const expiresAt = computed({
 
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <UFormField
+              label="Snapshot"
+              :error="form.errors.snapshot"
+            >
+              <UInput
+                v-model="form.snapshot"
+                :model-modifiers="{ nullable: true, number: true }"
+                :ui="{ trailing: 'pe-1' }"
+                type="number"
+                placeholder="3.00"
+                aria-label="Set by progress"
+                step="0.01"
+                min="0"
+                :max="video.duration || undefined"
+              >
+                <template #trailing>
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    icon="i-lucide-image-down"
+                    aria-label="From progress"
+                    @click.prevent="form.snapshot = progress || null"
+                  />
+                </template>
+              </UInput>
+            </UFormField>
+
+            <UFormField
               label="Published"
               :error="form.errors.published_at"
             >
@@ -185,28 +214,6 @@ const expiresAt = computed({
                     icon="i-lucide-calendar-clock"
                     aria-label="Set to now"
                     @click.prevent="releasedAt = nowDateTime()"
-                  />
-                </template>
-              </UInputDate>
-            </UFormField>
-
-            <UFormField
-              label="Expires"
-              :error="form.errors.expires_at"
-            >
-              <UInputDate
-                v-model="expiresAt"
-                granularity="second"
-                :ui="{ trailing: 'pe-1' }"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-calendar-clock"
-                    aria-label="Set to now"
-                    @click.prevent="expiresAt = nowDateTime()"
                   />
                 </template>
               </UInputDate>
