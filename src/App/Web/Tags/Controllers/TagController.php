@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Tags\Controllers;
+namespace App\Web\Tags\Controllers;
 
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Resources\TagResource;
