@@ -17,15 +17,15 @@ defineProps<{
   <UDashboardPanel id="tags">
     <template #header>
       <AppHeader />
-
-      <TagFilters
-        :types="types"
-        :type="type"
-      />
     </template>
 
     <template #body>
       <UPage>
+        <TagFilters
+          :types="types"
+          :type="type"
+        />
+
         <InfiniteScroll
           data="items"
           :buffer="200"
