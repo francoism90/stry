@@ -7,7 +7,7 @@ const props = defineProps<{
   order?: string | undefined
 }>()
 
-const form = useForm('get', '/', {
+const form = useForm('get', '', {
   order: props.order,
   page: 1,
 })
