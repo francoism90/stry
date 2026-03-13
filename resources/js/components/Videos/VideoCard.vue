@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import VideoController from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import type { Video } from '@/types'
 
@@ -13,6 +13,7 @@ defineProps<{
     variant="naked"
     :title="item.title"
     :date="item.released ?? undefined"
+    :to="show.url({ video: item.id })"
     :ui="{
       root: 'gap-y-3 rounded-none',
       title: 'line-clamp-2 text-sm leading-snug font-medium',

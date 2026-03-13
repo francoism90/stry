@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Videos\Responses;
+namespace App\Web\Videos\Responses;
 
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\GetVideoProgress;

@@ -52,7 +52,7 @@ trait InteractsWithPlaylists
     {
         return $this->playlists()
             ->type($type)
-            ->active()
+            ->current()
             ->exists();
     }
 }

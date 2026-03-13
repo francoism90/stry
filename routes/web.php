@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Web\Account\Controllers\HomeController;
+use App\Web\Videos\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 // Home
@@ -15,11 +16,5 @@ Route::get('/', HomeController::class)->name('home');
 // // Tags
 // Route::get('/tags', TagController::class)->name('tags');
 
-// // Videos
-// Route::get('/play/{video}', VideoController::class)->name('play');
-
-// // Fallback
-// Route::any('/{filter?}', HomeController::class)
-//     ->defaults('filter', 'all')
-//     ->where('filter', '^(?!admin|api).*')
-//     ->name('home');
+// Videos
+Route::apiResource('/videos/{video}', VideoController::class);

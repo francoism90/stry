@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Videos\Responses;
+namespace App\Web\Videos\Responses;
 
 use App\Api\Playlists\Resources\PlaylistResource;
 use Domain\Videos\Models\Video;
@@ -22,8 +22,12 @@ readonly class VideoPlaylistProperty implements ProvidesInertiaProperty
 
     protected function getPlaylist(): ?PlaylistResource
     {
+        if (! $this->video || ! $this->video->hasPlaylist()) {
+            return null;
+        }
+
         return $this->video
-            ?->getPlaylist()
-            ?->toResource(PlaylistResource::class);
+            ->getPlaylist()
+            ->toResource(PlaylistResource::class);
     }
 }

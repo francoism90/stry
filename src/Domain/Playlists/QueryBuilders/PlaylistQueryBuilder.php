@@ -32,7 +32,7 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', States\Verified::class);
     }
 
-    public function active(): self
+    public function current(): self
     {
         return $this
             ->whereNot(fn ($query) => $query->expired())
