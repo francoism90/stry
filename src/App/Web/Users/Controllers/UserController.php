@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Users\Controllers;
 
-use App\Web\Users\Responses\UserResourceProperty;
 use App\Api\Users\Requests\UserIndexRequest;
 use App\Api\Users\Requests\UserUpdateRequest;
 use App\Api\Users\Resources\UserResource;
+use App\Web\Users\Responses\UserResourceProperty;
 use Domain\Users\Models\User;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;

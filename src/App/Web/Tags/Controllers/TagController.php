@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Controllers;
 
-use App\Web\Tags\Responses\TagResourceProperty;
 use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagStoreRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;

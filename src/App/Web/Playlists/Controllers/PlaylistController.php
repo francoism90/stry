@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Playlists\Controllers;
 
-use App\Web\Playlists\Responses\PlaylistResourceProperty;
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
+use App\Web\Playlists\Responses\PlaylistResourceProperty;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Scopes\PlaylistFilterScope;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Transcodes\Controllers;
 
-use App\Web\Transcodes\Responses\TranscodeResourceProperty;
 use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
+use App\Web\Transcodes\Responses\TranscodeResourceProperty;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\Scopes\TranscodeFilterScope;

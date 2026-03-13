@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Media\Controllers;
 
-use App\Web\Media\Responses\MediaResourceProperty;
 use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Requests\MediaUpdateRequest;
 use App\Api\Media\Resources\MediaResource;
+use App\Web\Media\Responses\MediaResourceProperty;
 use Domain\Media\Models\Media;
 use Domain\Media\Scopes\MediaFilterScope;
 use Foundation\Http\Controllers\Controller;

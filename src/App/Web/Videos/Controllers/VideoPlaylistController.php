@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Web\Playlists\Responses\PlaylistResourceProperty;
-use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
+use App\Web\Playlists\Responses\PlaylistResourceProperty;
+use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;

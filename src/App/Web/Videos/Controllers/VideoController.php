@@ -5,24 +5,23 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoIndexRequest;
-use Domain\Videos\Actions\UpdateVideoDetails;
+use App\Api\Videos\Requests\VideoUpdateRequest;
+use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
-use App\Api\Videos\Requests\VideoUpdateRequest;
-use App\Api\Videos\Resources\VideoResource;
-use Domain\Shared\Scopes\OrderedScope;
+use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -86,11 +85,10 @@ class VideoController extends Controller implements HasMiddleware
         ];
 
         return Inertia::render('App/Videos/VideoEdit', [
-            'video' => fn () => new VideoResourceProperty($video, $appends  ),
+            'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty($video, Auth::user()),
         ]);
     }
-
 
     public function update(Video $video, VideoUpdateRequest $request): RedirectResponse
     {
