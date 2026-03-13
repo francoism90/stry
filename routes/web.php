@@ -17,4 +17,4 @@ Route::get('/', HomeController::class)->name('home');
 // Route::get('/tags', TagController::class)->name('tags');
 
 // Videos
-Route::apiResource('/videos/{video}', VideoController::class);
+Route::apiResource('videos', VideoController::class)->only(['show', 'update', 'destroy']);
