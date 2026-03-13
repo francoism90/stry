@@ -31,7 +31,7 @@ onMounted(() => initialize())
 </script>
 
 <template>
-  <div class="relative w-full flex-1">
+  <figure>
     <UEmpty
       v-if="!ready && !error"
       title="Preparing your video..."
@@ -62,5 +62,5 @@ onMounted(() => initialize())
         autoplay
       />
     </div>
-  </div>
+  </figure>
 </template>

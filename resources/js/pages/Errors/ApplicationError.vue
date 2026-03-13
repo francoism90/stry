@@ -12,18 +12,18 @@ const props = defineProps<{
 
 const actions = ref(<ButtonProps[]>[
   {
-    icon: 'i-lucide-refresh-cw',
-    label: 'Refresh',
-    variant: 'subtle',
-    size: 'md',
-    onClick: () => router.reload(),
-  },
-  {
     icon: 'i-lucide-house',
     label: 'Home',
     variant: 'subtle',
     size: 'md',
     to: '/',
+  },
+  {
+    icon: 'i-lucide-refresh-cw',
+    label: 'Refresh',
+    variant: 'subtle',
+    size: 'md',
+    onClick: () => router.reload(),
   },
 ])
 
