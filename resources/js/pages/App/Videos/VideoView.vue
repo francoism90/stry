@@ -50,39 +50,42 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
     </template>
 
     <template #body>
-      <UPage>
-        <UPageBody class="mt-6">
-          <VideoPlayer />
+      <UPage class="mt-6">
+        <VideoPlayer />
 
-          <UPageHeader
-            :title="video.title"
-            :links="links"
-            :ui="{
-              root: 'pt-0',
-              title: 'text-xl sm:text-2xl',
-              links: 'flex-nowrap',
-              description: 'flex flex-col gap-3 text-base',
-            }"
-          >
-            <template #description>
-              <p
-                v-if="video.description?.length"
-                v-html="video.description"
-              />
+        <UPageHeader
+          :title="video.title"
+          :links="links"
+          :ui="{
+            title: 'text-xl sm:text-2xl',
+            links: 'flex-nowrap',
+            description: 'flex flex-col gap-3 text-base',
+          }"
+        >
+          <template #description>
+            <p
+              v-if="video.description?.length"
+              v-html="video.description"
+            />
 
-              <VideoTags :items="video.tags" />
-            </template>
-          </UPageHeader>
+            <VideoTags :items="video.tags" />
+          </template>
+        </UPageHeader>
 
-          <Deferred data="queue">
-            <template #fallback>
-              <div class="sr-only">Loading queue...</div>
-            </template>
+        <Deferred data="queue">
+          <template #fallback>
+            <div class="sr-only">Loading queue...</div>
+          </template>
 
-            <UPageFeature title="Up next" />
+          <UPageBody>
+            <UPageFeature
+              title="Up next"
+              class="mt-6"
+            />
+
             <VideoList :items="queue" />
-          </Deferred>
-        </UPageBody>
+          </UPageBody>
+        </Deferred>
       </UPage>
     </template>
   </UDashboardPanel>
