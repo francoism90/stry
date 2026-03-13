@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import HomeController from '@/actions/App/Client/Account/Controllers/HomeController'
 import type { Tag } from '@/types'
 
 defineProps<{
   items: Tag[] | undefined
 }>()
 
-const url = (tag: string) => HomeController.url('all', { query: { tag } })
+const url = (tag: string) => `/all?tag=${tag}`
 </script>
 
 <template>

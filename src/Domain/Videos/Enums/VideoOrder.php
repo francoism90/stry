@@ -21,6 +21,7 @@ enum VideoOrder: string implements Enumerable
         return match ($this) {
             self::Recommended => __('Recommended'),
             self::Newest => __('Newest'),
+            self::Oldest => __('Oldest'),
             self::Ordered => __('Ordered'),
             self::Longest => __('Longest'),
             self::Shortest => __('Shortest'),

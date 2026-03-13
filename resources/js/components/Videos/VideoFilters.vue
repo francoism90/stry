@@ -28,7 +28,7 @@ const onSubmit = () => {
         v-if="orders?.length"
         v-model="form.order"
         :items="orders"
-        :ui="{ base: 'px-0', content: 'min-w-36' }"
+        :ui="{ base: 'px-0', content: 'min-w-40' }"
         label-key="label"
         value-key="value"
         variant="none"
