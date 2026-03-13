@@ -24,6 +24,7 @@ defineProps<{
 
       <ULink
         :to="show.url(item.id)"
+        active-class="text-neutral"
         class="hover:text-highlighted z-10 transition-colors"
       >
         {{ item.name }}
