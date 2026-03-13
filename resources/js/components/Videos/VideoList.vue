@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import VideoController from '@/actions/App/Client/Videos/Controllers/VideoController'
-import VideoTags from '@/components/Videos/VideoTags.vue'
+import VideoCard from '@/components/Videos/VideoCard.vue'
 import type { Video } from '@/types'
 
 defineProps<{
@@ -9,33 +8,11 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="gap-3 gap-y-9 lg:gap-y-12">
-    <UBlogPost
+  <div class="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-2 xl:grid-cols-3">
+    <VideoCard
       v-for="item in items"
       :key="item.id"
-      variant="naked"
-      :title="item.title"
-      :image="item.thumb ?? undefined"
-      :badge="item.timestamp ?? undefined"
-      :date="item.released ?? undefined"
-      :to="VideoController.url(item.id)"
-      :ui="{
-        root: 'gap-y-4 rounded-none',
-        header: 'rounded-lg shadow-none',
-        title: 'text-xs',
-        date: 'text-xs',
-        body: 'p-0 sm:p-0 lg:px-0',
-        description: 'mt-2.5 flex flex-col gap-2 text-xs',
-      }"
-    >
-      <template #description>
-        <p
-          v-if="item.description?.length"
-          v-html="item.description"
-        />
-
-        <VideoTags :items="item.tags" />
-      </template>
-    </UBlogPost>
-  </UBlogPosts>
+      :item="item"
+    />
+  </div>
 </template>

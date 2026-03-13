@@ -12,16 +12,24 @@ const url = (tag: string) => HomeController.url('all', { query: { tag } })
 <template>
   <div
     v-if="items?.length"
-    class="flex flex-wrap gap-1.5 overflow-auto"
+    class="text-muted flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm"
   >
-    <UButton
-      v-for="item in items"
+    <template
+      v-for="(item, index) in items"
       :key="item.id"
-      :label="item.name"
-      :to="url(item.id)"
-      variant="subtle"
-      size="xs"
-      class="z-10"
-    />
+    >
+      <span
+        v-if="index > 0"
+        class="opacity-40 select-none"
+        >·</span
+      >
+
+      <ULink
+        :to="url(item.id)"
+        class="hover:text-highlighted z-10 transition-colors"
+      >
+        {{ item.name }}
+      </ULink>
+    </template>
   </div>
 </template>
