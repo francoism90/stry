@@ -17,15 +17,15 @@ defineProps<{
   <UDashboardPanel id="videos">
     <template #header>
       <AppHeader />
-
-      <VideoFilters
-        :orders="orders"
-        :order="order"
-      />
     </template>
 
     <template #body>
       <UPage>
+        <VideoFilters
+          :orders="orders"
+          :order="order"
+        />
+
         <InfiniteScroll
           data="items"
           :buffer="200"

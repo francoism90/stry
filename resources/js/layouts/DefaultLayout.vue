@@ -21,19 +21,16 @@ const { nonce } = useAppearance()
         <UTheme
           :ui="{
             dashboardPanel: {
-              root: 'relative flex min-h-svh w-full flex-col',
-              header: 'sticky top-0 z-50 w-full',
-              body: 'flex w-full max-w-(--ui-container) flex-1 flex-col gap-4 self-center py-0 sm:gap-6 sm:py-0',
+              body: 'w-full max-w-(--ui-container) flex-1 self-center overflow-hidden py-0 sm:py-0',
             },
             dashboardNavbar: {
-              root: 'flex min-h-18 w-full max-w-(--ui-container) shrink-0 items-center justify-between gap-1.5 self-center overflow-x-auto border-0 px-4 sm:px-6',
+              root: 'min-h-16 overflow-x-auto border-0',
             },
             dashboardToolbar: {
-              root: 'flex min-h-18 w-full max-w-(--ui-container) shrink-0 items-center justify-between gap-1.5 self-center overflow-x-auto border-0 px-4 sm:px-6',
-              left: 'flex items-center gap-3 *:inline-flex *:items-center',
+              root: 'min-h-16 overflow-x-auto border-0 px-0 sm:px-0',
             },
             pageHeader: {
-              root: 'border-0 pt-6 pb-0',
+              root: 'border-0 pt-4 pb-0',
               description: 'mt-2',
             },
             pageBody: {

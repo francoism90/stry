@@ -51,7 +51,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
 <template>
   <UHeader
     :ui="{
-      root: 'border-default bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
+      root: 'border-default sticky top-0 z-50 w-full bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
       left: 'gap-4 *:inline-flex *:items-center',
     }"
   >
