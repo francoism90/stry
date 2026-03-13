@@ -1,0 +1,4 @@
+.shaka-video-container *,
+.shaka-video-container {
+  font-family: inherit !important;
+}
