@@ -22,10 +22,10 @@ const { nonce } = useAppearance()
           :ui="{
             dashboardPanel: {
               root: 'relative flex min-h-svh w-full flex-col',
-              body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 flex-col gap-4 sm:gap-6',
+              body: 'flex w-full max-w-(--ui-container) flex-1 flex-col gap-4 self-center sm:gap-6',
             },
             dashboardToolbar: {
-              root: 'mx-auto flex min-h-4 w-full max-w-(--ui-container) shrink-0 items-center justify-between gap-1.5 overflow-x-auto border-0 px-4 sm:px-6',
+              root: 'flex min-h-4 w-full max-w-(--ui-container) shrink-0 items-center justify-between gap-1.5 self-center overflow-x-auto border-0 px-4 sm:px-6',
               left: 'flex items-center gap-3 *:inline-flex *:items-center',
             },
             dashboardNavbar: {
