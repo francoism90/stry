@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import DashboardSidebar from '@/components/Admin/DashboardSidebar.vue'
-import AppNotifications from '@/components/Ui/AppNotifications.vue'
 import { useAppearance } from '@/composables/appearance'
+import { useNotifications } from '@/composables/notifications'
 import { Head } from '@inertiajs/vue3'
 
 const { nonce } = useAppearance()
+useNotifications()
 </script>
 
 <template>
@@ -20,7 +21,6 @@ const { nonce } = useAppearance()
         storage-key="dashboard"
         class="relative w-full overflow-clip"
       >
-        <AppNotifications />
         <DashboardSidebar />
         <slot />
       </UDashboardGroup>

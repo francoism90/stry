@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import AppNotifications from '@/components/Ui/AppNotifications.vue'
-import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import { useAppearance } from '@/composables/appearance'
 import { Head } from '@inertiajs/vue3'
 
@@ -20,8 +18,6 @@ const { nonce } = useAppearance()
         storage-key="app"
         class="relative w-full overflow-clip"
       >
-        <AppNotifications />
-        <AppSidebar />
         <slot />
       </UDashboardGroup>
     </UApp>

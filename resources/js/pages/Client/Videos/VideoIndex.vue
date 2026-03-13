@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import UserMenu from '@/components/Ui/UserMenu.vue'
+import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import { useGroups } from '@/composables/groups'
 import type { FilterOption, Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
-import { watchDebounced } from '@vueuse/core'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -14,13 +13,11 @@ const props = defineProps<{
   filter: FilterOption
   tag?: Tag | undefined
   order?: string | undefined
-  search?: string | null
 }>()
 
 const { clearGroup } = useGroups()
 
-const form = useForm('get', '', {
-  search: props.search ?? '',
+const form = useForm('get', '/', {
   order: props.order,
   tag: props.tag?.id,
   page: 1,
@@ -29,7 +26,7 @@ const form = useForm('get', '', {
 const onSubmit = () => {
   form.submit({
     preserveState: true,
-    only: ['items', 'search', 'order', 'tag'],
+    only: ['items', 'order', 'tag'],
     reset: ['items'],
   })
 }
@@ -38,12 +35,6 @@ const clearTag = () => {
   form.tag = undefined
   onSubmit()
 }
-
-watchDebounced(
-  () => form.search,
-  () => onSubmit(),
-  { debounce: 350, maxWait: 1000 },
-)
 </script>
 
 <template>
@@ -51,31 +42,7 @@ watchDebounced(
 
   <UDashboardPanel id="feed">
     <template #header>
-      <UDashboardNavbar
-        :ui="{ root: 'gap-3 border-0', left: 'w-full' }"
-        :toggle="{ variant: 'link', class: 'ps-0' }"
-      >
-        <template #left>
-          <UFormField
-            :error="form.errors.search"
-            class="flex-1"
-          >
-            <UInput
-              v-model="form.search"
-              :model-modifiers="{ string: true, trim: true }"
-              :placeholder="`Search ${filter.label}...`"
-              variant="soft"
-              size="xl"
-              color="neutral"
-              icon="i-lucide-search"
-            />
-          </UFormField>
-        </template>
-
-        <template #right>
-          <UserMenu />
-        </template>
-      </UDashboardNavbar>
+      <AppHeader />
 
       <UDashboardToolbar
         :ui="{
