@@ -210,7 +210,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function thumbnailUrl(): ?string
     {
-        return rescue(fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'thumb'));
+        $media = $this->getFirstMedia('avatar');
+
+        if (! $media) {
+            return null;
+        }
+
+        $media->setRelation('model', $this);
+
+        return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
     }
 
     protected function avatar(): Attribute

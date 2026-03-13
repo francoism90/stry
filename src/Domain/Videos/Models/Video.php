@@ -311,20 +311,44 @@ class Video extends Model implements HasMedia
             ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
     }
 
+    public function getVideoStreams(): Collection
+    {
+        return $this->getStreams()
+            ->filter(fn (array $stream) => $stream['codec_type'] === 'video');
+    }
+
+    public function getAudioStreams(): Collection
+    {
+        return $this->getStreams()
+            ->filter(fn (array $stream) => $stream['codec_type'] === 'audio');
+    }
+
+    public function getCaptionStreams(): Collection
+    {
+        return $this->getStreams()
+            ->filter(fn (array $stream) => $stream['codec_type'] === 'subtitle' || data_get($stream, 'closed_captions'));
+    }
+
     public function hasCaptions(): bool
     {
         if ($this->getCaptions()->isNotEmpty()) {
             return true;
         }
 
-        return (bool) $this->getStreams()
-            ->filter(fn (array $stream) => $stream['codec_type'] === 'subtitle' || data_get($stream, 'closed_captions'))
-            ->isNotEmpty();
+        return $this->getCaptionStreams()->isNotEmpty();
     }
 
     public function thumbnailUrl(): ?string
     {
-        return rescue(fn () => $this->getFirstTemporaryUrl(now()->addWeek(), 'clips', 'thumb'));
+        $media = $this->getFirstMedia('clips');
+
+        if (! $media) {
+            return null;
+        }
+
+        $media->setRelation('model', $this);
+
+        return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
     }
 
     public function durationInSeconds(): float
