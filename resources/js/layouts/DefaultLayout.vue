@@ -32,6 +32,10 @@ const { nonce } = useAppearance()
               root: 'flex min-h-4 w-full max-w-(--ui-container) shrink-0 items-center justify-between gap-1.5 self-center overflow-x-auto border-0 px-4 pt-4 sm:px-6 sm:pt-6',
               left: 'flex items-center gap-3 *:inline-flex *:items-center',
             },
+            pageHeader: {
+              root: 'border-0 py-0',
+              description: 'mt-2',
+            },
           }"
         >
           <slot />

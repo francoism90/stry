@@ -1,0 +1,8 @@
+@utility dot-separated {
+  > * + *::before {
+    content: '·';
+    margin-inline: 0.25rem;
+    opacity: 0.4;
+    user-select: none;
+  }
+}

@@ -16,7 +16,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 <template>
   <Head :title="video.title" />
 
-  <UDashboardPanel id="video-resource">
+  <UDashboardPanel id="video">
     <template #header>
       <AppHeader />
     </template>

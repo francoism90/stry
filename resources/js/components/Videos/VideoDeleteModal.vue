@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Videos/Controllers/VideoController'
+import { destroy } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 

@@ -26,9 +26,17 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
+        $appends = [
+            'titles',
+            'content',
+            'summary',
+            'snapshot',
+            'filesize',
+        ];
+
         return $this->video
             ->loadMissing('media', 'tags', 'user')
-            ->append('titles', 'content', 'summary', 'snapshot')
+            ->append($appends)
             ->toResource(VideoResource::class);
     }
 }
