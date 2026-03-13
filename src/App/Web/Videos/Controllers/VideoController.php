@@ -16,6 +16,7 @@ use Domain\Shared\Scopes\OrderedScope;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -41,9 +42,8 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = Video::search()
-            ->tap(new OrderedScope(
+            ->tap(new VideoFilterScope(
                 order: $request->safe()->input('order'),
-                direction: $request->safe()->input('direction'),
             ))
             ->simplePaginate(perPage: 18);
 

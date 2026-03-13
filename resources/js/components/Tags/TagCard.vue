@@ -18,7 +18,7 @@ function tagColor(slug: string): string {
 
 <template>
   <ULink
-    :to="show.url(props.item.slug)"
+    :to="show.url(props.item.id)"
     class="bg-elevated hover:bg-accented flex flex-col gap-0.5 rounded-lg border-l-6 px-4 py-2.5 transition"
     :style="{ borderColor: tagColor(props.item.slug) }"
   >

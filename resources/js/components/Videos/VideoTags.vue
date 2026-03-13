@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 
 defineProps<{
   items: Tag[] | undefined
 }>()
-
-const url = (tag: string) => `/all?tag=${tag}`
 </script>
 
 <template>
@@ -24,7 +23,7 @@ const url = (tag: string) => `/all?tag=${tag}`
       >
 
       <ULink
-        :to="url(item.id)"
+        :to="show.url(item.id)"
         class="hover:text-highlighted z-10 transition-colors"
       >
         {{ item.name }}

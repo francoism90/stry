@@ -9,10 +9,16 @@ use App\Api\Tags\Requests\TagIndexRequest;
 use App\Api\Tags\Requests\TagStoreRequest;
 use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
+use App\Api\Videos\Requests\VideoIndexRequest;
+use App\Api\Videos\Resources\VideoResource;
+use Domain\Shared\Scopes\OrderedScope;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -46,6 +52,26 @@ class TagController extends Controller implements HasMiddleware
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),
+        ]);
+    }
+
+    public function show(Tag $tag, VideoIndexRequest $request): Response
+    {
+        Gate::authorize('view', $tag);
+
+        // Scout builder
+        $scout = Video::search()
+            ->tap(new VideoFilterScope(
+                tag: $tag,
+                order: $request->safe()->input('order'),
+            ))
+            ->simplePaginate(perPage: 18);
+
+        return Inertia::render('App/Tags/TagView', [
+            'tag' => fn () => new TagResourceProperty($tag, ['related']),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'orders' => fn () => VideoOrder::options(),
         ]);
     }
 
