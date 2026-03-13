@@ -46,13 +46,14 @@ const links = computed<ButtonProps[]>(() => [
 
     <template #body>
       <UPage>
-        <UPageBody>
+        <UPageBody class="mt-6">
           <VideoPlayer />
 
           <UPageHeader
             :title="video.title"
             :links="links"
             :ui="{
+              root: 'pt-0',
               title: 'text-xl sm:text-2xl',
               links: 'flex-nowrap',
               description: 'flex flex-col gap-3 text-base',
