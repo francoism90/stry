@@ -16,6 +16,10 @@ const navItems: NavigationMenuItem[] = [
     exact: true,
   },
   {
+    label: 'Collections',
+    to: '/collections',
+  },
+  {
     label: 'Tags',
     to: '/tags',
   },
@@ -45,7 +49,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
 </script>
 
 <template>
-  <UHeader :ui="{ root: 'border-(--ui-border)', left: 'gap-6 *:inline-flex *:items-center' }">
+  <UHeader :ui="{ root: 'border-(--ui-border)', left: 'gap-4 *:inline-flex *:items-center' }">
     <template #left>
       <AppLogo />
 
