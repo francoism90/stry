@@ -19,10 +19,10 @@ function tagColor(slug: string): string {
 <template>
   <ULink
     :to="show.url(props.item.slug)"
-    class="flex flex-col gap-0.5 rounded-lg px-4 py-3 transition hover:brightness-110"
-    :style="{ backgroundColor: tagColor(props.item.slug) }"
+    class="bg-elevated hover:bg-accented flex flex-col gap-0.5 rounded-lg border-l-6 px-4 py-2.5 transition"
+    :style="{ borderColor: tagColor(props.item.slug) }"
   >
-    <span class="line-clamp-1 text-sm font-semibold text-white">{{ props.item.name }}</span>
-    <span class="text-xs text-white/60">{{ props.item.category }}</span>
+    <span class="line-clamp-1 text-sm font-semibold">{{ props.item.name }}</span>
+    <span class="text-muted text-xs">{{ props.item.videos }} {{ props.item.videos === 1 ? 'video' : 'videos' }}</span>
   </ULink>
 </template>
