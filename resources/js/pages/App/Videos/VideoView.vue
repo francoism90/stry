@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useVideo } from '@/composables/video'
-import VideoLayout from '@/layouts/App/VideoLayout.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Video } from '@/types'
 import { Deferred, Head } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
@@ -15,8 +14,6 @@ const props = defineProps<{
   video: Video
   queue?: Video[] | undefined
 }>()
-
-defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
 const { toggleLike, toggleSave } = useVideo(props.video)
 
@@ -42,37 +39,45 @@ const links = computed<ButtonProps[]>(() => [
 <template>
   <Head :title="video.title" />
 
-  <UPage>
-    <VideoPlayer />
+  <UDashboardPanel id="play">
+    <template #header>
+      <AppHeader />
+    </template>
 
-    <UPageHeader
-      :title="video.title"
-      :links="links"
-      :ui="{
-        title: 'text-xl sm:text-2xl',
-        links: 'flex-nowrap',
-        description: 'flex flex-col gap-3 text-base',
-      }"
-    >
-      <template #description>
-        <p
-          v-if="video.description?.length"
-          v-html="video.description"
-        />
+    <template #body>
+      <UPage>
+        <UPageBody>
+          <VideoPlayer />
 
-        <VideoTags :items="video.tags" />
-      </template>
-    </UPageHeader>
+          <UPageHeader
+            :title="video.title"
+            :links="links"
+            :ui="{
+              title: 'text-xl sm:text-2xl',
+              links: 'flex-nowrap',
+              description: 'flex flex-col gap-3 text-base',
+            }"
+          >
+            <template #description>
+              <p
+                v-if="video.description?.length"
+                v-html="video.description"
+              />
 
-    <UPageBody class="mt-4 space-y-4 pb-8">
-      <Deferred data="queue">
-        <template #fallback>
-          <div class="sr-only">Loading queue...</div>
-        </template>
+              <VideoTags :items="video.tags" />
+            </template>
+          </UPageHeader>
 
-        <UPageFeature title="Up next" />
-        <VideoList :items="queue" />
-      </Deferred>
-    </UPageBody>
-  </UPage>
+          <Deferred data="queue">
+            <template #fallback>
+              <div class="sr-only">Loading queue...</div>
+            </template>
+
+            <UPageFeature title="Up next" />
+            <VideoList :items="queue" />
+          </Deferred>
+        </UPageBody>
+      </UPage>
+    </template>
+  </UDashboardPanel>
 </template>

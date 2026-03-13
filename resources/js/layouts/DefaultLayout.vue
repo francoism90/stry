@@ -22,7 +22,7 @@ const { nonce } = useAppearance()
           :ui="{
             dashboardPanel: {
               root: 'relative flex min-h-svh w-full flex-col',
-              header: 'bg-default sticky top-0 z-50 w-full',
+              header: 'sticky top-0 z-50 w-full',
               body: 'flex w-full max-w-(--ui-container) flex-1 flex-col gap-4 self-center sm:gap-6',
             },
             dashboardNavbar: {
@@ -35,6 +35,12 @@ const { nonce } = useAppearance()
             pageHeader: {
               root: 'border-0 py-0',
               description: 'mt-2',
+            },
+            pageBody: {
+              base: 'mt-0 space-y-6',
+            },
+            tabs: {
+              root: 'mt-3',
             },
           }"
         >

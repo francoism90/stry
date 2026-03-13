@@ -13,6 +13,7 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
         protected ?Video $video = null,
+        protected ?array $appends = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
@@ -26,17 +27,9 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        $appends = [
-            'titles',
-            'content',
-            'summary',
-            'snapshot',
-            'filesize',
-        ];
-
         return $this->video
             ->loadMissing('media', 'tags', 'user')
-            ->append($appends)
+            ->append($this->appends ?? [])
             ->toResource(VideoResource::class);
     }
 }

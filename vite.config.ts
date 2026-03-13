@@ -58,6 +58,11 @@ export default defineConfig(({ mode }) => {
               root: 'w-full',
             },
           },
+          inputDate: {
+            slots: {
+              base: 'w-full',
+            },
+          },
         },
       }),
     ],

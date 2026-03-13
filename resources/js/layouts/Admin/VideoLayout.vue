@@ -8,6 +8,7 @@ import type { Video } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
+import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
@@ -46,6 +47,8 @@ const links: NavigationMenuItem[][] = [
   ],
 ]
 
+const meta = computed(() => [props.video.timestamp, props.video.filesize, props.video.user?.name].filter(Boolean))
+
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 </script>
 
@@ -70,7 +73,22 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload
     </template>
 
     <template #body>
-      <slot />
+      <UPage>
+        <UPageHeader :title="video.title">
+          <template #description>
+            <div class="dot-separated text-muted flex flex-wrap items-center text-sm">
+              <span
+                v-for="(item, index) in meta"
+                :key="index"
+              >
+                {{ item }}
+              </span>
+            </div>
+          </template>
+        </UPageHeader>
+
+        <slot />
+      </UPage>
     </template>
   </UDashboardPanel>
 </template>

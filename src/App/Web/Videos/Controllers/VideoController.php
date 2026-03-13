@@ -53,9 +53,18 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
+        // Define the attributes to append to the video resource
+        $appends = [
+            'titles',
+            'content',
+            'summary',
+            'snapshot',
+            'filesize',
+        ];
+
         return Inertia::render('App/Videos/VideoEdit', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
-            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            'video' => fn () => new VideoResourceProperty($video, $appends  ),
+            'progress' => fn () => new VideoProgressProperty($video, Auth::user()),
         ]);
     }
 
