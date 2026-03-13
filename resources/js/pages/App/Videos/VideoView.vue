@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Videos/Controllers/VideoController'
 import AppNavbar from '@/components/Ui/AppNavbar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
@@ -17,12 +16,8 @@ const props = defineProps<{
 }>()
 
 const { toggleLike, toggleSave } = useVideo(props.video)
+
 const links = computed<ButtonProps[]>(() => [
-  {
-    label: 'Edit',
-    to: edit.url(props.video.id),
-    icon: 'i-lucide-clipboard-pen',
-  },
   {
     label: props.video.liked ? 'Unlike' : 'Like',
     icon: props.video.liked ? 'i-lucide-heart' : 'i-lucide-heart-plus',
