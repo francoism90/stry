@@ -33,10 +33,12 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Playlist::class);
 
         // Fetch playlists for the video
-        $playlists = $video->playlists()->simplePaginate(16);
+        $playlists = $video
+            ->playlists()
+            ->simplePaginate(16);
 
         return Inertia::render('App/Videos/Playlists/PlaylistIndex', [
-            'video' => fn () => new VideoResourceProperty($video),
+            'video' => fn () => new VideoResourceProperty($video, ['filesize']),
             'items' => Inertia::scroll(fn () => PlaylistResource::collection($playlists)),
         ]);
     }

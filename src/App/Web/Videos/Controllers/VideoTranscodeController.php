@@ -33,10 +33,12 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Transcode::class);
 
         // Fetch transcodes for the video
-        $transcodes = $video->transcodes()->simplePaginate(16);
+        $transcodes = $video
+            ->transcodes()
+            ->simplePaginate(16);
 
         return Inertia::render('App/Videos/Transcodes/TranscodeIndex', [
-            'video' => fn () => new VideoResourceProperty($video),
+            'video' => fn () => new VideoResourceProperty($video, ['filesize']),
             'items' => Inertia::scroll(fn () => TranscodeResource::collection($transcodes)),
         ]);
     }
