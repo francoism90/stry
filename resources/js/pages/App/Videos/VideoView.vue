@@ -21,6 +21,11 @@ const { toggleLike, toggleSave } = useVideo(props.video)
 
 const links = computed<ButtonProps[]>(() => [
   {
+    label: 'Edit',
+    icon: 'i-lucide-edit',
+    onClick: () => toggleLike(),
+  },
+  {
     label: props.video.liked ? 'Unlike' : 'Like',
     icon: props.video.liked ? 'i-lucide-heart' : 'i-lucide-heart-plus',
     onClick: () => toggleLike(),
