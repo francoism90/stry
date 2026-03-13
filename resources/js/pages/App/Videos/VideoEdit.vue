@@ -52,13 +52,6 @@ const releasedAt = computed({
     form.released_at = fromDateTime(value)
   },
 })
-
-const expiresAt = computed({
-  get: () => toDateTime(form.expires_at),
-  set: (value: CalendarDateTime | null) => {
-    form.expires_at = fromDateTime(value)
-  },
-})
 </script>
 
 <template>
