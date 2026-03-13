@@ -52,6 +52,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
 
         <UNavigationMenu
           :items="items"
+          variant="link"
           highlight
           :ui="{
             root: 'border-default mt-2 w-full flex-1 border-b',
