@@ -6,7 +6,8 @@ import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useVideo } from '@/composables/video'
 import type { Video } from '@/types'
-import { Deferred, Head } from '@inertiajs/vue3'
+import { Deferred, Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed } from 'vue'
 
@@ -34,6 +35,10 @@ const links = computed<ButtonProps[]>(() => [
     onClick: () => toggleSave(),
   },
 ])
+
+useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
 </script>
 
 <template>
