@@ -52,12 +52,6 @@ $app = Application::configure(basePath: $basePath)
             Route::resourceParameters([
                 'media' => 'media',
             ]);
-
-            // Admin Routes
-            Route::middleware(['web', 'verified', 'role:super-admin'])
-                ->prefix('admin')
-                ->name('admin.')
-                ->group(base_path('routes/admin.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

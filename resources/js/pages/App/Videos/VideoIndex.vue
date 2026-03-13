@@ -2,29 +2,24 @@
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { FilterOption, Tag, VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import type { VideoCollection } from '@/types'
+import { InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
-const props = defineProps<{
+defineProps<{
   items: VideoCollection
   orders: SelectMenuItem[]
-  filter: FilterOption
-  tag?: Tag | undefined
   order?: string | undefined
 }>()
 </script>
 
 <template>
-  <Head :title="filter.label" />
-
   <UDashboardPanel id="feed">
     <template #header>
       <AppHeader />
 
       <VideoFilters
         :orders="orders"
-        :tag="tag"
         :order="order"
       />
     </template>

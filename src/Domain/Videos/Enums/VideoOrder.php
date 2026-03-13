@@ -8,8 +8,9 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum VideoOrder: string implements Enumerable
 {
-    case Default = 'default';
+    case Recommended = 'recommended';
     case Newest = 'newest';
+    case Oldest = 'oldest';
     case Ordered = 'ordered';
     case Longest = 'longest';
     case Shortest = 'shortest';
@@ -18,7 +19,7 @@ enum VideoOrder: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
-            self::Default => __('Default'),
+            self::Recommended => __('Recommended'),
             self::Newest => __('Newest'),
             self::Ordered => __('Ordered'),
             self::Longest => __('Longest'),

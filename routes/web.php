@@ -2,25 +2,24 @@
 
 declare(strict_types=1);
 
-use App\Client\Account\Controllers\HomeController;
-use App\Client\Account\Controllers\ProfileController;
-use App\Client\Account\Controllers\SettingsController;
-use App\Client\Tags\Controllers\TagController;
-use App\Client\Videos\Controllers\VideoController;
+use App\Web\Account\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
+// Home
+Route::get('/', HomeController::class)->name('home');
+
 // Account
-Route::get('/profile', ProfileController::class)->name('profile');
-Route::get('/settings', SettingsController::class)->name('settings');
+// Route::get('/profile', ProfileController::class)->name('profile');
+// Route::get('/settings', SettingsController::class)->name('settings');
 
-// Tags
-Route::get('/tags', TagController::class)->name('tags');
+// // Tags
+// Route::get('/tags', TagController::class)->name('tags');
 
-// Videos
-Route::get('/play/{video}', VideoController::class)->name('play');
+// // Videos
+// Route::get('/play/{video}', VideoController::class)->name('play');
 
-// Fallback
-Route::any('/{filter?}', HomeController::class)
-    ->defaults('filter', 'all')
-    ->where('filter', '^(?!admin|api).*')
-    ->name('home');
+// // Fallback
+// Route::any('/{filter?}', HomeController::class)
+//     ->defaults('filter', 'all')
+//     ->where('filter', '^(?!admin|api).*')
+//     ->name('home');

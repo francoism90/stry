@@ -3,7 +3,7 @@ import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
-  orders: SelectMenuItem[]
+  orders?: SelectMenuItem[]
   order?: string | undefined
 }>()
 
@@ -25,7 +25,7 @@ const onSubmit = () => {
   <UDashboardToolbar>
     <template #left>
       <USelect
-        v-show="!!orders.length"
+        v-if="orders?.length"
         v-model="form.order"
         :items="orders"
         :ui="{ base: 'px-0', content: 'min-w-36' }"
