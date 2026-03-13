@@ -51,7 +51,7 @@ onMounted(() => initialize())
     <div
       ref="ui"
       v-show="ready && !error"
-      class="fullscreen:aspect-auto fullscreen:max-h-none fullscreen:rounded-none aspect-video max-h-[50dvh] w-full overflow-hidden rounded-lg md:max-h-[70dvh] lg:max-h-[85dvh]"
+      class="fullscreen:aspect-auto fullscreen:max-h-none fullscreen:rounded-none aspect-video max-h-[35dvh] w-full overflow-hidden rounded-lg md:max-h-[50dvh] lg:max-h-[60dvh]"
     >
       <video
         ref="el"
