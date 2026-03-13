@@ -56,7 +56,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.rel
           :title="video.title"
           :links="links"
           :ui="{
-            title: 'font-serif text-xl sm:text-2xl',
+            title: 'text-xl sm:text-2xl',
             links: 'flex-nowrap',
             description: 'flex flex-col gap-3 text-base',
           }"

@@ -13,7 +13,6 @@
 @inertiaHead
 @pwaHead
 @googlefonts(['nonce' => app('csp-nonce')])
-@googlefonts(['font' => 'serif', 'nonce' => app('csp-nonce')])
 @googlefonts(['font' => 'code', 'nonce' => app('csp-nonce')])
 </head>
 

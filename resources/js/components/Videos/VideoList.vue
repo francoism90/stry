@@ -22,7 +22,7 @@ defineProps<{
       :ui="{
         root: 'gap-y-4 rounded-none',
         header: 'rounded-lg shadow-none',
-        title: 'font-serif text-xs',
+        title: 'text-xs',
         date: 'text-xs',
         body: 'p-0 sm:p-0 lg:px-0',
         description: 'mt-2.5 flex flex-col gap-2 text-xs',

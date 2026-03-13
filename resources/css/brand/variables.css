@@ -1,7 +1,6 @@
 :root {
-  --font-sans: 'Roboto', sans-serif;
-  --font-serif: 'Inter', serif;
-  --font-mono: 'Source Code Pro', monospace;
+  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
   --ui-header-height: --spacing(18);
   --ui-container: var(--container-7xl);
   --ui-bg: var(--ui-color-neutral-900);
