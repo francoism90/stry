@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <UDashboardPanel id="feed">
+  <UDashboardPanel id="videos">
     <template #header>
       <AppHeader />
 
