@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
-import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
-import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
-import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { TranscodeCollection, Video } from '@/types'
+import { edit } from '@/actions/App/Web/Media/Controllers/MediaController'
+import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
+import { useMedia } from '@/composables/media'
+import VideoLayout from '@/layouts/App/VideoLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import type { MediaCollection, Video } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 defineProps<{
   video: Video
-  items: TranscodeCollection
+  items: MediaCollection
 }>()
 
-defineOptions({ layout: [DashboardLayout, VideoLayout] })
+defineOptions({ layout: [DefaultLayout, VideoLayout] })
+
+const { getStreamInfo } = useMedia()
 </script>
 
 <template>
-  <Head :title="`${video.title} - Transcodes`" />
+  <Head :title="`${video.title} - Media`" />
 
-  <UPage>
+  <UPageBody>
     <InfiniteScroll
       data="items"
       :buffer="200"
@@ -33,10 +35,10 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
         >
           <div class="flex items-center justify-between">
             <UUser
-              :name="item.id"
-              :description="`${item.state.label} • ${item.file_size}`"
+              :name="item.file_name"
+              :description="getStreamInfo(item).join(' • ')"
               :avatar="{
-                alt: item.id,
+                alt: item.file_name,
                 loading: 'lazy',
                 decoding: 'async',
                 class: 'rounded-sm size-12 me-1',
@@ -44,12 +46,11 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
             />
 
             <div class="z-10 flex items-center gap-2">
-              <TranscodeDeleteModal :item="item" />
-              <TranscodeImportModal :item="item" />
+              <MediaDeleteModal :item="item" />
             </div>
           </div>
         </UPageCard>
       </UPageList>
     </InfiniteScroll>
-  </UPage>
+  </UPageBody>
 </template>

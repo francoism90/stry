@@ -37,7 +37,7 @@ const { nonce } = useAppearance()
               description: 'mt-2',
             },
             pageBody: {
-              base: 'mt-4 space-y-6',
+              base: 'mt-3 space-y-6',
             },
             tabs: {
               root: 'mt-3',

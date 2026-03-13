@@ -35,7 +35,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         // Fetch playlists for the video
         $playlists = $video->playlists()->simplePaginate(16);
 
-        return Inertia::render('Admin/Videos/Playlists/PlaylistIndex', [
+        return Inertia::render('App/Videos/Playlists/PlaylistIndex', [
             'video' => fn () => new VideoResourceProperty($video),
             'items' => Inertia::scroll(fn () => PlaylistResource::collection($playlists)),
         ]);
@@ -45,7 +45,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $playlist);
 
-        return Inertia::render('Admin/Videos/Playlists/PlaylistEdit', [
+        return Inertia::render('App/Videos/Playlists/PlaylistEdit', [
             'video' => fn () => new VideoResourceProperty($video),
             'playlist' => fn () => new PlaylistResourceProperty($playlist),
         ]);

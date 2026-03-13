@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Playlists/Controllers/PlaylistController'
+import { edit } from '@/actions/App/Web/Playlists/Controllers/PlaylistController'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
-import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import VideoLayout from '@/layouts/App/VideoLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
@@ -11,13 +11,13 @@ defineProps<{
   items: PlaylistCollection
 }>()
 
-defineOptions({ layout: [DashboardLayout, VideoLayout] })
+defineOptions({ layout: [DefaultLayout, VideoLayout] })
 </script>
 
 <template>
   <Head :title="`${video.title} - Playlists`" />
 
-  <UPage>
+  <UPageBody>
     <InfiniteScroll
       data="items"
       :buffer="200"
@@ -49,5 +49,5 @@ defineOptions({ layout: [DashboardLayout, VideoLayout] })
         </UPageCard>
       </UPageList>
     </InfiniteScroll>
-  </UPage>
+  </UPageBody>
 </template>

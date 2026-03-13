@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Admin/Media/Controllers/MediaController'
-import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
-import { useMedia } from '@/composables/media'
-import VideoLayout from '@/layouts/Admin/VideoLayout.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
-import type { MediaCollection, Video } from '@/types'
+import { edit } from '@/actions/App/Web/Transcodes/Controllers/TranscodeController'
+import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
+import VideoLayout from '@/layouts/App/VideoLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import type { TranscodeCollection, Video } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 defineProps<{
   video: Video
-  items: MediaCollection
+  items: TranscodeCollection
 }>()
 
-defineOptions({ layout: [DashboardLayout, VideoLayout] })
-
-const { getStreamInfo } = useMedia()
+defineOptions({ layout: [DefaultLayout, VideoLayout] })
 </script>
 
 <template>
-  <Head :title="`${video.title} - Media`" />
+  <Head :title="`${video.title} - Transcodes`" />
 
   <UPage>
     <InfiniteScroll
@@ -35,10 +33,10 @@ const { getStreamInfo } = useMedia()
         >
           <div class="flex items-center justify-between">
             <UUser
-              :name="item.file_name"
-              :description="getStreamInfo(item).join(' • ')"
+              :name="item.id"
+              :description="`${item.state.label} • ${item.file_size}`"
               :avatar="{
-                alt: item.file_name,
+                alt: item.id,
                 loading: 'lazy',
                 decoding: 'async',
                 class: 'rounded-sm size-12 me-1',
@@ -46,7 +44,8 @@ const { getStreamInfo } = useMedia()
             />
 
             <div class="z-10 flex items-center gap-2">
-              <MediaDeleteModal :item="item" />
+              <TranscodeDeleteModal :item="item" />
+              <TranscodeImportModal :item="item" />
             </div>
           </div>
         </UPageCard>

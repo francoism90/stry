@@ -35,7 +35,7 @@ class VideoMediaController extends Controller implements HasMiddleware
             ->simplePaginate(16)
             ->through(fn ($item) => $item->append(['custom_properties', 'generated_conversions']));
 
-        return Inertia::render('Admin/Videos/Media/MediaIndex', [
+        return Inertia::render('App/Videos/Media/MediaIndex', [
             'video' => fn () => new VideoResourceProperty($video),
             'items' => Inertia::scroll(fn () => MediaResource::collection($media)),
         ]);
@@ -45,7 +45,7 @@ class VideoMediaController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Media::class);
 
-        return Inertia::render('Admin/Videos/Media/MediaCreate', [
+        return Inertia::render('App/Videos/Media/MediaCreate', [
             'video' => fn () => new VideoResourceProperty($video),
         ]);
     }
