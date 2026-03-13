@@ -15,7 +15,7 @@ Route::get('/', HomeController::class)->name('home');
 // Route::get('/settings', SettingsController::class)->name('settings');
 
 // // Tags
-Route::apiResource('tags', TagController::class)->only(['index', 'show']);
+Route::resource('tags', TagController::class)->only(['index', 'show']);
 
 // Videos
-Route::apiResource('videos', VideoController::class)->only(['show', 'update', 'destroy']);
+Route::resource('videos', VideoController::class);

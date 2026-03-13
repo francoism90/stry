@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
@@ -12,7 +13,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
-  queue?: Video[]
+  queue?: Video[] | undefined
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
@@ -23,7 +24,7 @@ const links = computed<ButtonProps[]>(() => [
   {
     label: 'Edit',
     icon: 'i-lucide-edit',
-    onClick: () => toggleLike(),
+    to: edit.url(props.video.id),
   },
   {
     label: props.video.liked ? 'Unlike' : 'Like',
