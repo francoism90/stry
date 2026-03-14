@@ -50,7 +50,7 @@ class GroupController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'order' => fn () => $request->safe()->input('order'),
             'orders' => fn () => GroupOrder::options(),
         ]);
     }
@@ -70,7 +70,7 @@ class GroupController extends Controller implements HasMiddleware
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'order' => fn () => $request->safe()->input('order'),
             'orders' => fn () => VideoOrder::options(),
         ]);
     }

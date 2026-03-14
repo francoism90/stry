@@ -22,10 +22,10 @@ enum VideoOrder: string implements Enumerable
             self::Default => __('Recommended'),
             self::Newest => __('Newest'),
             self::Oldest => __('Oldest'),
-            self::Ordered => __('Ordered'),
+            self::Ordered => __('Alphabetical'),
             self::Longest => __('Longest'),
             self::Shortest => __('Shortest'),
-            self::Filesize => __('Filesize'),
+            self::Filesize => __('File Size'),
         };
     }
 

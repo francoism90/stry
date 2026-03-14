@@ -48,7 +48,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'order' => fn () => $request->safe()->input('order'),
             'orders' => fn () => VideoOrder::options(),
         ]);
     }

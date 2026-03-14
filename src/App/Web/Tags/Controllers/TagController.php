@@ -69,7 +69,7 @@ class TagController extends Controller implements HasMiddleware
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag, ['related']),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'order' => fn () => $request->safe()->input('order'),
             'orders' => fn () => VideoOrder::options(),
         ]);
     }

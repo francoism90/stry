@@ -29,14 +29,14 @@ class SearchGroupsController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Group::class);
 
-        $order = $request->input('order', GroupOrder::Default->value);
+        $order = $request->input('order');
 
         $scout = Group::search($query)
             ->tap(new GroupFilterScope(order: $order))
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Search/SearchCollections', [
-            'search' => $query,
+            'search' => fn () => $query,
             'order' => fn () => $order,
             'orders' => fn () => GroupOrder::options(),
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),

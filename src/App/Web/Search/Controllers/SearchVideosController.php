@@ -29,14 +29,14 @@ class SearchVideosController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        $order = $request->input('order', VideoOrder::Default->value);
+        $order = $request->input('order');
 
         $scout = Video::search($query)
             ->tap(new VideoFilterScope(order: $order))
             ->simplePaginate(perPage: 18);
 
         return Inertia::render('App/Search/SearchVideos', [
-            'search' => $query,
+            'search' => fn () => $query,
             'order' => fn () => $order,
             'orders' => fn () => VideoOrder::options(),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),

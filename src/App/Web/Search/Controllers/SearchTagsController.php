@@ -36,7 +36,7 @@ class SearchTagsController extends Controller implements HasMiddleware
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Search/SearchTags', [
-            'search' => $query,
+            'search' => fn () => $query,
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),

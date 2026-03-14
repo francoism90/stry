@@ -24,16 +24,19 @@ const onSubmit = () => {
 <template>
   <UDashboardToolbar>
     <template #left>
-      <USelect
+      <USelectMenu
         v-if="types?.length"
         v-model="form.type"
+        :model-modifiers="{ nullable: true }"
         :items="types"
         :ui="{ base: 'px-0', content: 'min-w-40' }"
         placeholder="All types"
         label-key="label"
         value-key="value"
         variant="none"
+        clear
         @update:modelValue="onSubmit"
+        @clear="onSubmit"
       />
     </template>
   </UDashboardToolbar>
