@@ -209,11 +209,4 @@ class Group extends Model implements HasMedia, Sortable
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
     }
-
-    protected function title(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => Str::of($this->name ?: $this->kind)->apa(),
-        )->shouldCache();
-    }
 }
