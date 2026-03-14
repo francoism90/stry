@@ -1,0 +1,185 @@
+<script setup lang="ts">
+import GroupList from '@/components/Groups/GroupList.vue'
+import TagList from '@/components/Tags/TagList.vue'
+import AppHeader from '@/components/Ui/AppHeader.vue'
+import VideoList from '@/components/Videos/VideoList.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import type { Group, Tag, Video } from '@/types'
+import { Head, router } from '@inertiajs/vue3'
+import { watchDebounced } from '@vueuse/core'
+import { useForm } from 'laravel-precognition-vue-inertia'
+
+defineOptions({ layout: DefaultLayout })
+
+const props = defineProps<{
+  search: string
+  videos: Video[]
+  tags: Tag[]
+  collections: Group[]
+}>()
+
+const form = useForm('get', '/search', {
+  search: props.search,
+})
+
+watchDebounced(
+  () => form.search,
+  (value) => {
+    router.visit(`/search/${encodeURIComponent(value)}`, {
+      preserveState: true,
+      only: ['search', 'videos', 'tags', 'collections'],
+    })
+  },
+  { debounce: 350, maxWait: 1000 },
+)
+</script>
+
+<template>
+  <Head :title="search ? `Search: ${search}` : 'Search'" />
+
+  <UDashboardPanel id="search">
+    <template #header>
+      <AppHeader />
+
+      <UDashboardToolbar
+        :ui="{
+          root: 'border-default min-h-16 border-b',
+          left: 'flex-1',
+        }"
+      >
+        <template #left>
+          <UFormField
+            :error="form.errors.search"
+            class="mx-auto w-full max-w-2xl"
+          >
+            <UInput
+              v-model="form.search"
+              :model-modifiers="{ string: true, trim: true }"
+              variant="soft"
+              size="xl"
+              color="neutral"
+              class="w-full"
+              placeholder="Search videos, tags, collections..."
+              icon="i-lucide-search"
+              autofocus
+            />
+          </UFormField>
+        </template>
+      </UDashboardToolbar>
+    </template>
+
+    <template #body>
+      <UPage>
+        <UPageBody>
+          <!-- Empty state -->
+          <div
+            v-if="!search"
+            class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+          >
+            <UIcon
+              name="i-lucide-search"
+              class="text-muted size-10"
+            />
+            <p class="font-semibold">Search for something</p>
+            <p class="text-muted text-sm">Enter a term above to find videos, tags, and collections.</p>
+          </div>
+
+          <!-- Results -->
+          <template v-else>
+            <p class="text-muted text-sm">
+              Results for <span class="text-default font-semibold">{{ search }}</span>
+            </p>
+
+            <!-- Videos -->
+            <section class="flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <p class="font-semibold">Videos</p>
+
+                <UButton
+                  variant="link"
+                  size="sm"
+                  trailing-icon="i-lucide-arrow-right"
+                  :to="`/search/${encodeURIComponent(search)}/videos`"
+                >
+                  See all videos
+                </UButton>
+              </div>
+
+              <VideoList
+                v-if="videos.length"
+                :items="videos"
+              />
+
+              <p
+                v-else
+                class="text-muted text-sm"
+              >
+                No videos found.
+              </p>
+            </section>
+
+            <USeparator />
+
+            <!-- Tags -->
+            <section class="flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <p class="font-semibold">Tags</p>
+
+                <UButton
+                  variant="link"
+                  size="sm"
+                  trailing-icon="i-lucide-arrow-right"
+                  :to="`/search/${encodeURIComponent(search)}/tags`"
+                >
+                  See all tags
+                </UButton>
+              </div>
+
+              <TagList
+                v-if="tags.length"
+                :items="tags"
+              />
+
+              <p
+                v-else
+                class="text-muted text-sm"
+              >
+                No tags found.
+              </p>
+            </section>
+
+            <USeparator />
+
+            <!-- Collections -->
+            <section class="flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <p class="font-semibold">Collections</p>
+
+                <UButton
+                  variant="link"
+                  size="sm"
+                  trailing-icon="i-lucide-arrow-right"
+                  :to="`/search/${encodeURIComponent(search)}/collections`"
+                >
+                  See all collections
+                </UButton>
+              </div>
+
+              <GroupList
+                v-if="collections.length"
+                :items="collections"
+              />
+
+              <p
+                v-else
+                class="text-muted text-sm"
+              >
+                No collections found.
+              </p>
+            </section>
+          </template>
+        </UPageBody>
+      </UPage>
+    </template>
+  </UDashboardPanel>
+</template>

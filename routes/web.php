@@ -6,6 +6,10 @@ use App\Web\Account\Controllers\HomeController;
 use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
+use App\Web\Search\Controllers\SearchController;
+use App\Web\Search\Controllers\SearchGroupsController;
+use App\Web\Search\Controllers\SearchTagsController;
+use App\Web\Search\Controllers\SearchVideosController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
 use App\Web\Videos\Controllers\VideoController;
@@ -35,6 +39,14 @@ Route::resource('tags', TagController::class);
 
 // Transcodes
 Route::resource('transcodes', TranscodeController::class);
+
+// Search
+Route::prefix('search')->name('search.')->group(function () {
+    Route::get('/{query}/videos', SearchVideosController::class)->name('videos');
+    Route::get('/{query}/tags', SearchTagsController::class)->name('tags');
+    Route::get('/{query}/collections', SearchGroupsController::class)->name('collections');
+    Route::get('/{query?}', SearchController::class)->name('index');
+});
 
 // Videos
 Route::resource('videos', VideoController::class);
