@@ -9,6 +9,7 @@ use Foundation\Providers\EventServiceProvider;
 use Foundation\Providers\FortifyServiceProvider;
 use Foundation\Providers\HorizonServiceProvider;
 use Foundation\Providers\RouteServiceProvider;
+use Foundation\Providers\ScoutServiceProvider;
 use Foundation\Providers\ViewServiceProvider;
 
 return [
@@ -19,5 +20,6 @@ return [
     FortifyServiceProvider::class,
     HorizonServiceProvider::class,
     RouteServiceProvider::class,
+    ScoutServiceProvider::class,
     ViewServiceProvider::class,
 ];
