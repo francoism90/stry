@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use App\Web\Account\Controllers\HomeController;
+use App\Web\Account\Controllers\NotificationsController;
+use App\Web\Account\Controllers\ProfileController;
+use App\Web\Account\Controllers\SettingsController;
 use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
@@ -22,8 +25,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 
 // Account
-// Route::get('/profile', ProfileController::class)->name('profile');
-// Route::get('/settings', SettingsController::class)->name('settings');
+Route::get('/profile', ProfileController::class)->name('profile');
+Route::get('/settings', SettingsController::class)->name('settings');
+Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
 
 // Media
 Route::resource('media', MediaController::class);

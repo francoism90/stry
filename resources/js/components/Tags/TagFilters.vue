@@ -29,6 +29,7 @@ const onSubmit = () => {
         v-model="form.type"
         :items="types"
         :ui="{ base: 'px-0', content: 'min-w-40' }"
+        placeholder="All types"
         label-key="label"
         value-key="value"
         variant="none"

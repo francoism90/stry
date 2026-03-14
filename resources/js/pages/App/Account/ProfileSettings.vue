@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
-import AppNavbar from '@/components/Ui/AppNavbar.vue'
+import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { User } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
@@ -29,7 +29,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 
   <UDashboardPanel id="settings">
     <template #header>
-      <AppNavbar />
+      <AppHeader />
     </template>
 
     <template #body>

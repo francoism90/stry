@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Tags\Resources\TagResource;
+use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -28,12 +29,16 @@ class SearchTagsController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Tag::class);
 
+        $type = $request->input('type');
+
         $scout = Tag::search($query)
-            ->tap(new TagFilterScope)
+            ->tap(new TagFilterScope(type: $type))
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Search/SearchTags', [
             'search' => $query,
+            'type' => fn () => $type,
+            'types' => fn () => TagType::options(),
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
         ]);
     }

@@ -32,7 +32,7 @@ class VideoResource extends JsonResource
             'part' => $this->part,
             'released' => $this->released,
             'adult' => $this->adult,
-            'captioned' => true,
+            'captioned' => $this->captioned,
             'thumb' => $this->thumb,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,

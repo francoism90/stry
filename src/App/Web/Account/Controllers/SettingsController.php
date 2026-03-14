@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Account\Controllers;
+namespace App\Web\Account\Controllers;
 
 use App\Api\Users\Resources\UserResource;
 use Foundation\Http\Controllers\Controller;

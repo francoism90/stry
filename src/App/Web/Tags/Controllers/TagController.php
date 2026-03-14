@@ -40,7 +40,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         // Apply filters
-        $type = $request->safe()->input('type', TagType::Genre);
+        $type = $request->safe()->input('type');
 
         // Scout builder
         $scout = Tag::search()

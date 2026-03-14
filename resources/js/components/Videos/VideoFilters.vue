@@ -29,6 +29,7 @@ const onSubmit = () => {
         v-model="form.order"
         :items="orders"
         :ui="{ base: 'px-0', content: 'min-w-40' }"
+        placeholder="Sort by"
         label-key="label"
         value-key="value"
         variant="none"

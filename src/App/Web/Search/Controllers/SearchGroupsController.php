@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Groups\Resources\GroupResource;
+use Domain\Groups\Enums\GroupOrder;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -28,12 +29,16 @@ class SearchGroupsController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Group::class);
 
+        $order = $request->input('order', GroupOrder::Default->value);
+
         $scout = Group::search($query)
-            ->tap(new GroupFilterScope)
+            ->tap(new GroupFilterScope(order: $order))
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Search/SearchCollections', [
             'search' => $query,
+            'order' => fn () => $order,
+            'orders' => fn () => GroupOrder::options(),
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
         ]);
     }

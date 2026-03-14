@@ -1,33 +1,21 @@
 <script setup lang="ts">
+import SearchBar from '@/components/Search/SearchBar.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { VideoCollection } from '@/types'
-import { Head, InfiniteScroll, Link, router } from '@inertiajs/vue3'
-import { watchDebounced } from '@vueuse/core'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
 
 defineOptions({ layout: DefaultLayout })
 
-const props = defineProps<{
+defineProps<{
   search: string
   items: VideoCollection
+  orders: SelectMenuItem[]
+  order: string
 }>()
-
-const form = useForm('get', '/search/videos', {
-  search: props.search,
-})
-
-watchDebounced(
-  () => form.search,
-  (value) => {
-    router.visit(`/search/${encodeURIComponent(value)}/videos`, {
-      preserveState: true,
-      only: ['search', 'items'],
-    })
-  },
-  { debounce: 350, maxWait: 1000 },
-)
 </script>
 
 <template>
@@ -36,43 +24,28 @@ watchDebounced(
   <UDashboardPanel id="search-videos">
     <template #header>
       <AppHeader />
+
+      <SearchBar
+        :search="search"
+        placeholder="Search videos..."
+        suffix="/videos"
+        :back-href="`/search/${encodeURIComponent(search)}`"
+      />
     </template>
 
     <template #body>
       <UPage>
-        <UDashboardToolbar>
-          <template #left>
-            <UFormField :error="form.errors.search">
-              <UInput
-                v-model="form.search"
-                :model-modifiers="{ string: true, trim: true }"
-                color="neutral"
-                class="min-w-72"
-                placeholder="Search videos..."
-                icon="i-lucide-search"
-                autofocus
-              />
-            </UFormField>
-          </template>
+        <VideoFilters
+          :orders="orders"
+          :order="order"
+        />
 
-          <template #right>
-            <Link
-              :href="`/search/${encodeURIComponent(search)}`"
-              class="text-muted text-sm hover:underline"
-            >
-              All results
-            </Link>
-          </template>
-        </UDashboardToolbar>
-
-        <UPageBody>
-          <InfiniteScroll
-            data="items"
-            :buffer="200"
-          >
-            <VideoList :items="items?.data" />
-          </InfiniteScroll>
-        </UPageBody>
+        <InfiniteScroll
+          data="items"
+          :buffer="200"
+        >
+          <VideoList :items="items?.data" />
+        </InfiniteScroll>
       </UPage>
     </template>
   </UDashboardPanel>

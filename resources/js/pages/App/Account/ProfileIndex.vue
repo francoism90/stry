@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
-import AppNavbar from '@/components/Ui/AppNavbar.vue'
+import AppHeader from '@/components/Ui/AppHeader.vue'
 import { logout } from '@/routes'
 import type { User } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
@@ -29,7 +29,7 @@ const onLogout = () => router.post(logout.url())
 
   <UDashboardPanel id="profile">
     <template #header>
-      <AppNavbar />
+      <AppHeader />
     </template>
 
     <template #body>

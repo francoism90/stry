@@ -77,6 +77,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
         variant="ghost"
         color="neutral"
         icon="i-lucide-bell"
+        to="/notifications"
       />
 
       <UDropdownMenu

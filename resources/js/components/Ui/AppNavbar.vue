@@ -18,6 +18,7 @@ import AppLogo from '@/components/Ui/AppLogo.vue'
           color="neutral"
           class="px-0"
           icon="i-lucide-bell"
+          to="/notifications"
         />
 
         <UButton

@@ -174,6 +174,19 @@ export type GroupCollection = Omit<Paginator, 'data'> & {
   data: Group[] | undefined
 }
 
+export type Notification = {
+  id: string
+  type: string
+  data: Record<string, unknown>
+  read_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type NotificationCollection = Omit<Paginator, 'data'> & {
+  data: Notification[] | undefined
+}
+
 export type Paginator = {
   data: Model[] | undefined
   links: {
