@@ -486,6 +486,11 @@ return [
                             'optional' => true,
                         ],
                         [
+                            'name' => 'groupables',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'type',
                             'type' => 'string',
                             'optional' => true,
