@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Web\Account\Controllers\HomeController;
+use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
 use App\Web\Tags\Controllers\TagController;
@@ -25,6 +26,9 @@ Route::resource('media', MediaController::class);
 
 // Playlists
 Route::resource('playlists', PlaylistController::class);
+
+// Groups
+Route::resource('collections', GroupController::class);
 
 // // Tags
 Route::resource('tags', TagController::class);

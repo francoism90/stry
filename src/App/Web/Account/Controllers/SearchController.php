@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Client\Account\Controllers;
 
 use App\Api\Users\Resources\UserResource;
+use Domain\Tags\Models\Tag;
+use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -24,9 +26,9 @@ class SettingsController extends Controller implements HasMiddleware
 
     public function __invoke(Request $request): Response
     {
-        Gate::authorize('update', $request->user());
+        Gate::authorize('viewAny', [Tag::class, Video::class]);
 
-        return Inertia::render('App/Account/ProfileSettings', [
+        return Inertia::render('App/Account/SearchIndex', [
             'user' => fn () => UserResource::make($request->user()->append('email', 'avatar')),
         ]);
     }
