@@ -62,6 +62,7 @@ class GroupController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Video::search()
             ->tap(new VideoFilterScope(
+                group: $group,
                 order: $request->safe()->input('order'),
             ))
             ->simplePaginate(perPage: 18);

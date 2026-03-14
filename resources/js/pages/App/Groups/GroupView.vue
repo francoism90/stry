@@ -37,7 +37,8 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload
     <template #body>
       <UPage>
         <UPageHeader
-          :title="group.title ?? group.type ?? 'Collection'"
+          :title="group.title"
+          :description="`${group.videos ?? 0} videos`"
           :links="links"
         />
 

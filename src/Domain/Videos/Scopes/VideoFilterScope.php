@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
-use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
-use Domain\Users\Models\User;
-use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Laravel\Scout\Builder;
@@ -16,9 +13,8 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
-        public User|string|null $user = null,
         public Tag|string|null $tag = null,
-        public GroupType|string|null $group = null,
+        public Group|string|null $group = null,
         public VideoOrder|string|null $order = null,
     ) {}
 
@@ -28,7 +24,7 @@ readonly class VideoFilterScope
         $options = $this->getOptions();
 
         // Determine if we should use placeholder results
-        $defaultOrder = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
+        $defaultOrder = $this->isOrderDefault() && (blank($scout->query) || $scout->query === '*');
 
         $scout
             ->query(fn (VideoQueryBuilder $query) => $query->with('media', 'tags'))
@@ -44,21 +40,10 @@ readonly class VideoFilterScope
 
     protected function getOptions(): array
     {
-        // Get the current user (if any)
-        $user = $this->getUser();
-
         // Initialize options array
         $options = [];
 
-        // Build group options
-        $group = match ($this->getGroup()) {
-            GroupType::Liked => $user?->likedGroup(),
-            GroupType::Saved => $user?->savedGroup(),
-            GroupType::Viewed => $user?->viewedGroup(),
-            default => null,
-        };
-
-        if ($group instanceof Group) {
+        if ($group = $this->getGroup()) {
             // Make sure the group has videos
             if ($group->videos()->doesntExist()) {
                 // Return no results
@@ -79,13 +64,6 @@ readonly class VideoFilterScope
         return $options;
     }
 
-    protected function getGroup(): GroupType
-    {
-        $groupValue = $this->group ?? GroupType::Viewed;
-
-        return is_string($groupValue) ? GroupType::from($groupValue) : $groupValue;
-    }
-
     protected function getOrderer(): VideoOrder
     {
         $orderValue = $this->order ?? VideoOrder::Default;
@@ -93,26 +71,9 @@ readonly class VideoFilterScope
         return is_string($orderValue) ? VideoOrder::from($orderValue) : $orderValue;
     }
 
-    protected function isDefault(): bool
-    {
-        return $this->isGroupDefault() && $this->isOrderDefault();
-    }
-
-    protected function isGroupDefault(): bool
-    {
-        return $this->getGroup() === GroupType::Viewed;
-    }
-
     protected function isOrderDefault(): bool
     {
         return $this->getOrderer() === VideoOrder::Default;
-    }
-
-    protected function isGroup(GroupType ...$values): bool
-    {
-        $currentGroup = $this->getGroup();
-
-        return in_array($currentGroup, $values, true);
     }
 
     protected function isOrder(VideoOrder ...$values): bool
@@ -122,6 +83,15 @@ readonly class VideoFilterScope
         return $currentOrderer && in_array($currentOrderer, $values, true);
     }
 
+    protected function getGroup(): ?Group
+    {
+        if (! $this->group) {
+            return null;
+        }
+
+        return Group::findFromUlid($this->group);
+    }
+
     protected function getTag(): ?Tag
     {
         if (! $this->tag) {
@@ -129,14 +99,5 @@ readonly class VideoFilterScope
         }
 
         return Tag::findFromUlid($this->tag);
-    }
-
-    protected function getUser(): ?User
-    {
-        if (! $this->user) {
-            return null;
-        }
-
-        return User::findFromUlid($this->user);
     }
 }

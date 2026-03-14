@@ -27,6 +27,7 @@ readonly class GroupResourceProperty implements ProvidesInertiaProperty
         }
 
         return $this->group
+            ->loadCount('groupables')
             ->toResource(GroupResource::class);
     }
 }
