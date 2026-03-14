@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
@@ -203,11 +202,27 @@ class Group extends Model implements HasMedia, Sortable
             'user_id' => (string) $this->user_id,
             'name' => (string) $this->name,
             'content' => (string) $this->content,
+            'groupables' => (int) $this->groupables_count,
             'type' => (string) $this->type?->value ?? '',
             'state' => (string) $this->state,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
+    }
+
+    public function makeSearchableUsing(GroupCollection $models): GroupCollection
+    {
+        return $models->loadCount('groupables');
+    }
+
+    protected function makeAllSearchableUsing(GroupQueryBuilder $query): GroupQueryBuilder
+    {
+        return $query->withCount('groupables');
+    }
+
+    public function loadForResource(): static
+    {
+        return $this->loadCount('groupables');
     }
 
     protected function title(): Attribute

@@ -11,9 +11,12 @@ use App\Api\Groups\Resources\GroupResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
+use Domain\Groups\Enums\GroupOrder;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
+use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -36,17 +39,17 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Group::class);
 
         // Apply filters
-        $type = $request->safe()->input('type');
+        $order = $request->safe()->input('order');
 
         // Scout builder
         $scout = Group::search()
-            ->tap(new GroupFilterScope(type: $type))
+            ->tap(new GroupFilterScope(type: $type, order: $order))
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'type' => fn () => $type,
-            'types' => fn () => GroupType::options(),
+            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'orders' => fn () => GroupOrder::options(),
         ]);
     }
 
@@ -55,13 +58,13 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('view', $group);
 
         // Paginate the group's videos
-        $videos = $group->videos()
-            ->with('media', 'tags')
-            ->simplePaginate(perPage: 18);
+        $scout = Video::search()
+            ->tap(new VideoFilterScope(group: $group->type))
+            ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
-            'items' => Inertia::scroll(fn () => VideoResource::collection($videos)),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
         ]);
     }
 

@@ -8,8 +8,8 @@ import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   items: GroupCollection
-  types: SelectMenuItem[]
-  type: string | null
+  orders: SelectMenuItem[]
+  order: string
 }>()
 </script>
 
@@ -22,8 +22,8 @@ defineProps<{
     <template #body>
       <UPage>
         <GroupFilters
-          :types="types"
-          :type="type ?? undefined"
+          :orders="orders"
+          :order="order"
         />
 
         <InfiniteScroll

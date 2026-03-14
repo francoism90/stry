@@ -27,7 +27,6 @@ readonly class GroupResourceProperty implements ProvidesInertiaProperty
         }
 
         return $this->group
-            ->loadCount('videos')
             ->toResource(GroupResource::class);
     }
 }

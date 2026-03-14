@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
+use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
@@ -17,7 +18,7 @@ readonly class VideoFilterScope
     public function __construct(
         public User|string|null $user = null,
         public Tag|string|null $tag = null,
-        public VideoFilter|string|null $filter = null,
+        public GroupType|string|null $group = null,
         public VideoOrder|string|null $order = null,
     ) {}
 
@@ -50,10 +51,10 @@ readonly class VideoFilterScope
         $options = [];
 
         // Build group options
-        $group = match ($this->getFilter()) {
-            VideoFilter::Liked => $user?->likedGroup(),
-            VideoFilter::Saved => $user?->savedGroup(),
-            VideoFilter::History => $user?->viewedGroup(),
+        $group = match ($this->getGroup()) {
+            GroupType::Liked => $user?->likedGroup(),
+            GroupType::Saved => $user?->savedGroup(),
+            GroupType::Viewed => $user?->viewedGroup(),
             default => null,
         };
 
@@ -69,7 +70,7 @@ readonly class VideoFilterScope
             // Set filter by group ID
             $options['filter_by'] = sprintf('$groupables(group_id:%d)', $group->getKey());
 
-            // Set default sorting for certain filters
+            // Set default sorting for certain groups
             if ($this->isOrderDefault()) {
                 $options['sort_by'] = '$groupables(updated_at:desc)';
             }
@@ -78,11 +79,11 @@ readonly class VideoFilterScope
         return $options;
     }
 
-    protected function getFilter(): VideoFilter
+    protected function getGroup(): GroupType
     {
-        $filterValue = $this->filter ?? VideoFilter::Default;
+        $groupValue = $this->group ?? GroupType::Viewed;
 
-        return is_string($filterValue) ? VideoFilter::from($filterValue) : $filterValue;
+        return is_string($groupValue) ? GroupType::from($groupValue) : $groupValue;
     }
 
     protected function getOrderer(): VideoOrder
@@ -94,12 +95,12 @@ readonly class VideoFilterScope
 
     protected function isDefault(): bool
     {
-        return $this->isFilterDefault() && $this->isOrderDefault();
+        return $this->isGroupDefault() && $this->isOrderDefault();
     }
 
-    protected function isFilterDefault(): bool
+    protected function isGroupDefault(): bool
     {
-        return $this->getFilter() === VideoFilter::Default;
+        return $this->getGroup() === GroupType::Viewed;
     }
 
     protected function isOrderDefault(): bool
@@ -107,11 +108,11 @@ readonly class VideoFilterScope
         return $this->getOrderer() === VideoOrder::Default;
     }
 
-    protected function isFilter(VideoFilter ...$values): bool
+    protected function isGroup(GroupType ...$values): bool
     {
-        $currentFilter = $this->getFilter();
+        $currentGroup = $this->getGroup();
 
-        return in_array($currentFilter, $values, true);
+        return in_array($currentGroup, $values, true);
     }
 
     protected function isOrder(VideoOrder ...$values): bool

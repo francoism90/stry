@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Groups\Requests;
 
+use Domain\Groups\Enums\GroupOrder;
 use Domain\Groups\Enums\GroupType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,6 +25,7 @@ class GroupIndexRequest extends FormRequest
         return [
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
             'type' => ['sometimes', 'nullable', Rule::enum(GroupType::class)],
+            'order' => ['sometimes', 'nullable', Rule::enum(GroupOrder::class)],
         ];
     }
 }
