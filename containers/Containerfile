@@ -9,11 +9,13 @@ RUN apt-get update && apt-get upgrade -y \
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
-      x86_64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linux64-gpl-8.0.tar.xz" ;; \
-      aarch64) FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linuxarm64-gpl-8.0.tar.xz" ;; \
+      x86_64) ARCH="linux64" ;; \
+      aarch64) ARCH="linuxarm64" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
-    && curl -fsSL ${FFMPEG_URL} | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
+    && RELEASES=$(curl -fsSL "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest") \
+    && FFMPEG_URL=$(echo "${RELEASES}" | grep -o "https://[^\"]*${ARCH}-gpl-8\.0\.tar\.xz" | grep -v shared | head -1) \
+    && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
 # Shaka Packager
@@ -107,8 +109,8 @@ COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-us
 
 # Install PHP extensions
 run install-php-extensions @composer \
-    apcu bcmath ctype exif ffi gd \
-    igbinary imagick inotify intl opcache pcntl \
+    apcu bcmath exif ffi gd \
+    igbinary imagick inotify intl pcntl \
     pdo_pgsql redis sockets uv zip
 
 # Node.js Configuration
