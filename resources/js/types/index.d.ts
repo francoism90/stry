@@ -161,6 +161,19 @@ export type TranscodeCollection = Omit<Paginator, 'data'> & {
   data: Transcode[] | undefined
 }
 
+export type Group = Model & {
+  name: string | null
+  title: string | null
+  content: string | null
+  type: string | null
+  state: ModelState
+  videos?: number
+}
+
+export type GroupCollection = Omit<Paginator, 'data'> & {
+  data: Group[] | undefined
+}
+
 export type Paginator = {
   data: Model[] | undefined
   links: {

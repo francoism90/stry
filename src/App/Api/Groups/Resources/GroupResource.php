@@ -22,6 +22,7 @@ class GroupResource extends JsonResource
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->name,
+            'title' => $this->title,
             'content' => $this->content,
             'type' => $this->type,
             'state' => $this->state->toArray(),
