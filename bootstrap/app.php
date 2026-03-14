@@ -6,6 +6,8 @@ use App\Api\Users\Middlewares\EnsureUserHasSubscription;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Tags\Commands\CreateTagCommand;
 use Domain\Tags\Commands\SortTagsCommand;
+use Domain\Transcodes\Commands\ClearTranscodeCommand;
+use Domain\Transcodes\Commands\CreateTranscodeCommand;
 use Domain\Users\Commands\CreateUserCommand;
 use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
@@ -105,8 +107,10 @@ $app = Application::configure(basePath: $basePath)
     ])
     ->withCommands([
         ClearPlaylistCommand::class,
+        ClearTranscodeCommand::class,
         CreateTagCommand::class,
         SortTagsCommand::class,
+        CreateTranscodeCommand::class,
         CreateUserCommand::class,
         ClearVideoCommand::class,
         ImportVideoCommand::class,
