@@ -1,4 +1,5 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
+import { configureOverlay } from '@/plugins/shaka'
 import type { Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
@@ -38,6 +39,9 @@ export function useShaka(
       toValue(container) as HTMLElement,
       toValue(element) as HTMLMediaElement,
     )
+
+    // Configure UI: disable double-tap fullscreen, enable tap-to-seek, add seek buttons
+    configureOverlay(ui.value)
 
     // Add error event listener
     player.value.addEventListener('error', onErrorEvent)

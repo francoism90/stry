@@ -2,3 +2,23 @@
 .shaka-video-container {
   font-family: inherit !important;
 }
+
+.shaka-seek-back-15,
+.shaka-seek-forward-15 {
+  @apply inline-flex cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150;
+}
+
+.shaka-seek-back-15:hover,
+.shaka-seek-forward-15:hover {
+  @apply opacity-100;
+}
+
+.shaka-seek-back-15 svg,
+.shaka-seek-forward-15 svg {
+  @apply size-[18px] shrink-0;
+}
+
+.shaka-seek-back-15 span,
+.shaka-seek-forward-15 span {
+  @apply text-[11px] leading-none font-semibold;
+}

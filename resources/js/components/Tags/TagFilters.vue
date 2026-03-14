@@ -29,6 +29,7 @@ const onSubmit = () => {
         v-model="form.type"
         :model-modifiers="{ nullable: true }"
         :items="types"
+        :search-input="false"
         :ui="{ base: 'px-0', content: 'min-w-40' }"
         placeholder="All types"
         label-key="label"
