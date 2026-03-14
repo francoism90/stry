@@ -24,10 +24,10 @@ const { nonce } = useAppearance()
               body: 'w-full max-w-(--ui-container) flex-1 self-center overflow-visible py-0 sm:py-0',
             },
             dashboardNavbar: {
-              root: 'min-h-16 overflow-x-auto border-0',
+              root: 'min-h-14 overflow-x-auto border-0',
             },
             dashboardToolbar: {
-              root: 'min-h-16 overflow-x-auto border-0 px-0 sm:px-0',
+              root: 'min-h-14 overflow-x-auto border-0 px-0 sm:px-0',
             },
             pageHeader: {
               root: 'border-0 py-4 sm:py-6',
