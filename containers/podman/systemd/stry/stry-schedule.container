@@ -8,7 +8,7 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=scheduler
 UserNS=keep-id
-Volume=${STORAGE_PATH}:/storage:rw,z
+Volume=${STORAGE_PATH}:/storage:rw
 Network=stry.network
 
 [Service]

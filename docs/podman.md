@@ -137,17 +137,43 @@ mkdir -p /mnt/disk1/media /mnt/disk2/cache /mnt/disk3/import
 
 ### SELinux & Volume Flags (if applicable)
 
-If using SELinux, configure the proper permissions. Use:
+If using SELinux (e.g. Fedora CoreOS), Podman needs files in bind-mounted volumes to carry the `container_file_t` context so the container process can access them.
 
-- `:z` when the volume content is shared between multiple containers.
-- `:Z` when the volume should be private to a single container.
-- `,U` can be added when user namespace remapping requires ownership fix-ups (rootless environments with keep-id may omit it unless issues arise).
+**Named Podman volumes** (e.g. `stry-pgsql`, `stry-redis`) start empty so carrying `:Z` there is fine — Podman labels a small directory once.
 
-Example:
+**Large host bind mounts** (e.g. `${STORAGE_PATH}`) are a different story. Using `:z` or `:Z` causes Podman to recursively relabel every file on every container start, which can take a very long time for large media libraries.
 
-```ini
-Volume=${MEDIA_PATH}:/storage/media:rw,z,U
+#### Recommended: pre-label the directory once
+
+Instead of `:z`, set the SELinux context permanently on the host once:
+
+```bash
+sudo semanage fcontext -a -t container_file_t "${STORAGE_PATH}(/.*)?"
+sudo restorecon -Rv "${STORAGE_PATH}"
 ```
+
+Replace `${STORAGE_PATH}` with the actual path from your `app.env`. After this, Podman sees the files are already correctly labeled and skips relabeling entirely on every subsequent start.
+
+> [!WARNING]
+> **ZFS / symlinked mount points (e.g. Fedora CoreOS):**
+>
+> If your storage is under `/var/mnt/...` (common with ZFS on CoreOS), SELinux has an equivalency rule mapping `/var/mnt → /mnt`. The `semanage fcontext` command must use the **canonical form** (`/mnt/...`), while `restorecon` uses the **real path** (`/var/mnt/...`):
+>
+> ```bash
+> # Use /mnt/... for semanage (canonical path through equivalency)
+> sudo semanage fcontext -a -t container_file_t "/mnt/data/media(/.*)?"
+> # Use /var/mnt/... for restorecon (actual path on disk)
+> sudo restorecon -Rv /var/mnt/data/media
+> ```
+>
+> Using the real path in `semanage fcontext` will produce:
+> `ValueError: File spec … conflicts with equivalency rule '/var/mnt /mnt'`
+
+> [!NOTE]
+> **New files** created inside the container or copied (`cp`) on the host automatically inherit `container_file_t` from the parent directory. Files **moved** (`mv`) onto the host preserve their original context — run `restorecon -Rv ${STORAGE_PATH}` afterwards if you do this.
+
+> [!TIP]
+> `:z` (shared) vs `:Z` (private) are still valid options if you prefer the simpler setup and your library is small enough that the relabeling delay is acceptable.
 
 ### Environment Variables (`app.env`)
 
@@ -258,9 +284,11 @@ Follow the [S3 Object Storage](s3.md) setup guide.
 >
 > - Runs Laravel optimization (`artisan optimize`)
 > - Creates storage symlinks (`artisan storage:link`)
-> - Performs [storage-chown-by-maps](https://github.com/containers/podman/issues/13071) for rootless user namespaces
 >
 > **Do not cancel this process!** If needed, increase the `TimeoutStartSec=*` value in your container files.
+
+> [!TIP]
+> If startup is slow on SELinux systems (e.g. Fedora CoreOS), pre-label your storage directory once instead of relying on the `:z` volume flag — see [SELinux & Volume Flags](#selinux--volume-flags-if-applicable) above.
 
 To rebuild the image (if needed) and start all containers:
 
