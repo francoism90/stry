@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import type { Tag, VideoCollection } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import type { SelectMenuItem } from '@nuxt/ui'
+import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
   tag: Tag
@@ -13,6 +14,14 @@ const props = defineProps<{
   orders: SelectMenuItem[]
   order: string
 }>()
+
+const links: NavigationMenuItem[] = [
+  {
+    label: 'Edit tag',
+    icon: 'i-lucide-eye',
+    to: edit.url(props.tag.id),
+  },
+]
 
 useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
 </script>
@@ -30,6 +39,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
         <UPageHeader
           :title="tag.name"
           :description="tag.category"
+          :links="links"
         />
 
         <VideoFilters
