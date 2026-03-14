@@ -15,7 +15,7 @@ return [
      * This disk will be used to store local Google Fonts. The public disk
      * is the default because it can be served over HTTP with storage:link.
      */
-    'disk' => 'assets',
+    'disk' => env('GOOGLE_FONTS_DISK', 'assets'),
 
     /*
      * Prepend all files that are written to the selected disk with this path.
@@ -40,7 +40,7 @@ return [
      * When something goes wrong fonts are loaded directly from Google.
      * With fallback disabled, this package will throw an exception.
      */
-    'fallback' => ! env('APP_DEBUG'),
+    'fallback' => (bool) env('GOOGLE_FONTS_FALLBACK', ! env('APP_DEBUG')),
 
     /*
      * This user agent will be used to request the stylesheet from Google Fonts.
