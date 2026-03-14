@@ -49,7 +49,7 @@ trait InteractsWithTranscodes
     {
         return $this
             ->transcodes()
-            ->active()
+            ->current()
             ->first();
     }
 }

@@ -49,7 +49,15 @@ class TranscodeQueryBuilder extends Builder
             ->where('created_at', '<=', now()->subDays(7));
     }
 
-    public function active(): self
+    public function prunable(): self
+    {
+        return $this->where(fn ($query) => $query
+            ->expired()
+            ->orWhere(fn ($query) => $query->failed())
+        );
+    }
+
+    public function current(): self
     {
         return $this
             ->whereNot(fn ($query) => $query->failed())

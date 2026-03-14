@@ -19,7 +19,7 @@ class ClearPlaylistCommand extends Command implements Isolatable
      * @var string
      */
     protected $signature = 'playlists:clear
-        {--all : Clear all playlists, including those that are not expired}';
+        {--all : Clear all playlists, including those that are not expired or failed}';
 
     /**
      * @var string
@@ -28,11 +28,11 @@ class ClearPlaylistCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $onlyFailed = ! $this->option('all');
+        $prunable = ! $this->option('all');
 
         $playlists = spin(
             message: 'Retrieving playlists...',
-            callback: fn () => Playlist::query()->when($onlyFailed, fn ($query) => $query->expired())->lazy(),
+            callback: fn () => Playlist::query()->when($prunable, fn ($query) => $query->prunable())->lazy(),
         );
 
         if ($playlists->isEmpty()) {

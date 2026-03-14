@@ -99,7 +99,7 @@ class Transcode extends Model
 
     public function prunable(): TranscodeQueryBuilder
     {
-        return static::query()->expired();
+        return static::query()->prunable();
     }
 
     public function uniqueIds(): array

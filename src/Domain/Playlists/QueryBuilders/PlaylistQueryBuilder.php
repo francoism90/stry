@@ -32,21 +32,11 @@ class PlaylistQueryBuilder extends Builder
         return $this->whereState('state', States\Verified::class);
     }
 
-    public function current(): self
-    {
-        return $this
-            ->whereNot(fn ($query) => $query->expired())
-            ->ordered();
-    }
-
     public function expired(): self
     {
         return $this->where(fn ($query) => $query
-            ->where(fn ($q) => $q
-                ->whereNotNull('expires_at')
-                ->whereNowOrPast('expires_at')
-            )
-            ->orWhere(fn ($q) => $q->failed())
+            ->whereNotNull('expires_at')
+            ->whereNowOrPast('expires_at')
         );
     }
 
@@ -56,5 +46,20 @@ class PlaylistQueryBuilder extends Builder
             ->orderByDesc('expires_at')
             ->orderByDesc('transcoded_at')
             ->latest();
+    }
+
+    public function prunable(): self
+    {
+        return $this->where(fn ($query) => $query
+            ->expired()
+            ->orWhere(fn ($query) => $query->failed())
+        );
+    }
+
+    public function current(): self
+    {
+        return $this
+            ->whereNot(fn ($query) => $query->expired())
+            ->ordered();
     }
 }
