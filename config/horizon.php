@@ -89,9 +89,9 @@ return [
 
     'waits' => [
         'redis:default' => 60,
-        'redis:broadcasts' => 5,
-        'redis:processing' => 60,
-        'redis:transcoding' => 300,
+        'redis:broadcasts' => 10,
+        'redis:processing' => 90,
+        'redis:transcoding' => 3600,
     ],
 
     /*
