@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Api\Authentication\Controllers\HomeController;
 use App\Api\Groups\Controllers\GroupClearController;
 use App\Api\Groups\Controllers\GroupToggleController;
+use App\Api\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Api\Playlists\Controllers\PlaylistManifestController;
 use App\Api\Playlists\Controllers\PlaylistSessionController;
 use App\Api\Tags\Controllers\TagController;
@@ -32,6 +33,9 @@ Route::name('api.')->prefix('v1')->group(function () {
     // Videos
     Route::post('/videos/import', VideoImportController::class)->name('videos.import');
     Route::post('/videos/{video}/transcode', VideoTranscodeController::class)->name('videos.transcode');
+
+    // Notifications
+    Route::post('/notifications/mark-all-read', MarkAllNotificationsReadController::class)->name('notifications.mark-all-read');
 
     // VOD - Playlists
     Route::get('/play/{playlist}/{path}', PlaylistManifestController::class)

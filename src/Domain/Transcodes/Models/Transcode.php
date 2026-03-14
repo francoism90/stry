@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Transcodes\Models;
 
+use Database\Factories\TranscodeFactory;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Transcodes\Collections\TranscodeCollection;
 use Domain\Transcodes\Enums\TranscodeEncoder;
@@ -36,6 +37,11 @@ class Transcode extends Model
     use HasUlids;
     use InteractsWithUser;
     use Prunable;
+
+    protected static function newFactory(): TranscodeFactory
+    {
+        return TranscodeFactory::new();
+    }
 
     /**
      * @var array<int, string>

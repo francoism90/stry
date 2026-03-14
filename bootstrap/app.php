@@ -6,6 +6,8 @@ use App\Api\Users\Middlewares\EnsureUserHasSubscription;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Tags\Commands\CreateTagCommand;
 use Domain\Tags\Commands\SortTagsCommand;
+use Domain\Transcodes\Commands\ClearTranscodeCommand;
+use Domain\Transcodes\Commands\CreateTranscodeCommand;
 use Domain\Users\Commands\CreateUserCommand;
 use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
@@ -47,17 +49,6 @@ $app = Application::configure(basePath: $basePath)
                     ? Limit::perMinute(240)->by($request->user()->getKey())
                     : Limit::perMinute(30)->by($request->ip());
             });
-
-            // Global resource parameter mappings
-            Route::resourceParameters([
-                'media' => 'media',
-            ]);
-
-            // Admin Routes
-            Route::middleware(['web', 'verified', 'role:super-admin'])
-                ->prefix('admin')
-                ->name('admin.')
-                ->group(base_path('routes/admin.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -116,8 +107,10 @@ $app = Application::configure(basePath: $basePath)
     ])
     ->withCommands([
         ClearPlaylistCommand::class,
+        ClearTranscodeCommand::class,
         CreateTagCommand::class,
         SortTagsCommand::class,
+        CreateTranscodeCommand::class,
         CreateUserCommand::class,
         ClearVideoCommand::class,
         ImportVideoCommand::class,

@@ -1,4 +1,5 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
+import { configureOverlay } from '@/plugins/shaka'
 import type { Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
@@ -39,11 +40,20 @@ export function useShaka(
       toValue(element) as HTMLMediaElement,
     )
 
+    // Configure UI: disable double-tap fullscreen, enable tap-to-seek, add seek buttons
+    configureOverlay(ui.value)
+
     // Add error event listener
     player.value.addEventListener('error', onErrorEvent)
 
     // Attach player to video element
     await player.value.attach(el.value)
+
+    // Configure player preferences
+    player.value.configure({
+      preferredAudioLanguage: 'en',
+      preferredTextLanguage: 'en',
+    })
 
     // Add timeupdate listener
     el.value.addEventListener('timeupdate', onTimeUpdate)
@@ -92,11 +102,8 @@ export function useShaka(
 
     // Only attempt to load if playlist is valid (not expired or failed)
     if (playlist.value?.valid) {
-      // Build configuration
-      const config: Partial<shaka.extern.PlayerConfiguration> = {
-        preferredAudioLanguage: 'en',
-        preferredTextLanguage: 'en',
-      }
+      // Build DRM configuration with clear keys (if available)
+      const config: Partial<shaka.extern.PlayerConfiguration> = {}
 
       // Configure DRM with clear keys (if available)
       const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
@@ -112,11 +119,13 @@ export function useShaka(
 
       // Attempt to load manifest and start playback
       try {
-        // Apply configuration to player
-        player.value.configure(config)
+        // Apply DRM configuration to player (if any)
+        if (config.drm) {
+          player.value.configure(config)
+        }
 
-        // Load the manifest with optional start time
-        await player.value.load(manifestUri, startTime.value ?? 0)
+        // Load the manifest with optional resume time
+        await player.value.load(manifestUri, startTime.value)
 
         // Enable the first available subtitle track by default (if any)
         const textTracks = player.value.getTextTracks()
@@ -152,8 +161,8 @@ export function useShaka(
     // Round to 2 decimal places and ensure valid number
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
-    // Only store if playlist valid and time has changed (> 0.25 seconds)
-    if (playlist.value?.valid && Math.abs((ticker.value ?? 0) - time) > 0.25) {
+    // Only store if playlist valid, time > 0, and time has changed (> 0.25 seconds)
+    if (playlist.value?.valid && time > 0 && Math.abs((ticker.value ?? 0) - time) > 0.25) {
       http.post(PlaylistSessionController.url(playlist.value.id), { time }).then(() => {
         ticker.value = time
       })

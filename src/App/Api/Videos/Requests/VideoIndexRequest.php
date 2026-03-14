@@ -24,7 +24,7 @@ class VideoIndexRequest extends FormRequest
         return [
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
             'order' => ['sometimes', 'nullable', Rule::enum(VideoOrder::class)],
-            'tag' => ['sometimes', 'nullable', 'string', 'exists:tags,ulid'],
+            'direction' => ['sometimes', 'nullable', Rule::in(['asc', 'desc'])],
         ];
     }
 }

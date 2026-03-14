@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Admin/Tags/Controllers/TagController'
+import { store } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 

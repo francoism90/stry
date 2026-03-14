@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Transcodes/Controllers/TranscodeController'
+import { destroy } from '@/actions/App/Web/Transcodes/Controllers/TranscodeController'
 import type { Transcode } from '@/types'
 import { router } from '@inertiajs/vue3'
 

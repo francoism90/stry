@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import AppNotifications from '@/components/Ui/AppNotifications.vue'
-import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import { useAppearance } from '@/composables/appearance'
 import { Head } from '@inertiajs/vue3'
 
@@ -18,11 +16,36 @@ const { nonce } = useAppearance()
         unit="rem"
         storage="local"
         storage-key="app"
-        class="relative mx-auto w-full max-w-(--ui-container) overflow-clip"
+        class="relative w-full overflow-clip"
       >
-        <AppNotifications />
-        <AppSidebar />
-        <slot />
+        <UTheme
+          :ui="{
+            dashboardPanel: {
+              body: 'w-full max-w-(--ui-container) flex-1 self-center overflow-visible py-0 sm:py-0',
+            },
+            dashboardNavbar: {
+              root: 'min-h-14 overflow-x-auto border-0',
+            },
+            dashboardToolbar: {
+              root: 'min-h-14 overflow-x-auto border-0 px-0 sm:px-0',
+            },
+            pageHeader: {
+              root: 'border-0 py-4 sm:py-6',
+              container: 'flex flex-col gap-4 lg:block',
+              wrapper: 'contents lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-4',
+              description: 'mt-0.5',
+              links: 'order-last',
+            },
+            pageBody: {
+              base: 'mt-3 space-y-6',
+            },
+            tabs: {
+              root: 'mt-3',
+            },
+          }"
+        >
+          <slot />
+        </UTheme>
       </UDashboardGroup>
     </UApp>
   </Suspense>

@@ -6,8 +6,6 @@ namespace Domain\Videos\Scopes;
 
 use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
-use Domain\Users\Models\User;
-use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Laravel\Scout\Builder;
@@ -15,9 +13,8 @@ use Laravel\Scout\Builder;
 readonly class VideoFilterScope
 {
     public function __construct(
-        public User|string|null $user = null,
         public Tag|string|null $tag = null,
-        public VideoFilter|string|null $filter = null,
+        public Group|string|null $group = null,
         public VideoOrder|string|null $order = null,
     ) {}
 
@@ -27,7 +24,7 @@ readonly class VideoFilterScope
         $options = $this->getOptions();
 
         // Determine if we should use placeholder results
-        $defaultOrder = $this->isDefault() && (blank($scout->query) || $scout->query === '*');
+        $defaultOrder = $this->isOrderDefault() && (blank($scout->query) || $scout->query === '*');
 
         $scout
             ->query(fn (VideoQueryBuilder $query) => $query->with('media', 'tags'))
@@ -43,22 +40,11 @@ readonly class VideoFilterScope
 
     protected function getOptions(): array
     {
-        // Get the current user (if any)
-        $user = $this->getUser();
-
         // Initialize options array
         $options = [];
 
-        // Build group options
-        $group = match ($this->getFilter()) {
-            VideoFilter::Liked => $user?->likedGroup(),
-            VideoFilter::Saved => $user?->savedGroup(),
-            VideoFilter::History => $user?->viewedGroup(),
-            default => null,
-        };
-
-        if ($group instanceof Group) {
-            // Make sure the group has videos
+        if ($group = $this->getGroup()) {
+            // Make sure the group has videos, otherwise return no results
             if ($group->videos()->doesntExist()) {
                 // Return no results
                 $options['filter_by'] = 'id:0';
@@ -69,20 +55,13 @@ readonly class VideoFilterScope
             // Set filter by group ID
             $options['filter_by'] = sprintf('$groupables(group_id:%d)', $group->getKey());
 
-            // Set default sorting for certain filters
+            // Set default sorting for certain groups
             if ($this->isOrderDefault()) {
                 $options['sort_by'] = '$groupables(updated_at:desc)';
             }
         }
 
         return $options;
-    }
-
-    protected function getFilter(): VideoFilter
-    {
-        $filterValue = $this->filter ?? VideoFilter::Default;
-
-        return is_string($filterValue) ? VideoFilter::from($filterValue) : $filterValue;
     }
 
     protected function getOrderer(): VideoOrder
@@ -92,26 +71,9 @@ readonly class VideoFilterScope
         return is_string($orderValue) ? VideoOrder::from($orderValue) : $orderValue;
     }
 
-    protected function isDefault(): bool
-    {
-        return $this->isFilterDefault() && $this->isOrderDefault();
-    }
-
-    protected function isFilterDefault(): bool
-    {
-        return $this->getFilter() === VideoFilter::Default;
-    }
-
     protected function isOrderDefault(): bool
     {
         return $this->getOrderer() === VideoOrder::Default;
-    }
-
-    protected function isFilter(VideoFilter ...$values): bool
-    {
-        $currentFilter = $this->getFilter();
-
-        return in_array($currentFilter, $values, true);
     }
 
     protected function isOrder(VideoOrder ...$values): bool
@@ -121,6 +83,15 @@ readonly class VideoFilterScope
         return $currentOrderer && in_array($currentOrderer, $values, true);
     }
 
+    protected function getGroup(): ?Group
+    {
+        if (! $this->group) {
+            return null;
+        }
+
+        return Group::findFromUlid($this->group);
+    }
+
     protected function getTag(): ?Tag
     {
         if (! $this->tag) {
@@ -128,14 +99,5 @@ readonly class VideoFilterScope
         }
 
         return Tag::findFromUlid($this->tag);
-    }
-
-    protected function getUser(): ?User
-    {
-        if (! $this->user) {
-            return null;
-        }
-
-        return User::findFromUlid($this->user);
     }
 }

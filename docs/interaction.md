@@ -109,6 +109,8 @@ Run `stry help` for a complete list. Here are the most commonly used:
 | Command                                                      | Description                                     |
 | ------------------------------------------------------------ | ----------------------------------------------- |
 | `stry a playlists:clear`                                     | Remove generated DASH playlists from filesystem |
+| `stry a transcodes:clear`                                    | Force delete failed transcodes                  |
+| `stry a transcodes:clear --all`                              | Force delete all expired transcodes             |
 | `stry a groups:clear`                                        | Detach all videos from groups of a given type   |
 | `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions            |
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Media/Controllers/MediaController'
+import { destroy } from '@/actions/App/Web/Media/Controllers/MediaController'
 import type { Media } from '@/types'
 import { router } from '@inertiajs/vue3'
 
@@ -7,7 +7,7 @@ const props = defineProps<{
   item: Media
 }>()
 
-const handle = async () => router.delete(destroy.url({ media: props.item.id }))
+const handle = async () => router.delete(destroy.url(props.item.id))
 </script>
 
 <template>

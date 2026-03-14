@@ -17,7 +17,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Scout\Builder;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
         $this->configureMorphMap();
         $this->configureCommands();
         $this->configureJsonResource();
-        $this->configureScoutMacros();
     }
 
     protected function registerTelescope(): void
@@ -78,13 +76,5 @@ class AppServiceProvider extends ServiceProvider
     protected function configureJsonResource(): void
     {
         JsonResource::withoutWrapping();
-    }
-
-    protected function configureScoutMacros(): void
-    {
-        Builder::macro('randomOrder', function (?int $seed = null) {
-            /** @var Builder $this */
-            return $this->orderBy("_rand({$seed})");
-        });
     }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Admin/Tags/Controllers/TagController'
+import { destroy } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 import { router } from '@inertiajs/vue3'
 

@@ -11,16 +11,12 @@ class GroupPolicy
 {
     public function before(User $user, string $ability): ?bool
     {
-        if ($user->isAdmin()) {
-            return true;
-        }
-
-        return null;
+        return $user->isAdmin() ? true : null;
     }
 
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     public function view(User $user, Group $group): bool
