@@ -86,6 +86,7 @@ class Group extends Model implements HasMedia, Sortable
         return [
             'state' => GroupState::class,
             'type' => GroupType::class,
+            'content' => AsArrayObject::class,
             'options' => AsArrayObject::class,
             'expires_at' => AsDateTime::class,
             'published_at' => AsDateTime::class,

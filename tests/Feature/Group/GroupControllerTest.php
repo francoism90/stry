@@ -18,18 +18,18 @@ it('allows admins to view the group index', function () {
     $response->assertSuccessful();
 });
 
-it('forbids guests from viewing the group index', function () {
+it('redirects guests from viewing the group index', function () {
     $response = $this->get(action([GroupController::class, 'index']));
 
-    $response->assertRedirect();
+    $response->assertForbidden();
 });
 
-it('forbids regular users from viewing the group index', function () {
+it('allows regular users to view the group index', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(action([GroupController::class, 'index']));
 
-    $response->assertForbidden();
+    $response->assertSuccessful();
 });
 
 // show

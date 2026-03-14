@@ -20,7 +20,7 @@ class GroupFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => fake()->words(3, true),
-            'content' => fake()->paragraph(),
+            'content' => ['body' => fake()->paragraph()],
             'type' => fake()->randomElement(GroupType::cases()),
             'state' => Verified::class,
             'published_at' => now(),
