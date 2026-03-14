@@ -67,7 +67,7 @@ class TagController extends Controller implements HasMiddleware
             ->simplePaginate(perPage: 18);
 
         return Inertia::render('App/Tags/TagView', [
-            'tag' => fn () => new TagResourceProperty($tag, ['related']),
+            'tag' => fn () => new TagResourceProperty($tag, ['relates']),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'order' => fn () => $request->safe()->input('order'),
             'orders' => fn () => VideoOrder::options(),
