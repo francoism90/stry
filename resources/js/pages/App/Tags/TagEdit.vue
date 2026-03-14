@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
+import TagDeleteModal from '@/components/Tags/TagDeleteModal.vue'
 import { useTags } from '@/composables/tags'
 import TagLayout from '@/layouts/App/TagLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -131,5 +132,32 @@ const onSubmit = () =>
         </template>
       </UPageCard>
     </UForm>
+
+    <UPageCard
+      variant="subtle"
+      orientation="vertical"
+      :ui="{
+        root: 'ring-error/25 from-error/5 bg-linear-to-r to-transparent',
+        body: 'flex flex-col gap-3',
+      }"
+    >
+      <template #body>
+        <div class="flex flex-col gap-2">
+          <p class="text-error text-sm font-semibold">Delete tag</p>
+          <p class="text-muted text-sm">Permanently remove this tag and all associated data.</p>
+
+          <TagDeleteModal :item="tag">
+            <UButton
+              label="Delete tag"
+              icon="i-lucide-trash"
+              color="error"
+              variant="soft"
+              size="sm"
+              class="w-fit"
+            />
+          </TagDeleteModal>
+        </div>
+      </template>
+    </UPageCard>
   </UPageBody>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { show, update } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Group } from '@/types'
 import { Head } from '@inertiajs/vue3'
@@ -94,6 +95,33 @@ const onSubmit = () =>
               </template>
             </UPageCard>
           </UForm>
+
+          <UPageCard
+            variant="subtle"
+            orientation="vertical"
+            :ui="{
+              root: 'ring-error/25 from-error/5 bg-linear-to-r to-transparent',
+              body: 'flex flex-col gap-3',
+            }"
+          >
+            <template #body>
+              <div class="flex flex-col gap-2">
+                <p class="text-error text-sm font-semibold">Delete collection</p>
+                <p class="text-muted text-sm">Permanently remove this collection and all associated data.</p>
+
+                <GroupDeleteModal :item="group">
+                  <UButton
+                    label="Delete collection"
+                    icon="i-lucide-trash"
+                    color="error"
+                    variant="soft"
+                    size="sm"
+                    class="w-fit"
+                  />
+                </GroupDeleteModal>
+              </div>
+            </template>
+          </UPageCard>
         </UPageBody>
       </UPage>
     </template>

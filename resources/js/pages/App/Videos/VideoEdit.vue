@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useDateTime } from '@/composables/datetime'
 import { useTags } from '@/composables/tags'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
@@ -267,5 +268,32 @@ const releasedAt = computed({
         </template>
       </UPageCard>
     </UForm>
+
+    <UPageCard
+      variant="subtle"
+      orientation="vertical"
+      :ui="{
+        root: 'ring-error/25 from-error/5 bg-linear-to-r to-transparent',
+        body: 'flex flex-col gap-3',
+      }"
+    >
+      <template #body>
+        <div class="flex flex-col gap-2">
+          <p class="text-error text-sm font-semibold">Delete video</p>
+          <p class="text-muted text-sm">Permanently remove this video and all associated data.</p>
+
+          <VideoDeleteModal :item="video">
+            <UButton
+              label="Delete video"
+              icon="i-lucide-trash"
+              color="error"
+              variant="soft"
+              size="sm"
+              class="w-fit"
+            />
+          </VideoDeleteModal>
+        </div>
+      </template>
+    </UPageCard>
   </UPageBody>
 </template>

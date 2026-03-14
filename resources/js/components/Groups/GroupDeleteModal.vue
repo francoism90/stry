@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Web/Tags/Controllers/TagController'
-import type { Tag } from '@/types'
+import { destroy } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import type { Group } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
-  item: Tag
+  item: Group
 }>()
 
 const handle = async () => router.delete(destroy.url(props.item.id))
@@ -12,7 +12,7 @@ const handle = async () => router.delete(destroy.url(props.item.id))
 
 <template>
   <UModal
-    :title="item.name"
+    :title="item.title ?? item.id"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>
@@ -26,7 +26,7 @@ const handle = async () => router.delete(destroy.url(props.item.id))
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to delete this tag?</h3>
+        <h3>Are you sure you want to delete this collection?</h3>
         <p class="text-sm text-neutral-500">
           This action cannot be undone. All associated data will be permanently removed.
         </p>
@@ -42,7 +42,7 @@ const handle = async () => router.delete(destroy.url(props.item.id))
       />
 
       <UButton
-        label="Delete tag"
+        label="Delete collection"
         variant="soft"
         color="error"
         loading-auto
