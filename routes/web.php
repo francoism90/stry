@@ -15,6 +15,7 @@ use App\Web\Search\Controllers\SearchTagsController;
 use App\Web\Search\Controllers\SearchVideosController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
+use App\Web\Users\Controllers\UserController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoMediaController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
@@ -51,6 +52,9 @@ Route::prefix('search')->name('search.')->group(function () {
     Route::get('/{query}/collections', SearchGroupsController::class)->name('collections');
     Route::get('/{query?}', SearchController::class)->name('index');
 });
+
+// Users
+Route::resource('users', UserController::class)->only(['update', 'destroy']);
 
 // Videos
 Route::resource('videos', VideoController::class);
