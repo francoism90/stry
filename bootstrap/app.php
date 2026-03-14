@@ -47,11 +47,6 @@ $app = Application::configure(basePath: $basePath)
                     ? Limit::perMinute(240)->by($request->user()->getKey())
                     : Limit::perMinute(30)->by($request->ip());
             });
-
-            // Global resource parameter mappings
-            Route::resourceParameters([
-                'media' => 'media',
-            ]);
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

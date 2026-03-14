@@ -8,6 +8,7 @@ use App\Api\Groups\Requests\GroupIndexRequest;
 use App\Api\Groups\Requests\GroupStoreRequest;
 use App\Api\Groups\Requests\GroupUpdateRequest;
 use App\Api\Groups\Resources\GroupResource;
+use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
@@ -15,6 +16,7 @@ use Domain\Groups\Enums\GroupOrder;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
+use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -43,7 +45,7 @@ class GroupController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = Group::search()
-            ->tap(new GroupFilterScope(type: $type, order: $order))
+            ->tap(new GroupFilterScope(order: $order))
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Groups/GroupIndex', [
@@ -53,18 +55,22 @@ class GroupController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function show(Group $group): Response
+    public function show(Group $group, VideoIndexRequest $request): Response
     {
         Gate::authorize('view', $group);
 
-        // Paginate the group's videos
+        // Scout builder
         $scout = Video::search()
-            ->tap(new VideoFilterScope(group: $group->type))
-            ->simplePaginate(perPage: 16);
+            ->tap(new VideoFilterScope(
+                order: $request->safe()->input('order'),
+            ))
+            ->simplePaginate(perPage: 18);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'order' => fn () => $request->safe()->input('order', 'recommended'),
+            'orders' => fn () => VideoOrder::options(),
         ]);
     }
 
