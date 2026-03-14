@@ -27,7 +27,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int
@@ -37,7 +37,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $uniqueFor = 30;
+    public $uniqueFor = 300;
 
     /**
      * @var int
