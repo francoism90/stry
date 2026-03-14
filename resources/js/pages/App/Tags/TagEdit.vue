@@ -1,36 +1,27 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import { useDateTime } from '@/composables/datetime'
+import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
 import { useTags } from '@/composables/tags'
-import VideoLayout from '@/layouts/App/VideoLayout.vue'
+import TagLayout from '@/layouts/App/TagLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import type { TagMenuItem, Video } from '@/types'
-import { capitalize } from '@/utils/case'
+import type { Tag, TagMenuItem } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import type { CalendarDateTime } from '@internationalized/date'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
-import { computed } from 'vue'
 
 const props = defineProps<{
-  video: Video
-  progress: number | null
+  tag: Tag
+  types: SelectMenuItem[]
 }>()
 
-defineOptions({ layout: [DefaultLayout, VideoLayout] })
+defineOptions({ layout: [DefaultLayout, TagLayout] })
 
-const { toDateTime, fromDateTime, nowDateTime } = useDateTime()
-const { items, filter } = useTags(props.video.tags || [])
+const { items, filter } = useTags(props.tag.related || [])
 
-const form = useForm('put', update.url(props.video.id), {
-  name: props.video.name,
-  episode: props.video.episode || null,
-  season: props.video.season || null,
-  part: props.video.part || null,
-  summary: props.video.summary || null,
-  tags: props.video.tags || [],
-  snapshot: props.video.snapshot || null,
-  published_at: props.video.published_at || null,
-  released_at: props.video.released_at || null,
+const form = useForm('put', update.url(props.tag.id), {
+  name: props.tag.name,
+  type: props.tag.type || null,
+  related: props.tag.related || [],
+  description: props.tag.description || null,
 })
 
 const onSubmit = () =>
@@ -38,24 +29,10 @@ const onSubmit = () =>
     preserveState: true,
     replace: true,
   })
-
-const publishedAt = computed({
-  get: () => toDateTime(form.published_at),
-  set: (value: CalendarDateTime | null) => {
-    form.published_at = fromDateTime(value)
-  },
-})
-
-const releasedAt = computed({
-  get: () => toDateTime(form.released_at),
-  set: (value: CalendarDateTime | null) => {
-    form.released_at = fromDateTime(value)
-  },
-})
 </script>
 
 <template>
-  <Head :title="video.title" />
+  <Head :title="tag.name" />
 
   <UPageBody>
     <UForm
@@ -80,153 +57,40 @@ const releasedAt = computed({
             <UInput
               v-model="form.name"
               :model-modifiers="{ string: true, trim: true }"
-              :ui="{ trailing: 'pe-1' }"
               autofocus
               autocapitalize="words"
-            >
-              <template #trailing>
-                <UButton
-                  color="neutral"
-                  variant="link"
-                  size="sm"
-                  icon="i-lucide-wand-sparkles"
-                  aria-label="Capitalize"
-                  @click.prevent="form.name = capitalize(form.name)"
-                />
-              </template>
-            </UInput>
+            />
           </UFormField>
 
           <USeparator />
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <UFormField
-              label="Season"
-              :error="form.errors.season"
-            >
-              <UInput
-                v-model="form.season"
-                :model-modifiers="{ nullable: true, string: true, trim: true }"
-                placeholder="1"
-                autocapitalize="characters"
-              />
-            </UFormField>
-
-            <UFormField
-              label="Episode"
-              :error="form.errors.episode"
-            >
-              <UInput
-                v-model="form.episode"
-                :model-modifiers="{ nullable: true, string: true, trim: true }"
-                placeholder="1"
-                autocapitalize="characters"
-              />
-            </UFormField>
-
-            <UFormField
-              label="Part"
-              :error="form.errors.part"
-            >
-              <UInput
-                v-model="form.part"
-                :model-modifiers="{ nullable: true, string: true, trim: true }"
-                placeholder="1"
-                autocapitalize="characters"
-              />
-            </UFormField>
-          </div>
-
-          <USeparator />
-
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <UFormField
-              label="Snapshot"
-              :error="form.errors.snapshot"
-            >
-              <UInput
-                v-model="form.snapshot"
-                :model-modifiers="{ nullable: true, number: true }"
-                :ui="{ trailing: 'pe-1' }"
-                type="number"
-                placeholder="3.00"
-                aria-label="Set by progress"
-                step="0.01"
-                min="0"
-                :max="video.duration || undefined"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-image-down"
-                    aria-label="From progress"
-                    @click.prevent="form.snapshot = progress || null"
-                  />
-                </template>
-              </UInput>
-            </UFormField>
-
-            <UFormField
-              label="Published"
-              :error="form.errors.published_at"
-            >
-              <UInputDate
-                v-model="publishedAt"
-                granularity="second"
-                :ui="{ trailing: 'pe-1' }"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-calendar-clock"
-                    aria-label="Set to now"
-                    @click.prevent="publishedAt = nowDateTime()"
-                  />
-                </template>
-              </UInputDate>
-            </UFormField>
-
-            <UFormField
-              label="Released"
-              :error="form.errors.released_at"
-            >
-              <UInputDate
-                v-model="releasedAt"
-                granularity="second"
-                :ui="{ trailing: 'pe-1' }"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-calendar-clock"
-                    aria-label="Set to now"
-                    @click.prevent="releasedAt = nowDateTime()"
-                  />
-                </template>
-              </UInputDate>
-            </UFormField>
-          </div>
+          <UFormField
+            label="Type"
+            required
+            :error="form.errors.type"
+          >
+            <USelect
+              v-model="form.type"
+              :items="types"
+              label-key="label"
+              value-key="value"
+            />
+          </UFormField>
 
           <USeparator />
 
           <UFormField
-            label="Tags"
-            :error="form.errors.tags"
+            label="Related tags"
+            :error="form.errors.related"
           >
             <USelectMenu
-              v-model="form.tags as TagMenuItem[]"
+              v-model="form.related as TagMenuItem[]"
               :items="items as TagMenuItem[]"
               :ignore-filter="true"
               label-key="name"
               multiple
               class="w-full"
-              placeholder="Add tags"
+              placeholder="Add related tags"
               @update:search-term="(value: string) => filter({ query: { search: value } })"
             >
               <template #item-label="{ item }">
@@ -242,11 +106,11 @@ const releasedAt = computed({
           <USeparator />
 
           <UFormField
-            label="Summary"
-            :error="form.errors.summary"
+            label="Description"
+            :error="form.errors.description"
           >
             <UTextarea
-              v-model="form.summary"
+              v-model="form.description"
               :model-modifiers="{ nullable: true, string: true, trim: true }"
               :rows="5"
               autoresize

@@ -54,16 +54,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload
 <template>
   <Head :title="video.title" />
 
-  <UDashboardPanel
-    id="video"
-    :ui="{ body: 'mx-auto w-full max-w-6xl px-4 sm:px-6' }"
-  >
+  <UDashboardPanel id="video">
     <template #header>
       <AppHeader />
     </template>
 
     <template #body>
-      <UPage>
+      <UPage class="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <UPageHeader
           :title="video.title"
           :links="links"

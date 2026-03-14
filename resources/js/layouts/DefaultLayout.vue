@@ -30,8 +30,8 @@ const { nonce } = useAppearance()
               root: 'min-h-16 overflow-x-auto border-0 px-0 sm:px-0',
             },
             pageHeader: {
-              root: 'border-0 pt-4 pb-0',
-              description: 'mt-2',
+              root: 'border-0 py-4 sm:py-6',
+              description: 'mt-0.5',
             },
             pageBody: {
               base: 'mt-3 space-y-6',

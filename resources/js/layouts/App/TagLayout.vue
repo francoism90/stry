@@ -15,16 +15,13 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only:
 <template>
   <Head :title="tag.name" />
 
-  <UDashboardPanel
-    id="tag"
-    :ui="{ body: 'mx-auto w-full max-w-6xl px-4 sm:px-6' }"
-  >
+  <UDashboardPanel id="tag">
     <template #header>
       <AppHeader />
     </template>
 
     <template #body>
-      <UPage>
+      <UPage class="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <UPageHeader
           :title="tag.name"
           :description="tag.category"
