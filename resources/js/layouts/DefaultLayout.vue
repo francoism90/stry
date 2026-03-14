@@ -21,7 +21,7 @@ const { nonce } = useAppearance()
         <UTheme
           :ui="{
             dashboardPanel: {
-              body: 'w-full max-w-(--ui-container) flex-1 self-center overflow-hidden py-0 sm:py-0',
+              body: 'w-full max-w-(--ui-container) flex-1 self-center overflow-visible py-0 sm:py-0',
             },
             dashboardNavbar: {
               root: 'min-h-16 overflow-x-auto border-0',
