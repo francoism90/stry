@@ -4,7 +4,7 @@ import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import type { Tag, VideoCollection } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
 
