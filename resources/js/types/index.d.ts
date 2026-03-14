@@ -162,8 +162,8 @@ export type TranscodeCollection = Omit<Paginator, 'data'> & {
 }
 
 export type Group = Model & {
-  name: string | null
-  title: string | null
+  name: string
+  title: string
   content: string | null
   type: string | null
   state: ModelState

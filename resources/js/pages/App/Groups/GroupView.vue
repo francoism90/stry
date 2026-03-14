@@ -27,7 +27,7 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload
 </script>
 
 <template>
-  <Head :title="group.name ?? group.type ?? 'Collection'" />
+  <Head :title="group.title" />
 
   <UDashboardPanel id="collection">
     <template #header>
@@ -37,7 +37,7 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload
     <template #body>
       <UPage>
         <UPageHeader
-          :title="group.name ?? group.type ?? 'Collection'"
+          :title="group.title ?? group.type ?? 'Collection'"
           :links="links"
         />
 
