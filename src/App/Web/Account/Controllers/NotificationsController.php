@@ -27,7 +27,7 @@ class NotificationsController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        return Inertia::render('App/Account/Notifications', [
+        return Inertia::render('App/Account/NotificationIndex', [
             'notifications' => Inertia::scroll(fn () => NotificationResource::collection(
                 $request->user()->notifications()->simplePaginate(20)
             )),
