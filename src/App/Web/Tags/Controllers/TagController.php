@@ -67,7 +67,7 @@ class TagController extends Controller implements HasMiddleware
             ->simplePaginate(perPage: 18);
 
         return Inertia::render('App/Tags/TagView', [
-            'tag' => fn () => new TagResourceProperty($tag, ['relates']),
+            'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'order' => fn () => $request->safe()->input('order'),
             'orders' => fn () => VideoOrder::options(),
@@ -95,7 +95,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('update', $tag);
 
         return Inertia::render('App/Tags/TagEdit', [
-            'tag' => fn () => new TagResourceProperty($tag),
+            'tag' => fn () => new TagResourceProperty($tag, ['relates']),
             'types' => fn () => TagType::options(),
         ]);
     }
