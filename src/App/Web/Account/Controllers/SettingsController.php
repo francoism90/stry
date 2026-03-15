@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Account\Controllers;
 
-use App\Api\Users\Resources\UserResource;
+use App\Web\Users\Responses\UserResourceProperty;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -27,7 +27,7 @@ class SettingsController extends Controller implements HasMiddleware
         Gate::authorize('update', $request->user());
 
         return Inertia::render('App/Account/ProfileSettings', [
-            'user' => fn () => UserResource::make($request->user()->append('email', 'avatar')),
+            'user' => fn () => new UserResourceProperty($request->user(), ['name', 'email', 'avatar']),
         ]);
     }
 }

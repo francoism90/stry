@@ -13,6 +13,7 @@ readonly class UserResourceProperty implements ProvidesInertiaProperty
 {
     public function __construct(
         protected ?User $user = null,
+        protected ?array $appends = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
@@ -26,15 +27,9 @@ readonly class UserResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        // Append necessary attributes for the edit form
-        $appends = [
-            'avatar',
-            'email',
-        ];
-
         return $this->user
             ->loadMissing('roles', 'permissions')
-            ->append($appends)
+            ->append($this->appends ?? [])
             ->toResource(UserResource::class);
     }
 }
