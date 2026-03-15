@@ -9,7 +9,7 @@ import type { SelectMenuItem } from '@nuxt/ui'
 defineProps<{
   items: TagCollection
   types: SelectMenuItem[]
-  type: string
+  type?: string
 }>()
 </script>
 

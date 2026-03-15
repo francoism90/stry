@@ -9,7 +9,7 @@ import type { SelectMenuItem } from '@nuxt/ui'
 defineProps<{
   items: VideoCollection
   orders: SelectMenuItem[]
-  order: string
+  order?: string
 }>()
 </script>
 

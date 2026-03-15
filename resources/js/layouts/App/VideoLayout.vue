@@ -83,7 +83,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(
           variant="link"
           highlight
           :ui="{
-            root: 'border-default mt-2 w-full flex-1 border-b',
+            root: 'border-default w-full flex-1 border-b',
           }"
         />
 

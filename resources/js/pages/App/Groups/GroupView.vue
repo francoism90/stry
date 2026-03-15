@@ -12,7 +12,7 @@ const props = defineProps<{
   group: Group
   items: VideoCollection
   orders: SelectMenuItem[]
-  order: string
+  order?: string
 }>()
 
 const links: NavigationMenuItem[] = [

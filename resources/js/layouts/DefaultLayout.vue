@@ -31,10 +31,10 @@ const { nonce } = useAppearance()
             },
             pageHeader: {
               root: 'border-0 py-4 sm:py-6',
-              container: 'flex flex-col gap-4 lg:block',
+              container: 'flex flex-col gap-x-4 lg:block',
               wrapper: 'contents lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-4',
               description: 'mt-0.5',
-              links: 'order-last',
+              links: 'order-last mt-3 lg:mt-0',
             },
             pageBody: {
               base: 'mt-3 space-y-6',

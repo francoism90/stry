@@ -12,7 +12,7 @@ const props = defineProps<{
   tag: Tag
   items: VideoCollection
   orders: SelectMenuItem[]
-  order: string
+  order?: string
 }>()
 
 const links: NavigationMenuItem[] = [

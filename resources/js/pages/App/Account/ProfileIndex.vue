@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
-import AppHeader from '@/components/Ui/AppHeader.vue'
+import AccountLayout from '@/layouts/App/AccountLayout.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { logout } from '@/routes'
 import type { User } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
@@ -9,6 +10,8 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 const props = defineProps<{
   user: User
 }>()
+
+defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
 const form = useForm('put', update.url(), {
   name: props.user.name || '',
@@ -27,77 +30,74 @@ const onLogout = () => router.post(logout.url())
 <template>
   <Head title="Profile" />
 
-  <UDashboardPanel id="profile">
-    <template #header>
-      <AppHeader />
-    </template>
-
-    <template #body>
-      <UPage>
-        <UForm
-          :state="form"
-          class="mx-auto flex w-full flex-col gap-6 sm:gap-9 lg:max-w-3xl lg:py-3"
-          loading-auto
-          @submit="onSubmit"
-        >
-          <UPageCard
-            title="Your Profile"
-            variant="naked"
-            orientation="horizontal"
+  <UPageBody>
+    <UForm
+      :state="form"
+      class="flex flex-col gap-4 py-3"
+      loading-auto
+      @submit="onSubmit"
+    >
+      <UPageCard
+        variant="subtle"
+        orientation="vertical"
+        :ui="{
+          body: 'flex w-full flex-col gap-3',
+        }"
+      >
+        <template #body>
+          <UFormField
+            label="Name"
+            required
+            :error="form.errors.name"
           >
-            <div class="flex items-center gap-2 lg:ms-auto">
-              <UButton
-                label="Save changes"
-                type="submit"
-                color="primary"
-                variant="soft"
-                loading-auto
-              />
-            </div>
-          </UPageCard>
+            <UInput
+              v-model="form.name"
+              :model-modifiers="{ string: true, trim: true }"
+              autofocus
+              autocapitalize="words"
+            />
+          </UFormField>
 
-          <UPageCard variant="subtle">
-            <UFormField
-              label="Name"
-              required
-              :error="form.errors.name"
-            >
-              <UInput
-                v-model="form.name"
-                :model-modifiers="{ string: true, trim: true }"
-                autofocus
-                autocapitalize="words"
-              />
-            </UFormField>
+          <USeparator />
 
-            <UFormField
-              label="Email"
-              required
-              :error="form.errors.email"
-            >
-              <UInput
-                v-model="form.email"
-                :model-modifiers="{ string: true, trim: true }"
-              />
-            </UFormField>
-          </UPageCard>
-
-          <UPageCard
-            title="Session"
-            description="Log out of your account."
-            variant="subtle"
+          <UFormField
+            label="Email"
+            required
+            :error="form.errors.email"
           >
-            <template #footer>
-              <UButton
-                label="Logout"
-                @click="onLogout"
-                color="primary"
-                variant="soft"
-              />
-            </template>
-          </UPageCard>
-        </UForm>
-      </UPage>
-    </template>
-  </UDashboardPanel>
+            <UInput
+              v-model="form.email"
+              :model-modifiers="{ string: true, trim: true }"
+            />
+          </UFormField>
+        </template>
+
+        <template #footer>
+          <UButton
+            label="Save changes"
+            type="submit"
+            color="primary"
+            variant="soft"
+            loading-auto
+          />
+        </template>
+      </UPageCard>
+    </UForm>
+
+    <UPageCard
+      title="Session"
+      description="Log out of your account."
+      variant="subtle"
+      orientation="vertical"
+    >
+      <template #footer>
+        <UButton
+          label="Logout"
+          color="primary"
+          variant="soft"
+          @click="onLogout"
+        />
+      </template>
+    </UPageCard>
+  </UPageBody>
 </template>
