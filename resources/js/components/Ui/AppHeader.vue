@@ -87,8 +87,11 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
         <UAvatar
           :src="user?.avatar ?? undefined"
           :alt="user?.name ?? 'User'"
+          :ui="{
+            root: 'cursor-pointer p-1',
+            fallback: 'flex size-full items-center justify-center',
+          }"
           size="sm"
-          class="cursor-pointer"
         />
       </UDropdownMenu>
     </template>

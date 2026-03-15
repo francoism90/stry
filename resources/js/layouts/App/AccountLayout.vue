@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { index as notifications } from '@/actions/App/Web/Account/Controllers/NotificationsController'
 import ProfileController from '@/actions/App/Web/Account/Controllers/ProfileController'
 import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
@@ -33,12 +32,6 @@ const tabs: NavigationMenuItem[] = [
     label: 'Settings',
     icon: 'i-lucide-settings',
     to: SettingsController.url(),
-    exact: true,
-  },
-  {
-    label: 'Notifications',
-    icon: 'i-lucide-bell',
-    to: notifications.url(),
     exact: true,
   },
 ]
