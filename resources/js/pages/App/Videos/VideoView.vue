@@ -60,14 +60,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.rel
           :links="links"
           :ui="{
             title: 'text-xl sm:text-2xl',
-            links: 'flex-nowrap',
-            description: 'flex flex-col gap-3 text-base',
           }"
         >
           <template #description>
             <p
               v-if="video.description?.length"
               v-html="video.description"
+              class="mb-2"
             />
 
             <VideoTags :items="video.tags" />
