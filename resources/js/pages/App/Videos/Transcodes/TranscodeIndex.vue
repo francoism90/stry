@@ -39,7 +39,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () => router.re
           <div class="flex items-center justify-between">
             <UUser
               :name="item.id"
-              :description="`${item.state.label} • ${item.file_size}`"
+              :description="`${item.state.label} · ${item.file_size}`"
               :avatar="{
                 alt: item.id,
                 loading: 'lazy',

@@ -41,7 +41,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload
           <div class="flex items-center justify-between">
             <UUser
               :name="item.file_name"
-              :description="getStreamInfo(item).join(' • ')"
+              :description="getStreamInfo(item).join(' · ')"
               :avatar="{
                 alt: item.file_name,
                 loading: 'lazy',

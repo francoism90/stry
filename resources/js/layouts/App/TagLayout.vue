@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { index, show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Tag } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
@@ -13,6 +13,7 @@ const props = defineProps<{
 const meta = computed(() => [props.tag.category, props.tag.created_at].filter(Boolean))
 
 useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
+useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
 </script>
 
 <template>

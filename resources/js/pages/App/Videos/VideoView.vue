@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { edit, index } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
@@ -37,8 +37,10 @@ const links = computed<ButtonProps[]>(() => [
 ])
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.reload({ only: ['playlist'] }))
 </script>
 
 <template>

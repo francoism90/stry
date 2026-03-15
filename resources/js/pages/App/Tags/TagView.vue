@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { edit, index } from '@/actions/App/Web/Tags/Controllers/TagController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
@@ -24,6 +24,7 @@ const links: NavigationMenuItem[] = [
 ]
 
 useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
+useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
 </script>
 
 <template>

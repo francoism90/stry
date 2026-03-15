@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { edit, index } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
@@ -24,6 +24,7 @@ const links: NavigationMenuItem[] = [
 ]
 
 useEcho<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
+useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
 </script>
 
 <template>
