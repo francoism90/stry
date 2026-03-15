@@ -33,6 +33,7 @@ const { nonce } = useAppearance()
               root: 'border-0 py-4 sm:py-6',
               container: 'flex flex-col gap-x-4 lg:block',
               wrapper: 'contents lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-4',
+              title: 'wrap-anywhere capitalize',
               description: 'mt-0.5',
               links: 'order-last mt-3 lg:mt-0',
             },

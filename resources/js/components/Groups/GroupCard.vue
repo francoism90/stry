@@ -64,7 +64,7 @@ const style = computed<GroupStyle>(
     </div>
 
     <div class="flex flex-col gap-0.5 px-0.5">
-      <span class="line-clamp-1 text-sm font-semibold">
+      <span class="line-clamp-1 text-sm font-semibold capitalize">
         {{ item.title ?? item.type }}
       </span>
       <span class="text-muted text-xs">

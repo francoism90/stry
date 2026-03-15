@@ -59,7 +59,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.rel
           :title="video.title"
           :links="links"
           :ui="{
-            title: 'text-xl sm:text-2xl',
+            title: 'text-xl wrap-anywhere capitalize sm:text-2xl',
           }"
         >
           <template #description>
