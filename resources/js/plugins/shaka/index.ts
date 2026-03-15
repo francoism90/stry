@@ -13,6 +13,7 @@ shaka.ui.Controls.registerElement('seek_forward_15', {
 export function configureOverlay(overlay: shaka.ui.Overlay): void {
   overlay.configure({
     doubleClickForFullscreen: false,
+    singleClickForPlayAndPause: false,
     seekOnTaps: true,
     tapSeekDistance: 15,
     controlPanelElements: [
