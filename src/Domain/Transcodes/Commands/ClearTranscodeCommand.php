@@ -28,11 +28,15 @@ class ClearTranscodeCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $prunable = ! $this->option('all');
-
         $transcodes = spin(
             message: 'Retrieving transcodes...',
-            callback: fn () => Transcode::query()->when($prunable, fn ($query) => $query->prunable())->lazy(),
+            callback: fn () => Transcode::query()
+                ->when(
+                    $this->option('all'),
+                    fn ($query) => $query->expired(),
+                    fn ($query) => $query->prunable(),
+                )
+                ->lazy(),
         );
 
         if ($transcodes->isEmpty()) {

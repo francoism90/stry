@@ -39,6 +39,9 @@ const { nonce } = useAppearance()
             pageBody: {
               base: 'mt-3 space-y-6',
             },
+            dropdownMenu: {
+              content: 'z-50',
+            },
           }"
         >
           <slot />
