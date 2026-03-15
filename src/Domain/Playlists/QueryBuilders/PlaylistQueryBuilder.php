@@ -50,10 +50,12 @@ class PlaylistQueryBuilder extends Builder
 
     public function prunable(): self
     {
-        return $this->where(fn ($query) => $query
-            ->expired()
-            ->orWhere(fn ($query) => $query->failed())
-        );
+        return $this
+            ->whereNotState('state', States\Verified::class)
+            ->where(fn ($query) => $query
+                ->expired()
+                ->orWhere(fn ($query) => $query->failed())
+            );
     }
 
     public function current(): self
