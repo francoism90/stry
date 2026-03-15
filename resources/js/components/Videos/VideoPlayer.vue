@@ -35,7 +35,7 @@ onMounted(() => initialize())
     <UEmpty
       v-if="!ready && !error"
       title="Preparing your video..."
-      description="Please wait while we get everything ready."
+      description="This will refresh automatically once your video is ready."
       icon="i-lucide-hard-drive-download"
       :actions="actions"
     />
