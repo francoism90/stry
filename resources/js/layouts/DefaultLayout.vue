@@ -39,9 +39,6 @@ const { nonce } = useAppearance()
             pageBody: {
               base: 'mt-3 space-y-6',
             },
-            tabs: {
-              root: 'mt-3',
-            },
           }"
         >
           <slot />
