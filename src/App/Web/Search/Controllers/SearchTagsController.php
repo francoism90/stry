@@ -33,7 +33,7 @@ class SearchTagsController extends Controller implements HasMiddleware
 
         $scout = Tag::search($query)
             ->tap(new TagFilterScope(type: $type))
-            ->simplePaginate(perPage: 24);
+            ->simplePaginate(perPage: 36);
 
         return Inertia::render('App/Search/SearchTags', [
             'search' => fn () => $query,
