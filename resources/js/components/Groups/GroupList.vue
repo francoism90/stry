@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import GroupCard from '@/components/Groups/GroupCard.vue';
-import type { Group } from '@/types';
+import GroupCard from '@/components/Groups/GroupCard.vue'
+import type { Group } from '@/types'
 
 defineProps<{
   items: Group[] | undefined

@@ -6,6 +6,9 @@
 *.sql
 *.sqlite
 *.sql.gz
+.github
+/AGENTS.md
+/boost.json
 /node_modules
 /public
 /storage
