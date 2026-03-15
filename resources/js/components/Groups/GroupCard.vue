@@ -68,7 +68,7 @@ const style = computed<GroupStyle>(
         {{ item.title ?? item.type }}
       </span>
       <span class="text-muted text-xs">
-        {{ item.videos != null ? `${item.videos} ${item.videos === 1 ? 'video' : 'videos'}` : '' }}
+        {{ Intl.NumberFormat().format(item.videos ?? 0) }} {{ (item.videos ?? 0) === 1 ? 'video' : 'videos' }}
       </span>
     </div>
   </ULink>

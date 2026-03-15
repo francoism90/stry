@@ -39,7 +39,7 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(
       <UPage>
         <UPageHeader
           :title="group.title"
-          :description="`${group.videos ?? 0} videos`"
+          :description="`${Intl.NumberFormat().format(group.videos ?? 0)} videos`"
           :links="links"
         />
 

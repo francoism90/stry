@@ -23,6 +23,9 @@ function tagColor(slug: string): string {
     :style="{ borderColor: tagColor(props.item.slug) }"
   >
     <span class="line-clamp-1 text-sm font-semibold">{{ props.item.name }}</span>
-    <span class="text-muted text-xs">{{ props.item.videos }} {{ props.item.videos === 1 ? 'video' : 'videos' }}</span>
+    <span class="text-muted text-xs">
+      {{ Intl.NumberFormat().format(props.item.videos ?? 0) }}
+      {{ (props.item.videos ?? 0) === 1 ? 'video' : 'videos' }}
+    </span>
   </ULink>
 </template>
