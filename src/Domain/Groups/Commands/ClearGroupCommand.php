@@ -16,7 +16,7 @@ use function Laravel\Prompts\spin;
 use function Laravel\Prompts\table;
 use function Laravel\Prompts\warning;
 
-class GroupClearCommand extends Command implements Isolatable
+class ClearGroupCommand extends Command implements Isolatable
 {
     /**
      * @var string

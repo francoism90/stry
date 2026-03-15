@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Api\Users\Middlewares\EnsureUserHasSubscription;
+use Domain\Groups\Commands\ClearGroupCommand;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Tags\Commands\CreateTagCommand;
 use Domain\Tags\Commands\SortTagsCommand;
@@ -106,6 +107,7 @@ $app = Application::configure(basePath: $basePath)
         base_path('src/Domain/*/Listeners'),
     ])
     ->withCommands([
+        ClearGroupCommand::class,
         ClearPlaylistCommand::class,
         ClearTranscodeCommand::class,
         CreateTagCommand::class,
