@@ -29,6 +29,8 @@ defineProps<{
           :src="item.thumb"
           :alt="item.title"
           class="aspect-video w-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
 
         <div
