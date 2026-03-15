@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Api\Users\Resources\UserResource;
-use Domain\Users\Models\User;
+use App\Web\Users\Responses\UserResourceProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
@@ -24,20 +23,8 @@ class HandleInertiaRequests extends Middleware
             'app' => Inertia::once(fn (): string => Config::string('app.name', 'Laravel')),
             'nonce' => Inertia::once(fn (): string => app('csp-nonce')),
             'locale' => Inertia::once(fn (): string => $request->getLocale()),
-            'auth' => Inertia::once(fn (): ?UserResource => $this->auth($request->user())),
+            'auth' => Inertia::once(fn (): ?UserResourceProperty => new UserResourceProperty($request->user(), ['name', 'email', 'avatar'])),
         ]);
-    }
-
-    public function auth(?User $user = null): ?UserResource
-    {
-        if (! $user) {
-            return null;
-        }
-
-        return UserResource::make($user
-            ->loadMissing('permissions', 'roles')
-            ->append('name', 'email', 'avatar'),
-        );
     }
 
     /**
