@@ -46,7 +46,7 @@ class GroupController extends Controller implements HasMiddleware
         // Scout builder
         $scout = Group::search()
             ->tap(new GroupFilterScope(order: $order))
-            ->simplePaginate(perPage: 16);
+            ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
@@ -65,7 +65,7 @@ class GroupController extends Controller implements HasMiddleware
                 group: $group,
                 order: $request->safe()->input('order'),
             ))
-            ->simplePaginate(perPage: 18);
+            ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),

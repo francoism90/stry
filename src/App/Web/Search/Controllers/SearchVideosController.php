@@ -33,7 +33,7 @@ class SearchVideosController extends Controller implements HasMiddleware
 
         $scout = Video::search($query)
             ->tap(new VideoFilterScope(order: $order))
-            ->simplePaginate(perPage: 18);
+            ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,

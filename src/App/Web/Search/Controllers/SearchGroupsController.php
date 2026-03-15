@@ -33,7 +33,7 @@ class SearchGroupsController extends Controller implements HasMiddleware
 
         $scout = Group::search($query)
             ->tap(new GroupFilterScope(order: $order))
-            ->simplePaginate(perPage: 16);
+            ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Search/SearchCollections', [
             'search' => fn () => $query,

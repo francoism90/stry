@@ -48,7 +48,7 @@ const tabs: NavigationMenuItem[] = [
     <template #body>
       <UPage class="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <UPageHeader
-          title="Account"
+          :title="user.value?.name || 'Account'"
           :description="joinedAt ? `Joined ${joinedAt}` : undefined"
         />
 
