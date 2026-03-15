@@ -5,9 +5,10 @@ import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { MediaCollection, Video } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 
-defineProps<{
+const props = defineProps<{
   video: Video
   items: MediaCollection
 }>()
@@ -15,6 +16,10 @@ defineProps<{
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
 const { getStreamInfo } = useMedia()
+
+useEcho<Video>(`videos.${props.video.id}`, '.media.created', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload({ only: ['items'] }))
 </script>
 
 <template>

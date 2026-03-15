@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Api\Groups\Broadcasting\GroupChannel;
+use App\Api\Media\Broadcasting\MediaChannel;
 use App\Api\Playlists\Broadcasting\PlaylistChannel;
 use App\Api\Tags\Broadcasting\TagChannel;
 use App\Api\Transcodes\Broadcasting\TranscodeChannel;
@@ -25,5 +26,6 @@ Broadcast::channel('users.{user}', UserChannel::class);
 Broadcast::channel('tags.{tag}', TagChannel::class);
 Broadcast::channel('videos.{video}', VideoChannel::class);
 Broadcast::channel('groups.{group}', GroupChannel::class);
+Broadcast::channel('media.{media}', MediaChannel::class);
 Broadcast::channel('playlists.{playlist}', PlaylistChannel::class);
 Broadcast::channel('transcodes.{transcode}', TranscodeChannel::class);

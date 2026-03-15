@@ -6,11 +6,15 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
 {
+    use BroadcastsEvents;
+
     /**
      * @var array<int, string>
      */
@@ -65,5 +69,38 @@ class Media extends BaseMedia
     public function getStreams(): array
     {
         return $this->getCustomProperty('streams', []);
+    }
+
+    /**
+     * @return array<int, Channel>
+     */
+    public function broadcastOn(string $event): array
+    {
+        return array_filter([$this, $this->model]);
+    }
+
+    public function broadcastChannel(): string
+    {
+        return 'media.'.$this->getRouteKey();
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "media.{$event}";
+    }
+
+    public function broadcastWith(string $event): array
+    {
+        return ['id' => $this->getRouteKey()];
+    }
+
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
+    }
+
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
     }
 }

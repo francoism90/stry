@@ -4,14 +4,19 @@ import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 
-defineProps<{
+defineOptions({ layout: [DefaultLayout, VideoLayout] })
+
+const props = defineProps<{
   video: Video
   items: PlaylistCollection
 }>()
 
-defineOptions({ layout: [DefaultLayout, VideoLayout] })
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.reload({ only: ['items'] }))
 </script>
 
 <template>

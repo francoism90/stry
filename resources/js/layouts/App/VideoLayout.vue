@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { edit, index, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index as media } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
 import { index as playlists } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import { index as transcodes } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
@@ -49,6 +49,7 @@ const tabs: NavigationMenuItem[] = [
 const meta = computed(() => [props.video.timestamp, props.video.filesize, props.video.user?.name].filter(Boolean))
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
 </script>
 
 <template>
