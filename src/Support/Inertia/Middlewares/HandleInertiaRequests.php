@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
 
         return UserResource::make($user
             ->loadMissing('permissions', 'roles')
-            ->append('name', 'avatar'),
+            ->append('name', 'email', 'avatar'),
         );
     }
 
