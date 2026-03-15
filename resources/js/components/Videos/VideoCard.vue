@@ -2,13 +2,10 @@
 import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import type { Video } from '@/types'
-import { ref } from 'vue'
 
 defineProps<{
   item: Video
 }>()
-
-const loaded = ref(false)
 </script>
 
 <template>
@@ -27,20 +24,13 @@ const loaded = ref(false)
   >
     <template #header>
       <div class="relative overflow-hidden rounded-lg">
-        <USkeleton
-          v-if="item.thumb && !loaded"
-          class="aspect-video w-full"
-        />
-
         <img
           v-if="item.thumb"
           :src="item.thumb"
           :alt="item.title"
           class="aspect-video w-full object-cover"
-          :class="{ 'sr-only': !loaded }"
           loading="lazy"
           decoding="async"
-          @load="loaded = true"
         />
 
         <div
