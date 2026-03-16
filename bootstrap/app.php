@@ -9,6 +9,7 @@ use Domain\Tags\Commands\CreateTagCommand;
 use Domain\Tags\Commands\SortTagsCommand;
 use Domain\Transcodes\Commands\ClearTranscodeCommand;
 use Domain\Transcodes\Commands\CreateTranscodeCommand;
+use Domain\Transcodes\Commands\ImportTranscodeCommand;
 use Domain\Users\Commands\CreateUserCommand;
 use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
@@ -110,6 +111,7 @@ $app = Application::configure(basePath: $basePath)
         ClearGroupCommand::class,
         ClearPlaylistCommand::class,
         ClearTranscodeCommand::class,
+        ImportTranscodeCommand::class,
         CreateTagCommand::class,
         SortTagsCommand::class,
         CreateTranscodeCommand::class,
