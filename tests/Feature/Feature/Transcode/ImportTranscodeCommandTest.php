@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Jobs\ImportVideo;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(fn () => Storage::fake('transcodes'));
@@ -40,7 +40,7 @@ it('imports completed transcodes', function () {
         ->expectsOutputToContain('Transcodes imported successfully.')
         ->assertSuccessful();
 
-    Queue::assertPushed(ImportVideo::class);
+    Bus::assertDispatched(ImportVideo::class);
 
     expect(Transcode::query()->find($transcode->id)->isImported())->toBeTrue();
 });
@@ -52,5 +52,5 @@ it('imports multiple completed transcodes', function () {
         ->expectsOutputToContain('Transcodes imported successfully.')
         ->assertSuccessful();
 
-    Queue::assertPushed(ImportVideo::class, 3);
+    Bus::assertDispatchedTimes(ImportVideo::class, 3);
 });
