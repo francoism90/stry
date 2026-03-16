@@ -14,9 +14,15 @@ const props = defineProps<{
   items: PlaylistCollection
 }>()
 
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () =>
+  router.reload({ only: ['items'], reset: ['items'] }),
+)
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () =>
+  router.reload({ only: ['items'], reset: ['items'] }),
+)
+useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
+  router.reload({ only: ['items'], reset: ['items'] }),
+)
 </script>
 
 <template>

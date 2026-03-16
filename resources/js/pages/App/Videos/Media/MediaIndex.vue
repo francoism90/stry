@@ -17,9 +17,9 @@ defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
 const { getStreamInfo } = useMedia()
 
-useEcho<Video>(`videos.${props.video.id}`, '.media.created', () => router.reload({ only: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.media.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
 </script>
 
 <template>

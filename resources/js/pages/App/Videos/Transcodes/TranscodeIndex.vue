@@ -15,15 +15,21 @@ const props = defineProps<{
   items: TranscodeCollection
 }>()
 
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.created', () => router.reload({ only: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () => router.reload({ only: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () => router.reload({ only: ['items'] }))
+useEcho<Video>(`videos.${props.video.id}`, '.transcode.created', () =>
+  router.reload({ only: ['items'], reset: ['items'] }),
+)
+useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () =>
+  router.reload({ only: ['items'], reset: ['items'] }),
+)
+useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
+  router.reload({ only: ['items'], reset: ['items'] }),
+)
 </script>
 
 <template>
   <Head :title="`${video.title} - Transcodes`" />
 
-  <UPage>
+  <UPageBody>
     <InfiniteScroll
       data="items"
       :buffer="200"
@@ -56,5 +62,5 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () => router.re
         </UPageCard>
       </UPageList>
     </InfiniteScroll>
-  </UPage>
+  </UPageBody>
 </template>
