@@ -1,5 +1,6 @@
 onlyBuiltDependencies:
-    - '@tailwindcss/oxide'
-    - esbuild
-    - sharp
-    - vue-demi
+  - '@parcel/watcher'
+  - '@tailwindcss/oxide'
+  - esbuild
+  - sharp
+  - vue-demi

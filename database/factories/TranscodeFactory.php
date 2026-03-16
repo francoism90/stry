@@ -38,6 +38,7 @@ class TranscodeFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'file_name' => 'video_av1.mp4',
+            'file_size' => $this->faker->numberBetween(1_000_000, 500_000_000),
             'state' => Completed::class,
             'transcoded_at' => now(),
         ]);
