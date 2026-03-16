@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
+use Domain\Transcodes\States\Completed;
 use Domain\Transcodes\States\Failed;
 use Domain\Transcodes\States\Imported;
 use Domain\Transcodes\States\Pending;
@@ -31,6 +32,15 @@ class TranscodeFactory extends Factory
             'encoder' => TranscodeEncoder::AV1,
             'state' => Pending::class,
         ];
+    }
+
+    public function completed(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'file_name' => 'video_av1.mp4',
+            'state' => Completed::class,
+            'transcoded_at' => now(),
+        ]);
     }
 
     public function failed(): static
