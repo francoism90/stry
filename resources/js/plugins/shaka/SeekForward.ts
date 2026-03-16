@@ -24,6 +24,7 @@ export class SeekForward extends shaka.ui.Element {
 
     const label = document.createElement('span')
     label.textContent = '15'
+    label.className = 'sr-only'
     this.button.appendChild(label)
 
     this.button.addEventListener('click', () => {
