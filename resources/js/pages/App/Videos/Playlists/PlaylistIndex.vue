@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Playlists/Controllers/PlaylistController'
 import { create } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
@@ -49,7 +48,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
         <UPageCard
           v-for="item in items?.data"
           :key="item.id"
-          :to="edit.url(item.id)"
           variant="naked"
           class="py-4 first:pt-0 last:pb-0"
         >

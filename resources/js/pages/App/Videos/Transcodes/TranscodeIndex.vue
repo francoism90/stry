@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { edit } from '@/actions/App/Web/Transcodes/Controllers/TranscodeController'
 import { create } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
@@ -50,7 +49,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
         <UPageCard
           v-for="item in items?.data"
           :key="item.id"
-          :to="edit.url(item.id)"
           variant="naked"
           class="py-4 first:pt-0 last:pb-0"
         >
