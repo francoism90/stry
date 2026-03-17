@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Playlists/Controllers/PlaylistController'
+import { create } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -33,7 +34,18 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
       data="items"
       :buffer="200"
     >
-      <UPageList divide>
+      <UEmpty
+        v-if="!items?.data?.length"
+        icon="i-lucide-list-video"
+        title="No playlists"
+        description="Create a playlist to enable streaming for this video."
+        :actions="[{ label: 'Create playlist', icon: 'i-lucide-plus', to: create.url(video.id) }]"
+      />
+
+      <UPageList
+        v-else
+        divide
+      >
         <UPageCard
           v-for="item in items?.data"
           :key="item.id"
