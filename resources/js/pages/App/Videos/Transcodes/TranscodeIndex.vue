@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Transcodes/Controllers/TranscodeController'
+import { create } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
@@ -34,7 +35,18 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
       data="items"
       :buffer="200"
     >
-      <UPageList divide>
+      <UEmpty
+        v-if="!items?.data?.length"
+        icon="i-lucide-cpu"
+        title="No transcodes"
+        description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
+        :actions="[{ label: 'Create transcode', icon: 'i-lucide-plus', to: create.url(video.id) }]"
+      />
+
+      <UPageList
+        v-else
+        divide
+      >
         <UPageCard
           v-for="item in items?.data"
           :key="item.id"
