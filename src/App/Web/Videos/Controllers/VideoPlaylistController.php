@@ -37,7 +37,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         // Fetch playlists for the video
         $playlists = $video
             ->playlists()
-            ->simplePaginate(16);
+            ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Videos/Playlists/PlaylistIndex', [
             'video' => fn () => new VideoResourceProperty($video, ['filesize']),

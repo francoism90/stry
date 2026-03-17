@@ -35,7 +35,7 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         // Fetch transcodes for the video
         $transcodes = $video
             ->transcodes()
-            ->simplePaginate(16);
+            ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Videos/Transcodes/TranscodeIndex', [
             'video' => fn () => new VideoResourceProperty($video, ['filesize']),

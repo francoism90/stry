@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace App\Web\Transcodes\Controllers;
 
-use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
-use App\Api\Transcodes\Resources\TranscodeResource;
-use App\Web\Transcodes\Responses\TranscodeResourceProperty;
-use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
-use Domain\Transcodes\Scopes\TranscodeFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class TranscodeController extends Controller implements HasMiddleware
 {
@@ -26,35 +20,6 @@ class TranscodeController extends Controller implements HasMiddleware
         return [
             new Middleware('precognitive'),
         ];
-    }
-
-    public function index(TranscodeIndexRequest $request): Response
-    {
-        Gate::authorize('viewAny', Transcode::class);
-
-        // Apply filters
-        $encoder = $request->safe()->input('encoder');
-
-        // Query builder
-        $query = Transcode::query()
-            ->tap(new TranscodeFilterScope(encoder: $encoder))
-            ->simplePaginate(16);
-
-        return Inertia::render('Admin/Transcodes/TranscodeIndex', [
-            'items' => Inertia::scroll(fn () => TranscodeResource::collection($query)),
-            'encoder' => fn () => $encoder,
-            'encoders' => fn () => TranscodeEncoder::options(),
-        ]);
-    }
-
-    public function edit(Transcode $transcode): Response
-    {
-        Gate::authorize('update', $transcode);
-
-        return Inertia::render('Admin/Transcodes/TranscodeEdit', [
-            'transcode' => fn () => new TranscodeResourceProperty($transcode),
-            'encoders' => fn () => TranscodeEncoder::options(),
-        ]);
     }
 
     public function update(Transcode $transcode, TranscodeUpdateRequest $request): RedirectResponse

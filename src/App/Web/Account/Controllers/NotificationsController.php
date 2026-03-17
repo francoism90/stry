@@ -29,7 +29,7 @@ class NotificationsController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Account/NotificationIndex', [
             'notifications' => Inertia::scroll(fn () => NotificationResource::collection(
-                $request->user()->notifications()->simplePaginate(20)
+                $request->user()->notifications()->simplePaginate(perPage: 20)
             )),
         ]);
     }

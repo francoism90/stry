@@ -30,20 +30,19 @@ Route::get('/profile', ProfileController::class)->name('profile');
 Route::get('/settings', SettingsController::class)->name('settings');
 Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
 
-// Media
-Route::resource('media', MediaController::class);
-
-// Playlists
-Route::resource('playlists', PlaylistController::class);
-
-// Groups
+// Resources
 Route::resource('collections', GroupController::class);
-
-// // Tags
 Route::resource('tags', TagController::class);
+Route::resource('media', MediaController::class)->only(['update', 'destroy']);
+Route::resource('playlists', PlaylistController::class)->only(['update', 'destroy']);
+Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
+Route::resource('users', UserController::class)->only(['update', 'destroy']);
 
-// Transcodes
-Route::resource('transcodes', TranscodeController::class);
+// Videos
+Route::resource('videos', VideoController::class);
+Route::resource('videos.media', VideoMediaController::class)->scoped();
+Route::resource('videos.playlists', VideoPlaylistController::class)->scoped();
+Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped();
 
 // Search
 Route::prefix('search')->name('search.')->group(function () {
@@ -52,12 +51,3 @@ Route::prefix('search')->name('search.')->group(function () {
     Route::get('/{query}/collections', SearchGroupsController::class)->name('collections');
     Route::get('/{query?}', SearchController::class)->name('index');
 });
-
-// Users
-Route::resource('users', UserController::class)->only(['update', 'destroy']);
-
-// Videos
-Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class)->scoped();
-Route::resource('videos.playlists', VideoPlaylistController::class)->scoped();
-Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped();

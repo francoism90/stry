@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace App\Web\Media\Controllers;
 
-use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Requests\MediaUpdateRequest;
-use App\Api\Media\Resources\MediaResource;
-use App\Web\Media\Responses\MediaResourceProperty;
 use Domain\Media\Models\Media;
-use Domain\Media\Scopes\MediaFilterScope;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class MediaController extends Controller implements HasMiddleware
 {
@@ -25,29 +20,6 @@ class MediaController extends Controller implements HasMiddleware
         return [
             new Middleware('precognitive'),
         ];
-    }
-
-    public function index(MediaIndexRequest $request): Response
-    {
-        Gate::authorize('viewAny', Media::class);
-
-        // Query builder
-        $query = Media::query()
-            ->tap(new MediaFilterScope)
-            ->simplePaginate(16);
-
-        return Inertia::render('Admin/Media/MediaIndex', [
-            'items' => Inertia::scroll(fn () => MediaResource::collection($query)),
-        ]);
-    }
-
-    public function edit(Media $media): Response
-    {
-        Gate::authorize('update', $media);
-
-        return Inertia::render('Admin/Media/MediaEdit', [
-            'media' => fn () => new MediaResourceProperty($media),
-        ]);
     }
 
     public function update(Media $media, MediaUpdateRequest $request): RedirectResponse
