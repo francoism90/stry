@@ -14,7 +14,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "foxws/laravel-ab-av1": "^1.0",
         "foxws/laravel-pwa": "^2.0",
         "foxws/laravel-shaka": "^2.0.1",
@@ -133,6 +133,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
