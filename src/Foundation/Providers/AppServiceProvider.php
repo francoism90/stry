@@ -17,12 +17,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Support\Filesystem\FilesystemManager;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->registerTelescope();
+        $this->app->singleton('filesystem', fn ($app) => new FilesystemManager($app));
     }
 
     public function boot(): void
