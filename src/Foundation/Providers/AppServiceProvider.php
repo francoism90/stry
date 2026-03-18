@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->registerFilesystem();
         $this->registerTelescope();
-        $this->app->singleton('filesystem', fn ($app) => new FilesystemManager($app));
     }
 
     public function boot(): void
@@ -34,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
         $this->configureMorphMap();
         $this->configureCommands();
         $this->configureJsonResource();
+    }
+
+    protected function registerFilesystem(): void
+    {
+        $this->app->singleton('filesystem', fn ($app) => new FilesystemManager($app));
     }
 
     protected function registerTelescope(): void
