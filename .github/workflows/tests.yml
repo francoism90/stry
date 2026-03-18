@@ -77,7 +77,7 @@ jobs:
               run: composer install --prefer-dist --no-interaction --no-progress
 
             - name: Install pnpm
-              uses: pnpm/action-setup@v4
+              uses: pnpm/action-setup@v5
               with:
                   version: latest
 
