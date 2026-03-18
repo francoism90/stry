@@ -10,11 +10,20 @@ it('resolves s3 disks as S3TemporaryUrlAdapter', function () {
 });
 
 it('generates temporary urls signed with the public endpoint', function () {
-    $url = Storage::disk('conversions')->temporaryUrl('test/file.avif', now()->addHour());
+    $disk = Storage::build([
+        'driver' => 's3',
+        'key' => 'test-key',
+        'secret' => 'test-secret',
+        'region' => 'us-east-1',
+        'bucket' => 'conversions',
+        'endpoint' => 'http://internal-host:9000',
+        'temporary_url' => 'https://s3.example.test',
+        'use_path_style_endpoint' => true,
+    ]);
 
-    $host = parse_url($url, PHP_URL_HOST);
+    $url = $disk->temporaryUrl('test/file.avif', now()->addHour());
 
-    expect($host)->toBe('s3.spiky.test');
+    expect(parse_url($url, PHP_URL_HOST))->toBe('s3.example.test');
 });
 
 it('falls back to default behaviour when endpoint matches temporary_url', function () {
