@@ -151,8 +151,9 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
-            'throw' => false,
+            'throw' => true,
             'report' => true,
+            'stream_reads' => true,
             'options' => [
                 'CacheControl' => 'private, max-age=3600', // 1 hour
             ],
