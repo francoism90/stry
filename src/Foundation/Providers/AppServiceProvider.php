@@ -17,11 +17,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Support\Filesystem\FilesystemManager;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->registerFilesystem();
         $this->registerTelescope();
     }
 
@@ -32,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
         $this->configureMorphMap();
         $this->configureCommands();
         $this->configureJsonResource();
+    }
+
+    protected function registerFilesystem(): void
+    {
+        $this->app->singleton('filesystem', fn ($app) => new FilesystemManager($app));
     }
 
     protected function registerTelescope(): void
