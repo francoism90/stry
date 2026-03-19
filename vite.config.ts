@@ -6,6 +6,7 @@ import laravel from 'laravel-vite-plugin'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import { stripCss } from './resources/js/plugins/build/strip-css'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -44,6 +45,10 @@ export default defineConfig(({ mode }) => {
       }),
       vueDevTools(),
       tailwindcss(),
+      stripCss(
+        // Remove Roboto @font-face from shaka-player's controls.css — violates CSP font-src 'self'
+        /@font-face\{[^}]*font-family:Roboto[^}]*fonts\.gstatic\.com[^}]*\}/g,
+      ),
       wayfinder(),
       ui({
         router: 'inertia',
