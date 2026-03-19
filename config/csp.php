@@ -2,7 +2,6 @@
 
 use Support\Csp\Nonce\ViteNonceGenerator;
 use Support\Csp\Presets\BasicPreset;
-use Support\Csp\Presets\IconifyPreset;
 
 // use Spatie\Csp\Directive;
 // use Spatie\Csp\Keyword;
@@ -15,7 +14,6 @@ return [
      */
     'presets' => [
         BasicPreset::class,
-        IconifyPreset::class,
     ],
 
     /**
