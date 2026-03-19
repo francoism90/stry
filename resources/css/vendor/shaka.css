@@ -1,8 +1,16 @@
+/* Force brand font on the UI container and all its pseudo-elements */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100 900;
+  src: local('_');
+}
+
+.shaka-video-container,
 .shaka-video-container *,
 .shaka-video-container *::before,
-.shaka-video-container *::after,
-.shaka-video-container {
-  font-family: inherit !important;
+.shaka-video-container *::after {
+  font-family: var(--font-sans) !important;
 }
 
 .shaka-seek-back-15,
