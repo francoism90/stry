@@ -75,6 +75,7 @@ export default defineConfig(({ mode }) => {
 
             return (
               chunk('player', ['shaka-player']) ??
+              chunk('icons', ['@iconify']) ??
               chunk('ui', ['@nuxt/ui', '@nuxt/icon', 'reka-ui', '@internationalized']) ??
               chunk('core', ['vue', '@inertiajs', '@vueuse']) ??
               chunk('broadcasting', ['pusher-js', 'laravel-echo', '@laravel/echo-vue']) ??
