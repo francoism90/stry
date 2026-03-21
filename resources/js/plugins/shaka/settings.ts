@@ -14,13 +14,6 @@ export const defaults: PlayerSettings = {
   caption_language: 'en',
 }
 
-export function playerSetting<K extends keyof PlayerSettings>(
-  settings: PlayerSettings | null,
-  key: K,
-): PlayerSettings[K] {
-  return settings?.[key] ?? defaults[key]
-}
-
 export function updatePlayerSettings(settings: Partial<PlayerSettings>): void {
   http.patch(UserSettingsController.url(), { player: settings })
 }

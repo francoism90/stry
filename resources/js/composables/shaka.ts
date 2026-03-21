@@ -1,6 +1,6 @@
 import { configureOverlay } from '@/plugins/shaka'
 import { updatePlaylistSession } from '@/plugins/shaka/session'
-import { playerSetting, updatePlayerSettings } from '@/plugins/shaka/settings'
+import { defaults, updatePlayerSettings } from '@/plugins/shaka/settings'
 import type { PlayerSettings, Playlist } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
@@ -48,20 +48,20 @@ export function useShaka(
     await player.value.attach(el.value)
 
     // Configure player preferences
-    const quality = playerSetting(settings.value, 'quality')
+    const quality = getSetting('quality')
 
     player.value.configure({
-      preferredAudioLanguage: playerSetting(settings.value, 'audio_language'),
-      preferredTextLanguage: playerSetting(settings.value, 'caption_language'),
+      preferredAudioLanguage: getSetting('audio_language'),
+      preferredTextLanguage: getSetting('caption_language'),
       abr: {
         restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
       },
     })
 
     // Restore saved mute state and playback speed
-    el.value.muted = playerSetting(settings.value, 'muted')
-    el.value.volume = playerSetting(settings.value, 'volume')
-    el.value.playbackRate = playerSetting(settings.value, 'playback_speed')
+    el.value.muted = getSetting('muted')
+    el.value.volume = getSetting('volume')
+    el.value.playbackRate = getSetting('playback_speed')
 
     // Load the manifest and start playback
     await load()
@@ -135,7 +135,7 @@ export function useShaka(
         // Enable the first available subtitle track if captions are enabled
         const textTracks = player.value.getTextTracks()
 
-        if (playerSetting(settings.value, 'captions') && textTracks.length > 0) {
+        if (getSetting('captions') && textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
 
@@ -178,6 +178,9 @@ export function useShaka(
       updatePlayerSettings({ muted: el.value.muted, volume: el.value.volume })
     }
   }
+
+  const getSetting = <K extends keyof PlayerSettings>(key: K): PlayerSettings[K] =>
+    settings.value?.[key] ?? defaults[key]
 
   const destroy = async () => {
     try {
