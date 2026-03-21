@@ -27,7 +27,10 @@ class ProfileController extends Controller implements HasMiddleware
         Gate::authorize('update', $request->user());
 
         return Inertia::render('App/Account/ProfileIndex', [
-            'user' => fn () => new UserResourceProperty($request->user(), ['name', 'email', 'avatar']),
+            'user' => fn () => new UserResourceProperty(
+                $request->user()?->loadCount('videos'),
+                ['name', 'email', 'avatar'],
+            ),
         ]);
     }
 }

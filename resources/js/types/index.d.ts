@@ -32,6 +32,9 @@ export type User = Model & {
   roles?: string[]
   permissions?: string[]
   general?: GeneralSettings
+  appearance?: AppearanceSettings
+  videos_count?: number
+  email_verified_at?: string | null
 }
 
 export type GeneralSettings = {
@@ -54,8 +57,8 @@ export type PlayerSettings = {
   captions: boolean
   quality: string
   playback_speed: number
-  audio_languages: string
-  caption_languages: string
+  audio_language: string
+  caption_language: string
 }
 
 export type UserCollection = Omit<Paginator, 'data'> & {

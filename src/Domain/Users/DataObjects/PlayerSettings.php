@@ -15,7 +15,7 @@ class PlayerSettings extends Data
         public bool $captions = true,
         public string $quality = 'auto',
         public float $playback_speed = 1.0,
-        public string $audio_languages = 'en',
-        public string $caption_languages = 'en',
+        public string $audio_language = 'en',
+        public string $caption_language = 'en',
     ) {}
 }

@@ -7,8 +7,8 @@ export const defaults: PlayerSettings = {
   captions: true,
   quality: 'auto',
   playback_speed: 1,
-  audio_languages: 'en',
-  caption_languages: 'en',
+  audio_language: 'en',
+  caption_language: 'en',
 }
 
 export function playerSetting<K extends keyof PlayerSettings>(
