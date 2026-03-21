@@ -16,8 +16,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     public function update(User $user, array $input): void
     {
-        logger($input);
-
         $request = new UserUpdateRequest;
         $request->setRouteResolver(fn () => request()->route());
         $request->merge(['user' => $user]);
@@ -25,16 +23,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, $request->rules())
             ->validateWithBag('updateProfileInformation');
 
-        logger('validation passed');
-
         DB::transaction(function () use ($user, $input) {
             if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
                 $this->updateVerifiedUser($user, $input);
 
                 return;
             }
-
-            logger($input);
 
             // Update user attributes
             $user->updateOrFail(

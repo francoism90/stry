@@ -14,8 +14,6 @@ const props = defineProps<{
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
 const form = useForm('put', update.url(), {
-  name: props.user.name || '',
-  email: props.user.email || '',
   settings: props.user.settings as UserSettings,
 })
 
