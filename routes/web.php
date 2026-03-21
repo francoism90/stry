@@ -38,7 +38,7 @@ Route::resource('transcodes', TranscodeController::class)->only(['index', 'destr
 
 // Videos
 Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class)->scoped()->only(['index']);
+Route::resource('videos.media', VideoMediaController::class)->only(['index']);
 Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['index', 'update', 'destroy']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
 
