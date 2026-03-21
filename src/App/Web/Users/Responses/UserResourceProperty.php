@@ -6,6 +6,7 @@ namespace App\Web\Users\Responses;
 
 use App\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
@@ -27,8 +28,11 @@ readonly class UserResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
+        if (Gate::allows('update', $this->user)) {
+            $this->user->loadMissing('roles', 'permissions');
+        }
+
         return $this->user
-            ->loadMissing('roles', 'permissions')
             ->append($this->appends ?? [])
             ->toResource(UserResource::class);
     }
