@@ -243,7 +243,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
-    protected function preferences(): Attribute
+    protected function userSettings(): Attribute
     {
         return Attribute::make(
             get: fn (): array => UserSettings::fromModel($this)->include('*')->toArray(),
