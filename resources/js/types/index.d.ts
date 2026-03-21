@@ -31,7 +31,7 @@ export type User = Model & {
   avatar?: AvatarProps['src'] | null
   roles?: string[] | null
   permissions?: string[] | null
-  preferences?: UserSettings
+  settings?: UserSettings
   videos_count?: number
   email_verified_at?: string | null
 }

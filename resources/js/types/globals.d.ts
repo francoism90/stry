@@ -1,4 +1,4 @@
-import type { AppearanceSettings, GeneralSettings, User } from '@/types'
+import type { User } from '@/types'
 import type { Page } from '@inertiajs/vue3'
 import type { ToastProps } from '@nuxt/ui'
 
@@ -12,8 +12,6 @@ declare module '@inertiajs/core' {
     readonly nonce: string
     readonly locale: string
     readonly auth: User | undefined
-    readonly general: GeneralSettings | undefined
-    readonly appearance: AppearanceSettings | undefined
   }
 }
 

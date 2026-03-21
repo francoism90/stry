@@ -6,7 +6,7 @@ import { computed } from 'vue'
 export function useSettings<N extends keyof UserSettings>(namespace: N) {
   type S = UserSettings[N]
 
-  const settings = computed(() => usePage().props[namespace] as S | undefined)
+  const settings = computed(() => usePage().props.auth?.settings?.[namespace] as S | undefined)
 
   function get<K extends keyof S>(key: K, defaultValue: S[K] | null = null): S[K] | null {
     if (!settings.value) return defaultValue

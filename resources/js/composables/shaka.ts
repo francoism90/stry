@@ -1,7 +1,7 @@
+import { useSettings } from '@/composables/settings'
 import { configureOverlay } from '@/plugins/shaka'
 import { updatePlaylistSession } from '@/plugins/shaka/session'
-import { defaults, updatePlayerSettings } from '@/plugins/shaka/settings'
-import type { PlayerSettings, Playlist } from '@/types'
+import type { Playlist } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
 import shaka from 'shaka-player/dist/shaka-player.ui'
@@ -12,8 +12,9 @@ export function useShaka(
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
 ) {
   const playlist = computed(() => usePage().props.playlist as Playlist | null)
-  const settings = computed(() => usePage().props.player as PlayerSettings | null)
   const startTime = computed(() => usePage().props.progress as number | null)
+
+  const { get, update } = useSettings('player')
   const el = computed(() => toValue(element))
 
   const player = shallowRef<shaka.Player>()
@@ -48,20 +49,20 @@ export function useShaka(
     await player.value.attach(el.value)
 
     // Configure player preferences
-    const quality = getSetting('quality')
+    const quality = get('quality', 'auto')!
 
     player.value.configure({
-      preferredAudioLanguage: getSetting('audio_language'),
-      preferredTextLanguage: getSetting('caption_language'),
+      preferredAudioLanguage: get('audio_language', 'en')!,
+      preferredTextLanguage: get('caption_language', 'en')!,
       abr: {
         restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
       },
     })
 
     // Restore saved mute state and playback speed
-    el.value.muted = getSetting('muted')
-    el.value.volume = getSetting('volume')
-    el.value.playbackRate = getSetting('playback_speed')
+    el.value.muted = get('muted', false)!
+    el.value.volume = get('volume', 1)!
+    el.value.playbackRate = get('playback_speed', 1)!
 
     // Load the manifest and start playback
     await load()
@@ -135,7 +136,7 @@ export function useShaka(
         // Enable the first available subtitle track if captions are enabled
         const textTracks = player.value.getTextTracks()
 
-        if (getSetting('captions') && textTracks.length > 0) {
+        if (get('captions', true) && textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
 
@@ -175,12 +176,9 @@ export function useShaka(
 
   const onVolumeChange = () => {
     if (el.value) {
-      updatePlayerSettings({ muted: el.value.muted, volume: el.value.volume })
+      update({ muted: el.value.muted, volume: el.value.volume })
     }
   }
-
-  const getSetting = <K extends keyof PlayerSettings>(key: K): PlayerSettings[K] =>
-    settings.value?.[key] ?? defaults[key]
 
   const destroy = async () => {
     try {
