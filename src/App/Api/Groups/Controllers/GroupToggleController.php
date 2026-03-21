@@ -10,7 +10,6 @@ use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -21,12 +20,11 @@ class GroupToggleController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum'),
             new Middleware('verified'),
         ];
     }
 
-    public function __invoke(Group $group, Video $video, Request $request): RedirectResponse|Response
+    public function __invoke(Group $group, Video $video, Request $request): RedirectResponse
     {
         Gate::authorize('view', $video);
 
@@ -44,16 +42,11 @@ class GroupToggleController extends Controller implements HasMiddleware
             ? __('Added to :group.', ['group' => $group->title])
             : __('Removed from :group.', ['group' => $group->title]);
 
-        if ($request->inertia()) {
-            // Notify the user
-            Inertia::flash([
-                'title' => (string) $video->name,
-                'description' => $result,
-            ]);
+        Inertia::flash([
+            'title' => (string) $video->name,
+            'description' => $result,
+        ]);
 
-            return back();
-        }
-
-        return response()->noContent();
+        return back();
     }
 }

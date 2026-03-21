@@ -1,4 +1,4 @@
-import type { Notification, NotificationCollection } from '@/types'
+import MarkAllNotificationsReadController from '@/actions/App/Api/Notifications/Controllers/MarkAllNotificationsReadController'
 import { router } from '@inertiajs/vue3'
 import { computed, onUnmounted, type Ref } from 'vue'
 
@@ -43,7 +43,7 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
 
   const markAllAsRead = (): void => {
     router.post(
-      '/api/v1/notifications/mark-all-read',
+      MarkAllNotificationsReadController.url(),
       {},
       {
         preserveScroll: true,
