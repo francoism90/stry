@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { logout } from '@/routes'
+import { update } from '@/routes/user-profile-information'
 import type { User } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'

@@ -21,6 +21,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureActions();
+        $this->configureRateLimits();
         $this->configureViews();
     }
 
@@ -31,6 +32,11 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
+        return $this;
+    }
+
+    protected function configureRateLimits(): static
+    {
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 

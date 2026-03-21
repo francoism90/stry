@@ -15,7 +15,6 @@ use App\Web\Search\Controllers\SearchTagsController;
 use App\Web\Search\Controllers\SearchVideosController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
-use App\Web\Users\Controllers\UserController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoMediaController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
@@ -36,7 +35,6 @@ Route::resource('tags', TagController::class);
 Route::resource('media', MediaController::class)->only(['update', 'destroy']);
 Route::resource('playlists', PlaylistController::class)->only(['update', 'destroy']);
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
-Route::resource('users', UserController::class)->only(['update', 'destroy']);
 
 // Videos
 Route::resource('videos', VideoController::class);
