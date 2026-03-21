@@ -5,12 +5,12 @@ declare(strict_types=1);
 use App\Api\Groups\Controllers\GroupClearController;
 use App\Api\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Api\Tags\Controllers\TagOrderController;
-use App\Api\Transcodes\Controllers\TranscodeImportController;
 use App\Api\Users\Controllers\UserSettingsController;
 use App\Api\Videos\Controllers\VideoImportController;
 use App\Api\Videos\Controllers\VideoLikeController;
 use App\Api\Videos\Controllers\VideoSaveController;
 use App\Api\Videos\Controllers\VideoTranscodeController;
+use App\Api\Videos\Controllers\VideoTranscodedController;
 use Illuminate\Support\Facades\Route;
 
 // Settings
@@ -33,15 +33,11 @@ Route::prefix('/tags')->name('tags.')->group(function () {
     Route::post('/reorder', TagOrderController::class)->name('reorder');
 });
 
-// Transcodes
-Route::prefix('/transcodes')->name('transcodes.')->group(function () {
-    Route::post('/{transcode}/import', TranscodeImportController::class)->name('import');
-});
-
 // Videos
 Route::prefix('/videos')->name('videos.')->group(function () {
     Route::post('/import', VideoImportController::class)->name('import');
     Route::post('/{video}/like', VideoLikeController::class)->name('like');
     Route::post('/{video}/save', VideoSaveController::class)->name('save');
     Route::post('/{video}/transcode', VideoTranscodeController::class)->name('transcode');
+    Route::post('/{video}/transcoded', VideoTranscodedController::class)->name('transcoded');
 });

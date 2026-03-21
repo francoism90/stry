@@ -1,4 +1,5 @@
-import { usePage } from '@inertiajs/vue3'
+import { logout } from '@/routes'
+import { router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useAuth() {
@@ -10,11 +11,14 @@ export function useAuth() {
   const hasAnyRole = (names: string[]) => names.some((name) => hasRole(name))
   const hasAnyPermission = (names: string[]) => names.some((name) => hasPermission(name))
 
+  const logOut = () => router.post(logout.url())
+
   return {
     user,
     hasRole,
     hasPermission,
     hasAnyRole,
     hasAnyPermission,
+    logOut,
   }
 }
