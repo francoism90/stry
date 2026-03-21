@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 use App\Api\Groups\Controllers\GroupClearController;
-use App\Api\Groups\Controllers\GroupToggleController;
 use App\Api\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Api\Tags\Controllers\TagOrderController;
 use App\Api\Transcodes\Controllers\TranscodeImportController;
 use App\Api\Users\Controllers\UserSettingsController;
 use App\Api\Videos\Controllers\VideoImportController;
+use App\Api\Videos\Controllers\VideoLikeController;
+use App\Api\Videos\Controllers\VideoSaveController;
 use App\Api\Videos\Controllers\VideoTranscodeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,6 @@ Route::prefix('/settings')->name('settings.')->group(function () {
 // Groups
 Route::prefix('/groups')->name('groups.')->group(function () {
     Route::post('/{group}/clear', GroupClearController::class)->name('clear');
-    Route::post('/{group}/{video}', GroupToggleController::class)->name('toggle');
 });
 
 // Notifications
@@ -30,7 +30,7 @@ Route::prefix('/notifications')->name('notifications.')->group(function () {
 
 // Tags
 Route::prefix('/tags')->name('tags.')->group(function () {
-    Route::post('/order', TagOrderController::class)->name('reorder');
+    Route::post('/reorder', TagOrderController::class)->name('reorder');
 });
 
 // Transcodes
@@ -41,5 +41,7 @@ Route::prefix('/transcodes')->name('transcodes.')->group(function () {
 // Videos
 Route::prefix('/videos')->name('videos.')->group(function () {
     Route::post('/import', VideoImportController::class)->name('import');
+    Route::post('/{video}/like', VideoLikeController::class)->name('like');
+    Route::post('/{video}/save', VideoSaveController::class)->name('save');
     Route::post('/{video}/transcode', VideoTranscodeController::class)->name('transcode');
 });
