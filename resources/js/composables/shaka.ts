@@ -1,4 +1,5 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
+import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import { configureOverlay } from '@/plugins/shaka'
 import { playerSetting } from '@/plugins/shaka/settings'
 import type { PlayerSettings, Playlist } from '@/types'
@@ -174,6 +175,12 @@ export function useShaka(
     }
   }, 900)
 
+  const onVolumeChange = () => {
+    if (el.value) {
+      http.patch(UserSettingsController.url(), { player: { muted: el.value.muted } })
+    }
+  }
+
   const destroy = async () => {
     try {
       // Pause video to stop playback and clean MediaSource state
@@ -200,6 +207,7 @@ export function useShaka(
 
   useEventListener(player, 'error', onErrorEvent)
   useEventListener(el, 'timeupdate', onTimeUpdate)
+  useEventListener(el, 'volumechange', onVolumeChange)
 
   whenever(el, () => initialize(), { immediate: true })
   watchDeep(playlist, () => load())
