@@ -1,6 +1,7 @@
+import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import type { UserSettings } from '@/types'
-import type { RequestPayload } from '@inertiajs/core'
-import { router, usePage } from '@inertiajs/vue3'
+import { http } from '@/utils/http'
+import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useSettings<N extends keyof UserSettings>(namespace: N) {
@@ -18,8 +19,7 @@ export function useSettings<N extends keyof UserSettings>(namespace: N) {
   }
 
   function update(data: Partial<S>): void {
-    const payload = { [namespace]: data } as RequestPayload
-    router.patch('/api/v1/settings', payload, { preserveScroll: true })
+    http.patch(UserSettingsController.url(), { [namespace]: data })
   }
 
   return { settings, get, only, update }

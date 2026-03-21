@@ -13,13 +13,13 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class UserSettingsController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
         return [
+            new Middleware('auth:sanctum'),
             new Middleware('precognitive'),
         ];
     }
@@ -37,15 +37,6 @@ class UserSettingsController extends Controller implements HasMiddleware
 
         // Update the user's settings with the provided values
         (new UpdateUserSettings)->handle($request->user(), $update);
-
-        if ($request->inertia()) {
-            Inertia::flash([
-                'title' => __('Settings updated'),
-                'description' => __('Your settings have been successfully updated.'),
-            ]);
-
-            return back();
-        }
 
         return response()->noContent();
     }
