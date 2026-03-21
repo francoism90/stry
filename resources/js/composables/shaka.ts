@@ -4,7 +4,7 @@ import { playerSetting } from '@/plugins/shaka/settings'
 import type { PlayerSettings, Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
-import { useEventListener, useThrottleFn, watchDeep, watchImmediate } from '@vueuse/core'
+import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
 import shaka from 'shaka-player/dist/shaka-player.ui'
 import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
 
@@ -184,8 +184,8 @@ export function useShaka(
 
       // Destroy Shaka player instance
       await player.value?.destroy()
-    } catch (error) {
-      console.error('Error destroying Shaka player:', error)
+    } catch (err) {
+      console.error('Error destroying Shaka player:', err)
     }
 
     // Reset state
@@ -201,7 +201,7 @@ export function useShaka(
   useEventListener(player, 'error', onErrorEvent)
   useEventListener(el, 'timeupdate', onTimeUpdate)
 
-  watchImmediate(el, () => initialize())
+  whenever(el, () => initialize(), { immediate: true })
   watchDeep(playlist, () => load())
 
   return {
