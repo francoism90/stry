@@ -11,9 +11,6 @@ use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithSubscription;
-use Domain\Users\DataObjects\AppearanceSettings;
-use Domain\Users\DataObjects\GeneralSettings;
-use Domain\Users\DataObjects\PlayerSettings;
 use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
@@ -245,24 +242,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
-    protected function generalSettings(): Attribute
+    protected function preferences(): Attribute
     {
         return Attribute::make(
-            get: fn (): GeneralSettings => GeneralSettings::from($this->settings?->general?->toArray() ?? []),
-        )->shouldCache();
-    }
-
-    protected function appearanceSettings(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): AppearanceSettings => AppearanceSettings::from($this->settings?->appearance?->toArray() ?? []),
-        )->shouldCache();
-    }
-
-    protected function playerSettings(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): PlayerSettings => PlayerSettings::from($this->settings?->player?->toArray() ?? []),
+            get: fn (): array => UserSettings::fromModel($this)->only('general', 'appearance')->toArray(),
         )->shouldCache();
     }
 }

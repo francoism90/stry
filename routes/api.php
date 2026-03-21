@@ -21,8 +21,8 @@ Route::name('api.')->prefix('v1')->group(function () {
     Route::get('/', HomeController::class)->name('home');
 
     // Groups
-    Route::post('/groups/{type}/clear', GroupClearController::class)->name('groups.clear');
-    Route::post('/groups/{type}/{video}', GroupToggleController::class)->name('groups.toggle');
+    Route::post('/groups/{group}/clear', GroupClearController::class)->name('groups.clear');
+    Route::post('/groups/{group}/{video}', GroupToggleController::class)->name('groups.toggle');
 
     // Tags
     Route::apiResource('tags', TagController::class)->only('index');

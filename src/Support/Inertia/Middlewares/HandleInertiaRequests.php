@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Web\Users\Responses\AppearanceSettingsProperty;
-use App\Web\Users\Responses\GeneralSettingsProperty;
 use App\Web\Users\Responses\UserResourceProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -25,9 +23,7 @@ class HandleInertiaRequests extends Middleware
             'app' => Inertia::once(fn (): string => Config::string('app.name', 'Laravel')),
             'nonce' => Inertia::once(fn (): string => app('csp-nonce')),
             'locale' => Inertia::once(fn (): string => $request->getLocale()),
-            'auth' => Inertia::once(fn (): ?UserResourceProperty => new UserResourceProperty($request->user(), ['name', 'email', 'avatar'])),
-            'general' => Inertia::once(fn (): GeneralSettingsProperty => new GeneralSettingsProperty($request->user())),
-            'appearance' => Inertia::once(fn (): AppearanceSettingsProperty => new AppearanceSettingsProperty($request->user())),
+            'auth' => Inertia::once(fn (): ?UserResourceProperty => new UserResourceProperty($request->user(), ['name', 'email', 'avatar', 'preferences'])),
         ]);
     }
 

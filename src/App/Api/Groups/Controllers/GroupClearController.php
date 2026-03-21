@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Groups\Controllers;
 
-use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Models\Group;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,17 +24,8 @@ class GroupClearController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(GroupType $type, Request $request): RedirectResponse|Response
+    public function __invoke(Group $group, Request $request): RedirectResponse|Response
     {
-        abort_if(
-            in_array($type, [GroupType::Custom, GroupType::Mixer]),
-            422,
-            'The group type is not supported for this action.'
-        );
-
-        // Find or create the group for the authenticated user
-        $group = $request->user()->findOrCreateGroup($type);
-
         // Authorize the user to update the group
         Gate::authorize('update', $group);
 
@@ -44,7 +35,7 @@ class GroupClearController extends Controller implements HasMiddleware
         if ($request->inertia()) {
             // Notify the user
             Inertia::flash([
-                'title' => $type->label(),
+                'title' => $group->title,
                 'description' => __('All videos will be detached shortly.'),
             ]);
 
