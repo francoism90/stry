@@ -1,7 +1,6 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
-import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import { configureOverlay } from '@/plugins/shaka'
-import { playerSetting } from '@/plugins/shaka/settings'
+import { playerSetting, updatePlayerSettings } from '@/plugins/shaka/settings'
 import type { PlayerSettings, Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
@@ -178,7 +177,7 @@ export function useShaka(
 
   const onVolumeChange = () => {
     if (el.value) {
-      http.patch(UserSettingsController.url(), { player: { muted: el.value.muted, volume: el.value.volume } })
+      updatePlayerSettings({ muted: el.value.muted, volume: el.value.volume })
     }
   }
 
