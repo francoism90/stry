@@ -11,6 +11,7 @@ class PlayerSettings extends Data
     public function __construct(
         public bool $autoplay = true,
         public bool $muted = false,
+        public float $volume = 1.0,
         public bool $loop = false,
         public bool $captions = true,
         public string $quality = 'auto',

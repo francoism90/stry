@@ -3,6 +3,7 @@ import type { PlayerSettings } from '@/types'
 export const defaults: PlayerSettings = {
   autoplay: true,
   muted: false,
+  volume: 1,
   loop: false,
   captions: true,
   quality: 'auto',

@@ -62,6 +62,7 @@ export function useShaka(
 
     // Restore saved mute state and playback speed
     el.value.muted = playerSetting(settings.value, 'muted')
+    el.value.volume = playerSetting(settings.value, 'volume')
     el.value.playbackRate = playerSetting(settings.value, 'playback_speed')
 
     // Load the manifest and start playback
@@ -177,7 +178,7 @@ export function useShaka(
 
   const onVolumeChange = () => {
     if (el.value) {
-      http.patch(UserSettingsController.url(), { player: { muted: el.value.muted } })
+      http.patch(UserSettingsController.url(), { player: { muted: el.value.muted, volume: el.value.volume } })
     }
   }
 

@@ -53,6 +53,7 @@ export type AppearanceSettings = {
 export type PlayerSettings = {
   autoplay: boolean
   muted: boolean
+  volume: number
   loop: boolean
   captions: boolean
   quality: string
