@@ -31,9 +31,19 @@ export type User = Model & {
   avatar?: AvatarProps['src'] | null
   roles?: string[] | null
   permissions?: string[] | null
-  preferences?: GeneralSettings & AppearanceSettings
+  preferences?: UserSettings
   videos_count?: number
   email_verified_at?: string | null
+}
+
+export type UserCollection = Omit<Paginator, 'data'> & {
+  data: User[] | undefined
+}
+
+export type UserSettings = {
+  general: GeneralSettings
+  appearance: AppearanceSettings
+  player: PlayerSettings
 }
 
 export type GeneralSettings = {
@@ -59,10 +69,6 @@ export type PlayerSettings = {
   playback_speed: number
   audio_language: string
   caption_language: string
-}
-
-export type UserCollection = Omit<Paginator, 'data'> & {
-  data: User[] | undefined
 }
 
 export type MediaStream = {

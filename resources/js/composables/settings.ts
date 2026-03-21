@@ -1,15 +1,10 @@
-import type { AppearanceSettings, GeneralSettings } from '@/types'
+import type { UserSettings } from '@/types'
 import type { RequestPayload } from '@inertiajs/core'
 import { router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
-type SettingsMap = {
-  general: GeneralSettings
-  appearance: AppearanceSettings
-}
-
-export function useSettings<N extends keyof SettingsMap>(namespace: N) {
-  type S = SettingsMap[N]
+export function useSettings<N extends keyof UserSettings>(namespace: N) {
+  type S = UserSettings[N]
 
   const settings = computed(() => usePage().props[namespace] as S | undefined)
 
