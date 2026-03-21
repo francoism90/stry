@@ -1,6 +1,7 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import { configureOverlay } from '@/plugins/shaka'
-import type { Playlist } from '@/types'
+import { playerSetting } from '@/plugins/shaka/settings'
+import type { PlayerSettings, Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useEventListener, useThrottleFn, watchDeep, watchImmediate } from '@vueuse/core'
@@ -48,13 +49,19 @@ export function useShaka(
     await player.value.attach(el.value)
 
     // Configure player preferences
+    const quality = playerSetting(settings.value, 'quality')
+
     player.value.configure({
-      preferredAudioLanguage: settings.value?.audio_languages ?? 'en',
-      preferredTextLanguage: settings.value?.caption_languages ?? 'en',
+      preferredAudioLanguage: playerSetting(settings.value, 'audio_languages'),
+      preferredTextLanguage: playerSetting(settings.value, 'caption_languages'),
+      abr: {
+        restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
+      },
     })
 
-    // Restore saved mute state
-    el.value.muted = settings.value?.muted ?? false
+    // Restore saved mute state and playback speed
+    el.value.muted = playerSetting(settings.value, 'muted')
+    el.value.playbackRate = playerSetting(settings.value, 'playback_speed')
 
     // Load the manifest and start playback
     await load()
@@ -128,7 +135,7 @@ export function useShaka(
         // Enable the first available subtitle track if captions are enabled
         const textTracks = player.value.getTextTracks()
 
-        if (settings.value?.captions && textTracks.length > 0) {
+        if (playerSetting(settings.value, 'captions') && textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
 
