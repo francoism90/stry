@@ -16,11 +16,16 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     public function update(User $user, array $input): void
     {
+        logger($input);
+
         $request = new UserUpdateRequest;
         $request->setRouteResolver(fn () => request()->route());
+        $request->merge(['user' => $user]);
 
         Validator::make($input, $request->rules())
             ->validateWithBag('updateProfileInformation');
+
+        logger('validation passed');
 
         DB::transaction(function () use ($user, $input) {
             if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
@@ -29,15 +34,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 return;
             }
 
+            logger($input);
+
             // Update user attributes
             $user->updateOrFail(
                 Arr::only($input, $user->getFillable()),
             );
-
-            // Sync settings if provided
-            if (array_key_exists('settings', $input)) {
-                app(UpdateUserSettings::class)->handle($user, $input['settings']);
-            }
         });
     }
 

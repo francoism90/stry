@@ -2,7 +2,7 @@
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { update } from '@/routes/user-profile-information'
-import type { AppearanceSettings, GeneralSettings, User } from '@/types'
+import type { User, UserSettings } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import { useForm } from 'laravel-precognition-vue-inertia'
@@ -14,8 +14,9 @@ const props = defineProps<{
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
 const form = useForm('put', update.url(), {
-  general: props.user.settings?.general as GeneralSettings,
-  appearance: props.user.settings?.appearance as AppearanceSettings,
+  name: props.user.name || '',
+  email: props.user.email || '',
+  settings: props.user.settings as UserSettings,
 })
 
 const onSubmit = () =>
@@ -48,30 +49,30 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
       >
         <template #body>
           <UFormField label="Timezone">
-            <UInput v-model="form.general.timezone" />
+            <UInput v-model="form.settings.general.timezone" />
           </UFormField>
 
           <USeparator />
 
           <UFormField label="Language">
-            <UInput v-model="form.general.language" />
+            <UInput v-model="form.settings.general.language" />
           </UFormField>
 
           <USeparator />
 
           <UFormField label="Locale">
-            <UInput v-model="form.general.locale" />
+            <UInput v-model="form.settings.general.locale" />
           </UFormField>
 
           <USeparator />
 
           <div class="grid grid-cols-2 gap-3">
             <UFormField label="Date format">
-              <UInput v-model="form.general.date_format" />
+              <UInput v-model="form.settings.general.date_format" />
             </UFormField>
 
             <UFormField label="Time format">
-              <UInput v-model="form.general.time_format" />
+              <UInput v-model="form.settings.general.time_format" />
             </UFormField>
           </div>
         </template>
@@ -89,7 +90,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
         <template #body>
           <UFormField label="Theme">
             <USelect
-              v-model="form.appearance.theme"
+              v-model="form.settings.appearance.theme"
               :options="[
                 { label: 'Dark', value: 'dark' },
                 { label: 'Light', value: 'light' },
@@ -102,7 +103,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 
           <UFormField label="Default view">
             <USelect
-              v-model="form.appearance.default_view"
+              v-model="form.settings.appearance.default_view"
               :options="[
                 { label: 'Vertical', value: 'vertical' },
                 { label: 'Horizontal', value: 'horizontal' },
@@ -111,17 +112,17 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
             />
           </UFormField>
         </template>
-
-        <template #footer>
-          <UButton
-            label="Save changes"
-            type="submit"
-            color="primary"
-            variant="soft"
-            loading-auto
-          />
-        </template>
       </UPageCard>
+
+      <div class="flex justify-end">
+        <UButton
+          label="Save changes"
+          type="submit"
+          color="primary"
+          variant="soft"
+          loading-auto
+        />
+      </div>
     </UForm>
   </UPageBody>
 </template>

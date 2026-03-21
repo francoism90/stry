@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAppearance } from '@/composables/appearance'
-import { Head } from '@inertiajs/vue3'
+import { useAuth } from '@/composables/auth'
+import { Head, router } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 
 const { nonce } = useAppearance()
+const { user } = useAuth()
+
+useEcho(`users.${user.value?.id}`, '.user.updated', () => router.reload({ only: ['auth'] }))
 </script>
 
 <template>
