@@ -27,6 +27,7 @@ class UserResource extends JsonResource
             'roles' => $this->whenLoaded('roles', $this->assigned_roles),
             'permissions' => $this->whenLoaded('permissions', $this->assigned_permissions),
             'general' => $this->whenAppended('general_settings', fn () => $this->general_settings->toArray()),
+            'appearance' => $this->whenAppended('appearance_settings', fn () => $this->appearance_settings->toArray()),
             'state' => $this->state->toArray(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
