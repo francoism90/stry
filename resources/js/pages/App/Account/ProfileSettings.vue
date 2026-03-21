@@ -3,9 +3,8 @@ import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSett
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { AppearanceSettings, GeneralSettings, User } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   user: User
@@ -15,13 +14,12 @@ const props = defineProps<{
 
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
-const generalForm = useForm('patch', UserSettingsController.url(), {
+const form = useForm({
   general: props.general,
-})
-
-const appearanceForm = useForm('patch', UserSettingsController.url(), {
   appearance: props.appearance,
 })
+
+const onSubmit = () => form.patch(UserSettingsController.url(), { preserveScroll: true })
 
 useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
   router.reload({ only: ['user', 'general', 'appearance'] }),
@@ -33,9 +31,9 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
 
   <UPageBody>
     <UForm
-      :state="generalForm.general"
-      class="flex flex-col py-3"
-      @submit="generalForm.submit({ preserveScroll: true })"
+      :state="form"
+      class="flex flex-col gap-6 py-3"
+      @submit="onSubmit"
     >
       <UPageCard
         title="General"
@@ -48,50 +46,35 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
       >
         <template #body>
           <UFormField label="Timezone">
-            <UInput v-model="generalForm.general.timezone" />
+            <UInput v-model="form.general.timezone" />
           </UFormField>
 
           <USeparator />
 
           <UFormField label="Language">
-            <UInput v-model="generalForm.general.language" />
+            <UInput v-model="form.general.language" />
           </UFormField>
 
           <USeparator />
 
           <UFormField label="Locale">
-            <UInput v-model="generalForm.general.locale" />
+            <UInput v-model="form.general.locale" />
           </UFormField>
 
           <USeparator />
 
           <div class="grid grid-cols-2 gap-3">
             <UFormField label="Date format">
-              <UInput v-model="generalForm.general.date_format" />
+              <UInput v-model="form.general.date_format" />
             </UFormField>
 
             <UFormField label="Time format">
-              <UInput v-model="generalForm.general.time_format" />
+              <UInput v-model="form.general.time_format" />
             </UFormField>
           </div>
         </template>
-
-        <template #footer>
-          <UButton
-            label="Save changes"
-            type="submit"
-            color="primary"
-            variant="soft"
-          />
-        </template>
       </UPageCard>
-    </UForm>
 
-    <UForm
-      :state="appearanceForm.appearance"
-      class="flex flex-col py-3"
-      @submit="appearanceForm.submit({ preserveScroll: true })"
-    >
       <UPageCard
         title="Appearance"
         description="Customise how the application looks and feels."
@@ -104,7 +87,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
         <template #body>
           <UFormField label="Theme">
             <USelect
-              v-model="appearanceForm.appearance.theme"
+              v-model="form.appearance.theme"
               :options="[
                 { label: 'Dark', value: 'dark' },
                 { label: 'Light', value: 'light' },
@@ -117,7 +100,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
 
           <UFormField label="Default view">
             <USelect
-              v-model="appearanceForm.appearance.default_view"
+              v-model="form.appearance.default_view"
               :options="[
                 { label: 'Vertical', value: 'vertical' },
                 { label: 'Horizontal', value: 'horizontal' },
@@ -133,6 +116,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
             type="submit"
             color="primary"
             variant="soft"
+            :loading="form.processing"
           />
         </template>
       </UPageCard>
