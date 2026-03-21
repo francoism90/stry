@@ -1,5 +1,5 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
-import { configureOverlay, useShakaStorage } from '@/plugins/shaka'
+import { configureOverlay } from '@/plugins/shaka'
 import type { Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
@@ -12,6 +12,7 @@ export function useShaka(
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
 ) {
   const playlist = computed(() => usePage().props.playlist as Playlist | null)
+  const settings = computed(() => usePage().props.player as PlayerSettings | null)
   const startTime = computed(() => usePage().props.progress as number | null)
   const el = computed(() => toValue(element))
 
@@ -20,7 +21,6 @@ export function useShaka(
   const error = ref<shaka.util.Error | null>(null)
   const ready = ref<boolean>(false)
   const ticker = ref<number>(startTime.value ?? 0)
-  const { muted } = useShakaStorage()
 
   const initialize = async () => {
     // If a player instance already exists, destroy it before re-initializing
@@ -49,12 +49,12 @@ export function useShaka(
 
     // Configure player preferences
     player.value.configure({
-      preferredAudioLanguage: 'en',
-      preferredTextLanguage: 'en',
+      preferredAudioLanguage: settings.value?.audio_languages ?? 'en',
+      preferredTextLanguage: settings.value?.caption_languages ?? 'en',
     })
 
     // Restore saved mute state
-    el.value.muted = muted.value
+    el.value.muted = settings.value?.muted ?? false
 
     // Load the manifest and start playback
     await load()
@@ -125,10 +125,10 @@ export function useShaka(
         // Load the manifest with optional resume time
         await player.value.load(manifestUri, startTime.value)
 
-        // Enable the first available subtitle track by default (if any)
+        // Enable the first available subtitle track if captions are enabled
         const textTracks = player.value.getTextTracks()
 
-        if (textTracks.length > 0) {
+        if (settings.value?.captions && textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
 
@@ -193,9 +193,6 @@ export function useShaka(
 
   useEventListener(player, 'error', onErrorEvent)
   useEventListener(el, 'timeupdate', onTimeUpdate)
-  useEventListener(el, 'volumechange', (event: Event) => {
-    muted.value = (event.target as HTMLMediaElement).muted
-  })
 
   watchImmediate(el, () => initialize())
   watchDeep(playlist, () => load())

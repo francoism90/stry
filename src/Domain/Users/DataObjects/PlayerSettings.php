@@ -6,7 +6,7 @@ namespace Domain\Users\DataObjects;
 
 use Spatie\LaravelData\Data;
 
-class UserPlayerSettings extends Data
+class PlayerSettings extends Data
 {
     public function __construct(
         public bool $autoplay = true,
@@ -15,7 +15,7 @@ class UserPlayerSettings extends Data
         public bool $captions = true,
         public string $quality = 'auto',
         public float $playback_speed = 1.0,
-        public array $audio_languages = ['en'],
-        public array $caption_languages = ['en'],
+        public string $audio_languages = 'en',
+        public string $caption_languages = 'en',
     ) {}
 }

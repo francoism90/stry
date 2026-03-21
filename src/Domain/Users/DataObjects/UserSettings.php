@@ -11,9 +11,9 @@ use Spatie\LaravelData\Lazy;
 class UserSettings extends Data
 {
     public function __construct(
-        public Lazy|UserGeneralSettings|null $general = null,
-        public Lazy|UserAppearanceSettings|null $appearance = null,
-        public Lazy|UserPlayerSettings|null $player = null,
+        public Lazy|GeneralSettings|null $general = null,
+        public Lazy|AppearanceSettings|null $appearance = null,
+        public Lazy|PlayerSettings|null $player = null,
     ) {}
 
     public static function fromModel(User $user): self
@@ -22,9 +22,9 @@ class UserSettings extends Data
         $settings = $user->settings;
 
         return new self(
-            Lazy::create(fn () => UserGeneralSettings::from($settings->general?->toArray())),
-            Lazy::create(fn () => UserAppearanceSettings::from($settings->appearance?->toArray())),
-            Lazy::create(fn () => UserPlayerSettings::from($settings->player?->toArray())),
+            Lazy::create(fn () => GeneralSettings::from($settings->general?->toArray())),
+            Lazy::create(fn () => AppearanceSettings::from($settings->appearance?->toArray())),
+            Lazy::create(fn () => PlayerSettings::from($settings->player?->toArray())),
         );
     }
 }

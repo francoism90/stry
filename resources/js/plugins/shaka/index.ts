@@ -33,5 +33,4 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
   })
 }
 
-export { useShakaStorage } from './storage'
 export { SeekBack, SeekForward }

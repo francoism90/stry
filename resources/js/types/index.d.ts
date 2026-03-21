@@ -31,6 +31,31 @@ export type User = Model & {
   avatar?: AvatarProps['src'] | null
   roles?: string[]
   permissions?: string[]
+  general?: GeneralSettings
+}
+
+export type GeneralSettings = {
+  timezone: string
+  locale: string
+  language: string
+  date_format: string
+  time_format: string
+}
+
+export type AppearanceSettings = {
+  theme: string
+  default_view: string
+}
+
+export type PlayerSettings = {
+  autoplay: boolean
+  muted: boolean
+  loop: boolean
+  captions: boolean
+  quality: string
+  playback_speed: number
+  audio_languages: string
+  caption_languages: string
 }
 
 export type UserCollection = Omit<Paginator, 'data'> & {

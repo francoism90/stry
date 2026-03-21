@@ -6,7 +6,7 @@ namespace Domain\Users\DataObjects;
 
 use Spatie\LaravelData\Data;
 
-class UserGeneralSettings extends Data
+class GeneralSettings extends Data
 {
     public function __construct(
         public string $timezone = 'UTC',

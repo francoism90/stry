@@ -11,6 +11,7 @@ use App\Api\Playlists\Controllers\PlaylistSessionController;
 use App\Api\Tags\Controllers\TagController;
 use App\Api\Tags\Controllers\TagOrderController;
 use App\Api\Transcodes\Controllers\TranscodeImportController;
+use App\Api\Users\Controllers\UserSettingsController;
 use App\Api\Videos\Controllers\VideoImportController;
 use App\Api\Videos\Controllers\VideoTranscodeController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,9 @@ Route::name('api.')->prefix('v1')->group(function () {
 
     // Notifications
     Route::post('/notifications/mark-all-read', MarkAllNotificationsReadController::class)->name('notifications.mark-all-read');
+
+    // Settings
+    Route::patch('/settings', UserSettingsController::class)->name('settings.update');
 
     // VOD - Playlists
     Route::get('/play/{playlist}/{path}', PlaylistManifestController::class)

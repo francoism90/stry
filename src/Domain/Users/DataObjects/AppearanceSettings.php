@@ -6,7 +6,7 @@ namespace Domain\Users\DataObjects;
 
 use Spatie\LaravelData\Data;
 
-class UserAppearanceSettings extends Data
+class AppearanceSettings extends Data
 {
     public function __construct(
         public string $theme = 'dark',
