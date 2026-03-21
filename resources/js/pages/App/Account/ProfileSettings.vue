@@ -1,35 +1,31 @@
 <script setup lang="ts">
-import { useSettings } from '@/composables/settings'
+import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import type { User } from '@/types'
+import type { AppearanceSettings, GeneralSettings, User } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { reactive } from 'vue'
+import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   user: User
+  general: GeneralSettings
+  appearance: AppearanceSettings
 }>()
 
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
-const { settings: general, update: updateGeneral } = useSettings('general')
-const { settings: appearance, update: updateAppearance } = useSettings('appearance')
-
-const generalForm = reactive({
-  timezone: general.value?.timezone,
-  locale: general.value?.locale,
-  language: general.value?.language,
-  date_format: general.value?.date_format,
-  time_format: general.value?.time_format,
+const generalForm = useForm('patch', UserSettingsController.url(), {
+  general: props.general,
 })
 
-const appearanceForm = reactive({
-  theme: appearance.value?.theme,
-  default_view: appearance.value?.default_view,
+const appearanceForm = useForm('patch', UserSettingsController.url(), {
+  appearance: props.appearance,
 })
 
-useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ only: ['user', 'settings'] }))
+useEcho<User>(`users.${props.user.id}`, '.user.updated', () =>
+  router.reload({ only: ['user', 'general', 'appearance'] }),
+)
 </script>
 
 <template>
@@ -37,9 +33,9 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 
   <UPageBody>
     <UForm
-      :state="generalForm"
+      :state="generalForm.general"
       class="flex flex-col py-3"
-      @submit="updateGeneral(generalForm)"
+      @submit="generalForm.submit({ preserveScroll: true })"
     >
       <UPageCard
         title="General"
@@ -52,30 +48,30 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
       >
         <template #body>
           <UFormField label="Timezone">
-            <UInput v-model="generalForm.timezone" />
+            <UInput v-model="generalForm.general.timezone" />
           </UFormField>
 
           <USeparator />
 
           <UFormField label="Language">
-            <UInput v-model="generalForm.language" />
+            <UInput v-model="generalForm.general.language" />
           </UFormField>
 
           <USeparator />
 
           <UFormField label="Locale">
-            <UInput v-model="generalForm.locale" />
+            <UInput v-model="generalForm.general.locale" />
           </UFormField>
 
           <USeparator />
 
           <div class="grid grid-cols-2 gap-3">
             <UFormField label="Date format">
-              <UInput v-model="generalForm.date_format" />
+              <UInput v-model="generalForm.general.date_format" />
             </UFormField>
 
             <UFormField label="Time format">
-              <UInput v-model="generalForm.time_format" />
+              <UInput v-model="generalForm.general.time_format" />
             </UFormField>
           </div>
         </template>
@@ -92,9 +88,9 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
     </UForm>
 
     <UForm
-      :state="appearanceForm"
+      :state="appearanceForm.appearance"
       class="flex flex-col py-3"
-      @submit="updateAppearance(appearanceForm)"
+      @submit="appearanceForm.submit({ preserveScroll: true })"
     >
       <UPageCard
         title="Appearance"
@@ -108,7 +104,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
         <template #body>
           <UFormField label="Theme">
             <USelect
-              v-model="appearanceForm.theme"
+              v-model="appearanceForm.appearance.theme"
               :options="[
                 { label: 'Dark', value: 'dark' },
                 { label: 'Light', value: 'light' },
@@ -121,7 +117,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 
           <UFormField label="Default view">
             <USelect
-              v-model="appearanceForm.default_view"
+              v-model="appearanceForm.appearance.default_view"
               :options="[
                 { label: 'Vertical', value: 'vertical' },
                 { label: 'Horizontal', value: 'horizontal' },
