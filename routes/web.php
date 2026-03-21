@@ -38,9 +38,9 @@ Route::resource('transcodes', TranscodeController::class)->only(['index', 'destr
 
 // Videos
 Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class)->scoped();
-Route::resource('videos.playlists', VideoPlaylistController::class)->scoped();
-Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped();
+Route::resource('videos.media', VideoMediaController::class)->scoped()->only(['index']);
+Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['index', 'update', 'destroy']);
+Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
 
 // Search
 Route::prefix('search')->name('search.')->group(function () {

@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistIndexRequest;
-use App\Api\Playlists\Requests\PlaylistStoreRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
-use App\Web\Playlists\Responses\PlaylistResourceProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
-use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -42,43 +39,6 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         return Inertia::render('App/Videos/Playlists/PlaylistIndex', [
             'video' => fn () => new VideoResourceProperty($video, ['filesize']),
             'items' => Inertia::scroll(fn () => PlaylistResource::collection($playlists)),
-        ]);
-    }
-
-    public function create(Video $video): Response
-    {
-        Gate::authorize('create', Playlist::class);
-
-        return Inertia::render('App/Videos/Playlists/PlaylistCreate', [
-            'video' => fn () => new VideoResourceProperty($video),
-            'types' => fn () => PlaylistType::options(),
-        ]);
-    }
-
-    public function store(PlaylistStoreRequest $request, Video $video): RedirectResponse
-    {
-        Gate::authorize('create', Playlist::class);
-
-        // Create a new playlist for the video
-        $type = PlaylistType::from($request->safe()->string('type')->value());
-        $playlist = $video->createPlaylist(['type' => $type]);
-
-        // Notify the user
-        Inertia::flash([
-            'title' => (string) $playlist->getRouteKey(),
-            'description' => __('The playlist has been created.'),
-        ]);
-
-        return to_route('videos.playlists.index', $video);
-    }
-
-    public function edit(Video $video, Playlist $playlist): Response
-    {
-        Gate::authorize('update', $playlist);
-
-        return Inertia::render('App/Videos/Playlists/PlaylistEdit', [
-            'video' => fn () => new VideoResourceProperty($video),
-            'playlist' => fn () => new PlaylistResourceProperty($playlist),
         ]);
     }
 

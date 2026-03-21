@@ -33,7 +33,6 @@ it('allows resubmitting the same email without failing unique validation', funct
 
     $action = new UpdateUserProfileInformation;
 
-    // Should not throw a ValidationException for duplicate email
     $action->update($user, [
         'name' => 'Same User Updated',
         'email' => 'same@example.com',
@@ -66,4 +65,25 @@ it('fails validation when name is missing', function (): void {
     expect(fn () => $action->update($user, [
         'email' => 'test@example.com',
     ]))->toThrow(ValidationException::class);
+});
+
+it('flashes a success notification after updating profile via HTTP', function (): void {
+    $user = User::factory()->create([
+        'name' => 'Old Name',
+        'email' => 'old@example.com',
+    ]);
+
+    $response = $this
+        ->actingAs($user)
+        ->put(route('user-profile-information.update'), [
+            'name' => 'New Name',
+            'email' => 'old@example.com',
+        ]);
+
+    $response->assertRedirect();
+
+    $flashData = session('inertia.flash_data');
+
+    expect($flashData)->not->toBeNull()
+        ->and($flashData['title'])->toBe('Profile updated');
 });

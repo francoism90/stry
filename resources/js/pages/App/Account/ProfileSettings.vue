@@ -36,78 +36,138 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
       @submit="onSubmit"
     >
       <UPageCard
-        title="General"
-        description="Set your timezone, language, and date preferences."
+        title="Profile Settings"
+        description="Manage your general preferences and appearance."
         variant="subtle"
         orientation="vertical"
         :ui="{
-          body: 'flex w-full flex-col gap-3',
+          body: 'flex w-full flex-col gap-6',
         }"
       >
         <template #body>
-          <UFormField label="Timezone">
-            <UInput v-model="form.general.timezone" />
-          </UFormField>
+          <div class="flex flex-col gap-1">
+            <p class="text-highlighted text-sm font-semibold">General</p>
+            <p class="text-muted text-sm">Set your timezone, language, and date preferences.</p>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-3 gap-4">
+              <UFormField
+                label="Timezone"
+                name="general.timezone"
+              >
+                <USelect
+                  v-model="form.general.timezone"
+                  class="w-full"
+                  :items="[
+                    { label: 'UTC', value: 'UTC' },
+                    { label: 'Europe/Amsterdam', value: 'Europe/Amsterdam' },
+                  ]"
+                />
+              </UFormField>
+
+              <UFormField
+                label="Language"
+                name="general.language"
+              >
+                <USelect
+                  v-model="form.general.language"
+                  class="w-full"
+                  :items="[{ label: 'English', value: 'en' }]"
+                />
+              </UFormField>
+
+              <UFormField
+                label="Locale"
+                name="general.locale"
+              >
+                <USelect
+                  v-model="form.general.locale"
+                  class="w-full"
+                  :items="[
+                    { label: 'English (US)', value: 'en-US' },
+                    { label: 'Dutch (Netherlands)', value: 'nl-NL' },
+                  ]"
+                />
+              </UFormField>
+            </div>
+
+            <USeparator />
+
+            <div class="grid grid-cols-2 gap-4">
+              <UFormField
+                label="Date format"
+                name="general.date_format"
+              >
+                <USelect
+                  v-model="form.general.date_format"
+                  class="w-full"
+                  :items="[
+                    { label: 'YYYY-MM-DD', value: 'YYYY-MM-DD' },
+                    { label: 'MM/DD/YYYY', value: 'MM/DD/YYYY' },
+                    { label: 'DD/MM/YYYY', value: 'DD/MM/YYYY' },
+                    { label: 'DD.MM.YYYY', value: 'DD.MM.YYYY' },
+                    { label: 'MMM D, YYYY', value: 'MMM D, YYYY' },
+                  ]"
+                />
+              </UFormField>
+
+              <UFormField
+                label="Time format"
+                name="general.time_format"
+              >
+                <USelect
+                  v-model="form.general.time_format"
+                  class="w-full"
+                  :items="[
+                    { label: '24-hour (HH:mm)', value: 'HH:mm' },
+                    { label: '12-hour (h:mm A)', value: 'h:mm A' },
+                    { label: '24-hour with seconds', value: 'HH:mm:ss' },
+                    { label: '12-hour with seconds', value: 'h:mm:ss A' },
+                  ]"
+                />
+              </UFormField>
+            </div>
+          </div>
 
           <USeparator />
 
-          <UFormField label="Language">
-            <UInput v-model="form.general.language" />
-          </UFormField>
+          <div class="flex flex-col gap-1">
+            <p class="text-highlighted text-sm font-semibold">Appearance</p>
+            <p class="text-muted text-sm">Customise how the application looks and feels.</p>
+          </div>
 
-          <USeparator />
-
-          <UFormField label="Locale">
-            <UInput v-model="form.general.locale" />
-          </UFormField>
-
-          <USeparator />
-
-          <div class="grid grid-cols-2 gap-3">
-            <UFormField label="Date format">
-              <UInput v-model="form.general.date_format" />
+          <div class="grid grid-cols-2 gap-4">
+            <UFormField
+              label="Theme"
+              name="appearance.theme"
+            >
+              <USelect
+                v-model="form.appearance.theme"
+                class="w-full"
+                :items="[
+                  { label: 'Dark', value: 'dark' },
+                  { label: 'Light', value: 'light' },
+                  { label: 'System', value: 'system' },
+                ]"
+              />
             </UFormField>
 
-            <UFormField label="Time format">
-              <UInput v-model="form.general.time_format" />
+            <UFormField
+              label="Default view"
+              name="appearance.default_view"
+            >
+              <USelect
+                v-model="form.appearance.default_view"
+                class="w-full"
+                :items="[
+                  { label: 'Vertical', value: 'vertical' },
+                  { label: 'Horizontal', value: 'horizontal' },
+                  { label: 'Grid', value: 'grid' },
+                ]"
+              />
             </UFormField>
           </div>
-        </template>
-      </UPageCard>
-
-      <UPageCard
-        title="Appearance"
-        description="Customise how the application looks and feels."
-        variant="subtle"
-        orientation="vertical"
-        :ui="{
-          body: 'flex w-full flex-col gap-3',
-        }"
-      >
-        <template #body>
-          <UFormField label="Theme">
-            <USelect
-              v-model="form.appearance.theme"
-              :options="[
-                { label: 'Dark', value: 'dark' },
-                { label: 'Light', value: 'light' },
-                { label: 'System', value: 'system' },
-              ]"
-            />
-          </UFormField>
-
-          <USeparator />
-
-          <UFormField label="Default view">
-            <USelect
-              v-model="form.appearance.default_view"
-              :options="[
-                { label: 'Vertical', value: 'vertical' },
-                { label: 'Horizontal', value: 'horizontal' },
-                { label: 'Grid', value: 'grid' },
-              ]"
-            />
-          </UFormField>
         </template>
       </UPageCard>
 

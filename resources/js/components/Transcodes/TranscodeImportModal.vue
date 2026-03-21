@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import TranscodeImportController from '@/actions/App/Api/Transcodes/Controllers/TranscodeImportController'
-import type { Transcode } from '@/types'
-import { router } from '@inertiajs/vue3'
+import VideoTranscodedController from '@/actions/App/Api/Videos/Controllers/VideoTranscodedController';
+import type { Video } from '@/types';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps<{
-  item: Transcode
+  video: Video
 }>()
 
 const handle = async (close: () => void) =>
   router.post(
-    TranscodeImportController.url(props.item.id),
+    VideoTranscodedController.url(props.video.id),
     {},
     {
       preserveScroll: true,
@@ -20,22 +20,23 @@ const handle = async (close: () => void) =>
 
 <template>
   <UModal
-    :title="item.id"
+    title="Import transcodes"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>
       <UButton
         icon="i-lucide-import"
+        label="Import all"
         color="neutral"
-        variant="ghost"
+        variant="outline"
         size="sm"
       />
     </slot>
 
     <template #body>
       <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to import this transcode?</h3>
-        <p class="text-sm text-neutral-500">This action will import the transcode into the parent model.</p>
+        <h3>Are you sure you want to import all completed transcodes?</h3>
+        <p class="text-sm text-neutral-500">All completed transcodes will be imported into the video.</p>
       </div>
     </template>
 
@@ -48,9 +49,9 @@ const handle = async (close: () => void) =>
       />
 
       <UButton
-        label="Import transcode"
+        label="Import all"
         variant="soft"
-        color="error"
+        color="primary"
         loading-auto
         @click.prevent="handle(close)"
       />
