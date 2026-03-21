@@ -27,8 +27,7 @@ class GroupClearController extends Controller implements HasMiddleware
     public function __invoke(GroupType $type, Request $request): RedirectResponse|Response
     {
         abort_if(
-            in_array($type,
-                [GroupType::Custom, GroupType::Mixer]),
+            in_array($type, [GroupType::Custom, GroupType::Mixer]),
             422,
             'The group type is not supported for this action.'
         );
