@@ -7,9 +7,9 @@ namespace App\Api\Groups\Controllers;
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +25,7 @@ class GroupToggleController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(GroupType $type, Video $video, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(GroupType $type, Video $video, Request $request): RedirectResponse|Response
     {
         Gate::authorize('view', $video);
 
@@ -53,6 +53,6 @@ class GroupToggleController extends Controller implements HasMiddleware
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

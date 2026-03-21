@@ -6,9 +6,9 @@ namespace App\Api\Groups\Controllers;
 
 use Domain\Groups\Enums\GroupType;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -24,7 +24,7 @@ class GroupClearController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(GroupType $type, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(GroupType $type, Request $request): RedirectResponse|Response
     {
         abort_if(
             in_array($type,
@@ -52,6 +52,6 @@ class GroupClearController extends Controller implements HasMiddleware
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

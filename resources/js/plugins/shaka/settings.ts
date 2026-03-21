@@ -1,6 +1,6 @@
 import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import type { PlayerSettings } from '@/types'
-import { router } from '@inertiajs/vue3'
+import { http } from '@/utils/http'
 
 export const defaults: PlayerSettings = {
   autoplay: true,
@@ -22,5 +22,5 @@ export function playerSetting<K extends keyof PlayerSettings>(
 }
 
 export function updatePlayerSettings(settings: Partial<PlayerSettings>): void {
-  router.patch(UserSettingsController.url(), { player: settings }, { preserveScroll: true })
+  http.patch(UserSettingsController.url(), { player: settings })
 }

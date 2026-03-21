@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Api\Notifications\Controllers;
 
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -23,7 +23,7 @@ class MarkAllNotificationsReadController extends Controller implements HasMiddle
         ];
     }
 
-    public function __invoke(Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Request $request): RedirectResponse|Response
     {
         Gate::authorize('update', $request->user());
 
@@ -39,6 +39,6 @@ class MarkAllNotificationsReadController extends Controller implements HasMiddle
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

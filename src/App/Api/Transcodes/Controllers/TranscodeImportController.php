@@ -7,9 +7,9 @@ namespace App\Api\Transcodes\Controllers;
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +25,7 @@ class TranscodeImportController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Transcode $transcode, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Transcode $transcode, Request $request): RedirectResponse|Response
     {
         Gate::authorize('update', $transcode);
 
@@ -42,6 +42,6 @@ class TranscodeImportController extends Controller implements HasMiddleware
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

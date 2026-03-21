@@ -7,9 +7,9 @@ namespace App\Api\Tags\Controllers;
 use Domain\Tags\Actions\SetTagsOrder;
 use Domain\Tags\Models\Tag;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +25,7 @@ class TagOrderController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Request $request): RedirectResponse|Response
     {
         Gate::authorize('create', Tag::class);
 
@@ -42,6 +42,6 @@ class TagOrderController extends Controller implements HasMiddleware
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

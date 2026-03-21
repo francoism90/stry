@@ -7,9 +7,9 @@ namespace App\Api\Videos\Controllers;
 use Domain\Videos\Actions\ProcessVideoImport;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +25,7 @@ class VideoImportController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Request $request): RedirectResponse|Response
     {
         Gate::authorize('create', Video::class);
 
@@ -45,6 +45,6 @@ class VideoImportController extends Controller implements HasMiddleware
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

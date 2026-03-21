@@ -7,15 +7,15 @@ namespace App\Api\Users\Controllers;
 use Domain\Users\Actions\UpdateUserSettings;
 use Domain\Users\DataObjects\UserSettings;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class UserSettingsController extends Controller
 {
-    public function __invoke(Request $request, UserSettings $settings): RedirectResponse|JsonResponse
+    public function __invoke(Request $request, UserSettings $settings): RedirectResponse|Response
     {
         Gate::authorize('update', $request->user());
 
@@ -38,6 +38,6 @@ class UserSettingsController extends Controller
             return back();
         }
 
-        return response()->json();
+        return response()->noContent();
     }
 }

@@ -1,8 +1,7 @@
-import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
 import { configureOverlay } from '@/plugins/shaka'
+import { updatePlaylistSession } from '@/plugins/shaka/session'
 import { playerSetting, updatePlayerSettings } from '@/plugins/shaka/settings'
 import type { PlayerSettings, Playlist } from '@/types'
-import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
 import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
 import shaka from 'shaka-player/dist/shaka-player.ui'
@@ -169,9 +168,8 @@ export function useShaka(
 
     // Only store if playlist valid, time > 0, and time has changed (> 0.25 seconds)
     if (playlist.value?.valid && time > 0 && Math.abs((ticker.value ?? 0) - time) > 0.25) {
-      http.post(PlaylistSessionController.url(playlist.value.id), { time }).then(() => {
-        ticker.value = time
-      })
+      updatePlaylistSession(playlist.value, time)
+      ticker.value = time
     }
   }, 900)
 
