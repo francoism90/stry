@@ -13,6 +13,7 @@ class UserSettings extends Data
     public function __construct(
         public Lazy|UserGeneralSettings|null $general = null,
         public Lazy|UserAppearanceSettings|null $appearance = null,
+        public Lazy|UserPlayerSettings|null $player = null,
     ) {}
 
     public static function fromModel(User $user): self
@@ -23,6 +24,7 @@ class UserSettings extends Data
         return new self(
             Lazy::create(fn () => UserGeneralSettings::from($settings->general?->toArray())),
             Lazy::create(fn () => UserAppearanceSettings::from($settings->appearance?->toArray())),
+            Lazy::create(fn () => UserPlayerSettings::from($settings->player?->toArray())),
         );
     }
 }

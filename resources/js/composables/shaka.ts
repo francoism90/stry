@@ -1,11 +1,11 @@
 import PlaylistSessionController from '@/actions/App/Api/Playlists/Controllers/PlaylistSessionController'
-import { configureOverlay } from '@/plugins/shaka'
+import { configureOverlay, useShakaStorage } from '@/plugins/shaka'
 import type { Playlist } from '@/types'
 import { http } from '@/utils/http'
 import { usePage } from '@inertiajs/vue3'
-import { useThrottleFn } from '@vueuse/core'
+import { useEventListener, useThrottleFn, watchDeep, watchImmediate } from '@vueuse/core'
 import shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
@@ -20,6 +20,7 @@ export function useShaka(
   const error = ref<shaka.util.Error | null>(null)
   const ready = ref<boolean>(false)
   const ticker = ref<number>(startTime.value ?? 0)
+  const { muted } = useShakaStorage()
 
   const initialize = async () => {
     // If a player instance already exists, destroy it before re-initializing
@@ -43,9 +44,6 @@ export function useShaka(
     // Configure UI: disable double-tap fullscreen, enable tap-to-seek, add seek buttons
     configureOverlay(ui.value)
 
-    // Add error event listener
-    player.value.addEventListener('error', onErrorEvent)
-
     // Attach player to video element
     await player.value.attach(el.value)
 
@@ -55,8 +53,8 @@ export function useShaka(
       preferredTextLanguage: 'en',
     })
 
-    // Add timeupdate listener
-    el.value.addEventListener('timeupdate', onTimeUpdate)
+    // Restore saved mute state
+    el.value.muted = muted.value
 
     // Load the manifest and start playback
     await load()
@@ -174,9 +172,6 @@ export function useShaka(
       // Pause video to stop playback and clean MediaSource state
       el.value?.pause()
 
-      // Remove timeupdate listener
-      el.value?.removeEventListener('timeupdate', onTimeUpdate)
-
       // Destroy UI overlay before the player
       await ui.value?.destroy()
 
@@ -196,8 +191,14 @@ export function useShaka(
   onBeforeMount(() => shaka.polyfill.installAll())
   onBeforeUnmount(() => destroy())
 
-  watch(el, () => initialize(), { immediate: true })
-  watch(playlist, () => load(), { deep: true })
+  useEventListener(player, 'error', onErrorEvent)
+  useEventListener(el, 'timeupdate', onTimeUpdate)
+  useEventListener(el, 'volumechange', (event: Event) => {
+    muted.value = (event.target as HTMLMediaElement).muted
+  })
+
+  watchImmediate(el, () => initialize())
+  watchDeep(playlist, () => load())
 
   return {
     player,
