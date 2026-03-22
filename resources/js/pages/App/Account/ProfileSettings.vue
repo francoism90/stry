@@ -176,16 +176,17 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
             </UFormField>
           </div>
         </template>
-      </UPageCard>
 
-      <div class="flex justify-end">
-        <UButton
-          label="Save changes"
-          type="submit"
-          color="primary"
-          variant="soft"
-        />
-      </div>
+        <template #footer>
+          <UButton
+            label="Save changes"
+            type="submit"
+            color="primary"
+            variant="soft"
+            loading-auto
+          />
+        </template>
+      </UPageCard>
     </UForm>
   </UPageBody>
 </template>
