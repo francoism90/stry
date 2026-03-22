@@ -88,7 +88,7 @@ class TagController extends Controller implements HasMiddleware
             'type' => 'success',
         ]);
 
-        return back();
+        return redirect()->route('tags.show', $tag);
     }
 
     public function edit(Tag $tag): Response
