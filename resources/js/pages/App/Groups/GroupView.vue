@@ -7,6 +7,7 @@ import type { Group, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
+import { computed } from 'vue'
 
 const props = defineProps<{
   group: Group
@@ -15,13 +16,15 @@ const props = defineProps<{
   order?: string
 }>()
 
-const links: NavigationMenuItem[] = [
+const links = computed<NavigationMenuItem[]>(() => [
   {
     label: 'Edit collection',
     icon: 'i-lucide-pencil',
     to: edit.url(props.group.id),
+    disabled: props.group.type !== 'custom',
+    class: props.group.type !== 'custom' ? 'hidden' : undefined,
   },
-]
+])
 
 useEcho<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
 useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))

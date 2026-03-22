@@ -1,5 +1,13 @@
 import type { AvatarProps, SelectMenuItem } from '@nuxt/ui'
 
+export type FlashType = 'success' | 'error' | 'warning' | 'info' | 'primary'
+
+export type FlashData = {
+  readonly title?: string
+  readonly description?: string
+  readonly type?: FlashType
+}
+
 export type Model = {
   id: string
   created_at: string
@@ -29,12 +37,46 @@ export type User = Model & {
   name: string
   email?: string
   avatar?: AvatarProps['src'] | null
-  roles?: string[]
-  permissions?: string[]
+  roles?: string[] | null
+  permissions?: string[] | null
+  settings?: UserSettings
+  videos_count?: number
+  email_verified_at?: string | null
 }
 
 export type UserCollection = Omit<Paginator, 'data'> & {
   data: User[] | undefined
+}
+
+export type UserSettings = {
+  general: GeneralSettings
+  appearance: AppearanceSettings
+  player: PlayerSettings
+}
+
+export type GeneralSettings = {
+  timezone: string
+  locale: string
+  language: string
+  date_format: string
+  time_format: string
+}
+
+export type AppearanceSettings = {
+  theme: string
+  default_view: string
+}
+
+export type PlayerSettings = {
+  autoplay: boolean
+  muted: boolean
+  volume: number
+  loop: boolean
+  captions: boolean
+  quality: string
+  playback_speed: number
+  audio_language: string
+  caption_language: string
 }
 
 export type MediaStream = {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { update } from '@/actions/Laravel/Fortify/Http/Controllers/ProfileInformationController'
+import { useAuth } from '@/composables/auth'
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { logout } from '@/routes'
+import { update } from '@/routes/user-profile-information'
 import type { User } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
@@ -12,6 +12,8 @@ const props = defineProps<{
 }>()
 
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
+
+const { logOut } = useAuth()
 
 const form = useForm('put', update.url(), {
   name: props.user.name || '',
@@ -22,9 +24,8 @@ const onSubmit = () =>
   form.submit({
     preserveState: true,
     replace: true,
+    only: ['auth', 'user'],
   })
-
-const onLogout = () => router.post(logout.url())
 </script>
 
 <template>
@@ -33,11 +34,13 @@ const onLogout = () => router.post(logout.url())
   <UPageBody>
     <UForm
       :state="form"
-      class="flex flex-col gap-4 py-3"
+      class="flex flex-col py-3"
       loading-auto
       @submit="onSubmit"
     >
       <UPageCard
+        title="Profile"
+        description="Update your name and email address."
         variant="subtle"
         orientation="vertical"
         :ui="{
@@ -95,7 +98,7 @@ const onLogout = () => router.post(logout.url())
           label="Logout"
           color="primary"
           variant="soft"
-          @click="onLogout"
+          @click="logOut"
         />
       </template>
     </UPageCard>

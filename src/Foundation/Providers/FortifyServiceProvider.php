@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use App\Web\Account\Responses\ProfileInformationUpdatedResponse;
 use Domain\Users\Actions\CreateNewUser;
 use Domain\Users\Actions\ResetUserPassword;
 use Domain\Users\Actions\UpdateUserPassword;
@@ -14,13 +15,20 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->app->singleton(ProfileInformationUpdatedResponseContract::class, ProfileInformationUpdatedResponse::class);
+    }
+
     public function boot(): void
     {
         $this->configureActions();
+        $this->configureRateLimits();
         $this->configureViews();
     }
 
@@ -31,6 +39,11 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
+        return $this;
+    }
+
+    protected function configureRateLimits(): static
+    {
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 

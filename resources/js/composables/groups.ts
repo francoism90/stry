@@ -1,10 +1,11 @@
-import GroupClearController from '@/actions/App/Api/Groups/Controllers/GroupClearController'
+import { clear } from '@/routes/actions/groups'
+import type { Group } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 export function useGroups() {
-  const clearGroup = async (type: string) =>
+  const clearGroup = async (group: Group) =>
     router.post(
-      GroupClearController.url({ type }),
+      clear.url(group.id),
       {},
       {
         preserveScroll: true,

@@ -58,6 +58,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'email',
         'email_verified_at',
         'password',
+        'settings',
         'state',
     ];
 
@@ -239,6 +240,13 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return Attribute::make(
             get: fn (): Collection => $this->getAllPermissions()->pluck('name'),
+        )->shouldCache();
+    }
+
+    protected function userSettings(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): array => UserSettings::fromModel($this)->include('*')->toArray(),
         )->shouldCache();
     }
 }

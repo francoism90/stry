@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAuth } from '@/composables/auth'
-import { useNotifications } from '@/composables/notifications'
 import { router } from '@inertiajs/vue3'
 import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
-useNotifications()
 const { user } = useAuth()
 
 const navItems: NavigationMenuItem[] = [

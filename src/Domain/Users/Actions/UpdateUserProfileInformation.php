@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace Domain\Users\Actions;
 
+use App\Api\Users\Requests\UserUpdateRequest;
 use Domain\Users\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+        $request = new UserUpdateRequest;
+        $request->setRouteResolver(fn () => request()->route());
+        $request->merge(['user' => $user]);
 
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ])->validateWithBag('updateProfileInformation');
+        Validator::make($input, $request->rules())
+            ->validateWithBag('updateProfileInformation');
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
-        } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
-        }
+        DB::transaction(function () use ($user, $input) {
+            if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
+                $this->updateVerifiedUser($user, $input);
+
+                return;
+            }
+
+            // Update user attributes
+            $user->updateOrFail(
+                Arr::only($input, $user->getFillable()),
+            );
+        });
     }
 
     protected function updateVerifiedUser(User $user, array $input): void
@@ -43,7 +43,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => $input['name'],
             'email' => $input['email'],
             'email_verified_at' => null,
-        ])->save();
+        ])->saveOrFail();
 
         $user->sendEmailVerificationNotification();
     }

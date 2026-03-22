@@ -7,9 +7,7 @@ namespace App\Api\Videos\Controllers;
 use Domain\Videos\Jobs\TranscodeVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -20,31 +18,26 @@ class VideoTranscodeController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum'),
+            new Middleware('verified'),
             new Middleware('role:super-admin'),
         ];
     }
 
-    public function __invoke(Video $video, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Video $video): RedirectResponse
     {
         Gate::authorize('update', $video);
 
-        // Perform the transcode action
         TranscodeVideo::dispatchIf(
             ! $video->hasTranscode(),
             $video
         );
 
-        if ($request->inertia()) {
-            // Notify the user
-            Inertia::flash([
-                'title' => (string) $video->name,
-                'description' => __('Queued for transcoding.'),
-            ]);
+        Inertia::flash([
+            'title' => (string) $video->name,
+            'description' => __('Queued for transcoding.'),
+            'type' => 'info',
+        ]);
 
-            return back();
-        }
-
-        return response()->json();
+        return back();
     }
 }

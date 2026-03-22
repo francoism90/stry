@@ -33,6 +33,7 @@ class TranscodeController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $transcode->file_name,
             'description' => __('The transcode has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -49,6 +50,7 @@ class TranscodeController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $transcode->file_name,
             'description' => __('The transcode has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

@@ -111,7 +111,7 @@ it('allows a user to mark all notifications as read', function () {
         action(MarkAllNotificationsReadController::class)
     );
 
-    $response->assertSuccessful();
+    $response->assertRedirect();
     expect($user->unreadNotifications()->count())->toBe(0);
 });
 

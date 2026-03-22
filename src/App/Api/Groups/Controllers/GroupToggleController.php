@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Api\Groups\Controllers;
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Models\Group;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -20,12 +20,11 @@ class GroupToggleController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum'),
             new Middleware('verified'),
         ];
     }
 
-    public function __invoke(GroupType $type, Video $video, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Group $group, Video $video, Request $request): RedirectResponse
     {
         Gate::authorize('view', $video);
 
@@ -33,26 +32,22 @@ class GroupToggleController extends Controller implements HasMiddleware
         $user = $request->user();
 
         // Toggle the group association based on the type
-        $group = match ($type) {
+        $group = match ($group->type) {
             GroupType::Liked => $user->toggleLiked($video),
             GroupType::Saved => $user->toggleSaved($video),
             default => abort(422, 'Invalid group type provided.'),
         };
 
         $result = $group->hasGroupable($video)
-            ? __('Added to :group.', ['group' => $type->label()])
-            : __('Removed from :group.', ['group' => $type->label()]);
+            ? __('Added to :group.', ['group' => $group->title])
+            : __('Removed from :group.', ['group' => $group->title]);
 
-        if ($request->inertia()) {
-            // Notify the user
-            Inertia::flash([
-                'title' => (string) $video->name,
-                'description' => $result,
-            ]);
+        Inertia::flash([
+            'title' => (string) $video->name,
+            'description' => $result,
+            'type' => 'success',
+        ]);
 
-            return back();
-        }
-
-        return response()->json();
+        return back();
     }
 }

@@ -85,6 +85,7 @@ class TagController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $tag->name,
             'description' => __('The tag has been created.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -114,6 +115,7 @@ class TagController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $tag->name,
             'description' => __('The tag has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -130,6 +132,7 @@ class TagController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $tag->name,
             'description' => __('The tag has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

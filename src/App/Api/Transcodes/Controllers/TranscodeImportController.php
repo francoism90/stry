@@ -7,7 +7,6 @@ namespace App\Api\Transcodes\Controllers;
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -20,28 +19,22 @@ class TranscodeImportController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum'),
-            new Middleware('role:super-admin'),
+            new Middleware('verified'),
         ];
     }
 
-    public function __invoke(Transcode $transcode, Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Transcode $transcode, Request $request): RedirectResponse
     {
         Gate::authorize('update', $transcode);
 
-        // Perform the import action
         app(ImportTranscode::class)->handle($transcode);
 
-        if ($request->inertia()) {
-            // Notify the user
-            Inertia::flash([
-                'title' => (string) $transcode->file_name,
-                'description' => __('Queued for import.'),
-            ]);
+        Inertia::flash([
+            'title' => (string) $transcode->file_name,
+            'description' => __('Queued for import.'),
+            'type' => 'info',
+        ]);
 
-            return back();
-        }
-
-        return response()->json();
+        return back();
     }
 }

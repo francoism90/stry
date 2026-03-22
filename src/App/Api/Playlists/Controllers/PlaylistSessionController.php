@@ -41,8 +41,6 @@ class PlaylistSessionController extends Controller implements HasMiddleware
             $request->safe()->only(['time']),
         );
 
-        return $request->inertia()
-            ? redirect()->back()
-            : response()->noContent();
+        return response()->noContent();
     }
 }

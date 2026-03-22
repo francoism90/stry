@@ -31,17 +31,17 @@ class GroupPolicy
 
     public function update(User $user, Group $group): bool
     {
-        return $group->user()->is($user);
+        return $group->isCustom() && $group->user()->is($user);
     }
 
     public function delete(User $user, Group $group): bool
     {
-        return $group->user()->is($user);
+        return $group->isCustom() && $group->user()->is($user);
     }
 
     public function restore(User $user, Group $group): bool
     {
-        return $group->user()->is($user);
+        return $group->isCustom() && $group->user()->is($user);
     }
 
     public function forceDelete(User $user, Group $group): bool

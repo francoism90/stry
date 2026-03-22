@@ -172,7 +172,7 @@ class Playlist extends Model
 
     public function getUrl(): string
     {
-        return $this->getUrlResolver($this->file_name);
+        return $this->getUrlResolver($this->file_name ?? 'index.mpd');
     }
 
     public function markAsReady(): void
@@ -237,7 +237,7 @@ class Playlist extends Model
         return Storage::disk($this->getDisk());
     }
 
-    public function getUrlResolver(?string $path = null): string
+    public function getUrlResolver(string $path): string
     {
         return URL::temporarySignedRoute('api.play.manifest', now()->addHour(), [
             'playlist' => $this,

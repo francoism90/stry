@@ -92,7 +92,7 @@ it('validates required fields on store', function () {
 
 it('allows the owner to access the group edit page', function () {
     $user = User::factory()->create();
-    $group = Group::factory()->create(['user_id' => $user->getKey()]);
+    $group = Group::factory()->custom()->create(['user_id' => $user->getKey()]);
 
     $response = $this->actingAs($user)->get(action([GroupController::class, 'edit'], $group));
 
@@ -113,7 +113,7 @@ it('forbids other users from accessing the group edit page', function () {
 
 it('allows the owner to update their group', function () {
     $user = User::factory()->create();
-    $group = Group::factory()->create(['user_id' => $user->getKey(), 'name' => 'Old Name']);
+    $group = Group::factory()->custom()->create(['user_id' => $user->getKey(), 'name' => 'Old Name']);
 
     $response = $this->actingAs($user)->put(action([GroupController::class, 'update'], $group), [
         'name' => 'New Name',
@@ -149,7 +149,7 @@ it('validates required fields on update', function () {
 
 it('allows the owner to delete their group', function () {
     $user = User::factory()->create();
-    $group = Group::factory()->create(['user_id' => $user->getKey()]);
+    $group = Group::factory()->custom()->create(['user_id' => $user->getKey()]);
 
     $response = $this->actingAs($user)->delete(action([GroupController::class, 'destroy'], $group));
 

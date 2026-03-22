@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { create } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
+import VideoTranscodeController from '@/actions/App/Api/Videos/Controllers/VideoTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
+import ActionBar from '@/components/Ui/ActionBar.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { TranscodeCollection, Video } from '@/types'
@@ -24,10 +25,27 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () =>
 useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
   router.reload({ only: ['items'], reset: ['items'] }),
 )
+
+const createTranscode = () => router.post(VideoTranscodeController.url(props.video.id), {}, { preserveScroll: true })
 </script>
 
 <template>
   <Head :title="`${video.title} - Transcodes`" />
+
+  <ActionBar>
+    <template #right>
+      <TranscodeImportModal :video="video" />
+
+      <UButton
+        icon="i-lucide-plus"
+        label="Create transcode"
+        color="neutral"
+        variant="outline"
+        size="sm"
+        @click="createTranscode"
+      />
+    </template>
+  </ActionBar>
 
   <UPageBody>
     <InfiniteScroll
@@ -39,7 +57,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
         icon="i-lucide-cpu"
         title="No transcodes"
         description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
-        :actions="[{ label: 'Create transcode', icon: 'i-lucide-plus', to: create.url(video.id) }]"
       />
 
       <UPageList
@@ -66,7 +83,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
 
             <div class="z-10 flex items-center gap-2">
               <TranscodeDeleteModal :item="item" />
-              <TranscodeImportModal :item="item" />
             </div>
           </div>
         </UPageCard>

@@ -104,6 +104,7 @@ class VideoController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $video->name,
             'description' => __('The video has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -120,6 +121,7 @@ class VideoController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $video->name,
             'description' => __('The video has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

@@ -19,6 +19,7 @@ class ProfileController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
@@ -27,7 +28,10 @@ class ProfileController extends Controller implements HasMiddleware
         Gate::authorize('update', $request->user());
 
         return Inertia::render('App/Account/ProfileIndex', [
-            'user' => fn () => new UserResourceProperty($request->user(), ['name', 'email', 'avatar']),
+            'user' => fn () => new UserResourceProperty(
+                $request->user(),
+                ['name', 'email', 'avatar'],
+            ),
         ]);
     }
 }

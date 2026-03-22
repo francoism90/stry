@@ -24,6 +24,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
@@ -51,6 +52,12 @@ $app = Application::configure(basePath: $basePath)
                     ? Limit::perMinute(240)->by($request->user()->getKey())
                     : Limit::perMinute(30)->by($request->ip());
             });
+
+            // Inertia action routes (web middleware for session, CSRF, and Inertia handling)
+            Route::middleware('web')
+                ->prefix('/actions')
+                ->name('actions.')
+                ->group(base_path('routes/actions.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

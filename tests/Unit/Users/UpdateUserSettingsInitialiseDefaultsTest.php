@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Domain\Users\Actions\UpdateUserSettings;
-use Domain\Users\DataObjects\UserAppearanceSettings;
-use Domain\Users\DataObjects\UserGeneralSettings;
+use Domain\Users\DataObjects\AppearanceSettings;
+use Domain\Users\DataObjects\GeneralSettings;
 use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\Models\User;
 
@@ -26,13 +26,13 @@ it('initialises default settings when user settings are null', function (): void
     $settings = UserSettings::from($user->settings);
 
     expect($settings->general)
-        ->toBeInstanceOf(UserGeneralSettings::class);
+        ->toBeInstanceOf(GeneralSettings::class);
 
     expect($settings->general->timezone)->toBe('Europe/Paris');
     expect($settings->general->locale)->toBe('en_US');
 
     expect($settings->appearance)
-        ->toBeInstanceOf(UserAppearanceSettings::class);
+        ->toBeInstanceOf(AppearanceSettings::class);
 
     expect($settings->appearance->theme)->toBe('dark');
 });

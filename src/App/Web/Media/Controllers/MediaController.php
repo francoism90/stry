@@ -33,6 +33,7 @@ class MediaController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $media->name,
             'description' => __('The media has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -49,6 +50,7 @@ class MediaController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $media->name,
             'description' => __('The media has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

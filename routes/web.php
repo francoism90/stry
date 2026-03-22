@@ -15,7 +15,6 @@ use App\Web\Search\Controllers\SearchTagsController;
 use App\Web\Search\Controllers\SearchVideosController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
-use App\Web\Users\Controllers\UserController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoMediaController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
@@ -36,13 +35,12 @@ Route::resource('tags', TagController::class);
 Route::resource('media', MediaController::class)->only(['update', 'destroy']);
 Route::resource('playlists', PlaylistController::class)->only(['update', 'destroy']);
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
-Route::resource('users', UserController::class)->only(['update', 'destroy']);
 
 // Videos
 Route::resource('videos', VideoController::class);
-Route::resource('videos.media', VideoMediaController::class)->scoped();
-Route::resource('videos.playlists', VideoPlaylistController::class)->scoped();
-Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped();
+Route::resource('videos.media', VideoMediaController::class)->only(['index']);
+Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['index', 'store', 'update', 'destroy']);
+Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
 
 // Search
 Route::prefix('search')->name('search.')->group(function () {

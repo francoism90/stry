@@ -7,7 +7,6 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
-use App\Web\Transcodes\Responses\TranscodeResourceProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
@@ -43,16 +42,6 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function edit(Video $video, Transcode $transcode): Response
-    {
-        Gate::authorize('update', $transcode);
-
-        return Inertia::render('App/Videos/Transcodes/TranscodeEdit', [
-            'video' => fn () => new VideoResourceProperty($video),
-            'transcode' => fn () => new TranscodeResourceProperty($transcode),
-        ]);
-    }
-
     public function update(TranscodeUpdateRequest $request, Video $video, Transcode $transcode): RedirectResponse
     {
         Gate::authorize('update', $transcode);
@@ -64,6 +53,7 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $transcode->file_name,
             'description' => __('The transcode has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -80,6 +70,7 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $transcode->file_name,
             'description' => __('The transcode has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

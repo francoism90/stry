@@ -33,6 +33,7 @@ class PlaylistController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $playlist->file_name,
             'description' => __('The playlist has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -49,6 +50,7 @@ class PlaylistController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $playlist->file_name,
             'description' => __('The playlist has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

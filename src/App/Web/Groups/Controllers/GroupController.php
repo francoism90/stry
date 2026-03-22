@@ -13,7 +13,6 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupOrder;
-use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
 use Domain\Videos\Enums\VideoOrder;
@@ -86,6 +85,7 @@ class GroupController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $group->name,
             'description' => __('The group has been created.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -97,7 +97,6 @@ class GroupController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Groups/GroupEdit', [
             'group' => fn () => new GroupResourceProperty($group),
-            'types' => fn () => GroupType::options(),
         ]);
     }
 
@@ -115,6 +114,7 @@ class GroupController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $group->name,
             'description' => __('The group has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -131,6 +131,7 @@ class GroupController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $group->name,
             'description' => __('The group has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

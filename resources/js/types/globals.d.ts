@@ -1,10 +1,9 @@
-import type { User } from '@/types'
+import type { FlashData, User } from '@/types'
 import type { Page } from '@inertiajs/vue3'
-import type { ToastProps } from '@nuxt/ui'
 
 declare module '@inertiajs/core' {
   export interface InertiaConfig {
-    readonly flashDataType: ToastProps
+    readonly flashDataType: FlashData
   }
 
   export interface PageProps {
