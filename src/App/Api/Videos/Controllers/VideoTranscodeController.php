@@ -35,6 +35,7 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $video->name,
             'description' => __('Queued for transcoding.'),
+            'type' => 'info',
         ]);
 
         return back();

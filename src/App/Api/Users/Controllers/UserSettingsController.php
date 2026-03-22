@@ -40,6 +40,7 @@ class UserSettingsController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => __('Settings updated'),
             'description' => __('Your preferences have been saved.'),
+            'type' => 'success',
         ]);
 
         return back();

@@ -45,6 +45,7 @@ class GroupToggleController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $video->name,
             'description' => $result,
+            'type' => 'success',
         ]);
 
         return back();

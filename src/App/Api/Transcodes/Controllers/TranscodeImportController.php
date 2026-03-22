@@ -32,6 +32,7 @@ class TranscodeImportController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $transcode->file_name,
             'description' => __('Queued for import.'),
+            'type' => 'info',
         ]);
 
         return back();

@@ -86,6 +86,7 @@ class GroupController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $group->name,
             'description' => __('The group has been created.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -115,6 +116,7 @@ class GroupController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $group->name,
             'description' => __('The group has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -131,6 +133,7 @@ class GroupController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $group->name,
             'description' => __('The group has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

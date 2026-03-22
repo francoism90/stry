@@ -20,8 +20,7 @@ class ProfileInformationUpdatedResponse implements ProfileInformationUpdatedResp
         Inertia::flash([
             'title' => __('Profile updated'),
             'description' => __('Your profile information has been saved.'),
-            'color' => 'success',
-            'icon' => 'i-lucide-circle-check',
+            'type' => 'success',
         ]);
 
         return back();

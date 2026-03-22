@@ -56,6 +56,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $video->name,
             'description' => __('Queued for playlist generation.'),
+            'type' => 'info',
         ]);
 
         return back();
@@ -72,6 +73,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $playlist->file_name,
             'description' => __('The playlist has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();
@@ -88,6 +90,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => (string) $playlist->file_name,
             'description' => __('The playlist has been deleted.'),
+            'type' => 'warning',
         ]);
 
         return back();

@@ -30,6 +30,7 @@ class GroupClearController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => $group->title,
             'description' => __('All videos will be detached shortly.'),
+            'type' => 'info',
         ]);
 
         return back();

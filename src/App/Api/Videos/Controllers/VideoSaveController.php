@@ -33,6 +33,7 @@ class VideoSaveController extends Controller implements HasMiddleware
             'description' => $group->hasGroupable($video)
                 ? __('Added to :group.', ['group' => $group->title])
                 : __('Removed from :group.', ['group' => $group->title]),
+            'type' => 'success',
         ]);
 
         return back();

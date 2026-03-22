@@ -32,6 +32,7 @@ class TagOrderController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => __('Tags reordered'),
             'description' => __('The display order has been updated.'),
+            'type' => 'success',
         ]);
 
         return back();

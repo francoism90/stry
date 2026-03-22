@@ -1,5 +1,13 @@
 import type { AvatarProps, SelectMenuItem } from '@nuxt/ui'
 
+export type FlashType = 'success' | 'error' | 'warning' | 'info' | 'primary'
+
+export type FlashData = {
+  readonly title?: string
+  readonly description?: string
+  readonly type?: FlashType
+}
+
 export type Model = {
   id: string
   created_at: string

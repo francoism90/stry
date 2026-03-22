@@ -35,6 +35,7 @@ class VideoImportController extends Controller implements HasMiddleware
         Inertia::flash([
             'title' => __('Video import initiated'),
             'description' => __('Files are being processed in the background.'),
+            'type' => 'info',
         ]);
 
         return back();

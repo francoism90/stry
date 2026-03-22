@@ -30,7 +30,7 @@ class MarkAllNotificationsReadController extends Controller implements HasMiddle
         Inertia::flash([
             'title' => 'All caught up',
             'description' => 'All notifications have been marked as read.',
-            'icon' => 'i-lucide-check-check',
+            'type' => 'success',
         ]);
 
         return back();
