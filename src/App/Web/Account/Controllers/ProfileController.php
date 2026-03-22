@@ -29,7 +29,7 @@ class ProfileController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Account/ProfileIndex', [
             'user' => fn () => new UserResourceProperty(
-                $request->user()?->loadCount('videos'),
+                $request->user(),
                 ['name', 'email', 'avatar'],
             ),
         ]);
