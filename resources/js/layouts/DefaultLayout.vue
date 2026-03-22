@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useAppearance } from '@/composables/appearance'
+import { useFlash } from '@/composables/flash'
 import { Head } from '@inertiajs/vue3'
 
 const { nonce } = useAppearance()
+useFlash()
 </script>
 
 <template>
