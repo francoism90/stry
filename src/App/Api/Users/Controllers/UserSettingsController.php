@@ -20,6 +20,7 @@ class UserSettingsController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('verified'),
+            new Middleware('precognitive'),
         ];
     }
 
