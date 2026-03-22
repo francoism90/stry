@@ -13,6 +13,7 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupOrder;
+use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
 use Domain\Videos\Enums\VideoOrder;
@@ -31,6 +32,8 @@ class GroupController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth'),
+            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
@@ -79,7 +82,11 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('create', Group::class);
 
         // Create the group
-        $group = Group::create($request->safe()->all());
+        $group = $request->user()->findOrCreateGroup(
+            name: $request->safe()->input('name'),
+            type: GroupType::Custom,
+            attributes: $request->safe()->only('content'),
+        );
 
         // Notify the user
         Inertia::flash([
@@ -88,7 +95,7 @@ class GroupController extends Controller implements HasMiddleware
             'type' => 'success',
         ]);
 
-        return back();
+        return redirect()->route('collections.show', $group);
     }
 
     public function edit(Group $group): Response

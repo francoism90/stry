@@ -9,6 +9,7 @@ use Domain\Groups\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 trait HasGroups
 {
@@ -30,84 +31,60 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
-    public function isLiked(Model $model): bool
+    public function findOrCreateGroup(GroupType $type, ?string $name = null, ?array $attributes = null): Group
     {
-        return $this->groupHasModel($model, GroupType::Liked);
+        $criteria = filled($name)
+            ? ['name' => $name, 'type' => $type]
+            : ['type' => $type];
+
+        return $this->groups()->firstOrCreate($criteria, $attributes ?? []);
     }
 
-    public function isSaved(Model $model): bool
+    public function customGroups(): HasMany
     {
-        return $this->groupHasModel($model, GroupType::Saved);
+        return $this->groups()
+            ->where('type', GroupType::Custom)
+            ->orderBy('name');
     }
 
-    public function isViewed(Model $model): bool
+    /**
+     * @return Collection<int, array{id: mixed, name: string, has: bool}>
+     */
+    public function customGroupsFor(Model $model): Collection
     {
-        return $this->groupHasModel($model, GroupType::Viewed);
+        return $this->customGroups()
+            ->forModel($model)
+            ->get()
+            ->map(fn (Group $group) => [
+                'id' => $group->getRouteKey(),
+                'name' => (string) $group->name,
+                'has' => (bool) $group->modelable,
+            ]);
     }
 
-    public function customGroup(string $name): Group
+    public function isInGroup(Model $model, GroupType $type): bool
     {
-        return $this->groups()->firstOrCreate([
-            'name' => $name,
-            'type' => GroupType::Custom,
-        ]);
+        return $this->groupHasModel($model, $type);
     }
 
-    public function likedGroup(): Group
+    public function groupFor(GroupType $type): Group
     {
-        return $this->findOrCreateGroup(GroupType::Liked);
+        return $this->findOrCreateGroup(type: $type);
     }
 
-    public function savedGroup(): Group
+    public function markInGroup(Model $model, GroupType $type, ?array $options = null): Model
     {
-        return $this->findOrCreateGroup(GroupType::Saved);
+        return $model->attachToGroup($this->groupFor($type), $options);
     }
 
-    public function viewedGroup(): Group
+    public function toggleInGroup(Model $model, GroupType $type, ?array $options = null): Model
     {
-        return $this->findOrCreateGroup(GroupType::Viewed);
-    }
-
-    public function markAsLiked(Model $model, ?array $options = null): Model
-    {
-        return $model->attachToGroup($this->likedGroup(), $options);
-    }
-
-    public function markAsSaved(Model $model, ?array $options = null): Model
-    {
-        return $model->attachToGroup($this->savedGroup(), $options);
-    }
-
-    public function markAsViewed(Model $model, ?array $options = null): Model
-    {
-        return $model->attachToGroup($this->viewedGroup(), $options);
-    }
-
-    public function toggleLiked(Model $model, ?array $options = null): Model
-    {
-        return $model->toggleGroup($this->likedGroup(), $options);
-    }
-
-    public function toggleSaved(Model $model, ?array $options = null): Model
-    {
-        return $model->toggleGroup($this->savedGroup(), $options);
-    }
-
-    public function toggleViewed(Model $model, ?array $options = null): Model
-    {
-        return $model->toggleGroup($this->viewedGroup(), $options);
-    }
-
-    public function findOrCreateGroup(GroupType $type): Group
-    {
-        return $this->groups()->firstOrCreate([
-            'type' => $type,
-        ]);
+        return $model->toggleGroup($this->groupFor($type), $options);
     }
 
     public function groupHasModel(Model $model, GroupType $type): bool
     {
-        $group = $this->groups()->where('type', $type)->first();
+        $group = $this->groups()->firstWhere('type', $type);
 
         return $group ? $group->hasGroupable($model) : false;
     }

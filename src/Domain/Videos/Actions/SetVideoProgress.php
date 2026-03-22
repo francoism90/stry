@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
+use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Cache;
@@ -24,8 +25,8 @@ class SetVideoProgress
         $time = $this->normalizeProgress($video, $attributes);
 
         // Only mark as viewed if the user hasn't already viewed the video
-        if (Cache::missing($cacheKey) || ! $user->isViewed($video)) {
-            $user->markAsViewed($video, ['time' => $time]);
+        if (Cache::missing($cacheKey) || ! $user->isInGroup($video, GroupType::Viewed)) {
+            $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
         }
 
         // Always cache the progress for quick retrieval

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use App\Web\Account\Responses\PasswordUpdateResponse;
 use App\Web\Account\Responses\ProfileInformationUpdatedResponse;
 use Domain\Users\Actions\CreateNewUser;
 use Domain\Users\Actions\ResetUserPassword;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\PasswordUpdateResponse as PasswordUpdateResponseContract;
 use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
 use Laravel\Fortify\Fortify;
 
@@ -22,6 +24,7 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->singleton(PasswordUpdateResponseContract::class, PasswordUpdateResponse::class);
         $this->app->singleton(ProfileInformationUpdatedResponseContract::class, ProfileInformationUpdatedResponse::class);
     }
 

@@ -44,17 +44,18 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 ## 🛠️ Tech Stack
 
-| Category              | Technology                                                                |
-| --------------------- | ------------------------------------------------------------------------- |
-| **Backend**           | [Laravel 12.x](https://laravel.com/)                                      |
-| **Frontend**          | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/) |
-| **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                            |
-| **Containers**        | [Podman 5.x](https://podman.io/)                                          |
-| **Search**            | [Typesense 30.x](https://typesense.org/)                                  |
-| **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)          |
-| **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)            |
-| **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)      |
-| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)          |
+| Category              | Technology                                                                          |
+| --------------------- | ----------------------------------------------------------------------------------- |
+| **Backend**           | [Laravel 12.x](https://laravel.com/)                                                |
+| **Frontend**          | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
+| **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
+| **Containers**        | [Podman 5.x](https://podman.io/)                                                    |
+| **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
+| **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)                    |
+| **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)                      |
+| **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)                |
+| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                    |
+| **PWA**               | [Laravel PWA](https://github.com/foxws/laravel-pwa) (installable on mobile/desktop) |
 
 ---
 
@@ -66,8 +67,11 @@ Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) 
 **System Requirements:**
 
 - 🐧 Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
-- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
+- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
 - 🛠️ Basic tools: `git`, `bash`
+
+> [!NOTE]
+> Docker is not officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and can be made to work with minor adjustments.
 
 For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies.
 See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
@@ -85,6 +89,7 @@ Comprehensive guides are available in the `docs/` folder:
 | [⚙️ Configuration](docs/configuration.md)   | Configuration options       |
 | [🔧 System Setup](docs/system.md)           | System requirements         |
 | [🐳 Podman Guide](docs/podman.md)           | Container management        |
+| [🐋 Docker Compose](docs/docker.md)         | Docker Compose setup        |
 | [🌐 Proxy Setup](docs/proxy.md)             | Reverse proxy configuration |
 | [☁️ S3 Storage](docs/s3.md)                 | Object storage setup        |
 | [🎮 Interaction](docs/interaction.md)       | CLI usage and commands      |

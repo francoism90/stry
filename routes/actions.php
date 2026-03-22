@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Api\Groups\Controllers\GroupClearController;
+use App\Api\Groups\Controllers\GroupToggleController;
 use App\Api\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Api\Tags\Controllers\TagOrderController;
 use App\Api\Users\Controllers\UserSettingsController;
@@ -21,6 +22,7 @@ Route::prefix('/settings')->name('settings.')->group(function () {
 // Groups
 Route::prefix('/groups')->name('groups.')->group(function () {
     Route::post('/{group}/clear', GroupClearController::class)->name('clear');
+    Route::post('/{group}/videos/{video}/toggle', GroupToggleController::class)->name('videos.toggle');
 });
 
 // Notifications

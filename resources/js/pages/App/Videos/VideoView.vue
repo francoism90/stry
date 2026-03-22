@@ -1,22 +1,26 @@
 <script setup lang="ts">
 import { edit, index } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import GroupVideoModal from '@/components/Groups/GroupVideoModal.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useVideo } from '@/composables/video'
-import type { Video } from '@/types'
+import type { Group, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   video: Video
   queue?: Video[] | undefined
+  groups?: Group[] | undefined
 }>()
 
 const { toggleLike, toggleSave } = useVideo(props.video)
+
+const isAddModalOpen = ref(false)
 
 const links = computed<ButtonProps[]>(() => [
   {
@@ -33,6 +37,11 @@ const links = computed<ButtonProps[]>(() => [
     label: props.video.saved ? 'Unsave' : 'Save',
     icon: props.video.saved ? 'i-lucide-bookmark' : 'i-lucide-bookmark-plus',
     onClick: () => toggleSave(),
+  },
+  {
+    label: 'Add',
+    icon: 'i-lucide-list-plus',
+    onClick: () => void (isAddModalOpen.value = true),
   },
 ])
 
@@ -54,6 +63,12 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.rel
     <template #body>
       <UPage class="mt-6">
         <VideoPlayer />
+
+        <GroupVideoModal
+          v-model:open="isAddModalOpen"
+          :video="video"
+          :groups="groups"
+        />
 
         <UPageHeader
           :title="video.title"

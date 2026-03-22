@@ -12,6 +12,7 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\UpdateTagDetails;
+use Domain\Tags\Enums\TagOrder;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
@@ -31,6 +32,8 @@ class TagController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth'),
+            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
@@ -41,16 +44,19 @@ class TagController extends Controller implements HasMiddleware
 
         // Apply filters
         $type = $request->safe()->input('type');
+        $order = $request->safe()->input('order');
 
         // Scout builder
         $scout = Tag::search()
-            ->tap(new TagFilterScope(type: $type))
+            ->tap(new TagFilterScope(type: $type, order: $order))
             ->simplePaginate(perPage: 36);
 
         return Inertia::render('App/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
+            'order' => fn () => $order,
             'types' => fn () => TagType::options(),
+            'orders' => fn () => TagOrder::options(),
         ]);
     }
 
@@ -88,7 +94,7 @@ class TagController extends Controller implements HasMiddleware
             'type' => 'success',
         ]);
 
-        return back();
+        return redirect()->route('tags.show', $tag);
     }
 
     public function edit(Tag $tag): Response

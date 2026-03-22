@@ -22,23 +22,19 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <UDashboardToolbar>
-    <template #left>
-      <USelectMenu
-        v-if="orders?.length"
-        v-model="form.order"
-        :model-modifiers="{ nullable: true }"
-        :items="orders"
-        :search-input="false"
-        :ui="{ base: 'px-0', content: 'min-w-40' }"
-        placeholder="Sort by"
-        label-key="label"
-        value-key="value"
-        variant="none"
-        clear
-        @update:modelValue="onSubmit"
-        @clear="onSubmit"
-      />
-    </template>
-  </UDashboardToolbar>
+  <USelectMenu
+    v-if="orders?.length"
+    v-model="form.order"
+    :model-modifiers="{ nullable: true }"
+    :items="orders"
+    :search-input="false"
+    :ui="{ base: 'px-0', content: 'min-w-40' }"
+    placeholder="Sort by"
+    label-key="label"
+    value-key="value"
+    variant="none"
+    clear
+    @update:modelValue="onSubmit"
+    @clear="onSubmit"
+  />
 </template>

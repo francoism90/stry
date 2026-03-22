@@ -86,9 +86,11 @@ Run `stry help` for a complete list. Here are the most commonly used:
 
 ### 👥 User Management
 
-| Command               | Description               |
-| --------------------- | ------------------------- |
-| `stry a users:create` | Create a new user account |
+| Command                             | Description                                   |
+| ----------------------------------- | --------------------------------------------- |
+| `stry a users:create`               | Create a new user account (interactive)       |
+| `stry a users:create --admin`       | Create a user and assign the admin role       |
+| `stry a users:create --super-admin` | Create a user and assign the super-admin role |
 
 ### 🎬 Video Management
 
@@ -118,8 +120,9 @@ Run `stry help` for a complete list. Here are the most commonly used:
 
 | Command                           | Description                                                               |
 | --------------------------------- | ------------------------------------------------------------------------- |
-| `stry a scout:sync`               | Sync searchable model indexes (re-import all models)                      |
-| `stry a scout:sync --delete`      | Delete and re-sync all indexes (clears existing data before re-importing) |
+| `stry a scout:sync`               | Sync Typesense indexes (configure collections)                            |
+| `stry a scout:sync --import`      | Sync indexes and import all model records                                 |
+| `stry a scout:sync --delete`      | Delete all indexes and re-sync (clears existing data — useful for resets) |
 | `stry a scout:delete-index Model` | Delete a specific index (useful for fixing corrupted indexes)             |
 | `stry a scout:import Model`       | Import a specific model into its search index                             |
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Controllers;
 
+use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +19,7 @@ class VideoLikeController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth'),
             new Middleware('verified'),
         ];
     }
@@ -26,7 +28,7 @@ class VideoLikeController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        $group = $request->user()->toggleLiked($video);
+        $group = $request->user()->toggleInGroup($video, GroupType::Liked);
 
         Inertia::flash([
             'title' => (string) $video->name,
