@@ -31,8 +31,9 @@ const create = async (close: () => void) =>
     <slot>
       <UButton
         label="Create tag"
-        color="primary"
-        variant="soft"
+        color="neutral"
+        variant="outline"
+        size="sm"
         icon="i-lucide-plus"
       />
     </slot>

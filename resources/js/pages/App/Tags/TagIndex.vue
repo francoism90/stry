@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
 import TagFilters from '@/components/Tags/TagFilters.vue'
 import TagList from '@/components/Tags/TagList.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
@@ -10,6 +11,7 @@ defineProps<{
   items: TagCollection
   types: SelectMenuItem[]
   type?: string
+  can?: { create: boolean }
 }>()
 </script>
 
@@ -21,10 +23,21 @@ defineProps<{
 
     <template #body>
       <UPage>
-        <TagFilters
-          :types="types"
-          :type="type"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <TagFilters
+              :types="types"
+              :type="type"
+            />
+          </template>
+
+          <template
+            v-if="can?.create"
+            #right
+          >
+            <TagCreateModal :types="types" />
+          </template>
+        </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"

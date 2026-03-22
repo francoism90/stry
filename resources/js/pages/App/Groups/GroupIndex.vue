@@ -21,10 +21,14 @@ defineProps<{
 
     <template #body>
       <UPage>
-        <GroupFilters
-          :orders="orders"
-          :order="order"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <GroupFilters
+              :orders="orders"
+              :order="order"
+            />
+          </template>
+        </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"

@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAppearance } from '@/composables/appearance'
-import { useAuth } from '@/composables/auth'
 import { useFlash } from '@/composables/flash'
-import { Head, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
+import { Head } from '@inertiajs/vue3'
 
 const { nonce } = useAppearance()
-const { user } = useAuth()
 
 useFlash()
-useEcho(`users.${user.value?.id}`, '.user.updated', () => router.reload({ only: ['auth'] }))
 </script>
 
 <template>

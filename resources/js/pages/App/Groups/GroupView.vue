@@ -46,10 +46,14 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(
           :links="links"
         />
 
-        <VideoFilters
-          :orders="orders"
-          :order="order"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <VideoFilters
+              :orders="orders"
+              :order="order"
+            />
+          </template>
+        </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"
