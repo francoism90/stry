@@ -62,64 +62,24 @@ trait HasGroups
             ]);
     }
 
-    public function isLiked(Model $model): bool
+    public function isInGroup(Model $model, GroupType $type): bool
     {
-        return $this->groupHasModel($model, GroupType::Liked);
+        return $this->groupHasModel($model, $type);
     }
 
-    public function isSaved(Model $model): bool
+    public function groupFor(GroupType $type): Group
     {
-        return $this->groupHasModel($model, GroupType::Saved);
+        return $this->findOrCreateGroup(type: $type);
     }
 
-    public function isViewed(Model $model): bool
+    public function markInGroup(Model $model, GroupType $type, ?array $options = null): Model
     {
-        return $this->groupHasModel($model, GroupType::Viewed);
+        return $model->attachToGroup($this->groupFor($type), $options);
     }
 
-    public function likedGroup(): Group
+    public function toggleInGroup(Model $model, GroupType $type, ?array $options = null): Model
     {
-        return $this->findOrCreateGroup(type: GroupType::Liked);
-    }
-
-    public function savedGroup(): Group
-    {
-        return $this->findOrCreateGroup(type: GroupType::Saved);
-    }
-
-    public function viewedGroup(): Group
-    {
-        return $this->findOrCreateGroup(type: GroupType::Viewed);
-    }
-
-    public function markAsLiked(Model $model, ?array $options = null): Model
-    {
-        return $model->attachToGroup($this->likedGroup(), $options);
-    }
-
-    public function markAsSaved(Model $model, ?array $options = null): Model
-    {
-        return $model->attachToGroup($this->savedGroup(), $options);
-    }
-
-    public function markAsViewed(Model $model, ?array $options = null): Model
-    {
-        return $model->attachToGroup($this->viewedGroup(), $options);
-    }
-
-    public function toggleLiked(Model $model, ?array $options = null): Model
-    {
-        return $model->toggleGroup($this->likedGroup(), $options);
-    }
-
-    public function toggleSaved(Model $model, ?array $options = null): Model
-    {
-        return $model->toggleGroup($this->savedGroup(), $options);
-    }
-
-    public function toggleViewed(Model $model, ?array $options = null): Model
-    {
-        return $model->toggleGroup($this->viewedGroup(), $options);
+        return $model->toggleGroup($this->groupFor($type), $options);
     }
 
     public function groupHasModel(Model $model, GroupType $type): bool

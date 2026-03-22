@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Actions;
 
+use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Cache;
@@ -24,7 +25,7 @@ class GetVideoProgress
         // If there is no cached progress, try to get it from the viewed records
         if (Cache::missing($cacheKey)) {
             // Attempt to retrieve the viewed record for the video
-            $record = $user->viewedGroup()->getGroupable($video);
+            $record = $user->groupFor(GroupType::Viewed)->getGroupable($video);
 
             // Extract the progress time from the pivot options, defaulting to 0 if not available
             $time = (float) data_get($record?->pivot?->options ?? [], 'time', 0);

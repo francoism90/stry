@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Groups\Controllers;
 
-use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -29,16 +28,8 @@ class GroupToggleController extends Controller implements HasMiddleware
         Gate::authorize('view', $video);
         Gate::authorize('update', $group);
 
-        // Get the currently authenticated user
-        $user = $request->user();
-
-        // Toggle the group association based on the type
-        $group = match ($group->type) {
-            GroupType::Liked => $user->toggleLiked($video),
-            GroupType::Saved => $user->toggleSaved($video),
-            GroupType::Custom => $video->toggleGroup($group),
-            default => abort(422, 'Invalid group type provided.'),
-        };
+        // Toggle the group association
+        $video->toggleGroup($group);
 
         $result = $group->hasGroupable($video)
             ? __('Added to :group.', ['group' => $group->title])
