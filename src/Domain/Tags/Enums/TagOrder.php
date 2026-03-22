@@ -10,6 +10,7 @@ enum TagOrder: string implements Enumerable
 {
     case Default = 'recommended';
     case Name = 'name';
+    case Videos = 'videos';
     case Newest = 'newest';
     case Oldest = 'oldest';
 
@@ -18,6 +19,7 @@ enum TagOrder: string implements Enumerable
         return match ($this) {
             self::Default => __('Most videos'),
             self::Name => __('Name'),
+            self::Videos => __('Most videos'),
             self::Newest => __('Newest'),
             self::Oldest => __('Oldest'),
         };
