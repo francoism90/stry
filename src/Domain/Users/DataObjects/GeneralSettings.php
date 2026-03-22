@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Users\DataObjects;
 
+use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Data;
 
 class GeneralSettings extends Data
@@ -16,15 +17,15 @@ class GeneralSettings extends Data
         public string $time_format = 'H:i',
     ) {}
 
-    /** @return array<string, array<int, string>> */
+    /** @return array<string, mixed[]> */
     public static function rules(): array
     {
         return [
-            'timezone' => ['sometimes', 'string', 'max:255'],
-            'locale' => ['sometimes', 'string', 'max:255'],
-            'language' => ['sometimes', 'string', 'max:255'],
-            'date_format' => ['sometimes', 'string', 'max:255'],
-            'time_format' => ['sometimes', 'string', 'max:255'],
+            'timezone' => ['sometimes', 'timezone'],
+            'locale' => ['sometimes', 'string', Rule::in(['en-US', 'nl-NL'])],
+            'language' => ['sometimes', 'string', Rule::in(['en'])],
+            'date_format' => ['sometimes', 'string', Rule::in(['YYYY-MM-DD', 'MM/DD/YYYY', 'DD/MM/YYYY', 'DD.MM.YYYY', 'MMM D, YYYY'])],
+            'time_format' => ['sometimes', 'string', Rule::in(['HH:mm', 'h:mm A', 'HH:mm:ss', 'h:mm:ss A'])],
         ];
     }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { create } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
+import PlaylistCreateModal from '@/components/Playlists/PlaylistCreateModal.vue'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
+import ActionBar from '@/components/Ui/ActionBar.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
@@ -28,6 +29,12 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
 <template>
   <Head :title="`${video.title} - Playlists`" />
 
+  <ActionBar>
+    <template #right>
+      <PlaylistCreateModal :video="video" />
+    </template>
+  </ActionBar>
+
   <UPageBody>
     <InfiniteScroll
       data="items"
@@ -38,7 +45,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
         icon="i-lucide-list-video"
         title="No playlists"
         description="Create a playlist to enable streaming for this video."
-        :actions="[{ label: 'Create playlist', icon: 'i-lucide-plus', to: create.url(video.id) }]"
       />
 
       <UPageList

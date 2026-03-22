@@ -55,6 +55,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
               <UFormField
                 label="Timezone"
                 name="general.timezone"
+                :error="form.errors['general.timezone']"
               >
                 <USelect
                   v-model="form.general.timezone"
@@ -69,6 +70,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
               <UFormField
                 label="Language"
                 name="general.language"
+                :error="form.errors['general.language']"
               >
                 <USelect
                   v-model="form.general.language"
@@ -80,6 +82,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
               <UFormField
                 label="Locale"
                 name="general.locale"
+                :error="form.errors['general.locale']"
               >
                 <USelect
                   v-model="form.general.locale"
@@ -98,6 +101,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
               <UFormField
                 label="Date format"
                 name="general.date_format"
+                :error="form.errors['general.date_format']"
               >
                 <USelect
                   v-model="form.general.date_format"
@@ -115,6 +119,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
               <UFormField
                 label="Time format"
                 name="general.time_format"
+                :error="form.errors['general.time_format']"
               >
                 <USelect
                   v-model="form.general.time_format"
@@ -141,6 +146,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
             <UFormField
               label="Theme"
               name="appearance.theme"
+              :error="form.errors['appearance.theme']"
             >
               <USelect
                 v-model="form.appearance.theme"
@@ -156,6 +162,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
             <UFormField
               label="Default view"
               name="appearance.default_view"
+              :error="form.errors['appearance.default_view']"
             >
               <USelect
                 v-model="form.appearance.default_view"
