@@ -494,6 +494,7 @@ return [
                             'name' => 'type',
                             'type' => 'string',
                             'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'state',
