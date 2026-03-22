@@ -1,5 +1,5 @@
 <template>
-  <UDashboardToolbar :ui="{ root: 'px-0 sm:px-0' }">
+  <UDashboardToolbar :ui="{ root: 'min-h-6 overflow-x-auto border-0 px-0 sm:px-0' }">
     <template
       v-if="$slots.left"
       #left

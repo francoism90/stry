@@ -2,6 +2,7 @@
 import VideoTranscodeController from '@/actions/App/Api/Videos/Controllers/VideoTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
+import ActionBar from '@/components/Ui/ActionBar.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { TranscodeCollection, Video } from '@/types'
@@ -31,22 +32,22 @@ const createTranscode = () => router.post(VideoTranscodeController.url(props.vid
 <template>
   <Head :title="`${video.title} - Transcodes`" />
 
-  <UDashboardToolbar>
-    <template #right>
-      <TranscodeImportModal :video="video" />
-
-      <UButton
-        icon="i-lucide-plus"
-        label="Create transcode"
-        color="neutral"
-        variant="outline"
-        size="sm"
-        @click="createTranscode"
-      />
-    </template>
-  </UDashboardToolbar>
-
   <UPageBody>
+    <ActionBar>
+      <template #left>
+        <TranscodeImportModal :video="video" />
+
+        <UButton
+          icon="i-lucide-plus"
+          label="Create transcode"
+          color="neutral"
+          variant="outline"
+          size="sm"
+          @click="createTranscode"
+        />
+      </template>
+    </ActionBar>
+
     <InfiniteScroll
       data="items"
       :buffer="200"

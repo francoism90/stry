@@ -30,6 +30,15 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
+    public function findOrCreateGroup(GroupType $type, ?string $name = null, ?array $attributes = null): Group
+    {
+        $criteria = filled($name)
+            ? ['name' => $name, 'type' => $type]
+            : ['type' => $type];
+
+        return $this->groups()->firstOrCreate($criteria, $attributes ?? []);
+    }
+
     public function isLiked(Model $model): bool
     {
         return $this->groupHasModel($model, GroupType::Liked);
@@ -45,27 +54,19 @@ trait HasGroups
         return $this->groupHasModel($model, GroupType::Viewed);
     }
 
-    public function customGroup(string $name): Group
-    {
-        return $this->groups()->firstOrCreate([
-            'name' => $name,
-            'type' => GroupType::Custom,
-        ]);
-    }
-
     public function likedGroup(): Group
     {
-        return $this->findOrCreateGroup(GroupType::Liked);
+        return $this->findOrCreateGroup(type: GroupType::Liked);
     }
 
     public function savedGroup(): Group
     {
-        return $this->findOrCreateGroup(GroupType::Saved);
+        return $this->findOrCreateGroup(type: GroupType::Saved);
     }
 
     public function viewedGroup(): Group
     {
-        return $this->findOrCreateGroup(GroupType::Viewed);
+        return $this->findOrCreateGroup(type: GroupType::Viewed);
     }
 
     public function markAsLiked(Model $model, ?array $options = null): Model
@@ -98,16 +99,9 @@ trait HasGroups
         return $model->toggleGroup($this->viewedGroup(), $options);
     }
 
-    public function findOrCreateGroup(GroupType $type): Group
-    {
-        return $this->groups()->firstOrCreate([
-            'type' => $type,
-        ]);
-    }
-
     public function groupHasModel(Model $model, GroupType $type): bool
     {
-        $group = $this->groups()->where('type', $type)->first();
+        $group = $this->groups()->firstWhere('type', $type);
 
         return $group ? $group->hasGroupable($model) : false;
     }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PlaylistCreateModal from '@/components/Playlists/PlaylistCreateModal.vue'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
+import ActionBar from '@/components/Ui/ActionBar.vue'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
@@ -28,13 +29,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
 <template>
   <Head :title="`${video.title} - Playlists`" />
 
-  <UDashboardToolbar>
-    <template #right>
-      <PlaylistCreateModal :video="video" />
-    </template>
-  </UDashboardToolbar>
-
   <UPageBody>
+    <ActionBar>
+      <template #left>
+        <PlaylistCreateModal :video="video" />
+      </template>
+    </ActionBar>
+
     <InfiniteScroll
       data="items"
       :buffer="200"

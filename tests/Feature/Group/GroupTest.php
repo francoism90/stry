@@ -11,7 +11,7 @@ uses(RefreshDatabase::class);
 
 it('can create a custom group', function () {
     $user = User::factory()->create();
-    $group = $user->customGroup('foo');
+    $group = $user->findOrCreateGroup(GroupType::Custom, 'foo');
 
     expect($group->exists)->toBeTrue()
         ->and($group->user_id)->toBe($user->id)
