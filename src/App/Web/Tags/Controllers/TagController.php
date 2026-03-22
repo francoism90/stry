@@ -12,6 +12,7 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\UpdateTagDetails;
+use Domain\Tags\Enums\TagOrder;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
@@ -41,16 +42,19 @@ class TagController extends Controller implements HasMiddleware
 
         // Apply filters
         $type = $request->safe()->input('type');
+        $order = $request->safe()->input('order');
 
         // Scout builder
         $scout = Tag::search()
-            ->tap(new TagFilterScope(type: $type))
+            ->tap(new TagFilterScope(type: $type, order: $order))
             ->simplePaginate(perPage: 36);
 
         return Inertia::render('App/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
+            'order' => fn () => $order,
             'types' => fn () => TagType::options(),
+            'orders' => fn () => TagOrder::options(),
         ]);
     }
 
