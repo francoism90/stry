@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api\Groups\Requests;
 
+use Domain\Groups\Enums\GroupType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GroupUpdateRequest extends FormRequest
 {
@@ -22,6 +24,7 @@ class GroupUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'content' => ['sometimes', 'nullable', 'string', 'max:4096'],
+            'type' => ['required', 'string', Rule::enum(GroupType::class)],
         ];
     }
 }

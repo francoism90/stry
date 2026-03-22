@@ -13,8 +13,9 @@ const props = defineProps<{
 }>()
 
 const form = useForm('put', update.url(props.group.id), {
-  name: props.group.name,
+  name: props.group.name ?? props.group.title,
   content: props.group.content || null,
+  type: props.group.type,
 })
 
 const onSubmit = () =>
@@ -64,6 +65,18 @@ const onSubmit = () =>
                     :model-modifiers="{ string: true, trim: true }"
                     autofocus
                     autocapitalize="words"
+                  />
+                </UFormField>
+
+                <UFormField
+                  label="Type"
+                  :error="form.errors.type"
+                >
+                  <USelect
+                    v-model="form.type"
+                    :items="types"
+                    :model-modifiers="{ nullable: true }"
+                    class="w-full"
                   />
                 </UFormField>
 
