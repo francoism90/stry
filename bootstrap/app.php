@@ -49,7 +49,7 @@ $app = Application::configure(basePath: $basePath)
             // Rate limiting
             RateLimiter::for('api', function (Request $request) {
                 return $request->user()
-                    ? Limit::perMinute(120)->by($request->user()->getKey())
+                    ? Limit::perMinute(240)->by($request->user()->getKey())
                     : Limit::perMinute(30)->by($request->ip());
             });
 
