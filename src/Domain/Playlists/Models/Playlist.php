@@ -241,7 +241,7 @@ class Playlist extends Model
     {
         return URL::temporarySignedRoute('api.play.manifest', now()->addHour(), [
             'playlist' => $this,
-            'path' => $path ?? '',
+            'path' => $path ?? 'index.mpd',
         ]);
     }
 
