@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Controllers;
 
+use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,7 @@ class VideoSaveController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        $group = $request->user()->toggleSaved($video);
+        $group = $request->user()->toggleInGroup($video, GroupType::Saved);
 
         Inertia::flash([
             'title' => (string) $video->name,
