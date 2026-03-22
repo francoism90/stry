@@ -4,18 +4,15 @@ import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Group } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   group: Group
-  types: SelectMenuItem[]
 }>()
 
 const form = useForm('put', update.url(props.group.id), {
   name: props.group.name ?? props.group.title,
   content: props.group.content || null,
-  type: props.group.type,
 })
 
 const onSubmit = () =>
@@ -65,18 +62,6 @@ const onSubmit = () =>
                     :model-modifiers="{ string: true, trim: true }"
                     autofocus
                     autocapitalize="words"
-                  />
-                </UFormField>
-
-                <UFormField
-                  label="Type"
-                  :error="form.errors.type"
-                >
-                  <USelect
-                    v-model="form.type"
-                    :items="types"
-                    :model-modifiers="{ nullable: true }"
-                    class="w-full"
                   />
                 </UFormField>
 
