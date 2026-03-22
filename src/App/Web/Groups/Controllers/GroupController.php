@@ -32,6 +32,8 @@ class GroupController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth'),
+            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }

@@ -21,7 +21,7 @@ it('allows admins to view the group index', function () {
 it('redirects guests from viewing the group index', function () {
     $response = $this->get(action([GroupController::class, 'index']));
 
-    $response->assertForbidden();
+    $response->assertRedirect();
 });
 
 it('allows regular users to view the group index', function () {
