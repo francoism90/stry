@@ -55,6 +55,13 @@ class GroupFactory extends Factory
         ]);
     }
 
+    public function custom(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => GroupType::Custom,
+        ]);
+    }
+
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
