@@ -67,8 +67,11 @@ Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) 
 **System Requirements:**
 
 - 🐧 Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
-- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
+- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
 - 🛠️ Basic tools: `git`, `bash`
+
+> [!NOTE]
+> Docker is not officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and can be made to work with minor adjustments.
 
 For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies.
 See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
