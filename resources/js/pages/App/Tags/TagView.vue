@@ -43,10 +43,14 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
           :links="links"
         />
 
-        <VideoFilters
-          :orders="orders"
-          :order="order"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <VideoFilters
+              :orders="orders"
+              :order="order"
+            />
+          </template>
+        </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"

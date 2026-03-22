@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Groups\Controllers;
 
-use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -20,6 +19,7 @@ class GroupToggleController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth'),
             new Middleware('verified'),
         ];
     }
@@ -27,16 +27,10 @@ class GroupToggleController extends Controller implements HasMiddleware
     public function __invoke(Group $group, Video $video, Request $request): RedirectResponse
     {
         Gate::authorize('view', $video);
+        Gate::authorize('update', $group);
 
-        // Get the currently authenticated user
-        $user = $request->user();
-
-        // Toggle the group association based on the type
-        $group = match ($group->type) {
-            GroupType::Liked => $user->toggleLiked($video),
-            GroupType::Saved => $user->toggleSaved($video),
-            default => abort(422, 'Invalid group type provided.'),
-        };
+        // Toggle the group association
+        $video->toggleGroup($group);
 
         $result = $group->hasGroupable($video)
             ? __('Added to :group.', ['group' => $group->title])

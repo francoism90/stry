@@ -6,6 +6,7 @@ namespace App\Api\Videos\Resources;
 
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Users\Resources\UserResource;
+use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -36,9 +37,9 @@ class VideoResource extends JsonResource
             'thumb' => $this->thumb,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
-            'liked' => $request->user()?->isLiked($this->resource),
-            'saved' => $request->user()?->isSaved($this->resource),
-            'viewed' => $request->user()?->isViewed($this->resource),
+            'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
+            'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
+            'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
             'titles' => $this->whenAppended('titles'),
             'summary' => $this->whenAppended('summary'),
             'content' => $this->whenAppended('content'),

@@ -1,0 +1,216 @@
+# Docker Compose — standalone (no reverse proxy).
+# All services expose ports directly on the host.
+#
+# Podman/rootless-specific options that have no Docker Compose equivalent:
+#   UserNS=keep-id, GroupAdd=keep-groups, AutoUpdate, AddDevice, LogDriver=none
+#
+# Build the application image first:
+#   docker build -f containers/Containerfile -t stry.build .
+#
+# Env files are expected at containers/config/*.env — create them from the
+# Quadlet config templates at containers/podman/systemd/stry/config/.
+
+name: stry
+
+services:
+    # ---------------------------------------------------------------------------
+    # Infrastructure
+    # ---------------------------------------------------------------------------
+
+    redis:
+        image: docker.io/valkey/valkey:latest
+        restart: always
+        command: valkey-server --save --loglevel warning
+        volumes:
+            - redis:/data
+        networks:
+            - stry
+        ports:
+            - '6379:6379'
+        healthcheck:
+            test: ['CMD', 'valkey-cli', 'ping']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    pgsql:
+        image: docker.io/library/postgres:latest
+        restart: always
+        shm_size: 256m
+        env_file:
+            # Variables: POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD
+            - ../config/postgres.env
+        volumes:
+            - pgsql:/var/lib/postgresql
+        networks:
+            - stry
+        ports:
+            - '5432:5432'
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    typesense:
+        image: docker.io/typesense/typesense:30.1
+        restart: always
+        env_file:
+            # Variables: TYPESENSE_DATA_DIR, TYPESENSE_API_KEY
+            - ../config/typesense.env
+        volumes:
+            - typesense:/data
+        networks:
+            - stry
+        ports:
+            - '8108:8108'
+        healthcheck:
+            test: ['CMD-SHELL', 'curl -sf http://localhost:8108/health || exit 1']
+            interval: 15s
+            timeout: 5s
+            retries: 5
+
+    rustfs:
+        image: docker.io/rustfs/rustfs:latest
+        restart: always
+        env_file:
+            # Variables: RUSTFS_ACCESS_KEY, RUSTFS_SECRET_KEY, etc.
+            - ../config/rustfs.env
+        volumes:
+            - rustfs-data:/data
+            - rustfs-logs:/logs
+        networks:
+            - stry
+        ports:
+            - '9000:9000' # S3 API
+            - '9001:9001' # Web console
+
+    mailpit:
+        # Development mail catcher — remove in production
+        image: docker.io/axllent/mailpit:latest
+        restart: always
+        environment:
+            MP_MAX_MESSAGES: '5000'
+            MP_DATABASE: /data/mailpit.db
+            MP_SMTP_AUTH_ACCEPT_ANY: '1'
+            MP_SMTP_AUTH_ALLOW_INSECURE: '1'
+        volumes:
+            - mailpit:/data
+        networks:
+            - stry
+        ports:
+            - '1025:1025' # SMTP
+            - '8025:8025' # Web UI
+
+    # ---------------------------------------------------------------------------
+    # Application (shared image, different roles via CONTAINER_ROLE)
+    # ---------------------------------------------------------------------------
+
+    app:
+        image: stry.build
+        build:
+            context: ../../
+            dockerfile: containers/Containerfile
+        restart: always
+        env_file:
+            - ../config/app.env
+        volumes:
+            - ${STORAGE_PATH:-../../storage}:/storage
+        networks:
+            - stry
+        ports:
+            - '8000:8000' # HTTP (FrankenPHP / Octane)
+            - '5173:5173' # Vite HMR (dev only)
+        depends_on:
+            redis:
+                condition: service_healthy
+            pgsql:
+                condition: service_healthy
+            typesense:
+                condition: service_healthy
+            rustfs:
+                condition: service_started
+
+    queue:
+        # Laravel Horizon worker
+        image: stry.build
+        restart: always
+        environment:
+            CONTAINER_ROLE: horizon
+        env_file:
+            - ../config/app.env
+        shm_size: 128m
+        # NOTE: GPU passthrough for video encoding (AddDevice=/dev/dri).
+        # Uncomment on Linux hosts with a compatible GPU:
+        # devices:
+        #   - /dev/dri:/dev/dri
+        volumes:
+            - ${STORAGE_PATH:-../../storage}:/storage
+        networks:
+            - stry
+        depends_on:
+            - app
+
+    schedule:
+        # Laravel scheduler
+        image: stry.build
+        restart: always
+        environment:
+            CONTAINER_ROLE: scheduler
+        env_file:
+            - ../config/app.env
+        volumes:
+            - ${STORAGE_PATH:-../../storage}:/storage
+        networks:
+            - stry
+        depends_on:
+            - app
+
+    reverb:
+        # Laravel Reverb WebSocket server
+        image: stry.build
+        restart: always
+        environment:
+            CONTAINER_ROLE: reverb
+        env_file:
+            - ../config/app.env
+        networks:
+            - stry
+        ports:
+            - '6001:6001'
+        depends_on:
+            - app
+
+    ssr:
+        # Inertia.js server-side rendering
+        image: stry.build
+        restart: always
+        environment:
+            CONTAINER_ROLE: ssr
+        env_file:
+            - ../config/app.env
+        networks:
+            - stry
+        ports:
+            - '13714:13714'
+        depends_on:
+            - app
+
+# -----------------------------------------------------------------------------
+# Named volumes
+# -----------------------------------------------------------------------------
+
+volumes:
+    redis:
+    pgsql:
+    typesense:
+    rustfs-data:
+    rustfs-logs:
+    mailpit:
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+
+networks:
+    stry:

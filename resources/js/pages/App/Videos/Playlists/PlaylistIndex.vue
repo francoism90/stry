@@ -29,13 +29,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
 <template>
   <Head :title="`${video.title} - Playlists`" />
 
-  <ActionBar>
-    <template #right>
-      <PlaylistCreateModal :video="video" />
-    </template>
-  </ActionBar>
-
   <UPageBody>
+    <ActionBar>
+      <template #left>
+        <PlaylistCreateModal :video="video" />
+      </template>
+    </ActionBar>
+
     <InfiniteScroll
       data="items"
       :buffer="200"

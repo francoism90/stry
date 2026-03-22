@@ -11,7 +11,7 @@ uses(RefreshDatabase::class);
 
 it('can create a custom group', function () {
     $user = User::factory()->create();
-    $group = $user->customGroup('foo');
+    $group = $user->findOrCreateGroup(GroupType::Custom, 'foo');
 
     expect($group->exists)->toBeTrue()
         ->and($group->user_id)->toBe($user->id)
@@ -21,7 +21,7 @@ it('can create a custom group', function () {
 
 it('can create like group', function () {
     $user = User::factory()->create();
-    $group = $user->likedGroup();
+    $group = $user->groupFor(GroupType::Liked);
 
     expect($group->exists)->toBeTrue()
         ->and($group->user_id)->toBe($user->id)
@@ -32,37 +32,33 @@ it('can attach and detach videos to saved group', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
 
-    // Attach using HasGroups method
-    $user->markAsSaved($video);
+    $user->markInGroup($video, GroupType::Saved);
 
-    $group = $user->savedGroup();
+    $group = $user->groupFor(GroupType::Saved);
     $group->refresh();
 
-    expect($user->isSaved($video))->toBeTrue();
+    expect($user->isInGroup($video, GroupType::Saved))->toBeTrue();
 
-    // Detach using HasGroups toggle method
-    $user->toggleSaved($video);
+    $user->toggleInGroup($video, GroupType::Saved);
 
     $group->refresh();
 
-    expect($user->isSaved($video))->toBeFalse();
+    expect($user->isInGroup($video, GroupType::Saved))->toBeFalse();
 });
 
 it('can attach and detach videos to like group', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
 
-    // Attach using HasGroups method
-    $user->markAsLiked($video);
+    $user->markInGroup($video, GroupType::Liked);
 
-    $group = $user->likedGroup();
+    $group = $user->groupFor(GroupType::Liked);
     $group->refresh();
 
-    expect($user->isLiked($video))->toBeTrue();
+    expect($user->isInGroup($video, GroupType::Liked))->toBeTrue();
 
-    // Detach using HasGroups toggle method
-    $user->toggleLiked($video);
+    $user->toggleInGroup($video, GroupType::Liked);
     $group->refresh();
 
-    expect($user->isLiked($video))->toBeFalse();
+    expect($user->isInGroup($video, GroupType::Liked))->toBeFalse();
 });

@@ -7,6 +7,7 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Videos\Responses\VideoGroupsProperty;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
@@ -30,6 +31,7 @@ class VideoController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('auth'),
             new Middleware('verified'),
             new Middleware('precognitive'),
         ];
@@ -67,6 +69,7 @@ class VideoController extends Controller implements HasMiddleware
             'video' => fn () => new VideoResourceProperty(video: $video),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
         ]);
     }

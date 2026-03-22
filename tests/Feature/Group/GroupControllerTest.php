@@ -21,7 +21,7 @@ it('allows admins to view the group index', function () {
 it('redirects guests from viewing the group index', function () {
     $response = $this->get(action([GroupController::class, 'index']));
 
-    $response->assertForbidden();
+    $response->assertRedirect();
 });
 
 it('allows regular users to view the group index', function () {
@@ -68,7 +68,7 @@ it('allows admins to create a group', function () {
     expect(Group::query()->where('name', 'My New Group')->exists())->toBeTrue();
 });
 
-it('forbids regular users from creating a group', function () {
+it('allows regular users to create a group', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post(action([GroupController::class, 'store']), [
@@ -76,7 +76,8 @@ it('forbids regular users from creating a group', function () {
         'type' => GroupType::Custom->value,
     ]);
 
-    $response->assertForbidden();
+    $response->assertRedirect();
+    expect(Group::query()->where('name', 'My Group')->exists())->toBeTrue();
 });
 
 it('validates required fields on store', function () {
@@ -85,7 +86,7 @@ it('validates required fields on store', function () {
 
     $response = $this->actingAs($user)->post(action([GroupController::class, 'store']), []);
 
-    $response->assertInvalid(['name', 'type']);
+    $response->assertInvalid(['name']);
 });
 
 // edit

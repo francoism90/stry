@@ -35,10 +35,14 @@ defineProps<{
 
     <template #body>
       <UPage>
-        <TagFilters
-          :types="types"
-          :type="type ?? undefined"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <TagFilters
+              :types="types"
+              :type="type ?? undefined"
+            />
+          </template>
+        </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"

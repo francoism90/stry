@@ -32,22 +32,22 @@ const createTranscode = () => router.post(VideoTranscodeController.url(props.vid
 <template>
   <Head :title="`${video.title} - Transcodes`" />
 
-  <ActionBar>
-    <template #right>
-      <TranscodeImportModal :video="video" />
-
-      <UButton
-        icon="i-lucide-plus"
-        label="Create transcode"
-        color="neutral"
-        variant="outline"
-        size="sm"
-        @click="createTranscode"
-      />
-    </template>
-  </ActionBar>
-
   <UPageBody>
+    <ActionBar>
+      <template #left>
+        <TranscodeImportModal :video="video" />
+
+        <UButton
+          icon="i-lucide-plus"
+          label="Create transcode"
+          color="neutral"
+          variant="outline"
+          size="sm"
+          @click="createTranscode"
+        />
+      </template>
+    </ActionBar>
+
     <InfiniteScroll
       data="items"
       :buffer="200"

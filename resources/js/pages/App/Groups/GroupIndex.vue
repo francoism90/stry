@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
 import GroupFilters from '@/components/Groups/GroupFilters.vue'
 import GroupList from '@/components/Groups/GroupList.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
@@ -21,10 +22,18 @@ defineProps<{
 
     <template #body>
       <UPage>
-        <GroupFilters
-          :orders="orders"
-          :order="order"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <GroupFilters
+              :orders="orders"
+              :order="order"
+            />
+          </template>
+
+          <template #right>
+            <GroupCreateModal />
+          </template>
+        </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"

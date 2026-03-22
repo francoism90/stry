@@ -90,8 +90,24 @@ watchDebounced(
               Results for <span class="text-default font-semibold">{{ search }}</span>
             </p>
 
+            <!-- No results at all -->
+            <div
+              v-if="!videos.length && !tags.length && !collections.length"
+              class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+            >
+              <UIcon
+                name="i-lucide-search-x"
+                class="text-muted size-10"
+              />
+              <p class="font-semibold">No results found</p>
+              <p class="text-muted text-sm">Try searching with different keywords.</p>
+            </div>
+
             <!-- Videos -->
-            <section class="flex flex-col gap-4">
+            <section
+              v-if="videos.length"
+              class="flex flex-col gap-4"
+            >
               <div class="flex items-center justify-between">
                 <p class="font-semibold">Videos</p>
 
@@ -105,23 +121,16 @@ watchDebounced(
                 </UButton>
               </div>
 
-              <VideoList
-                v-if="videos.length"
-                :items="videos"
-              />
-
-              <p
-                v-else
-                class="text-muted text-sm"
-              >
-                No videos found.
-              </p>
+              <VideoList :items="videos" />
             </section>
 
-            <USeparator />
+            <USeparator v-if="videos.length && (tags.length || collections.length)" />
 
             <!-- Tags -->
-            <section class="flex flex-col gap-4">
+            <section
+              v-if="tags.length"
+              class="flex flex-col gap-4"
+            >
               <div class="flex items-center justify-between">
                 <p class="font-semibold">Tags</p>
 
@@ -135,23 +144,16 @@ watchDebounced(
                 </UButton>
               </div>
 
-              <TagList
-                v-if="tags.length"
-                :items="tags"
-              />
-
-              <p
-                v-else
-                class="text-muted text-sm"
-              >
-                No tags found.
-              </p>
+              <TagList :items="tags" />
             </section>
 
-            <USeparator />
+            <USeparator v-if="tags.length && collections.length" />
 
             <!-- Collections -->
-            <section class="flex flex-col gap-4">
+            <section
+              v-if="collections.length"
+              class="flex flex-col gap-4"
+            >
               <div class="flex items-center justify-between">
                 <p class="font-semibold">Collections</p>
 
@@ -165,17 +167,7 @@ watchDebounced(
                 </UButton>
               </div>
 
-              <GroupList
-                v-if="collections.length"
-                :items="collections"
-              />
-
-              <p
-                v-else
-                class="text-muted text-sm"
-              >
-                No collections found.
-              </p>
+              <GroupList :items="collections" />
             </section>
           </template>
         </UPageBody>
