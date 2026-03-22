@@ -210,6 +210,7 @@ export type Group = Model & {
   type: string | null
   state: ModelState
   videos?: number
+  has?: boolean
 }
 
 export type GroupCollection = Omit<Paginator, 'data'> & {

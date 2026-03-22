@@ -16,7 +16,6 @@ use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,12 +30,14 @@ use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\ModelStates\HasStates;
+use Spatie\Translatable\HasTranslations;
 
 class Group extends Model implements HasMedia, Sortable
 {
     use BroadcastsEvents;
     use HasFactory;
     use HasStates;
+    use HasTranslations;
     use HasUlids;
     use InteractsWithMedia;
     use InteractsWithUser;
@@ -76,6 +77,13 @@ class Group extends Model implements HasMedia, Sortable
         'sort_when_creating' => true,
     ];
 
+    /**
+     * @var array<int, string>
+     */
+    public array $translatable = [
+        'content',
+    ];
+
     protected static function newFactory(): GroupFactory
     {
         return GroupFactory::new();
@@ -86,7 +94,6 @@ class Group extends Model implements HasMedia, Sortable
         return [
             'state' => GroupState::class,
             'type' => GroupType::class,
-            'content' => AsArrayObject::class,
             'options' => AsArrayObject::class,
             'expires_at' => AsDateTime::class,
             'published_at' => AsDateTime::class,

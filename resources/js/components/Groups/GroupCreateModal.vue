@@ -4,7 +4,6 @@ import { useForm } from 'laravel-precognition-vue-inertia'
 
 const form = useForm('post', store.url(), {
   name: '',
-  type: 'custom',
   content: null,
 })
 

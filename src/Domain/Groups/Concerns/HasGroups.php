@@ -9,6 +9,7 @@ use Domain\Groups\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 trait HasGroups
 {
@@ -37,6 +38,28 @@ trait HasGroups
             : ['type' => $type];
 
         return $this->groups()->firstOrCreate($criteria, $attributes ?? []);
+    }
+
+    public function customGroups(): HasMany
+    {
+        return $this->groups()
+            ->where('type', GroupType::Custom)
+            ->orderBy('name');
+    }
+
+    /**
+     * @return Collection<int, array{id: mixed, name: string, has: bool}>
+     */
+    public function customGroupsFor(Model $model): Collection
+    {
+        return $this->customGroups()
+            ->forModel($model)
+            ->get()
+            ->map(fn (Group $group) => [
+                'id' => $group->getRouteKey(),
+                'name' => (string) $group->name,
+                'has' => (bool) $group->modelable,
+            ]);
     }
 
     public function isLiked(Model $model): bool

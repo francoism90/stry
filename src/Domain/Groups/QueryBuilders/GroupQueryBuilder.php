@@ -6,6 +6,7 @@ namespace Domain\Groups\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class GroupQueryBuilder extends Builder
 {
@@ -32,5 +33,13 @@ class GroupQueryBuilder extends Builder
     public function viewed(): self
     {
         return $this->where('type', GroupType::Viewed);
+    }
+
+    public function forModel(Model $model): self
+    {
+        return $this->withExists('groupables as modelable', fn (Builder $query) => $query
+            ->where('groupable_type', $model->getMorphClass())
+            ->where('groupable_id', $model->getKey())
+        );
     }
 }

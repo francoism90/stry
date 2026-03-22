@@ -27,6 +27,7 @@ class GroupToggleController extends Controller implements HasMiddleware
     public function __invoke(Group $group, Video $video, Request $request): RedirectResponse
     {
         Gate::authorize('view', $video);
+        Gate::authorize('update', $group);
 
         // Get the currently authenticated user
         $user = $request->user();
@@ -35,6 +36,7 @@ class GroupToggleController extends Controller implements HasMiddleware
         $group = match ($group->type) {
             GroupType::Liked => $user->toggleLiked($video),
             GroupType::Saved => $user->toggleSaved($video),
+            GroupType::Custom => $video->toggleGroup($group),
             default => abort(422, 'Invalid group type provided.'),
         };
 
