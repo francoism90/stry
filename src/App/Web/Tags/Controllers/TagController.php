@@ -51,7 +51,6 @@ class TagController extends Controller implements HasMiddleware
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
             'types' => fn () => TagType::options(),
-            'can' => fn () => ['create' => Gate::check('create', Tag::class)],
         ]);
     }
 

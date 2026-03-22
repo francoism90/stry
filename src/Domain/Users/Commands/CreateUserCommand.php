@@ -17,7 +17,7 @@ class CreateUserCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'users:create';
+    protected $signature = 'users:create {--admin : Assign the admin role to the user} {--super-admin : Assign the super-admin role to the user}';
 
     /**
      * @var string
@@ -42,6 +42,12 @@ class CreateUserCommand extends Command implements Isolatable
         );
 
         $user = app(CreateNewUser::class)->create(compact('name', 'email', 'password'));
+
+        if ($this->option('super-admin')) {
+            $user->assignRole('super-admin');
+        } elseif ($this->option('admin')) {
+            $user->assignRole('admin');
+        }
 
         info("User has been created successfully ({$user->email}).");
     }
