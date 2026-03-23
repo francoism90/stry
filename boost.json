@@ -1,6 +1,7 @@
 {
     "agents": [
-        "copilot"
+        "copilot",
+        "junie"
     ],
     "guidelines": true,
     "herd_mcp": false,
@@ -10,7 +11,8 @@
         "laravel/fortify",
         "spatie/laravel-medialibrary",
         "spatie/laravel-permission",
-        "spatie/laravel-responsecache"
+        "spatie/laravel-responsecache",
+        "spatie/boost-spatie-guidelines"
     ],
     "sail": false,
     "skills": [
@@ -25,6 +27,7 @@
         "fortify-development",
         "medialibrary-development",
         "laravel-permission-development",
-        "responsecache-development"
+        "responsecache-development",
+        "spatie-laravel-php-standards"
     ]
 }
