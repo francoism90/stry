@@ -4,7 +4,7 @@
 
 [![Tests](https://github.com/francoism90/stry/actions/workflows/tests.yml/badge.svg)](https://github.com/francoism90/stry/actions/workflows/tests.yml)
 [![License](https://img.shields.io/github/license/francoism90/stry)](LICENSE)
-[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?logo=laravel)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?logo=laravel)](https://laravel.com)
 [![Inertia](https://img.shields.io/badge/Inertia-2.x-9553E9?logo=inertia)](https://inertiajs.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
