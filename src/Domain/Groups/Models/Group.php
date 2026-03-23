@@ -85,11 +85,6 @@ class Group extends Model implements HasMedia, Sortable
         'content',
     ];
 
-    protected static function newFactory(): GroupFactory
-    {
-        return GroupFactory::new();
-    }
-
     protected function casts(): array
     {
         return [
@@ -98,6 +93,7 @@ class Group extends Model implements HasMedia, Sortable
             'options' => AsArrayObject::class,
             'expires_at' => AsDateTime::class,
             'published_at' => AsDateTime::class,
+            'deleted_at' => AsDateTime::class,
         ];
     }
 
@@ -109,6 +105,11 @@ class Group extends Model implements HasMedia, Sortable
     public function newCollection(array $models = []): GroupCollection
     {
         return new GroupCollection($models);
+    }
+
+    protected static function newFactory(): GroupFactory
+    {
+        return GroupFactory::new();
     }
 
     public function uniqueIds(): array
@@ -226,6 +227,7 @@ class Group extends Model implements HasMedia, Sortable
             'state' => (string) $this->state,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'deleted_at' => (int) $this->deleted_at?->getTimestamp(),
         ];
     }
 
