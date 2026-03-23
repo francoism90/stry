@@ -46,7 +46,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 | Category              | Technology                                                                          |
 | --------------------- | ----------------------------------------------------------------------------------- |
-| **Backend**           | [Laravel 12.x](https://laravel.com/)                                                |
+| **Backend**           | [Laravel 13.x](https://laravel.com/)                                                |
 | **Frontend**          | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
 | **Containers**        | [Podman 5.x](https://podman.io/)                                                    |
