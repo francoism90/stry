@@ -8,7 +8,6 @@ use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -77,6 +76,10 @@ class Media extends BaseMedia
      */
     public function broadcastOn(string $event): array
     {
+        if ($event === 'updated') {
+            return [];
+        }
+
         return array_filter([$this, $this->model]);
     }
 
@@ -93,23 +96,6 @@ class Media extends BaseMedia
     public function broadcastWith(string $event): array
     {
         return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastWhen(): bool
-    {
-        if ($this->wasRecentlyCreated) {
-            return true;
-        }
-
-        return Collection::make($this->getChanges())
-            ->keys()
-            ->diff(['generated_conversions', 'responsive_images', 'updated_at'])
-            ->isNotEmpty();
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
     }
 
     public function broadcastAfterCommit(): bool
