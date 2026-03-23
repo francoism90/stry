@@ -66,23 +66,26 @@ class Groupable extends MorphPivot
         return $this->belongsTo(Group::class, 'group_id');
     }
 
+    public function shouldBeSearchable(): bool
+    {
+        return $this->groupable !== null;
+    }
+
     public function toSearchableArray(): array
     {
-        // Build initial array with common fields
-        $array = [
+        $groupableType = (string) $this->groupable_type;
+        $groupableId = (string) $this->groupable_id;
+
+        return [
             'id' => (string) $this->getScoutKey(),
             'group_id' => (string) $this->group_id,
+            'groupable_id' => $groupableId,
+            'groupable_type' => $groupableType,
+            "{$groupableType}_id" => $groupableId,
             'order_column' => (int) $this->order_column,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
-
-        // Add polymorphic fields if the relationship exists
-        if ($this->groupable?->exists()) {
-            $array["{$this->groupable_type}_id"] = (string) $this->groupable_id;
-        }
-
-        return $array;
     }
 
     public function makeSearchableUsing(Collection $models): Collection

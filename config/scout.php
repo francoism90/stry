@@ -543,22 +543,40 @@ return [
                             'reference' => 'groups.id',
                         ],
                         [
+                            'name' => 'groupable_id',
+                            'type' => 'string',
+                            'sort' => true,
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'groupable_type',
+                            'type' => 'string',
+                            'sort' => true,
+                            'facet' => true,
+                        ],
+                        [
                             'name' => 'video_id',
                             'type' => 'string',
                             'reference' => 'videos.id',
                             'optional' => true,
+                            'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'user_id',
                             'type' => 'string',
                             'reference' => 'users.id',
                             'optional' => true,
+                            'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'tag_id',
                             'type' => 'string',
                             'reference' => 'tags.id',
                             'optional' => true,
+                            'sort' => true,
+                            'facet' => true,
                         ],
                         [
                             'name' => 'order_column',
@@ -583,7 +601,8 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'group_id, video_id, user_id, tag_id',
+                    'query_by' => 'groupable_id, groupable_type',
+                    'facet_by' => 'groupable_type, video_id, user_id, tag_id',
                 ],
 
             ],
