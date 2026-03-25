@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Tags/Controllers/TagController';
-import { useForm } from '@inertiajs/vue3';
-import type { SelectMenuItem } from '@nuxt/ui';
+import { store } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { useForm } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   types: SelectMenuItem[] | undefined

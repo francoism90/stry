@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController';
-import type { Video } from '@/types';
-import { useForm } from '@inertiajs/vue3';
+import { store } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
+import type { Video } from '@/types'
+import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   video: Video

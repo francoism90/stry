@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { router, useForm } from '@inertiajs/vue3';
-import { watchDebounced } from '@vueuse/core';
+import { router, useForm } from '@inertiajs/vue3'
+import { watchDebounced } from '@vueuse/core'
 
 const props = defineProps<{
   search: string
