@@ -18,6 +18,7 @@ use Foundation\Http\Middlewares\EnsureRequestHasPrivateSubnet;
 use Foundation\Http\Middlewares\SetCacheHeaders;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
@@ -92,6 +93,9 @@ $app = Application::configure(basePath: $basePath)
         $middleware->statefulApi();
         $middleware->throttleWithRedis();
         $middleware->redirectGuestsTo(fn () => route('login'));
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        //
     })
     ->withEvents(discover: [
         base_path('src/Domain/*/Listeners'),
