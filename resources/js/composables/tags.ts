@@ -8,7 +8,7 @@ import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } 
 export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   const state = ref<TagCollection>()
   const ready = ref(false)
-  const http = useHttp<{}, TagCollection>({})
+  const http = useHttp<object, TagCollection>({})
 
   const items = computed(() => unique([...toValue(tags || []), ...(state.value?.data || [])]))
 
