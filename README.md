@@ -5,7 +5,7 @@
 [![Tests](https://github.com/francoism90/stry/actions/workflows/tests.yml/badge.svg)](https://github.com/francoism90/stry/actions/workflows/tests.yml)
 [![License](https://img.shields.io/github/license/francoism90/stry)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?logo=laravel)](https://laravel.com)
-[![Inertia](https://img.shields.io/badge/Inertia-2.x-9553E9?logo=inertia)](https://inertiajs.com)
+[![Inertia](https://img.shields.io/badge/Inertia-3.x-9553E9?logo=inertia)](https://inertiajs.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
 [![Podman](https://img.shields.io/badge/Podman-5.x-892CA0?logo=podman)](https://podman.io)
@@ -47,7 +47,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 | Category              | Technology                                                                          |
 | --------------------- | ----------------------------------------------------------------------------------- |
 | **Backend**           | [Laravel 13.x](https://laravel.com/)                                                |
-| **Frontend**          | [Inertia 2.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
+| **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
 | **Containers**        | [Podman 5.x](https://podman.io/)                                                    |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
