@@ -1,3 +1,4 @@
+import inertia from '@inertiajs/vite'
 import { wayfinder } from '@laravel/vite-plugin-wayfinder'
 import ui from '@nuxt/ui/vite'
 import tailwindcss from '@tailwindcss/vite'
@@ -35,6 +36,7 @@ export default defineConfig(({ mode }) => {
         ssr: 'resources/js/ssr.ts',
         refresh: true,
       }),
+      inertia(),
       vue({
         template: {
           transformAssetUrls: {

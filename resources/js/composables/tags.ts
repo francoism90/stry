@@ -1,8 +1,8 @@
 import { index } from '@/actions/App/Api/Tags/Controllers/TagController'
 import type { Tag, TagCollection } from '@/types'
-import { http } from '@/utils/http'
 import { unique } from '@/utils/model'
 import { type RouteQueryOptions } from '@/wayfinder'
+import { http } from '@inertiajs/vue3'
 import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
 export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
@@ -15,7 +15,7 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
     try {
       state.value = Object.assign(
         state.value || {},
-        await http.get<TagCollection>(index.url(options)).then((r) => r.data),
+        JSON.parse((await http.getClient().request({ method: 'GET', url: index.url(options) })).data) as TagCollection,
       )
     } finally {
       ready.value = true

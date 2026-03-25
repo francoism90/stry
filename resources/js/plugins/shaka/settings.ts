@@ -1,6 +1,6 @@
 import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import type { PlayerSettings } from '@/types'
-import { http } from '@/utils/http'
+import { http } from '@inertiajs/vue3'
 
 export const defaults: PlayerSettings = {
   autoplay: true,
@@ -15,5 +15,5 @@ export const defaults: PlayerSettings = {
 }
 
 export function updatePlayerSettings(settings: Partial<PlayerSettings>): void {
-  http.patch(UserSettingsController.url(), { player: settings })
+  http.getClient().request({ method: 'PATCH', url: UserSettingsController.url(), data: { player: settings } })
 }

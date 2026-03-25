@@ -1,7 +1,6 @@
 import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import type { UserSettings } from '@/types'
-import { http } from '@/utils/http'
-import { usePage } from '@inertiajs/vue3'
+import { http, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useSettings<N extends keyof UserSettings>(namespace: N) {
@@ -19,7 +18,7 @@ export function useSettings<N extends keyof UserSettings>(namespace: N) {
   }
 
   function update(data: Partial<S>): void {
-    http.patch(UserSettingsController.url(), { [namespace]: data })
+    http.getClient().request({ method: 'PATCH', url: UserSettingsController.url(), data: { [namespace]: data } })
   }
 
   return { settings, get, only, update }
