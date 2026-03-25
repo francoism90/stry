@@ -16,6 +16,7 @@
     ],
     "sail": false,
     "skills": [
+        "laravel-best-practices",
         "configuring-horizon",
         "scout-development",
         "wayfinder-development",
