@@ -5,9 +5,8 @@ import { useTags } from '@/composables/tags'
 import TagLayout from '@/layouts/App/TagLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Tag, TagMenuItem } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
-import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   tag: Tag
@@ -18,7 +17,7 @@ defineOptions({ layout: [DefaultLayout, TagLayout] })
 
 const { items, filter } = useTags(props.tag.related || [])
 
-const form = useForm('put', update.url(props.tag.id), {
+const form = useForm(update(props.tag.id), {
   name: props.tag.name,
   type: props.tag.type || null,
   related: props.tag.related || [],

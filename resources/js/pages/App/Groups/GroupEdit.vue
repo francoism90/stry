@@ -3,14 +3,13 @@ import { show, update } from '@/actions/App/Web/Groups/Controllers/GroupControll
 import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Group } from '@/types'
-import { Head } from '@inertiajs/vue3'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   group: Group
 }>()
 
-const form = useForm('put', update.url(props.group.id), {
+const form = useForm(update(props.group.id), {
   name: props.group.name ?? props.group.title,
   content: props.group.content || null,
 })

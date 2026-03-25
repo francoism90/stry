@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { SelectMenuItem } from '@nuxt/ui'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { useForm } from '@inertiajs/vue3';
+import type { SelectMenuItem } from '@nuxt/ui';
 
 const props = defineProps<{
   type?: string | undefined

@@ -2,12 +2,11 @@
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { update } from '@/routes/user-password'
-import { Head } from '@inertiajs/vue3'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { Head, useForm } from '@inertiajs/vue3'
 
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
-const form = useForm('put', update.url(), {
+const form = useForm(update(), {
   current_password: '',
   password: '',
   password_confirmation: '',

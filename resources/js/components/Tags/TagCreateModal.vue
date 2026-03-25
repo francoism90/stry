@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Tags/Controllers/TagController'
-import type { SelectMenuItem } from '@nuxt/ui'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { store } from '@/actions/App/Web/Tags/Controllers/TagController';
+import { useForm } from '@inertiajs/vue3';
+import type { SelectMenuItem } from '@nuxt/ui';
 
 defineProps<{
   types: SelectMenuItem[] | undefined
 }>()
 
-const form = useForm('post', store.url(), {
+const form = useForm(store(), {
   name: '',
   type: null,
   description: null,

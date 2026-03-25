@@ -3,9 +3,8 @@ import { store } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistControl
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Video } from '@/types'
-import { Head } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
-import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   video: Video
@@ -14,7 +13,7 @@ const props = defineProps<{
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
-const form = useForm('post', store.url(props.video.id), {
+const form = useForm(store(props.video.id), {
   type: null as string | null,
 })
 

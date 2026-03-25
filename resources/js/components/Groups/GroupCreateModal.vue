@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { store } from '@/actions/App/Web/Groups/Controllers/GroupController'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { useForm } from '@inertiajs/vue3'
 
-const form = useForm('post', store.url(), {
+const form = useForm(store(), {
   name: '',
   content: null,
 })

@@ -4,8 +4,7 @@ import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { update } from '@/routes/user-profile-information'
 import type { User } from '@/types'
-import { Head } from '@inertiajs/vue3'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   user: User
@@ -15,7 +14,7 @@ defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
 const { logOut } = useAuth()
 
-const form = useForm('put', update.url(), {
+const form = useForm(update(), {
   name: props.user.name || '',
   email: props.user.email || '',
 })
