@@ -1,6 +1,6 @@
 import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import type { PlayerSettings } from '@/types'
-import { http } from '@inertiajs/vue3'
+import { useHttp } from '@inertiajs/vue3'
 
 export const defaults: PlayerSettings = {
   autoplay: true,
@@ -14,6 +14,13 @@ export const defaults: PlayerSettings = {
   caption_language: 'en',
 }
 
-export function updatePlayerSettings(settings: Partial<PlayerSettings>): void {
-  http.getClient().request({ method: 'PATCH', url: UserSettingsController.url(), data: { player: settings } })
+export function usePlayerSettings() {
+  const http = useHttp({ player: null } as { player: Partial<PlayerSettings> | null })
+
+  function updatePlayerSettings(settings: Partial<PlayerSettings>): void {
+    http.player = settings
+    http.patch(UserSettingsController.url())
+  }
+
+  return { updatePlayerSettings }
 }

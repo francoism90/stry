@@ -1,6 +1,6 @@
 import { useSettings } from '@/composables/settings'
 import { configureOverlay } from '@/plugins/shaka'
-import { updatePlaylistSession } from '@/plugins/shaka/session'
+import { usePlaylistSession } from '@/plugins/shaka/session'
 import type { Playlist } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
@@ -15,6 +15,7 @@ export function useShaka(
   const startTime = computed(() => usePage().props.progress as number | null)
 
   const { get, update } = useSettings('player')
+  const { updatePlaylistSession } = usePlaylistSession()
   const el = computed(() => toValue(element))
 
   const player = shallowRef<shaka.Player>()
