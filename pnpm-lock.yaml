@@ -12,7 +12,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(axios@1.13.6)(vite@8.0.2(@types/node@25.5.0)(esbuild@0.27.4)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))
       '@inertiajs/vue3':
-        specifier: ^3.0
+        specifier: ^3.0.0
         version: 3.0.0(axios@1.13.6)(vue@3.5.31(typescript@6.0.2))
       '@laravel/echo-vue':
         specifier: ^2.3.1
@@ -3821,6 +3821,7 @@ packages:
 
   shaka-player@5.0.8:
     resolution: {integrity: sha512-f886rKRvQ0IKhWGk+rINS++YTjTJyc4DT5YypTsHW6wiNV9fiHi2n35+lg5R+hj9RfhqkmJHMjJb3gprUTNa8w==}
+    engines: {node: '>=18'}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
