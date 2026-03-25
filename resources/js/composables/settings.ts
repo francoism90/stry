@@ -1,13 +1,13 @@
 import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
 import type { UserSettings } from '@/types'
-import { http } from '@/utils/http'
-import { usePage } from '@inertiajs/vue3'
+import { useHttp, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useSettings<N extends keyof UserSettings>(namespace: N) {
   type S = UserSettings[N]
 
   const settings = computed(() => usePage().props.auth?.settings?.[namespace] as S | undefined)
+  const http = useHttp({})
 
   function get<K extends keyof S>(key: K, defaultValue: S[K] | null = null): S[K] | null {
     if (!settings.value) return defaultValue
@@ -19,7 +19,7 @@ export function useSettings<N extends keyof UserSettings>(namespace: N) {
   }
 
   function update(data: Partial<S>): void {
-    http.patch(UserSettingsController.url(), { [namespace]: data })
+    http.transform(() => ({ [namespace]: data })).patch(UserSettingsController.url())
   }
 
   return { settings, get, only, update }

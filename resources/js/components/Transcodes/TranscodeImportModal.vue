@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import VideoTranscodedController from '@/actions/App/Api/Videos/Controllers/VideoTranscodedController';
-import type { Video } from '@/types';
-import { router } from '@inertiajs/vue3';
+import VideoTranscodedController from '@/actions/App/Api/Videos/Controllers/VideoTranscodedController'
+import type { Video } from '@/types'
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
   video: Video

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
-import { useForm } from 'laravel-precognition-vue-inertia'
 
 const props = defineProps<{
   search: string
@@ -10,7 +9,7 @@ const props = defineProps<{
   backHref: string
 }>()
 
-const form = useForm('get', '', {
+const form = useForm({
   search: props.search,
 })
 

@@ -5,9 +5,8 @@ import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Group, Tag, Video } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
-import { useForm } from 'laravel-precognition-vue-inertia'
 
 defineOptions({ layout: DefaultLayout })
 
@@ -18,7 +17,7 @@ const props = defineProps<{
   collections: Group[]
 }>()
 
-const form = useForm('get', '/search', {
+const form = useForm({
   search: props.search,
 })
 

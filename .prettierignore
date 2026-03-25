@@ -6,7 +6,8 @@
 *.sql
 *.sqlite
 *.sql.gz
-.github
+/.github
+/.junie
 /AGENTS.md
 /boost.json
 /node_modules

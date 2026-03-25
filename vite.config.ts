@@ -1,3 +1,4 @@
+import inertia from '@inertiajs/vite'
 import { wayfinder } from '@laravel/vite-plugin-wayfinder'
 import ui from '@nuxt/ui/vite'
 import tailwindcss from '@tailwindcss/vite'
@@ -32,8 +33,13 @@ export default defineConfig(({ mode }) => {
     plugins: [
       laravel({
         input: ['resources/js/app.ts'],
-        ssr: 'resources/js/ssr.ts',
         refresh: true,
+      }),
+      inertia({
+        ssr: {
+          port: 13714,
+          cluster: true,
+        },
       }),
       vue({
         template: {
@@ -83,8 +89,7 @@ export default defineConfig(({ mode }) => {
               chunk('icons', ['@iconify']) ??
               chunk('ui', ['@nuxt/ui', '@nuxt/icon', 'reka-ui', '@internationalized']) ??
               chunk('core', ['vue', '@inertiajs', '@vueuse']) ??
-              chunk('broadcasting', ['pusher-js', 'laravel-echo', '@laravel/echo-vue']) ??
-              chunk('http', ['axios'])
+              chunk('broadcasting', ['pusher-js', 'laravel-echo', '@laravel/echo-vue'])
             )
           },
         },

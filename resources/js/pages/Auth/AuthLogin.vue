@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthLayout from '@/layouts/AuthLayout.vue'
-import { useForm } from 'laravel-precognition-vue-inertia'
+import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   action: string

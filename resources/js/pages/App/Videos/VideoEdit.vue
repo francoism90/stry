@@ -7,9 +7,8 @@ import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
-import { Head } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
-import { useForm } from 'laravel-precognition-vue-inertia'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -22,7 +21,7 @@ defineOptions({ layout: [DefaultLayout, VideoLayout] })
 const { toDateTime, fromDateTime, nowDateTime } = useDateTime()
 const { items, filter } = useTags(props.video.tags || [])
 
-const form = useForm('put', update.url(props.video.id), {
+const form = useForm(update(props.video.id), {
   name: props.video.name,
   episode: props.video.episode || null,
   season: props.video.season || null,
