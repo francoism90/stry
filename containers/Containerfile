@@ -74,12 +74,12 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Install dependencies
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    python3 ca-certificates libssl3 curl wget unzip zip git \
+    python3 ca-certificates libssl3 libcap2-bin curl wget unzip zip git \
     nano openssh-client postgresql-common awscli \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
-    libavif-bin jpegoptim optipng pngquant gifsicle libcap2-bin
+    libavif-bin jpegoptim optipng pngquant gifsicle
 
 # Add PostgreSQL APT repository and install client
 RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \

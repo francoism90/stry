@@ -409,21 +409,28 @@ If you do not want a container to start automatically on boot, you can remove th
 
 Each container file ships with `Memory=` and `ShmSize=` limits tuned for a **~16 GB development machine** (12 GB total cap across all services). The current defaults are:
 
-| Container                             | Dev Memory | Dev ShmSize | Prod Memory | Notes                                   |
-| ------------------------------------- | ---------- | ----------- | ----------- | --------------------------------------- |
-| `stry` (main app / Octane)            | 2 GB       | 128 MB      | 4–6 GB      | Scale with Octane worker count          |
-| `stry-queue` (Horizon + FFmpeg)       | 3 GB       | 256 MB      | 6–8 GB      | One concurrent FFmpeg job needs ~1–2 GB |
-| `stry-pgsql` (PostgreSQL)             | 2 GB       | 512 MB      | 4–8 GB      | —                                       |
-| `stry-typesense` (Typesense search)   | 1 GB       | default     | 2–4 GB      | Grows with index size                   |
-| `stry-rustfs` (RustFS object storage) | 1 GB       | default     | 2–4 GB      | More concurrent S3 operations           |
-| `stry-redis` (Valkey cache)           | 512 MB     | default     | 1–2 GB      | Update `--maxmemory` to match           |
-| `stry-ssr` (Node.js SSR)              | 512 MB     | default     | 1–2 GB      | More concurrent SSR renders             |
-| `stry-schedule` (Laravel scheduler)   | 512 MB     | default     | 512 MB–1 GB | Stays lightweight unless jobs are heavy |
-| `stry-reverb` (WebSocket server)      | 512 MB     | default     | 1–2 GB      | ~1 MB per 1 000 concurrent connections  |
-| `stry-mailpit` (dev mail)             | 256 MB     | default     | —           | Dev only; not used in production        |
-| `proxy` (Caddy reverse proxy)         | 256 MB     | default     | 512 MB–1 GB | Real traffic + TLS session cache        |
+| Container                             | Memory | ShmSize | Notes                                                                     |
+| ------------------------------------- | ------ | ------- | ------------------------------------------------------------------------- |
+| `stry` (main app / Octane)            | 2 GB   | 128 MB  | Scale with Octane worker count; increase to 4–6 GB in production          |
+| `stry-queue` (Horizon + FFmpeg)       | 3 GB   | 256 MB  | One concurrent FFmpeg job needs ~1–2 GB; increase to 6–8 GB in production |
+| `stry-pgsql` (PostgreSQL)             | 2 GB   | 512 MB  | Increase to 4–8 GB in production                                          |
+| `stry-typesense` (Typesense search)   | 1 GB   | default | Grows with index size; increase to 2–4 GB in production                   |
+| `stry-rustfs` (RustFS object storage) | 1 GB   | default | Increase to 2–4 GB in production                                          |
+| `stry-redis` (Valkey cache)           | 512 MB | default | Update `--maxmemory` to match; increase to 1–2 GB in production           |
+| `stry-ssr` (Node.js SSR)              | 512 MB | default | Increase to 1–2 GB in production                                          |
+| `stry-schedule` (Laravel scheduler)   | 512 MB | default | Stays lightweight; increase to 512 MB–1 GB in production                  |
+| `stry-reverb` (WebSocket server)      | 512 MB | default | ~1 MB per 1 000 concurrent connections; increase to 1–2 GB in production  |
+| `stry-mailpit` (dev mail)             | 256 MB | default | Dev only; not used in production                                          |
+| `proxy` (Caddy reverse proxy)         | 256 MB | default | Increase to 512 MB–1 GB in production                                     |
 
 > "default" ShmSize means the Podman default of **64 MB** applies (no explicit value set).
+
+> [!NOTE]
+> **ShmSize in production:** The default 64 MB is sufficient for most containers. Increase it for:
+>
+> - **`stry-pgsql`** — keep `ShmSize=` at least as large as `shared_buffers` in your PostgreSQL config (e.g. `ShmSize=2g` if `shared_buffers=2GB`).
+> - **`stry-queue`** — FFmpeg uses shared memory for inter-process video frame passing; increase to 512 MB–1 GB if processing many concurrent jobs.
+> - Any container that logs `ENOSPC` or `shmget` errors under load.
 
 > [!IMPORTANT]
 > If your machine has **more or less RAM**, or if a container is OOM-killed during heavy workloads
