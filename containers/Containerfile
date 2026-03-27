@@ -79,7 +79,7 @@ RUN apt-get update && apt-get upgrade -y \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
-    libavif-bin jpegoptim optipng pngquant gifsicle
+    libavif-bin jpegoptim optipng pngquant gifsicle libcap2-bin
 
 # Add PostgreSQL APT repository and install client
 RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
@@ -102,6 +102,9 @@ RUN ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-stream
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Strip file capabilities from frankenphp (not needed on port 8000, and incompatible with NoNewPrivileges)
+RUN setcap -r /usr/local/bin/frankenphp
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
