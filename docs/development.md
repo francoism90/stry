@@ -57,12 +57,11 @@ CONTAINER_ENV=development
 Add this line to each container file:
 
 ```diff
-+Volume=${APP_PATH}:/app:rw,z,U
-Volume=${MEDIA_PATH}:/storage/media:rw,z,U
++Volume=${APP_PATH}:/app:rw,z
 ```
 
 > [!IMPORTANT]
-> The volume `U` flag should **only** be appended in `stry.container`.
+> Append the `U` flag **only** in `stry.container`: `Volume=${APP_PATH}:/app:rw,z,U`
 
 **Step 3:** Remove SSR dependency:
 
