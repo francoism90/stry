@@ -4,7 +4,9 @@ Description=Redis container
 [Container]
 Image=docker.io/valkey/valkey:latest
 AutoUpdate=registry
-Exec=valkey-server --save --loglevel warning
+Exec=valkey-server --save --loglevel warning --maxmemory 480mb --maxmemory-policy allkeys-lru
+NoNewPrivileges=true
+Memory=512m
 Volume=stry-redis:/data:rw,Z,U
 Network=stry.network
 ExposeHostPort=6379

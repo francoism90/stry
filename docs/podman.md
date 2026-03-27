@@ -405,6 +405,57 @@ If you do not want a container to start automatically on boot, you can remove th
 
 ---
 
+## 🧠 Resource Limits
+
+Each container file ships with `Memory=` and `ShmSize=` limits tuned for a **~16 GB development machine** (12 GB total cap across all services). The current defaults are:
+
+| Container                             | Dev Memory | Dev ShmSize | Prod Memory | Notes                                   |
+| ------------------------------------- | ---------- | ----------- | ----------- | --------------------------------------- |
+| `stry` (main app / Octane)            | 2 GB       | 128 MB      | 4–6 GB      | Scale with Octane worker count          |
+| `stry-queue` (Horizon + FFmpeg)       | 3 GB       | 256 MB      | 6–8 GB      | One concurrent FFmpeg job needs ~1–2 GB |
+| `stry-pgsql` (PostgreSQL)             | 2 GB       | 512 MB      | 4–8 GB      | —                                       |
+| `stry-typesense` (Typesense search)   | 1 GB       | default     | 2–4 GB      | Grows with index size                   |
+| `stry-rustfs` (RustFS object storage) | 1 GB       | default     | 2–4 GB      | More concurrent S3 operations           |
+| `stry-redis` (Valkey cache)           | 512 MB     | default     | 1–2 GB      | Update `--maxmemory` to match           |
+| `stry-ssr` (Node.js SSR)              | 512 MB     | default     | 1–2 GB      | More concurrent SSR renders             |
+| `stry-schedule` (Laravel scheduler)   | 512 MB     | default     | 512 MB–1 GB | Stays lightweight unless jobs are heavy |
+| `stry-reverb` (WebSocket server)      | 512 MB     | default     | 1–2 GB      | ~1 MB per 1 000 concurrent connections  |
+| `stry-mailpit` (dev mail)             | 256 MB     | default     | —           | Dev only; not used in production        |
+| `proxy` (Caddy reverse proxy)         | 256 MB     | default     | 512 MB–1 GB | Real traffic + TLS session cache        |
+
+> "default" ShmSize means the Podman default of **64 MB** applies (no explicit value set).
+
+> [!IMPORTANT]
+> If your machine has **more or less RAM**, or if a container is OOM-killed during heavy workloads
+> (e.g. indexing large video libraries, running many queue workers), adjust or remove the `Memory=`
+> and `ShmSize=` lines in the relevant `.container` file and reload the daemon:
+>
+> ```bash
+> systemctl --user daemon-reload
+> systemctl --user restart stry
+> ```
+
+> [!NOTE]
+> Valkey/Redis also has a matching in-process `--maxmemory 480mb` directive so it evicts old cache
+> entries before hitting the container hard limit. If you raise `Memory=` for `stry-redis`, update
+> the `--maxmemory` value in `Exec=` to match (leave ~30 MB headroom).
+
+> [!NOTE]
+> PostgreSQL's internal page cache (`shared_buffers`) defaults to `128MB` regardless of the container
+> memory limit — it does not auto-scale. For production, set it to ~25% of `Memory=` either via
+> `Exec=postgres -c shared_buffers=1GB` in `stry-pgsql.container` or by mounting a custom
+> `postgresql.conf`.
+
+### Security Hardening
+
+All containers ship with the following hardening applied:
+
+- **`NoNewPrivileges=true`** — prevents setuid/setgid escalation after container start.
+- **`DropCapability=ALL`** — applied to all `stry.build`-based containers (`stry`, `stry-queue`, `stry-reverb`, `stry-schedule`, `stry-ssr`), which run as a mapped user via `UserNS=keep-id` and need no Linux capabilities.
+- **`proxy` (Caddy)** — uses `DropCapability=ALL` combined with `AddCapability=CAP_NET_BIND_SERVICE` so only the port-binding capability is granted.
+
+---
+
 ## 💡 Troubleshooting
 
 > [!TIP]

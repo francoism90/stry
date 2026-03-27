@@ -8,6 +8,9 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=scheduler
 UserNS=keep-id
+NoNewPrivileges=true
+DropCapability=ALL
+Memory=512m
 Volume=${STORAGE_PATH}:/storage:rw
 Network=stry.network
 

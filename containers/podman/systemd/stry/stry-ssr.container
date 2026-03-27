@@ -8,6 +8,9 @@ Image=stry.build
 AutoUpdate=local
 Environment=CONTAINER_ROLE=ssr
 UserNS=keep-id
+NoNewPrivileges=true
+DropCapability=ALL
+Memory=512m
 Network=stry.network
 ExposeHostPort=13714
 
