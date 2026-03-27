@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb38306810f76709953ee8ce03581943",
+    "content-hash": "af74b1bbe4f22e36ce2c186bb86858d7",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.374.0",
+            "version": "3.374.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "18525c8cc2a3aa2c1db23ceca5f57c5f8380d9c4"
+                "reference": "fa9801583e679aecc95660838708acfd98aa28e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/18525c8cc2a3aa2c1db23ceca5f57c5f8380d9c4",
-                "reference": "18525c8cc2a3aa2c1db23ceca5f57c5f8380d9c4",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fa9801583e679aecc95660838708acfd98aa28e7",
+                "reference": "fa9801583e679aecc95660838708acfd98aa28e7",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.374.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.374.1"
             },
-            "time": "2026-03-25T18:05:48+00:00"
+            "time": "2026-03-26T18:06:13+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2137,16 +2137,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "0e354ba16a567d8125c0850ddddcb120af2126cb"
+                "reference": "4675331c428c0f77b2539684835c5e0fd27ee023"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/0e354ba16a567d8125c0850ddddcb120af2126cb",
-                "reference": "0e354ba16a567d8125c0850ddddcb120af2126cb",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/4675331c428c0f77b2539684835c5e0fd27ee023",
+                "reference": "4675331c428c0f77b2539684835c5e0fd27ee023",
                 "shasum": ""
             },
             "require": {
@@ -2204,9 +2204,9 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.0.0"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.0.1"
             },
-            "time": "2026-03-24T15:46:00+00:00"
+            "time": "2026-03-25T21:07:46+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -3221,16 +3221,16 @@
         },
         {
             "name": "laravel/wayfinder",
-            "version": "v0.1.14",
+            "version": "v0.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/wayfinder.git",
-                "reference": "57bbd154ae69b11513d459bb97a0db19a8b7c871"
+                "reference": "25b8a947af54d35106dc04e933d05a6b7fad1133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/wayfinder/zipball/57bbd154ae69b11513d459bb97a0db19a8b7c871",
-                "reference": "57bbd154ae69b11513d459bb97a0db19a8b7c871",
+                "url": "https://api.github.com/repos/laravel/wayfinder/zipball/25b8a947af54d35106dc04e933d05a6b7fad1133",
+                "reference": "25b8a947af54d35106dc04e933d05a6b7fad1133",
                 "shasum": ""
             },
             "require": {
@@ -3280,7 +3280,7 @@
                 "issues": "https://github.com/laravel/wayfinder/issues",
                 "source": "https://github.com/laravel/wayfinder"
             },
-            "time": "2026-02-24T12:51:07+00:00"
+            "time": "2026-03-25T20:46:44+00:00"
         },
         {
             "name": "league/commonmark",

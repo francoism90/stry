@@ -16,6 +16,8 @@ const props = defineProps<{
   items: TranscodeCollection
 }>()
 
+const createTranscode = () => router.post(VideoTranscodeController.url(props.video.id), {}, { preserveScroll: true })
+
 useEcho<Video>(`videos.${props.video.id}`, '.transcode.created', () =>
   router.reload({ only: ['items'], reset: ['items'] }),
 )
@@ -25,8 +27,6 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () =>
 useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
   router.reload({ only: ['items'], reset: ['items'] }),
 )
-
-const createTranscode = () => router.post(VideoTranscodeController.url(props.video.id), {}, { preserveScroll: true })
 </script>
 
 <template>

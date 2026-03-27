@@ -33,12 +33,6 @@ const form = useForm(update(props.video.id), {
   released_at: props.video.released_at || null,
 })
 
-const onSubmit = () =>
-  form.submit({
-    preserveState: true,
-    replace: true,
-  })
-
 const publishedAt = computed({
   get: () => toDateTime(form.published_at),
   set: (value: CalendarDateTime | null) => {
@@ -52,6 +46,12 @@ const releasedAt = computed({
     form.released_at = fromDateTime(value)
   },
 })
+
+const onSubmit = () =>
+  form.submit({
+    preserveState: true,
+    replace: true,
+  })
 </script>
 
 <template>
