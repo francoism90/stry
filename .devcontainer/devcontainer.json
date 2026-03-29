@@ -5,8 +5,12 @@
         "HOME": "/home/docker",
         "CONTAINER_ROLE": "shell"
     },
-    "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"], // Make sure to create the network with systemctl --user start stry-network
+    "runArgs": ["--init"],
+    // Optional SSH mount for either Docker or Podman when you need host SSH keys in the container.
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,consistency=cached"],
+    // Podman-only extras:
+    // "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"],
+    // Make sure to create the network first with: systemctl --user start stry-network
     "build": {
         "context": "./../",
         "dockerfile": "./../containers/Containerfile",
