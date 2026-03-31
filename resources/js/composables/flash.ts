@@ -17,18 +17,8 @@ function resolveType(type?: string): { icon: string; color: FlashType } {
 export const useFlash = createSharedComposable(() => {
   const toast = useToast()
 
-  let isPartialReload = false
-
-  const unsubBefore = router.on('before', (event) => {
-    isPartialReload = event.detail.visit.only.length > 0
-  })
-
-  const unsubFinish = router.on('finish', () => {
-    isPartialReload = false
-  })
-
   const unsubFlash = router.on('flash', (event) => {
-    if (event.detail.flash && !isPartialReload) {
+    if (event.detail.flash) {
       const { icon, color } = resolveType(event.detail.flash.type)
 
       toast.add({
@@ -41,8 +31,6 @@ export const useFlash = createSharedComposable(() => {
   })
 
   tryOnUnmounted(() => {
-    unsubBefore()
-    unsubFinish()
     unsubFlash()
   })
 })
