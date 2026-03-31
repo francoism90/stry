@@ -14,7 +14,9 @@ RUN arch="$(uname -m)" && case "$arch" in \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && RELEASES=$(curl -fsSL "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest") \
-    && FFMPEG_URL=$(echo "${RELEASES}" | grep -o "https://[^\"]*${ARCH}-gpl-8\.0\.tar\.xz" | grep -v shared | head -1) \
+    && FFMPEG_URL=$(echo "${RELEASES}" | grep -o "https://[^\"]*${ARCH}-gpl\.tar\.xz" | head -1) \
+    && if [ -z "${FFMPEG_URL}" ]; then FFMPEG_URL=$(echo "${RELEASES}" | grep -oE "https://[^\"]*${ARCH}-gpl-[0-9.]+\.tar\.xz" | grep -v shared | head -1); fi \
+    && if [ -z "${FFMPEG_URL}" ]; then echo "Unable to resolve FFmpeg download URL for architecture ${ARCH}"; exit 1; fi \
     && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
