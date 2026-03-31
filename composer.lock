@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.374.1",
+            "version": "3.375.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fa9801583e679aecc95660838708acfd98aa28e7"
+                "reference": "6cfa1798c3fa0182d902eda9419dca48c86d74a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fa9801583e679aecc95660838708acfd98aa28e7",
-                "reference": "fa9801583e679aecc95660838708acfd98aa28e7",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6cfa1798c3fa0182d902eda9419dca48c86d74a1",
+                "reference": "6cfa1798c3fa0182d902eda9419dca48c86d74a1",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.374.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.375.0"
             },
-            "time": "2026-03-26T18:06:13+00:00"
+            "time": "2026-03-30T19:30:55+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3032,16 +3032,16 @@
         },
         {
             "name": "laravel/sentinel",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sentinel.git",
-                "reference": "7a98db53e0d9d6f61387f3141c07477f97425603"
+                "reference": "972d9885d9d14312a118e9565c4e6ecc5e751ea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sentinel/zipball/7a98db53e0d9d6f61387f3141c07477f97425603",
-                "reference": "7a98db53e0d9d6f61387f3141c07477f97425603",
+                "url": "https://api.github.com/repos/laravel/sentinel/zipball/972d9885d9d14312a118e9565c4e6ecc5e751ea1",
+                "reference": "972d9885d9d14312a118e9565c4e6ecc5e751ea1",
                 "shasum": ""
             },
             "require": {
@@ -3060,9 +3060,6 @@
                     "providers": [
                         "Laravel\\Sentinel\\SentinelServiceProvider"
                     ]
-                },
-                "branch-alias": {
-                    "dev-main": "1.x-dev"
                 }
             },
             "autoload": {
@@ -3085,9 +3082,9 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/laravel/sentinel/tree/v1.0.1"
+                "source": "https://github.com/laravel/sentinel/tree/v1.1.0"
             },
-            "time": "2026-02-12T13:32:54+00:00"
+            "time": "2026-03-24T14:03:38+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -11753,16 +11750,16 @@
         },
         {
             "name": "brianium/paratest",
-            "version": "v7.19.2",
+            "version": "v7.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "66e4f7910cecf67736bccf2b8bd53a2e3eb98bd9"
+                "reference": "81c80677c9ec0ed4ef16b246167f11dec81a6e3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/66e4f7910cecf67736bccf2b8bd53a2e3eb98bd9",
-                "reference": "66e4f7910cecf67736bccf2b8bd53a2e3eb98bd9",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/81c80677c9ec0ed4ef16b246167f11dec81a6e3d",
+                "reference": "81c80677c9ec0ed4ef16b246167f11dec81a6e3d",
                 "shasum": ""
             },
             "require": {
@@ -11786,7 +11783,7 @@
                 "ext-pcntl": "*",
                 "ext-pcov": "*",
                 "ext-posix": "*",
-                "phpstan/phpstan": "^2.1.40",
+                "phpstan/phpstan": "^2.1.44",
                 "phpstan/phpstan-deprecation-rules": "^2.0.4",
                 "phpstan/phpstan-phpunit": "^2.0.16",
                 "phpstan/phpstan-strict-rules": "^2.0.10",
@@ -11830,7 +11827,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v7.19.2"
+                "source": "https://github.com/paratestphp/paratest/tree/v7.20.0"
             },
             "funding": [
                 {
@@ -11842,20 +11839,20 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2026-03-09T14:33:17+00:00"
+            "time": "2026-03-29T15:46:14+00:00"
         },
         {
             "name": "composer/class-map-generator",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/class-map-generator.git",
-                "reference": "8f5fa3cc214230e71f54924bd0197a3bcc705eb1"
+                "reference": "6a9c2f0970022ab00dc58c07d0685dd712f2231b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/8f5fa3cc214230e71f54924bd0197a3bcc705eb1",
-                "reference": "8f5fa3cc214230e71f54924bd0197a3bcc705eb1",
+                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/6a9c2f0970022ab00dc58c07d0685dd712f2231b",
+                "reference": "6a9c2f0970022ab00dc58c07d0685dd712f2231b",
                 "shasum": ""
             },
             "require": {
@@ -11899,7 +11896,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/class-map-generator/issues",
-                "source": "https://github.com/composer/class-map-generator/tree/1.7.1"
+                "source": "https://github.com/composer/class-map-generator/tree/1.7.2"
             },
             "funding": [
                 {
@@ -11911,7 +11908,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-29T13:15:25+00:00"
+            "time": "2026-03-30T15:36:56+00:00"
         },
         {
             "name": "composer/pcre",
@@ -13730,11 +13727,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.44",
+            "version": "2.1.45",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4a88c083c668b2c364a425c9b3171b2d9ea5d218",
-                "reference": "4a88c083c668b2c364a425c9b3171b2d9ea5d218",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f8cdfd9421b7edb7686a2d150a234870464eac70",
+                "reference": "f8cdfd9421b7edb7686a2d150a234870464eac70",
                 "shasum": ""
             },
             "require": {
@@ -13779,7 +13776,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-25T17:34:21+00:00"
+            "time": "2026-03-30T13:22:02+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
