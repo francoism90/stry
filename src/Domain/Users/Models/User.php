@@ -7,6 +7,7 @@ namespace Domain\Users\Models;
 use Database\Factories\UserFactory;
 use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Profiles\Concerns\HasProfiles;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\Concerns\InteractsWithCache;
@@ -39,6 +40,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasApiTokens;
     use HasFactory;
     use HasGroups;
+    use HasProfiles;
     use HasRoles;
     use HasStates;
     use HasUlids;
@@ -208,6 +210,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function isAdmin(): bool
     {
         return $this->hasAnyRole('admin', 'super-admin');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super-admin');
     }
 
     public function thumbnailUrl(): ?string
