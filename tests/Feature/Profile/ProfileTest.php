@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Domain\Profiles\Models\Profile;
+use Domain\Profiles\Policies\ProfilePolicy;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Gate;
 
 uses(RefreshDatabase::class);
 
@@ -59,4 +61,8 @@ it('can resolve a profile from a ulid', function () {
 
     expect($resolved)->toBeInstanceOf(Profile::class)
         ->and($resolved?->getKey())->toBe($profile->getKey());
+});
+
+it('resolves the profile policy through gate', function () {
+    expect(Gate::getPolicyFor(Profile::class))->toBeInstanceOf(ProfilePolicy::class);
 });
