@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -31,7 +30,6 @@ class Profile extends Model implements HasMedia
     use HasUlids;
     use InteractsWithMedia;
     use InteractsWithUser;
-    use SoftDeletes;
 
     /**
      * @var array<int, string>
@@ -62,7 +60,6 @@ class Profile extends Model implements HasMedia
             'settings' => AsArrayObject::class,
             'created_at' => AsDateTime::class,
             'updated_at' => AsDateTime::class,
-            'deleted_at' => AsDateTime::class,
         ];
     }
 

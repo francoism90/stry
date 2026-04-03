@@ -53,7 +53,6 @@ export type Profile = Model & {
   avatar: string | null
   is_kids: boolean
   is_primary: boolean
-  is_current: boolean
   state: ModelState
 }
 

@@ -93,6 +93,39 @@ it('creates a profile for the authenticated user', function () {
     expect($user->profiles()->where('name', 'Kids')->exists())->toBeTrue();
 });
 
+it('marks the first created profile as primary', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post(action([ProfileController::class, 'store']), [
+        'name' => 'Main',
+        'is_kids' => false,
+    ])->assertRedirect();
+
+    $profile = $user->profiles()->first();
+
+    expect($profile)->not->toBeNull()
+        ->and($profile?->is_primary)->toBeTrue();
+});
+
+it('unmarks existing primary profile when creating a new primary profile', function () {
+    $user = User::factory()->create();
+
+    $primary = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Primary',
+        'is_primary' => true,
+    ]);
+
+    $this->actingAs($user)->post(action([ProfileController::class, 'store']), [
+        'name' => 'New Primary',
+        'is_kids' => false,
+        'is_primary' => true,
+    ])->assertRedirect();
+
+    expect($primary->fresh()?->is_primary)->toBeFalse();
+    expect($user->profiles()->where('name', 'New Primary')->first()?->is_primary)->toBeTrue();
+});
+
 it('updates an owned profile', function () {
     $user = User::factory()->create();
     $profile = Profile::factory()->create([
@@ -112,6 +145,31 @@ it('updates an owned profile', function () {
         ->and($profile->fresh()?->is_primary)->toBeTrue();
 });
 
+it('unmarks other profiles when updating a profile as primary', function () {
+    $user = User::factory()->create();
+
+    $primary = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Primary',
+        'is_primary' => true,
+    ]);
+
+    $secondary = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Secondary',
+        'is_primary' => false,
+    ]);
+
+    $this->actingAs($user)->put(action([ProfileController::class, 'update'], $secondary), [
+        'name' => 'Secondary',
+        'is_kids' => false,
+        'is_primary' => true,
+    ])->assertRedirect();
+
+    expect($secondary->fresh()?->is_primary)->toBeTrue()
+        ->and($primary->fresh()?->is_primary)->toBeFalse();
+});
+
 it('deletes an owned profile', function () {
     $user = User::factory()->create();
     $profile = Profile::factory()->create([
@@ -122,4 +180,18 @@ it('deletes an owned profile', function () {
 
     $response->assertRedirect();
     expect(Profile::query()->whereKey($profile->getKey())->exists())->toBeFalse();
+});
+
+it('forgets current profile session key when deleting the selected profile', function () {
+    $user = User::factory()->create();
+    $profile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+    ]);
+
+    $response = $this->actingAs($user)
+        ->withSession(['profiles.current' => $profile->getRouteKey()])
+        ->delete(action([ProfileController::class, 'destroy'], $profile));
+
+    $response->assertRedirect();
+    $response->assertSessionMissing('profiles.current');
 });

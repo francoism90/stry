@@ -19,14 +19,12 @@ class ProfileResource extends JsonResource
 
     public function toArray($request): array
     {
-        $currentProfile = $request->attributes->get('profiles.current');
-
         return [
             'id' => (string) $this->getRouteKey(),
             'name' => $this->name,
             'avatar' => $this->avatar,
-            'is_kids' => $this->isKids(),
-            'is_primary' => $this->isPrimary(),
+            'is_kids' => $this->is_kids,
+            'is_primary' => $this->is_primary,
             'state' => $this->state->toArray(),
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),

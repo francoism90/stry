@@ -8,8 +8,9 @@ use App\Api\Profiles\Requests\ProfileStoreRequest;
 use App\Api\Profiles\Requests\ProfileUpdateRequest;
 use App\Api\Profiles\Resources\ProfileResource;
 use App\Web\Profiles\Responses\ProfileResourceProperty;
+use Domain\Profiles\Actions\CreateNewProfile;
+use Domain\Profiles\Actions\UpdateProfileDetails;
 use Domain\Profiles\Models\Profile;
-use Domain\Profiles\States\Enabled;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class ProfileController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty($request->user()),
-            'profiles' => Inertia::scroll(fn () => ProfileResource::collection($query)),
+            'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
         ]);
     }
 
@@ -50,22 +51,10 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Profile::class);
 
-        $isFirstProfile = ! $request->user()->profiles()->exists();
-        $attributes = $request->safe()->all();
-
-        $profile = $request->user()->profiles()->create([
-            ...$attributes,
-            'state' => Enabled::class,
-            'settings' => $attributes['settings'] ?? [],
-            'is_primary' => $isFirstProfile || (bool) ($attributes['is_primary'] ?? false),
-        ]);
-
-        if ($profile->is_primary) {
-            $request->user()
-                ->profiles()
-                ->whereKeyNot($profile->getKey())
-                ->update(['is_primary' => false]);
-        }
+        $profile = app(CreateNewProfile::class)->handle(
+            user: $request->user(),
+            attributes: $request->safe()->all(),
+        );
 
         Inertia::flash([
             'title' => (string) $profile->name,
@@ -80,16 +69,10 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $profile);
 
-        $attributes = $request->safe()->all();
-
-        $profile->updateOrFail($attributes);
-
-        if ((bool) ($attributes['is_primary'] ?? false)) {
-            $request->user()
-                ->profiles()
-                ->whereKeyNot($profile->getKey())
-                ->update(['is_primary' => false]);
-        }
+        app(UpdateProfileDetails::class)->handle(
+            profile: $profile,
+            attributes: $request->safe()->all(),
+        );
 
         Inertia::flash([
             'title' => (string) $profile->name,
@@ -104,25 +87,22 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $profile);
 
-        $deletedProfileKey = (string) $profile->getRouteKey();
-        $deletedProfileName = (string) $profile->name;
+        // Get the profile's key and name before deletion for flash messaging and session management.
+        $profileKey = (string) $profile->getRouteKey();
+        $profileName = (string) $profile->name;
 
+        // Delete the profile.
         $profile->deleteOrFail();
 
+        // Check if the deleted profile was the currently selected profile in the session.
         $currentProfile = (string) $request->session()->get('profiles.current', '');
 
-        if ($currentProfile === $deletedProfileKey) {
-            $nextProfile = $request->user()->profiles()->ordered()->first();
-
-            if ($nextProfile) {
-                $request->session()->put('profiles.current', $nextProfile->getRouteKey());
-            } else {
-                $request->session()->forget('profiles.current');
-            }
+        if ($currentProfile === $profileKey) {
+            $request->session()->forget('profiles.current');
         }
 
         Inertia::flash([
-            'title' => $deletedProfileName,
+            'title' => $profileName,
             'description' => __('The profile has been deleted.'),
             'type' => 'warning',
         ]);

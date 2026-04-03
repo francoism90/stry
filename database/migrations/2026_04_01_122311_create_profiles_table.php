@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('state')->index();
             $table->jsonb('settings')->nullable();
             $table->timestamps();
-            $table->softDeletes();
             $table->unique(['user_id', 'name']);
         });
     }

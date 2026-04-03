@@ -8,11 +8,12 @@ import type { Profile, ProfileCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 
 defineProps<{
-  profiles: ProfileCollection
+  profile: Profile | null
+  items: ProfileCollection
 }>()
 
-const switchProfile = (profile: Profile) =>
-  router.visit(SwitchProfileController(profile.id), {
+const switchProfile = (item: Profile) =>
+  router.visit(SwitchProfileController(item.id), {
     preserveScroll: true,
   })
 </script>
@@ -38,7 +39,7 @@ const switchProfile = (profile: Profile) =>
 
         <UPageBody>
           <div
-            v-if="!profiles?.data?.length"
+            v-if="!items?.data?.length"
             class="flex flex-col items-center justify-center gap-3 py-24 text-center"
           >
             <UIcon
@@ -51,25 +52,25 @@ const switchProfile = (profile: Profile) =>
 
           <InfiniteScroll
             v-else
-            data="profiles"
+            data="items"
             :buffer="200"
           >
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <UPageCard
-                v-for="profile in profiles?.data"
-                :key="profile.id"
+                v-for="item in items?.data"
+                :key="item.id"
                 variant="subtle"
                 :ui="{ body: 'flex items-center gap-3', footer: 'flex items-center justify-between' }"
               >
                 <template #body>
                   <UAvatar
-                    :src="profile.avatar ?? undefined"
-                    :alt="profile.name"
+                    :src="item.avatar ?? undefined"
+                    :alt="item.name"
                     size="lg"
                   />
 
                   <div class="flex min-w-0 flex-col gap-1">
-                    <p class="truncate font-semibold">{{ profile.name }}</p>
+                    <p class="truncate font-semibold">{{ item.name }}</p>
 
                     <div class="flex items-center gap-2">
                       <UBadge
@@ -77,11 +78,11 @@ const switchProfile = (profile: Profile) =>
                         variant="soft"
                         size="sm"
                       >
-                        {{ profile.state.label }}
+                        {{ item.state.label }}
                       </UBadge>
 
                       <UBadge
-                        v-if="profile.is_primary"
+                        v-if="item.is_primary"
                         color="primary"
                         variant="soft"
                         size="sm"
@@ -90,7 +91,7 @@ const switchProfile = (profile: Profile) =>
                       </UBadge>
 
                       <UBadge
-                        v-if="profile.is_kids"
+                        v-if="item.is_kids"
                         color="warning"
                         variant="soft"
                         size="sm"
@@ -103,17 +104,17 @@ const switchProfile = (profile: Profile) =>
 
                 <template #footer>
                   <div class="flex items-center gap-2">
-                    <ProfileEditModal :item="profile" />
-                    <ProfileDeleteModal :item="profile" />
+                    <ProfileEditModal :item="item" />
+                    <ProfileDeleteModal :item="item" />
                   </div>
 
                   <UButton
-                    :label="profile.is_current ? 'Current' : 'Switch'"
+                    :label="item.id === profile?.id ? 'Current' : 'Switch'"
                     color="neutral"
                     variant="soft"
                     size="sm"
-                    :disabled="profile.is_current"
-                    @click="switchProfile(profile)"
+                    :disabled="item.id === profile?.id"
+                    @click="switchProfile(item)"
                   />
                 </template>
               </UPageCard>
