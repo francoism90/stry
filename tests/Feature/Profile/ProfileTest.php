@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\Profiles\Models\Profile;
 use Domain\Profiles\Policies\ProfilePolicy;
+use Domain\Profiles\States\Disabled;
 use Domain\Profiles\States\Enabled;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -83,4 +84,21 @@ it('casts profile settings to an array object', function () {
             'language' => 'en',
             'autoplay_next' => true,
         ]);
+});
+
+it('can scope enabled and disabled profiles', function () {
+    $user = User::factory()->create();
+
+    $enabledProfile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'state' => Enabled::class,
+    ]);
+
+    $disabledProfile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'state' => Disabled::class,
+    ]);
+
+    expect($user->profiles()->enabled()->pluck('id')->all())->toBe([$enabledProfile->getKey()])
+        ->and($user->profiles()->disabled()->pluck('id')->all())->toBe([$disabledProfile->getKey()]);
 });
