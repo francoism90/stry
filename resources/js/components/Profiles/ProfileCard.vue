@@ -5,7 +5,7 @@ import type { Profile } from '@/types'
 
 defineProps<{
   item: Profile
-  currentProfileId?: string | null
+  current?: Profile | null
 }>()
 
 const emit = defineEmits<{
@@ -65,11 +65,11 @@ const emit = defineEmits<{
       </div>
 
       <UButton
-        :label="item.id === currentProfileId ? 'Current' : 'Switch'"
+        :label="item.id === current?.id ? 'Current' : 'Switch'"
         color="neutral"
         variant="soft"
         size="sm"
-        :disabled="item.id === currentProfileId"
+        :disabled="item.id === current?.id"
         @click="emit('switchProfile', item)"
       />
     </template>

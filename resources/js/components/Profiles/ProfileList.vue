@@ -4,7 +4,7 @@ import type { Profile } from '@/types'
 
 const props = defineProps<{
   items: Profile[] | undefined
-  currentProfileId?: string | null
+  current?: Profile | null
 }>()
 
 const emit = defineEmits<{
@@ -33,7 +33,7 @@ const emit = defineEmits<{
       v-for="item in props.items"
       :key="item.id"
       :item="item"
-      :current-profile-id="props.currentProfileId"
+      :current="props.current"
       @switch-profile="emit('switchProfile', item)"
     />
   </div>

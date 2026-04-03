@@ -50,7 +50,7 @@ const switchProfile = (item: Profile) =>
         >
           <ProfileList
             :items="items?.data"
-            :current-profile-id="profile?.id"
+            :current="profile"
             @switch-profile="switchProfile"
           />
         </InfiniteScroll>
