@@ -34,7 +34,7 @@ Route::get('/settings', SettingsController::class)->name('settings');
 Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
 
 // Profiles
-Route::get('/profiles', ProfileController::class)->name('profiles');
+Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::post('/profiles/{profile}/switch', SwitchProfileController::class)->name('profiles.switch');
 
 // Resources

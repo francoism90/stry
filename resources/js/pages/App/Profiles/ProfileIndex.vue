@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { destroy, store, update } from '@/actions/App/Web/Profiles/Controllers/ProfileController'
+import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { ModelState } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 
 type ProfileItem = {
   id: string
@@ -16,6 +18,53 @@ type ProfileItem = {
 defineProps<{
   profiles: ProfileItem[]
 }>()
+
+const createForm = useForm(store(), {
+  name: '',
+  is_kids: false,
+  is_primary: false,
+})
+
+const createProfile = (close: () => void) =>
+  createForm.submit({
+    preserveScroll: true,
+    onSuccess: () => {
+      createForm.reset()
+      close()
+    },
+  })
+
+const editProfile = (profile: ProfileItem) => {
+  const name = window.prompt('Profile name', profile.name)?.trim()
+
+  if (!name) {
+    return
+  }
+
+  router.visit(update(profile.id), {
+    preserveScroll: true,
+    data: {
+      name,
+      is_kids: profile.is_kids,
+      is_primary: profile.is_primary,
+    },
+  })
+}
+
+const deleteProfile = (profile: ProfileItem) => {
+  if (!window.confirm(`Delete profile "${profile.name}"?`)) {
+    return
+  }
+
+  router.visit(destroy(profile.id), {
+    preserveScroll: true,
+  })
+}
+
+const switchProfile = (profile: ProfileItem) =>
+  router.visit(SwitchProfileController(profile.id), {
+    preserveScroll: true,
+  })
 </script>
 
 <template>
@@ -31,7 +80,71 @@ defineProps<{
         <UPageHeader
           title="Profiles"
           description="Choose who is watching."
-        />
+        >
+          <template #links>
+            <UModal
+              title="Create profile"
+              :ui="{ footer: 'justify-end' }"
+            >
+              <UButton
+                label="Create profile"
+                icon="i-lucide-plus"
+                color="neutral"
+                variant="soft"
+              />
+
+              <template #body>
+                <UForm
+                  :state="createForm"
+                  class="flex flex-col gap-4"
+                >
+                  <UFormField
+                    label="Name"
+                    required
+                    :error="createForm.errors.name"
+                  >
+                    <UInput
+                      v-model="createForm.name"
+                      :model-modifiers="{ string: true, trim: true }"
+                      autofocus
+                    />
+                  </UFormField>
+
+                  <UFormField
+                    label="Kids profile"
+                    :error="createForm.errors.is_kids"
+                  >
+                    <USwitch v-model="createForm.is_kids" />
+                  </UFormField>
+
+                  <UFormField
+                    label="Primary profile"
+                    :error="createForm.errors.is_primary"
+                  >
+                    <USwitch v-model="createForm.is_primary" />
+                  </UFormField>
+                </UForm>
+              </template>
+
+              <template #footer="{ close }">
+                <UButton
+                  label="Cancel"
+                  color="neutral"
+                  variant="soft"
+                  @click.prevent="close"
+                />
+
+                <UButton
+                  label="Create"
+                  color="primary"
+                  variant="soft"
+                  loading-auto
+                  @click.prevent="createProfile(close)"
+                />
+              </template>
+            </UModal>
+          </template>
+        </UPageHeader>
 
         <UPageBody>
           <div
@@ -97,14 +210,31 @@ defineProps<{
               </template>
 
               <template #footer>
-                <span class="text-muted text-sm">Switcher ready</span>
+                <div class="flex items-center gap-2">
+                  <UButton
+                    icon="i-lucide-pencil"
+                    color="neutral"
+                    variant="ghost"
+                    size="sm"
+                    @click="editProfile(profile)"
+                  />
+
+                  <UButton
+                    icon="i-lucide-trash-2"
+                    color="error"
+                    variant="ghost"
+                    size="sm"
+                    @click="deleteProfile(profile)"
+                  />
+                </div>
+
                 <UButton
                   :label="profile.is_current ? 'Current' : 'Switch'"
                   color="neutral"
                   variant="soft"
                   size="sm"
                   :disabled="profile.is_current"
-                  @click="router.post(`/profiles/${profile.id}/switch`)"
+                  @click="switchProfile(profile)"
                 />
               </template>
             </UPageCard>

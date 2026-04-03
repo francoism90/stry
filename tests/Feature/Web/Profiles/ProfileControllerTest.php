@@ -14,7 +14,7 @@ it('renders the profiles page for authenticated users', function () {
         'user_id' => $user->getKey(),
     ]);
 
-    $response = $this->actingAs($user)->get(action(ProfileController::class));
+    $response = $this->actingAs($user)->get(action([ProfileController::class, 'index']));
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
@@ -24,7 +24,7 @@ it('renders the profiles page for authenticated users', function () {
 });
 
 it('redirects guests from the profiles page', function () {
-    $response = $this->get(action(ProfileController::class));
+    $response = $this->get(action([ProfileController::class, 'index']));
 
     $response->assertRedirect();
 });
@@ -56,7 +56,7 @@ it('marks the switched profile as current', function () {
 
     $this->actingAs($user)->post(action(SwitchProfileController::class, $second));
 
-    $response = $this->actingAs($user)->get(action(ProfileController::class));
+    $response = $this->actingAs($user)->get(action([ProfileController::class, 'index']));
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
@@ -78,4 +78,48 @@ it('forbids switching another user profile', function () {
 
     $response->assertForbidden();
     $response->assertSessionMissing('profiles.current');
+});
+
+it('creates a profile for the authenticated user', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->post(action([ProfileController::class, 'store']), [
+        'name' => 'Kids',
+        'is_kids' => true,
+    ]);
+
+    $response->assertRedirect();
+
+    expect($user->profiles()->where('name', 'Kids')->exists())->toBeTrue();
+});
+
+it('updates an owned profile', function () {
+    $user = User::factory()->create();
+    $profile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Main',
+    ]);
+
+    $response = $this->actingAs($user)->put(action([ProfileController::class, 'update'], $profile), [
+        'name' => 'Updated',
+        'is_kids' => false,
+        'is_primary' => true,
+    ]);
+
+    $response->assertRedirect();
+
+    expect($profile->fresh()?->name)->toBe('Updated')
+        ->and($profile->fresh()?->is_primary)->toBeTrue();
+});
+
+it('deletes an owned profile', function () {
+    $user = User::factory()->create();
+    $profile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+    ]);
+
+    $response = $this->actingAs($user)->delete(action([ProfileController::class, 'destroy'], $profile));
+
+    $response->assertRedirect();
+    expect(Profile::query()->whereKey($profile->getKey())->exists())->toBeFalse();
 });

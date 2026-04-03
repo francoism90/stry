@@ -52,7 +52,7 @@ class GroupController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order'),
+            'order' => fn () => $order,
             'orders' => fn () => GroupOrder::options(),
         ]);
     }
@@ -61,18 +61,21 @@ class GroupController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $group);
 
+        // Apply filters
+        $order = $request->safe()->input('order');
+
         // Scout builder
         $scout = Video::search()
             ->tap(new VideoFilterScope(
                 group: $group,
-                order: $request->safe()->input('order'),
+                order: $order,
             ))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order'),
+            'order' => fn () => $order,
             'orders' => fn () => VideoOrder::options(),
         ]);
     }
