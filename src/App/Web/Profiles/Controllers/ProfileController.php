@@ -8,7 +8,7 @@ use App\Api\Profiles\Requests\ProfileStoreRequest;
 use App\Api\Profiles\Requests\ProfileUpdateRequest;
 use App\Web\Profiles\Responses\ProfileCollectionProperty;
 use Domain\Profiles\Models\Profile;
-use Domain\Profiles\States\Pending;
+use Domain\Profiles\States\Enabled;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,7 +52,7 @@ class ProfileController extends Controller implements HasMiddleware
 
         $profile = $request->user()->profiles()->create([
             ...$attributes,
-            'state' => Pending::class,
+            'state' => Enabled::class,
             'settings' => $attributes['settings'] ?? [],
             'is_primary' => $isFirstProfile || (bool) ($attributes['is_primary'] ?? false),
         ]);

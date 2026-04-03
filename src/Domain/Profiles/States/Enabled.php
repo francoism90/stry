@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Profiles\States;
 
-class Verified extends ProfileState
+class Enabled extends ProfileState
 {
-    public static $name = 'verified';
+    public static $name = 'enabled';
 
     public function label(): string
     {
-        return __('Verified');
+        return __('Enabled');
     }
 
     public function color(): string

@@ -36,7 +36,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
       @submit="onSubmit"
     >
       <UPageCard
-        title="Profile Settings"
+        title="Account Settings"
         description="Manage your general preferences and appearance."
         variant="subtle"
         orientation="vertical"
@@ -139,7 +139,7 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
 
           <div class="flex flex-col gap-1">
             <p class="text-highlighted text-sm font-semibold">Appearance</p>
-            <p class="text-muted text-sm">Customise how the application looks and feels.</p>
+            <p class="text-muted text-sm">Customize how the application looks and feels.</p>
           </div>
 
           <div class="grid grid-cols-2 gap-4">

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use Domain\Profiles\Models\Profile;
-use Domain\Profiles\States\Pending;
+use Domain\Profiles\States\Enabled;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +21,7 @@ class ProfileFactory extends Factory
             'avatar' => null,
             'is_kids' => false,
             'is_primary' => false,
-            'state' => Pending::class,
+            'state' => Enabled::class,
             'settings' => [],
         ];
     }

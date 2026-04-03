@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Profiles\States;
 
-class Pending extends ProfileState
+class Disabled extends ProfileState
 {
-    public static $name = 'pending';
+    public static $name = 'disabled';
 
     public function label(): string
     {
-        return __('Pending');
+        return __('Disabled');
     }
 
     public function color(): string
@@ -20,6 +20,6 @@ class Pending extends ProfileState
 
     public function icon(): string
     {
-        return 'i-lucide-clock';
+        return 'i-lucide-ban';
     }
 }

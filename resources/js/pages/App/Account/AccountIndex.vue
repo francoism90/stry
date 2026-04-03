@@ -28,7 +28,7 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Profile" />
+  <Head title="Account" />
 
   <UPageBody>
     <UForm
@@ -38,7 +38,7 @@ const onSubmit = () =>
       @submit="onSubmit"
     >
       <UPageCard
-        title="Profile"
+        title="Account"
         description="Update your name and email address."
         variant="subtle"
         orientation="vertical"

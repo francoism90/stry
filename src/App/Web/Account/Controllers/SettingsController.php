@@ -28,7 +28,7 @@ class SettingsController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        return Inertia::render('App/Account/ProfileSettings', [
+        return Inertia::render('App/Account/AccountSettings', [
             'user' => fn () => new UserResourceProperty(
                 $request->user(),
                 ['name', 'email', 'avatar', 'settings'],

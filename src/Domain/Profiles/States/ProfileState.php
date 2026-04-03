@@ -28,7 +28,7 @@ abstract class ProfileState extends State
     public static function config(): StateConfig
     {
         return parent::config()
-            ->default(Pending::class)
+            ->default(Enabled::class)
             ->allowAllTransitions();
     }
 }
