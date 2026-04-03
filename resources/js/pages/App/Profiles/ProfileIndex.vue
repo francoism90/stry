@@ -2,21 +2,11 @@
 import { destroy, store, update } from '@/actions/App/Web/Profiles/Controllers/ProfileController'
 import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import type { ModelState } from '@/types'
-import { Head, router, useForm } from '@inertiajs/vue3'
-
-type ProfileItem = {
-  id: string
-  name: string
-  avatar: string | null
-  is_kids: boolean
-  is_primary: boolean
-  is_current: boolean
-  state: ModelState
-}
+import type { Profile, ProfileCollection } from '@/types'
+import { Head, InfiniteScroll, router, useForm } from '@inertiajs/vue3'
 
 defineProps<{
-  profiles: ProfileItem[]
+  profiles: ProfileCollection
 }>()
 
 const createForm = useForm(store(), {
@@ -34,7 +24,7 @@ const createProfile = (close: () => void) =>
     },
   })
 
-const editProfile = (profile: ProfileItem) => {
+const editProfile = (profile: Profile) => {
   const name = window.prompt('Profile name', profile.name)?.trim()
 
   if (!name) {
@@ -51,7 +41,7 @@ const editProfile = (profile: ProfileItem) => {
   })
 }
 
-const deleteProfile = (profile: ProfileItem) => {
+const deleteProfile = (profile: Profile) => {
   if (!window.confirm(`Delete profile "${profile.name}"?`)) {
     return
   }
@@ -61,7 +51,7 @@ const deleteProfile = (profile: ProfileItem) => {
   })
 }
 
-const switchProfile = (profile: ProfileItem) =>
+const switchProfile = (profile: Profile) =>
   router.visit(SwitchProfileController(profile.id), {
     preserveScroll: true,
   })
@@ -148,7 +138,7 @@ const switchProfile = (profile: ProfileItem) =>
 
         <UPageBody>
           <div
-            v-if="profiles.length === 0"
+            v-if="!profiles?.data?.length"
             class="flex flex-col items-center justify-center gap-3 py-24 text-center"
           >
             <UIcon
@@ -159,86 +149,89 @@ const switchProfile = (profile: ProfileItem) =>
             <p class="text-muted text-sm">Create a profile to personalize watch history and recommendations.</p>
           </div>
 
-          <div
+          <InfiniteScroll
             v-else
-            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            data="profiles"
+            :buffer="200"
           >
-            <UPageCard
-              v-for="profile in profiles"
-              :key="profile.id"
-              variant="subtle"
-              :ui="{ body: 'flex items-center gap-3', footer: 'flex items-center justify-between' }"
-            >
-              <template #body>
-                <UAvatar
-                  :src="profile.avatar ?? undefined"
-                  :alt="profile.name"
-                  size="lg"
-                />
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <UPageCard
+                v-for="profile in profiles?.data"
+                :key="profile.id"
+                variant="subtle"
+                :ui="{ body: 'flex items-center gap-3', footer: 'flex items-center justify-between' }"
+              >
+                <template #body>
+                  <UAvatar
+                    :src="profile.avatar ?? undefined"
+                    :alt="profile.name"
+                    size="lg"
+                  />
 
-                <div class="flex min-w-0 flex-col gap-1">
-                  <p class="truncate font-semibold">{{ profile.name }}</p>
+                  <div class="flex min-w-0 flex-col gap-1">
+                    <p class="truncate font-semibold">{{ profile.name }}</p>
 
-                  <div class="flex items-center gap-2">
-                    <UBadge
-                      color="neutral"
-                      variant="soft"
-                      size="sm"
-                    >
-                      {{ profile.state.label }}
-                    </UBadge>
+                    <div class="flex items-center gap-2">
+                      <UBadge
+                        color="neutral"
+                        variant="soft"
+                        size="sm"
+                      >
+                        {{ profile.state.label }}
+                      </UBadge>
 
-                    <UBadge
-                      v-if="profile.is_primary"
-                      color="primary"
-                      variant="soft"
-                      size="sm"
-                    >
-                      Primary
-                    </UBadge>
+                      <UBadge
+                        v-if="profile.is_primary"
+                        color="primary"
+                        variant="soft"
+                        size="sm"
+                      >
+                        Primary
+                      </UBadge>
 
-                    <UBadge
-                      v-if="profile.is_kids"
-                      color="warning"
-                      variant="soft"
-                      size="sm"
-                    >
-                      Kids
-                    </UBadge>
+                      <UBadge
+                        v-if="profile.is_kids"
+                        color="warning"
+                        variant="soft"
+                        size="sm"
+                      >
+                        Kids
+                      </UBadge>
+                    </div>
                   </div>
-                </div>
-              </template>
+                </template>
 
-              <template #footer>
-                <div class="flex items-center gap-2">
+                <template #footer>
+                  <div class="flex items-center gap-2">
+                    <UButton
+                      icon="i-lucide-pencil"
+                      color="neutral"
+                      variant="ghost"
+                      size="sm"
+                      @click="editProfile(profile)"
+                    />
+
+                    <UButton
+                      icon="i-lucide-trash-2"
+                      color="error"
+                      variant="ghost"
+                      size="sm"
+                      @click="deleteProfile(profile)"
+                    />
+                  </div>
+
                   <UButton
-                    icon="i-lucide-pencil"
+                    :label="profile.is_current ? 'Current' : 'Switch'"
                     color="neutral"
-                    variant="ghost"
+                    variant="soft"
                     size="sm"
-                    @click="editProfile(profile)"
+                    :disabled="profile.is_current"
+                    @click="switchProfile(profile)"
                   />
-
-                  <UButton
-                    icon="i-lucide-trash-2"
-                    color="error"
-                    variant="ghost"
-                    size="sm"
-                    @click="deleteProfile(profile)"
-                  />
-                </div>
-
-                <UButton
-                  :label="profile.is_current ? 'Current' : 'Switch'"
-                  color="neutral"
-                  variant="soft"
-                  size="sm"
-                  :disabled="profile.is_current"
-                  @click="switchProfile(profile)"
-                />
-              </template>
-            </UPageCard>
-          </div>
+                </template>
+              </UPageCard>
+            </div>
+          </InfiniteScroll>
         </UPageBody>
       </UPage>
     </template>

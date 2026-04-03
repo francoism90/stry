@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Domain\Profiles\Models;
 
 use Database\Factories\ProfileFactory;
+use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Media\Models\Media;
 use Domain\Profiles\Collections\ProfileCollection;
 use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
@@ -12,18 +14,22 @@ use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\ModelStates\HasStates;
 
-class Profile extends Model
+class Profile extends Model implements HasMedia
 {
     use BroadcastsEvents;
     use HasFactory;
     use HasStates;
     use HasUlids;
+    use InteractsWithMedia;
     use InteractsWithUser;
     use SoftDeletes;
 
@@ -85,6 +91,34 @@ class Profile extends Model
         return 'ulid';
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('avatar')
+            ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
+            ->singleFile()
+            ->withResponsiveImages()
+            ->acceptsMimeTypes([
+                'image/avif',
+                'image/gif',
+                'image/jpeg',
+                'image/jpg',
+                'image/png',
+                'image/svg+xml',
+                'image/tiff',
+                'image/webp',
+            ]);
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('thumb')
+            ->fit(Fit::Stretch, 1280, 720)
+            ->sharpen(10);
+    }
+
     public static function findFromUlid(Profile|string $value): ?Profile
     {
         if ($value instanceof Profile) {
@@ -135,5 +169,25 @@ class Profile extends Model
     public function isPrimary(): bool
     {
         return $this->is_primary;
+    }
+
+    public function thumbnailUrl(): ?string
+    {
+        $media = $this->getFirstMedia('avatar');
+
+        if (! $media) {
+            return null;
+        }
+
+        $media->setRelation('model', $this);
+
+        return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
+    }
+
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->thumbnailUrl(),
+        )->shouldCache();
     }
 }
