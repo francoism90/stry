@@ -6,7 +6,8 @@ namespace App\Web\Profiles\Controllers;
 
 use App\Api\Profiles\Requests\ProfileStoreRequest;
 use App\Api\Profiles\Requests\ProfileUpdateRequest;
-use App\Web\Profiles\Responses\ProfileCollectionProperty;
+use App\Api\Profiles\Resources\ProfileResource;
+use App\Web\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Models\Profile;
 use Domain\Profiles\States\Enabled;
 use Foundation\Http\Controllers\Controller;
@@ -33,13 +34,15 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Profile::class);
 
-        $currentProfile = (string) $request->session()->get('profiles.current', '');
+        // Query builder
+        $query = $request->user()
+            ->profiles()
+            ->ordered()
+            ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Profiles/ProfileIndex', [
-            'profiles' => fn (): ProfileCollectionProperty => new ProfileCollectionProperty(
-                $request->user(),
-                $currentProfile,
-            ),
+            'profile' => fn () => new ProfileResourceProperty($request->user()),
+            'profiles' => Inertia::scroll(fn () => ProfileResource::collection($query)),
         ]);
     }
 

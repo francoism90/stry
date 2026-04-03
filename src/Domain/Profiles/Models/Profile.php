@@ -92,24 +92,29 @@ class Profile extends Model
         return Profile::query()->firstWhere('ulid', $value);
     }
 
-    public function isCurrent(string $currentProfile = ''): bool
+    public function isCurrent(Profile|string $profile): bool
     {
-        return $currentProfile === (string) $this->getRouteKey();
+        $profile = static::findFromUlid($profile);
+
+        if (! $profile instanceof Profile) {
+            return false;
+        }
+
+        return $this->is($profile);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function toSwitcherArray(string $currentProfile = ''): array
+    public function isKids(): bool
     {
-        return [
-            'id' => (string) $this->getRouteKey(),
-            'name' => $this->name,
-            'avatar' => $this->avatar,
-            'is_kids' => $this->is_kids,
-            'is_primary' => $this->is_primary,
-            'is_current' => $this->isCurrent($currentProfile),
-            'state' => $this->state->toArray(),
-        ];
+        return $this->is_kids;
+    }
+
+    public function isPrimary(): bool
+    {
+        return $this->is_primary;
+    }
+
+    public function getPrimary(): ?Profile
+    {
+        return $this->user->profiles()->firstWhere('is_primary', true);
     }
 }
