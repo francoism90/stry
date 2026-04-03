@@ -64,18 +64,21 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $tag);
 
+        // Apply filters
+        $order = $request->safe()->input('order');
+
         // Scout builder
         $scout = Video::search()
             ->tap(new VideoFilterScope(
                 tag: $tag,
-                order: $request->safe()->input('order'),
+                order: $order,
             ))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order'),
+            'order' => fn () => $order,
             'orders' => fn () => VideoOrder::options(),
         ]);
     }

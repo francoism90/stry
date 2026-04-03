@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller implements HasMiddleware
+class AccountController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -28,7 +28,7 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        return Inertia::render('App/Account/ProfileIndex', [
+        return Inertia::render('App/Account/AccountIndex', [
             'user' => fn () => new UserResourceProperty(
                 $request->user(),
                 ['name', 'email', 'avatar'],

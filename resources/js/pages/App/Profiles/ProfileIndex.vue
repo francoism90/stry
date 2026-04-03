@@ -1,0 +1,127 @@
+<script setup lang="ts">
+import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
+import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
+import ProfileDeleteModal from '@/components/Profiles/ProfileDeleteModal.vue'
+import ProfileEditModal from '@/components/Profiles/ProfileEditModal.vue'
+import AppHeader from '@/components/Ui/AppHeader.vue'
+import type { Profile, ProfileCollection } from '@/types'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
+
+defineProps<{
+  profile: Profile | null
+  items: ProfileCollection
+}>()
+
+const switchProfile = (item: Profile) =>
+  router.visit(SwitchProfileController(item.id), {
+    preserveScroll: true,
+  })
+</script>
+
+<template>
+  <Head title="Profiles" />
+
+  <UDashboardPanel id="profiles">
+    <template #header>
+      <AppHeader />
+    </template>
+
+    <template #body>
+      <UPage>
+        <UPageHeader
+          title="Profiles"
+          description="Choose who is watching."
+        >
+          <template #links>
+            <ProfileCreateModal />
+          </template>
+        </UPageHeader>
+
+        <UPageBody>
+          <div
+            v-if="!items?.data?.length"
+            class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+          >
+            <UIcon
+              name="i-lucide-users"
+              class="text-muted size-10"
+            />
+            <p class="font-semibold">No profiles yet</p>
+            <p class="text-muted text-sm">Create a profile to personalize watch history and recommendations.</p>
+          </div>
+
+          <InfiniteScroll
+            v-else
+            data="items"
+            :buffer="200"
+          >
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <UPageCard
+                v-for="item in items?.data"
+                :key="item.id"
+                variant="subtle"
+                :ui="{ body: 'flex items-center gap-3', footer: 'flex items-center justify-between' }"
+              >
+                <template #body>
+                  <UAvatar
+                    :src="item.avatar ?? undefined"
+                    :alt="item.name"
+                    size="lg"
+                  />
+
+                  <div class="flex min-w-0 flex-col gap-1">
+                    <p class="truncate font-semibold">{{ item.name }}</p>
+
+                    <div class="flex items-center gap-2">
+                      <UBadge
+                        color="neutral"
+                        variant="soft"
+                        size="sm"
+                      >
+                        {{ item.state.label }}
+                      </UBadge>
+
+                      <UBadge
+                        v-if="item.is_primary"
+                        color="primary"
+                        variant="soft"
+                        size="sm"
+                      >
+                        Primary
+                      </UBadge>
+
+                      <UBadge
+                        v-if="item.is_kids"
+                        color="warning"
+                        variant="soft"
+                        size="sm"
+                      >
+                        Kids
+                      </UBadge>
+                    </div>
+                  </div>
+                </template>
+
+                <template #footer>
+                  <div class="flex items-center gap-2">
+                    <ProfileEditModal :item="item" />
+                    <ProfileDeleteModal :item="item" />
+                  </div>
+
+                  <UButton
+                    :label="item.id === profile?.id ? 'Current' : 'Switch'"
+                    color="neutral"
+                    variant="soft"
+                    size="sm"
+                    :disabled="item.id === profile?.id"
+                    @click="switchProfile(item)"
+                  />
+                </template>
+              </UPageCard>
+            </div>
+          </InfiniteScroll>
+        </UPageBody>
+      </UPage>
+    </template>
+  </UDashboardPanel>
+</template>

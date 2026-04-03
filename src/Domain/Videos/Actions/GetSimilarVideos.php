@@ -54,7 +54,7 @@ class GetSimilarVideos
             $candidates = $candidates->merge($results);
         }
 
-        return $candidates->unique('id')->take(12);
+        return $candidates->unique('id')->take($this->limit ?? 18);
     }
 
     /**
@@ -82,7 +82,7 @@ class GetSimilarVideos
                 ...$tags->relates()->all(),
             ])
             ->inRandomOrder()
-            ->take(12)
+            ->take($this->limit ?? 18)
             ->cursor();
     }
 
@@ -95,7 +95,7 @@ class GetSimilarVideos
             ->whereKeyNot($video)
             ->verified()
             ->inRandomOrder()
-            ->take(12)
+            ->take($this->limit ?? 18)
             ->cursor();
     }
 

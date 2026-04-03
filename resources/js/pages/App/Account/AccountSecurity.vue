@@ -39,6 +39,11 @@ const onSubmit = () =>
         }"
       >
         <template #body>
+          <div class="flex flex-col gap-1">
+            <p class="text-highlighted text-sm font-semibold">Change password</p>
+            <p class="text-muted text-sm">Choose a strong password and keep your account secure.</p>
+          </div>
+
           <UFormField
             label="Current password"
             required
@@ -53,30 +58,34 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <UFormField
-            label="New password"
-            required
-            :error="form.errors.password"
-          >
-            <UInput
-              v-model="form.password"
-              type="password"
-              autocomplete="new-password"
-              @change="form.validate('password')"
-            />
-          </UFormField>
+          <div class="grid grid-cols-12 gap-4">
+            <UFormField
+              class="col-span-12 md:col-span-6"
+              label="New password"
+              required
+              :error="form.errors.password"
+            >
+              <UInput
+                v-model="form.password"
+                type="password"
+                autocomplete="new-password"
+                @change="form.validate('password')"
+              />
+            </UFormField>
 
-          <UFormField
-            label="Confirm new password"
-            required
-            :error="form.errors.password_confirmation"
-          >
-            <UInput
-              v-model="form.password_confirmation"
-              type="password"
-              autocomplete="new-password"
-            />
-          </UFormField>
+            <UFormField
+              class="col-span-12 md:col-span-6"
+              label="Confirm new password"
+              required
+              :error="form.errors.password_confirmation"
+            >
+              <UInput
+                v-model="form.password_confirmation"
+                type="password"
+                autocomplete="new-password"
+              />
+            </UFormField>
+          </div>
         </template>
 
         <template #footer>

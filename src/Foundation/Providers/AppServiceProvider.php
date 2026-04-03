@@ -7,6 +7,7 @@ namespace Foundation\Providers;
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
+use Domain\Profiles\Models\Profile;
 use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
@@ -65,9 +66,10 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'group' => Group::class,
             'media' => Media::class,
+            'playlist' => Playlist::class,
+            'profile' => Profile::class,
             'related' => Related::class,
             'tag' => Tag::class,
-            'playlist' => Playlist::class,
             'user' => User::class,
             'video' => Video::class,
         ]);

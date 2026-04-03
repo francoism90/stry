@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Web\Account\Controllers\AccountController;
 use App\Web\Account\Controllers\HomeController;
 use App\Web\Account\Controllers\NotificationsController;
-use App\Web\Account\Controllers\ProfileController;
 use App\Web\Account\Controllers\SecurityController;
 use App\Web\Account\Controllers\SettingsController;
 use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
+use App\Web\Profiles\Controllers\ProfileController;
+use App\Web\Profiles\Controllers\SwitchProfileController;
 use App\Web\Search\Controllers\SearchController;
 use App\Web\Search\Controllers\SearchGroupsController;
 use App\Web\Search\Controllers\SearchTagsController;
@@ -26,10 +28,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 
 // Account
-Route::get('/profile', ProfileController::class)->name('profile');
+Route::get('/account', AccountController::class)->name('account');
 Route::get('/security', SecurityController::class)->name('security');
 Route::get('/settings', SettingsController::class)->name('settings');
 Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
+
+// Profiles
+Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::post('/profiles/{profile}/switch', SwitchProfileController::class)->name('profiles.switch');
 
 // Resources
 Route::resource('collections', GroupController::class);

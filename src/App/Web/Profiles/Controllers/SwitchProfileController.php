@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Account\Controllers;
+namespace App\Web\Profiles\Controllers;
 
+use Domain\Profiles\Models\Profile;
 use Foundation\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
-use Inertia\Response;
 
-class SecurityController extends Controller implements HasMiddleware
+class SwitchProfileController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -23,10 +23,12 @@ class SecurityController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, Profile $profile): RedirectResponse
     {
-        Gate::authorize('update', $request->user());
+        Gate::authorize('view', $profile);
 
-        return Inertia::render('App/Account/AccountSecurity');
+        $request->session()->put('profiles.current', $profile->getRouteKey());
+
+        return back();
     }
 }

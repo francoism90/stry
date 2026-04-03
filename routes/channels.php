@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Api\Groups\Broadcasting\GroupChannel;
 use App\Api\Media\Broadcasting\MediaChannel;
 use App\Api\Playlists\Broadcasting\PlaylistChannel;
+use App\Api\Profiles\Broadcasting\ProfileChannel;
 use App\Api\Tags\Broadcasting\TagChannel;
 use App\Api\Transcodes\Broadcasting\TranscodeChannel;
 use App\Api\Users\Broadcasting\UserChannel;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('users.{user}', UserChannel::class);
+Broadcast::channel('profiles.{profile}', ProfileChannel::class);
 Broadcast::channel('tags.{tag}', TagChannel::class);
 Broadcast::channel('videos.{video}', VideoChannel::class);
 Broadcast::channel('groups.{group}', GroupChannel::class);

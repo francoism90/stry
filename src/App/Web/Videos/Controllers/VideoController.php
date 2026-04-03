@@ -41,16 +41,19 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
+        // Apply filters
+        $order = $request->safe()->input('order');
+
         // Scout builder
         $scout = Video::search()
             ->tap(new VideoFilterScope(
-                order: $request->safe()->input('order'),
+                order: $order,
             ))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->safe()->input('order'),
+            'order' => fn () => $order,
             'orders' => fn () => VideoOrder::options(),
         ]);
     }

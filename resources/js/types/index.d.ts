@@ -48,6 +48,18 @@ export type UserCollection = Omit<Paginator, 'data'> & {
   data: User[] | undefined
 }
 
+export type Profile = Model & {
+  name: string
+  avatar: string | null
+  is_kids: boolean
+  is_primary: boolean
+  state: ModelState
+}
+
+export type ProfileCollection = Omit<Paginator, 'data'> & {
+  data: Profile[] | undefined
+}
+
 export type UserSettings = {
   general: GeneralSettings
   appearance: AppearanceSettings
