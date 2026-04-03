@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Profiles\Responses;
 
 use App\Api\Profiles\Resources\ProfileResource;
+use Domain\Profiles\Models\Profile;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Session;
 use Inertia\PropertyContext;
@@ -27,22 +28,10 @@ readonly class ProfileResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this->user
-            ->loadMissing('profiles')
-            ->toResource(ProfileResource::class);
-    }
+        $currentProfile = Session::has('profiles.current')
+            ? Profile::findFromUlid(Session::get('profiles.current'))
+            : $this->user->currentProfile();
 
-    protected function getCurrentProfile(): ?string
-    {
-        $currentProfile = Session::get('profiles.current') ?? ;
-
-        if (Session::has('profiles.current')) {
-            return Session::get('profiles.current');
-        }
-
-        // Get the current profile from the session
-        $currentProfile = Profile::findFromUlid((string) $request->session()->get('profiles.current', ''));
-
-        return $this->user?->profiles()->current()?->ulid;
+        return $currentProfile?->toResource(ProfileResource::class);
     }
 }

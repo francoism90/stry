@@ -27,8 +27,9 @@ class ProfileResource extends JsonResource
             'avatar' => $this->avatar,
             'is_kids' => $this->isKids(),
             'is_primary' => $this->isPrimary(),
-            'is_current' => $this->isCurrent($currentProfile instanceof Profile ? $currentProfile : ''),
             'state' => $this->state->toArray(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

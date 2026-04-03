@@ -92,17 +92,6 @@ class Profile extends Model
         return Profile::query()->firstWhere('ulid', $value);
     }
 
-    public function isCurrent(Profile|string $profile): bool
-    {
-        $profile = static::findFromUlid($profile);
-
-        if (! $profile instanceof Profile) {
-            return false;
-        }
-
-        return $this->is($profile);
-    }
-
     public function isKids(): bool
     {
         return $this->is_kids;
@@ -111,10 +100,5 @@ class Profile extends Model
     public function isPrimary(): bool
     {
         return $this->is_primary;
-    }
-
-    public function getPrimary(): ?Profile
-    {
-        return $this->user->profiles()->firstWhere('is_primary', true);
     }
 }

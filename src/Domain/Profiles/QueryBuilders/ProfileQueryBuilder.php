@@ -25,4 +25,11 @@ class ProfileQueryBuilder extends Builder
             ->orderByDesc('is_primary')
             ->orderBy('name');
     }
+
+    public function current(): self
+    {
+        return $this
+            ->enabled()
+            ->ordered();
+    }
 }

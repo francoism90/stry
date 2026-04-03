@@ -102,3 +102,39 @@ it('can scope enabled and disabled profiles', function () {
     expect($user->profiles()->enabled()->pluck('id')->all())->toBe([$enabledProfile->getKey()])
         ->and($user->profiles()->disabled()->pluck('id')->all())->toBe([$disabledProfile->getKey()]);
 });
+
+it('returns the primary profile when one exists', function () {
+    $user = User::factory()->create();
+
+    $firstProfile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Alpha',
+        'is_primary' => false,
+    ]);
+
+    $primaryProfile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Bravo',
+        'is_primary' => true,
+    ]);
+
+    expect($firstProfile->getPrimary()?->is($primaryProfile))->toBeTrue();
+});
+
+it('falls back to the first profile when no primary exists', function () {
+    $user = User::factory()->create();
+
+    $firstProfile = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Alpha',
+        'is_primary' => false,
+    ]);
+
+    Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Bravo',
+        'is_primary' => false,
+    ]);
+
+    expect($firstProfile->getPrimary()?->is($firstProfile))->toBeTrue();
+});

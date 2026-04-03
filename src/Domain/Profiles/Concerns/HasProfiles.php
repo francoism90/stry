@@ -13,4 +13,12 @@ trait HasProfiles
     {
         return $this->hasMany(Profile::class)->chaperone();
     }
+
+    public function currentProfile(): ?Profile
+    {
+        return $this
+            ->profiles()
+            ->current()
+            ->first();
+    }
 }
