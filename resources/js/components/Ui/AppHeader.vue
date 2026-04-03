@@ -26,14 +26,14 @@ const navItems: NavigationMenuItem[] = [
 const menuItems = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: 'Profiles',
-      icon: 'i-lucide-users',
-      to: '/profiles',
-    },
-    {
       label: 'Account',
       icon: 'i-lucide-user',
       to: '/account',
+    },
+    {
+      label: 'Profiles',
+      icon: 'i-lucide-users',
+      to: '/profiles',
     },
     {
       label: 'Settings',

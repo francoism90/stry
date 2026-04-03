@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Domain\Profiles\Models;
 
 use Database\Factories\ProfileFactory;
+use Domain\Profiles\Collections\ProfileCollection;
+use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
@@ -61,6 +63,16 @@ class Profile extends Model
         return ProfileFactory::new();
     }
 
+    public function newEloquentBuilder($query): ProfileQueryBuilder
+    {
+        return new ProfileQueryBuilder($query);
+    }
+
+    public function newCollection(array $models = []): ProfileCollection
+    {
+        return new ProfileCollection($models);
+    }
+
     public function uniqueIds(): array
     {
         return ['ulid'];
@@ -78,5 +90,26 @@ class Profile extends Model
         }
 
         return Profile::query()->firstWhere('ulid', $value);
+    }
+
+    public function isCurrent(string $currentProfile = ''): bool
+    {
+        return $currentProfile === (string) $this->getRouteKey();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toSwitcherArray(string $currentProfile = ''): array
+    {
+        return [
+            'id' => (string) $this->getRouteKey(),
+            'name' => $this->name,
+            'avatar' => $this->avatar,
+            'is_kids' => $this->is_kids,
+            'is_primary' => $this->is_primary,
+            'is_current' => $this->isCurrent($currentProfile),
+            'state' => $this->state->toArray(),
+        ];
     }
 }

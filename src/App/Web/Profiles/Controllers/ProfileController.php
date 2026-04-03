@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Profiles\Controllers;
 
-use Domain\Profiles\Models\Profile;
+use App\Web\Profiles\Responses\ProfileCollectionProperty;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -28,23 +28,10 @@ class ProfileController extends Controller implements HasMiddleware
         $currentProfile = (string) $request->session()->get('profiles.current', '');
 
         return Inertia::render('App/Profiles/ProfileIndex', [
-            'profiles' => fn (): array => $request
-                ->user()
-                ->profiles()
-                ->orderByDesc('is_primary')
-                ->orderBy('name')
-                ->get()
-                ->map(fn (Profile $profile): array => [
-                    'id' => (string) $profile->getRouteKey(),
-                    'name' => $profile->name,
-                    'avatar' => $profile->avatar,
-                    'is_kids' => $profile->is_kids,
-                    'is_primary' => $profile->is_primary,
-                    'is_current' => $currentProfile === (string) $profile->getRouteKey(),
-                    'state' => $profile->state->toArray(),
-                ])
-                ->values()
-                ->all(),
+            'profiles' => fn (): ProfileCollectionProperty => new ProfileCollectionProperty(
+                $request->user(),
+                $currentProfile,
+            ),
         ]);
     }
 }

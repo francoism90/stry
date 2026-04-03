@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Web/Account/Controllers/ProfileController'
+import AccountController from '@/actions/App/Web/Account/Controllers/AccountController'
 import SecurityController from '@/actions/App/Web/Account/Controllers/SecurityController'
 import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
@@ -27,7 +27,7 @@ const tabs: NavigationMenuItem[] = [
   {
     label: 'Profile',
     icon: 'i-lucide-user',
-    to: ProfileController.url(),
+    to: AccountController.url(),
     exact: true,
   },
   {
