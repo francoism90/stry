@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller implements HasMiddleware
+class AccountController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
