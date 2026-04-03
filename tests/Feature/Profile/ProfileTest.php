@@ -118,7 +118,7 @@ it('returns the primary profile when one exists', function () {
         'is_primary' => true,
     ]);
 
-    expect($firstProfile->getPrimary()?->is($primaryProfile))->toBeTrue();
+    expect($user->currentProfile()?->is($primaryProfile))->toBeTrue();
 });
 
 it('falls back to the first profile when no primary exists', function () {
@@ -136,5 +136,5 @@ it('falls back to the first profile when no primary exists', function () {
         'is_primary' => false,
     ]);
 
-    expect($firstProfile->getPrimary()?->is($firstProfile))->toBeTrue();
+    expect($user->currentProfile()?->is($firstProfile))->toBeTrue();
 });

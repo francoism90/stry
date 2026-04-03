@@ -11,7 +11,7 @@ it('renders the security settings page for authenticated users', function () {
     $response = $this->actingAs($user)->get(action(SecurityController::class));
 
     $response->assertSuccessful();
-    $response->assertInertia(fn ($page) => $page->component('App/Account/SecuritySettings'));
+    $response->assertInertia(fn ($page) => $page->component('App/Account/AccountSecurity'));
 });
 
 it('redirects guests from the security settings page', function () {

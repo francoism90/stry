@@ -19,7 +19,7 @@ it('renders the profiles page for authenticated users', function () {
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
         ->component('App/Profiles/ProfileIndex')
-        ->has('profiles', 2)
+        ->has('items.data', 2)
     );
 });
 
@@ -60,10 +60,9 @@ it('marks the switched profile as current', function () {
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
-        ->where('profiles.0.id', $first->getRouteKey())
-        ->where('profiles.0.is_current', false)
-        ->where('profiles.1.id', $second->getRouteKey())
-        ->where('profiles.1.is_current', true)
+        ->where('items.data.0.id', $first->getRouteKey())
+        ->where('items.data.1.id', $second->getRouteKey())
+        ->where('profile.id', $second->getRouteKey())
     );
 });
 

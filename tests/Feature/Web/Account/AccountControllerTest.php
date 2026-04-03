@@ -11,7 +11,7 @@ it('renders the account page for authenticated users', function () {
     $response = $this->actingAs($user)->get(action(AccountController::class));
 
     $response->assertSuccessful();
-    $response->assertInertia(fn ($page) => $page->component('App/Account/ProfileIndex'));
+    $response->assertInertia(fn ($page) => $page->component('App/Account/AccountIndex'));
 });
 
 it('redirects guests from the account page', function () {
