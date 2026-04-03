@@ -31,15 +31,15 @@ const tabs: NavigationMenuItem[] = [
     exact: true,
   },
   {
-    label: 'Security',
-    icon: 'i-lucide-lock',
-    to: SecurityController.url(),
-    exact: true,
-  },
-  {
     label: 'Settings',
     icon: 'i-lucide-settings',
     to: SettingsController.url(),
+    exact: true,
+  },
+  {
+    label: 'Security',
+    icon: 'i-lucide-lock',
+    to: SecurityController.url(),
     exact: true,
   },
 ]
