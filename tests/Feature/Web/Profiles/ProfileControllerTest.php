@@ -23,6 +23,43 @@ it('renders the profiles page for authenticated users', function () {
     );
 });
 
+it('orders profiles by created_at when requested', function () {
+    $user = User::factory()->create();
+
+    $older = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'is_primary' => false,
+        'created_at' => now()->subDay(),
+    ]);
+
+    $newer = Profile::factory()->create([
+        'user_id' => $user->getKey(),
+        'is_primary' => false,
+        'created_at' => now(),
+    ]);
+
+    $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
+        'order' => 'created_at',
+    ]));
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->where('order', 'created_at')
+        ->where('items.data.0.id', $newer->getRouteKey())
+        ->where('items.data.1.id', $older->getRouteKey())
+    );
+});
+
+it('rejects unknown profile order values', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
+        'order' => 'invalid',
+    ]));
+
+    $response->assertSessionHasErrors('order');
+});
+
 it('redirects guests from the profiles page', function () {
     $response = $this->get(action([ProfileController::class, 'index']));
 

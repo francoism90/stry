@@ -2,7 +2,7 @@
 import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import type { Tag } from '@/types'
 
-const props = defineProps<{
+defineProps<{
   item: Tag
 }>()
 
@@ -18,14 +18,14 @@ function tagColor(slug: string): string {
 
 <template>
   <ULink
-    :to="show.url(props.item.id)"
+    :to="show.url(item.id)"
     class="bg-elevated hover:bg-accented flex flex-col gap-0.5 rounded-lg border-l-6 px-4 py-2.5 transition"
-    :style="{ borderColor: tagColor(props.item.slug) }"
+    :style="{ borderColor: tagColor(item.slug) }"
   >
-    <span class="line-clamp-1 text-sm font-semibold capitalize">{{ props.item.name }}</span>
+    <span class="line-clamp-1 text-sm font-semibold capitalize">{{ item.name }}</span>
     <span class="text-muted text-xs">
-      {{ Intl.NumberFormat().format(props.item.videos ?? 0) }}
-      {{ (props.item.videos ?? 0) === 1 ? 'video' : 'videos' }}
+      {{ Intl.NumberFormat().format(item.videos ?? 0) }}
+      {{ (item.videos ?? 0) === 1 ? 'video' : 'videos' }}
     </span>
   </ULink>
 </template>
