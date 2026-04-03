@@ -6,7 +6,6 @@ namespace Domain\Profiles\Models;
 
 use Database\Factories\ProfileFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Media\Models\Media;
 use Domain\Profiles\Collections\ProfileCollection;
 use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
@@ -21,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 
 class Profile extends Model implements HasMedia

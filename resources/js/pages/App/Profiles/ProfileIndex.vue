@@ -1,55 +1,15 @@
 <script setup lang="ts">
-import { destroy, store, update } from '@/actions/App/Web/Profiles/Controllers/ProfileController'
 import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
+import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
+import ProfileDeleteModal from '@/components/Profiles/ProfileDeleteModal.vue'
+import ProfileEditModal from '@/components/Profiles/ProfileEditModal.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Profile, ProfileCollection } from '@/types'
-import { Head, InfiniteScroll, router, useForm } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 
 defineProps<{
   profiles: ProfileCollection
 }>()
-
-const createForm = useForm(store(), {
-  name: '',
-  is_kids: false,
-  is_primary: false,
-})
-
-const createProfile = (close: () => void) =>
-  createForm.submit({
-    preserveScroll: true,
-    onSuccess: () => {
-      createForm.reset()
-      close()
-    },
-  })
-
-const editProfile = (profile: Profile) => {
-  const name = window.prompt('Profile name', profile.name)?.trim()
-
-  if (!name) {
-    return
-  }
-
-  router.visit(update(profile.id), {
-    preserveScroll: true,
-    data: {
-      name,
-      is_kids: profile.is_kids,
-      is_primary: profile.is_primary,
-    },
-  })
-}
-
-const deleteProfile = (profile: Profile) => {
-  if (!window.confirm(`Delete profile "${profile.name}"?`)) {
-    return
-  }
-
-  router.visit(destroy(profile.id), {
-    preserveScroll: true,
-  })
-}
 
 const switchProfile = (profile: Profile) =>
   router.visit(SwitchProfileController(profile.id), {
@@ -72,67 +32,7 @@ const switchProfile = (profile: Profile) =>
           description="Choose who is watching."
         >
           <template #links>
-            <UModal
-              title="Create profile"
-              :ui="{ footer: 'justify-end' }"
-            >
-              <UButton
-                label="Create profile"
-                icon="i-lucide-plus"
-                color="neutral"
-                variant="soft"
-              />
-
-              <template #body>
-                <UForm
-                  :state="createForm"
-                  class="flex flex-col gap-4"
-                >
-                  <UFormField
-                    label="Name"
-                    required
-                    :error="createForm.errors.name"
-                  >
-                    <UInput
-                      v-model="createForm.name"
-                      :model-modifiers="{ string: true, trim: true }"
-                      autofocus
-                    />
-                  </UFormField>
-
-                  <UFormField
-                    label="Kids profile"
-                    :error="createForm.errors.is_kids"
-                  >
-                    <USwitch v-model="createForm.is_kids" />
-                  </UFormField>
-
-                  <UFormField
-                    label="Primary profile"
-                    :error="createForm.errors.is_primary"
-                  >
-                    <USwitch v-model="createForm.is_primary" />
-                  </UFormField>
-                </UForm>
-              </template>
-
-              <template #footer="{ close }">
-                <UButton
-                  label="Cancel"
-                  color="neutral"
-                  variant="soft"
-                  @click.prevent="close"
-                />
-
-                <UButton
-                  label="Create"
-                  color="primary"
-                  variant="soft"
-                  loading-auto
-                  @click.prevent="createProfile(close)"
-                />
-              </template>
-            </UModal>
+            <ProfileCreateModal />
           </template>
         </UPageHeader>
 
@@ -203,21 +103,8 @@ const switchProfile = (profile: Profile) =>
 
                 <template #footer>
                   <div class="flex items-center gap-2">
-                    <UButton
-                      icon="i-lucide-pencil"
-                      color="neutral"
-                      variant="ghost"
-                      size="sm"
-                      @click="editProfile(profile)"
-                    />
-
-                    <UButton
-                      icon="i-lucide-trash-2"
-                      color="error"
-                      variant="ghost"
-                      size="sm"
-                      @click="deleteProfile(profile)"
-                    />
+                    <ProfileEditModal :item="profile" />
+                    <ProfileDeleteModal :item="profile" />
                   </div>
 
                   <UButton
