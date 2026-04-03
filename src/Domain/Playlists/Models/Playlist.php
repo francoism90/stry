@@ -88,6 +88,11 @@ class Playlist extends Model
         ];
     }
 
+    protected static function newFactory(): PlaylistFactory
+    {
+        return PlaylistFactory::new();
+    }
+
     public function newEloquentBuilder($query): PlaylistQueryBuilder
     {
         return new PlaylistQueryBuilder($query);
@@ -96,11 +101,6 @@ class Playlist extends Model
     public function newCollection(array $models = []): PlaylistCollection
     {
         return new PlaylistCollection($models);
-    }
-
-    protected static function newFactory(): PlaylistFactory
-    {
-        return PlaylistFactory::new();
     }
 
     public function uniqueIds(): array

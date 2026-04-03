@@ -10,6 +10,7 @@ use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +20,7 @@ use Spatie\ModelStates\HasStates;
 
 class Profile extends Model
 {
+    use BroadcastsEvents;
     use HasFactory;
     use HasStates;
     use HasUlids;
@@ -90,6 +92,39 @@ class Profile extends Model
         }
 
         return Profile::query()->firstWhere('ulid', $value);
+    }
+
+    /**
+     * @return array<int, Channel>
+     */
+    public function broadcastOn(string $event): array
+    {
+        return array_filter([$this, $this->user]);
+    }
+
+    public function broadcastChannel(): string
+    {
+        return 'profiles.'.$this->getRouteKey();
+    }
+
+    public function broadcastAs(string $event): string
+    {
+        return "profile.{$event}";
+    }
+
+    public function broadcastWith(string $event): array
+    {
+        return ['id' => $this->getRouteKey()];
+    }
+
+    public function broadcastAfterCommit(): bool
+    {
+        return true;
+    }
+
+    public function broadcastQueue(): string
+    {
+        return 'broadcasts';
     }
 
     public function isKids(): bool
