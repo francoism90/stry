@@ -30,6 +30,6 @@ return [
 
     'create_playlists' => (bool) env('VIDEO_CREATE_PLAYLISTS', false),
 
-    'completion_threshold' => (float) env('VIDEO_COMPLETION_THRESHOLD', 0.95),
+    'completion_threshold' => (float) env('VIDEO_COMPLETION_THRESHOLD', 0.97),
 
 ];

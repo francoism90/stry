@@ -20,8 +20,6 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
       'play_pause',
       'seek_back_15',
       'seek_forward_15',
-      'skip_previous',
-      'skip_next',
       'time_and_duration',
       'spacer',
       'mute',

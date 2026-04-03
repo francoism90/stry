@@ -18,10 +18,14 @@
 
 .shaka-seek-back-15 svg,
 .shaka-seek-forward-15 svg {
-  @apply size-[18px] shrink-0;
+  @apply size-4.5 shrink-0;
 }
 
 .shaka-seek-back-15 span,
 .shaka-seek-forward-15 span {
   @apply text-[11px] leading-none font-semibold;
+}
+
+.shaka-seek-bar-container {
+  @apply top-1.25 mb-1 h-1.25 border-t-8 border-b-8;
 }
