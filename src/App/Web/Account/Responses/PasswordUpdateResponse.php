@@ -23,6 +23,6 @@ class PasswordUpdateResponse implements PasswordUpdateResponseContract
             'type' => 'success',
         ]);
 
-        return redirect()->route('security');
+        return back();
     }
 }
