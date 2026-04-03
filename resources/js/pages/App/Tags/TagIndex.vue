@@ -30,6 +30,7 @@ const { hasAnyRole } = useAuth()
         <UDashboardToolbar>
           <template #left>
             <TagFilters
+              :results="Boolean(items?.data?.length)"
               :types="types"
               :type="type"
               :orders="orders"

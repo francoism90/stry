@@ -38,6 +38,7 @@ defineProps<{
         <UDashboardToolbar>
           <template #left>
             <GroupFilters
+              :results="Boolean(items?.data?.length)"
               :orders="orders"
               :order="order"
             />

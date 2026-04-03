@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
+  results?: boolean
   orders?: SelectMenuItem[]
   order?: string | undefined
 }>()
@@ -23,7 +24,7 @@ const onSubmit = () => {
 
 <template>
   <USelectMenu
-    v-if="orders?.length"
+    v-if="orders?.length && results"
     v-model="form.order"
     :model-modifiers="{ nullable: true }"
     :items="orders"

@@ -46,6 +46,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
         <UDashboardToolbar>
           <template #left>
             <VideoFilters
+              :results="Boolean(items?.data?.length)"
               :orders="orders"
               :order="order"
             />

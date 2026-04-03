@@ -49,6 +49,7 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(
         <UDashboardToolbar>
           <template #left>
             <VideoFilters
+              :results="Boolean(items?.data?.length)"
               :orders="orders"
               :order="order"
             />

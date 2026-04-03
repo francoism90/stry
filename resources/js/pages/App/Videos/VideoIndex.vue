@@ -24,6 +24,7 @@ defineProps<{
         <UDashboardToolbar>
           <template #left>
             <VideoFilters
+              :results="Boolean(items?.data?.length)"
               :orders="orders"
               :order="order"
             />

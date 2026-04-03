@@ -34,6 +34,7 @@ const switchProfile = (item: Profile) =>
         <UDashboardToolbar>
           <template #left>
             <ProfileFilters
+              :results="Boolean(items?.data?.length)"
               :orders="orders"
               :order="order"
             />

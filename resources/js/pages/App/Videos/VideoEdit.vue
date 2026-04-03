@@ -101,11 +101,11 @@ const onSubmit = () =>
 
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <UFormField
-              label="Season"
-              :error="form.errors.season"
+              label="Episode"
+              :error="form.errors.episode"
             >
               <UInput
-                v-model="form.season"
+                v-model="form.episode"
                 :model-modifiers="{ nullable: true, string: true, trim: true }"
                 placeholder="1"
                 autocapitalize="characters"
@@ -113,11 +113,11 @@ const onSubmit = () =>
             </UFormField>
 
             <UFormField
-              label="Episode"
-              :error="form.errors.episode"
+              label="Season"
+              :error="form.errors.season"
             >
               <UInput
-                v-model="form.episode"
+                v-model="form.season"
                 :model-modifiers="{ nullable: true, string: true, trim: true }"
                 placeholder="1"
                 autocapitalize="characters"

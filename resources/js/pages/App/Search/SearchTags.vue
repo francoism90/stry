@@ -38,6 +38,7 @@ defineProps<{
         <UDashboardToolbar>
           <template #left>
             <TagFilters
+              :results="Boolean(items?.data?.length)"
               :types="types"
               :type="type ?? undefined"
             />
