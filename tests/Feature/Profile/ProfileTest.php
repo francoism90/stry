@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\Profiles\Models\Profile;
 use Domain\Profiles\Policies\ProfilePolicy;
+use Domain\Profiles\States\Pending;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
@@ -22,7 +23,9 @@ it('can create a profile with required attributes', function () {
         ->and($profile->user_id)->toBe($user->getKey())
         ->and($profile->name)->toBe('Main')
         ->and($profile->is_kids)->toBeFalse()
-        ->and($profile->is_primary)->toBeFalse();
+        ->and($profile->is_primary)->toBeFalse()
+        ->and($profile->state->equals(Pending::class))->toBeTrue()
+        ->and($profile->settings->toArray())->toBe([]);
 });
 
 it('belongs to a user', function () {
@@ -65,4 +68,19 @@ it('can resolve a profile from a ulid', function () {
 
 it('resolves the profile policy through gate', function () {
     expect(Gate::getPolicyFor(Profile::class))->toBeInstanceOf(ProfilePolicy::class);
+});
+
+it('casts profile settings to an array object', function () {
+    $profile = Profile::factory()->create([
+        'settings' => [
+            'language' => 'en',
+            'autoplay_next' => true,
+        ],
+    ]);
+
+    expect($profile->settings)->toBeInstanceOf(ArrayObject::class)
+        ->and($profile->settings->toArray())->toBe([
+            'language' => 'en',
+            'autoplay_next' => true,
+        ]);
 });

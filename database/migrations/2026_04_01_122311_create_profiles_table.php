@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->boolean('is_kids')->default(false)->index();
             $table->boolean('is_primary')->default(false)->index();
+            $table->string('state')->index();
+            $table->jsonb('settings')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['user_id', 'name']);
