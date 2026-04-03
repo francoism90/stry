@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ba2e85d8898ee84e1762bdd5f99684b",
+    "content-hash": "ce5912cb90526f3b2cbc11ee848a52b8",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.376.0",
+            "version": "3.376.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5c9ce14723532cd694fa64dc1cbd1b33db1c79f9"
+                "reference": "ff2f61f280fc46081a1fbb7ae201a09f431d436d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5c9ce14723532cd694fa64dc1cbd1b33db1c79f9",
-                "reference": "5c9ce14723532cd694fa64dc1cbd1b33db1c79f9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ff2f61f280fc46081a1fbb7ae201a09f431d436d",
+                "reference": "ff2f61f280fc46081a1fbb7ae201a09f431d436d",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.376.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.376.2"
             },
-            "time": "2026-03-31T18:13:11+00:00"
+            "time": "2026-04-02T18:09:03+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2361,16 +2361,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.2.0",
+            "version": "v13.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "9e48d1fe933e89de628dafa167d2c5778566d4cf"
+                "reference": "118b7063c44a2f3421d1646f5ddf08defcfd1db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/9e48d1fe933e89de628dafa167d2c5778566d4cf",
-                "reference": "9e48d1fe933e89de628dafa167d2c5778566d4cf",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/118b7063c44a2f3421d1646f5ddf08defcfd1db3",
+                "reference": "118b7063c44a2f3421d1646f5ddf08defcfd1db3",
                 "shasum": ""
             },
             "require": {
@@ -2488,6 +2488,7 @@
                 "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^11.5.50 || ^12.5.8 || ^13.0.3",
                 "predis/predis": "^2.3 || ^3.0",
+                "rector/rector": "^2.3",
                 "resend/resend-php": "^1.0",
                 "symfony/cache": "^7.4.0 || ^8.0.0",
                 "symfony/http-client": "^7.4.0 || ^8.0.0",
@@ -2578,20 +2579,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-03-24T18:42:09+00:00"
+            "time": "2026-04-01T15:39:53+00:00"
         },
         {
             "name": "laravel/horizon",
-            "version": "v5.45.4",
+            "version": "v5.45.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "b2b32e3f6013081e0176307e9081cd085f0ad4d6"
+                "reference": "683b6117ec0d0495a4d18106bc2c44b3461fd92b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/b2b32e3f6013081e0176307e9081cd085f0ad4d6",
-                "reference": "b2b32e3f6013081e0176307e9081cd085f0ad4d6",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/683b6117ec0d0495a4d18106bc2c44b3461fd92b",
+                "reference": "683b6117ec0d0495a4d18106bc2c44b3461fd92b",
                 "shasum": ""
             },
             "require": {
@@ -2656,9 +2657,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/horizon/issues",
-                "source": "https://github.com/laravel/horizon/tree/v5.45.4"
+                "source": "https://github.com/laravel/horizon/tree/v5.45.5"
             },
-            "time": "2026-03-18T14:14:59+00:00"
+            "time": "2026-04-01T07:28:03+00:00"
         },
         {
             "name": "laravel/octane",
@@ -2810,16 +2811,16 @@
         },
         {
             "name": "laravel/reverb",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/reverb.git",
-                "reference": "7a1ef2235cfe085cdf3190d0dcfaed4f7d251734"
+                "reference": "a9c2b24ba455d0b2c22bb2851c15ba1adcb75240"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/reverb/zipball/7a1ef2235cfe085cdf3190d0dcfaed4f7d251734",
-                "reference": "7a1ef2235cfe085cdf3190d0dcfaed4f7d251734",
+                "url": "https://api.github.com/repos/laravel/reverb/zipball/a9c2b24ba455d0b2c22bb2851c15ba1adcb75240",
+                "reference": "a9c2b24ba455d0b2c22bb2851c15ba1adcb75240",
                 "shasum": ""
             },
             "require": {
@@ -2883,9 +2884,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/reverb/issues",
-                "source": "https://github.com/laravel/reverb/tree/v1.9.0"
+                "source": "https://github.com/laravel/reverb/tree/v1.10.0"
             },
-            "time": "2026-03-20T20:16:59+00:00"
+            "time": "2026-03-29T14:51:57+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -7380,16 +7381,16 @@
         },
         {
             "name": "spatie/laravel-data",
-            "version": "4.20.1",
+            "version": "4.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-data.git",
-                "reference": "5490cb15de6fc8b35a8cd2f661fac072d987a1ad"
+                "reference": "27ad502f84a684e1ec94ebee95c5adaea99bef96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/5490cb15de6fc8b35a8cd2f661fac072d987a1ad",
-                "reference": "5490cb15de6fc8b35a8cd2f661fac072d987a1ad",
+                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/27ad502f84a684e1ec94ebee95c5adaea99bef96",
+                "reference": "27ad502f84a684e1ec94ebee95c5adaea99bef96",
                 "shasum": ""
             },
             "require": {
@@ -7450,7 +7451,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-data/issues",
-                "source": "https://github.com/spatie/laravel-data/tree/4.20.1"
+                "source": "https://github.com/spatie/laravel-data/tree/4.21.0"
             },
             "funding": [
                 {
@@ -7458,7 +7459,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-18T07:44:01+00:00"
+            "time": "2026-04-02T14:36:45+00:00"
         },
         {
             "name": "spatie/laravel-google-fonts",
@@ -12494,16 +12495,16 @@
         },
         {
             "name": "laravel/envoy",
-            "version": "v2.12.1",
+            "version": "v2.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/envoy.git",
-                "reference": "87b8832d351e96b6a94ef134ec1657b8c4464100"
+                "reference": "2f475252d9f2ab45e259d9b24e18cd179a6814df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/envoy/zipball/87b8832d351e96b6a94ef134ec1657b8c4464100",
-                "reference": "87b8832d351e96b6a94ef134ec1657b8c4464100",
+                "url": "https://api.github.com/repos/laravel/envoy/zipball/2f475252d9f2ab45e259d9b24e18cd179a6814df",
+                "reference": "2f475252d9f2ab45e259d9b24e18cd179a6814df",
                 "shasum": ""
             },
             "require": {
@@ -12551,9 +12552,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/envoy/issues",
-                "source": "https://github.com/laravel/envoy/tree/v2.12.1"
+                "source": "https://github.com/laravel/envoy/tree/v2.12.2"
             },
-            "time": "2026-03-25T14:03:01+00:00"
+            "time": "2026-04-01T12:56:10+00:00"
         },
         {
             "name": "laravel/mcp",
