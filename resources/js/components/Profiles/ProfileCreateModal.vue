@@ -28,7 +28,9 @@ const create = async (close: () => void) =>
         label="Create profile"
         icon="i-lucide-plus"
         color="neutral"
-        variant="soft"
+        variant="link"
+        size="sm"
+        class="px-0"
       />
     </slot>
 

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Web\Profiles\Controllers;
 
+use App\Api\Profiles\Requests\ProfileIndexRequest;
 use App\Api\Profiles\Requests\ProfileStoreRequest;
 use App\Api\Profiles\Requests\ProfileUpdateRequest;
 use App\Api\Profiles\Resources\ProfileResource;
 use App\Web\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;
+use Domain\Profiles\Enums\ProfileOrder;
 use Domain\Profiles\Models\Profile;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -31,19 +33,23 @@ class ProfileController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(ProfileIndexRequest $request): Response
     {
         Gate::authorize('viewAny', Profile::class);
+
+        $order = $request->safe()->input('order');
 
         // Query builder
         $query = $request->user()
             ->profiles()
-            ->ordered()
+            ->ordered(order: $order)
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty($request->user()),
             'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
+            'order' => fn () => $order,
+            'orders' => fn () => ProfileOrder::options(),
         ]);
     }
 
