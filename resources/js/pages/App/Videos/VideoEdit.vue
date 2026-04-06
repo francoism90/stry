@@ -113,11 +113,11 @@ const onSubmit = () =>
             </UFormField>
 
             <UFormField
-              label="Season"
-              :error="form.errors.season"
+              label="Part"
+              :error="form.errors.part"
             >
               <UInput
-                v-model="form.season"
+                v-model="form.part"
                 :model-modifiers="{ nullable: true, string: true, trim: true }"
                 placeholder="1"
                 autocapitalize="characters"
@@ -125,11 +125,11 @@ const onSubmit = () =>
             </UFormField>
 
             <UFormField
-              label="Part"
-              :error="form.errors.part"
+              label="Season"
+              :error="form.errors.season"
             >
               <UInput
-                v-model="form.part"
+                v-model="form.season"
                 :model-modifiers="{ nullable: true, string: true, trim: true }"
                 placeholder="1"
                 autocapitalize="characters"
