@@ -9,13 +9,11 @@ import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { Head, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
   progress: number | null
-  states: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
@@ -31,7 +29,6 @@ const form = useForm(update(props.video.id), {
   summary: props.video.summary || null,
   tags: props.video.tags || [],
   adult: props.video.adult,
-  state: props.video.state.name,
   snapshot: props.video.snapshot || null,
   published_at: props.video.published_at || null,
   released_at: props.video.released_at || null,
@@ -243,47 +240,30 @@ const onSubmit = () =>
             </USelectMenu>
           </UFormField>
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <USeparator />
+
+          <div class="flex flex-col gap-4">
             <UFormField
-              label="State"
-              :error="form.errors.state"
-              class="sm:col-span-2"
+              label="Summary"
+              :error="form.errors.summary"
             >
-              <USelect
-                v-model="form.state"
-                :items="states"
-                label-key="label"
-                value-key="value"
+              <UTextarea
+                v-model="form.summary"
+                :model-modifiers="{ nullable: true, string: true, trim: true }"
+                :rows="5"
+                autoresize
+                placeholder="Enter markdown"
                 class="w-full"
               />
             </UFormField>
 
-            <UFormField
-              label="Adult"
-              :error="form.errors.adult"
-            >
+            <UFormField :error="form.errors.adult">
               <USwitch
                 v-model="form.adult"
                 label="Adult content"
               />
             </UFormField>
           </div>
-
-          <USeparator />
-
-          <UFormField
-            label="Summary"
-            :error="form.errors.summary"
-          >
-            <UTextarea
-              v-model="form.summary"
-              :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="5"
-              autoresize
-              placeholder="Enter markdown"
-              class="w-full"
-            />
-          </UFormField>
         </template>
 
         <template #footer>
