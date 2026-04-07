@@ -71,7 +71,9 @@ That means **stry** focuses on repackaging/transcoding and adaptive streaming wo
 | **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                    |
 | **PWA**               | [Laravel PWA](https://github.com/foxws/laravel-pwa) (installable on mobile/desktop) |
 
----## 📋 Prerequisites
+---
+
+## 📋 Prerequisites
 
 You need a basic knowledge of Laravel, Inertia.js, and containerization concepts.
 Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) is a plus.
