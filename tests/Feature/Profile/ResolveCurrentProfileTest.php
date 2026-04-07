@@ -27,7 +27,7 @@ it('sets the session profile on the request when profiles.current is set', funct
 
     $request = Request::create('/');
     $request->setUserResolver(fn () => $user);
-    $request->setLaravelSession(session());
+    $request->setLaravelSession(session()->driver());
     session()->put('profiles.current', $profile->ulid);
 
     $middleware = new ResolveCurrentProfile;
@@ -47,7 +47,7 @@ it('sets a kids profile on the request when the session profile is kids', functi
 
     $request = Request::create('/');
     $request->setUserResolver(fn () => $user);
-    $request->setLaravelSession(session());
+    $request->setLaravelSession(session()->driver());
     session()->put('profiles.current', $profile->ulid);
 
     $middleware = new ResolveCurrentProfile;
