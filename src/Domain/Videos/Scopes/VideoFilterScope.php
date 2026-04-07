@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Groups\Models\Group;
+use Domain\Profiles\Models\Profile;
 use Domain\Tags\Models\Tag;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
@@ -27,7 +28,7 @@ readonly class VideoFilterScope
         $defaultOrder = $this->isOrderDefault() && (blank($scout->query) || $scout->query === '*');
 
         $scout
-            ->query(fn (VideoQueryBuilder $query) => $query->with('media', 'tags'))
+            ->query(fn (VideoQueryBuilder $query) => $query->with('media', 'tags')->forProfile(Profile::current()))
             ->when($options, fn (Builder $scout) => $scout->options($options))
             ->when($defaultOrder, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->getTag(), fn (Builder $scout, Tag $tag) => $scout->whereIn('tagged', [$tag->getKey()]))
