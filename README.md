@@ -31,7 +31,7 @@
 - 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
 
 > [!WARNING]
-> ⚠️ Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library.
+> Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library.
 
 ## Demo
 
