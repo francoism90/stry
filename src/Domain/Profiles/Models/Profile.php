@@ -7,8 +7,10 @@ namespace Domain\Profiles\Models;
 use Database\Factories\ProfileFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Profiles\Collections\ProfileCollection;
+use Domain\Profiles\Exceptions\CurrentProfileException;
 use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
+use Domain\Profiles\Support\CurrentProfileContext;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -123,6 +125,32 @@ class Profile extends Model implements HasMedia
         }
 
         return Profile::query()->firstWhere('ulid', $value);
+    }
+
+    public static function current(): ?Profile
+    {
+        return app(CurrentProfileContext::class)->get();
+    }
+
+    public static function currentOrFail(): Profile
+    {
+        $profile = static::current();
+
+        if (! $profile) {
+            throw CurrentProfileException::notAvailable();
+        }
+
+        return $profile;
+    }
+
+    public static function setCurrent(?Profile $profile): void
+    {
+        app(CurrentProfileContext::class)->set($profile);
+    }
+
+    public static function forgetCurrent(): void
+    {
+        app(CurrentProfileContext::class)->forget();
     }
 
     /**

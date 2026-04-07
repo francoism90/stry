@@ -23,15 +23,14 @@
 - 🎥 **DASH Streaming** - Built-in DASH playlist generation
 - 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand
 - 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
+- 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
 - 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
-  🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
+- 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
 
 > [!WARNING]
 > ⚠️ Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library.
-
----
 
 ## 📸 Demo
 
@@ -39,6 +38,21 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 > [!NOTE]
 > A hosted demo is planned, but not yet available.
+
+---
+
+## 🔄 Jellyfin / Plex vs stry
+
+Jellyfin/Plex are media servers first, while **stry** is a streaming delivery platform first.
+That means **stry** focuses on repackaging/transcoding and adaptive streaming workflows (DASH-first, HLS-ready), which gives more control but requires a more advanced setup.
+
+| Topic                | Jellyfin / Plex                                   | stry                                                |
+| -------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| Primary focus        | Personal media server                             | Streaming delivery platform                         |
+| Typical setup effort | Faster and simpler                                | More advanced and pipeline-oriented                 |
+| Playback model       | Direct library playback plus optional transcoding | Prepared renditions and adaptive streaming delivery |
+| Packaging            | Usually less packaging-centric                    | Repackaging/transcoding for streaming-first output  |
+| Best fit             | Home library convenience                          | Netflix/YouTube-style streaming workflows           |
 
 ---
 

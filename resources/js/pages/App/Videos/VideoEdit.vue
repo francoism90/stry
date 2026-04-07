@@ -28,6 +28,7 @@ const form = useForm(update(props.video.id), {
   part: props.video.part || null,
   summary: props.video.summary || null,
   tags: props.video.tags || [],
+  adult: props.video.adult,
   snapshot: props.video.snapshot || null,
   published_at: props.video.published_at || null,
   released_at: props.video.released_at || null,
@@ -241,19 +242,28 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <UFormField
-            label="Summary"
-            :error="form.errors.summary"
-          >
-            <UTextarea
-              v-model="form.summary"
-              :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="5"
-              autoresize
-              placeholder="Enter markdown"
-              class="w-full"
-            />
-          </UFormField>
+          <div class="flex flex-col gap-4">
+            <UFormField
+              label="Summary"
+              :error="form.errors.summary"
+            >
+              <UTextarea
+                v-model="form.summary"
+                :model-modifiers="{ nullable: true, string: true, trim: true }"
+                :rows="5"
+                autoresize
+                placeholder="Enter markdown"
+                class="w-full"
+              />
+            </UFormField>
+
+            <UFormField :error="form.errors.adult">
+              <USwitch
+                v-model="form.adult"
+                label="Adult content"
+              />
+            </UFormField>
+          </div>
         </template>
 
         <template #footer>

@@ -31,14 +31,14 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       to: '/account',
     },
     {
-      label: 'Profiles',
-      icon: 'i-lucide-users',
-      to: '/profiles',
-    },
-    {
       label: 'Settings',
       icon: 'i-lucide-settings',
       to: '/settings',
+    },
+    {
+      label: 'Profiles',
+      icon: 'i-lucide-users',
+      to: '/profiles',
     },
   ],
   [

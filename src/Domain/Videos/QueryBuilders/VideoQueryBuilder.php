@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\QueryBuilders;
 
-use Domain\Groups\Enums\GroupType;
-use Domain\Users\Models\User;
+use Domain\Profiles\Models\Profile;
 use Domain\Videos\States;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -37,36 +36,12 @@ class VideoQueryBuilder extends Builder
             ->latest();
     }
 
-    public function likedBy(?User $user = null): self
+    public function forProfile(?Profile $profile = null): self
     {
-        return $this->inGroup($user, GroupType::Liked);
-    }
-
-    public function savedBy(?User $user = null): self
-    {
-        return $this->inGroup($user, GroupType::Saved);
-    }
-
-    public function viewedBy(?User $user = null): self
-    {
-        return $this->inGroup($user, GroupType::Viewed);
-    }
-
-    public function inGroup(?User $user, GroupType $type): self
-    {
-        if (! $user) {
-            return $this;
+        if ($profile?->isKids()) {
+            return $this->where('adult', false);
         }
 
-        return $this
-            ->select('videos.*')
-            ->distinct()
-            ->join('groupables', 'videos.id', '=', 'groupables.groupable_id')
-            ->join('groups', 'groupables.group_id', '=', 'groups.id')
-            ->where('groupables.groupable_type', 'video')
-            ->whereNotNull('groupables.group_id')
-            ->where('groups.type', $type->value)
-            ->where('groups.user_id', $user->getKey())
-            ->orderByDesc('groupables.created_at');
+        return $this;
     }
 }
