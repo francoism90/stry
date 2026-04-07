@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Api\Users\Middlewares\EnsureUserHasSubscription;
+use App\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Domain\Groups\Commands\ClearGroupCommand;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Tags\Commands\CreateTagCommand;
@@ -85,6 +86,7 @@ $app = Application::configure(basePath: $basePath)
         // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading
         $middleware->web(append: [
             AddCspHeaders::class,
+            ResolveCurrentProfile::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
