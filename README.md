@@ -14,17 +14,18 @@
 
 ---
 
-## 🎯 Introduction
+## Introduction
 
 **stry** is a video-on-demand (VOD) media distribution system that allows users to access videos, television shows and movies with streaming capabilities.
 
-### ✨ Key Features
+### Key Features
 
 - 🎥 **DASH Streaming** - Built-in DASH playlist generation
 - 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand
 - 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
 - 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
-- 📱 **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
+- 📲 **Installable PWA** - Install stry on mobile and desktop
+- 🖥️ **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
 - 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
@@ -32,7 +33,7 @@
 > [!WARNING]
 > ⚠️ Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library.
 
-## 📸 Demo
+## Demo
 
 For WIP screenshots, please check out: <https://github.com/francoism90/.github/tree/main/stry>
 
@@ -41,7 +42,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 ---
 
-## 🔄 Jellyfin / Plex vs stry
+## Jellyfin / Plex vs stry
 
 Jellyfin/Plex are media servers first, while **stry** is a streaming delivery platform first.
 That means **stry** focuses on repackaging/transcoding and adaptive streaming workflows (DASH-first, HLS-ready), which gives more control but requires a more advanced setup.
@@ -56,7 +57,7 @@ That means **stry** focuses on repackaging/transcoding and adaptive streaming wo
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category              | Technology                                                                          |
 | --------------------- | ----------------------------------------------------------------------------------- |
@@ -73,16 +74,16 @@ That means **stry** focuses on repackaging/transcoding and adaptive streaming wo
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 You need a basic knowledge of Laravel, Inertia.js, and containerization concepts.
 Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) is a plus.
 
 **System Requirements:**
 
-- 🐧 Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
-- 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
-- 🛠️ Basic tools: `git`, `bash`
+- Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
+- [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
+- Basic tools: `git`, `bash`
 
 > [!NOTE]
 > Docker is not officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and can be made to work with minor adjustments.
@@ -92,28 +93,28 @@ See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hard
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 Comprehensive guides are available in the `docs/` folder:
 
-| Guide                                       | Description                 |
-| ------------------------------------------- | --------------------------- |
-| [🚀 Production Setup](docs/production.md)   | Deploy to production        |
-| [💻 Development Guide](docs/development.md) | Local development setup     |
-| [⚙️ Configuration](docs/configuration.md)   | Configuration options       |
-| [🔧 System Setup](docs/system.md)           | System requirements         |
-| [🐳 Podman Guide](docs/podman.md)           | Container management        |
-| [🐋 Docker Compose](docs/docker.md)         | Docker Compose setup        |
-| [🌐 Proxy Setup](docs/proxy.md)             | Reverse proxy configuration |
-| [☁️ S3 Storage](docs/s3.md)                 | Object storage setup        |
-| [🎮 Interaction](docs/interaction.md)       | CLI usage and commands      |
+| Guide                                    | Description                 |
+| ---------------------------------------- | --------------------------- |
+| [Production Setup](docs/production.md)   | Deploy to production        |
+| [Development Guide](docs/development.md) | Local development setup     |
+| [Configuration](docs/configuration.md)   | Configuration options       |
+| [System Setup](docs/system.md)           | System requirements         |
+| [Podman Guide](docs/podman.md)           | Container management        |
+| [Docker Compose](docs/docker.md)         | Docker Compose setup        |
+| [Proxy Setup](docs/proxy.md)             | Reverse proxy configuration |
+| [S3 Storage](docs/s3.md)                 | Object storage setup        |
+| [Interaction](docs/interaction.md)       | CLI usage and commands      |
 
 > [!TIP]
 > Quick start: Choose between [Production](docs/production.md) or [Development](docs/development.md) setup.
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### Starting the Instance
 
@@ -154,10 +155,10 @@ The following services are only accessible when logged in as **super-admin**:
 
 ---
 
-### 📝 License
+### License
 
 This project is open-sourced software licensed under the [MIT license](LICENSE).
 
-### ⭐ Support
+### Support
 
 If you find this project useful, please consider giving it a star!
