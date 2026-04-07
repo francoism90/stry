@@ -16,12 +16,4 @@ enum TranscodeEncoder: string implements Enumerable
             self::AV1 => 'ab-av1 (AV1)',
         };
     }
-
-    public static function options(): array
-    {
-        return array_map(fn (self $item) => [
-            'value' => $item->value,
-            'label' => $item->label(),
-        ], self::cases());
-    }
 }

@@ -26,6 +26,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class TagController extends Controller implements HasMiddleware
 {
@@ -55,8 +56,8 @@ class TagController extends Controller implements HasMiddleware
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
             'order' => fn () => $order,
-            'types' => fn () => TagType::options(),
-            'orders' => fn () => TagOrder::options(),
+            'types' => fn () => Options::forEnum(TagType::class),
+            'orders' => fn () => Options::forEnum(TagOrder::class),
         ]);
     }
 
@@ -79,7 +80,7 @@ class TagController extends Controller implements HasMiddleware
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'order' => fn () => $order,
-            'orders' => fn () => VideoOrder::options(),
+            'orders' => fn () => Options::forEnum(VideoOrder::class),
         ]);
     }
 
@@ -106,7 +107,7 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Tags/TagEdit', [
             'tag' => fn () => new TagResourceProperty($tag, ['relates']),
-            'types' => fn () => TagType::options(),
+            'types' => fn () => Options::forEnum(TagType::class),
         ]);
     }
 

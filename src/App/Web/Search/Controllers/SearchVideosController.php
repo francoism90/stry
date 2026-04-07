@@ -15,6 +15,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class SearchVideosController extends Controller implements HasMiddleware
 {
@@ -39,7 +40,7 @@ class SearchVideosController extends Controller implements HasMiddleware
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,
             'order' => fn () => $order,
-            'orders' => fn () => VideoOrder::options(),
+            'orders' => fn () => Options::forEnum(VideoOrder::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
         ]);
     }

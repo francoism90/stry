@@ -18,12 +18,4 @@ enum ProfileOrder: string implements Enumerable
             self::Newest => __('Newest'),
         };
     }
-
-    public static function options(): array
-    {
-        return array_map(fn (self $type) => [
-            'value' => $type->value,
-            'label' => $type->label(),
-        ], self::cases());
-    }
 }

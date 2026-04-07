@@ -15,6 +15,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class HomeController extends Controller implements HasMiddleware
 {
@@ -41,7 +42,7 @@ class HomeController extends Controller implements HasMiddleware
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'order' => fn () => $request->safe()->input('order'),
-            'orders' => fn () => VideoOrder::options(),
+            'orders' => fn () => Options::forEnum(VideoOrder::class),
         ]);
     }
 }
