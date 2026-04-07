@@ -13,12 +13,12 @@ readonly class ProfileResourceProperty implements ProvidesInertiaProperty
 {
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): ?ProfileResource => $this->getResource($context));
+        return once(fn (): ?ProfileResource => $this->getResource());
     }
 
-    protected function getResource(PropertyContext $context): ?ProfileResource
+    protected function getResource(): ?ProfileResource
     {
-        $profile = $context->request->attributes->get('currentProfile');
+        $profile = Profile::current();
 
         if (! $profile instanceof Profile) {
             return null;
