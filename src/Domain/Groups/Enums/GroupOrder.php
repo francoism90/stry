@@ -26,12 +26,4 @@ enum GroupOrder: string implements Enumerable
             self::Updated => __('Recently updated'),
         };
     }
-
-    public static function options(): array
-    {
-        return array_map(fn (self $type) => [
-            'value' => $type->value,
-            'label' => $type->label(),
-        ], self::cases());
-    }
 }

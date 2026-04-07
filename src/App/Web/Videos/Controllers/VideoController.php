@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class VideoController extends Controller implements HasMiddleware
 {
@@ -54,7 +55,7 @@ class VideoController extends Controller implements HasMiddleware
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'order' => fn () => $order,
-            'orders' => fn () => VideoOrder::options(),
+            'orders' => fn () => Options::forEnum(VideoOrder::class),
         ]);
     }
 

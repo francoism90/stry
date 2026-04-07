@@ -15,6 +15,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class SearchGroupsController extends Controller implements HasMiddleware
 {
@@ -39,7 +40,7 @@ class SearchGroupsController extends Controller implements HasMiddleware
         return Inertia::render('App/Search/SearchCollections', [
             'search' => fn () => $query,
             'order' => fn () => $order,
-            'orders' => fn () => GroupOrder::options(),
+            'orders' => fn () => Options::forEnum(GroupOrder::class),
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
         ]);
     }

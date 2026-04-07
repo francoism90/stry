@@ -26,6 +26,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class GroupController extends Controller implements HasMiddleware
 {
@@ -53,7 +54,7 @@ class GroupController extends Controller implements HasMiddleware
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
             'order' => fn () => $order,
-            'orders' => fn () => GroupOrder::options(),
+            'orders' => fn () => Options::forEnum(GroupOrder::class),
         ]);
     }
 
@@ -76,7 +77,7 @@ class GroupController extends Controller implements HasMiddleware
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'order' => fn () => $order,
-            'orders' => fn () => VideoOrder::options(),
+            'orders' => fn () => Options::forEnum(VideoOrder::class),
         ]);
     }
 

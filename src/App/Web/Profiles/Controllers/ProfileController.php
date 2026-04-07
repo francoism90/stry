@@ -21,6 +21,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class ProfileController extends Controller implements HasMiddleware
 {
@@ -49,7 +50,7 @@ class ProfileController extends Controller implements HasMiddleware
             'profile' => fn () => new ProfileResourceProperty($request->user()),
             'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
             'order' => fn () => $order,
-            'orders' => fn () => ProfileOrder::options(),
+            'orders' => fn () => Options::forEnum(ProfileOrder::class),
         ]);
     }
 

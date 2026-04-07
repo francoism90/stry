@@ -28,12 +28,4 @@ enum VideoOrder: string implements Enumerable
             self::Filesize => __('File Size'),
         };
     }
-
-    public static function options(): array
-    {
-        return array_map(fn (self $type) => [
-            'value' => $type->value,
-            'label' => $type->label(),
-        ], self::cases());
-    }
 }

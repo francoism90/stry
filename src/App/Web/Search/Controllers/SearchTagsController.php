@@ -15,6 +15,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\LaravelOptions\Options;
 
 class SearchTagsController extends Controller implements HasMiddleware
 {
@@ -39,7 +40,7 @@ class SearchTagsController extends Controller implements HasMiddleware
         return Inertia::render('App/Search/SearchTags', [
             'search' => fn () => $query,
             'type' => fn () => $type,
-            'types' => fn () => TagType::options(),
+            'types' => fn () => Options::forEnum(TagType::class),
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
         ]);
     }
