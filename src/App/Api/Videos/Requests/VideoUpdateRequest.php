@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Requests;
 
+use Domain\Videos\States\VideoState;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Spatie\ModelStates\Validation\ValidStateRule;
 
 class VideoUpdateRequest extends FormRequest
 {
@@ -24,6 +26,8 @@ class VideoUpdateRequest extends FormRequest
             'episode' => ['nullable', 'string', 'max:255'],
             'season' => ['nullable', 'string', 'max:255'],
             'part' => ['nullable', 'string', 'max:255'],
+            'adult' => ['sometimes', 'boolean'],
+            'state' => ['sometimes', ValidStateRule::make(VideoState::class)],
             'snapshot' => ['nullable', 'numeric', 'min:0'],
             'tags' => ['nullable', 'array', 'max:15'],
             'tags.*.id' => ['required', 'string', 'exists:tags,ulid'],

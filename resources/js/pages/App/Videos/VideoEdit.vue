@@ -9,11 +9,13 @@ import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { Head, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
   progress: number | null
+  states: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
@@ -28,6 +30,8 @@ const form = useForm(update(props.video.id), {
   part: props.video.part || null,
   summary: props.video.summary || null,
   tags: props.video.tags || [],
+  adult: props.video.adult,
+  state: props.video.state.name,
   snapshot: props.video.snapshot || null,
   published_at: props.video.published_at || null,
   released_at: props.video.released_at || null,
@@ -238,6 +242,32 @@ const onSubmit = () =>
               </template>
             </USelectMenu>
           </UFormField>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <UFormField
+              label="State"
+              :error="form.errors.state"
+              class="sm:col-span-2"
+            >
+              <USelect
+                v-model="form.state"
+                :items="states"
+                label-key="label"
+                value-key="value"
+                class="w-full"
+              />
+            </UFormField>
+
+            <UFormField
+              label="Adult"
+              :error="form.errors.adult"
+            >
+              <USwitch
+                v-model="form.adult"
+                label="Adult content"
+              />
+            </UFormField>
+          </div>
 
           <USeparator />
 

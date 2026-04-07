@@ -17,6 +17,7 @@ use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\States\VideoState;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -94,6 +95,7 @@ class VideoController extends Controller implements HasMiddleware
         return Inertia::render('App/Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty($video, Auth::user()),
+            'states' => fn () => Options::forStates(VideoState::class),
         ]);
     }
 
