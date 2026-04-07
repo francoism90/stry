@@ -159,6 +159,12 @@ The following services are only accessible when logged in as **super-admin**:
 
 This project is open-sourced software licensed under the [MIT license](LICENSE).
 
+### AI Statement
+
+This project is developed with AI assistance, primarily using GitHub Copilot and Claude Sonnet.
+AI is used for suggestions and acceleration, but all final implementation decisions and adjustments are made by the developers.
+AI-assisted pull requests are welcome, as long as an actual person or developer is actively involved in the implementation and review.
+
 ### Support
 
 If you find this project useful, please consider giving it a star!
