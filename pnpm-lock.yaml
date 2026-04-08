@@ -15,8 +15,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))
       '@laravel/echo-vue':
-        specifier: ^2.3.3
-        version: 2.3.3(pusher-js@8.5.0)(socket.io-client@4.8.3)(vue@3.5.32(typescript@6.0.2))
+        specifier: ^2.3.4
+        version: 2.3.4(pusher-js@8.5.0)(socket.io-client@4.8.3)(vue@3.5.32(typescript@6.0.2))
       '@nuxt/ui':
         specifier: ^4.6.1
         version: 4.6.1(@inertiajs/vue3@3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2)))(@tiptap/extensions@3.22.2(@tiptap/core@3.22.2(@tiptap/pm@3.22.2))(@tiptap/pm@3.22.2))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.6)(embla-carousel@8.6.0)(tailwindcss@4.2.2)(typescript@6.0.2)(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))(vue@3.5.32(typescript@6.0.2))(yjs@13.6.29)
@@ -560,8 +560,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@laravel/echo-vue@2.3.3':
-    resolution: {integrity: sha512-ygf3qCUttTHShm4wVv+y739lRWOcwUTemtJvVA7dJSa8oA7drWgP0ybTWtHpim96Uxpep56SDLlFy02aipz/4A==}
+  '@laravel/echo-vue@2.3.4':
+    resolution: {integrity: sha512-arflSI8XSI4J6s5Lm3OAAVg1iyKQTBCx+Pcd084CEfoiKoH/FVkz9sAtpY6hpiK6H93v6oB6HVkH+1AMoMeacw==}
     engines: {node: '>=20'}
     peerDependencies:
       pusher-js: '*'
@@ -3931,7 +3931,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@laravel/echo-vue@2.3.3(pusher-js@8.5.0)(socket.io-client@4.8.3)(vue@3.5.32(typescript@6.0.2))':
+  '@laravel/echo-vue@2.3.4(pusher-js@8.5.0)(socket.io-client@4.8.3)(vue@3.5.32(typescript@6.0.2))':
     dependencies:
       pusher-js: 8.5.0
       socket.io-client: 4.8.3
