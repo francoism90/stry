@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aea6ce6c6353400f00576cefbc227cb1",
+    "content-hash": "64052ab45ac322184c1856bf22f15c49",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1351,6 +1351,85 @@
                 }
             ],
             "time": "2026-03-17T20:44:49+00:00"
+        },
+        {
+            "name": "foxws/laravel-scout-builder",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/foxws/laravel-scout-builder.git",
+                "reference": "a0f6e7ae8c05f5cb67e637b04025dc476bfeafcb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/a0f6e7ae8c05f5cb67e637b04025dc476bfeafcb",
+                "reference": "a0f6e7ae8c05f5cb67e637b04025dc476bfeafcb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^12.0||^13.0",
+                "php": "^8.4",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0.0||^9.0.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "ScoutBuilder": "Foxws\\ScoutBuilder\\Facades\\ScoutBuilder"
+                    },
+                    "providers": [
+                        "Foxws\\ScoutBuilder\\ScoutBuilderServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Foxws\\ScoutBuilder\\": "src/",
+                    "Foxws\\ScoutBuilder\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "francoism90",
+                    "email": "francoism90@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily build Scout queries from API requests",
+            "homepage": "https://github.com/foxws/laravel-scout-builder",
+            "keywords": [
+                "foxws",
+                "laravel",
+                "laravel-scout-builder"
+            ],
+            "support": {
+                "issues": "https://github.com/foxws/laravel-scout-builder/issues",
+                "source": "https://github.com/foxws/laravel-scout-builder/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Foxws",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-08T11:04:09+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -15554,7 +15633,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "foxws/laravel-scout-builder": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
