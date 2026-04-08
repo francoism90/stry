@@ -19,7 +19,7 @@
     },
     "dependencies": {
         "@inertiajs/vite": "^3.0.2",
-        "@inertiajs/vue3": "^3.0.2",
+        "@inertiajs/vue3": "^3.0.3",
         "@laravel/echo-vue": "^2.3.4",
         "@nuxt/ui": "^4.6.1",
         "@vueuse/core": "^14.2.1",

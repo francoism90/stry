@@ -12,14 +12,14 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(axios@1.13.6)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))
       '@inertiajs/vue3':
-        specifier: ^3.0.2
-        version: 3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))
+        specifier: ^3.0.3
+        version: 3.0.3(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))
       '@laravel/echo-vue':
         specifier: ^2.3.4
         version: 2.3.4(pusher-js@8.5.0)(socket.io-client@4.8.3)(vue@3.5.32(typescript@6.0.2))
       '@nuxt/ui':
         specifier: ^4.6.1
-        version: 4.6.1(@inertiajs/vue3@3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2)))(@tiptap/extensions@3.22.2(@tiptap/core@3.22.2(@tiptap/pm@3.22.2))(@tiptap/pm@3.22.2))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.6)(embla-carousel@8.6.0)(tailwindcss@4.2.2)(typescript@6.0.2)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))(vue@3.5.32(typescript@6.0.2))(yjs@13.6.29)
+        version: 4.6.1(@inertiajs/vue3@3.0.3(axios@1.13.6)(vue@3.5.32(typescript@6.0.2)))(@tiptap/extensions@3.22.2(@tiptap/core@3.22.2(@tiptap/pm@3.22.2))(@tiptap/pm@3.22.2))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.6)(embla-carousel@8.6.0)(tailwindcss@4.2.2)(typescript@6.0.2)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))(vue@3.5.32(typescript@6.0.2))(yjs@13.6.29)
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.32(typescript@6.0.2))
@@ -525,13 +525,21 @@ packages:
       axios:
         optional: true
 
+  '@inertiajs/core@3.0.3':
+    resolution: {integrity: sha512-/4sW/cfNpvujjVOZlB5UNypLGNySs7X7V8IMLNSK8+3j1KsUYGS5wpLd9EqAu8wy8RiW7PPra2rPwB6Lx/ACow==}
+    peerDependencies:
+      axios: ^1.13.2
+    peerDependenciesMeta:
+      axios:
+        optional: true
+
   '@inertiajs/vite@3.0.2':
     resolution: {integrity: sha512-i/Pg9dprdLRae59Ek2Sf8GtCCmzQSR+bBz1nhbz23UcDC17ZqMzPSlWa37qvzESMbEqTjz+8wuxUz5+sfPlijQ==}
     peerDependencies:
       vite: ^7.0.0 || ^8.0.0
 
-  '@inertiajs/vue3@3.0.2':
-    resolution: {integrity: sha512-oAhpklYp7F8/LFsh9DOCOkxzgGVeaIfDN6yi0PB9bHA+ObxTRVq8J4fqQgLExvwjNQIzl6RKh3PaLMf2JXacKQ==}
+  '@inertiajs/vue3@3.0.3':
+    resolution: {integrity: sha512-bhJN+GS66g1tYH1p6flKkG1N8oaT5J7ZLqBkavN9mHC6bVfoQCUG6sCuA07WTDfo9tDaxU89wsSSAf4mhn3SuA==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -3885,6 +3893,14 @@ snapshots:
     optionalDependencies:
       axios: 1.13.6
 
+  '@inertiajs/core@3.0.3(axios@1.13.6)':
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      es-toolkit: 1.45.1
+      laravel-precognition: 2.0.0(axios@1.13.6)
+    optionalDependencies:
+      axios: 1.13.6
+
   '@inertiajs/vite@3.0.2(axios@1.13.6)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))':
     dependencies:
       '@inertiajs/core': 3.0.2(axios@1.13.6)
@@ -3893,9 +3909,9 @@ snapshots:
     transitivePeerDependencies:
       - axios
 
-  '@inertiajs/vue3@3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))':
+  '@inertiajs/vue3@3.0.3(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))':
     dependencies:
-      '@inertiajs/core': 3.0.2(axios@1.13.6)
+      '@inertiajs/core': 3.0.3(axios@1.13.6)
       es-toolkit: 1.45.1
       laravel-precognition: 2.0.0(axios@1.13.6)
       vue: 3.5.32(typescript@6.0.2)
@@ -4090,7 +4106,7 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 4.0.0
 
-  '@nuxt/ui@4.6.1(@inertiajs/vue3@3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2)))(@tiptap/extensions@3.22.2(@tiptap/core@3.22.2(@tiptap/pm@3.22.2))(@tiptap/pm@3.22.2))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.6)(embla-carousel@8.6.0)(tailwindcss@4.2.2)(typescript@6.0.2)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))(vue@3.5.32(typescript@6.0.2))(yjs@13.6.29)':
+  '@nuxt/ui@4.6.1(@inertiajs/vue3@3.0.3(axios@1.13.6)(vue@3.5.32(typescript@6.0.2)))(@tiptap/extensions@3.22.2(@tiptap/core@3.22.2(@tiptap/pm@3.22.2))(@tiptap/pm@3.22.2))(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(axios@1.13.6)(embla-carousel@8.6.0)(tailwindcss@4.2.2)(typescript@6.0.2)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))(vue@3.5.32(typescript@6.0.2))(yjs@13.6.29)':
     dependencies:
       '@floating-ui/dom': 1.7.6
       '@iconify/vue': 5.0.0(vue@3.5.32(typescript@6.0.2))
@@ -4159,7 +4175,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.9.3(vue@3.5.32(typescript@6.0.2)))(vue@3.5.32(typescript@6.0.2))
       vue-component-type-helpers: 3.2.6
     optionalDependencies:
-      '@inertiajs/vue3': 3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))
+      '@inertiajs/vue3': 3.0.3(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
