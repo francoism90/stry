@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@inertiajs/vite':
-        specifier: ^3.0.2
-        version: 3.0.2(axios@1.13.6)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))
+        specifier: ^3.0.3
+        version: 3.0.3(axios@1.13.6)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))
       '@inertiajs/vue3':
         specifier: ^3.0.2
         version: 3.0.2(axios@1.13.6)(vue@3.5.32(typescript@6.0.2))
@@ -525,8 +525,16 @@ packages:
       axios:
         optional: true
 
-  '@inertiajs/vite@3.0.2':
-    resolution: {integrity: sha512-i/Pg9dprdLRae59Ek2Sf8GtCCmzQSR+bBz1nhbz23UcDC17ZqMzPSlWa37qvzESMbEqTjz+8wuxUz5+sfPlijQ==}
+  '@inertiajs/core@3.0.3':
+    resolution: {integrity: sha512-/4sW/cfNpvujjVOZlB5UNypLGNySs7X7V8IMLNSK8+3j1KsUYGS5wpLd9EqAu8wy8RiW7PPra2rPwB6Lx/ACow==}
+    peerDependencies:
+      axios: ^1.13.2
+    peerDependenciesMeta:
+      axios:
+        optional: true
+
+  '@inertiajs/vite@3.0.3':
+    resolution: {integrity: sha512-D/oAbX2DRPAilOnTCZBeacRuylRMSB6Xtwf5M41i46xuHBc4aSDGdU7XGN6AcOm84HQ7YDKAfR5d+YoLBtsoYQ==}
     peerDependencies:
       vite: ^7.0.0 || ^8.0.0
 
@@ -3885,10 +3893,18 @@ snapshots:
     optionalDependencies:
       axios: 1.13.6
 
-  '@inertiajs/vite@3.0.2(axios@1.13.6)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))':
+  '@inertiajs/core@3.0.3(axios@1.13.6)':
     dependencies:
-      '@inertiajs/core': 3.0.2(axios@1.13.6)
-      tinyglobby: 0.2.15
+      '@jridgewell/trace-mapping': 0.3.31
+      es-toolkit: 1.45.1
+      laravel-precognition: 2.0.0(axios@1.13.6)
+    optionalDependencies:
+      axios: 1.13.6
+
+  '@inertiajs/vite@3.0.3(axios@1.13.6)(vite@8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3))':
+    dependencies:
+      '@inertiajs/core': 3.0.3(axios@1.13.6)
+      tinyglobby: 0.2.16
       vite: 8.0.7(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - axios
