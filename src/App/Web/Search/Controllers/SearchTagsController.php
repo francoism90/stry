@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Tags\Resources\TagResource;
+use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -16,6 +20,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Sorts\VideosSorter;
 
 class SearchTagsController extends Controller implements HasMiddleware
 {
@@ -31,15 +36,25 @@ class SearchTagsController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Tag::class);
 
-        $type = $request->input('type');
-
-        $scout = Tag::search($query)
-            ->tap(new TagFilterScope(type: $type))
-            ->simplePaginate(perPage: 36);
+        $scout = ScoutBuilder::for(Tag::search($query))
+            ->query(fn (TagQueryBuilder $builder) => $builder->withCount('videos'))
+            ->allowedFilters(
+                AllowedFilter::exact('type'),
+            )
+            ->allowedSorts(
+                AllowedSort::custom('videos', new VideosSorter),
+                AllowedSort::field('name'),
+                AllowedSort::latest('newest'),
+                AllowedSort::oldest('oldest'),
+            )
+            ->defaultSort('videos')
+            ->jsonSimplePaginate(defaultSize: 36);
 
         return Inertia::render('App/Search/SearchTags', [
             'search' => fn () => $query,
-            'type' => fn () => $type,
+            'sort' => fn () => $request->input('sort'),
+            'type' => fn () => $request->input('type'),
+            'sorters' => fn () => Options::forEnum(TagSorter::class),
             'types' => fn () => Options::forEnum(TagType::class),
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
         ]);
