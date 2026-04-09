@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f5e8aa134f4853d4eee280a30034821",
+    "content-hash": "2fe4f4dc97c3914e5c9717a3997e91e9",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1354,16 +1354,16 @@
         },
         {
             "name": "foxws/laravel-scout-builder",
-            "version": "dev-main",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-builder.git",
-                "reference": "edb3690cf171d1f8bbb29c473ae1c17abe003028"
+                "reference": "c5a0563c52c5fa1d4001ccb4ee3eef4ee1b4baca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/edb3690cf171d1f8bbb29c473ae1c17abe003028",
-                "reference": "edb3690cf171d1f8bbb29c473ae1c17abe003028",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/c5a0563c52c5fa1d4001ccb4ee3eef4ee1b4baca",
+                "reference": "c5a0563c52c5fa1d4001ccb4ee3eef4ee1b4baca",
                 "shasum": ""
             },
             "require": {
@@ -1384,7 +1384,6 @@
                 "phpstan/phpstan-deprecation-rules": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1422,7 +1421,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-builder/issues",
-                "source": "https://github.com/foxws/laravel-scout-builder/tree/main"
+                "source": "https://github.com/foxws/laravel-scout-builder/tree/0.0.4"
             },
             "funding": [
                 {
@@ -1430,7 +1429,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-08T16:05:04+00:00"
+            "time": "2026-04-09T15:37:01+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -15560,9 +15559,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "foxws/laravel-scout-builder": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

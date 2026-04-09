@@ -17,7 +17,7 @@
         "php": "^8.3",
         "foxws/laravel-ab-av1": "^1.0",
         "foxws/laravel-pwa": "^2.1",
-        "foxws/laravel-scout-builder": "dev-main",
+        "foxws/laravel-scout-builder": "^0.0.4",
         "foxws/laravel-shaka": "^2.0.1",
         "foxws/laravel-streamer": "^1.7",
         "guzzlehttp/guzzle": "^7.10.0",
