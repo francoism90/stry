@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const form = useForm('get', '', {
   sort: props.sort,
-  'page[number]': 1,
+  page: 1,
 })
 
 const onSubmit = () => {
