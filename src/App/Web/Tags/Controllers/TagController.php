@@ -48,18 +48,20 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Tag::class);
 
         // Scout builder
+        $videosSort = AllowedSort::custom('videos', new VideosSorter);
+
         $scout = ScoutBuilder::for(Tag::class)
             ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
             ->allowedFilters(
                 AllowedFilter::exact('type'),
             )
             ->allowedSorts(
-                AllowedSort::custom('videos', new VideosSorter),
+                $videosSort,
                 AllowedSort::field('ordered', 'name'),
                 AllowedSort::latest('newest'),
                 AllowedSort::oldest('oldest'),
             )
-            ->defaultSort('videos')
+            ->defaultSort($videosSort)
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Tags/TagIndex', [

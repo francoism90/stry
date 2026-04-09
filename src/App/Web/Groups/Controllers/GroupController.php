@@ -49,6 +49,8 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Group::class);
 
         // Scout builder
+        $updatedSort = AllowedSort::field('updated', 'updated_at')->defaultDescending();
+
         $scout = ScoutBuilder::for(Group::class)
             ->tap(new GroupProfileScope)
             ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
@@ -60,9 +62,9 @@ class GroupController extends Controller implements HasMiddleware
                 AllowedSort::field('videos', 'groupables')->defaultDescending(),
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
-                AllowedSort::field('updated', 'updated_at')->defaultDescending(),
+                $updatedSort,
             )
-            ->defaultSort('updated')
+            ->defaultSort($updatedSort)
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Groups/GroupIndex', [
@@ -78,11 +80,13 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('view', $group);
 
         // Scout builder
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoGroupScope(group: $group))
             ->tap(new VideoProfileScope)
             ->allowedSorts(
-                AllowedSort::custom('recommended', new RecommendedSorter),
+                $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
                 AllowedSort::field('ordered', 'name'),
@@ -90,7 +94,7 @@ class GroupController extends Controller implements HasMiddleware
                 AllowedSort::field('longest', 'duration')->defaultDescending(),
                 AllowedSort::field('filesize')->defaultDescending(),
             )
-            ->defaultSort('recommended')
+            ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Groups/GroupView', [

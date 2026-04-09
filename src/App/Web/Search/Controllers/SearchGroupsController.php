@@ -34,6 +34,8 @@ class SearchGroupsController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Group::class);
 
+        $updatedSort = AllowedSort::field('updated', 'updated_at')->defaultDescending();
+
         $scout = ScoutBuilder::for(Group::search($query))
             ->query(fn (GroupQueryBuilder $builder) => $builder->withCount('groupables'))
             ->allowedFilters(
@@ -44,9 +46,9 @@ class SearchGroupsController extends Controller implements HasMiddleware
                 AllowedSort::field('videos', 'groupables')->defaultDescending(),
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
-                AllowedSort::field('updated', 'updated_at')->defaultDescending(),
+                $updatedSort,
             )
-            ->defaultSort('updated')
+            ->defaultSort($updatedSort)
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Search/SearchCollections', [
