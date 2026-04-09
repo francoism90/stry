@@ -50,6 +50,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
 
     <InfiniteScroll
       data="items"
+      items-element="#infinite-items"
       :buffer="200"
     >
       <UEmpty
@@ -61,6 +62,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
 
       <UPageList
         v-else
+        id="infinite-items"
         divide
       >
         <UPageCard

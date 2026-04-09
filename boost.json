@@ -10,8 +10,7 @@
         "spatie/laravel-medialibrary",
         "spatie/laravel-permission",
         "spatie/laravel-responsecache",
-        "spatie/boost-spatie-guidelines",
-        "spatie/laravel-query-builder"
+        "spatie/boost-spatie-guidelines"
     ],
     "sail": false,
     "skills": [
@@ -27,7 +26,6 @@
         "tailwindcss-development",
         "medialibrary-development",
         "laravel-permission-development",
-        "laravel-query-builder",
         "responsecache-development",
         "spatie-laravel-php-standards"
     ]

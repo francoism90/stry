@@ -27,9 +27,13 @@ useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload
   <UPageBody>
     <InfiniteScroll
       data="items"
+      items-element="#infinite-items"
       :buffer="200"
     >
-      <UPageList divide>
+      <UPageList
+        id="infinite-items"
+        divide
+      >
         <UPageCard
           v-for="item in items?.data"
           :key="item.id"

@@ -46,6 +46,7 @@ defineOptions({ layout: DefaultLayout })
         <UPageBody>
           <InfiniteScroll
             data="notifications"
+            items-element="#infinite-items"
             :buffer="200"
           >
             <div
@@ -62,6 +63,7 @@ defineOptions({ layout: DefaultLayout })
 
             <div
               v-else
+              id="infinite-items"
               class="flex flex-col"
             >
               <div

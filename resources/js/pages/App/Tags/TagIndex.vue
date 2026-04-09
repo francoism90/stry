@@ -48,9 +48,13 @@ const { hasAnyRole } = useAuth()
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
-          <TagList :items="items?.data" />
+          <TagList
+            id="infinite-items"
+            :items="items?.data"
+          />
         </InfiniteScroll>
       </UPage>
     </template>

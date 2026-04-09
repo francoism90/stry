@@ -55,9 +55,13 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
-          <VideoList :items="items?.data" />
+          <VideoList
+            id="infinite-items"
+            :items="items?.data"
+          />
         </InfiniteScroll>
       </UPage>
     </template>
