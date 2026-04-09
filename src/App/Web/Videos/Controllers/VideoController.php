@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Sorts\SortsRandom;
+use Support\Scout\Sorts\SortsRecommended;
 
 class VideoController extends Controller implements HasMiddleware
 {
@@ -46,8 +46,11 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
-            ->allowedSorts('name', '-name', 'duration', AllowedSort::custom('random', new SortsRandom))
-            ->defaultSort(AllowedSort::custom('random', new SortsRandom))
+            ->allowedSorts(
+                AllowedSort::custom('recommended', new SortsRecommended),
+                AllowedSort::field('newest', 'created_at'),
+            )
+            ->defaultSort('recommended')
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Videos/VideoIndex', [
