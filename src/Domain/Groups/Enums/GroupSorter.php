@@ -14,14 +14,15 @@ enum GroupSorter: string implements Enumerable
     case Oldest = 'oldest';
     case Updated = 'updated';
 
-    public function label(): string
+    /** @return array<string, string> */
+    public static function labels(): array
     {
-        return match ($this) {
-            self::Name => __('Name'),
-            self::Videos => __('Most videos'),
-            self::Newest => __('Newest'),
-            self::Oldest => __('Oldest'),
-            self::Updated => __('Recently updated'),
-        };
+        return [
+            'name' => __('Name'),
+            'videos' => __('Most videos'),
+            'newest' => __('Newest'),
+            'oldest' => __('Oldest'),
+            'updated' => __('Recently updated'),
+        ];
     }
 }

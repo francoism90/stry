@@ -14,6 +14,7 @@ use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
+use Domain\Groups\Scopes\GroupProfileScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoGroupScope;
@@ -49,6 +50,7 @@ class GroupController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Group::class)
+            ->tap(new GroupProfileScope)
             ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
             ->allowedFilters(
                 AllowedFilter::exact('type'),

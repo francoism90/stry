@@ -15,15 +15,16 @@ enum VideoSorter: string implements Enumerable
     case Shortest = 'shortest';
     case Filesize = 'filesize';
 
-    public function label(): string
+    /** @return array<string, string> */
+    public static function labels(): array
     {
-        return match ($this) {
-            self::Newest => __('Newest'),
-            self::Oldest => __('Oldest'),
-            self::Ordered => __('Alphabetical'),
-            self::Longest => __('Longest'),
-            self::Shortest => __('Shortest'),
-            self::Filesize => __('File Size'),
-        };
+        return [
+            'newest' => __('Newest'),
+            'oldest' => __('Oldest'),
+            'ordered' => __('Alphabetical'),
+            'longest' => __('Longest'),
+            'shortest' => __('Shortest'),
+            'filesize' => __('File Size'),
+        ];
     }
 }

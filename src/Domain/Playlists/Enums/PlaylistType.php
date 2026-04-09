@@ -11,11 +11,12 @@ enum PlaylistType: string implements Enumerable
     case Packager = 'packager';
     case Streamer = 'streamer';
 
-    public function label(): string
+    /** @return array<string, string> */
+    public static function labels(): array
     {
-        return match ($this) {
-            self::Packager => 'Packager',
-            self::Streamer => 'Streamer',
-        };
+        return [
+            'packager' => 'Packager',
+            'streamer' => 'Streamer',
+        ];
     }
 }

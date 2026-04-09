@@ -16,12 +16,18 @@ enum TagType: string implements Enumerable
 
     public function label(): string
     {
-        return match ($this) {
-            self::Serie => __('Serie'),
-            self::Studio => __('Studio'),
-            self::Genre => __('Genre'),
-            self::Person => __('Person'),
-            self::Language => __('Language'),
-        };
+        return self::labels()[$this->value];
+    }
+
+    /** @return array<string, string> */
+    public static function labels(): array
+    {
+        return [
+            'serie' => __('Serie'),
+            'studio' => __('Studio'),
+            'genre' => __('Genre'),
+            'person' => __('Person'),
+            'language' => __('Language'),
+        ];
     }
 }

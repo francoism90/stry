@@ -10,10 +10,11 @@ enum TranscodeEncoder: string implements Enumerable
 {
     case AV1 = 'av1';
 
-    public function label(): string
+    /** @return array<string, string> */
+    public static function labels(): array
     {
-        return match ($this) {
-            self::AV1 => 'ab-av1 (AV1)',
-        };
+        return [
+            'av1' => 'ab-av1 (AV1)',
+        ];
     }
 }

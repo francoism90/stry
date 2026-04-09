@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Profiles\Controllers;
 
-use App\Api\Profiles\Requests\ProfileIndexRequest;
 use App\Api\Profiles\Requests\ProfileStoreRequest;
 use App\Api\Profiles\Requests\ProfileUpdateRequest;
 use App\Api\Profiles\Resources\ProfileResource;
@@ -34,22 +33,19 @@ class ProfileController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(ProfileIndexRequest $request): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Profile::class);
-
-        $sort = $request->safe()->input('sort');
 
         // Query builder
         $query = $request->user()
             ->profiles()
-            ->ordered(order: $sort)
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty,
             'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
-            'sort' => fn () => $sort,
+            'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(ProfileSorter::class),
         ]);
     }
