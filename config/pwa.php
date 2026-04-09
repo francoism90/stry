@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'enabled' => (bool) env('PWA_ENABLED', env('APP_ENV') === 'production'),
+    'enabled' => (bool) env('PWA_ENABLED', true),
 
     /*
     |--------------------------------------------------------------------------
