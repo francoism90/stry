@@ -11,11 +11,13 @@ use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
+use Domain\Profiles\Models\Profile;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
@@ -27,6 +29,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersTagged;
 use Support\Scout\Sorts\SortsRecommended;
 
 class VideoController extends Controller implements HasMiddleware
@@ -46,7 +49,10 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
-            ->query(fn ($query) => $query->with(['media', 'tags']))
+            ->query(fn ($query) => $query->with(['media', 'tags'])->forProfile(Profile::current()))
+            ->allowedFilters(
+                AllowedFilter::custom('tagged', new FiltersTagged),
+            )
             ->allowedSorts(
                 AllowedSort::custom('recommended', new SortsRecommended),
                 AllowedSort::field('newest', 'created_at'),

@@ -19,8 +19,9 @@ defineProps<{
       <span
         v-if="index > 0"
         class="opacity-40 select-none"
-        >·</span
       >
+        ·
+      </span>
 
       <ULink
         :to="show.url(item.id)"
