@@ -14,6 +14,11 @@ enum GroupSorter: string implements Enumerable
     case Oldest = 'oldest';
     case Updated = 'updated';
 
+    public function label(): string
+    {
+        return self::labels()[$this->value];
+    }
+
     /** @return array<string, string> */
     public static function labels(): array
     {

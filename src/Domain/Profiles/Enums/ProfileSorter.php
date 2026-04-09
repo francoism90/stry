@@ -11,6 +11,11 @@ enum ProfileSorter: string implements Enumerable
     case Name = 'name';
     case Newest = 'created_at';
 
+    public function label(): string
+    {
+        return self::labels()[$this->value];
+    }
+
     /** @return array<string, string> */
     public static function labels(): array
     {

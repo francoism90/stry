@@ -10,6 +10,11 @@ enum TranscodeEncoder: string implements Enumerable
 {
     case AV1 = 'av1';
 
+    public function label(): string
+    {
+        return self::labels()[$this->value];
+    }
+
     /** @return array<string, string> */
     public static function labels(): array
     {

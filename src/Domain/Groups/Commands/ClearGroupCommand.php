@@ -58,7 +58,7 @@ class ClearGroupCommand extends Command implements Isolatable
         $count = $group->videos()->count();
 
         if ($count === 0) {
-            info("The {$type::labels()[$type->value]} group is already empty.");
+            info("The {$type->label()} group is already empty.");
 
             return;
         }
@@ -72,7 +72,7 @@ class ClearGroupCommand extends Command implements Isolatable
             ]],
         );
 
-        if (confirm("Are you sure you want to detach all {$count} video(s) from the {$type::labels()[$type->value]} group?")) {
+        if (confirm("Are you sure you want to detach all {$count} video(s) from the {$type->label()} group?")) {
             $group->videos()->detach();
 
             info('Done.');

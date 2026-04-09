@@ -15,6 +15,11 @@ enum VideoSorter: string implements Enumerable
     case Ordered = 'ordered';
     case Filesize = 'filesize';
 
+    public function label(): string
+    {
+        return self::labels()[$this->value];
+    }
+
     /** @return array<string, string> */
     public static function labels(): array
     {

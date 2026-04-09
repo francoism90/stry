@@ -12,6 +12,11 @@ enum TagSorter: string implements Enumerable
     case Newest = 'newest';
     case Oldest = 'oldest';
 
+    public function label(): string
+    {
+        return self::labels()[$this->value];
+    }
+
     /** @return array<string, string> */
     public static function labels(): array
     {
