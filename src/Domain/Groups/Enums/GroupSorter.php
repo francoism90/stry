@@ -8,7 +8,6 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum GroupSorter: string implements Enumerable
 {
-    case Default = 'recommended';
     case Name = 'name';
     case Videos = 'videos';
     case Newest = 'newest';
@@ -18,7 +17,6 @@ enum GroupSorter: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
-            self::Default => __('Recommended'),
             self::Name => __('Name'),
             self::Videos => __('Most videos'),
             self::Newest => __('Newest'),

@@ -8,7 +8,6 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum VideoSorter: string implements Enumerable
 {
-    case Default = 'recommended';
     case Newest = 'newest';
     case Oldest = 'oldest';
     case Ordered = 'ordered';
@@ -19,7 +18,6 @@ enum VideoSorter: string implements Enumerable
     public function label(): string
     {
         return match ($this) {
-            self::Default => __('Recommended'),
             self::Newest => __('Newest'),
             self::Oldest => __('Oldest'),
             self::Ordered => __('Alphabetical'),

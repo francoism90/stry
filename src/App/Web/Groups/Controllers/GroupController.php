@@ -8,7 +8,6 @@ use App\Api\Groups\Requests\GroupIndexRequest;
 use App\Api\Groups\Requests\GroupStoreRequest;
 use App\Api\Groups\Requests\GroupUpdateRequest;
 use App\Api\Groups\Resources\GroupResource;
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
@@ -24,6 +23,7 @@ use Foundation\Http\Controllers\Controller;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -62,16 +62,13 @@ class GroupController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function show(Group $group, VideoIndexRequest $request): Response
+    public function show(Group $group, Request $request): Response
     {
         Gate::authorize('view', $group);
 
-        // Apply filters
-        $sort = $request->safe()->input('sort');
-
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
-            ->tap(new VideoGroupScope(group: $group, sort: $sort))
+            ->tap(new VideoGroupScope(group: $group))
             ->tap(new VideoProfileScope)
             ->allowedSorts(
                 AllowedSort::custom('recommended', new RecommendedSorter),
@@ -88,7 +85,7 @@ class GroupController extends Controller implements HasMiddleware
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'sort' => fn () => $sort,
+            'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
