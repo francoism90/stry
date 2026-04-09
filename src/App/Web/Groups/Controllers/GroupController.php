@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Groups\Controllers;
 
-use App\Api\Groups\Requests\GroupIndexRequest;
 use App\Api\Groups\Requests\GroupStoreRequest;
 use App\Api\Groups\Requests\GroupUpdateRequest;
 use App\Api\Groups\Resources\GroupResource;
@@ -14,12 +13,13 @@ use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
-use Domain\Groups\Scopes\GroupFilterScope;
+use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoGroupScope;
 use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
@@ -43,21 +43,35 @@ class GroupController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(GroupIndexRequest $request): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Group::class);
 
         // Apply filters
-        $sort = $request->safe()->input('sort');
+        $search = $request->input('search', '');
+        $defaultSort = blank($search) || $search === '*';
 
         // Scout builder
-        $scout = Group::search()
-            ->tap(new GroupFilterScope(sort: $sort))
-            ->simplePaginate(perPage: 24);
+        $scout = ScoutBuilder::for(Group::search($search))
+            ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
+            ->allowedFilters(
+                AllowedFilter::exact('type'),
+            )
+            ->allowedSorts(
+                AllowedSort::field('name'),
+                AllowedSort::field('videos', 'groupables')->defaultDescending(),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('updated', 'updated_at')->defaultDescending(),
+            )
+            ->when($request->input('type'), fn (ScoutBuilder $scout, string $type) => $scout->where('type', $type))
+            ->when($defaultSort, fn (ScoutBuilder $scout) => $scout->defaultSort('updated'))
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'sort' => fn () => $sort,
+            'sort' => fn () => $request->input('sort'),
+            'type' => fn () => $request->input('type'),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
         ]);
     }
