@@ -51,7 +51,7 @@ jobs:
                     --health-retries 5
 
             typesense:
-                image: typesense/typesense:27.1
+                image: typesense/typesense:30.1
                 env:
                     TYPESENSE_DATA_DIR: /tmp
                     TYPESENSE_API_KEY: masterKey
