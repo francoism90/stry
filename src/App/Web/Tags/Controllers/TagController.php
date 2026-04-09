@@ -75,12 +75,15 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $tag);
 
+        // Relevant sort options
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoProfileScope)
             ->whereIn('tagged', [$tag->getKey()])
             ->allowedSorts(
-                AllowedSort::custom('recommended', new RecommendedSorter),
+                $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
                 AllowedSort::field('ordered', 'name'),
@@ -88,7 +91,7 @@ class TagController extends Controller implements HasMiddleware
                 AllowedSort::field('longest', 'duration')->defaultDescending(),
                 AllowedSort::field('filesize')->defaultDescending(),
             )
-            ->defaultSort('recommended')
+            ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Tags/TagView', [

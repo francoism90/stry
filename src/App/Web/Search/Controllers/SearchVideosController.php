@@ -34,10 +34,14 @@ class SearchVideosController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
+        // Relevant sort options
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+
+        // Scout builder
         $scout = ScoutBuilder::for(Video::search($query))
             ->tap(new VideoProfileScope)
             ->allowedSorts(
-                AllowedSort::custom('recommended', new RecommendedSorter),
+                $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
                 AllowedSort::field('ordered', 'name'),
@@ -45,7 +49,7 @@ class SearchVideosController extends Controller implements HasMiddleware
                 AllowedSort::field('longest', 'duration')->defaultDescending(),
                 AllowedSort::field('filesize')->defaultDescending(),
             )
-            ->defaultSort('recommended')
+            ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Search/SearchVideos', [

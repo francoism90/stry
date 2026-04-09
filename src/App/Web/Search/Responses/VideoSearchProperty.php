@@ -20,13 +20,16 @@ readonly class VideoSearchProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): ResourceCollection
     {
+        // Relevant sort options
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+
         return VideoResource::collection(
             ScoutBuilder::for(Video::search($this->query))
                 ->tap(new VideoProfileScope)
                 ->allowedSorts(
-                    AllowedSort::custom('recommended', new RecommendedSorter),
+                    $recommendedSort,
                 )
-                ->defaultSort('recommended')
+                ->defaultSort($recommendedSort)
                 ->take($this->limit)
                 ->get()
         );
