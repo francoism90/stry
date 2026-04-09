@@ -9,15 +9,13 @@ use Domain\Shared\Contracts\Enumerable;
 enum TagSorter: string implements Enumerable
 {
     case Name = 'name';
-    case Videos = 'videos';
     case Newest = 'newest';
     case Oldest = 'oldest';
 
     public function label(): string
     {
         return match ($this) {
-            self::Name => __('Name'),
-            self::Videos => __('Most videos'),
+            self::Name => __('0-9, A-Z'),
             self::Newest => __('Newest'),
             self::Oldest => __('Oldest'),
         };
