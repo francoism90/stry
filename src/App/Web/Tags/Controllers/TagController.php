@@ -58,8 +58,8 @@ class TagController extends Controller implements HasMiddleware
             ->allowedSorts(
                 $videosSort,
                 AllowedSort::field('ordered', 'name'),
-                AllowedSort::latest('newest'),
-                AllowedSort::oldest('oldest'),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
             )
             ->defaultSort($videosSort)
             ->jsonSimplePaginate(defaultSize: 24);
