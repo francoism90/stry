@@ -18,8 +18,11 @@ use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoGroupScope;
+use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -27,6 +30,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Sorts\RecommendedSorter;
 
 class GroupController extends Controller implements HasMiddleware
 {
@@ -66,12 +70,20 @@ class GroupController extends Controller implements HasMiddleware
         $sort = $request->safe()->input('sort');
 
         // Scout builder
-        $scout = Video::search()
-            ->tap(new VideoFilterScope(
-                group: $group,
-                sort: $sort,
-            ))
-            ->simplePaginate(perPage: 24);
+        $scout = ScoutBuilder::for(Video::class)
+            ->tap(new VideoGroupScope(group: $group, sort: $sort))
+            ->tap(new VideoProfileScope)
+            ->allowedSorts(
+                AllowedSort::custom('recommended', new RecommendedSorter),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('shortest', 'duration'),
+                AllowedSort::field('longest', 'duration')->defaultDescending(),
+                AllowedSort::field('filesize')->defaultDescending(),
+            )
+            ->defaultSort('recommended')
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
