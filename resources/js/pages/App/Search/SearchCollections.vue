@@ -50,18 +50,10 @@ defineProps<{
           items-element="#infinite-items"
           :buffer="200"
         >
-          <div id="infinite-items">
-            <UEmpty
-              v-if="!items?.data?.length"
-              icon="i-lucide-folder"
-              title="No collections"
-            />
-
-            <GroupList
-              v-else
-              :items="items?.data"
-            />
-          </div>
+          <GroupList
+            id="infinite-items"
+            :items="items?.data"
+          />
         </InfiniteScroll>
       </UPage>
     </template>
