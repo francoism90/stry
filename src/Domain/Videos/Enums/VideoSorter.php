@@ -10,9 +10,9 @@ enum VideoSorter: string implements Enumerable
 {
     case Newest = 'newest';
     case Oldest = 'oldest';
-    case Ordered = 'ordered';
     case Longest = 'longest';
     case Shortest = 'shortest';
+    case Ordered = 'ordered';
     case Filesize = 'filesize';
 
     /** @return array<string, string> */
@@ -21,9 +21,9 @@ enum VideoSorter: string implements Enumerable
         return [
             'newest' => __('Newest'),
             'oldest' => __('Oldest'),
-            'ordered' => __('Alphabetical'),
             'longest' => __('Longest'),
             'shortest' => __('Shortest'),
+            'ordered' => __('Ordered'),
             'filesize' => __('File Size'),
         ];
     }

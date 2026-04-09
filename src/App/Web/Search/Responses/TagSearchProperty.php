@@ -6,7 +6,8 @@ namespace App\Web\Search\Responses;
 
 use App\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\Scopes\TagFilterScope;
+use Domain\Tags\QueryBuilders\TagQueryBuilder;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
@@ -18,8 +19,8 @@ readonly class TagSearchProperty implements ProvidesInertiaProperty
     public function toInertiaProperty(PropertyContext $context): ResourceCollection
     {
         return TagResource::collection(
-            Tag::search($this->query)
-                ->tap(new TagFilterScope)
+            ScoutBuilder::for(Tag::search($this->query))
+                ->query(fn (TagQueryBuilder $builder) => $builder->withCount('videos'))
                 ->take($this->limit)
                 ->get()
         );

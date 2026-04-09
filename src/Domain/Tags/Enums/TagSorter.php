@@ -8,7 +8,7 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum TagSorter: string implements Enumerable
 {
-    case Name = 'name';
+    case Ordered = 'ordered';
     case Newest = 'newest';
     case Oldest = 'oldest';
 
@@ -16,7 +16,7 @@ enum TagSorter: string implements Enumerable
     public static function labels(): array
     {
         return [
-            'name' => __('Alphabetical'),
+            'ordered' => __('Ordered'),
             'newest' => __('Newest'),
             'oldest' => __('Oldest'),
         ];
