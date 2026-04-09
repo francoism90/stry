@@ -29,7 +29,7 @@ if [ ! -f ".env" ]; then
     ${ARTISAN} key:generate
 fi
 
- # Clear current cache
+ # Clear stale caches
 log "INFO" "Clearing cache..."
 ${ARTISAN} optimize:clear
 
