@@ -171,7 +171,7 @@ RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
-RUN chown -R docker:docker /pnpm /app /config /data /storage
+RUN chown -R docker:docker /app /pnpm /config /data /storage
 
 USER docker
 
