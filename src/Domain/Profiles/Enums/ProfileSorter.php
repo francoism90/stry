@@ -9,7 +9,8 @@ use Domain\Shared\Contracts\Enumerable;
 enum ProfileSorter: string implements Enumerable
 {
     case Name = 'name';
-    case Newest = 'created_at';
+    case Newest = 'newest';
+    case Oldest = 'oldest';
 
     public function label(): string
     {
@@ -21,7 +22,8 @@ enum ProfileSorter: string implements Enumerable
     {
         return [
             'name' => __('Name'),
-            'created_at' => __('Newest'),
+            'newest' => __('Newest'),
+            'oldest' => __('Oldest'),
         ];
     }
 }
