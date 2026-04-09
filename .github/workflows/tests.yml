@@ -50,6 +50,19 @@ jobs:
                     --health-timeout 5s
                     --health-retries 5
 
+            typesense:
+                image: typesense/typesense:27.1
+                env:
+                    TYPESENSE_DATA_DIR: /tmp
+                    TYPESENSE_API_KEY: masterKey
+                ports:
+                    - 8108:8108
+                options: >-
+                    --health-cmd "curl -sf http://localhost:8108/health"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v6
