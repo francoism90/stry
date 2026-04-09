@@ -8,6 +8,10 @@ const props = defineProps<{
   items: Profile[] | undefined
   current?: Profile | null
 }>()
+
+const emit = defineEmits<{
+  switchProfile: [item: Profile]
+}>()
 </script>
 
 <template>

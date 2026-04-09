@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { edit, index } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import GroupVideoModal from '@/components/Groups/GroupVideoModal.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useVideo } from '@/composables/video'
+import { index } from '@/routes/videos'
 import type { Group, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
