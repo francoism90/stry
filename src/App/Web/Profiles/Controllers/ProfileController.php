@@ -11,7 +11,7 @@ use App\Api\Profiles\Resources\ProfileResource;
 use App\Web\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;
-use Domain\Profiles\Enums\ProfileOrder;
+use Domain\Profiles\Enums\ProfileSorter;
 use Domain\Profiles\Models\Profile;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -38,19 +38,19 @@ class ProfileController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Profile::class);
 
-        $order = $request->safe()->input('order');
+        $sort = $request->safe()->input('sort');
 
         // Query builder
         $query = $request->user()
             ->profiles()
-            ->ordered(order: $order)
+            ->ordered(order: $sort)
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty,
             'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(ProfileOrder::class),
+            'sort' => fn () => $sort,
+            'sorters' => fn () => Options::forEnum(ProfileSorter::class),
         ]);
     }
 

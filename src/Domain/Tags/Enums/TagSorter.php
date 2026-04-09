@@ -6,7 +6,7 @@ namespace Domain\Tags\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum TagOrder: string implements Enumerable
+enum TagSorter: string implements Enumerable
 {
     case Default = 'recommended';
     case Name = 'name';

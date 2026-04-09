@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Scopes;
 
-use Domain\Tags\Enums\TagOrder;
+use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Laravel\Scout\Builder;
@@ -15,7 +15,7 @@ readonly class TagFilterScope
 {
     public function __construct(
         public TagType|string|null $type = null,
-        public TagOrder|string|null $order = null,
+        public TagSorter|string|null $sort = null,
     ) {}
 
     public function __invoke(Builder $scout): void
@@ -26,10 +26,10 @@ readonly class TagFilterScope
             ->query(fn (TagQueryBuilder $scout) => $scout->withCount('videos'))
             ->when($this->getType(), fn (Builder $scout, TagType $type) => $scout->where('type', enum_value($type)))
             ->when($defaultOrder, fn (Builder $scout) => $scout->orderByDesc('videos'))
-            ->when($this->isOrder(TagOrder::Name), fn (Builder $scout) => $scout->orderBy('name'))
-            ->when($this->isOrder(TagOrder::Videos), fn (Builder $scout) => $scout->orderByDesc('videos'))
-            ->when($this->isOrder(TagOrder::Newest), fn (Builder $scout) => $scout->latest())
-            ->when($this->isOrder(TagOrder::Oldest), fn (Builder $scout) => $scout->orderBy('created_at'));
+            ->when($this->isOrder(TagSorter::Name), fn (Builder $scout) => $scout->orderBy('name'))
+            ->when($this->isOrder(TagSorter::Videos), fn (Builder $scout) => $scout->orderByDesc('videos'))
+            ->when($this->isOrder(TagSorter::Newest), fn (Builder $scout) => $scout->latest())
+            ->when($this->isOrder(TagSorter::Oldest), fn (Builder $scout) => $scout->orderBy('created_at'));
     }
 
     protected function getType(): ?TagType
@@ -39,19 +39,19 @@ readonly class TagFilterScope
         return is_string($typeValue) ? TagType::tryFrom($typeValue) : $typeValue;
     }
 
-    protected function getOrder(): TagOrder
+    protected function getOrder(): TagSorter
     {
-        $orderValue = $this->order ?? TagOrder::Default;
+        $sortValue = $this->sort ?? TagSorter::Default;
 
-        return is_string($orderValue) ? TagOrder::from($orderValue) : $orderValue;
+        return is_string($sortValue) ? TagSorter::from($sortValue) : $sortValue;
     }
 
     protected function isOrderDefault(): bool
     {
-        return $this->getOrder() === TagOrder::Default;
+        return $this->getOrder() === TagSorter::Default;
     }
 
-    protected function isOrder(TagOrder ...$values): bool
+    protected function isOrder(TagSorter ...$values): bool
     {
         $current = $this->getOrder();
 

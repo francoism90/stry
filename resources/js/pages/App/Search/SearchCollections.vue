@@ -13,8 +13,8 @@ defineOptions({ layout: DefaultLayout })
 defineProps<{
   search: string
   items: GroupCollection
-  orders: SelectMenuItem[]
-  order: string
+  sorters: SelectMenuItem[]
+  sort: string
 }>()
 </script>
 
@@ -39,8 +39,8 @@ defineProps<{
           <template #left>
             <GroupFilters
               :results="Boolean(items?.data?.length)"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
         </UDashboardToolbar>

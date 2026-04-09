@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -31,16 +31,16 @@ class SearchVideosController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        $order = $request->input('order');
+        $sort = $request->input('sort');
 
         $scout = Video::search($query)
-            ->tap(new VideoFilterScope(order: $order))
+            ->tap(new VideoFilterScope(sort: $sort))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
+            'sort' => fn () => $sort,
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
         ]);
     }

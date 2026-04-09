@@ -12,11 +12,11 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
-use Domain\Groups\Enums\GroupOrder;
+use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupFilterScope;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -44,17 +44,17 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('viewAny', Group::class);
 
         // Apply filters
-        $order = $request->safe()->input('order');
+        $sort = $request->safe()->input('sort');
 
         // Scout builder
         $scout = Group::search()
-            ->tap(new GroupFilterScope(order: $order))
+            ->tap(new GroupFilterScope(sort: $sort))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(GroupOrder::class),
+            'sort' => fn () => $sort,
+            'sorters' => fn () => Options::forEnum(GroupSorter::class),
         ]);
     }
 
@@ -63,21 +63,21 @@ class GroupController extends Controller implements HasMiddleware
         Gate::authorize('view', $group);
 
         // Apply filters
-        $order = $request->safe()->input('order');
+        $sort = $request->safe()->input('sort');
 
         // Scout builder
         $scout = Video::search()
             ->tap(new VideoFilterScope(
                 group: $group,
-                order: $order,
+                sort: $sort,
             ))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
+            'sort' => fn () => $sort,
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 

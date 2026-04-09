@@ -8,8 +8,8 @@ import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   items: VideoCollection
-  orders: SelectMenuItem[]
-  order?: string
+  sorters: SelectMenuItem[]
+  sort?: string
 }>()
 </script>
 
@@ -25,8 +25,8 @@ defineProps<{
           <template #left>
             <VideoFilters
               :results="Boolean(items?.data?.length)"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
         </UDashboardToolbar>

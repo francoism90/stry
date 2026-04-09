@@ -12,7 +12,7 @@ use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -49,8 +49,8 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $request->input('sort'),
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
+            'sort' => fn () => $request->input('sort'),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 

@@ -6,7 +6,7 @@ namespace Domain\Profiles\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum ProfileOrder: string implements Enumerable
+enum ProfileSorter: string implements Enumerable
 {
     case Name = 'name';
     case Newest = 'created_at';

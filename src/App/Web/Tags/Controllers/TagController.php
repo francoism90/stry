@@ -12,11 +12,11 @@ use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\UpdateTagDetails;
-use Domain\Tags\Enums\TagOrder;
+use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\Scopes\TagFilterScope;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
@@ -45,19 +45,19 @@ class TagController extends Controller implements HasMiddleware
 
         // Apply filters
         $type = $request->safe()->input('type');
-        $order = $request->safe()->input('order');
+        $sort = $request->safe()->input('sort');
 
         // Scout builder
         $scout = Tag::search()
-            ->tap(new TagFilterScope(type: $type, order: $order))
+            ->tap(new TagFilterScope(type: $type, sort: $sort))
             ->simplePaginate(perPage: 36);
 
         return Inertia::render('App/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'type' => fn () => $type,
-            'order' => fn () => $order,
+            'sort' => fn () => $sort,
             'types' => fn () => Options::forEnum(TagType::class),
-            'orders' => fn () => Options::forEnum(TagOrder::class),
+            'sorters' => fn () => Options::forEnum(TagSorter::class),
         ]);
     }
 
@@ -66,21 +66,21 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('view', $tag);
 
         // Apply filters
-        $order = $request->safe()->input('order');
+        $sort = $request->safe()->input('sort');
 
         // Scout builder
         $scout = Video::search()
             ->tap(new VideoFilterScope(
                 tag: $tag,
-                order: $order,
+                sort: $sort,
             ))
             ->simplePaginate(perPage: 24);
 
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
+            'sort' => fn () => $sort,
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 

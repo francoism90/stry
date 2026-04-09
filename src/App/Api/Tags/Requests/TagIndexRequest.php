@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Tags\Requests;
 
-use Domain\Tags\Enums\TagOrder;
+use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,7 +25,7 @@ class TagIndexRequest extends FormRequest
         return [
             'search' => ['sometimes', 'nullable', 'string', 'max:255'],
             'type' => ['sometimes', 'nullable', Rule::enum(TagType::class)],
-            'order' => ['sometimes', 'nullable', Rule::enum(TagOrder::class)],
+            'sort' => ['sometimes', 'nullable', Rule::enum(TagSorter::class)],
         ];
     }
 }

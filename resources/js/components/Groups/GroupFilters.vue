@@ -4,18 +4,18 @@ import type { SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
   results?: boolean
-  orders?: SelectMenuItem[]
-  order?: string | undefined
+  sorters?: SelectMenuItem[]
+  sort?: string | undefined
 }>()
 
 const form = useForm('get', '', {
-  order: props.order,
+  sort: props.sort,
   page: 1,
 })
 
 const onSubmit = () => {
   form.submit({
-    only: ['items', 'type', 'order'],
+    only: ['items', 'type', 'sort'],
     reset: ['items'],
     preserveState: true,
   })
@@ -24,10 +24,10 @@ const onSubmit = () => {
 
 <template>
   <USelectMenu
-    v-if="orders?.length && results"
-    v-model="form.order"
+    v-if="sorters?.length && results"
+    v-model="form.sort"
     :model-modifiers="{ nullable: true }"
-    :items="orders"
+    :items="sorters"
     :search-input="false"
     :ui="{ base: 'px-0', content: 'min-w-48' }"
     placeholder="Sort by"

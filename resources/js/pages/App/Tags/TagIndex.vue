@@ -12,8 +12,8 @@ defineProps<{
   items: TagCollection
   types: SelectMenuItem[]
   type?: string
-  orders: SelectMenuItem[]
-  order?: string
+  sorters: SelectMenuItem[]
+  sort?: string
 }>()
 
 const { hasAnyRole } = useAuth()
@@ -33,8 +33,8 @@ const { hasAnyRole } = useAuth()
               :results="Boolean(items?.data?.length)"
               :types="types"
               :type="type"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
 

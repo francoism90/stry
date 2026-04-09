@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Profiles\Requests;
 
-use Domain\Profiles\Enums\ProfileOrder;
+use Domain\Profiles\Enums\ProfileSorter;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -22,7 +22,7 @@ class ProfileIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order' => ['sometimes', 'nullable', Rule::enum(ProfileOrder::class)],
+            'sort' => ['sometimes', 'nullable', Rule::enum(ProfileSorter::class)],
         ];
     }
 }

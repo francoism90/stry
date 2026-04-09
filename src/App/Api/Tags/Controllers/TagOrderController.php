@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TagOrderController extends Controller implements HasMiddleware
+class TagSorterController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {

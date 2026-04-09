@@ -2,28 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Domain\Groups\Enums;
+namespace Domain\Videos\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum GroupOrder: string implements Enumerable
+enum VideoSorter: string implements Enumerable
 {
     case Default = 'recommended';
-    case Name = 'name';
-    case Videos = 'videos';
     case Newest = 'newest';
     case Oldest = 'oldest';
-    case Updated = 'updated';
+    case Ordered = 'ordered';
+    case Longest = 'longest';
+    case Shortest = 'shortest';
+    case Filesize = 'filesize';
 
     public function label(): string
     {
         return match ($this) {
             self::Default => __('Recommended'),
-            self::Name => __('Name'),
-            self::Videos => __('Most videos'),
             self::Newest => __('Newest'),
             self::Oldest => __('Oldest'),
-            self::Updated => __('Recently updated'),
+            self::Ordered => __('Alphabetical'),
+            self::Longest => __('Longest'),
+            self::Shortest => __('Shortest'),
+            self::Filesize => __('File Size'),
         };
     }
 }

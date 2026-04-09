@@ -7,7 +7,7 @@ namespace Domain\Videos\Scopes;
 use Domain\Groups\Models\Group;
 use Domain\Profiles\Models\Profile;
 use Domain\Tags\Models\Tag;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Laravel\Scout\Builder;
 
@@ -16,7 +16,7 @@ readonly class VideoFilterScope
     public function __construct(
         public Tag|string|null $tag = null,
         public Group|string|null $group = null,
-        public VideoOrder|string|null $order = null,
+        public VideoSorter|string|null $sort = null,
     ) {}
 
     public function __invoke(Builder $scout): void
@@ -32,11 +32,11 @@ readonly class VideoFilterScope
             ->when($options, fn (Builder $scout) => $scout->options($options))
             ->when($defaultOrder, fn (Builder $scout) => $scout->randomOrder())
             ->when($this->getTag(), fn (Builder $scout, Tag $tag) => $scout->whereIn('tagged', [$tag->getKey()]))
-            ->when($this->isOrder(VideoOrder::Newest), fn (Builder $scout) => $scout->latest())
-            ->when($this->isOrder(VideoOrder::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
-            ->when($this->isOrder(VideoOrder::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
-            ->when($this->isOrder(VideoOrder::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
-            ->when($this->isOrder(VideoOrder::Filesize), fn (Builder $scout) => $scout->orderByDesc('filesize'));
+            ->when($this->isOrder(VideoSorter::Newest), fn (Builder $scout) => $scout->latest())
+            ->when($this->isOrder(VideoSorter::Ordered), fn (Builder $scout) => $scout->orderBy('name'))
+            ->when($this->isOrder(VideoSorter::Shortest), fn (Builder $scout) => $scout->orderBy('duration'))
+            ->when($this->isOrder(VideoSorter::Longest), fn (Builder $scout) => $scout->orderByDesc('duration'))
+            ->when($this->isOrder(VideoSorter::Filesize), fn (Builder $scout) => $scout->orderByDesc('filesize'));
     }
 
     protected function getOptions(): array
@@ -65,19 +65,19 @@ readonly class VideoFilterScope
         return $options;
     }
 
-    protected function getOrderer(): VideoOrder
+    protected function getOrderer(): VideoSorter
     {
-        $orderValue = $this->order ?? VideoOrder::Default;
+        $sortValue = $this->sort ?? VideoSorter::Default;
 
-        return is_string($orderValue) ? VideoOrder::from($orderValue) : $orderValue;
+        return is_string($sortValue) ? VideoSorter::from($sortValue) : $sortValue;
     }
 
     protected function isOrderDefault(): bool
     {
-        return $this->getOrderer() === VideoOrder::Default;
+        return $this->getOrderer() === VideoSorter::Default;
     }
 
-    protected function isOrder(VideoOrder ...$values): bool
+    protected function isOrder(VideoSorter ...$values): bool
     {
         $currentOrderer = $this->getOrderer();
 
