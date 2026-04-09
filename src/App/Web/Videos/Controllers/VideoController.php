@@ -16,6 +16,7 @@ use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Sorts\SortsRandom;
 
 class VideoController extends Controller implements HasMiddleware
 {
@@ -44,7 +46,8 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
-            ->allowedSorts('name', '-name', 'duration')
+            ->allowedSorts('name', '-name', 'duration', AllowedSort::custom('random', new SortsRandom))
+            ->defaultSort(AllowedSort::custom('random', new SortsRandom))
             ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Videos/VideoIndex', [
