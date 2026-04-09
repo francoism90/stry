@@ -46,6 +46,7 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
+            ->query(fn ($query) => $query->with(['media', 'tags']))
             ->allowedSorts(
                 AllowedSort::custom('recommended', new SortsRecommended),
                 AllowedSort::field('newest', 'created_at'),

@@ -14,7 +14,7 @@ GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
 Memory=3g
 ShmSize=256m
-Volume=${STORAGE_PATH}:/storage:rw
+Volume=${STORAGE_PATH}:/storage:rw,z
 Network=stry.network
 
 [Service]
