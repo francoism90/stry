@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Playlists\Requests\PlaylistIndexRequest;
 use App\Api\Playlists\Requests\PlaylistStoreRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use App\Api\Playlists\Resources\PlaylistResource;
@@ -32,13 +31,14 @@ class VideoPlaylistController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(PlaylistIndexRequest $request, Video $video): Response
+    public function index(Video $video): Response
     {
         Gate::authorize('viewAny', Playlist::class);
 
         // Fetch playlists for the video
         $playlists = $video
             ->playlists()
+            ->latest()
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Videos/Playlists/PlaylistIndex', [

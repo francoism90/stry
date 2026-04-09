@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Domain\Videos\Scopes;
+
+use Domain\Profiles\Models\Profile;
+use Domain\Videos\QueryBuilders\VideoQueryBuilder;
+use Laravel\Scout\Builder;
+
+readonly class VideoProfileScope
+{
+    public function __invoke(Builder $scout): void
+    {
+        $scout->query(fn (VideoQueryBuilder $query) => $query->with(['media', 'tags'])->forProfile(Profile::current()));
+    }
+}

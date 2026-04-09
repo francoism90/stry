@@ -109,8 +109,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN setcap -r /usr/local/bin/frankenphp
 
 # PHP Configuration
-RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
+COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Install PHP extensions
 run install-php-extensions @composer \
@@ -136,12 +136,15 @@ RUN apt-get clean && apt-get autoremove -y \
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-FROM base AS build
+FROM base AS production
 
 WORKDIR /app
 
 # Copy application source code
 COPY . /app
+
+# Set proper ownership
+RUN chown -R docker:docker /app /config /data /storage
 
 # Install PHP dependencies
 RUN --mount=type=cache,target=/root/.composer/cache \
@@ -152,22 +155,8 @@ RUN --mount=type=cache,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
 # Complete composer setup and build assets
-RUN composer dump-autoload --optimize && \
-    pnpm build && pnpm build:ssr && pnpm prune --prod
-
-FROM base AS production
-
-WORKDIR /app
-
-# Copy application from build stage
-COPY --chown=docker:docker --from=build /app /app
-
-# Set proper ownership
-RUN chown -R docker:docker /config /data /storage
-
-# PHP Configuration
-RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
-COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+RUN composer dump-autoload --optimize \
+    && pnpm build && pnpm build:ssr && pnpm prune --prod
 
 USER docker
 
@@ -176,6 +165,10 @@ EXPOSE 6001 8000 13714
 FROM base AS development
 
 WORKDIR /app
+
+# PHP Configuration
+RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
+COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
 RUN chown -R docker:docker /app /pnpm /config /data /storage

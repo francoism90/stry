@@ -7,7 +7,6 @@
     "mcp": true,
     "nightwatch_mcp": false,
     "packages": [
-        "laravel/fortify",
         "spatie/laravel-medialibrary",
         "spatie/laravel-permission",
         "spatie/laravel-responsecache",
@@ -15,6 +14,7 @@
     ],
     "sail": false,
     "skills": [
+        "fortify-development",
         "laravel-best-practices",
         "configuring-horizon",
         "scout-development",
@@ -24,7 +24,6 @@
         "echo-vue-development",
         "echo-development",
         "tailwindcss-development",
-        "fortify-development",
         "medialibrary-development",
         "laravel-permission-development",
         "responsecache-development",

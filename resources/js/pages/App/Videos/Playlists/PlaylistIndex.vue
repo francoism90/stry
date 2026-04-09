@@ -38,43 +38,46 @@ useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
 
     <InfiniteScroll
       data="items"
+      items-element="#infinite-items"
       :buffer="200"
     >
-      <UEmpty
-        v-if="!items?.data?.length"
-        icon="i-lucide-list-video"
-        title="No playlists"
-        description="Create a playlist to enable streaming for this video."
-      />
+      <div id="infinite-items">
+        <UEmpty
+          v-if="!items?.data?.length"
+          icon="i-lucide-list-video"
+          title="No playlists"
+          description="Create a playlist to enable streaming for this video."
+        />
 
-      <UPageList
-        v-else
-        divide
-      >
-        <UPageCard
-          v-for="item in items?.data"
-          :key="item.id"
-          variant="naked"
-          class="py-4 first:pt-0 last:pb-0"
+        <UPageList
+          v-else
+          divide
         >
-          <div class="flex items-center justify-between">
-            <UUser
-              :name="item.id"
-              :description="`${item.state.label} · ${item.type}`"
-              :avatar="{
-                alt: item.id,
-                loading: 'lazy',
-                decoding: 'async',
-                class: 'rounded-sm size-12 me-1',
-              }"
-            />
+          <UPageCard
+            v-for="item in items?.data"
+            :key="item.id"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
+          >
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.id"
+                :description="`${item.state.label} · ${item.type}`"
+                :avatar="{
+                  alt: item.id,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'rounded-sm size-12 me-1',
+                }"
+              />
 
-            <div class="z-10 flex items-center gap-2">
-              <PlaylistDeleteModal :item="item" />
+              <div class="z-10 flex items-center gap-2">
+                <PlaylistDeleteModal :item="item" />
+              </div>
             </div>
-          </div>
-        </UPageCard>
-      </UPageList>
+          </UPageCard>
+        </UPageList>
+      </div>
     </InfiniteScroll>
   </UPageBody>
 </template>

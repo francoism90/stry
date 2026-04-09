@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Transcodes\Requests\TranscodeIndexRequest;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
 use App\Web\Videos\Responses\VideoResourceProperty;
@@ -29,13 +28,14 @@ class VideoTranscodeController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(TranscodeIndexRequest $request, Video $video): Response
+    public function index(Video $video): Response
     {
         Gate::authorize('viewAny', Transcode::class);
 
         // Fetch transcodes for the video
         $transcodes = $video
             ->transcodes()
+            ->latest()
             ->simplePaginate(perPage: 16);
 
         return Inertia::render('App/Videos/Transcodes/TranscodeIndex', [

@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Domain\Playlists\Enums;
+namespace Domain\Tags\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum PlaylistType: string implements Enumerable
+enum TagSorter: string implements Enumerable
 {
-    case Packager = 'packager';
-    case Streamer = 'streamer';
+    case Ordered = 'ordered';
+    case Newest = 'newest';
+    case Oldest = 'oldest';
 
     public function label(): string
     {
@@ -20,8 +21,9 @@ enum PlaylistType: string implements Enumerable
     public static function labels(): array
     {
         return [
-            'packager' => 'Packager',
-            'streamer' => 'Streamer',
+            'ordered' => __('Ordered'),
+            'newest' => __('Newest'),
+            'oldest' => __('Oldest'),
         ];
     }
 }

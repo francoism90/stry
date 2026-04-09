@@ -50,6 +50,14 @@ jobs:
                     --health-timeout 5s
                     --health-retries 5
 
+            typesense:
+                image: typesense/typesense:30.1
+                env:
+                    TYPESENSE_DATA_DIR: /tmp
+                    TYPESENSE_API_KEY: masterKey
+                ports:
+                    - 8108:8108
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v6
@@ -86,6 +94,17 @@ jobs:
               with:
                   node-version: 24
                   cache: 'pnpm'
+
+            - name: Wait for Typesense
+              run: |
+                  for i in $(seq 1 30); do
+                    if curl -sf http://localhost:8108/health > /dev/null 2>&1; then
+                      echo "Typesense is ready"
+                      break
+                    fi
+                    echo "Waiting for Typesense... ($i/30)"
+                    sleep 2
+                  done
 
             - name: Build application
               run: |

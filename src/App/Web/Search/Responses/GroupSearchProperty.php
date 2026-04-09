@@ -6,7 +6,8 @@ namespace App\Web\Search\Responses;
 
 use App\Api\Groups\Resources\GroupResource;
 use Domain\Groups\Models\Group;
-use Domain\Groups\Scopes\GroupFilterScope;
+use Domain\Groups\QueryBuilders\GroupQueryBuilder;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
@@ -18,8 +19,8 @@ readonly class GroupSearchProperty implements ProvidesInertiaProperty
     public function toInertiaProperty(PropertyContext $context): ResourceCollection
     {
         return GroupResource::collection(
-            Group::search($this->query)
-                ->tap(new GroupFilterScope)
+            ScoutBuilder::for(Group::search($this->query))
+                ->query(fn (GroupQueryBuilder $builder) => $builder->withCount('groupables'))
                 ->take($this->limit)
                 ->get()
         );

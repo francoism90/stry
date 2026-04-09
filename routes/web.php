@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Web\Account\Controllers\AccountController;
-use App\Web\Account\Controllers\HomeController;
 use App\Web\Account\Controllers\NotificationsController;
 use App\Web\Account\Controllers\SecurityController;
 use App\Web\Account\Controllers\SettingsController;
@@ -25,7 +24,7 @@ use App\Web\Videos\Controllers\VideoTranscodeController;
 use Illuminate\Support\Facades\Route;
 
 // Home
-Route::get('/', HomeController::class)->name('home');
+Route::get('/', [VideoController::class, 'index'])->name('home');
 
 // Account
 Route::get('/account', AccountController::class)->name('account');

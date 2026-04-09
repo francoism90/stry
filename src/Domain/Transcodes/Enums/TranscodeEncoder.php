@@ -12,8 +12,14 @@ enum TranscodeEncoder: string implements Enumerable
 
     public function label(): string
     {
-        return match ($this) {
-            self::AV1 => 'ab-av1 (AV1)',
-        };
+        return self::labels()[$this->value];
+    }
+
+    /** @return array<string, string> */
+    public static function labels(): array
+    {
+        return [
+            'av1' => 'ab-av1 (AV1)',
+        ];
     }
 }

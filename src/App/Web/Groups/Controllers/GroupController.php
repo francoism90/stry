@@ -4,29 +4,34 @@ declare(strict_types=1);
 
 namespace App\Web\Groups\Controllers;
 
-use App\Api\Groups\Requests\GroupIndexRequest;
 use App\Api\Groups\Requests\GroupStoreRequest;
 use App\Api\Groups\Requests\GroupUpdateRequest;
 use App\Api\Groups\Resources\GroupResource;
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
-use Domain\Groups\Enums\GroupOrder;
+use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
-use Domain\Groups\Scopes\GroupFilterScope;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Groups\QueryBuilders\GroupQueryBuilder;
+use Domain\Groups\Scopes\GroupProfileScope;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoGroupScope;
+use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Sorts\RecommendedSorter;
 
 class GroupController extends Controller implements HasMiddleware
 {
@@ -39,45 +44,64 @@ class GroupController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(GroupIndexRequest $request): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Group::class);
 
-        // Apply filters
-        $order = $request->safe()->input('order');
-
         // Scout builder
-        $scout = Group::search()
-            ->tap(new GroupFilterScope(order: $order))
-            ->simplePaginate(perPage: 24);
+        $updatedSort = AllowedSort::field('updated', 'updated_at')->defaultDescending();
+
+        $scout = ScoutBuilder::for(Group::class)
+            ->tap(new GroupProfileScope)
+            ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
+            ->allowedFilters(
+                AllowedFilter::exact('type'),
+            )
+            ->allowedSorts(
+                AllowedSort::field('name'),
+                AllowedSort::field('videos', 'groupables')->defaultDescending(),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                $updatedSort,
+            )
+            ->defaultSort($updatedSort)
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(GroupOrder::class),
+            'sort' => fn () => $request->input('sort'),
+            'type' => fn () => $request->input('type'),
+            'sorters' => fn () => Options::forEnum(GroupSorter::class),
         ]);
     }
 
-    public function show(Group $group, VideoIndexRequest $request): Response
+    public function show(Group $group, Request $request): Response
     {
         Gate::authorize('view', $group);
 
-        // Apply filters
-        $order = $request->safe()->input('order');
-
         // Scout builder
-        $scout = Video::search()
-            ->tap(new VideoFilterScope(
-                group: $group,
-                order: $order,
-            ))
-            ->simplePaginate(perPage: 24);
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+
+        $scout = ScoutBuilder::for(Video::class)
+            ->tap(new VideoGroupScope(group: $group))
+            ->tap(new VideoProfileScope)
+            ->allowedSorts(
+                $recommendedSort,
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('shortest', 'duration'),
+                AllowedSort::field('longest', 'duration')->defaultDescending(),
+                AllowedSort::field('filesize')->defaultDescending(),
+            )
+            ->defaultSort($recommendedSort)
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
+            'sort' => fn () => $request->input('sort'),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 

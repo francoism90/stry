@@ -16,12 +16,18 @@ enum GroupType: string implements Enumerable
 
     public function label(): string
     {
-        return match ($this) {
-            self::Custom => __('Custom'),
-            self::Liked => __('Liked'),
-            self::Mixer => __('Mixer'),
-            self::Saved => __('Saved'),
-            self::Viewed => __('Viewed'),
-        };
+        return self::labels()[$this->value];
+    }
+
+    /** @return array<string, string> */
+    public static function labels(): array
+    {
+        return [
+            'custom' => __('Custom'),
+            'liked' => __('Liked'),
+            'mixer' => __('Mixer'),
+            'saved' => __('Saved'),
+            'viewed' => __('Viewed'),
+        ];
     }
 }

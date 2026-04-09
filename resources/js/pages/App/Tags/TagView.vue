@@ -11,8 +11,8 @@ import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
 const props = defineProps<{
   tag: Tag
   items: VideoCollection
-  orders: SelectMenuItem[]
-  order?: string
+  sorters: SelectMenuItem[]
+  sort?: string
 }>()
 
 const links: NavigationMenuItem[] = [
@@ -47,17 +47,21 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
           <template #left>
             <VideoFilters
               :results="Boolean(items?.data?.length)"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
         </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
-          <VideoList :items="items?.data" />
+          <VideoList
+            id="infinite-items"
+            :items="items?.data"
+          />
         </InfiniteScroll>
       </UPage>
     </template>

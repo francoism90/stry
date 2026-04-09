@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Sorts\RecommendedSorter;
 
 class SearchVideosController extends Controller implements HasMiddleware
 {
@@ -31,17 +34,29 @@ class SearchVideosController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        $order = $request->input('order');
+        // Relevant sort options
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
 
-        $scout = Video::search($query)
-            ->tap(new VideoFilterScope(order: $order))
-            ->simplePaginate(perPage: 24);
+        // Scout builder
+        $scout = ScoutBuilder::for(Video::search($query))
+            ->tap(new VideoProfileScope)
+            ->allowedSorts(
+                $recommendedSort,
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('shortest', 'duration'),
+                AllowedSort::field('longest', 'duration')->defaultDescending(),
+                AllowedSort::field('filesize')->defaultDescending(),
+            )
+            ->defaultSort($recommendedSort)
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'sort' => fn () => $request->input('sort'),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Media\Requests\MediaIndexRequest;
 use App\Api\Media\Resources\MediaResource;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Media\Models\Media;
@@ -27,13 +26,14 @@ class VideoMediaController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(MediaIndexRequest $request, Video $video): Response
+    public function index(Video $video): Response
     {
         Gate::authorize('viewAny', Media::class);
 
         // Fetch media for the video
         $media = $video
             ->media()
+            ->latest()
             ->simplePaginate(perPage: 16)
             ->through(fn ($item) => $item->append(['custom_properties', 'generated_conversions']));
 

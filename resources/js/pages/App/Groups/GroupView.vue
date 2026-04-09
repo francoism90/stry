@@ -12,8 +12,8 @@ import { computed } from 'vue'
 const props = defineProps<{
   group: Group
   items: VideoCollection
-  orders: SelectMenuItem[]
-  order?: string
+  sorters: SelectMenuItem[]
+  sort?: string
 }>()
 
 const links = computed<NavigationMenuItem[]>(() => [
@@ -50,17 +50,21 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(
           <template #left>
             <VideoFilters
               :results="Boolean(items?.data?.length)"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
         </UDashboardToolbar>
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
-          <VideoList :items="items?.data" />
+          <VideoList
+            id="infinite-items"
+            :items="items?.data"
+          />
         </InfiniteScroll>
       </UPage>
     </template>

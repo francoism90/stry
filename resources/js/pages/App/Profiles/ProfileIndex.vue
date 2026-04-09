@@ -11,8 +11,8 @@ import type { SelectMenuItem } from '@nuxt/ui'
 defineProps<{
   profile: Profile | null
   items: ProfileCollection
-  orders: SelectMenuItem[]
-  order?: string
+  sorters: SelectMenuItem[]
+  sort?: string
 }>()
 
 const switchProfile = (item: Profile) =>
@@ -35,8 +35,8 @@ const switchProfile = (item: Profile) =>
           <template #left>
             <ProfileFilters
               :results="Boolean(items?.data?.length)"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
 
@@ -47,9 +47,11 @@ const switchProfile = (item: Profile) =>
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
           <ProfileList
+            id="infinite-items"
             :items="items?.data"
             :current="profile"
             @switch-profile="switchProfile"

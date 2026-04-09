@@ -2,6 +2,8 @@
 import ProfileCard from '@/components/Profiles/ProfileCard.vue'
 import type { Profile } from '@/types'
 
+defineOptions({ inheritAttrs: false })
+
 const props = defineProps<{
   items: Profile[] | undefined
   current?: Profile | null
@@ -27,6 +29,7 @@ const emit = defineEmits<{
 
   <div
     v-else
+    v-bind="$attrs"
     class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
   >
     <ProfileCard

@@ -67,7 +67,7 @@ class ClearGroupCommand extends Command implements Isolatable
             headers: ['ID', 'Type', 'Videos'],
             rows: [[
                 (string) $group->getKey(),
-                (string) $group->type->label(),
+                (string) GroupType::labels()[$group->type->value],
                 (string) $count,
             ]],
         );

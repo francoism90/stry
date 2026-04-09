@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoGroupsProperty;
@@ -13,12 +12,16 @@ use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Enums\VideoOrder;
+use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
+use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +29,8 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersTagged;
+use Support\Scout\Sorts\RecommendedSorter;
 
 class VideoController extends Controller implements HasMiddleware
 {
@@ -38,24 +43,35 @@ class VideoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(VideoIndexRequest $request): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Video::class);
 
-        // Apply filters
-        $order = $request->safe()->input('order');
+        // Relevant sort options
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
 
         // Scout builder
-        $scout = Video::search()
-            ->tap(new VideoFilterScope(
-                order: $order,
-            ))
-            ->simplePaginate(perPage: 24);
+        $scout = ScoutBuilder::for(Video::class)
+            ->tap(new VideoProfileScope)
+            ->allowedFilters(
+                AllowedFilter::custom('tagged', new FiltersTagged),
+            )
+            ->allowedSorts(
+                $recommendedSort,
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('shortest', 'duration'),
+                AllowedSort::field('longest', 'duration')->defaultDescending(),
+                AllowedSort::field('filesize')->defaultDescending(),
+            )
+            ->defaultSort($recommendedSort)
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(VideoOrder::class),
+            'sort' => fn () => $request->input('sort'),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 

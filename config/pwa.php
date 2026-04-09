@@ -6,6 +6,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | PWA Enabled
+    |--------------------------------------------------------------------------
+    |
+    | When set to false, pwa:generate writes a self-unregistering service
+    | worker that clears all caches and removes itself. Set this to false
+    | in local and staging environments via the PWA_ENABLED env variable,
+    | or rely on the default which enables PWA only in production.
+    |
+    */
+
+    'enabled' => (bool) env('PWA_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | PWA Manifest Output Path
     |--------------------------------------------------------------------------
     |

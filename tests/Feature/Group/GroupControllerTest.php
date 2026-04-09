@@ -32,6 +32,27 @@ it('allows regular users to view the group index', function () {
     $response->assertSuccessful();
 });
 
+it('only returns groups that belong to the authenticated user on index', function () {
+    $user = User::factory()->create();
+    $other = User::factory()->create();
+
+    $owned = Group::factory()->create([
+        'user_id' => $user->getKey(),
+        'name' => 'Owned Group Alpha',
+    ]);
+
+    Group::factory()->create([
+        'user_id' => $other->getKey(),
+        'name' => 'Foreign Group Beta',
+    ]);
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'index']));
+
+    $response->assertSuccessful();
+    $response->assertSee($owned->name);
+    $response->assertDontSee('Foreign Group Beta');
+});
+
 // show
 
 it('allows the owner to view their group', function () {

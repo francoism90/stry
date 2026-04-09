@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { edit, index, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { index as media } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
 import { index as playlists } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import { index as transcodes } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import { index } from '@/routes/videos'
 import type { Video } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'

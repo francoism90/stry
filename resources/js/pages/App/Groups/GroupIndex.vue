@@ -9,8 +9,8 @@ import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   items: GroupCollection
-  orders: SelectMenuItem[]
-  order?: string
+  sorters: SelectMenuItem[]
+  sort?: string
 }>()
 </script>
 
@@ -26,8 +26,8 @@ defineProps<{
           <template #left>
             <GroupFilters
               :results="Boolean(items?.data?.length)"
-              :orders="orders"
-              :order="order"
+              :sorters="sorters"
+              :sort="sort"
             />
           </template>
 
@@ -38,9 +38,13 @@ defineProps<{
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
-          <GroupList :items="items?.data" />
+          <GroupList
+            id="infinite-items"
+            :items="items?.data"
+          />
         </InfiniteScroll>
       </UPage>
     </template>

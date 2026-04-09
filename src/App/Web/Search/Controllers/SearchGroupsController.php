@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Groups\Resources\GroupResource;
-use Domain\Groups\Enums\GroupOrder;
+use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Models\Group;
-use Domain\Groups\Scopes\GroupFilterScope;
+use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -31,16 +34,27 @@ class SearchGroupsController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAny', Group::class);
 
-        $order = $request->input('order');
+        $updatedSort = AllowedSort::field('updated', 'updated_at')->defaultDescending();
 
-        $scout = Group::search($query)
-            ->tap(new GroupFilterScope(order: $order))
-            ->simplePaginate(perPage: 24);
+        $scout = ScoutBuilder::for(Group::search($query))
+            ->query(fn (GroupQueryBuilder $builder) => $builder->withCount('groupables'))
+            ->allowedFilters(
+                AllowedFilter::exact('type'),
+            )
+            ->allowedSorts(
+                AllowedSort::field('name'),
+                AllowedSort::field('videos', 'groupables')->defaultDescending(),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                $updatedSort,
+            )
+            ->defaultSort($updatedSort)
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Search/SearchCollections', [
             'search' => fn () => $query,
-            'order' => fn () => $order,
-            'orders' => fn () => Options::forEnum(GroupOrder::class),
+            'sort' => fn () => $request->input('sort'),
+            'sorters' => fn () => Options::forEnum(GroupSorter::class),
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
         ]);
     }

@@ -50,43 +50,46 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
 
     <InfiniteScroll
       data="items"
+      items-element="#infinite-items"
       :buffer="200"
     >
-      <UEmpty
-        v-if="!items?.data?.length"
-        icon="i-lucide-cpu"
-        title="No transcodes"
-        description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
-      />
+      <div id="infinite-items">
+        <UEmpty
+          v-if="!items?.data?.length"
+          icon="i-lucide-cpu"
+          title="No transcodes"
+          description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
+        />
 
-      <UPageList
-        v-else
-        divide
-      >
-        <UPageCard
-          v-for="item in items?.data"
-          :key="item.id"
-          variant="naked"
-          class="py-4 first:pt-0 last:pb-0"
+        <UPageList
+          v-else
+          divide
         >
-          <div class="flex items-center justify-between">
-            <UUser
-              :name="item.id"
-              :description="`${item.state.label} · ${item.file_size}`"
-              :avatar="{
-                alt: item.id,
-                loading: 'lazy',
-                decoding: 'async',
-                class: 'rounded-sm size-12 me-1',
-              }"
-            />
+          <UPageCard
+            v-for="item in items?.data"
+            :key="item.id"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
+          >
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.id"
+                :description="`${item.state.label} · ${item.file_size}`"
+                :avatar="{
+                  alt: item.id,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'rounded-sm size-12 me-1',
+                }"
+              />
 
-            <div class="z-10 flex items-center gap-2">
-              <TranscodeDeleteModal :item="item" />
+              <div class="z-10 flex items-center gap-2">
+                <TranscodeDeleteModal :item="item" />
+              </div>
             </div>
-          </div>
-        </UPageCard>
-      </UPageList>
+          </UPageCard>
+        </UPageList>
+      </div>
     </InfiniteScroll>
   </UPageBody>
 </template>
