@@ -55,7 +55,7 @@ class TagController extends Controller implements HasMiddleware
             )
             ->allowedSorts(
                 AllowedSort::custom('videos', new VideosSorter),
-                AllowedSort::field('name'),
+                AllowedSort::field('ordered', 'name'),
                 AllowedSort::latest('newest'),
                 AllowedSort::oldest('oldest'),
             )
@@ -81,7 +81,12 @@ class TagController extends Controller implements HasMiddleware
             ->whereIn('tagged', [$tag->getKey()])
             ->allowedSorts(
                 AllowedSort::custom('recommended', new RecommendedSorter),
-                AllowedSort::field('newest', 'created_at'),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('shortest', 'duration'),
+                AllowedSort::field('longest', 'duration')->defaultDescending(),
+                AllowedSort::field('filesize')->defaultDescending(),
             )
             ->defaultSort('recommended')
             ->jsonSimplePaginate(defaultSize: 24);

@@ -43,7 +43,7 @@ class SearchTagsController extends Controller implements HasMiddleware
             )
             ->allowedSorts(
                 AllowedSort::custom('videos', new VideosSorter),
-                AllowedSort::field('name'),
+                AllowedSort::field('ordered', 'name'),
                 AllowedSort::latest('newest'),
                 AllowedSort::oldest('oldest'),
             )
