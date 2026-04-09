@@ -23,7 +23,7 @@ it('renders the profiles page for authenticated users', function () {
     );
 });
 
-it('orders profiles by created_at when requested', function () {
+it('sorts profiles by created_at when requested', function () {
     $user = User::factory()->create();
 
     $older = Profile::factory()->create([
@@ -39,25 +39,25 @@ it('orders profiles by created_at when requested', function () {
     ]);
 
     $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
-        'order' => 'created_at',
+        'sort' => 'created_at',
     ]));
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
-        ->where('order', 'created_at')
+        ->where('sort', 'created_at')
         ->where('items.data.0.id', $newer->getRouteKey())
         ->where('items.data.1.id', $older->getRouteKey())
     );
 });
 
-it('rejects unknown profile order values', function () {
+it('rejects unknown profile sort values', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
-        'order' => 'invalid',
+        'sort' => 'invalid',
     ]));
 
-    $response->assertSessionHasErrors('order');
+    $response->assertSessionHasErrors('sort');
 });
 
 it('redirects guests from the profiles page', function () {
