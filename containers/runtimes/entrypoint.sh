@@ -29,39 +29,38 @@ if [ ! -f ".env" ]; then
     ${ARTISAN} key:generate
 fi
 
-# Set up application
+ # Clear current cache
+log "INFO" "Clearing cache..."
+${ARTISAN} optimize:clear
+
+# Link storage
+log "INFO" "Linking storage..."
+${ARTISAN} storage:link
+
+# Application-specific setup
+if [ "${CONTAINER_ROLE}" = "app" ]; then
+    # Ensure migrations are up to date
+    log "INFO" "Running any pending migrations..."
+    ${ARTISAN} migrate --force
+
+    # Ensure scout settings are synced
+    log "INFO" "Syncing scout settings..."
+    ${ARTISAN} scout:sync
+fi
+
+# Handle assets
+if [[ "${CONTAINER_ROLE}" = "app" || "${CONTAINER_ROLE}" = "ssr" ]]; then
+    # Fetch Google Fonts
+    log "INFO" "Fetching Google Fonts..."
+    ${ARTISAN} google-fonts:fetch
+
+    # Regenerate PWA assets
+    log "INFO" "Generating PWA assets..."
+    ${ARTISAN} pwa:generate
+fi
+
+# Optimize application for production
 if [ "${CONTAINER_ENV}" = "production" ]; then
-    # Clear current cache
-    log "INFO" "Clearing cache..."
-    ${ARTISAN} optimize:clear
-
-    # Link storage
-    log "INFO" "Linking storage..."
-    ${ARTISAN} storage:link
-
-    # Handle assets
-    if [[ "${CONTAINER_ROLE}" = "app" || "${CONTAINER_ROLE}" = "ssr" ]]; then
-        # Fetch Google Fonts
-        log "INFO" "Fetching Google Fonts..."
-        ${ARTISAN} google-fonts:fetch
-
-        # Regenerate PWA assets
-        log "INFO" "Generating PWA assets..."
-        ${ARTISAN} pwa:generate
-    fi
-
-    # Application-specific setup
-    if [ "${CONTAINER_ROLE}" = "app" ]; then
-        # Ensure migrations are up to date
-        log "INFO" "Running any pending migrations..."
-        ${ARTISAN} migrate --force
-
-        # Ensure scout settings are synced
-        log "INFO" "Syncing scout settings..."
-        ${ARTISAN} scout:sync
-    fi
-
-    # Optimize application
     log "INFO" "Optimizing application..."
     ${ARTISAN} optimize
     ${ARTISAN} data:cache-structures
