@@ -39,12 +39,12 @@ it('sorts profiles by created_at when requested', function () {
     ]);
 
     $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
-        'sort' => 'created_at',
+        'sort' => 'newest',
     ]));
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
-        ->where('sort', 'created_at')
+        ->where('sort', 'newest')
         ->where('items.data.0.id', $newer->getRouteKey())
         ->where('items.data.1.id', $older->getRouteKey())
     );
