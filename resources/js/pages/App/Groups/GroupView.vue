@@ -61,10 +61,18 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(
           items-element="#infinite-items"
           :buffer="200"
         >
-          <VideoList
-            id="infinite-items"
-            :items="items?.data"
-          />
+          <div id="infinite-items">
+            <UEmpty
+              v-if="!items?.data?.length"
+              icon="i-lucide-film"
+              title="No videos"
+            />
+
+            <VideoList
+              v-else
+              :items="items?.data"
+            />
+          </div>
         </InfiniteScroll>
       </UPage>
     </template>

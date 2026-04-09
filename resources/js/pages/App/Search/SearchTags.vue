@@ -47,9 +47,21 @@ defineProps<{
 
         <InfiniteScroll
           data="items"
+          items-element="#infinite-items"
           :buffer="200"
         >
-          <TagList :items="items?.data" />
+          <div id="infinite-items">
+            <UEmpty
+              v-if="!items?.data?.length"
+              icon="i-lucide-tags"
+              title="No tags"
+            />
+
+            <TagList
+              v-else
+              :items="items?.data"
+            />
+          </div>
         </InfiniteScroll>
       </UPage>
     </template>
