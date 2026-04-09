@@ -52,8 +52,8 @@ it('allows admins to view video search results', function () {
     $response->assertInertia(fn ($page) => $page
         ->component('App/Search/SearchVideos')
         ->has('search')
-        ->has('order')
-        ->has('orders')
+        ->has('sort')
+        ->has('sorters')
         ->has('items')
     );
 });
@@ -116,8 +116,8 @@ it('allows admins to view collection search results', function () {
     $response->assertInertia(fn ($page) => $page
         ->component('App/Search/SearchCollections')
         ->has('search')
-        ->has('order')
-        ->has('orders')
+        ->has('sort')
+        ->has('sorters')
         ->has('items')
     );
 });
