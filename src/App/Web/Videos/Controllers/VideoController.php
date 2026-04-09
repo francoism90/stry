@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Videos\Requests\VideoIndexRequest;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoGroupsProperty;
@@ -16,9 +15,10 @@ use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoOrder;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoFilterScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -38,23 +38,18 @@ class VideoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(VideoIndexRequest $request): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Video::class);
 
-        // Apply filters
-        $order = $request->safe()->input('order');
-
         // Scout builder
-        $scout = Video::search()
-            ->tap(new VideoFilterScope(
-                order: $order,
-            ))
-            ->simplePaginate(perPage: 24);
+        $scout = ScoutBuilder::for(Video::class)
+            ->allowedSorts('name', '-name', 'duration')
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'order' => fn () => $order,
+            'order' => fn () => $request->input('sort'),
             'orders' => fn () => Options::forEnum(VideoOrder::class),
         ]);
     }
