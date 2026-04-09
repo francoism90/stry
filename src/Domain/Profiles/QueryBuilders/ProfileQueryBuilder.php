@@ -27,7 +27,6 @@ class ProfileQueryBuilder extends Builder
         $orderer = is_string($orderValue) ? ProfileSorter::from($orderValue) : $orderValue;
 
         return $this
-            ->orderByDesc('is_primary')
             ->when($orderer === ProfileSorter::Newest, fn (self $query) => $query->orderByDesc('created_at'))
             ->when($orderer === ProfileSorter::Oldest, fn (self $query) => $query->orderBy('created_at'))
             ->when($orderer === ProfileSorter::Name, fn (self $query) => $query->orderBy('name'));
@@ -37,6 +36,6 @@ class ProfileQueryBuilder extends Builder
     {
         return $this
             ->enabled()
-            ->ordered();
+            ->orderByDesc('is_primary');
     }
 }
