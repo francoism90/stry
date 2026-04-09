@@ -22,7 +22,7 @@
         "foxws/laravel-streamer": "^1.7",
         "guzzlehttp/guzzle": "^7.10.0",
         "http-interop/http-factory-guzzle": "^1.2.1",
-        "inertiajs/inertia-laravel": "^3.0.3",
+        "inertiajs/inertia-laravel": "^3.0.5",
         "laravel/fortify": "^1.36.2",
         "laravel/framework": "^13.4.0",
         "laravel/horizon": "^5.45.5",
@@ -136,6 +136,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
