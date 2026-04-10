@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Shared\Concerns;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
@@ -18,43 +19,69 @@ trait HasSearchableRelations
 
     public static function bootHasSearchableRelations(): void
     {
-        static::saved(function (Model $model) {
-            if (! $model->wasChanged()) {
-                return;
-            }
-
-            $class = static::class;
-
-            if (array_key_exists($class, static::$syncing)) {
-                return;
-            }
-
-            static::$syncing[$class] = true;
-
-            try {
-                foreach ($model->searchableRelations() as $relation) {
-                    $related = $model->{$relation}()->getRelated();
-
-                    if (! in_array(Searchable::class, class_uses_recursive($related))) {
-                        continue;
-                    }
-
-                    $model->{$relation}()->lazyById()->each->searchable();
-                }
-            } finally {
-                unset(static::$syncing[$class]);
+        static::saved(function (Model $model): void {
+            if ($model->wasChanged()) {
+                $model->reindexSearchableRelations();
             }
         });
+
+        static::deleted(fn (Model $model) => $model->reindexSearchableRelations());
+    }
+
+    protected function reindexSearchableRelations(): void
+    {
+        $class = static::class;
+
+        if (array_key_exists($class, static::$syncing)) {
+            return;
+        }
+
+        static::$syncing[$class] = true;
+
+        try {
+            foreach ($this->searchableRelations() as $relation) {
+                $this->reindexSearchableRelation($relation);
+            }
+        } finally {
+            unset(static::$syncing[$class]);
+        }
     }
 
     /**
      * Return the relationship names whose models should be re-indexed
-     * after this model is saved.
+     * after this model is saved or deleted.
      *
      * @return array<int, string>
      */
     public function searchableRelations(): array
     {
         return [];
+    }
+
+    /**
+     * Re-index all related models for the given relationship name.
+     *
+     * Applies makeAllSearchableUsing (if defined) to the relation query before
+     * streaming, mirroring Scout's bulk import behaviour and preventing N+1
+     * queries when toSearchableArray() accesses eager-loaded relationships.
+     */
+    protected function reindexSearchableRelation(string $relation): void
+    {
+        $query = $this->{$relation}();
+        $related = $query->getRelated();
+
+        if (! in_array(Searchable::class, class_uses_recursive($related))) {
+            return;
+        }
+
+        if (method_exists($related, 'makeAllSearchableUsing')) {
+            Closure::bind(
+                fn ($q) => $this->makeAllSearchableUsing($q),
+                $related,
+                get_class($related),
+            )($query);
+        }
+
+        $query->lazyById()->each->searchable();
     }
 }
