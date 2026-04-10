@@ -42,7 +42,11 @@ class TagController extends Controller implements HasMiddleware
             )
             ->allowedSorts(
                 $videosSort,
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
             )
+            ->defaultSort($videosSort)
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
     }
