@@ -127,11 +127,6 @@ class Tag extends BaseTag implements HasMedia
         return $this->morphedByMany(Video::class, 'taggable');
     }
 
-    public function searchableRelations(): array
-    {
-        return ['videos'];
-    }
-
     /**
      * @return Collection<int, string>
      */
@@ -205,6 +200,11 @@ class Tag extends BaseTag implements HasMedia
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
         ];
+    }
+
+    public function searchableRelations(): array
+    {
+        return ['videos'];
     }
 
     public function makeSearchableUsing(TagCollection $models): TagCollection
