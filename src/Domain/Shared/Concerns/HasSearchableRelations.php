@@ -79,7 +79,7 @@ trait HasSearchableRelations
                 fn ($q) => $this->makeAllSearchableUsing($q),
                 $related,
                 get_class($related),
-            )($query);
+            )($query->getQuery());
         }
 
         $query->lazyById()->each->searchable();
