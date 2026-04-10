@@ -9,6 +9,7 @@ use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Relates\Concerns\InteractsWithRelated;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\HasSearchableRelations;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
@@ -31,6 +32,7 @@ class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsEvents;
     use HasFactory;
+    use HasSearchableRelations;
     use HasUlids;
     use InteractsWithMedia;
     use InteractsWithRelated;
@@ -123,6 +125,11 @@ class Tag extends BaseTag implements HasMedia
     public function videos(): MorphToMany
     {
         return $this->morphedByMany(Video::class, 'taggable');
+    }
+
+    public function searchableRelations(): array
+    {
+        return ['videos'];
     }
 
     /**
