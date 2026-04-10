@@ -36,17 +36,13 @@ class TagController extends Controller implements HasMiddleware
 
         $videosSort = AllowedSort::custom('videos', new VideosSorter);
 
-        return ScoutBuilder::for(Tag::search($request->input('search', '')))
+        return ScoutBuilder::for(Tag::class)
             ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
             ->allowedFilters(
                 AllowedFilter::exact('type'),
             )
             ->allowedSorts(
                 $videosSort,
-            )
-            ->when(
-                blank($request->input('search')) || $request->input('search') === '*',
-                fn (ScoutBuilder $scout) => $scout->defaultSort($videosSort)
             )
             ->simplePaginate(perPage: 16)
             ->through(fn (Tag $tag) => TagResource::make($tag));
