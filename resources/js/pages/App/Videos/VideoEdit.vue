@@ -228,7 +228,7 @@ const onSubmit = () =>
               multiple
               class="w-full"
               placeholder="Add tags"
-              @update:search-term="(value: string) => filter({ query: { search: value } })"
+              @update:search-term="(value: string) => filter({ query: { query: value } })"
             >
               <template #item-label="{ item }">
                 {{ item.name }}
