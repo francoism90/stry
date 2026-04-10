@@ -16,7 +16,7 @@ const joinedAt = computed(() => {
     return null
   }
 
-  return new Date(user.value.created_at).toLocaleDateString(undefined, {
+  return new Date(user.value.created_at).toLocaleDateString('en', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
