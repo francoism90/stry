@@ -82,6 +82,6 @@ trait HasSearchableRelations
             )($query->getQuery());
         }
 
-        $query->lazyById()->each->searchable();
+        $query->lazyById()->chunk(500)->each->searchable();
     }
 }
