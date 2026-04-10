@@ -35,7 +35,10 @@ useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
   <UPageBody>
     <ActionBar>
       <template #left>
-        <TranscodeImportModal :video="video" />
+        <TranscodeImportModal
+          v-if="items?.data?.length"
+          :video="video"
+        />
 
         <UButton
           icon="i-lucide-plus"
