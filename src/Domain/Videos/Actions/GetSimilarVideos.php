@@ -129,8 +129,7 @@ class GetSimilarVideos
     {
         // List of common words to exclude
         $commonWords = Config::array('scout.common_words', [
-            'the', 'and', 'a', 'an', 'of', 'in', 'to', 'is', 'it',
-            'that', 'on', 'for', 'with', 'as', 'by', 'at',
+            'a', 'an', 'the', 'and', 'or', 'of', 'in', 'to',
         ]);
 
         return in_array($word, $commonWords, true);
