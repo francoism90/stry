@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Shared\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 trait HasSearchableRelations
 {
@@ -18,6 +19,10 @@ trait HasSearchableRelations
     public static function bootHasSearchableRelations(): void
     {
         static::saved(function (Model $model) {
+            if (! $model->wasChanged()) {
+                return;
+            }
+
             $class = static::class;
 
             if (array_key_exists($class, static::$syncing)) {
@@ -28,6 +33,12 @@ trait HasSearchableRelations
 
             try {
                 foreach ($model->searchableRelations() as $relation) {
+                    $related = $model->{$relation}()->getRelated();
+
+                    if (! in_array(Searchable::class, class_uses_recursive($related))) {
+                        continue;
+                    }
+
                     $model->{$relation}()->lazyById()->each->searchable();
                 }
             } finally {
