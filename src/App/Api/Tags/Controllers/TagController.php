@@ -11,7 +11,6 @@ use Foundation\Http\Controllers\Controller;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -30,7 +29,7 @@ class TagController extends Controller implements HasMiddleware
     }
 
     #[Cache(lifetime: 10 * 60, tags: ['tags'])]
-    public function index(Request $request): Paginator
+    public function index(): Paginator
     {
         Gate::authorize('viewAny', Tag::class);
 
