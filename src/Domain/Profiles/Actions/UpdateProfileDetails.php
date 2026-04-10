@@ -17,7 +17,7 @@ class UpdateProfileDetails
                 Arr::only($attributes, $profile->getFillable()),
             );
 
-            if ((bool) ($attributes['is_primary'] ?? false)) {
+            if ($profile->wasChanged('is_primary') && $profile->is_primary) {
                 $profile
                     ->newQuery()
                     ->where('user_id', $profile->user_id)
