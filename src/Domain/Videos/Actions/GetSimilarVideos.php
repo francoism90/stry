@@ -42,10 +42,21 @@ class GetSimilarVideos
             // Generate phrase by decreasing word count
             $phrase = (string) $query->take($i)->implode(' ');
 
+            if (blank($phrase)) {
+                continue;
+            }
+
+            // Get IDs to exclude (original video + already found candidates)
+            $excludeIds = $candidates
+                ->pluck('id')
+                ->prepend($video->getKey())
+                ->unique()
+                ->all();
+
             // Search for videos matching the phrase
             $results = Video::search($phrase)
                 ->query(fn (VideoQueryBuilder $query) => $query->with('tags'))
-                ->whereNotIn('id', [$video->getKey()])
+                ->whereNotIn('id', $excludeIds)
                 ->where('state', 'verified')
                 ->take(6)
                 ->cursor();
