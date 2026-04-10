@@ -6,6 +6,7 @@ namespace Domain\Shared\Concerns;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Laravel\Scout\Searchable;
 
 trait HasSearchableRelations
@@ -82,6 +83,6 @@ trait HasSearchableRelations
             )($query->getQuery());
         }
 
-        $query->chunkById(500, fn ($chunk) => $chunk->searchable());
+        $query->chunkById(Config::integer('scout.chunk.searchable', 500), fn ($chunk) => $chunk->searchable());
     }
 }

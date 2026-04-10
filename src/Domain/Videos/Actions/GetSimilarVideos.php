@@ -10,7 +10,6 @@ use Domain\Videos\Models\Video;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
 
 class GetSimilarVideos
@@ -27,12 +26,12 @@ class GetSimilarVideos
     }
 
     /**
-     * @return LazyCollection<int, Video>
+     * @return Collection<int, Video>
      */
-    protected function phraseMatches(Video $video): LazyCollection
+    protected function phraseMatches(Video $video): Collection
     {
         // Initialize an empty collection for candidates
-        $candidates = LazyCollection::make();
+        $candidates = Collection::make();
 
         // Extract meaningful tokens from the video
         $query = $this->extractMeaningfulTokens($video);
@@ -69,18 +68,15 @@ class GetSimilarVideos
     }
 
     /**
-     * @return LazyCollection<int, Video>
+     * @return Collection<int, Video>
      */
-    protected function tagMatches(Video $video): LazyCollection
+    protected function tagMatches(Video $video): Collection
     {
-        // Initialize an empty collection for candidates
-        $candidates = LazyCollection::make();
-
         /** @var TagCollection $tags */
         $tags = $video->tags;
 
         if ($tags->isEmpty()) {
-            return $candidates;
+            return Collection::make();
         }
 
         // Find videos sharing tags with the given video
@@ -94,20 +90,20 @@ class GetSimilarVideos
             ])
             ->inRandomOrder()
             ->take($this->limit ?? 18)
-            ->cursor();
+            ->get();
     }
 
     /**
-     * @return LazyCollection<int, Video>
+     * @return Collection<int, Video>
      */
-    protected function randomCandidates(Video $video): LazyCollection
+    protected function randomCandidates(Video $video): Collection
     {
         return Video::query()
             ->whereKeyNot($video)
             ->verified()
             ->inRandomOrder()
             ->take($this->limit ?? 18)
-            ->cursor();
+            ->get();
     }
 
     /**
