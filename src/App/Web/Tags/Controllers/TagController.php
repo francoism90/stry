@@ -126,7 +126,7 @@ class TagController extends Controller implements HasMiddleware
         Gate::authorize('update', $tag);
 
         return Inertia::render('App/Tags/TagEdit', [
-            'tag' => fn () => new TagResourceProperty($tag, ['relates']),
+            'tag' => fn () => new TagResourceProperty($tag, ['relates', 'description']),
             'types' => fn () => Options::forEnum(TagType::class),
         ]);
     }
