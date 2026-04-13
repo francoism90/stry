@@ -73,7 +73,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
 
         // Notify the user
         Inertia::flash([
-            'title' => (string) $playlist->file_name,
+            'title' => (string) $playlist->type->label(),
             'description' => __('The playlist has been updated.'),
             'type' => 'success',
         ]);
@@ -90,7 +90,7 @@ class VideoPlaylistController extends Controller implements HasMiddleware
 
         // Notify the user
         Inertia::flash([
-            'title' => (string) $playlist->file_name,
+            'title' => (string) $playlist->type->label(),
             'description' => __('The playlist has been deleted.'),
             'type' => 'warning',
         ]);
