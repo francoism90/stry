@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Groups\Models\Group;
+use Domain\Videos\Enums\VideoSorter;
 use Laravel\Scout\Builder;
 
 readonly class VideoGroupScope
 {
     public function __construct(
         public Group|string|null $group = null,
+        public VideoSorter|string|null $sort = null,
     ) {}
 
     public function __invoke(Builder $scout): void
@@ -27,7 +29,10 @@ readonly class VideoGroupScope
         // If group exists and has videos, set filter to return videos in the group
         if ($group && $group->videos()->exists()) {
             $options['filter_by'] = sprintf('$groupables(group_id:%d)', $group->getKey());
-            $options['sort_by'] = '$groupables(updated_at:desc)';
+
+            if (blank($this->sort)) {
+                $options['sort_by'] = '$groupables(updated_at:desc)';
+            }
         }
 
         // Apply options to the scout builder

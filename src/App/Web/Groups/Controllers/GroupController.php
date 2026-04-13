@@ -83,7 +83,7 @@ class GroupController extends Controller implements HasMiddleware
         $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
 
         $scout = ScoutBuilder::for(Video::class)
-            ->tap(new VideoGroupScope(group: $group))
+            ->tap(new VideoGroupScope(group: $group, sort: $request->input('sort')))
             ->tap(new VideoProfileScope)
             ->allowedSorts(
                 $recommendedSort,
