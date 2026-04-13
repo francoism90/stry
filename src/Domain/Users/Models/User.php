@@ -15,7 +15,6 @@ use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
-use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -45,7 +44,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasStates;
     use HasUlids;
     use InteractsWithMedia;
-    use InteractsWithModelCache;
     use InteractsWithSubscription;
     use InteractsWithVideos;
     use Notifiable;

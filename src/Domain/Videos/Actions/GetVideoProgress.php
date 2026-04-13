@@ -17,9 +17,9 @@ class GetVideoProgress
             return 0;
         }
 
-        $progressKey = "video:progress:{$video->getKey()}";
+        $progressKey = 'progress';
 
-        if (! $user->modelCacheHas($progressKey)) {
+        if (! $video->modelCacheHas($progressKey)) {
             $record = $user->groupFor(GroupType::Viewed)->getGroupable($video);
 
             $time = (float) data_get($record?->pivot?->options ?? [], 'time', 0);
@@ -27,7 +27,7 @@ class GetVideoProgress
             return $this->normalizeProgress($video, $time);
         }
 
-        return $this->normalizeProgress($video, (float) $user->modelCached($progressKey, 0));
+        return $this->normalizeProgress($video, (float) $video->modelCached($progressKey, 0));
     }
 
     protected function normalizeProgress(Video $video, ?float $time = null): float

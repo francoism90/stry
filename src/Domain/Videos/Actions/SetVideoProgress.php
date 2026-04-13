@@ -17,15 +17,15 @@ class SetVideoProgress
             return;
         }
 
-        $progressKey = "video:progress:{$video->getKey()}";
+        $progressKey = 'progress';
 
         $time = $this->normalizeProgress($video, $attributes);
 
-        if (! $user->modelCacheHas($progressKey) || ! $user->isInGroup($video, GroupType::Viewed)) {
+        if (! $video->modelCacheHas($progressKey) || ! $user->isInGroup($video, GroupType::Viewed)) {
             $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
         }
 
-        $user->modelCache($progressKey, $time, now()->addHour());
+        $video->modelCache($progressKey, $time, now()->addHour());
     }
 
     protected function normalizeProgress(Video $video, ?array $attributes = null): float

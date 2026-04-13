@@ -14,6 +14,7 @@ use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -45,6 +46,7 @@ class Video extends Model implements HasMedia
     use HasUlids;
     use InteractsWithGroups;
     use InteractsWithMedia;
+    use InteractsWithModelCache;
     use InteractsWithPlaylists;
     use InteractsWithTranscodes;
     use InteractsWithUser;
