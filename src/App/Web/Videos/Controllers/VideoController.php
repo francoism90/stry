@@ -109,7 +109,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
-            'progress' => fn () => new VideoProgressProperty($video, Auth::user()),
+            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
         ]);
     }
 

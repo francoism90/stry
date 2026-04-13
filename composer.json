@@ -16,6 +16,7 @@
     "require": {
         "php": "^8.3",
         "foxws/laravel-ab-av1": "^1.0",
+        "foxws/laravel-modelcache": "^1.3",
         "foxws/laravel-pwa": "^2.1",
         "foxws/laravel-scout-builder": "^0.0.4",
         "foxws/laravel-scout-relations": "^0.0.1",

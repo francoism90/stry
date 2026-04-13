@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3de1373e257af9ea5126d287eeadd70",
+    "content-hash": "22dfa8fa6ecd37979e2b04faa84c4fe0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1269,6 +1269,90 @@
                 }
             ],
             "time": "2026-03-18T10:27:05+00:00"
+        },
+        {
+            "name": "foxws/laravel-modelcache",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/foxws/laravel-modelcache.git",
+                "reference": "c7470c5205f4864afe4ec4c7153d228d7979b396"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/c7470c5205f4864afe4ec4c7153d228d7979b396",
+                "reference": "c7470c5205f4864afe4ec4c7153d228d7979b396",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "^12.0|^13.0",
+                "illuminate/console": "^12.0|^13.0",
+                "illuminate/contracts": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.4",
+                "laravel/pint": "^1.22",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0|^11.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "phpstan/extension-installer": "^1.4.3",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "ModelCache": "Foxws\\ModelCache\\Facades\\ModelCache"
+                    },
+                    "providers": [
+                        "Foxws\\ModelCache\\ModelCacheServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Foxws\\ModelCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "francoism90",
+                    "email": "francoism90@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Cache helpers for Laravel Eloquent models",
+            "homepage": "https://github.com/foxws/laravel-modelcache",
+            "keywords": [
+                "cache",
+                "caching",
+                "eloquent",
+                "laravel",
+                "laravel-modelcache",
+                "model",
+                "models"
+            ],
+            "support": {
+                "issues": "https://github.com/foxws/laravel-modelcache/issues",
+                "source": "https://github.com/foxws/laravel-modelcache/tree/1.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Foxws",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-13T12:20:23+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
