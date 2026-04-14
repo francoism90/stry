@@ -58,7 +58,7 @@ class GetSimilarVideos
                 ->whereNotIn('id', $excludeIds)
                 ->where('state', 'verified')
                 ->take(6)
-                ->cursor();
+                ->get();
 
             // Merge results into candidates
             $candidates = $candidates->merge($results);
