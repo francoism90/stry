@@ -25,7 +25,7 @@ class SetVideoProgress
             $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
         }
 
-        $video->modelCache($progressKey, $time, now()->addHour());
+        $video->modelCache($progressKey, $time, now()->addMinutes(30));
     }
 
     protected function normalizeProgress(Video $video, ?array $attributes = null): float
