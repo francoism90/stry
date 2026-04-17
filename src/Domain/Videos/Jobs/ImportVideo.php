@@ -37,7 +37,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $uniqueFor = 300;
+    public $uniqueFor = 120;
 
     /**
      * @var int
@@ -78,6 +78,6 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function uniqueId(): string
     {
-        return (string) "{$this->file->disk}:{$this->file->path}";
+        return hash('xxh128', "{$this->file->disk}:{$this->file->path}");
     }
 }

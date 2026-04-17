@@ -42,7 +42,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $uniqueFor = 180;
+    public $uniqueFor = 120;
 
     /**
      * @var int
@@ -91,8 +91,8 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
 
     public function uniqueId(): string
     {
-        $type = enum_value($this->type, 'default');
+        $type = enum_value($this->type, 'packager');
 
-        return "{$this->video->getKey()}:{$type}";
+        return hash('xxh128', "{$this->video->getKey()}:{$type}");
     }
 }
