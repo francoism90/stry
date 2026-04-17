@@ -11,7 +11,7 @@ class RecommendedSorter implements Sort
 {
     public function __invoke(Builder $query, bool $descending, string $property): void
     {
-        // If the query is already sorted by something else, or if there are any orders applied, we don't want to apply the recommended sorting.
+        // If the query already has a sort order defined, we won't apply our custom sorting logic to avoid conflicts.
         if (($query->options['sort_by'] ?? null) || ! empty($query->orders)) {
             return;
         }
