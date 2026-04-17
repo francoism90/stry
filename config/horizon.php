@@ -89,8 +89,8 @@ return [
 
     'waits' => [
         'redis:default' => 60,
-        'redis:broadcasts' => 10,
-        'redis:processing' => 90,
+        'redis:broadcasts' => 30,
+        'redis:processing' => 900,
         'redis:transcoding' => 3600,
     ],
 
@@ -253,7 +253,7 @@ return [
             'balanceCooldown' => 3,
             'maxTime' => 0,
             'maxJobs' => 0,
-            'memory' => 1024,
+            'memory' => 2048,
             'tries' => 3,
             'timeout' => 14400,
             'nice' => 0,
