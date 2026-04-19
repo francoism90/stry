@@ -33,10 +33,6 @@ fi
 log "INFO" "Clearing cache..."
 ${ARTISAN} optimize:clear
 
-# Link storage
-log "INFO" "Linking storage..."
-${ARTISAN} storage:link
-
 # Application-specific setup
 if [ "${CONTAINER_ROLE}" = "app" ]; then
     # Ensure migrations are up to date
@@ -53,10 +49,6 @@ if [[ "${CONTAINER_ROLE}" = "app" || "${CONTAINER_ROLE}" = "ssr" ]]; then
     # Fetch Google Fonts
     log "INFO" "Fetching Google Fonts..."
     ${ARTISAN} google-fonts:fetch
-
-    # Regenerate PWA assets
-    log "INFO" "Generating PWA assets..."
-    ${ARTISAN} pwa:generate
 fi
 
 # Optimize application for production

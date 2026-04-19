@@ -158,6 +158,10 @@ RUN --mount=type=cache,target=/pnpm/store \
 RUN composer dump-autoload --optimize \
     && pnpm build && pnpm build:ssr && pnpm prune --prod
 
+# Link storage and generate PWA assets
+RUN ${ARTISAN} storage:link \
+    && ${ARTISAN} pwa:generate
+
 USER docker
 
 EXPOSE 6001 8000 13714
