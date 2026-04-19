@@ -16,6 +16,10 @@ if [ "${CONTAINER_ENV}" = "development" ]; then
     OCTANE="${OCTANE} --watch"
 fi
 
+# Ensure cache temp directories exist (named volume may be empty after rebuild)
+log "INFO" "Ensuring cache temp directories exist..."
+mkdir -p /cache/temp/{ffmpeg,packager,streamer,ab-av1}
+
 # Set up SQLite database
 if [ ! -f "database/database.sqlite" ]; then
     log "INFO" "Creating SQLite database..."
@@ -29,13 +33,13 @@ if [ ! -f ".env" ]; then
     ${ARTISAN} key:generate
 fi
 
-# Ensure cache temp directories exist (named volume may be empty after rebuild)
-log "INFO" "Ensuring cache temp directories exist..."
-mkdir -p /cache/temp/{ffmpeg,packager,streamer,ab-av1}
-
 # Clear stale caches
 log "INFO" "Clearing cache..."
 ${ARTISAN} optimize:clear
+
+# Create storage symlink
+log "INFO" "Linking storage..."
+${ARTISAN} storage:link
 
 # Application-specific setup
 if [ "${CONTAINER_ROLE}" = "app" ]; then
@@ -53,9 +57,13 @@ if [[ "${CONTAINER_ROLE}" = "app" || "${CONTAINER_ROLE}" = "ssr" ]]; then
     # Fetch Google Fonts
     log "INFO" "Fetching Google Fonts..."
     ${ARTISAN} google-fonts:fetch
+
+    # Generate PWA assets
+    log "INFO" "Generating PWA assets..."
+    ${ARTISAN} pwa:generate
 fi
 
-# Optimize application for production
+# Optimize for production
 if [ "${CONTAINER_ENV}" = "production" ]; then
     log "INFO" "Optimizing application..."
     ${ARTISAN} optimize
