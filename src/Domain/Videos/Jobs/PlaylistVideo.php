@@ -12,7 +12,7 @@ use Domain\Videos\Actions\CreateNewVideoStream;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -21,7 +21,7 @@ use Illuminate\Queue\SerializesModels;
 
 use function Illuminate\Support\enum_value;
 
-class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -32,7 +32,7 @@ class PlaylistVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int

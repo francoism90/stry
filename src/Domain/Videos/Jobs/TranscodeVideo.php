@@ -8,13 +8,14 @@ use Domain\Videos\Actions\CreateNewVideoTranscode;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class TranscodeVideo implements ShouldQueueAfterCommit
+class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -25,7 +26,7 @@ class TranscodeVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int

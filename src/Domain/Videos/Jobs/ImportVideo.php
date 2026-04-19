@@ -9,14 +9,14 @@ use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
+class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
     use Batchable;
     use Dispatchable;
@@ -27,7 +27,7 @@ class ImportVideo implements ShouldBeUnique, ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * @var int
