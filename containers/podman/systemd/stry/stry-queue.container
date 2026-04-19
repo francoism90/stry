@@ -15,7 +15,7 @@ AddDevice=/dev/dri/:/dev/dri/
 Memory=3g
 ShmSize=256m
 Volume=${MEDIA_PATH}:/media:rw,z
-Volume=stry-cache.volume:/cache:rw,z,U
+Volume=stry-cache:/cache:rw,z
 Network=stry.network
 
 [Service]
