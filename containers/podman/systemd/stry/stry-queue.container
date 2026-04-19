@@ -1,6 +1,7 @@
 [Unit]
 Description=Queue container
 After=stry.container
+Requires=stry.container
 PartOf=stry.service
 
 [Container]

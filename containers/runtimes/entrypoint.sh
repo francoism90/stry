@@ -29,6 +29,10 @@ if [ ! -f ".env" ]; then
     ${ARTISAN} key:generate
 fi
 
+# Ensure cache temp directories exist (named volume may be empty after rebuild)
+log "INFO" "Ensuring cache temp directories exist..."
+mkdir -p /cache/temp/{ffmpeg,packager,streamer,ab-av1}
+
 # Clear stale caches
 log "INFO" "Clearing cache..."
 ${ARTISAN} optimize:clear

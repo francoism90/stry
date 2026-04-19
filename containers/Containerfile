@@ -128,7 +128,7 @@ RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
-RUN mkdir -p /app /config /data /cache/temp/{ffmpeg,packager,streamer,ab-av1} /media /import
+RUN mkdir -p /app /config /data /cache /media /import
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
