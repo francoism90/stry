@@ -128,7 +128,7 @@ RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
-RUN mkdir -p /app /config /data /storage/{media,cache,import}
+RUN mkdir -p /app /config /data /cache/temp/{ffmpeg,packager,streamer,ab-av1} /media/{media,import}
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -144,7 +144,7 @@ WORKDIR /app
 COPY . /app
 
 # Set proper ownership
-RUN chown -R docker:docker /app /config /data /storage
+RUN chown -R docker:docker /app /config /data /cache /media
 
 # Install PHP dependencies
 RUN --mount=type=cache,target=/root/.composer/cache \
@@ -175,7 +175,7 @@ RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
-RUN chown -R docker:docker /app /pnpm /config /data /storage
+RUN chown -R docker:docker /app /pnpm /config /data /cache /media
 
 USER docker
 

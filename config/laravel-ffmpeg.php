@@ -16,7 +16,7 @@ return [
 
     'log_channel' => env('FFMPEG_LOG_CHANNEL', env('LOG_CHANNEL', 'stack')),
 
-    'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', storage_path('app/media/temp')),
+    'temporary_files_root' => env('FFMPEG_TEMPORARY_FILES_ROOT', '/cache/temp/ffmpeg'),
 
     'temporary_files_encrypted_hls' => env('FFMPEG_TEMPORARY_ENCRYPTED_HLS', '/dev/shm'),
 
