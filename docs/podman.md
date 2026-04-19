@@ -198,7 +198,7 @@ Primary application & services expose:
 
 | Service      | Port      |
 | ------------ | --------- |
-| App (HTTP)   | 8080      |
+| App (HTTP)   | 8000      |
 | Vite (Dev)   | 5173      |
 | Reverb (WS)  | 6001      |
 | SSR Renderer | 13714     |
@@ -273,6 +273,8 @@ Follow the [S3 Object Storage](s3.md) setup guide.
 >
 > - Runs database migrations (`artisan migrate`)
 > - Runs Laravel optimization (`artisan optimize`)
+> - Creates the storage symlink (`artisan storage:link`)
+> - Generates PWA assets (`artisan pwa:generate`)
 > - Fetches Google Fonts to S3 (`artisan google-fonts:fetch`)
 >
 > **Do not cancel this process!** If needed, increase the `TimeoutStartSec=*` value in your container files.
