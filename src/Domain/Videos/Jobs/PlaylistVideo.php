@@ -42,7 +42,7 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
     /**
      * @var int
      */
-    public $uniqueFor = 90;
+    public $uniqueFor = 1800;
 
     /**
      * @var int

@@ -37,7 +37,7 @@ class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
     /**
      * @var int
      */
-    public $uniqueFor = 90;
+    public $uniqueFor = 1800;
 
     /**
      * @var int

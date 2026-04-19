@@ -36,7 +36,7 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
     /**
      * @var int
      */
-    public $uniqueFor = 180;
+    public $uniqueFor = 1800;
 
     /**
      * @var int
