@@ -141,7 +141,7 @@ If using SELinux (e.g. Fedora CoreOS), Podman needs files in bind-mounted volume
 
 #### Recommended: pre-label the directory once
 
-Instead of `:z`, set the SELinux context permanently on the host once:
+Instead of `:z,U`, set the SELinux context permanently on the host once:
 
 ```bash
 sudo semanage fcontext -a -t container_file_t "${MEDIA_PATH}(/.*)?"
