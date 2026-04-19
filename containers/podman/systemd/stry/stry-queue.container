@@ -1,7 +1,7 @@
 [Unit]
 Description=Queue container
 After=stry.container
-Requires=stry.container
+BindsTo=stry.container
 
 [Container]
 Image=stry.build
@@ -14,7 +14,9 @@ GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
 Memory=3g
 ShmSize=256m
-Volume=${STORAGE_PATH}:/storage:rw,z
+Volume=${MEDIA_PATH}:/media:rw,z
+Volume=${IMPORT_PATH}:/import:rw,z
+Volume=stry-cache:/cache:rw,z
 Network=stry.network
 
 [Service]

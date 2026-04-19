@@ -49,7 +49,7 @@ return [
 
         'cache' => [
             'driver' => 'local',
-            'root' => '/storage/cache',
+            'root' => '/cache',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -57,7 +57,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => '/storage/media',
+            'root' => '/media',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -65,7 +65,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => '/storage/import',
+            'root' => '/import',
             'serve' => false,
             'throw' => true,
             'report' => true,

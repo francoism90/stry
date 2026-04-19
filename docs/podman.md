@@ -117,42 +117,40 @@ This will prevent the container from accessing GPU devices for video encoding/de
 > [!NOTE]
 > Hardware acceleration is optional. If you encounter issues or do not require it, you can safely disable it as described above.
 
-### Setup Storage Paths
+### Setup Media & Import Paths
 
-Create the required data directories as defined in `app.env`:
-
-**Single Disk (using `STORAGE_PATH`):**
+Create the required directories defined in `app.env`:
 
 ```bash
-mkdir -p /home/user/data/stry/{media,cache,import}
-# Then set STORAGE_PATH=/home/user/data/stry
+mkdir -p /home/user/data/stry/media
+mkdir -p /home/user/data/stry/import
+# Then set MEDIA_PATH=/home/user/data/stry/media
+#      IMPORT_PATH=/home/user/data/stry/import
 ```
 
-**Multiple Disks (individual paths):**
-
-```bash
-mkdir -p /mnt/disk1/media /mnt/disk2/cache /mnt/disk3/import
-# Then set MEDIA_PATH, CACHE_PATH, and IMPORT_PATH separately
-```
+> [!NOTE]
+> The `/cache` directory is managed automatically by the `stry-cache` named Podman volume — no host directory is needed.
 
 ### SELinux & Volume Flags (if applicable)
 
 If using SELinux (e.g. Fedora CoreOS), Podman needs files in bind-mounted volumes to carry the `container_file_t` context so the container process can access them.
 
-**Named Podman volumes** (e.g. `stry-pgsql`, `stry-redis`) start empty so carrying `:Z` there is fine — Podman labels a small directory once.
+**Named Podman volumes** (e.g. `stry-pgsql`, `stry-redis`, `stry-cache`) are managed by Podman — no host directory is needed and no relabeling is required.
 
-**Large host bind mounts** (e.g. `${STORAGE_PATH}`) are a different story. Using `:z` or `:Z` causes Podman to recursively relabel every file on every container start, which can take a very long time for large media libraries.
+**Large host bind mounts** (e.g. `${MEDIA_PATH}`) are a different story. Using `:z` or `:Z` causes Podman to recursively relabel every file on every container start, which can take a very long time for large media libraries.
 
 #### Recommended: pre-label the directory once
 
 Instead of `:z`, set the SELinux context permanently on the host once:
 
 ```bash
-sudo semanage fcontext -a -t container_file_t "${STORAGE_PATH}(/.*)?"
-sudo restorecon -Rv "${STORAGE_PATH}"
+sudo semanage fcontext -a -t container_file_t "${MEDIA_PATH}(/.*)?"
+sudo restorecon -Rv "${MEDIA_PATH}"
+sudo semanage fcontext -a -t container_file_t "${IMPORT_PATH}(/.*)?"
+sudo restorecon -Rv "${IMPORT_PATH}"
 ```
 
-Replace `${STORAGE_PATH}` with the actual path from your `app.env`. After this, Podman sees the files are already correctly labeled and skips relabeling entirely on every subsequent start.
+Replace `${MEDIA_PATH}` and `${IMPORT_PATH}` with the actual paths from your `app.env`. After this, Podman sees the files are already correctly labeled and skips relabeling entirely on every subsequent start.
 
 > [!WARNING]
 > **ZFS / symlinked mount points (e.g. Fedora CoreOS):**
@@ -170,7 +168,7 @@ Replace `${STORAGE_PATH}` with the actual path from your `app.env`. After this, 
 > `ValueError: File spec … conflicts with equivalency rule '/var/mnt /mnt'`
 
 > [!NOTE]
-> **New files** created inside the container or copied (`cp`) on the host automatically inherit `container_file_t` from the parent directory. Files **moved** (`mv`) onto the host preserve their original context — run `restorecon -Rv ${STORAGE_PATH}` afterwards if you do this.
+> **New files** created inside the container or copied (`cp`) on the host automatically inherit `container_file_t` from the parent directory. Files **moved** (`mv`) onto the host preserve their original context — run `restorecon -Rv` on the affected path afterwards if you do this.
 
 > [!TIP]
 > `:z` (shared) vs `:Z` (private) are still valid options if you prefer the simpler setup and your library is small enough that the relabeling delay is acceptable.
@@ -182,26 +180,17 @@ Replace `${STORAGE_PATH}` with the actual path from your `app.env`. After this, 
 | `UID`, `GID`    | Mapped user/group IDs for rootless container processes    |
 | `CONTAINER_ENV` | Application environment (e.g. production)                 |
 | `APP_PATH`      | Host path of source checkout (bind if enabling live code) |
-| `STORAGE_PATH`  | Base host data directory (used if individual paths unset) |
-| `MEDIA_PATH`    | Host data directory containing media subfolders           |
-| `CACHE_PATH`    | Host data directory for cache storage                     |
-| `IMPORT_PATH`   | Host data directory containing files to be imported       |
+| `MEDIA_PATH`    | Host path bind-mounted to `/media` (media files)          |
+| `IMPORT_PATH`   | Host path bind-mounted to `/import` (files to import)     |
 
-**Storage Path Strategy:**
-
-You can use either approach:
-
-- **Single Disk**: Set `STORAGE_PATH` and omit individual paths—media, cache, and import will use subdirectories under `STORAGE_PATH`
-- **Multiple Disks**: Define `MEDIA_PATH`, `CACHE_PATH`, and `IMPORT_PATH` individually to use different storage locations per container
-
-> > [!IMPORTANT]
-> > **For Multiple Disks:** If using individual paths, you must also update your `.container` files to replace `${STORAGE_PATH}` with the individual variables (e.g., `${MEDIA_PATH}`, `${CACHE_PATH}`, `${IMPORT_PATH}`) in the `Volume=` directives. For example, change `Volume=${STORAGE_PATH}/media:/storage/media:rw,z,U` to `Volume=${MEDIA_PATH}:/storage/media:rw,z,U`.
-
-Ensure paths exist and are owned by the matching UID/GID:
+Ensure the paths exist and are owned by the matching UID/GID:
 
 ```bash
-chown -R 1000:1000 /home/user/projects/stry /home/user/data/stry
+chown -R 1000:1000 /home/user/data/stry/media /home/user/data/stry/import
 ```
+
+> [!NOTE]
+> `/cache` is managed by the `stry-cache` named Podman volume and requires no host path configuration. FFmpeg, Shaka Packager, Shaka Streamer, and ab-av1 all write their temporary files there.
 
 ### Exposed Ports
 
@@ -209,7 +198,7 @@ Primary application & services expose:
 
 | Service      | Port      |
 | ------------ | --------- |
-| App (HTTP)   | 8080      |
+| App (HTTP)   | 8000      |
 | Vite (Dev)   | 5173      |
 | Reverb (WS)  | 6001      |
 | SSR Renderer | 13714     |
@@ -282,13 +271,16 @@ Follow the [S3 Object Storage](s3.md) setup guide.
 >
 > The initial startup can take several minutes as it:
 >
+> - Runs database migrations (`artisan migrate`)
 > - Runs Laravel optimization (`artisan optimize`)
-> - Creates storage symlinks (`artisan storage:link`)
+> - Creates the storage symlink (`artisan storage:link`)
+> - Generates PWA assets (`artisan pwa:generate`)
+> - Fetches Google Fonts to S3 (`artisan google-fonts:fetch`)
 >
 > **Do not cancel this process!** If needed, increase the `TimeoutStartSec=*` value in your container files.
 
 > [!TIP]
-> If startup is slow on SELinux systems (e.g. Fedora CoreOS), pre-label your storage directory once instead of relying on the `:z` volume flag — see [SELinux & Volume Flags](#selinux--volume-flags-if-applicable) above.
+> If startup is slow on SELinux systems (e.g. Fedora CoreOS), pre-label your media directory once instead of relying on the `:z` volume flag — see [SELinux & Volume Flags](#selinux--volume-flags-if-applicable) above.
 
 To rebuild the image (if needed) and start all containers:
 
