@@ -11,7 +11,7 @@ UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
 Memory=512m
-Volume=${STORAGE_PATH}:/storage:rw,z
+Volume=${MEDIA_PATH}:/media:rw,z
 Network=stry.network
 
 [Service]
