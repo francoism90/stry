@@ -1,7 +1,7 @@
 [Unit]
 Description=Server-side Rendering (SSR) container
 After=stry.container
-Requires=stry.container
+PartOf=stry.service
 
 [Container]
 Image=stry.build
