@@ -1,7 +1,7 @@
 [Unit]
 Description=Reverb container
 After=stry.container
-BindsTo=stry.service
+BindsTo=stry.container
 
 [Container]
 Image=stry.build
