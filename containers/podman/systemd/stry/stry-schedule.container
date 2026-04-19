@@ -12,6 +12,7 @@ NoNewPrivileges=true
 DropCapability=ALL
 Memory=512m
 Volume=${MEDIA_PATH}:/media:rw,z
+Volume=${IMPORT_PATH}:/import:rw,z
 Network=stry.network
 
 [Service]

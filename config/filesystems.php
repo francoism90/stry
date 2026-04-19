@@ -57,7 +57,7 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root' => '/media/media',
+            'root' => '/media',
             'serve' => false,
             'throw' => true,
             'report' => true,
@@ -65,7 +65,7 @@ return [
 
         'import' => [
             'driver' => 'local',
-            'root' => '/media/import',
+            'root' => '/import',
             'serve' => false,
             'throw' => true,
             'report' => true,
