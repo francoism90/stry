@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'temporary_files_root' => env('STREAMER_TEMPORARY_FILES_ROOT', storage_path('app/streamer/temp')),
+    'temporary_files_root' => env('STREAMER_TEMPORARY_FILES_ROOT', '/cache/temp/streamer'),
 
     /*
     |--------------------------------------------------------------------------
