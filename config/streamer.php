@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'force_generic_input' => env('STREAMER_FORCE_GENERIC_INPUT', true),
+    'force_generic_input' => (bool) env('STREAMER_FORCE_GENERIC_INPUT', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'timeout' => env('STREAMER_TIMEOUT', 14400),
+    'timeout' => (int) env('STREAMER_TIMEOUT', 14400),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'temporary_files_root' => env('STREAMER_TEMPORARY_FILES_ROOT', '/cache/temp/streamer'),
+    'temporary_files_root' => env('STREAMER_TEMPORARY_FILES_ROOT', storage_path('app/streamer/temp')),
 
     /*
     |--------------------------------------------------------------------------
