@@ -1,12 +1,15 @@
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { SeekBack } from './SeekBack'
-import { SeekForward } from './SeekForward'
 
 let _shaka: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
   if (!_shaka) {
-    const mod = await import('shaka-player/dist/shaka-player.ui')
+    const [mod, { SeekBack }, { SeekForward }] = await Promise.all([
+      import('shaka-player/dist/shaka-player.ui'),
+      import('./SeekBack'),
+      import('./SeekForward'),
+    ])
+
     _shaka = mod.default as unknown as typeof shaka
 
     _shaka.polyfill.installAll()
@@ -47,5 +50,3 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     ],
   })
 }
-
-export { SeekBack, SeekForward }
