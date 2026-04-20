@@ -2,7 +2,7 @@
 Description=RustFS container
 
 [Container]
-Image=docker.io/rustfs/rustfs:1.0.0-alpha.90
+Image=docker.io/rustfs/rustfs:1.0.0-alpha.95
 EnvironmentFile=%h/.config/containers/systemd/stry/config/rustfs.env
 LogDriver=none
 NoNewPrivileges=true
