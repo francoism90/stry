@@ -1,11 +1,11 @@
 import { useSettings } from '@/composables/settings'
-import { configureOverlay } from '@/plugins/shaka'
+import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import { usePlaylistSession } from '@/plugins/shaka/session'
 import type { Playlist } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
-import shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, onBeforeMount, onBeforeUnmount, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
+import type shaka from 'shaka-player/dist/shaka-player.ui'
+import { computed, onBeforeUnmount, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
@@ -32,6 +32,9 @@ export function useShaka(
 
     // Ensure video element is available before creating player
     if (!el.value) return
+
+    // Load Shaka Player library and polyfills (if not already loaded)
+    const shaka = await loadShaka()
 
     // Create new Shaka Player
     player.value = new shaka.Player()
@@ -72,6 +75,9 @@ export function useShaka(
   const load = async () => {
     // Reset error state before evaluating new playlist
     error.value = null
+
+    // Load Shaka Player library and polyfills (if not already loaded)
+    const shaka = await loadShaka()
 
     // On failed set critical error state
     if (playlist.value?.failed) {
@@ -155,7 +161,7 @@ export function useShaka(
     const shakaError = (event as CustomEvent).detail as shaka.util.Error
 
     // Only set error state for non-recoverable errors
-    if (shakaError.severity === shaka.util.Error.Severity.CRITICAL) {
+    if (shakaError.severity === getShaka()?.util.Error.Severity.CRITICAL) {
       error.value = shakaError
     }
 
@@ -202,15 +208,13 @@ export function useShaka(
     error.value = null
   }
 
-  onBeforeMount(() => shaka.polyfill.installAll())
-  onBeforeUnmount(() => destroy())
-
   useEventListener(player, 'error', onErrorEvent)
   useEventListener(el, 'timeupdate', onTimeUpdate)
   useEventListener(el, 'volumechange', onVolumeChange)
 
   whenever(el, () => initialize(), { immediate: true })
   watchDeep(playlist, () => load())
+  onBeforeUnmount(() => destroy())
 
   return {
     player,

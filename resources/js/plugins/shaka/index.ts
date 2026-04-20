@@ -1,14 +1,31 @@
-import shaka from 'shaka-player/dist/shaka-player.ui'
+import type shaka from 'shaka-player/dist/shaka-player.ui'
 import { SeekBack } from './SeekBack'
 import { SeekForward } from './SeekForward'
 
-shaka.ui.Controls.registerElement('seek_back_15', {
-  create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekBack(parent, controls),
-})
+let _shaka: typeof shaka | undefined
 
-shaka.ui.Controls.registerElement('seek_forward_15', {
-  create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekForward(parent, controls),
-})
+export async function loadShaka(): Promise<typeof shaka> {
+  if (!_shaka) {
+    const mod = await import('shaka-player/dist/shaka-player.ui')
+    _shaka = mod.default as unknown as typeof shaka
+
+    _shaka.polyfill.installAll()
+
+    _shaka.ui.Controls.registerElement('seek_back_15', {
+      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekBack(parent, controls),
+    })
+
+    _shaka.ui.Controls.registerElement('seek_forward_15', {
+      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekForward(parent, controls),
+    })
+  }
+
+  return _shaka
+}
+
+export function getShaka(): typeof shaka | undefined {
+  return _shaka
+}
 
 export function configureOverlay(overlay: shaka.ui.Overlay): void {
   overlay.configure({
