@@ -95,7 +95,7 @@ class GroupController extends Controller implements HasMiddleware
                 AllowedSort::field('filesize')->defaultDescending(),
             )
             ->defaultSort($recommendedSort)
-            ->jsonSimplePaginate(defaultSize: 24);
+            ->jsonSimplePaginate(defaultSize: 20);
 
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),

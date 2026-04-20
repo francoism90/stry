@@ -62,7 +62,7 @@ class TagController extends Controller implements HasMiddleware
                 AllowedSort::oldest('oldest', 'created_at'),
             )
             ->defaultSort($videosSort)
-            ->jsonSimplePaginate(defaultSize: 24);
+            ->jsonSimplePaginate(defaultSize: 20);
 
         return Inertia::render('App/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
@@ -94,7 +94,7 @@ class TagController extends Controller implements HasMiddleware
                 AllowedSort::field('filesize')->defaultDescending(),
             )
             ->defaultSort($recommendedSort)
-            ->jsonSimplePaginate(defaultSize: 24);
+            ->jsonSimplePaginate(defaultSize: 20);
 
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),

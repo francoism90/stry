@@ -25,7 +25,7 @@
         "@vueuse/core": "^14.2.1",
         "laravel-echo": "^2.3.4",
         "pusher-js": "^8.5.0",
-        "shaka-player": "^5.1.0",
+        "shaka-player": "^5.1.1",
         "tailwindcss": "^4.2.2",
         "vue": "^3.5.32"
     },
@@ -53,7 +53,7 @@
         "prettier": "3.8.3",
         "prettier-plugin-tailwindcss": "^0.7.2",
         "typescript": "~6.0.3",
-        "vite": "^8.0.8",
+        "vite": "^8.0.9",
         "vite-plugin-vue-devtools": "^8.1.1",
         "vitest": "^4.1.4",
         "vue-tsc": "^3.2.7",

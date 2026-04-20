@@ -50,7 +50,7 @@ class SearchTagsController extends Controller implements HasMiddleware
                 AllowedSort::oldest('oldest', 'created_at'),
             )
             ->defaultSort($videosSort)
-            ->jsonSimplePaginate(defaultSize: 36);
+            ->jsonSimplePaginate(defaultSize: 20);
 
         return Inertia::render('App/Search/SearchTags', [
             'search' => fn () => $query,

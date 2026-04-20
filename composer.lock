@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65e15cfa2c13170ff56a1f6d63e288c4",
+    "content-hash": "b704fbe2b5b3d8210034a843224a580a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -7898,16 +7898,16 @@
         },
         {
             "name": "spatie/laravel-model-states",
-            "version": "2.13.1",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-model-states.git",
-                "reference": "954b11f680bdb0bc5a845c300be2d598b35be59c"
+                "reference": "8901805a3eab57a4c940533562fd9121fc3d0fad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/954b11f680bdb0bc5a845c300be2d598b35be59c",
-                "reference": "954b11f680bdb0bc5a845c300be2d598b35be59c",
+                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/8901805a3eab57a4c940533562fd9121fc3d0fad",
+                "reference": "8901805a3eab57a4c940533562fd9121fc3d0fad",
                 "shasum": ""
             },
             "require": {
@@ -7963,7 +7963,7 @@
                 "state"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-model-states/tree/2.13.1"
+                "source": "https://github.com/spatie/laravel-model-states/tree/2.14.0"
             },
             "funding": [
                 {
@@ -7975,7 +7975,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-22T23:11:43+00:00"
+            "time": "2026-04-20T13:54:44+00:00"
         },
         {
             "name": "spatie/laravel-options",
