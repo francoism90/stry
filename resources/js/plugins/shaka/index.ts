@@ -1,5 +1,4 @@
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-
 import { registerLucideIcons } from './icons'
 
 let _shaka: typeof shaka | undefined

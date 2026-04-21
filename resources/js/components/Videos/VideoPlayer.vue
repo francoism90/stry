@@ -2,12 +2,12 @@
 import { useShaka } from '@/composables/shaka'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const ui = ref<HTMLDivElement | undefined>()
 const el = ref<HTMLMediaElement | undefined>()
 
-const { initialize, ready, error } = useShaka(ui, el)
+const { ready, error } = useShaka(ui, el)
 
 const actions = ref<ButtonProps[]>([
   {
@@ -26,8 +26,6 @@ const actions = ref<ButtonProps[]>([
     variant: 'subtle',
   },
 ])
-
-onMounted(() => initialize())
 </script>
 
 <template>
