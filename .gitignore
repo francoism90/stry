@@ -18,7 +18,7 @@ _ide_helper.php
 *.tsbuildinfo
 **/caddy
 /.codex
-/.cursor/
+/.cursor
 /.fleet
 /.idea
 /.nova
