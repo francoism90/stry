@@ -56,8 +56,8 @@ export function useShaka(
     const quality = get('quality', 'auto')!
 
     player.value.configure({
-      preferredAudioLanguage: get('audio_language', 'en')!,
-      preferredTextLanguage: get('caption_language', 'en')!,
+      preferredAudio: [{ language: get('audio_language', 'en')! }],
+      preferredText: [{ language: get('caption_language', 'en')! }],
       abr: {
         restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
       },
