@@ -14,7 +14,7 @@ export class SeekBack extends shaka.ui.Element {
     this.button.className = 'shaka-seek-backwards'
     parent.appendChild(this.button)
 
-    const icon = new shaka.ui.Icon(null, { url: iconDataUrl('undo-2'), size: 24, path: null, viewBox: null })
+    const icon = new shaka.ui.Icon(null, { url: iconDataUrl('rewind'), size: 24, path: null, viewBox: null })
     const svgEl = icon.getSvgElement()
     if (svgEl) {
       this.button.appendChild(svgEl)
