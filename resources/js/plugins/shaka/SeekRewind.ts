@@ -2,7 +2,7 @@ import shaka from 'shaka-player/dist/shaka-player.ui'
 
 import { iconDataUrl } from './icons'
 
-export class SeekBack extends shaka.ui.Element {
+export class SeekRewind extends shaka.ui.Element {
   private button: HTMLButtonElement
 
   constructor(parent: HTMLElement, controls: shaka.ui.Controls) {
@@ -11,7 +11,7 @@ export class SeekBack extends shaka.ui.Element {
     this.button = document.createElement('button')
     this.button.type = 'button'
     this.button.title = 'Seek back 15 seconds'
-    this.button.className = 'shaka-seek-backwards'
+    this.button.className = 'shaka-rewind'
     parent.appendChild(this.button)
 
     const icon = new shaka.ui.Icon(null, { url: iconDataUrl('rewind'), size: 24, path: null, viewBox: null })
