@@ -28,11 +28,6 @@ class UserSettingsController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        logger()->info('Updating user settings', [
-            'user_id' => $request->user()->id,
-            'settings' => $settings->toArray(),
-        ]);
-
         // Filter out any null values to avoid overwriting existing settings with null.
         $update = array_filter([
             'player' => $settings->player?->toArray(),
