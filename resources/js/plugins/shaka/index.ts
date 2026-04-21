@@ -1,5 +1,7 @@
 import type shaka from 'shaka-player/dist/shaka-player.ui'
 
+import { registerLucideIcons } from './icons'
+
 let _shaka: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
@@ -13,6 +15,8 @@ export async function loadShaka(): Promise<typeof shaka> {
     _shaka = mod.default as unknown as typeof shaka
 
     _shaka.polyfill.installAll()
+
+    registerLucideIcons(_shaka)
 
     _shaka.ui.Controls.registerElement('seek_back_15', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekBack(parent, controls),
