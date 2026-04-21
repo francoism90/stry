@@ -41,12 +41,11 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     tapSeekDistance: 15,
     controlPanelElements: [
       'play_pause',
+      'mute',
       'seek_rewind',
       'seek_forward',
       'time_and_duration',
       'spacer',
-      'mute',
-      'volume',
       'cast',
       'overflow_menu',
       'fullscreen',
