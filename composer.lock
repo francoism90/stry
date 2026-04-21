@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e15c95f54de359fd97448bb8d3733fe8",
+    "content-hash": "54983b5761ec60b4d5d4c6e62cf8916b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1517,16 +1517,16 @@
         },
         {
             "name": "foxws/laravel-scout-relations",
-            "version": "0.0.1",
+            "version": "0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-relations.git",
-                "reference": "adfc0165da92a12548e9e42c892862c4e593c860"
+                "reference": "03d0a13ec9f799a00639a230fc9bb2e646114a68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/adfc0165da92a12548e9e42c892862c4e593c860",
-                "reference": "adfc0165da92a12548e9e42c892862c4e593c860",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/03d0a13ec9f799a00639a230fc9bb2e646114a68",
+                "reference": "03d0a13ec9f799a00639a230fc9bb2e646114a68",
                 "shasum": ""
             },
             "require": {
@@ -1584,7 +1584,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-relations/issues",
-                "source": "https://github.com/foxws/laravel-scout-relations/tree/0.0.1"
+                "source": "https://github.com/foxws/laravel-scout-relations/tree/0.0.2"
             },
             "funding": [
                 {
@@ -1592,7 +1592,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-12T13:43:38+00:00"
+            "time": "2026-04-21T15:10:52+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
