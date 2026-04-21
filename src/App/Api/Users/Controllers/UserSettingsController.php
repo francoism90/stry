@@ -7,12 +7,11 @@ namespace App\Api\Users\Controllers;
 use Domain\Users\Actions\UpdateUserSettings;
 use Domain\Users\DataObjects\UserSettings;
 use Foundation\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class UserSettingsController extends Controller implements HasMiddleware
 {
@@ -25,9 +24,14 @@ class UserSettingsController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request, UserSettings $settings): RedirectResponse
+    public function __invoke(Request $request, UserSettings $settings): Response
     {
         Gate::authorize('update', $request->user());
+
+        logger()->info('Updating user settings', [
+            'user_id' => $request->user()->id,
+            'settings' => $settings->toArray(),
+        ]);
 
         // Filter out any null values to avoid overwriting existing settings with null.
         $update = array_filter([
@@ -39,12 +43,6 @@ class UserSettingsController extends Controller implements HasMiddleware
         // Update the user's settings with the provided values.
         (new UpdateUserSettings)->handle($request->user(), $update);
 
-        Inertia::flash([
-            'title' => __('Settings updated'),
-            'description' => __('Your preferences have been saved.'),
-            'type' => 'success',
-        ]);
-
-        return back();
+        return response()->noContent();
     }
 }
