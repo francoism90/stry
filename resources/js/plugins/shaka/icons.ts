@@ -92,7 +92,7 @@ const lucideMap: Record<ShakaIconName, string> = {
 type IconSetIcons = typeof iconSet.icons
 type LucideIconName = keyof IconSetIcons
 
-function iconDataUrl(iconName: LucideIconName): string {
+export function iconDataUrl(iconName: LucideIconName): string {
   const icon = iconSet.icons[iconName]
   const width = ('width' in icon ? icon.width : undefined) ?? iconSet.width
   const height = ('height' in icon ? icon.height : undefined) ?? iconSet.height

@@ -18,11 +18,11 @@ export async function loadShaka(): Promise<typeof shaka> {
 
     registerLucideIcons(_shaka)
 
-    _shaka.ui.Controls.registerElement('seek_back_15', {
+    _shaka.ui.Controls.registerElement('seek_backwards', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekBack(parent, controls),
     })
 
-    _shaka.ui.Controls.registerElement('seek_forward_15', {
+    _shaka.ui.Controls.registerElement('seek_forward', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekForward(parent, controls),
     })
   }
@@ -42,8 +42,8 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     tapSeekDistance: 15,
     controlPanelElements: [
       'play_pause',
-      'seek_back_15',
-      'seek_forward_15',
+      'seek_backwards',
+      'seek_forward',
       'time_and_duration',
       'spacer',
       'mute',
