@@ -1,12 +1,13 @@
 import type shaka from 'shaka-player/dist/shaka-player.ui'
+import { registerLucideIcons } from './icons'
 
 let _shaka: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
   if (!_shaka) {
-    const [mod, { SeekBack }, { SeekForward }] = await Promise.all([
+    const [mod, { SeekRewind }, { SeekForward }] = await Promise.all([
       import('shaka-player/dist/shaka-player.ui'),
-      import('./SeekBack'),
+      import('./SeekRewind'),
       import('./SeekForward'),
     ])
 
@@ -14,11 +15,13 @@ export async function loadShaka(): Promise<typeof shaka> {
 
     _shaka.polyfill.installAll()
 
-    _shaka.ui.Controls.registerElement('seek_back_15', {
-      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekBack(parent, controls),
+    registerLucideIcons(_shaka)
+
+    _shaka.ui.Controls.registerElement('seek_rewind', {
+      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekRewind(parent, controls),
     })
 
-    _shaka.ui.Controls.registerElement('seek_forward_15', {
+    _shaka.ui.Controls.registerElement('seek_forward', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekForward(parent, controls),
     })
   }
@@ -38,13 +41,16 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     tapSeekDistance: 15,
     controlPanelElements: [
       'play_pause',
-      'seek_back_15',
-      'seek_forward_15',
+      'mute',
+      'skip_previous',
+      'skip_next',
+      'seek_rewind',
+      'seek_forward',
       'time_and_duration',
       'spacer',
-      'mute',
-      'volume',
+      'captions',
       'cast',
+      'remote',
       'overflow_menu',
       'fullscreen',
     ],
