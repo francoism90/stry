@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfe84dc659a62b54e0b60d7359c9d14c",
+    "content-hash": "0d2bfac49118e776b95c8f46c005069d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -7788,16 +7788,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "11.21.1",
+            "version": "11.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "422b7ff3ed9cd263c70b400bc57dabdaaf472283"
+                "reference": "d6e2595033ffd130d4dd5d124510ab3304794c44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/422b7ff3ed9cd263c70b400bc57dabdaaf472283",
-                "reference": "422b7ff3ed9cd263c70b400bc57dabdaaf472283",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/d6e2595033ffd130d4dd5d124510ab3304794c44",
+                "reference": "d6e2595033ffd130d4dd5d124510ab3304794c44",
                 "shasum": ""
             },
             "require": {
@@ -7882,7 +7882,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.21.1"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.21.0"
             },
             "funding": [
                 {
@@ -7894,7 +7894,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-22T07:49:28+00:00"
+            "time": "2026-02-21T15:58:56+00:00"
         },
         {
             "name": "spatie/laravel-model-states",
