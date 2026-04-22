@@ -33,7 +33,7 @@ class UpdateVideoDetails
                 // Get all media IDs associated with the video's clips
                 $mediaIds = implode(',', $video->getClips()->modelKeys());
 
-                Artisan::call('media-library:regenerate', [
+                Artisan::queue('media-library:regenerate', [
                     '--ids' => $mediaIds,
                     '--force' => true,
                 ]);
