@@ -7,7 +7,7 @@ tags:
     - containers
 ---
 
-# 🐳 Docker Compose Setup
+# Docker Compose Setup
 
 ## Introduction
 
@@ -41,7 +41,7 @@ Two compose files are provided in `containers/docker/`:
 
 ```bash
 cd ~/projects
-git clone git@github.com:francoism90/stry.git
+git clone https://github.com/francoism90/stry.git
 cd stry
 ```
 

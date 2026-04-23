@@ -29,7 +29,7 @@ Clone the repository to your working directory (e.g., `~/projects`):
 
 ```bash
 cd ~/projects
-git clone git@github.com:francoism90/stry.git
+git clone https://github.com/francoism90/stry.git
 ```
 
 ### Configure Podman
@@ -71,9 +71,8 @@ Shaka Packager handles DASH/HLS video packaging and streaming.
 > [!TIP]
 > **Shaka Packager Benefits:**
 >
-> - ✅ Professional-grade DASH/HLS packaging
-> - ✅ Built-in encryption and key rotation
-> - ✅ Optimized for high-throughput streaming
+> - ✅ DASH/HLS packaging
+> - ✅ Encryption and key rotation support
 > - ✅ Handles multiple codec and bitrate profiles
 >
 > Review the [Laravel Shaka](https://github.com/foxws/laravel-shaka) documentation for advanced configuration options.
@@ -94,14 +93,11 @@ LogDriver=none
 >
 > - ✅ Eliminates disk I/O overhead from container logs
 > - ✅ Prevents log files from consuming disk space
-> - ✅ Reduces CPU usage from logging operations
-> - ✅ Improves overall container performance
 >
 > **Trade-offs:**
 >
 > - ⚠️ Container logs won't be available via `journalctl` or `podman logs`
 > - ⚠️ Application logs remain accessible via Laravel's logging system
-> - ⚠️ Use Laravel Telescope/Horizon for monitoring instead
 
 If you need selective logging, apply `LogDriver=none` only to high-throughput containers (e.g., `stry-queue.container`, `stry-reverb.container`) while keeping logs enabled for critical services.
 

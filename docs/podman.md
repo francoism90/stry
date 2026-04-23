@@ -9,15 +9,15 @@ tags:
     - compose
 ---
 
-# 🐳 Podman Quadlet Setup
+# Podman Quadlet Setup
 
 ## Introduction
 
 Podman Quadlet provides systemd integration for managing containers. Learn more:
 
-- 📖 [Podman Systemd Unit Documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)
-- 🔴 [Red Hat Quadlet Guide](https://www.redhat.com/sysadmin/quadlet-podman)
-- 💡 [Practical Quadlet Tutorial](https://mo8it.com/blog/quadlet/)
+- [Podman Systemd Unit Documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)
+- [Red Hat Quadlet Guide](https://www.redhat.com/sysadmin/quadlet-podman)
+- [Practical Quadlet Tutorial](https://mo8it.com/blog/quadlet/)
 
 ---
 
@@ -225,7 +225,6 @@ LogDriver=none
 > [!NOTE]
 > **Performance Impact:**
 >
-> - ✅ Reduces disk I/O and CPU overhead from logging
 > - ✅ Prevents log files from consuming disk space
 > - ⚠️ Container logs won't be available via `journalctl` or `podman logs`
 > - ℹ️ Application logs remain accessible through Laravel's logging system
