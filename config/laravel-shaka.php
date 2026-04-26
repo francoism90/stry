@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'segment_duration' => (int) env('PACKAGER_SEGMENT_DURATION', 10),
+    'segment_duration' => (int) env('PACKAGER_SEGMENT_DURATION', 6),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,6 +123,6 @@ return [
     |
     */
 
-    'concurrency_workers' => (int) env('PACKAGER_CONCURRENCY_WORKERS', 10),
+    'concurrency_workers' => (int) env('PACKAGER_CONCURRENCY_WORKERS', 20),
 
 ];

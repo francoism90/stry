@@ -121,7 +121,7 @@ return [
     |
     */
 
-    'segment_duration' => (int) env('STREAMER_SEGMENT_DURATION', 10),
+    'segment_duration' => (int) env('STREAMER_SEGMENT_DURATION', 6),
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +176,6 @@ return [
     |
     */
 
-    'concurrency_workers' => (int) env('STREAMER_CONCURRENCY_WORKERS', 10),
+    'concurrency_workers' => (int) env('STREAMER_CONCURRENCY_WORKERS', 20),
 
 ];

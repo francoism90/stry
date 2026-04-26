@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15f1c76b3563deb37ddfee5b60f91f28",
+    "content-hash": "e240708595fe2ac402aa752990095185",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1596,16 +1596,16 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "329b4127ea2f886b87379cdc230aa9bc54bfe7d2"
+                "reference": "67f712f8e635954e5be1a9312694a0903f7c6d3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/329b4127ea2f886b87379cdc230aa9bc54bfe7d2",
-                "reference": "329b4127ea2f886b87379cdc230aa9bc54bfe7d2",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/67f712f8e635954e5be1a9312694a0903f7c6d3d",
+                "reference": "67f712f8e635954e5be1a9312694a0903f7c6d3d",
                 "shasum": ""
             },
             "require": {
@@ -1674,7 +1674,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/2.0.1"
+                "source": "https://github.com/foxws/laravel-shaka/tree/2.0.2"
             },
             "funding": [
                 {
@@ -1682,20 +1682,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-18T10:29:57+00:00"
+            "time": "2026-04-26T13:34:41+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "45a30510b947e98b2b0ca3b792d00f54ef81013a"
+                "reference": "e392b5f0ef50a9b096ecacb70bf3a6b4d9bdede3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/45a30510b947e98b2b0ca3b792d00f54ef81013a",
-                "reference": "45a30510b947e98b2b0ca3b792d00f54ef81013a",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/e392b5f0ef50a9b096ecacb70bf3a6b4d9bdede3",
+                "reference": "e392b5f0ef50a9b096ecacb70bf3a6b4d9bdede3",
                 "shasum": ""
             },
             "require": {
@@ -1764,7 +1764,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/1.7.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/1.8.0"
             },
             "funding": [
                 {
@@ -1772,7 +1772,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-18T10:27:37+00:00"
+            "time": "2026-04-26T13:35:35+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -11784,16 +11784,16 @@
         },
         {
             "name": "voku/portable-ascii",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voku/portable-ascii.git",
-                "reference": "d870a33f0f79d2b4579740b0620200221ee44aeb"
+                "reference": "8e1051fe39379367aecf014f41744ce7539a856f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/d870a33f0f79d2b4579740b0620200221ee44aeb",
-                "reference": "d870a33f0f79d2b4579740b0620200221ee44aeb",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/8e1051fe39379367aecf014f41744ce7539a856f",
+                "reference": "8e1051fe39379367aecf014f41744ce7539a856f",
                 "shasum": ""
             },
             "require": {
@@ -11830,7 +11830,7 @@
             ],
             "support": {
                 "issues": "https://github.com/voku/portable-ascii/issues",
-                "source": "https://github.com/voku/portable-ascii/tree/2.1.0"
+                "source": "https://github.com/voku/portable-ascii/tree/2.1.1"
             },
             "funding": [
                 {
@@ -11854,7 +11854,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-16T23:10:39+00:00"
+            "time": "2026-04-26T05:33:54+00:00"
         },
         {
             "name": "webmozart/assert",
