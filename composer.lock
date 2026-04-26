@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e240708595fe2ac402aa752990095185",
+    "content-hash": "7ea689a43fb9f6057df7231bc285b78b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1187,16 +1187,16 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "56e0f8e4b2401d60bc3b24be3ed7649507588f63"
+                "reference": "0b4d9d948785ec4879a757e7b671e691700f33e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/56e0f8e4b2401d60bc3b24be3ed7649507588f63",
-                "reference": "56e0f8e4b2401d60bc3b24be3ed7649507588f63",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/0b4d9d948785ec4879a757e7b671e691700f33e6",
+                "reference": "0b4d9d948785ec4879a757e7b671e691700f33e6",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1260,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/1.0.0"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/1.0.1"
             },
             "funding": [
                 {
@@ -1268,7 +1268,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-18T10:27:05+00:00"
+            "time": "2026-04-26T14:10:28+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",

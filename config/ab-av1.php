@@ -150,7 +150,7 @@ return [
     |
     */
 
-    'verbosity' => env('AB_AV1_VERBOSITY', 0),
+    'verbosity' => (int) env('AB_AV1_VERBOSITY', 0),
 
     /*
     |--------------------------------------------------------------------------
@@ -173,7 +173,7 @@ return [
     |
     */
 
-    'min_vmaf' => env('AB_AV1_MIN_VMAF', 90),
+    'min_vmaf' => (int) env('AB_AV1_MIN_VMAF', 90),
 
     /*
     |--------------------------------------------------------------------------
@@ -185,7 +185,7 @@ return [
     |
     */
 
-    'max_encoded_percent' => env('AB_AV1_MAX_ENCODED_PERCENT', 200),
+    'max_encoded_percent' => (int) env('AB_AV1_MAX_ENCODED_PERCENT', 300),
 
     /*
     |--------------------------------------------------------------------------
