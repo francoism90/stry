@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace Support\MediaLibrary\Jobs;
 
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Spatie\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob as BaseGenerateResponsiveImagesJob;
 
-class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implements ShouldQueueAfterCommit
+class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
+    /**
+     * @var int
+     */
+    public $uniqueFor = 120;
+
     /**
      * @var int
      */
@@ -23,7 +29,7 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     /**
      * @var int
      */
-    public $timeout = 600;
+    public $timeout = 60;
 
     /**
      * @var bool
@@ -41,7 +47,12 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->media->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(10),
         ];
+    }
+
+    public function uniqueId(): string
+    {
+        return (string) $this->media->getKey();
     }
 }

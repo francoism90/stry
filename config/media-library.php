@@ -221,7 +221,7 @@ return [
      * The timeout (in seconds) that will be used when generating video
      * thumbnails via FFMPEG.
      */
-    'ffmpeg_timeout' => env('FFMPEG_TIMEOUT', 900),
+    'ffmpeg_timeout' => env('FFMPEG_TIMEOUT', 60),
 
     /*
      * The number of threads that FFMPEG should use. 0 means that FFMPEG
