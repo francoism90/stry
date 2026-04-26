@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use DateTime;
+use Carbon\CarbonInterface;
 use Domain\Videos\Actions\ImportVideoFile;
 use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Models\Video;
@@ -59,9 +59,9 @@ class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
             ->onQueue('processing');
     }
 
-    public function retryUntil(): DateTime
+    public function retryUntil(): CarbonInterface
     {
-        return now()->plus(seconds: $this->timeout + 60);
+        return now()->addSeconds($this->timeout + 60);
     }
 
     public function handle(): void

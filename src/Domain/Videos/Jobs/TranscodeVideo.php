@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use DateTime;
+use Carbon\CarbonInterface;
 use Domain\Videos\Actions\CreateNewVideoTranscode;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
@@ -62,9 +62,9 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
         app(CreateNewVideoTranscode::class)->handle($this->video);
     }
 
-    public function retryUntil(): DateTime
+    public function retryUntil(): CarbonInterface
     {
-        return now()->plus(seconds: $this->timeout + 60);
+        return now()->addSeconds($this->timeout + 60);
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
-use DateTime;
+use Carbon\CarbonInterface;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
@@ -87,9 +87,9 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
         ];
     }
 
-    public function retryUntil(): DateTime
+    public function retryUntil(): CarbonInterface
     {
-        return now()->plus(seconds: $this->timeout + 60);
+        return now()->addSeconds($this->timeout + 60);
     }
 
     public function uniqueId(): string
