@@ -226,7 +226,7 @@ return [
         ],
 
         'supervisor-3' => [
-            'connection' => 'redis',
+            'connection' => 'redis-long',
             'queue' => ['processing'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
@@ -243,7 +243,7 @@ return [
         ],
 
         'supervisor-4' => [
-            'connection' => 'redis',
+            'connection' => 'redis-long',
             'queue' => ['transcoding'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',

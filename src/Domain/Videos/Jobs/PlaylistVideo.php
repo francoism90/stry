@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use DateTime;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
@@ -28,11 +29,6 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -63,7 +59,9 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
         public Video $video,
         public ?PlaylistType $type = null,
     ) {
-        $this->onQueue('transcoding');
+        $this
+            ->onConnection('redis-long')
+            ->onQueue('transcoding');
     }
 
     public function handle(): void
@@ -85,8 +83,13 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
+            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(60),
         ];
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->plus(seconds: $this->timeout + 60);
     }
 
     public function uniqueId(): string

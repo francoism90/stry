@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use DateTime;
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\CreateVideoByImport;
 use Domain\Videos\DataObjects\VideoFile;
@@ -23,11 +24,6 @@ class CreateVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -58,7 +54,14 @@ class CreateVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
         public User $user,
         public VideoFile $file,
     ) {
-        $this->onQueue('processing');
+        $this
+            ->onConnection('redis-long')
+            ->onQueue('processing');
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->plus(seconds: $this->timeout + 60);
     }
 
     public function handle(): void
@@ -72,7 +75,7 @@ class CreateVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
+            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(60),
         ];
     }
 
