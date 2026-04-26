@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 10),
+    'segment_duration' => (int) env('PLAYLIST_SEGMENT_DURATION', 6),
 
     /*
     |--------------------------------------------------------------------------
