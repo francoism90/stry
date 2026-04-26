@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Jobs;
 
+use Carbon\CarbonInterface;
 use Domain\Videos\Actions\CreateNewVideoTranscode;
 use Domain\Videos\Models\Video;
 use Illuminate\Bus\Batchable;
@@ -22,11 +23,6 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * @var int
-     */
-    public $tries = 1;
 
     /**
      * @var int
@@ -56,12 +52,19 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
     public function __construct(
         public Video $video,
     ) {
-        $this->onQueue('transcoding');
+        $this
+            ->onConnection('redis-long')
+            ->onQueue('transcoding');
     }
 
     public function handle(): void
     {
         app(CreateNewVideoTranscode::class)->handle($this->video);
+    }
+
+    public function retryUntil(): CarbonInterface
+    {
+        return now()->addSeconds($this->timeout + 60);
     }
 
     /**
@@ -70,7 +73,7 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->dontRelease(),
+            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(60),
         ];
     }
 
