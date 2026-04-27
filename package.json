@@ -30,7 +30,7 @@
         "vue": "^3.5.33"
     },
     "devDependencies": {
-        "@iconify-json/lucide": "^1.2.103",
+        "@iconify-json/lucide": "^1.2.104",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@tailwindcss/vite": "^4.2.4",
         "@tsconfig/node24": "^24.0.4",
