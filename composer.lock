@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ea689a43fb9f6057df7231bc285b78b",
+    "content-hash": "4cd1dfe8272add2f917fc4e3b4bb62f4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.379.7",
+            "version": "3.379.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2c338cb3f2bcb9e8616ffbac7a36d66034f2ceef"
+                "reference": "856ddf3d241c29132fe1eb946e112351ab043542"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2c338cb3f2bcb9e8616ffbac7a36d66034f2ceef",
-                "reference": "2c338cb3f2bcb9e8616ffbac7a36d66034f2ceef",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/856ddf3d241c29132fe1eb946e112351ab043542",
+                "reference": "856ddf3d241c29132fe1eb946e112351ab043542",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.379.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.379.8"
             },
-            "time": "2026-04-24T18:17:06+00:00"
+            "time": "2026-04-27T19:13:21+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -7624,16 +7624,16 @@
         },
         {
             "name": "spatie/laravel-data",
-            "version": "4.22.0",
+            "version": "4.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-data.git",
-                "reference": "cec66f8d53bedbf78bea9f3155c7ee49fa8a61fb"
+                "reference": "ec254c0ebc3f3b37515cd7449e2dbb10588e606b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/cec66f8d53bedbf78bea9f3155c7ee49fa8a61fb",
-                "reference": "cec66f8d53bedbf78bea9f3155c7ee49fa8a61fb",
+                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/ec254c0ebc3f3b37515cd7449e2dbb10588e606b",
+                "reference": "ec254c0ebc3f3b37515cd7449e2dbb10588e606b",
                 "shasum": ""
             },
             "require": {
@@ -7646,7 +7646,7 @@
             "require-dev": {
                 "fakerphp/faker": "^1.14",
                 "friendsofphp/php-cs-fixer": "^3.0",
-                "inertiajs/inertia-laravel": "^2.0",
+                "inertiajs/inertia-laravel": "^2.0|^3.0",
                 "livewire/livewire": "^3.0|^4.0",
                 "mockery/mockery": "^1.6",
                 "nesbot/carbon": "^2.63|^3.0",
@@ -7694,7 +7694,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-data/issues",
-                "source": "https://github.com/spatie/laravel-data/tree/4.22.0"
+                "source": "https://github.com/spatie/laravel-data/tree/4.22.1"
             },
             "funding": [
                 {
@@ -7702,20 +7702,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-16T13:26:30+00:00"
+            "time": "2026-04-27T07:30:53+00:00"
         },
         {
             "name": "spatie/laravel-google-fonts",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-google-fonts.git",
-                "reference": "d68f49d35532ec16eade427ca12c00136350bcfd"
+                "reference": "aaac1cedd48c4c8436b4eb51d9b5e30bd4bd914a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/d68f49d35532ec16eade427ca12c00136350bcfd",
-                "reference": "d68f49d35532ec16eade427ca12c00136350bcfd",
+                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/aaac1cedd48c4c8436b4eb51d9b5e30bd4bd914a",
+                "reference": "aaac1cedd48c4c8436b4eb51d9b5e30bd4bd914a",
                 "shasum": ""
             },
             "require": {
@@ -7776,7 +7776,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-google-fonts/issues",
-                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.5.0"
+                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.6.0"
             },
             "funding": [
                 {
@@ -7784,20 +7784,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-22T18:45:01+00:00"
+            "time": "2026-04-27T16:38:35+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "11.21.2",
+            "version": "11.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "7279da79ec065d0882da1d7b0a1bf37e6cbe37be"
+                "reference": "a80f584d93bad370ca7a0efa52c16a1a81e6e9fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/7279da79ec065d0882da1d7b0a1bf37e6cbe37be",
-                "reference": "7279da79ec065d0882da1d7b0a1bf37e6cbe37be",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/a80f584d93bad370ca7a0efa52c16a1a81e6e9fe",
+                "reference": "a80f584d93bad370ca7a0efa52c16a1a81e6e9fe",
                 "shasum": ""
             },
             "require": {
@@ -7882,7 +7882,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.21.2"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.22.0"
             },
             "funding": [
                 {
@@ -7894,7 +7894,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-23T08:14:11+00:00"
+            "time": "2026-04-28T09:18:56+00:00"
         },
         {
             "name": "spatie/laravel-model-states",
@@ -8496,16 +8496,16 @@
         },
         {
             "name": "spatie/php-structure-discoverer",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/php-structure-discoverer.git",
-                "reference": "53565b3c4770c061b08e8ab755d109344e847799"
+                "reference": "10cd4e0018450d23e2bd8f8472569ad0c445c0fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/php-structure-discoverer/zipball/53565b3c4770c061b08e8ab755d109344e847799",
-                "reference": "53565b3c4770c061b08e8ab755d109344e847799",
+                "url": "https://api.github.com/repos/spatie/php-structure-discoverer/zipball/10cd4e0018450d23e2bd8f8472569ad0c445c0fc",
+                "reference": "10cd4e0018450d23e2bd8f8472569ad0c445c0fc",
                 "shasum": ""
             },
             "require": {
@@ -8563,7 +8563,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/php-structure-discoverer/issues",
-                "source": "https://github.com/spatie/php-structure-discoverer/tree/2.4.1"
+                "source": "https://github.com/spatie/php-structure-discoverer/tree/2.4.2"
             },
             "funding": [
                 {
@@ -8571,7 +8571,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-17T07:00:45+00:00"
+            "time": "2026-04-28T06:26:02+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -9916,7 +9916,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -9975,7 +9975,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -9999,16 +9999,16 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "ad1b7b9092976d6c948b8a187cec9faaea9ec1df"
+                "reference": "4864388bfbd3001ce88e234fab652acd91fdc57e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/ad1b7b9092976d6c948b8a187cec9faaea9ec1df",
-                "reference": "ad1b7b9092976d6c948b8a187cec9faaea9ec1df",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/4864388bfbd3001ce88e234fab652acd91fdc57e",
+                "reference": "4864388bfbd3001ce88e234fab652acd91fdc57e",
                 "shasum": ""
             },
             "require": {
@@ -10057,7 +10057,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10077,11 +10077,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-10T16:19:22+00:00"
+            "time": "2026-04-26T13:13:48+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
@@ -10144,7 +10144,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10168,7 +10168,7 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
@@ -10229,7 +10229,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10253,7 +10253,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -10314,7 +10314,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10338,7 +10338,7 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
@@ -10398,7 +10398,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10422,7 +10422,7 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
@@ -10478,7 +10478,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10502,7 +10502,7 @@
         },
         {
             "name": "symfony/polyfill-php84",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php84.git",
@@ -10558,7 +10558,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php84/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-php84/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10582,16 +10582,16 @@
         },
         {
             "name": "symfony/polyfill-php85",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php85.git",
-                "reference": "2c408a6bb0313e6001a83628dc5506100474254e"
+                "reference": "fcfa4973a9917cef23f2e38774da74a2b7d115ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/2c408a6bb0313e6001a83628dc5506100474254e",
-                "reference": "2c408a6bb0313e6001a83628dc5506100474254e",
+                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/fcfa4973a9917cef23f2e38774da74a2b7d115ee",
+                "reference": "fcfa4973a9917cef23f2e38774da74a2b7d115ee",
                 "shasum": ""
             },
             "require": {
@@ -10638,7 +10638,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php85/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-php85/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -10658,11 +10658,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-10T16:50:15+00:00"
+            "time": "2026-04-26T13:10:57+00:00"
         },
         {
             "name": "symfony/polyfill-uuid",
-            "version": "v1.36.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-uuid.git",
@@ -10721,7 +10721,7 @@
                 "uuid"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -12743,16 +12743,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.4.5",
+            "version": "v2.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "60386c7723ff7cb388b62b6c137597244a9cf2f2"
+                "reference": "c9ea6368c66f7c0e6a9b26706b401de900cdb9ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/60386c7723ff7cb388b62b6c137597244a9cf2f2",
-                "reference": "60386c7723ff7cb388b62b6c137597244a9cf2f2",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/c9ea6368c66f7c0e6a9b26706b401de900cdb9ac",
+                "reference": "c9ea6368c66f7c0e6a9b26706b401de900cdb9ac",
                 "shasum": ""
             },
             "require": {
@@ -12805,7 +12805,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-04-22T13:29:20+00:00"
+            "time": "2026-04-28T11:52:01+00:00"
         },
         {
             "name": "laravel/envoy",
@@ -14043,11 +14043,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.51",
+            "version": "2.1.52",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dc3b523c45e714c70de2ac5113b958223b55dc59",
-                "reference": "dc3b523c45e714c70de2ac5113b958223b55dc59",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/08a34f8db7ca4daabff74a474fe13c0e56e2b4e5",
+                "reference": "08a34f8db7ca4daabff74a474fe13c0e56e2b4e5",
                 "shasum": ""
             },
             "require": {
@@ -14092,7 +14092,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-21T18:22:01+00:00"
+            "time": "2026-04-28T12:17:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -15427,17 +15427,17 @@
             "time": "2025-02-07T05:00:38+00:00"
         },
         {
-            "name": "spatie/boost-spatie-guidelines",
-            "version": "1.1.0",
+            "name": "spatie/guidelines-skills",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spatie/boost-spatie-guidelines.git",
-                "reference": "1d15ddcd4077f7f7230fa9550fad16b6d78d0493"
+                "url": "https://github.com/spatie/guidelines-skills.git",
+                "reference": "0fb11f5cd3607db70a7c7503b8f437c8adeeeba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/boost-spatie-guidelines/zipball/1d15ddcd4077f7f7230fa9550fad16b6d78d0493",
-                "reference": "1d15ddcd4077f7f7230fa9550fad16b6d78d0493",
+                "url": "https://api.github.com/repos/spatie/guidelines-skills/zipball/0fb11f5cd3607db70a7c7503b8f437c8adeeeba5",
+                "reference": "0fb11f5cd3607db70a7c7503b8f437c8adeeeba5",
                 "shasum": ""
             },
             "require": {
@@ -15448,13 +15448,13 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Spatie\\BoostSpatieGuidelines\\BoostSpatieGuidelinesServiceProvider"
+                        "Spatie\\Guidelines\\GuidelinesServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Spatie\\BoostSpatieGuidelines\\": "src"
+                    "Spatie\\Guidelines\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -15469,20 +15469,22 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Spatie's Laravel & PHP coding guidelines for Laravel Boost",
-            "homepage": "https://github.com/spatie/boost-spatie-guidelines",
+            "description": "Spatie's coding guidelines as AI skills for Laravel Boost and skills.sh",
+            "homepage": "https://github.com/spatie/guidelines-skills",
             "keywords": [
+                "ai",
                 "boost",
                 "coding-standards",
                 "guidelines",
                 "laravel",
+                "skills",
                 "spatie"
             ],
             "support": {
-                "issues": "https://github.com/spatie/boost-spatie-guidelines/issues",
-                "source": "https://github.com/spatie/boost-spatie-guidelines/tree/1.1.0"
+                "issues": "https://github.com/spatie/guidelines-skills/issues",
+                "source": "https://github.com/spatie/guidelines-skills/tree/1.0.0"
             },
-            "time": "2026-03-06T08:25:49+00:00"
+            "time": "2026-03-16T14:11:29+00:00"
         },
         {
             "name": "staabm/side-effects-detector",

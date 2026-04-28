@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "spatie-javascript": {
+      "source": "spatie/guidelines-skills",
+      "sourceType": "github",
+      "skillPath": "resources/boost/skills/spatie-javascript/SKILL.md",
+      "computedHash": "faca4e037c93f23d9907523cfa53f4acd320131bae573adf17e41911e7aed27c"
+    },
+    "spatie-laravel-php": {
+      "source": "spatie/guidelines-skills",
+      "sourceType": "github",
+      "skillPath": "resources/boost/skills/spatie-laravel-php/SKILL.md",
+      "computedHash": "9c93332d7f84626db41dee9bf66534209250d99efd08295c8eac422e3a1af178"
+    },
+    "spatie-security": {
+      "source": "spatie/guidelines-skills",
+      "sourceType": "github",
+      "skillPath": "resources/boost/skills/spatie-security/SKILL.md",
+      "computedHash": "a16a04d6eed413355770fe1e81f6776058947ed4b9080c54a12d6b3a0bcc46d3"
+    },
+    "spatie-version-control": {
+      "source": "spatie/guidelines-skills",
+      "sourceType": "github",
+      "skillPath": "resources/boost/skills/spatie-version-control/SKILL.md",
+      "computedHash": "d6417af3a6f55c69e0807464c5ce1f5e18d9476a96a94175179cf2dfee35a063"
+    }
+  }
+}

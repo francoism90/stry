@@ -30,12 +30,25 @@
 - Use camelCase for non-public-facing strings
 - Use short nullable notation: `?string` not `string|null`
 - Always specify `void` return types when methods return nothing
+- Don't use `final` or `readonly` by default
 
 ## Class Structure
 
 - Use typed properties, not docblocks
 - Use constructor property promotion when all properties can be promoted
 - Use one trait per line
+
+```php
+class MyClass {
+    use TraitA;
+    use TraitB;
+
+    public function __construct(
+        protected string $firstArgument,
+        protected string $secondArgument,
+    ) {}
+}
+```
 
 ## Type Declarations and Docblocks
 
@@ -82,7 +95,7 @@ function someFunction(array $myArray, int $typedArgument) {}
 ```php
 /** @return array{
    first: SomeClass,
-   second: SomeClass
+   second: SomeClass,
 } */
 ```
 
@@ -128,6 +141,14 @@ $condition
 - Route names: camelCase (`->name('openSource')`)
 - Parameters: camelCase (`{userId}`)
 - Use tuple notation: `[Controller::class, 'method']`
+- HTTP verb first for readability
+- No leading slash unless URL is empty
+
+```php
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('open-source', [OpenSourceController::class, 'index'])->name('openSource');
+Route::post('users', [UsersController::class, 'store'])->name('users.store');
+```
 
 ### Controllers
 
@@ -135,12 +156,46 @@ $condition
 - Stick to CRUD methods (`index`, `create`, `store`, `show`, `edit`, `update`, `destroy`)
 - Extract new controllers for non-CRUD actions
 
+```php
+// Instead of PostsController@favorite, extract:
+class FavoritePostsController
+{
+    public function store(Post $post)
+    {
+        request()->user()->favorites()->attach($post);
+
+        return response(null, 200);
+    }
+
+    public function destroy(Post $post)
+    {
+        request()->user()->favorites()->detach($post);
+
+        return response(null, 200);
+    }
+}
+```
+
+### Views
+
+- View files use camelCase: `openSource.blade.php`
+
 ### Configuration
 
 - Files: kebab-case (`pdf-generator.php`)
 - Keys: snake_case (`chrome_path`)
 - Add service configs to `config/services.php`, don't create new files
 - Use `config()` helper, avoid `env()` outside config files
+
+```php
+// config/services.php
+return [
+    'github' => [
+        'username' => env('GITHUB_USERNAME'),
+        'token' => env('GITHUB_TOKEN'),
+    ],
+];
+```
 
 ### Artisan Commands
 
@@ -160,11 +215,32 @@ $this->comment("Processed {$items->count()} items.");
 
 ## Strings and Formatting
 
-- Use string interpolation over concatenation
+- Use string interpolation over concatenation:
+
+```php
+$greeting = "Hi, I am {$name}.";
+```
 
 ## Enums
 
-- Use PascalCase for enum values
+- Use PascalCase for enum values:
+
+```php
+enum Suit {
+    case Clubs;
+    case Diamonds;
+    case Hearts;
+    case Spades;
+}
+```
+
+- Class constants also use PascalCase:
+
+```php
+class Session {
+    public const SessionTokenHeader = 'X-Session-Token';
+}
+```
 
 ## Comments
 
@@ -187,6 +263,23 @@ $this->comment("Processed {$items->count()} items.");
 - Exception: sequences of equivalent single-line operations
 - No extra empty lines between `{}` brackets
 - Let code breathe; avoid cramped formatting
+
+```php
+public function getPage($url)
+{
+    $page = $this->pages()->where('slug', $url)->first();
+
+    if (! $page) {
+        return null;
+    }
+
+    if ($page['private'] && ! Auth::check()) {
+        return null;
+    }
+
+    return $page;
+}
+```
 
 ## Validation
 
@@ -225,9 +318,19 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 - Policies use camelCase: `Gate::define('editPost', ...)`
 - Use CRUD words, but `view` instead of `show`
 
+```php
+@can('editPost', $post)
+    <a href="{{ route('posts.edit', $post) }}">Edit</a>
+@endcan
+```
+
 ## Translations
 
-- Use `__()` function over `@lang`
+- Use `__()` function over `@lang`:
+
+```blade
+<h2>{{ __('newsletter.form.title') }}</h2>
+```
 
 ## API Routing
 
@@ -275,8 +378,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 
 ### Code Quality Reminders
 
-#### PHP
-
 - Use typed properties over docblocks
 - Prefer early returns over nested if/else
 - Use constructor property promotion when all properties can be promoted
@@ -286,4 +387,4 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 
 ---
 
-Source: https://spatie.be/guidelines/laravel-php
+Source: https://spatie.be/guidelines
