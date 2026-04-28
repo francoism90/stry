@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4cd1dfe8272add2f917fc4e3b4bb62f4",
+    "content-hash": "b0f68323e779f64fba60bd1d53c03637",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8111,16 +8111,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "7.3.0",
+            "version": "7.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "5272955119759cd217e84e8bbac19443c305ebc3"
+                "reference": "6f60746145bbdb1692021d44860d7850c1d2041a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/5272955119759cd217e84e8bbac19443c305ebc3",
-                "reference": "5272955119759cd217e84e8bbac19443c305ebc3",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/6f60746145bbdb1692021d44860d7850c1d2041a",
+                "reference": "6f60746145bbdb1692021d44860d7850c1d2041a",
                 "shasum": ""
             },
             "require": {
@@ -8186,7 +8186,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/7.3.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/7.4.0"
             },
             "funding": [
                 {
@@ -8194,7 +8194,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-07T15:19:42+00:00"
+            "time": "2026-04-28T14:02:19+00:00"
         },
         {
             "name": "spatie/laravel-responsecache",
