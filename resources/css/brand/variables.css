@@ -1,7 +1,7 @@
 :root {
   --font-sans: 'Geist', sans-serif;
   --font-mono: 'Geist Mono', monospace;
-  --ui-header-height: --spacing(18);
+  --ui-header-height: --spacing(16);
   --ui-container: 96rem;
   --ui-bg: var(--ui-color-neutral-900);
   --ui-primary: var(--ui-color-primary-300);
