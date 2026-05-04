@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f96ced2fc3d31b3131bcf22884b1ec06",
+    "content-hash": "0acb3a5839704ddcb597b5da1aaf545b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -7609,16 +7609,16 @@
         },
         {
             "name": "spatie/laravel-csp",
-            "version": "3.24.0",
+            "version": "3.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-csp.git",
-                "reference": "e4673b34482374440ac3252e92ce8df1446ecc55"
+                "reference": "004eb8299ec86fbfa43f17a3e2936827bfe113f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/e4673b34482374440ac3252e92ce8df1446ecc55",
-                "reference": "e4673b34482374440ac3252e92ce8df1446ecc55",
+                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/004eb8299ec86fbfa43f17a3e2936827bfe113f2",
+                "reference": "004eb8299ec86fbfa43f17a3e2936827bfe113f2",
                 "shasum": ""
             },
             "require": {
@@ -7683,7 +7683,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-csp/issues",
-                "source": "https://github.com/spatie/laravel-csp/tree/3.24.0"
+                "source": "https://github.com/spatie/laravel-csp/tree/3.24.1"
             },
             "funding": [
                 {
@@ -7691,7 +7691,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2026-05-04T08:23:33+00:00"
+            "time": "2026-05-04T10:44:18+00:00"
         },
         {
             "name": "spatie/laravel-data",
@@ -7859,16 +7859,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "11.22.0",
+            "version": "11.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "a80f584d93bad370ca7a0efa52c16a1a81e6e9fe"
+                "reference": "808424a4b7dc9811b5633c28a97c530919aea7b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/a80f584d93bad370ca7a0efa52c16a1a81e6e9fe",
-                "reference": "a80f584d93bad370ca7a0efa52c16a1a81e6e9fe",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/808424a4b7dc9811b5633c28a97c530919aea7b8",
+                "reference": "808424a4b7dc9811b5633c28a97c530919aea7b8",
                 "shasum": ""
             },
             "require": {
@@ -7953,7 +7953,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.22.0"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.22.1"
             },
             "funding": [
                 {
@@ -7965,7 +7965,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-28T09:18:56+00:00"
+            "time": "2026-05-04T11:42:39+00:00"
         },
         {
             "name": "spatie/laravel-model-states",
