@@ -11,7 +11,8 @@
         "spatie/laravel-medialibrary",
         "spatie/laravel-permission",
         "spatie/laravel-responsecache",
-        "spatie/guidelines-skills"
+        "spatie/guidelines-skills",
+        "spatie/laravel-translatable"
     ],
     "sail": false,
     "skills": [
@@ -28,6 +29,7 @@
         "medialibrary-development",
         "laravel-permission-development",
         "responsecache-development",
+        "translatable-development",
         "spatie-javascript",
         "spatie-laravel-php",
         "spatie-security",
