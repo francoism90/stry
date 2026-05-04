@@ -43,7 +43,7 @@
         "@vue/tsconfig": "^0.9.1",
         "chokidar": "^5.0.0",
         "concurrently": "^9.2.1",
-        "eslint": "^10.2.1",
+        "eslint": "^10.3.0",
         "eslint-plugin-oxlint": "~1.62.0",
         "eslint-plugin-vue": "^10.9.0",
         "jiti": "^2.6.1",
