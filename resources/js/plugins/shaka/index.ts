@@ -38,7 +38,8 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     doubleClickForFullscreen: false,
     singleClickForPlayAndPause: false,
     seekOnTaps: true,
-    tapSeekDistance: 15,
+    tapSeekDistance: 10,
+    bigButtons: [],
     controlPanelElements: [
       'play_pause',
       'mute',
