@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/github/license/francoism90/stry)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?logo=laravel)](https://laravel.com)
 [![Inertia](https://img.shields.io/badge/Inertia-3.x-9553E9?logo=inertia)](https://inertiajs.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
+[![Nuxt UI](https://img.shields.io/badge/Nuxt_UI-3.x-00DC82?logo=nuxtdotjs)](https://ui.nuxt.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
 [![Podman](https://img.shields.io/badge/Podman-5.x-892CA0?logo=podman)](https://podman.io)
