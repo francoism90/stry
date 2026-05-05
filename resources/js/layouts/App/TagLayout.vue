@@ -31,7 +31,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
           :links="[{ label: 'View tag', icon: 'i-lucide-eye', to: show.url(tag.id) }]"
         >
           <template #description>
-            <div class="dot-separated text-muted flex flex-wrap items-center text-sm">
+            <div class="dot-separated flex flex-wrap items-center text-sm text-muted">
               <span
                 v-for="(item, index) in meta"
                 :key="index"

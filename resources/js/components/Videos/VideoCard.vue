@@ -35,7 +35,7 @@ defineProps<{
 
         <div
           v-else
-          class="bg-muted aspect-video w-full"
+          class="aspect-video w-full bg-muted"
         />
 
         <div class="absolute inset-x-0 bottom-0 flex items-end justify-between p-2">

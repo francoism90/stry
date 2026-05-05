@@ -6,5 +6,6 @@
     "singleAttributePerLine": true,
     "printWidth": 120,
     "tailwindAttributes": ["class", "className", "ui", ":ui"],
-    "tailwindFunctions": ["cva", "clsx", "ui", ":ui"]
+    "tailwindFunctions": ["cva", "clsx", "ui", ":ui"],
+    "tailwindStylesheet": "./resources/css/app.css"
 }

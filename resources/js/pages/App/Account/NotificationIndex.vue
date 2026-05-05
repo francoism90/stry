@@ -56,10 +56,10 @@ defineOptions({ layout: DefaultLayout })
               >
                 <UIcon
                   name="i-lucide-bell-off"
-                  class="text-muted size-10"
+                  class="size-10 text-muted"
                 />
                 <p class="font-semibold">No notifications</p>
-                <p class="text-muted text-sm">You're all caught up!</p>
+                <p class="text-sm text-muted">You're all caught up!</p>
               </div>
 
               <div
@@ -69,7 +69,7 @@ defineOptions({ layout: DefaultLayout })
                 <div
                   v-for="notification in notifications?.data"
                   :key="notification.id"
-                  class="border-default flex items-start gap-4 border-b py-4 last:border-0"
+                  class="flex items-start gap-4 border-b border-default py-4 last:border-0"
                   :class="{ 'opacity-60': notification.read_at }"
                 >
                   <div
@@ -89,11 +89,11 @@ defineOptions({ layout: DefaultLayout })
                     <p class="text-sm font-medium">{{ getTitle(notification) }}</p>
                     <p
                       v-if="getMessage(notification)"
-                      class="text-muted mt-0.5 text-sm"
+                      class="mt-0.5 text-sm text-muted"
                     >
                       {{ getMessage(notification) }}
                     </p>
-                    <p class="text-muted mt-1 text-xs">{{ notification.created_at }}</p>
+                    <p class="mt-1 text-xs text-muted">{{ notification.created_at }}</p>
                   </div>
 
                   <div class="flex shrink-0 items-center gap-1">

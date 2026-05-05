@@ -46,8 +46,8 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
       >
         <template #body>
           <div class="flex flex-col gap-1">
-            <p class="text-highlighted text-sm font-semibold">General</p>
-            <p class="text-muted text-sm">Set your timezone, language, and date preferences.</p>
+            <p class="text-sm font-semibold text-highlighted">General</p>
+            <p class="text-sm text-muted">Set your timezone, language, and date preferences.</p>
           </div>
 
           <div class="flex flex-col gap-4">
@@ -138,8 +138,8 @@ useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ o
           <USeparator />
 
           <div class="flex flex-col gap-1">
-            <p class="text-highlighted text-sm font-semibold">Appearance</p>
-            <p class="text-muted text-sm">Customize how the application looks and feels.</p>
+            <p class="text-sm font-semibold text-highlighted">Appearance</p>
+            <p class="text-sm text-muted">Customize how the application looks and feels.</p>
           </div>
 
           <div class="grid grid-cols-2 gap-4">

@@ -67,7 +67,7 @@ const style = computed<GroupStyle>(
       <span class="line-clamp-1 text-sm font-semibold capitalize">
         {{ item.title ?? item.type }}
       </span>
-      <span class="text-muted text-xs">
+      <span class="text-xs text-muted">
         {{ Intl.NumberFormat().format(item.videos ?? 0) }} {{ (item.videos ?? 0) === 1 ? 'video' : 'videos' }}
       </span>
     </div>

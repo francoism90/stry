@@ -49,7 +49,7 @@ const actions = ref<ButtonProps[]>([
     <div
       ref="ui"
       v-show="ready && !error"
-      class="fullscreen:aspect-auto fullscreen:max-h-none fullscreen:rounded-none aspect-video max-h-[35dvh] w-full overflow-hidden rounded-lg md:max-h-[50dvh] lg:max-h-[60dvh]"
+      class="aspect-video max-h-[35dvh] w-full overflow-hidden rounded-lg md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:rounded-none"
     >
       <video
         ref="el"

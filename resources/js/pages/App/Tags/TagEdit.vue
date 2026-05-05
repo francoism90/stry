@@ -136,14 +136,14 @@ const onSubmit = () =>
       variant="subtle"
       orientation="vertical"
       :ui="{
-        root: 'ring-error/25 from-error/5 bg-linear-to-r to-transparent',
+        root: 'bg-linear-to-r from-error/5 to-transparent ring-error/25',
         body: 'flex flex-col gap-3',
       }"
     >
       <template #body>
         <div class="flex flex-col gap-2">
-          <p class="text-error text-sm font-semibold">Delete tag</p>
-          <p class="text-muted text-sm">Permanently remove this tag and all associated data.</p>
+          <p class="text-sm font-semibold text-error">Delete tag</p>
+          <p class="text-sm text-muted">Permanently remove this tag and all associated data.</p>
 
           <TagDeleteModal :item="tag">
             <UButton

@@ -67,7 +67,7 @@ useEcho(`users.${user.value?.id}`, '.user.updated', () => router.reload({ only: 
           variant="link"
           highlight
           :ui="{
-            root: 'border-default w-full flex-1 border-b',
+            root: 'w-full flex-1 border-b border-default',
           }"
         />
 

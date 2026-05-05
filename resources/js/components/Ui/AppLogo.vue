@@ -11,7 +11,7 @@ defineProps<{
   >
     <UIcon
       name="i-lucide-circle-play"
-      class="text-primary size-6 shrink-0"
+      class="size-6 shrink-0 text-primary"
     />
     <span class="hidden sm:inline">stry</span>
   </ULink>

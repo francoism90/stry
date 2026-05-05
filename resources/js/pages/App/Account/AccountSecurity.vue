@@ -40,8 +40,8 @@ const onSubmit = () =>
       >
         <template #body>
           <div class="flex flex-col gap-1">
-            <p class="text-highlighted text-sm font-semibold">Change password</p>
-            <p class="text-muted text-sm">Choose a strong password and keep your account secure.</p>
+            <p class="text-sm font-semibold text-highlighted">Change password</p>
+            <p class="text-sm text-muted">Choose a strong password and keep your account secure.</p>
           </div>
 
           <UFormField

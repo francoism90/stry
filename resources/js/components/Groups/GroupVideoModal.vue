@@ -43,14 +43,14 @@ const toggle = (group: Group) => {
 
       <div
         v-else-if="groups.length === 0"
-        class="text-muted flex flex-col items-center gap-2 py-4 text-sm"
+        class="flex flex-col items-center gap-2 py-4 text-sm text-muted"
       >
         <p>No collections yet.</p>
       </div>
 
       <ul
         v-else
-        class="divide-default -mx-4 flex flex-col divide-y"
+        class="-mx-4 flex flex-col divide-y divide-default"
       >
         <li
           v-for="group in groups"

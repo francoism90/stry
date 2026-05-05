@@ -42,7 +42,7 @@ watchDebounced(
 
       <UDashboardToolbar
         :ui="{
-          root: 'border-default min-h-16 border-b',
+          root: 'min-h-16 border-b border-default',
           left: 'flex-1',
         }"
       >
@@ -77,16 +77,16 @@ watchDebounced(
           >
             <UIcon
               name="i-lucide-search"
-              class="text-muted size-10"
+              class="size-10 text-muted"
             />
             <p class="font-semibold">Search for something</p>
-            <p class="text-muted text-sm">Enter a term above to find videos, tags, and collections.</p>
+            <p class="text-sm text-muted">Enter a term above to find videos, tags, and collections.</p>
           </div>
 
           <!-- Results -->
           <template v-else>
-            <p class="text-muted text-sm">
-              Results for <span class="text-default font-semibold">{{ search }}</span>
+            <p class="text-sm text-muted">
+              Results for <span class="font-semibold text-default">{{ search }}</span>
             </p>
 
             <!-- No results at all -->
@@ -96,10 +96,10 @@ watchDebounced(
             >
               <UIcon
                 name="i-lucide-search-x"
-                class="text-muted size-10"
+                class="size-10 text-muted"
               />
               <p class="font-semibold">No results found</p>
-              <p class="text-muted text-sm">Try searching with different keywords.</p>
+              <p class="text-sm text-muted">Try searching with different keywords.</p>
             </div>
 
             <!-- Videos -->

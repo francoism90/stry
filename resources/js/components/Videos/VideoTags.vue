@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div
     v-if="items?.length"
-    class="text-muted flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm"
+    class="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted"
   >
     <template
       v-for="(item, index) in items"
@@ -26,7 +26,7 @@ defineProps<{
       <ULink
         :to="show.url(item.id)"
         active-class="text-neutral"
-        class="hover:text-highlighted z-10 transition-colors"
+        class="z-10 transition-colors hover:text-highlighted"
       >
         {{ item.name }}
       </ULink>

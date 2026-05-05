@@ -21,10 +21,10 @@ const emit = defineEmits<{
   >
     <UIcon
       name="i-lucide-users"
-      class="text-muted size-10"
+      class="size-10 text-muted"
     />
     <p class="font-semibold">No profiles yet</p>
-    <p class="text-muted text-sm">Create a profile to personalize watch history and recommendations.</p>
+    <p class="text-sm text-muted">Create a profile to personalize watch history and recommendations.</p>
   </div>
 
   <div

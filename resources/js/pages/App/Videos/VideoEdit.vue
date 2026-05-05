@@ -282,14 +282,14 @@ const onSubmit = () =>
       variant="subtle"
       orientation="vertical"
       :ui="{
-        root: 'ring-error/25 from-error/5 bg-linear-to-r to-transparent',
+        root: 'bg-linear-to-r from-error/5 to-transparent ring-error/25',
         body: 'flex flex-col gap-3',
       }"
     >
       <template #body>
         <div class="flex flex-col gap-2">
-          <p class="text-error text-sm font-semibold">Delete video</p>
-          <p class="text-muted text-sm">Permanently remove this video and all associated data.</p>
+          <p class="text-sm font-semibold text-error">Delete video</p>
+          <p class="text-sm text-muted">Permanently remove this video and all associated data.</p>
 
           <VideoDeleteModal :item="video">
             <UButton

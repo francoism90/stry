@@ -29,7 +29,7 @@ watchDebounced(
 <template>
   <UDashboardToolbar
     :ui="{
-      root: 'border-default min-h-16 border-b',
+      root: 'min-h-16 border-b border-default',
       left: 'flex-1',
     }"
   >

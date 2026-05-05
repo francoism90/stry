@@ -68,7 +68,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(
           :links="links"
         >
           <template #description>
-            <div class="dot-separated text-muted flex flex-wrap items-center text-sm">
+            <div class="dot-separated flex flex-wrap items-center text-sm text-muted">
               <span
                 v-for="(item, index) in meta"
                 :key="index"
@@ -84,7 +84,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(
           variant="link"
           highlight
           :ui="{
-            root: 'border-default w-full flex-1 border-b',
+            root: 'w-full flex-1 border-b border-default',
           }"
         />
 
