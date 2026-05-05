@@ -4,8 +4,8 @@ WORKDIR /tmp
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    ca-certificates curl build-essential cmake ninja-build python3 python3-venv musl-tools \
-    pkg-config libssl-dev
+    ca-certificates curl build-essential cmake ninja-build musl-tools \
+    pkg-config libssl-dev python3 python3-venv
 
 # FFmpeg
 RUN arch="$(uname -m)" && case "$arch" in \
@@ -67,17 +67,14 @@ WORKDIR /tmp
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-# Create pnpm home directory
-RUN mkdir -p ${PNPM_HOME}
-
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    python3 ca-certificates libssl3 libcap2-bin curl wget unzip zip git \
-    nano openssh-client postgresql-common awscli \
+    python3 ca-certificates libcap2-bin curl wget unzip \
+    git openssh-client postgresql-common awscli \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
@@ -118,6 +115,9 @@ run install-php-extensions @composer \
     igbinary imagick inotify intl pcntl \
     pdo_pgsql redis sockets uv zip
 
+# Create pnpm home directory
+RUN mkdir -p ${PNPM_HOME} && chown -R root:root ${PNPM_HOME}
+
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable && corepack prepare pnpm@latest --activate \
@@ -128,7 +128,8 @@ RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create necessary directories
-RUN mkdir -p /app /config /data /cache /media /import
+RUN mkdir -p /app /config /data /cache /media /import \
+    && chown -R docker:docker /app /config /data /cache /media /import
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -141,10 +142,7 @@ FROM base AS production
 WORKDIR /app
 
 # Copy application source code
-COPY . /app
-
-# Set proper ownership
-RUN chown -R docker:docker /app /config /data /cache /media /import
+COPY --chown=docker:docker . /app
 
 # Install PHP dependencies
 RUN --mount=type=cache,target=/root/.composer/cache \
@@ -171,7 +169,7 @@ RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
-RUN chown -R docker:docker /app /pnpm /config /data /cache /media /import
+RUN chown -R docker:docker /app /pnpm
 
 USER docker
 
