@@ -3,12 +3,14 @@ _ide_helper.php
 .DS_Store
 .env.*
 !.env.example
+.agents
 .git
 .gitattributes
 .github
 .gitignore
 .gitmodules
 .idea
+.junie
 .php-cs-fixer.cache
 .phpstorm.meta.php
 .phpunit.result.cache
