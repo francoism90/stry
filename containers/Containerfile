@@ -73,12 +73,23 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    python3 ca-certificates libcap2-bin curl wget unzip \
-    git openssh-client postgresql-common awscli \
+    bash ca-certificates libcap2-bin curl wget unzip \
+    python3 git openssh-client postgresql-common awscli \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
     libavif-bin jpegoptim optipng pngquant gifsicle
+
+# Strip file capabilities from frankenphp (not needed on port 8000, and incompatible with NoNewPrivileges)
+RUN setcap -r /usr/local/bin/frankenphp
+
+# Create non-root user
+RUN groupadd -g ${GID} docker \
+    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+
+# Create pnpm home directory
+RUN mkdir -p ${PNPM_HOME} \
+    && chown -R docker:docker ${PNPM_HOME}
 
 # Add PostgreSQL APT repository and install client
 RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
@@ -86,7 +97,11 @@ RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
 
 # Add NodeSource APT repository and install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs
+    && apt-get install -y nodejs
+
+# Create necessary directories
+RUN mkdir -p /app /config /data /cache /media /import \
+    && chown -R docker:docker /app /config /data /cache /media /import
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
@@ -98,13 +113,6 @@ COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
 COPY --from=builder /opt/shaka-streamer-env /opt/shaka-streamer-env
 RUN ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
 
-# Entrypoint
-COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Strip file capabilities from frankenphp (not needed on port 8000, and incompatible with NoNewPrivileges)
-RUN setcap -r /usr/local/bin/frankenphp
-
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
@@ -115,21 +123,14 @@ run install-php-extensions @composer \
     igbinary imagick inotify intl pcntl \
     pdo_pgsql redis sockets uv zip
 
-# Create pnpm home directory
-RUN mkdir -p ${PNPM_HOME} && chown -R root:root ${PNPM_HOME}
-
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm config set store-dir ${PNPM_HOME}/store
 
-# Create non-root user
-RUN groupadd -g ${GID} docker \
-    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
-
-# Create necessary directories
-RUN mkdir -p /app /config /data /cache /media /import \
-    && chown -R docker:docker /app /config /data /cache /media /import
+# Entrypoint
+COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
@@ -141,28 +142,38 @@ FROM base AS production
 
 WORKDIR /app
 
-# Copy application source code
+# Copy application source
 COPY --chown=docker:docker . /app
 
+# Switch to non-root user
+USER docker
+
 # Install PHP dependencies
-RUN --mount=type=cache,target=/root/.composer/cache \
+RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID} \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Install Node.js dependencies
-RUN --mount=type=cache,target=/pnpm/store \
+RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
     pnpm install --frozen-lockfile
+
+# Clear any stale caches
+RUN ${ARTISAN} optimize:clear
+
+# Create storage symlinks
+RUN ${ARTISAN} storage:link
 
 # Complete composer setup and build assets
 RUN composer dump-autoload --optimize \
     && pnpm build && pnpm build:ssr && pnpm prune --prod
-
-USER docker
 
 EXPOSE 6001 8000 13714
 
 FROM base AS development
 
 WORKDIR /app
+
+# Set watch on development
+ENV OCTANE="${OCTANE} --watch"
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
