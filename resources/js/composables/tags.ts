@@ -5,6 +5,8 @@ import { type RouteQueryOptions } from '@/wayfinder'
 import { useHttp } from '@inertiajs/vue3'
 import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
+const isServer = import.meta.env.SSR
+
 export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   const state = ref<TagCollection>()
   const ready = ref(false)
@@ -13,6 +15,12 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   const items = computed(() => unique([...toValue(tags || []), ...(state.value?.data || [])]))
 
   const filter = async (options?: RouteQueryOptions) => {
+    if (isServer) {
+      ready.value = true
+
+      return
+    }
+
     try {
       await http.get(index.url(options), {
         onSuccess: (data) => {
@@ -25,9 +33,11 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   }
 
   watchEffect(() => {
-    if (!ready.value) {
-      filter()
+    if (isServer || ready.value) {
+      return
     }
+
+    void filter()
   })
 
   return {
