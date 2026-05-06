@@ -4,6 +4,7 @@ import ui from '@nuxt/ui/vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
+import { bunny, google } from 'laravel-vite-plugin/fonts'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
@@ -34,6 +35,11 @@ export default defineConfig(({ mode }) => {
       laravel({
         input: ['resources/js/app.ts'],
         refresh: true,
+        fonts: [
+          bunny('Instrument Sans', { weights: ['400..600'], alias: 'instrument-sans' }),
+          google('Geist', { weights: ['300..900'], alias: 'geist' }),
+          google('Geist Mono', { weights: ['300..900'], alias: 'geist-mono' }),
+        ],
       }),
       inertia({
         ssr: {
