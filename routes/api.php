@@ -17,9 +17,12 @@ Route::name('api.')->prefix('v1')->group(function () {
 
     // VOD - Playlists
     Route::get('/play/{playlist}/{path}', PlaylistManifestController::class)
+        ->withoutMiddleware('throttle:api')
         ->where('path', '.*')
         ->name('play.manifest');
 
     // VOD - Analytics
-    Route::post('/record/{playlist}', PlaylistSessionController::class)->name('play.session');
+    Route::post('/record/{playlist}', PlaylistSessionController::class)
+        ->withoutMiddleware('throttle:api')
+        ->name('play.session');
 });

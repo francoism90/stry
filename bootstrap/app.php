@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Api\Users\Middlewares\EnsureUserHasSubscription;
 use App\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Domain\Groups\Commands\ClearGroupCommand;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
@@ -48,8 +47,14 @@ $app = Application::configure(basePath: $basePath)
             // Rate limiting
             RateLimiter::for('api', function (Request $request) {
                 return $request->user()
-                    ? Limit::perMinute(240)->by($request->user()->getKey())
+                    ? Limit::perMinute(120)->by($request->user()->getKey())
                     : Limit::perMinute(30)->by($request->ip());
+            });
+
+            RateLimiter::for('vod', function (Request $request) {
+                return $request->user()
+                    ? Limit::perMinute(240)->by($request->user()->getKey())
+                    : Limit::perMinute(240)->by($request->ip());
             });
 
             // Inertia action routes (web middleware for session, CSRF, and Inertia handling)
@@ -80,7 +85,6 @@ $app = Application::configure(basePath: $basePath)
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'role' => RoleMiddleware::class,
-            'subscribed' => EnsureUserHasSubscription::class,
         ]);
 
         // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading

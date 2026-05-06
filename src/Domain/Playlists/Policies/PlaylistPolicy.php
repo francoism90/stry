@@ -21,6 +21,8 @@ class PlaylistPolicy
 
     public function view(?User $user, Playlist $playlist): bool
     {
+        // TODO: check subscription status if the playlist is premium
+
         return $playlist->isValid();
     }
 

@@ -20,6 +20,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            new Middleware('throttle:vod'),
             new Middleware('signed'),
         ];
     }

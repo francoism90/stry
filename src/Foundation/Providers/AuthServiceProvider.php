@@ -19,7 +19,10 @@ class AuthServiceProvider extends ServiceProvider
 
     protected function configurePasswords(): void
     {
-        Password::defaults(fn (): ?Password => app()->isProduction() ? Password::min(10)->max(32)->uncompromised() : null);
+        Password::defaults(fn (): ?Password => app()->isProduction()
+            ? Password::min(10)->max(24)->uncompromised()
+            : null
+        );
     }
 
     protected function configurePolicyAutoDiscovery(): void

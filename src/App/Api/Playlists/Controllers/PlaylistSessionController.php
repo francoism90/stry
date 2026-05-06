@@ -21,8 +21,8 @@ class PlaylistSessionController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('auth:sanctum'),
+            new Middleware('throttle:vod'),
             new Middleware('verified'),
-            new Middleware('subscribed'),
         ];
     }
 

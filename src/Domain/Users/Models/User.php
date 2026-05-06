@@ -10,7 +10,6 @@ use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Profiles\Concerns\HasProfiles;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Collections\UserCollection;
-use Domain\Users\Concerns\InteractsWithSubscription;
 use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
@@ -44,7 +43,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasStates;
     use HasUlids;
     use InteractsWithMedia;
-    use InteractsWithSubscription;
     use InteractsWithVideos;
     use Notifiable;
     use Searchable;
