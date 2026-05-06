@@ -16,14 +16,12 @@ use Domain\Videos\Commands\ImportVideoCommand;
 use Foundation\Http\Middlewares\AddCspHeaders;
 use Foundation\Http\Middlewares\EnsureRequestHasPrivateSubnet;
 use Foundation\Http\Middlewares\SetCacheHeaders;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
@@ -44,19 +42,6 @@ $app = Application::configure(basePath: $basePath)
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            // Rate limiting
-            RateLimiter::for('api', function (Request $request) {
-                return $request->user()
-                    ? Limit::perMinute(120)->by($request->user()->getKey())
-                    : Limit::perMinute(30)->by($request->ip());
-            });
-
-            RateLimiter::for('vod', function (Request $request) {
-                return $request->user()
-                    ? Limit::perMinute(240)->by($request->user()->getKey())
-                    : Limit::perMinute(240)->by($request->ip());
-            });
-
             // Inertia action routes (web middleware for session, CSRF, and Inertia handling)
             Route::middleware('web')
                 ->prefix('/actions')
