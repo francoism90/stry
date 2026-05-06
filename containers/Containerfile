@@ -156,12 +156,6 @@ RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID}
 RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
     pnpm install --frozen-lockfile
 
-# Clear any stale caches
-RUN ${ARTISAN} optimize:clear
-
-# Create storage symlinks
-RUN ${ARTISAN} storage:link
-
 # Complete composer setup and build assets
 RUN composer dump-autoload --optimize \
     && pnpm build && pnpm build:ssr && pnpm prune --prod

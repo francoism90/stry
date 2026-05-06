@@ -27,6 +27,14 @@ if [ ! -f ".env" ]; then
     ${ARTISAN} key:generate
 fi
 
+# Clear any stale caches
+log "INFO" "Clearing stale caches..."
+${ARTISAN} optimize:clear
+
+# Create storage symlinks
+log "INFO" "Creating storage symlinks..."
+${ARTISAN} storage:link
+
 # Application-specific setup
 if [ "${CONTAINER_ROLE}" = "app" ] && [ "${CONTAINER_ENV}" = "production" ]; then
     # Ensure migrations are up to date
