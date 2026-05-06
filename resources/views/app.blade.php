@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="dark">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" crossorigin="anonymous">
-@fonts
 @pwaHead
+@fonts
 @vite('resources/js/app.ts')
 <x-inertia::head />
 </head>
