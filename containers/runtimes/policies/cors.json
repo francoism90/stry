@@ -3,7 +3,7 @@
         {
             "AllowedOrigins": ["*"],
             "AllowedMethods": ["GET", "HEAD"],
-            "AllowedHeaders": ["Range", "Content-Type"],
+            "AllowedHeaders": ["*"],
             "ExposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges", "ETag"],
             "MaxAgeSeconds": 7200
         }

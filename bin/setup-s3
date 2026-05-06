@@ -3,7 +3,6 @@ set -e
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CORS_POLICY="${ROOT_DIR}/containers/runtimes/policies/cors.json"
-ASSETS_POLICY="${ROOT_DIR}/containers/runtimes/policies/assets.json"
 
 # Source .env if env vars are not already set...
 if [ -z "${AWS_ENDPOINT}" ] && [ -f "${ROOT_DIR}/.env" ]; then
@@ -20,7 +19,7 @@ export AWS_PAGER=""
 : "${AWS_ACCESS_KEY_ID:?Required: AWS_ACCESS_KEY_ID}"
 : "${AWS_SECRET_ACCESS_KEY:?Required: AWS_SECRET_ACCESS_KEY}"
 
-CORS_BUCKETS=(assets conversions segments secrets)
+CORS_BUCKETS=(conversions segments secrets)
 BUCKETS=(local "${CORS_BUCKETS[@]}")
 
 # Create buckets...
@@ -38,17 +37,5 @@ for bucket in "${CORS_BUCKETS[@]}"; do
         --bucket "${bucket}" \
         --cors-configuration "file://${CORS_POLICY}"
 done
-
-# Explicitly disable all public-access-block flags on public buckets.
-# Required for RustFS: without an explicit config, the internal ConfigNotFound
-# error is treated as a denial, blocking anonymous access even with a valid policy.
-echo "Disabling public access block on assets..."
-aws s3api put-public-access-block \
-    --bucket assets \
-    --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
-
-# Allow anonymous read on assets (fonts, icons)...
-echo "Applying anonymous read policy to assets..."
-aws s3api put-bucket-policy --bucket assets --policy "file://${ASSETS_POLICY}"
 
 echo "Done."

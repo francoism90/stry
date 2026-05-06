@@ -86,24 +86,6 @@ return [
             'report' => true,
         ],
 
-        'assets' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => 'assets',
-            'url' => env('AWS_URL').'/assets',
-            'temporary_url' => env('AWS_URL').'/assets',
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-            'options' => [
-                'CacheControl' => 'public, max-age=2592000, immutable', // 30 days
-            ],
-        ],
-
         'conversions' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
