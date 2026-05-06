@@ -16,7 +16,6 @@ _ide_helper.php
 .vscode/*
 *.log
 *.tsbuildinfo
-**/caddy
 /.codex
 /.cursor
 /.fleet
@@ -30,9 +29,8 @@ _ide_helper.php
 /node_modules
 /public/build
 /public/hot
+/public/fonts-manifest.dev.json
 /public/manifest.json
-/public/mix-manifest.json
-/public/robots.txt
 /public/storage
 /public/sw.js
 /public/vendor
@@ -40,7 +38,7 @@ _ide_helper.php
 /resources/js/routes
 /resources/js/wayfinder
 /storage/*.key
-/storage/debugbar/
+/storage/debugbar
 /storage/pail
 /vendor
 auth.json
