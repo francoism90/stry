@@ -76,7 +76,7 @@ RUN apt-get update \
     bash ca-certificates libcap2-bin curl wget unzip \
     python3 git openssh-client postgresql-common awscli \
     mesa-va-drivers mesa-vulkan-drivers \
-    libva2 libva-drm2 vainfo libmfx-gen1.2 libvpl2 \
+    libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
     libavif-bin jpegoptim optipng pngquant gifsicle
 
