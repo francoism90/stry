@@ -18,8 +18,8 @@
         "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
-        "@inertiajs/vite": "^3.1.0",
-        "@inertiajs/vue3": "^3.1.0",
+        "@inertiajs/vite": "^3.1.1",
+        "@inertiajs/vue3": "^3.1.1",
         "@laravel/echo-vue": "^2.3.4",
         "@nuxt/ui": "^4.7.1",
         "@vueuse/core": "^14.3.0",
@@ -35,7 +35,7 @@
         "@tailwindcss/vite": "^4.2.4",
         "@tsconfig/node24": "^24.0.4",
         "@types/jsdom": "^28.0.1",
-        "@types/node": "^25.6.0",
+        "@types/node": "^25.6.1",
         "@vitejs/plugin-vue": "^6.0.6",
         "@vitest/eslint-plugin": "^1.6.16",
         "@vue/eslint-config-prettier": "^10.2.0",
@@ -53,7 +53,7 @@
         "prettier": "3.8.3",
         "prettier-plugin-tailwindcss": "^0.8.0",
         "typescript": "~6.0.3",
-        "vite": "^8.0.10",
+        "vite": "^8.0.11",
         "vite-plugin-vue-devtools": "^8.1.1",
         "vitest": "^4.1.5",
         "vue-tsc": "^3.2.8"
