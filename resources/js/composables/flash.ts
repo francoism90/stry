@@ -1,4 +1,4 @@
-import type { FlashType } from '@/types'
+import type { FlashData, FlashType } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { createSharedComposable, tryOnUnmounted } from '@vueuse/core'
 
@@ -18,16 +18,15 @@ export const useFlash = createSharedComposable(() => {
   const toast = useToast()
 
   const unsubFlash = router.on('flash', (event) => {
-    if (event.detail.flash) {
-      const { icon, color } = resolveType(event.detail.flash.type)
+    const flash = (event.detail?.flash ?? {}) as FlashData
+    const { icon, color } = resolveType(flash.type)
 
-      toast.add({
-        title: event.detail.flash.title ?? 'Notice',
-        description: event.detail.flash.description ?? 'No message provided.',
-        color,
-        icon,
-      })
-    }
+    toast.add({
+      title: flash.title ?? 'Notice',
+      description: flash.description ?? 'No message provided.',
+      color,
+      icon,
+    })
   })
 
   tryOnUnmounted(() => {
