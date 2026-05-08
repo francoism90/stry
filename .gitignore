@@ -13,7 +13,6 @@ _ide_helper.php
 .phpunit.cache
 .phpunit.result.cache
 .pnpm-store
-.vscode/*
 *.log
 *.tsbuildinfo
 /.codex
