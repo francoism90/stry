@@ -41,13 +41,13 @@ if [ "${CONTAINER_ROLE}" = "app" ] && [ "${CONTAINER_ENV}" = "production" ]; the
     log "INFO" "Running any pending migrations..."
     ${ARTISAN} migrate --force
 
-    # Ensure scout settings are synced
-    log "INFO" "Syncing scout settings..."
-    ${ARTISAN} scout:sync
-
     # Generate PWA assets
     log "INFO" "Generating PWA assets..."
     ${ARTISAN} pwa:generate
+
+    # Ensure scout settings are synced
+    log "INFO" "Syncing scout settings..."
+    ${ARTISAN} scout:sync
 fi
 
 # Optimize for production
