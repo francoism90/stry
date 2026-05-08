@@ -1,19 +1,17 @@
 root = true
 
 [*]
-charset = utf-8
-end_of_line = lf
-indent_size = 4
 indent_style = space
-insert_final_newline = true
+indent_size = 2
+end_of_line = lf
+charset = utf-8
 trim_trailing_whitespace = true
-max_line_length = 120
+insert_final_newline = true
+draw_white_space = all
+trim_trailing_white_space_on_save = true
 
-[*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue,css,scss,sass,less,styl}]
-indent_size = 2
-
-[*.{Caddyfile}]
-indent_size = 2
+[Makefile]
+indent_style = tab
 
 [*.md]
 trim_trailing_whitespace = false
