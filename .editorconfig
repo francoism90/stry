@@ -13,8 +13,5 @@ trim_trailing_white_space_on_save = true
 [Makefile]
 indent_style = tab
 
-[*.json]
-indent_size = 4
-
 [*.md]
 trim_trailing_whitespace = false
