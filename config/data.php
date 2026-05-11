@@ -128,7 +128,7 @@ return [
         'cache' => [
             'store' => env('CACHE_STORE', env('CACHE_DRIVER', 'file')),
             'prefix' => 'laravel-data',
-            'duration' => 60 * 60 * 24 * 14,
+            'duration' => null,
         ],
         'reflection_discovery' => [
             'enabled' => true,
