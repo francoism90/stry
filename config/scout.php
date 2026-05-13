@@ -456,6 +456,18 @@ return [
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
 
+                    'stopwords' => [
+                        // Base stop words.
+                        'a', 'an', 'the', 'and', 'or', 'of', 'in', 'to',
+
+                        // Generic media terms.
+                        'movie', 'film', 'show', 'tv', 'series', 'episode', 'season', 'part',
+
+                        // Quality and source tags.
+                        'full', 'hd', 'fhd', 'uhd', 'hdr', '4k', '720p', '1080p', '2160p',
+                        'hq', 'x264', 'x265', 'bluray', 'webrip', 'webdl',
+                    ],
+
                 ],
 
                 'search-parameters' => [
