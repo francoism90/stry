@@ -14,21 +14,21 @@ use Illuminate\Support\Str;
 
 class GetSimilarVideos
 {
-    public function handle(Video $video, ?int $limit = null): VideoCollection
+    public function handle(Video $video, int $limit = 24): VideoCollection
     {
         $collect = VideoCollection::make();
 
         return $collect->merge([
-            ...$this->phraseMatches($video),
-            ...$this->tagMatches($video),
-            ...$this->randomCandidates($video),
-        ])->unique('id')->take($limit ?? 18);
+            ...$this->phraseMatches($video, $limit),
+            ...$this->tagMatches($video, $limit),
+            ...$this->randomCandidates($video, $limit),
+        ])->unique('id')->take($limit);
     }
 
     /**
      * @return Collection<int, Video>
      */
-    protected function phraseMatches(Video $video): Collection
+    protected function phraseMatches(Video $video, int $limit = 24): Collection
     {
         // Initialize an empty collection for candidates
         $candidates = Collection::make();
@@ -64,13 +64,13 @@ class GetSimilarVideos
             $candidates = $candidates->merge($results);
         }
 
-        return $candidates->unique('id')->take($this->limit ?? 18);
+        return $candidates->unique('id')->take($limit);
     }
 
     /**
      * @return Collection<int, Video>
      */
-    protected function tagMatches(Video $video): Collection
+    protected function tagMatches(Video $video, int $limit = 24): Collection
     {
         /** @var TagCollection $tags */
         $tags = $video->tags;
@@ -89,45 +89,38 @@ class GetSimilarVideos
                 ...$tags->relates()->all(),
             ])
             ->inRandomOrder()
-            ->take($this->limit ?? 18)
+            ->take($limit)
             ->get();
     }
 
     /**
      * @return Collection<int, Video>
      */
-    protected function randomCandidates(Video $video): Collection
+    protected function randomCandidates(Video $video, int $limit = 24): Collection
     {
         return Video::query()
             ->whereKeyNot($video)
             ->verified()
             ->inRandomOrder()
-            ->take($this->limit ?? 18)
+            ->take($limit)
             ->get();
     }
 
     /**
      * @return Collection<int, string>
      */
-    protected function extractMeaningfulTokens(Video $video): Collection
+    protected function extractMeaningfulTokens(Video $video, int $limit = 10): Collection
     {
+        // List of common words to exclude
+        $commonWords = Config::array('videos.common_words');
+
         $tokens = Str::of((string) $video->title)
             ->matchAll('/[\p{L}\p{N}]+/u')
             ->map(fn (string $word) => Str::lower($word))
-            ->reject(fn (string $word) => $this->isCommonWord($word))
-            ->take(8)
+            ->reject(fn (string $word) => in_array($word, $commonWords, true))
+            ->take($limit)
             ->values();
 
         return $tokens->unique()->values();
-    }
-
-    protected function isCommonWord(string $word = ''): bool
-    {
-        // List of common words to exclude
-        $commonWords = Config::array('scout.common_words', [
-            'a', 'an', 'the', 'and', 'or', 'of', 'in', 'to',
-        ]);
-
-        return in_array($word, $commonWords, true);
     }
 }
