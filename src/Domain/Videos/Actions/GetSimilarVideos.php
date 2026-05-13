@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 
 class GetSimilarVideos
 {
-    public function handle(Video $video, int $limit = 24): VideoCollection
+    public function handle(Video $video, int $limit = 10): VideoCollection
     {
         $collect = VideoCollection::make();
 
@@ -28,7 +28,7 @@ class GetSimilarVideos
     /**
      * @return Collection<int, Video>
      */
-    protected function phraseMatches(Video $video, int $limit = 24): Collection
+    protected function phraseMatches(Video $video, int $limit = 10): Collection
     {
         // Initialize an empty collection for candidates
         $candidates = Collection::make();
@@ -70,7 +70,7 @@ class GetSimilarVideos
     /**
      * @return Collection<int, Video>
      */
-    protected function tagMatches(Video $video, int $limit = 24): Collection
+    protected function tagMatches(Video $video, int $limit = 10): Collection
     {
         /** @var TagCollection $tags */
         $tags = $video->tags;
@@ -96,7 +96,7 @@ class GetSimilarVideos
     /**
      * @return Collection<int, Video>
      */
-    protected function randomCandidates(Video $video, int $limit = 24): Collection
+    protected function randomCandidates(Video $video, int $limit = 10): Collection
     {
         return Video::query()
             ->whereKeyNot($video)
