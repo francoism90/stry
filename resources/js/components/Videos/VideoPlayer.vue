@@ -54,10 +54,11 @@ const actions = ref<ButtonProps[]>([
       <video
         ref="el"
         class="size-full bg-black"
-        preload="metadata"
         crossorigin="anonymous"
+        preload="metadata"
         playsinline
         autoplay
+        autoPictureInPicture
       />
     </div>
   </figure>
