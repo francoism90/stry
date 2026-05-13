@@ -116,8 +116,8 @@ class GetSimilarVideos
 
         $tokens = Str::of((string) $video->title)
             ->matchAll('/[\p{L}\p{N}]+/u')
-            ->map(fn (string $word) => Str::lower($word))
-            ->reject(fn (string $word) => in_array($word, $commonWords, true))
+            ->map(fn (string $word): string => Str::lower($word))
+            ->reject(fn (string $word): bool => in_array($word, $commonWords, true))
             ->take($limit)
             ->values();
 
