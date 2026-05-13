@@ -11,8 +11,8 @@ const props = defineProps<{
 }>()
 
 const form = useForm('get', '', {
-  type: props.type,
   sort: props.sort,
+  'filter[type]': props.type,
   'page[number]': 1,
 })
 
@@ -28,7 +28,7 @@ const onSubmit = () => {
 <template>
   <USelectMenu
     v-if="types?.length"
-    v-model="form.type"
+    v-model="form['filter[type]']"
     :model-modifiers="{ nullable: true }"
     :items="types"
     :search-input="false"
