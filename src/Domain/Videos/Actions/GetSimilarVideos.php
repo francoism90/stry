@@ -109,7 +109,7 @@ class GetSimilarVideos
     /**
      * @return Collection<int, string>
      */
-    protected function extractMeaningfulTokens(Video $video, int $limit = 12): Collection
+    protected function extractMeaningfulTokens(Video $video, int $limit = 14): Collection
     {
         // List of common words to exclude
         $commonWords = Config::array('videos.common_words');
