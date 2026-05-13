@@ -49,7 +49,7 @@ class SearchGroupsController extends Controller implements HasMiddleware
                 $updatedSort,
             )
             ->defaultSort($updatedSort)
-            ->jsonSimplePaginate(defaultSize: 24);
+            ->jsonSimplePaginate(defaultSize: 18);
 
         return Inertia::render('App/Search/SearchCollections', [
             'search' => fn () => $query,

@@ -50,7 +50,7 @@ class SearchVideosController extends Controller implements HasMiddleware
                 AllowedSort::field('filesize')->defaultDescending(),
             )
             ->defaultSort($recommendedSort)
-            ->jsonSimplePaginate(defaultSize: 24);
+            ->jsonSimplePaginate(defaultSize: 18);
 
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,

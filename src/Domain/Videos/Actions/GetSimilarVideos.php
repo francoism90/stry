@@ -57,7 +57,7 @@ class GetSimilarVideos
                 ->query(fn (VideoQueryBuilder $query) => $query->with('tags'))
                 ->whereNotIn('id', $excludeIds)
                 ->where('state', 'verified')
-                ->take(6)
+                ->take(8)
                 ->get();
 
             // Merge results into candidates
