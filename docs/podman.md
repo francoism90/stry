@@ -42,7 +42,7 @@ This guide assumes a **rootless** Podman setup (recommended for security):
 > To keep the containers running when the user logs out, ensure you have lingering enabled for your user:
 
 ```bash
-sudo loginctl enable-linger $USER
+loginctl enable-linger $USER
 ```
 
 #### GPU Acceleration
