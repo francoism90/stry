@@ -28,6 +28,7 @@ class VideoSaveController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
+        // Toggle the video in the user's saved group.
         $group = $request->user()->toggleInGroup($video, GroupType::Saved);
 
         Inertia::flash([

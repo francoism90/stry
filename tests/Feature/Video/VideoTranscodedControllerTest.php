@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
-beforeEach(fn () => Storage::fake('transcodes'));
+beforeEach(function () {
+    Storage::fake('transcodes');
+    $this->withoutDefer();
+});
 
 it('imports all completed transcodes for a video', function () {
     Bus::fake();

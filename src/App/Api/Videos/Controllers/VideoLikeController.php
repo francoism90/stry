@@ -28,6 +28,7 @@ class VideoLikeController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
+        // Toggle the video in the user's liked group.
         $group = $request->user()->toggleInGroup($video, GroupType::Liked);
 
         Inertia::flash([

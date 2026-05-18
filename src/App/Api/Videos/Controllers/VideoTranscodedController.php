@@ -15,6 +15,8 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
+use function Illuminate\Support\defer;
+
 class VideoTranscodedController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
@@ -29,9 +31,14 @@ class VideoTranscodedController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
-        $video->transcodes()
+        // Get all completed transcodes for the video and queue them for import.
+        $items = $video->transcodes()
             ->completed()
-            ->each(fn (Transcode $transcode) => app(ImportTranscode::class)->handle($transcode));
+            ->get();
+
+        defer(function () use ($items): void {
+            $items->each(fn (Transcode $transcode) => app(ImportTranscode::class)->handle($transcode));
+        });
 
         Inertia::flash([
             'title' => (string) $video->name,
