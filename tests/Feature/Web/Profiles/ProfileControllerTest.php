@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Api\Profiles\Controllers\SwitchProfileController;
 use App\Web\Profiles\Controllers\ProfileController;
-use App\Web\Profiles\Controllers\SwitchProfileController;
 use Domain\Profiles\Models\Profile;
 use Domain\Users\Models\User;
 
