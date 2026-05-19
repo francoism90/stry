@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Controllers;
+namespace App\Web\Videos\Controllers;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class VideoLikeController extends Controller implements HasMiddleware
+class VideoSaveController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -28,8 +28,8 @@ class VideoLikeController extends Controller implements HasMiddleware
     {
         Gate::authorize('view', $video);
 
-        // Toggle the video in the user's liked group.
-        $group = $request->user()->toggleInGroup($video, GroupType::Liked);
+        // Toggle the video in the user's saved group.
+        $group = $request->user()->toggleInGroup($video, GroupType::Saved);
 
         Inertia::flash([
             'title' => (string) $video->name,

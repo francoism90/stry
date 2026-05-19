@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Users\Controllers;
+namespace App\Web\Users\Controllers;
 
 use Domain\Users\Actions\UpdateUserSettings;
 use Domain\Users\DataObjects\UserSettings;

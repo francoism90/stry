@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Controllers;
+namespace App\Web\Videos\Controllers;
 
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;

@@ -1,4 +1,4 @@
-import MarkAllNotificationsReadController from '@/actions/App/Api/Notifications/Controllers/MarkAllNotificationsReadController'
+import MarkAllNotificationsReadController from '@/actions/App/Web/Notifications/Controllers/MarkAllNotificationsReadController'
 import type { NotificationCollection, Notification as NotificationModel } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { computed, type Ref } from 'vue'

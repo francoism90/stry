@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoImportController from '@/actions/App/Api/Videos/Controllers/VideoImportController'
+import VideoImportController from '@/actions/App/Web/Videos/Controllers/VideoImportController'
 import { router } from '@inertiajs/vue3'
 
 const handle = async (close: () => void) =>

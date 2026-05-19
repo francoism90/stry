@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Groups\Controllers;
+namespace App\Web\Videos\Controllers;
 
-use Domain\Groups\Models\Group;
+use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class GroupToggleController extends Controller implements HasMiddleware
+class VideoLikeController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -24,21 +24,18 @@ class GroupToggleController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __invoke(Group $group, Video $video, Request $request): RedirectResponse
+    public function __invoke(Video $video, Request $request): RedirectResponse
     {
         Gate::authorize('view', $video);
-        Gate::authorize('update', $group);
 
-        // Toggle the group association
-        $video->toggleGroup($group);
-
-        $result = $group->hasGroupable($video)
-            ? __('Added to :group.', ['group' => $group->title])
-            : __('Removed from :group.', ['group' => $group->title]);
+        // Toggle the video in the user's liked group.
+        $group = $request->user()->toggleInGroup($video, GroupType::Liked);
 
         Inertia::flash([
             'title' => (string) $video->name,
-            'description' => $result,
+            'description' => $group->hasGroupable($video)
+                ? __('Added to :group.', ['group' => $group->title])
+                : __('Removed from :group.', ['group' => $group->title]),
             'type' => 'success',
         ]);
 

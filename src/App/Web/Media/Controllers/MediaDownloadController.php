@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Media\Controllers;
+namespace App\Web\Media\Controllers;
 
 use Domain\Media\Models\Media;
 use Foundation\Http\Controllers\Controller;

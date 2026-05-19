@@ -1,5 +1,5 @@
-import VideoLikeController from '@/actions/App/Api/Videos/Controllers/VideoLikeController'
-import VideoSaveController from '@/actions/App/Api/Videos/Controllers/VideoSaveController'
+import VideoLikeController from '@/actions/App/Web/Videos/Controllers/VideoLikeController'
+import VideoSaveController from '@/actions/App/Web/Videos/Controllers/VideoSaveController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 

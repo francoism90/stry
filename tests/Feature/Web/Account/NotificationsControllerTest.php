@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Api\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Web\Account\Controllers\NotificationsController;
+use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use Domain\Users\Models\User;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
