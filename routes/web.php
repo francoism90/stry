@@ -39,7 +39,7 @@ Route::post('/profiles/{profile}/switch', SwitchProfileController::class)->name(
 // Resources
 Route::resource('collections', GroupController::class);
 Route::resource('tags', TagController::class);
-Route::resource('media', MediaController::class)->only(['update', 'destroy']);
+Route::resource('media', MediaController::class)->only(['show', 'update', 'destroy']);
 Route::resource('playlists', PlaylistController::class)->only(['update', 'destroy']);
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
 

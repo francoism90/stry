@@ -8,6 +8,7 @@ use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -101,5 +102,12 @@ class Media extends BaseMedia
     public function broadcastAfterCommit(): bool
     {
         return true;
+    }
+
+    protected function assetUri(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => rescue(fn () => $this->getTemporaryUrl(now()->addWeek())),
+        )->shouldCache();
     }
 }

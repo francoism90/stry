@@ -109,6 +109,7 @@ export type MediaCustomProperties = {
 
 export type Media = Model & {
   asset?: string
+  url?: string | null
   name: string
   file_name: string
   mime_type: string

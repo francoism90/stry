@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
+import MediaViewModal from '@/components/Media/MediaViewModal.vue'
 import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -53,6 +54,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload
             />
 
             <div class="z-10 flex items-center gap-2">
+              <MediaViewModal :item="item" />
               <MediaDeleteModal :item="item" />
             </div>
           </div>
