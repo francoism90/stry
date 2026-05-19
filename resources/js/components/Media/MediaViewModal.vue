@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { useMedia } from '@/composables/media'
 import type { Media } from '@/types'
 
 defineProps<{
   item: Media
 }>()
-
-const { getStreamInfo } = useMedia()
 </script>
 
 <template>
@@ -56,11 +53,27 @@ const { getStreamInfo } = useMedia()
         </div>
 
         <div
-          v-if="getStreamInfo(item).length"
-          class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0"
+          v-if="item.generated_conversions"
+          class="flex flex-col gap-2 py-2 first:pt-0 last:pb-0"
         >
-          <dt class="text-sm text-muted">Stream info</dt>
-          <dd class="text-sm font-medium">{{ getStreamInfo(item).join(' · ') }}</dd>
+          <dt class="text-sm text-muted">Conversions</dt>
+          <dd>
+            <pre class="overflow-auto rounded bg-elevated p-2 text-xs">{{
+              JSON.stringify(item.generated_conversions, null, 2)
+            }}</pre>
+          </dd>
+        </div>
+
+        <div
+          v-if="item.custom_properties"
+          class="flex flex-col gap-2 py-2 first:pt-0 last:pb-0"
+        >
+          <dt class="text-sm text-muted">Metadata</dt>
+          <dd>
+            <pre class="overflow-auto rounded bg-elevated p-2 text-xs">{{
+              JSON.stringify(item.custom_properties, null, 2)
+            }}</pre>
+          </dd>
         </div>
       </dl>
     </template>
@@ -77,7 +90,7 @@ const { getStreamInfo } = useMedia()
         <UButton
           :href="item.url ?? ''"
           :disabled="!item.url"
-          label="View"
+          label="Download"
           icon="i-lucide-download"
           variant="soft"
           color="neutral"
