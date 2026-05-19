@@ -15,7 +15,7 @@ class UpdateUserSettings
         $currentSettings = UserSettings::fromModel($user)->include('*')->toArray();
 
         // Merge with new settings
-        $mergedSettings = [...$currentSettings, ...$settings];
+        $mergedSettings = array_replace_recursive($currentSettings, $settings);
 
         // Update user settings
         $user->settings = UserSettings::from($mergedSettings);
