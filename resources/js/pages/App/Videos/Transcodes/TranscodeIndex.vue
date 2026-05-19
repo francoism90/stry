@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoTranscodeController from '@/actions/App/Api/Videos/Controllers/VideoTranscodeController'
+import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import ActionBar from '@/components/Ui/ActionBar.vue'
@@ -16,7 +16,8 @@ const props = defineProps<{
   items: TranscodeCollection
 }>()
 
-const createTranscode = () => router.post(VideoTranscodeController.url(props.video.id), {}, { preserveScroll: true })
+const createTranscode = () =>
+  router.post(VideoDispatchTranscodeController.url(props.video.id), {}, { preserveScroll: true })
 
 useEcho<Video>(`videos.${props.video.id}`, '.transcode.created', () =>
   router.reload({ only: ['items'], reset: ['items'] }),

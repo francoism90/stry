@@ -1,4 +1,4 @@
-import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
+import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
 import type { UserSettings } from '@/types'
 import { useHttp, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'

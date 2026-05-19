@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Api\Videos\Controllers\VideoTranscodedController;
+use App\Web\Videos\Controllers\VideoTranscodedController;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 use Domain\Videos\Jobs\ImportVideo;

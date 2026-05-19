@@ -107,7 +107,7 @@ class Media extends BaseMedia
     protected function assetUri(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => rescue(fn () => $this->getTemporaryUrl(now()->addWeek())),
+            get: fn (): string => route('actions.media.download', $this),
         )->shouldCache();
     }
 }

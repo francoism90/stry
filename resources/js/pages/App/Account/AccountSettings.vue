@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserSettingsController from '@/actions/App/Api/Users/Controllers/UserSettingsController'
+import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { User, UserSettings } from '@/types'

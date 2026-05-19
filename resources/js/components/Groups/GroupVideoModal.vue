@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GroupToggleController from '@/actions/App/Api/Groups/Controllers/GroupToggleController'
+import GroupToggleController from '@/actions/App/Web/Groups/Controllers/GroupToggleController'
 import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
 import type { Group, Video } from '@/types'
 import { router } from '@inertiajs/vue3'

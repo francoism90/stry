@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TagOrderController from '@/actions/App/Api/Tags/Controllers/TagOrderController'
+import TagOrderController from '@/actions/App/Web/Tags/Controllers/TagOrderController'
 import { router } from '@inertiajs/vue3'
 
 const handle = async (close: () => void) =>

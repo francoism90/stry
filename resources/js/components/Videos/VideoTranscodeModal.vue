@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoTranscodeController from '@/actions/App/Api/Videos/Controllers/VideoTranscodeController'
+import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
@@ -9,7 +9,7 @@ const props = defineProps<{
 
 const handle = async (close: () => void) =>
   router.post(
-    VideoTranscodeController.url(props.item.id),
+    VideoDispatchTranscodeController.url(props.item.id),
     {},
     {
       preserveScroll: true,
