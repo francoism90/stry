@@ -66,24 +66,26 @@ const { getStreamInfo } = useMedia()
     </template>
 
     <template #footer="{ close }">
-      <UButton
-        label="Close"
-        color="neutral"
-        variant="soft"
-        @click.prevent="close"
-      />
+      <div class="flex justify-end gap-2">
+        <UButton
+          label="Close"
+          color="neutral"
+          variant="soft"
+          @click.prevent="close"
+        />
 
-      <UButton
-        v-if="item.url"
-        as="a"
-        :href="item.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        label="View / Download"
-        icon="i-lucide-download"
-        variant="soft"
-        color="neutral"
-      />
+        <UButton
+          v-if="item.url"
+          as="a"
+          :href="item.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          label="View / Download"
+          icon="i-lucide-download"
+          variant="soft"
+          color="neutral"
+        />
+      </div>
     </template>
   </UModal>
 </template>
