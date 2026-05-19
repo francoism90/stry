@@ -75,15 +75,15 @@ const { getStreamInfo } = useMedia()
         />
 
         <UButton
-          v-if="item.url"
           as="a"
-          :href="item.url"
+          :href="item.url ?? ''"
           target="_blank"
           rel="noopener noreferrer"
           label="View / Download"
           icon="i-lucide-download"
           variant="soft"
           color="neutral"
+          :disabled="!item.url"
         />
       </div>
     </template>
