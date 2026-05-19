@@ -1,4 +1,4 @@
-import type { AvatarProps, SelectMenuItem } from '@nuxt/ui'
+import type { AvatarProps, BadgeProps, SelectMenuItem } from '@nuxt/ui'
 
 export type FlashType = 'success' | 'error' | 'warning' | 'info' | 'primary'
 
@@ -25,7 +25,7 @@ export type ModelState = {
   name: string
   label: string
   icon: string
-  color: Badge['variants']['color']
+  color: BadgeProps['color']
 }
 
 export type FilterOption = {
@@ -108,9 +108,8 @@ export type MediaCustomProperties = {
 }
 
 export type Media = Model & {
-  asset?: string
-  url?: string | null
   name: string
+  url?: string | null
   file_name: string
   mime_type: string
   size: number
