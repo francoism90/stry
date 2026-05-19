@@ -9,7 +9,6 @@ vite.stry.test {
 }
 
 ws.stry.test {
-	import compress
 	reverse_proxy systemd-stry-reverb:6001
 }
 
