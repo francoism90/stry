@@ -75,15 +75,12 @@ const { getStreamInfo } = useMedia()
         />
 
         <UButton
-          as="a"
           :href="item.url ?? ''"
-          target="_blank"
-          rel="noopener noreferrer"
-          label="View / Download"
+          :disabled="!item.url"
+          label="View"
           icon="i-lucide-download"
           variant="soft"
           color="neutral"
-          :disabled="!item.url"
         />
       </div>
     </template>
