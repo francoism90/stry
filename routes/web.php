@@ -10,7 +10,6 @@ use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
 use App\Web\Profiles\Controllers\ProfileController;
-use App\Web\Profiles\Controllers\SwitchProfileController;
 use App\Web\Search\Controllers\SearchController;
 use App\Web\Search\Controllers\SearchGroupsController;
 use App\Web\Search\Controllers\SearchTagsController;
@@ -34,12 +33,11 @@ Route::resource('notifications', NotificationsController::class)->only(['index',
 
 // Profiles
 Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::post('/profiles/{profile}/switch', SwitchProfileController::class)->name('profiles.switch');
 
 // Resources
 Route::resource('collections', GroupController::class);
 Route::resource('tags', TagController::class);
-Route::resource('media', MediaController::class)->only(['show', 'update', 'destroy']);
+Route::resource('media', MediaController::class)->only(['update', 'destroy']);
 Route::resource('playlists', PlaylistController::class)->only(['update', 'destroy']);
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
 

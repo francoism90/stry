@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
+import SwitchProfileController from '@/actions/App/Api/Profiles/Controllers/SwitchProfileController'
 import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
 import ProfileFilters from '@/components/Profiles/ProfileFilters.vue'
 import ProfileList from '@/components/Profiles/ProfileList.vue'

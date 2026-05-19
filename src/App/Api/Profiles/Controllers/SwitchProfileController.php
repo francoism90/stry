@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Profiles\Controllers;
+namespace App\Api\Profiles\Controllers;
 
 use Domain\Profiles\Models\Profile;
 use Foundation\Http\Controllers\Controller;

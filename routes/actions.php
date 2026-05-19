@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 use App\Api\Groups\Controllers\GroupClearController;
 use App\Api\Groups\Controllers\GroupToggleController;
+use App\Api\Media\Controllers\MediaDownloadController;
 use App\Api\Notifications\Controllers\MarkAllNotificationsReadController;
+use App\Api\Profiles\Controllers\SwitchProfileController;
 use App\Api\Tags\Controllers\TagOrderController;
 use App\Api\Users\Controllers\UserSettingsController;
 use App\Api\Videos\Controllers\VideoImportController;
@@ -19,10 +21,20 @@ Route::prefix('/settings')->name('settings.')->group(function () {
     Route::patch('/', UserSettingsController::class)->name('update');
 });
 
+// Profiles
+Route::prefix('/profiles')->name('profiles.')->group(function () {
+    Route::post('/{profile}/switch', SwitchProfileController::class)->name('switch');
+});
+
 // Groups
 Route::prefix('/groups')->name('groups.')->group(function () {
     Route::post('/{group}/clear', GroupClearController::class)->name('clear');
     Route::post('/{group}/videos/{video}/toggle', GroupToggleController::class)->name('videos.toggle');
+});
+
+// Media
+Route::prefix('/media')->name('media.')->group(function () {
+    Route::get('/{media}/download', MediaDownloadController::class)->name('download');
 });
 
 // Notifications
