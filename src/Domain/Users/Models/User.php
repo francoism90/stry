@@ -226,6 +226,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
     }
 
+    public function getSettings(): UserSettings
+    {
+        return UserSettings::fromModel($this)->include('*');
+    }
+
     protected function avatar(): Attribute
     {
         return Attribute::make(
@@ -250,7 +255,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected function userSettings(): Attribute
     {
         return Attribute::make(
-            get: fn (): array => UserSettings::fromModel($this)->include('*')->toArray(),
+            get: fn (): array => $this->getSettings()->toArray(),
         )->shouldCache();
     }
 }
