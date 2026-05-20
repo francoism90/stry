@@ -31,6 +31,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 use Spatie\Permission\Traits\HasRoles;
+use Support\MediaLibrary\TemporaryUrls;
 
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
@@ -223,7 +224,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
         $media->setRelation('model', $this);
 
-        return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
     }
 
     public function getSettings(): UserSettings

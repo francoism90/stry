@@ -35,6 +35,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
+use Support\MediaLibrary\TemporaryUrls;
 
 class Video extends Model implements HasMedia
 {
@@ -341,7 +342,7 @@ class Video extends Model implements HasMedia
         return $this->getCaptionStreams()->isNotEmpty();
     }
 
-    public function thumbnailUrl(): ?string
+    protected function getThumbMedia(): ?Media
     {
         $media = $this->getFirstMedia('clips');
 
@@ -351,7 +352,29 @@ class Video extends Model implements HasMedia
 
         $media->setRelation('model', $this);
 
-        return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
+        return $media;
+    }
+
+    public function thumbnailUrl(): ?string
+    {
+        $media = $this->getThumbMedia();
+
+        if (! $media) {
+            return null;
+        }
+
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
+    }
+
+    public function thumbnailSrcset(): ?string
+    {
+        $media = $this->getThumbMedia();
+
+        if (! $media) {
+            return null;
+        }
+
+        return rescue(fn () => TemporaryUrls::make($media)->getSrcset('thumb'));
     }
 
     public function durationInSeconds(): float
@@ -384,6 +407,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->thumbnailUrl(),
+        )->shouldCache();
+    }
+
+    protected function thumbSrcset(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->thumbnailSrcset(),
         )->shouldCache();
     }
 
