@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImage;
 use Spatie\MediaLibrary\Support\PathGenerator\PathGeneratorFactory;
 
-class TemporaryUrls
+class MediaTemporaryUrl
 {
     public function __construct(
         protected readonly Media $media,
