@@ -35,7 +35,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
-use Support\MediaLibrary\MediaTemporaryUrl;
+use Support\MediaLibrary\TemporaryUrls;
 
 class Video extends Model implements HasMedia
 {
@@ -363,7 +363,7 @@ class Video extends Model implements HasMedia
             return null;
         }
 
-        return rescue(fn () => MediaTemporaryUrl::make($media)->getUrl('thumb'));
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
     }
 
     public function thumbnailSrcset(): ?string
@@ -374,7 +374,7 @@ class Video extends Model implements HasMedia
             return null;
         }
 
-        return rescue(fn () => MediaTemporaryUrl::make($media)->getSrcset('thumb'));
+        return rescue(fn () => TemporaryUrls::make($media)->getSrcset('thumb'));
     }
 
     public function durationInSeconds(): float
