@@ -27,6 +27,7 @@ defineProps<{
         <img
           v-if="item.thumb"
           :src="item.thumb"
+          :srcset="item.thumb_srcset ?? undefined"
           :alt="item.title"
           class="aspect-video w-full object-cover"
           loading="lazy"

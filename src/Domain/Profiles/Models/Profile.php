@@ -23,6 +23,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
+use Support\MediaLibrary\TemporaryUrls;
 
 class Profile extends Model implements HasMedia
 {
@@ -206,7 +207,7 @@ class Profile extends Model implements HasMedia
 
         $media->setRelation('model', $this);
 
-        return rescue(fn () => $media->getTemporaryUrl(now()->addWeek(), 'thumb'));
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
     }
 
     protected function avatar(): Attribute

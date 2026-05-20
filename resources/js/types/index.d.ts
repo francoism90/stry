@@ -164,6 +164,7 @@ export type Video = Model & {
   filesize?: string
   snapshot?: number
   thumb: string | null
+  thumb_srcset: string | null
   adult: boolean
   captioned: boolean
   liked: boolean | null
