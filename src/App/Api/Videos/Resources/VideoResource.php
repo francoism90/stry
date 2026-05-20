@@ -35,6 +35,7 @@ class VideoResource extends JsonResource
             'adult' => $this->adult,
             'captioned' => $this->captioned,
             'thumb' => $this->thumb,
+            'thumb_srcset' => $this->thumb_srcset,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
             'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
