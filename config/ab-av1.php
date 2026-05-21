@@ -79,7 +79,7 @@ return [
     |
     | Recommended presets:
     | - 0-2: Very slow, best compression (for archival)
-    | - 3-4: Slow, excellent compression (good for 1080p, recommended)
+    | - 3-4: Slow, excellent compression (good)
     | - 5-6: Medium speed, good compression (balanced)
     | - 7-8: Fast, lower compression (for quick encodes)
     |
@@ -88,7 +88,7 @@ return [
     |
     */
 
-    'preset' => env('AB_AV1_PRESET', 4),
+    'preset' => env('AB_AV1_PRESET', 6),
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +162,7 @@ return [
     |
     | Recommended values by use case:
     | - 95+: Near-transparent quality, large files
-    | - 90-94: Excellent quality, good balance (recommended for 1080p)
+    | - 90-94: Excellent quality, good balance
     | - 85-89: High quality, smaller files
     | - 80-84: Good quality, noticeable compression
     | - 75-79: Acceptable for most content
@@ -173,7 +173,7 @@ return [
     |
     */
 
-    'min_vmaf' => (int) env('AB_AV1_MIN_VMAF', 90),
+    'min_vmaf' => (int) env('AB_AV1_MIN_VMAF', 94),
 
     /*
     |--------------------------------------------------------------------------
@@ -182,6 +182,7 @@ return [
     |
     | Maximum allowed encode size as percentage of source.
     | Used to prevent oversized encodes.
+    | This is by default set to 300% to allow for cases where the source is already highly compressed.
     |
     */
 
