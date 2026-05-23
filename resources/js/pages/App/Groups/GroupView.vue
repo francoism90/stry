@@ -3,7 +3,7 @@ import { edit, index } from '@/actions/App/Web/Groups/Controllers/GroupControlle
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { Group, VideoCollection } from '@/types'
+import type { Filters, Group, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
@@ -12,6 +12,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   group: Group
   items: VideoCollection
+  filters: Filters
   sorters: SelectMenuItem[]
   sort?: string
 }>()
@@ -52,6 +53,7 @@ useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
               :sort="sort"
+              :captioned="filters?.captioned"
             />
           </template>
         </UDashboardToolbar>

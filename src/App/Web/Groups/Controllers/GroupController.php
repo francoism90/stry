@@ -85,6 +85,9 @@ class GroupController extends Controller implements HasMiddleware
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoGroupScope(group: $group, sort: $request->input('sort')))
             ->tap(new VideoProfileScope)
+            ->allowedFilters(
+                AllowedFilter::exact('captioned'),
+            )
             ->allowedSorts(
                 $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
@@ -100,6 +103,7 @@ class GroupController extends Controller implements HasMiddleware
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'filters' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);

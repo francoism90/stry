@@ -84,6 +84,9 @@ class TagController extends Controller implements HasMiddleware
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoProfileScope)
             ->whereIn('tagged', [$tag->getKey()])
+            ->allowedFilters(
+                AllowedFilter::exact('captioned'),
+            )
             ->allowedSorts(
                 $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
@@ -99,6 +102,7 @@ class TagController extends Controller implements HasMiddleware
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'filters' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);

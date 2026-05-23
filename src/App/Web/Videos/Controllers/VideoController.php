@@ -55,6 +55,7 @@ class VideoController extends Controller implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::custom('tagged', new FiltersTagged),
+                AllowedFilter::exact('captioned'),
             )
             ->allowedSorts(
                 $recommendedSort,
@@ -70,6 +71,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'filters' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);

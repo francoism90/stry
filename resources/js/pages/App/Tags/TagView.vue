@@ -3,7 +3,7 @@ import { edit, index } from '@/actions/App/Web/Tags/Controllers/TagController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { Tag, VideoCollection } from '@/types'
+import type { Filters, Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
@@ -11,6 +11,7 @@ import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
 const props = defineProps<{
   tag: Tag
   items: VideoCollection
+  filters: Filters
   sorters: SelectMenuItem[]
   sort?: string
 }>()
@@ -49,6 +50,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
               :sort="sort"
+              :captioned="filters?.captioned"
             />
           </template>
         </UDashboardToolbar>

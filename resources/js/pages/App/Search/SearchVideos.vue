@@ -13,9 +13,9 @@ defineOptions({ layout: DefaultLayout })
 defineProps<{
   search: string
   items: VideoCollection
+  filters: Filters
   sorters: SelectMenuItem[]
   sort: string
-  filters: Filters
 }>()
 </script>
 
