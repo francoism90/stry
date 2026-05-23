@@ -104,22 +104,6 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <UFormField
-            label="Alternative names"
-            :error="form.errors.titles"
-          >
-            <UTextarea
-              v-model="form.titles"
-              :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="1"
-              autocapitalize="words"
-              placeholder="Separate with new commas"
-              class="w-full"
-            />
-          </UFormField>
-
-          <USeparator />
-
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <UFormField
               label="Episode"
@@ -258,6 +242,22 @@ const onSubmit = () =>
                 </span>
               </template>
             </USelectMenu>
+          </UFormField>
+
+          <USeparator />
+
+          <UFormField
+            label="Alternative names"
+            :error="form.errors.titles"
+          >
+            <UTextarea
+              v-model="form.titles"
+              :model-modifiers="{ nullable: true, string: true, trim: true }"
+              :rows="1"
+              autocapitalize="words"
+              placeholder="Separate with new commas"
+              class="w-full"
+            />
           </UFormField>
 
           <USeparator />
