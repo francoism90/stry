@@ -35,6 +35,10 @@ class GetSimilarVideos
      */
     protected function seriesMatches(Video $video, int $limit = 10): Collection
     {
+        if (blank($video->season) && blank($video->episode) && blank($video->part)) {
+            return Collection::make();
+        }
+
         // Get the current locale and fallback locale for name matching
         $locale = App::currentLocale();
 
@@ -42,10 +46,6 @@ class GetSimilarVideos
 
         // Get the name in the current locale, falling back if necessary
         $name = $video->getTranslation('name', $locale);
-
-        if (blank($name)) {
-            return Collection::make();
-        }
 
         // Fetch all same-series episodes in order, then split into "after" and "before"
         // the current video so the next episode surfaces first.
