@@ -27,26 +27,21 @@ class FiltersUnseen implements Filter
         }
 
         // Find the "viewed" group for the user, which contains videos they've seen (if any).
-        $viewedGroup = Group::query()
+        $group = Group::query()
             ->where('user_id', $userId)
             ->where('type', GroupType::Viewed)
             ->first();
 
-        if (! $viewedGroup) {
+        if (! $group) {
             return;
         }
 
-        // Get the group ID and set up a custom callback to exclude videos in that group from the search results.
-        $groupId = (string) $viewedGroup->getKey();
-
         $previousCallback = $query->callback;
 
-        $query->callback = function ($typesense, $scoutQuery, $options) use ($groupId, $previousCallback) {
-            $exclude = "\$exclude(groupables, groupables.group_id:={$groupId})";
-
+        $query->callback = function ($typesense, $scoutQuery, $options) use ($group, $previousCallback) {
             $options['filter_by'] = filled($options['filter_by'] ?? '')
-                ? "{$options['filter_by']} && {$exclude}"
-                : $exclude;
+                ? sprintf('%s && $groupables(group_id:!=%d)', $options['filter_by'], $group->getKey())
+                : sprintf('$groupables(group_id:!=%d)', $group->getKey());
 
             if ($previousCallback) {
                 return $previousCallback($typesense, $scoutQuery, $options);
