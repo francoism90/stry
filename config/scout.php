@@ -312,7 +312,7 @@ return [
 
                     'default_sorting_field' => 'order',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '·', '(', ')', '[', ']'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
 
                 ],
 
@@ -454,7 +454,7 @@ return [
 
                     'default_sorting_field' => 'created_at',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '·', '(', ')', '[', ']'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
 
                     'stopwords' => [
                         // Base stop words.
@@ -532,7 +532,7 @@ return [
 
                     'default_sorting_field' => 'created_at',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '·', '(', ')', '[', ']'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
 
                 ],
 
