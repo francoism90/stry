@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Videos/Controllers/VideoController';
-import VideoTags from '@/components/Videos/VideoTags.vue';
-import type { Video } from '@/types';
+import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import VideoTags from '@/components/Videos/VideoTags.vue'
+import type { Video } from '@/types'
 
 const props = defineProps<{
   item: Video

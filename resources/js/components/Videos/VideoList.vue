@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VideoCard from '@/components/Videos/VideoCard.vue';
-import type { Video } from '@/types';
+import VideoCard from '@/components/Videos/VideoCard.vue'
+import type { Video } from '@/types'
 
 defineProps<{
   items: Video[] | undefined
