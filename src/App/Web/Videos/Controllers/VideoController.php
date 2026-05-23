@@ -71,7 +71,7 @@ class VideoController extends Controller implements HasMiddleware
                 AllowedSort::field('filesize')->defaultDescending(),
             )
             ->defaultSort($recommendedSort)
-            ->jsonSimplePaginate(defaultSize: 20);
+            ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),

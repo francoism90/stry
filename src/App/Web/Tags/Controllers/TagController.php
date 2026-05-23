@@ -100,7 +100,7 @@ class TagController extends Controller implements HasMiddleware
                 AllowedSort::field('filesize')->defaultDescending(),
             )
             ->defaultSort($recommendedSort)
-            ->jsonSimplePaginate(defaultSize: 20);
+            ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
