@@ -64,9 +64,9 @@ class SearchVideosController extends Controller implements HasMiddleware
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'filters' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
         ]);
     }
 }
