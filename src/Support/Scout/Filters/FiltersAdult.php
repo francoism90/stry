@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Support\Scout\Filters;
 
-use Domain\Tags\Models\Tag;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
-class FiltersTagged implements Filter
+class FiltersAdult implements Filter
 {
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
@@ -16,12 +15,6 @@ class FiltersTagged implements Filter
             return;
         }
 
-        $tag = Tag::findFromUlid($value);
-
-        if (! $tag) {
-            return;
-        }
-
-        $query->whereIn('tagged', [$tag->getKey()]);
+        $query->where('adult', filter_var($value, FILTER_VALIDATE_BOOLEAN));
     }
 }

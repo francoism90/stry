@@ -29,7 +29,9 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersAdult;
 use Support\Scout\Filters\FiltersTagged;
+use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class VideoController extends Controller implements HasMiddleware
@@ -56,6 +58,8 @@ class VideoController extends Controller implements HasMiddleware
             ->allowedFilters(
                 AllowedFilter::custom('tagged', new FiltersTagged),
                 AllowedFilter::exact('captioned'),
+                AllowedFilter::custom('unseen', new FiltersUnseen),
+                AllowedFilter::custom('adult', new FiltersAdult),
             )
             ->allowedSorts(
                 $recommendedSort,
