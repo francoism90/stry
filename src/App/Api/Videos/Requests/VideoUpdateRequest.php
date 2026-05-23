@@ -21,6 +21,7 @@ class VideoUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'titles' => ['sometimes', 'nullable', 'string', 'max:255'],
             'episode' => ['nullable', 'string', 'max:255'],
             'season' => ['nullable', 'string', 'max:255'],
             'part' => ['nullable', 'string', 'max:255'],

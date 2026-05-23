@@ -23,6 +23,7 @@ const { items, filter } = useTags(props.video.tags || [])
 
 const form = useForm(update(props.video.id), {
   name: props.video.name,
+  titles: props.video.titles || null,
   episode: props.video.episode || null,
   season: props.video.season || null,
   part: props.video.part || null,
@@ -98,9 +99,21 @@ const onSubmit = () =>
             </UInput>
           </UFormField>
 
+          <UFormField
+            label="Alternative names"
+            :error="form.errors.titles"
+          >
+            <UInput
+              v-model="form.titles"
+              :model-modifiers="{ nullable: true, string: true, trim: true }"
+              placeholder="Foo, foo2, foo3"
+              autocapitalize="words"
+            />
+          </UFormField>
+
           <USeparator />
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-4">
             <UFormField
               label="Episode"
               :error="form.errors.episode"
@@ -136,11 +149,7 @@ const onSubmit = () =>
                 autocapitalize="characters"
               />
             </UFormField>
-          </div>
 
-          <USeparator />
-
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <UFormField
               label="Snapshot"
               :error="form.errors.snapshot"
@@ -168,7 +177,11 @@ const onSubmit = () =>
                 </template>
               </UInput>
             </UFormField>
+          </div>
 
+          <USeparator />
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <UFormField
               label="Published"
               :error="form.errors.published_at"
@@ -242,7 +255,7 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
             <UFormField
               label="Summary"
               :error="form.errors.summary"

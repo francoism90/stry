@@ -152,7 +152,7 @@ export type Video = Model & {
   tags?: Tag[]
   name: string
   title: string
-  titles?: string[]
+  titles?: string
   description: string | null
   content?: string
   summary?: string
