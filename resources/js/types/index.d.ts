@@ -8,6 +8,13 @@ export type FlashData = {
   readonly type?: FlashType
 }
 
+export type Filters = Record<string, string>
+
+export type FilterOption = {
+  label: string
+  value: string
+}
+
 export type Model = {
   id: string
   created_at: string
@@ -26,11 +33,6 @@ export type ModelState = {
   label: string
   icon: string
   color: BadgeProps['color']
-}
-
-export type FilterOption = {
-  label: string
-  value: string
 }
 
 export type User = Model & {

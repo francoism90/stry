@@ -9,6 +9,7 @@ use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
@@ -19,10 +20,39 @@ class GetSimilarVideos
         $collect = VideoCollection::make();
 
         return $collect->merge([
+            ...$this->seriesMatches($video, $limit),
             ...$this->phraseMatches($video, $limit),
             ...$this->tagMatches($video, $limit),
             ...$this->randomCandidates($video, $limit),
         ])->unique('id')->take($limit);
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    protected function seriesMatches(Video $video, int $limit = 10): Collection
+    {
+        // Get the current locale
+        $locale = App::currentLocale();
+
+        // Get the video name in the current locale
+        $name = $video->getTranslation('name', $locale);
+
+        if (blank($name)) {
+            return Collection::make();
+        }
+
+        // Find videos with the same name in the current locale, excluding the original video
+        return Video::query()
+            ->whereKeyNot($video)
+            ->whereJsonContainsLocale('name', $locale, $name)
+            ->with('tags')
+            ->verified()
+            ->orderBy('season')
+            ->orderBy('episode')
+            ->orderBy('part')
+            ->take($limit)
+            ->get();
     }
 
     /**
@@ -114,7 +144,7 @@ class GetSimilarVideos
         // List of common words to exclude
         $commonWords = Config::array('videos.common_words');
 
-        $tokens = Str::of((string) $video->title)
+        $tokens = Str::of((string) $video->name)
             ->matchAll('/[\p{L}\p{N}]+/u')
             ->map(fn (string $word): string => Str::lower($word))
             ->reject(fn (string $word): bool => in_array($word, $commonWords, true))

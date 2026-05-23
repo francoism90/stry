@@ -9,6 +9,7 @@ use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Request;
@@ -40,6 +41,14 @@ class SearchVideosController extends Controller implements HasMiddleware
         // Scout builder
         $scout = ScoutBuilder::for(Video::search($query))
             ->tap(new VideoProfileScope)
+            ->allowedFilters(
+                AllowedFilter::exact('state'),
+                AllowedFilter::exact('adult'),
+                AllowedFilter::exact('captioned'),
+                AllowedFilter::exact('season'),
+                AllowedFilter::exact('episode'),
+                AllowedFilter::exact('part'),
+            )
             ->allowedSorts(
                 $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
@@ -57,6 +66,7 @@ class SearchVideosController extends Controller implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'filters' => fn () => $request->input('filter', []),
         ]);
     }
 }

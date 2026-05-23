@@ -4,7 +4,7 @@ import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilters from '@/components/Videos/VideoFilters.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import type { VideoCollection } from '@/types'
+import type { Filters, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
@@ -15,6 +15,7 @@ defineProps<{
   items: VideoCollection
   sorters: SelectMenuItem[]
   sort: string
+  filters: Filters
 }>()
 </script>
 
@@ -41,6 +42,7 @@ defineProps<{
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
               :sort="sort"
+              :captioned="filters?.captioned"
             />
           </template>
         </UDashboardToolbar>

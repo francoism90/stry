@@ -466,7 +466,7 @@ return [
                         'a', 'an', 'the', 'and', 'or', 'of', 'in', 'to',
 
                         // Generic media terms.
-                        'movie', 'film', 'show', 'tv', 'series', 'episode', 'season',
+                        'movie', 'film', 'part', 'show', 'tv', 'series', 'episode', 'season',
 
                         // Quality and source tags.
                         'full', 'hd', 'fhd', 'uhd', 'hdr', '4k', '720p', '1080p', '2160p',
