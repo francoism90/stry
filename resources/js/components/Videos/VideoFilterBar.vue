@@ -22,10 +22,15 @@ const form = useForm('get', '', {
   'page[number]': 1,
 })
 
-const onSubmit = () => {
-  form['filter[captioned]'] = formFilters.value.includes('captioned') ? 'true' : undefined
-  form['filter[unseen]'] = formFilters.value.includes('unseen') ? 'true' : undefined
+const onFiltersChange = (values: string[]) => {
+  formFilters.value = values
+  form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
+  form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
 
+  onSubmit()
+}
+
+const onSubmit = () => {
   form.submit({
     only: ['items', 'filters', 'sort'],
     reset: ['items'],
@@ -37,7 +42,7 @@ const onSubmit = () => {
 <template>
   <USelectMenu
     v-if="scopes?.length"
-    v-model="formFilters"
+    :model-value="formFilters"
     :items="scopes"
     :search-input="false"
     :ui="{ base: 'px-0', content: 'min-w-40' }"
@@ -47,8 +52,8 @@ const onSubmit = () => {
     variant="none"
     multiple
     clear
-    @update:modelValue="onSubmit"
-    @clear="onSubmit"
+    @update:modelValue="onFiltersChange"
+    @clear="onFiltersChange([])"
   />
 
   <USelectMenu
