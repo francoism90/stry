@@ -16,7 +16,6 @@ use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -47,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected function registerTelescope(): void
     {
-        if (Config::boolean('telescope.enabled') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+        if ((bool) config('telescope.enabled') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
