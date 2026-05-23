@@ -43,6 +43,21 @@ const onSubmit = () => {
 
 <template>
   <USelectMenu
+    :model-value="activeVideoFilters"
+    :items="videoOptions"
+    :search-input="false"
+    :ui="{ base: 'px-0', content: 'min-w-40' }"
+    placeholder="All videos"
+    label-key="label"
+    value-key="value"
+    variant="none"
+    multiple
+    clear
+    @update:model-value="onFiltersChange"
+    @clear="() => onFiltersChange([])"
+  />
+
+  <USelectMenu
     v-if="sorters?.length && results"
     v-model="form.sort"
     :model-modifiers="{ nullable: true }"
@@ -56,20 +71,5 @@ const onSubmit = () => {
     clear
     @update:modelValue="onSubmit"
     @clear="onSubmit"
-  />
-
-  <USelectMenu
-    :model-value="activeVideoFilters"
-    :items="videoOptions"
-    :search-input="false"
-    :ui="{ base: 'px-0', content: 'min-w-40' }"
-    placeholder="All videos"
-    label-key="label"
-    value-key="value"
-    variant="none"
-    multiple
-    clear
-    @update:model-value="onFiltersChange"
-    @clear="() => onFiltersChange([])"
   />
 </template>
