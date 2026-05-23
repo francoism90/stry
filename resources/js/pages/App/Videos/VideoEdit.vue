@@ -255,7 +255,7 @@ const onSubmit = () =>
               :model-modifiers="{ nullable: true, string: true, trim: true }"
               :rows="1"
               autocapitalize="words"
-              placeholder="Separate with new commas"
+              placeholder="Separated by commas"
               class="w-full"
             />
           </UFormField>
