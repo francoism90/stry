@@ -111,7 +111,7 @@ const onSubmit = () =>
             <UTextarea
               v-model="form.titles"
               :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="2"
+              :rows="1"
               autocapitalize="words"
               placeholder="Separate with new commas"
               class="w-full"
