@@ -87,7 +87,9 @@ RUN mkdir -p ${PNPM_HOME} \
     && chown -R docker:docker ${PNPM_HOME}
 
 # Add PostgreSQL APT repository and install client
-RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends postgresql-client-${POSTGRES_VERSION} \
     && apt-get clean \
