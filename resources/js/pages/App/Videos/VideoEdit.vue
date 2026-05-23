@@ -111,15 +111,16 @@ const onSubmit = () =>
             <UTextarea
               v-model="form.titles"
               :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="3"
+              :rows="2"
               autocapitalize="words"
+              placeholder="Separate with new commas"
               class="w-full"
             />
           </UFormField>
 
           <USeparator />
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-4">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <UFormField
               label="Episode"
               :error="form.errors.episode"
@@ -160,6 +161,34 @@ const onSubmit = () =>
           <USeparator />
 
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <UFormField
+              label="Snapshot"
+              :error="form.errors.snapshot"
+            >
+              <UInput
+                v-model="form.snapshot"
+                :model-modifiers="{ nullable: true, number: true }"
+                :ui="{ trailing: 'pe-1' }"
+                type="number"
+                placeholder="3.00"
+                aria-label="Set by progress"
+                step="0.01"
+                min="0"
+                :max="video.duration || undefined"
+              >
+                <template #trailing>
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    icon="i-lucide-image-down"
+                    aria-label="From progress"
+                    @click.prevent="form.snapshot = progress || null"
+                  />
+                </template>
+              </UInput>
+            </UFormField>
+
             <UFormField
               label="Published"
               :error="form.errors.published_at"
@@ -202,34 +231,6 @@ const onSubmit = () =>
                   />
                 </template>
               </UInputDate>
-            </UFormField>
-
-            <UFormField
-              label="Snapshot"
-              :error="form.errors.snapshot"
-            >
-              <UInput
-                v-model="form.snapshot"
-                :model-modifiers="{ nullable: true, number: true }"
-                :ui="{ trailing: 'pe-1' }"
-                type="number"
-                placeholder="3.00"
-                aria-label="Set by progress"
-                step="0.01"
-                min="0"
-                :max="video.duration || undefined"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-image-down"
-                    aria-label="From progress"
-                    @click.prevent="form.snapshot = progress || null"
-                  />
-                </template>
-              </UInput>
             </UFormField>
           </div>
 

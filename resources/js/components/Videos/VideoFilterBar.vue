@@ -3,7 +3,7 @@ import type { VideoFilters } from '@/types'
 import { modelFilters } from '@/utils/model'
 import { useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   results?: boolean
@@ -13,13 +13,7 @@ const props = defineProps<{
   filters?: VideoFilters
 }>()
 
-const formFilters = computed({
-  get: () => modelFilters(props.filters),
-  set: (values: string[]) => {
-    form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
-    form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
-  },
-})
+const formFilters = ref<string[]>(modelFilters(props.filters))
 
 const form = useForm('get', '', {
   sort: props.sort,
@@ -29,6 +23,9 @@ const form = useForm('get', '', {
 })
 
 const onSubmit = () => {
+  form['filter[captioned]'] = formFilters.value.includes('captioned') ? 'true' : undefined
+  form['filter[unseen]'] = formFilters.value.includes('unseen') ? 'true' : undefined
+
   form.submit({
     only: ['items', 'filters', 'sort'],
     reset: ['items'],
