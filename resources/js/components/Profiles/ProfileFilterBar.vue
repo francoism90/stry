@@ -10,12 +10,12 @@ const props = defineProps<{
 
 const form = useForm('get', '', {
   sort: props.sort,
-  'page[number]': 1,
+  page: 1,
 })
 
 const onSubmit = () => {
-  form.submit({
-    only: ['items', 'type', 'sort'],
+  form.get(window.location.pathname, {
+    only: ['items', 'sort'],
     reset: ['items'],
     preserveState: true,
   })
@@ -29,13 +29,12 @@ const onSubmit = () => {
     :model-modifiers="{ nullable: true }"
     :items="sorters"
     :search-input="false"
-    :ui="{ base: 'px-0', content: 'min-w-48' }"
+    :ui="{ base: 'px-0', content: 'min-w-40' }"
     placeholder="Sort by"
     label-key="label"
     value-key="value"
     variant="none"
     clear
     @update:modelValue="onSubmit"
-    @clear="onSubmit"
   />
 </template>

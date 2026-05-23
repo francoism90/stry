@@ -37,7 +37,7 @@ useFlash()
               wrapper: 'contents lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-4',
               title: 'wrap-anywhere capitalize',
               description: 'mt-0.5',
-              links: 'order-last mt-3 lg:mt-0',
+              links: 'order-last mt-3 flex-nowrap lg:mt-0',
             },
             pageBody: {
               base: 'mt-3 space-y-6',

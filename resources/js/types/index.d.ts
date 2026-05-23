@@ -8,6 +8,21 @@ export type FlashData = {
   readonly type?: FlashType
 }
 
+export type VideoFilters = {
+  captioned?: string | boolean
+  unseen?: string | boolean
+  tagged?: string
+  state?: string
+  season?: string
+  episode?: string
+  part?: string
+}
+
+export type FilterOption = {
+  label: string
+  value: string
+}
+
 export type Model = {
   id: string
   created_at: string
@@ -26,11 +41,6 @@ export type ModelState = {
   label: string
   icon: string
   color: BadgeProps['color']
-}
-
-export type FilterOption = {
-  label: string
-  value: string
 }
 
 export type User = Model & {
@@ -150,7 +160,7 @@ export type Video = Model & {
   tags?: Tag[]
   name: string
   title: string
-  titles?: string[]
+  titles?: string
   description: string | null
   content?: string
   summary?: string

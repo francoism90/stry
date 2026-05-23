@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import SearchBar from '@/components/Search/SearchBar.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import VideoFilters from '@/components/Videos/VideoFilters.vue'
+import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import type { VideoCollection } from '@/types'
+import type { VideoCollection, VideoFilters } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
@@ -13,7 +13,9 @@ defineOptions({ layout: DefaultLayout })
 defineProps<{
   search: string
   items: VideoCollection
+  filters: VideoFilters
   sorters: SelectMenuItem[]
+  scopes: SelectMenuItem[]
   sort: string
 }>()
 </script>
@@ -37,10 +39,12 @@ defineProps<{
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <VideoFilters
+            <VideoFilterBar
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
+              :scopes="scopes"
               :sort="sort"
+              :filters="filters"
             />
           </template>
         </UDashboardToolbar>

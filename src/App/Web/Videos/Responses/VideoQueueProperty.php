@@ -30,7 +30,7 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
         }
 
         return app(GetSimilarVideos::class)
-            ->handle(video: $this->video, limit: $this->limit ?? 18)
+            ->handle(video: $this->video, limit: $this->limit ?? 20)
             ->loadMissing('tags')
             ->toResourceCollection(VideoResource::class);
     }

@@ -11,9 +11,12 @@ import { Head, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
 import { computed } from 'vue'
 
+type LocaleOption = { label: string; value: string }
+
 const props = defineProps<{
   video: Video
   progress: number | null
+  locales: LocaleOption[]
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
@@ -23,6 +26,7 @@ const { items, filter } = useTags(props.video.tags || [])
 
 const form = useForm(update(props.video.id), {
   name: props.video.name,
+  titles: props.video.titles || null,
   episode: props.video.episode || null,
   season: props.video.season || null,
   part: props.video.part || null,
@@ -100,7 +104,23 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <UFormField
+            label="Alternative names"
+            :error="form.errors.titles"
+          >
+            <UTextarea
+              v-model="form.titles"
+              :model-modifiers="{ nullable: true, string: true, trim: true }"
+              :rows="1"
+              autocapitalize="words"
+              placeholder="Separate with new commas"
+              class="w-full"
+            />
+          </UFormField>
+
+          <USeparator />
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <UFormField
               label="Episode"
               :error="form.errors.episode"
@@ -140,7 +160,7 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <UFormField
               label="Snapshot"
               :error="form.errors.snapshot"
@@ -242,7 +262,7 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
             <UFormField
               label="Summary"
               :error="form.errors.summary"
@@ -250,7 +270,7 @@ const onSubmit = () =>
               <UTextarea
                 v-model="form.summary"
                 :model-modifiers="{ nullable: true, string: true, trim: true }"
-                :rows="5"
+                :rows="4"
                 autoresize
                 placeholder="Enter markdown"
                 class="w-full"

@@ -11,7 +11,9 @@ use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
+use Domain\Users\Enums\UserLocale;
 use Domain\Videos\Actions\UpdateVideoDetails;
+use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
@@ -30,6 +32,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters\FiltersTagged;
+use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class VideoController extends Controller implements HasMiddleware
@@ -55,6 +58,8 @@ class VideoController extends Controller implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::custom('tagged', new FiltersTagged),
+                AllowedFilter::exact('captioned'),
+                AllowedFilter::custom('unseen', new FiltersUnseen),
             )
             ->allowedSorts(
                 $recommendedSort,
@@ -70,8 +75,10 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
+            'scopes' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'filters' => fn () => $request->input('filter', []),
+            'sort' => fn () => $request->input('sort'),
         ]);
     }
 
@@ -110,6 +117,7 @@ class VideoController extends Controller implements HasMiddleware
         return Inertia::render('App/Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            'locales' => fn () => UserLocale::options(),
         ]);
     }
 

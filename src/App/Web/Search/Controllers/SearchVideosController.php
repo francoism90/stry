@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Videos\Resources\VideoResource;
+use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Controllers\Controller;
+use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\Request;
@@ -18,6 +20,8 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersTagged;
+use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class SearchVideosController extends Controller implements HasMiddleware
@@ -40,6 +44,15 @@ class SearchVideosController extends Controller implements HasMiddleware
         // Scout builder
         $scout = ScoutBuilder::for(Video::search($query))
             ->tap(new VideoProfileScope)
+            ->allowedFilters(
+                AllowedFilter::exact('state'),
+                AllowedFilter::exact('captioned'),
+                AllowedFilter::exact('season'),
+                AllowedFilter::exact('episode'),
+                AllowedFilter::exact('part'),
+                AllowedFilter::custom('unseen', new FiltersUnseen),
+                AllowedFilter::custom('tagged', new FiltersTagged),
+            )
             ->allowedSorts(
                 $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
@@ -55,8 +68,10 @@ class SearchVideosController extends Controller implements HasMiddleware
         return Inertia::render('App/Search/SearchVideos', [
             'search' => fn () => $query,
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
+            'scopes' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'filters' => fn () => $request->input('filter', []),
+            'sort' => fn () => $request->input('sort'),
         ]);
     }
 }

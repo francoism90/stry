@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class GroupController extends Controller implements HasMiddleware
@@ -85,6 +86,10 @@ class GroupController extends Controller implements HasMiddleware
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoGroupScope(group: $group, sort: $request->input('sort')))
             ->tap(new VideoProfileScope)
+            ->allowedFilters(
+                AllowedFilter::exact('captioned'),
+                AllowedFilter::custom('unseen', new FiltersUnseen),
+            )
             ->allowedSorts(
                 $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
@@ -100,8 +105,9 @@ class GroupController extends Controller implements HasMiddleware
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'filters' => fn () => $request->input('filter', []),
+            'sort' => fn () => $request->input('sort'),
         ]);
     }
 

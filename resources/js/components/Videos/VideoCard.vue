@@ -3,9 +3,13 @@ import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import type { Video } from '@/types'
 
-defineProps<{
+const props = defineProps<{
   item: Video
+  index?: number
 }>()
+
+const isAboveFold = (props.index ?? 0) < 4
+const isLcp = props.index === 0
 </script>
 
 <template>
@@ -30,7 +34,8 @@ defineProps<{
           :srcset="item.thumb_srcset ?? undefined"
           :alt="item.title"
           class="aspect-video w-full object-cover"
-          loading="lazy"
+          :loading="isAboveFold ? 'eager' : 'lazy'"
+          :fetchpriority="isLcp ? 'high' : 'auto'"
           decoding="auto"
         />
 

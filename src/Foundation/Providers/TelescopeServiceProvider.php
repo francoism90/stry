@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Foundation\Providers;
 
 use Domain\Users\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
@@ -12,15 +13,8 @@ use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
-    public function boot()
-    {
-        parent::boot();
-    }
-
     public function register(): void
     {
-        parent::register();
-
         Telescope::night();
 
         $this->hideSensitiveRequestDetails();
@@ -31,10 +25,23 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             }
 
             return $entry->isReportableException() ||
-                   $entry->isFailedRequest() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->isSlowQuery() ||
+                $entry->hasMonitoredTag();
+        });
+
+        Telescope::filterBatch(function (Collection $entries) {
+            if ($this->app->environment('local')) {
+                return true;
+            }
+
+            return $entries->contains(fn (IncomingEntry $entry) => $entry->isReportableException() ||
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->isSlowQuery() ||
+                $entry->hasMonitoredTag()
+            );
         });
     }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
-import GroupFilters from '@/components/Groups/GroupFilters.vue'
+import GroupFilterBar from '@/components/Groups/GroupFilterBar.vue'
 import GroupList from '@/components/Groups/GroupList.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { GroupCollection } from '@/types'
@@ -24,7 +24,7 @@ defineProps<{
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <GroupFilters
+            <GroupFilterBar
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
               :sort="sort"

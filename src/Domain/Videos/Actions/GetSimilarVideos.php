@@ -9,6 +9,7 @@ use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Models\Video;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
@@ -18,11 +19,57 @@ class GetSimilarVideos
     {
         $collect = VideoCollection::make();
 
+        // Split the limit across different strategies to get a diverse set of similar videos.
+        $take = (int) ceil($limit / 2);
+
         return $collect->merge([
-            ...$this->phraseMatches($video, $limit),
-            ...$this->tagMatches($video, $limit),
-            ...$this->randomCandidates($video, $limit),
+            ...$this->seriesMatches($video, $take),
+            ...$this->phraseMatches($video, $take),
+            ...$this->tagMatches($video, $take),
+            ...$this->randomCandidates($video, $take),
         ])->unique('id')->take($limit);
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    protected function seriesMatches(Video $video, int $limit = 10): Collection
+    {
+        // If the video doesn't have any series information, we can't use this strategy.
+        if (blank($video->season) && blank($video->episode) && blank($video->part)) {
+            return Collection::make();
+        }
+
+        // Get the current locale and fallback locale for name matching
+        $locale = App::currentLocale();
+
+        $fallback = App::getFallbackLocale();
+
+        // Get the name in the current locale, falling back if necessary
+        $name = $video->getTranslation('name', $locale);
+
+        if (blank($name)) {
+            return Collection::make();
+        }
+
+        // Fetch all same-series episodes in order, then split into "after" and "before"
+        // the current video so the next episode surfaces first.
+        [$after, $before] = Video::query()
+            ->whereKeyNot($video)
+            ->whereJsonContainsLocales('name', array_unique([$locale, $fallback]), $name)
+            ->with('tags')
+            ->verified()
+            ->orderBy('season')
+            ->orderBy('episode')
+            ->orderBy('part')
+            ->get()
+            ->partition(fn (Video $model): bool => [
+                $model->season ?? '', $model->episode ?? '', $model->part ?? '',
+            ] > [
+                $video->season ?? '', $video->episode ?? '', $video->part ?? '',
+            ]);
+
+        return $after->merge($before)->take($limit);
     }
 
     /**
@@ -114,7 +161,7 @@ class GetSimilarVideos
         // List of common words to exclude
         $commonWords = Config::array('videos.common_words');
 
-        $tokens = Str::of((string) $video->title)
+        $tokens = Str::of((string) $video->name)
             ->matchAll('/[\p{L}\p{N}]+/u')
             ->map(fn (string $word): string => Str::lower($word))
             ->reject(fn (string $word): bool => in_array($word, $commonWords, true))
