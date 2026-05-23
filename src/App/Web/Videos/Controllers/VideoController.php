@@ -13,6 +13,7 @@ use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Users\Enums\UserLocale;
 use Domain\Videos\Actions\UpdateVideoDetails;
+use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
@@ -30,7 +31,6 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters\FiltersAdult;
 use Support\Scout\Filters\FiltersTagged;
 use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
@@ -60,7 +60,6 @@ class VideoController extends Controller implements HasMiddleware
                 AllowedFilter::custom('tagged', new FiltersTagged),
                 AllowedFilter::exact('captioned'),
                 AllowedFilter::custom('unseen', new FiltersUnseen),
-                AllowedFilter::custom('adult', new FiltersAdult),
             )
             ->allowedSorts(
                 $recommendedSort,
@@ -76,9 +75,10 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'filters' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 

@@ -15,6 +15,7 @@ defineProps<{
   items: VideoCollection
   filters: VideoFilters
   sorters: SelectMenuItem[]
+  scopes: SelectMenuItem[]
   sort: string
 }>()
 </script>
@@ -41,6 +42,7 @@ defineProps<{
             <VideoFilterBar
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
+              :scopes="scopes"
               :sort="sort"
               :filters="filters"
             />

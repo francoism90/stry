@@ -13,6 +13,7 @@ const props = defineProps<{
   items: VideoCollection
   filters: VideoFilters
   sorters: SelectMenuItem[]
+  scopes: SelectMenuItem[]
   sort?: string
 }>()
 
@@ -49,6 +50,7 @@ useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.ur
             <VideoFilterBar
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
+              :scopes="scopes"
               :sort="sort"
               :filters="filters"
             />

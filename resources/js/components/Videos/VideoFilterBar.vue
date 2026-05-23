@@ -8,16 +8,18 @@ import { computed } from 'vue'
 const props = defineProps<{
   results?: boolean
   sorters?: SelectMenuItem[]
+  scopes?: SelectMenuItem[]
   sort?: string | undefined
   filters?: VideoFilters
 }>()
 
-const videoOptions: SelectMenuItem[] = [
-  { label: 'Captioned', value: 'captioned' },
-  { label: 'Unseen', value: 'unseen' },
-]
-
-const activeVideoFilters = computed(() => modelFilters(props.filters))
+const formFilters = computed({
+  get: () => modelFilters(props.filters),
+  set: (values: string[]) => {
+    form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
+    form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
+  },
+})
 
 const form = useForm('get', '', {
   sort: props.sort,
@@ -25,12 +27,6 @@ const form = useForm('get', '', {
   'filter[unseen]': props.filters?.unseen,
   'page[number]': 1,
 })
-
-const onFiltersChange = (values: string[]) => {
-  form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
-  form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
-  onSubmit()
-}
 
 const onSubmit = () => {
   form.submit({
@@ -43,18 +39,19 @@ const onSubmit = () => {
 
 <template>
   <USelectMenu
-    :model-value="activeVideoFilters"
-    :items="videoOptions"
+    v-if="scopes?.length"
+    v-model="formFilters"
+    :items="scopes"
     :search-input="false"
     :ui="{ base: 'px-0', content: 'min-w-40' }"
-    placeholder="All videos"
+    placeholder="Filters"
     label-key="label"
     value-key="value"
     variant="none"
     multiple
     clear
-    @update:model-value="onFiltersChange"
-    @clear="() => onFiltersChange([])"
+    @update:modelValue="onSubmit"
+    @clear="onSubmit"
   />
 
   <USelectMenu

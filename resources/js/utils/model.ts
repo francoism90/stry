@@ -5,5 +5,5 @@ export const uniqueModels = (values: Model[]) =>
 
 export const modelFilters = (values?: Record<string, unknown>): string[] =>
   Object.entries(values ?? {})
-    .filter(([, value]) => value != null && value !== '')
+    .filter(([, value]) => value != null && value !== false && value !== '')
     .map(([key]) => key)
