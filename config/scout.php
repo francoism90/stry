@@ -344,6 +344,11 @@ return [
                             'optional' => true,
                         ],
                         [
+                            'name' => 'titles',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
                             'name' => 'identifier',
                             'type' => 'string',
                             'optional' => true,
@@ -471,7 +476,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, tags, synonyms, identifier, released',
+                    'query_by' => 'name, titles, description, tags, synonyms, identifier, released',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],
