@@ -2,12 +2,14 @@ FROM docker.io/rust:latest AS builder
 
 WORKDIR /tmp
 
+# Install build tools
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    ca-certificates curl build-essential cmake ninja-build musl-tools \
-    pkg-config libssl-dev python3 python3-venv
+    ca-certificates curl build-essential cmake ninja-build musl-tools pkg-config libssl-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# FFmpeg
+# FFmpeg Build Extraction
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) ARCH="linux64" ;; \
       aarch64) ARCH="linuxarm64" ;; \
@@ -34,16 +36,10 @@ RUN arch="$(uname -m)" && case "$arch" in \
     && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
     && chmod +x /usr/local/bin/packager
 
-# Shaka Streamer
-RUN python3 -m venv /opt/shaka-streamer-env
-RUN /opt/shaka-streamer-env/bin/pip install shaka-streamer
-
-# ab-av1
-RUN cargo install ab-av1 --root /usr/local
-
-# Clean up
-RUN apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# ab-av1 (use BuildKit cache mounts)
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    cargo install ab-av1 --root /usr/local
 
 FROM docker.io/dunglas/frankenphp:latest AS base
 
@@ -70,15 +66,17 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
-# Install dependencies
+# Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    bash ca-certificates libcap2-bin curl wget unzip awscli \
-    python3 nano git openssh-client postgresql-client-common \
+    ca-certificates libcap2-bin curl unzip awscli \
+    python3 python3-venv python3-pip gpg nano git openssh-client \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
-    libavif-bin jpegoptim optipng pngquant gifsicle
+    libavif-bin jpegoptim optipng pngquant gifsicle \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
 RUN groupadd -g ${GID} docker \
@@ -90,15 +88,28 @@ RUN mkdir -p ${PNPM_HOME} \
 
 # Add PostgreSQL APT repository and install client
 RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y \
-    && apt-get install -y postgresql-client-${POSTGRES_VERSION}
+    && apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-${POSTGRES_VERSION} \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Add NodeSource APT repository and install Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-    && apt-get install -y nodejs
+# NodeSource Installation Block
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://nodesource.com | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://nodesource.com{NODE_VERSION}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create necessary directories
 RUN mkdir -p /app /config /data /cache /media /import \
     && chown -R docker:docker /app /config /data /cache /media /import
+
+# Build Shaka Streamer and set up Python environment
+RUN python3 -m venv /opt/shaka-streamer-env \
+    && /opt/shaka-streamer-env/bin/pip install --no-cache-dir shaka-streamer \
+    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
@@ -106,16 +117,12 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
 
-# Copy Shaka Streamer virtual environment from builder stage
-COPY --from=builder /opt/shaka-streamer-env /opt/shaka-streamer-env
-RUN ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
-
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Install PHP extensions
-run install-php-extensions @composer \
+RUN install-php-extensions @composer \
     apcu bcmath exif ffi gd \
     igbinary imagick inotify intl pcntl \
     pdo_pgsql redis sockets uv zip
@@ -125,16 +132,16 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm config set store-dir ${PNPM_HOME}/store
 
+# Strip file capabilities from frankenphp
+RUN setcap -r /usr/local/bin/frankenphp
+
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Strip file capabilities from frankenphp
-RUN setcap -r /usr/local/bin/frankenphp
-
-# Clean up
+# Clean up unnecessary files and caches to reduce image size
 RUN apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.npm /root/.config
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
