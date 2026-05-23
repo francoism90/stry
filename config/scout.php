@@ -312,7 +312,7 @@ return [
 
                     'default_sorting_field' => 'order',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '·', '(', ')', '[', ']'],
 
                 ],
 
@@ -454,14 +454,14 @@ return [
 
                     'default_sorting_field' => 'created_at',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '·', '(', ')', '[', ']'],
 
                     'stopwords' => [
                         // Base stop words.
                         'a', 'an', 'the', 'and', 'or', 'of', 'in', 'to',
 
                         // Generic media terms.
-                        'movie', 'film', 'show', 'tv', 'series', 'episode', 'season', 'part',
+                        'movie', 'film', 'show', 'tv', 'series', 'episode', 'season',
 
                         // Quality and source tags.
                         'full', 'hd', 'fhd', 'uhd', 'hdr', '4k', '720p', '1080p', '2160p',
@@ -532,7 +532,7 @@ return [
 
                     'default_sorting_field' => 'created_at',
 
-                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':'],
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '·', '(', ')', '[', ']'],
 
                 ],
 

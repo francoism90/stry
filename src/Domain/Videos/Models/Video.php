@@ -389,10 +389,17 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    protected function label(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => implode(' · ', array_filter([$this->identifier, $this->name])),
+        )->shouldCache();
+    }
+
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => implode(' - ', array_filter([$this->identifier, $this->name, $this->part])),
+            get: fn (): string => implode(' - ', array_filter([$this->label, $this->part])),
         )->shouldCache();
     }
 
