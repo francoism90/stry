@@ -14,6 +14,10 @@ trim_trailing_white_space_on_save = true
 [Makefile]
 indent_style = tab
 
+[{Caddyfile,*.Caddyfile}]
+indent_style = tab
+indent_size = 4
+
 [*.{php,json,yml,xml,md}]
 indent_size = 4
 
