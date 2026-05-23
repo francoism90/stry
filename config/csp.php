@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Csp\Presets\BunnyFonts;
 use Support\Csp\Nonce\ViteNonceGenerator;
 use Support\Csp\Presets\BasicPreset;
 
@@ -14,6 +15,7 @@ return [
      */
     'presets' => [
         BasicPreset::class,
+        BunnyFonts::class,
     ],
 
     /**
