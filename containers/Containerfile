@@ -142,6 +142,9 @@ FROM base AS production
 
 WORKDIR /app
 
+# Copy application source
+COPY --chown=docker:docker . /app
+
 # Switch to non-root user
 USER docker
 
