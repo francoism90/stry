@@ -270,7 +270,7 @@ const onSubmit = () =>
               <UTextarea
                 v-model="form.summary"
                 :model-modifiers="{ nullable: true, string: true, trim: true }"
-                :rows="5"
+                :rows="4"
                 autoresize
                 placeholder="Enter markdown"
                 class="w-full"
