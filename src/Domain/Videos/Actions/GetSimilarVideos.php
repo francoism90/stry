@@ -35,6 +35,7 @@ class GetSimilarVideos
      */
     protected function seriesMatches(Video $video, int $limit = 10): Collection
     {
+        // If the video doesn't have any series information, we can't use this strategy.
         if (blank($video->season) && blank($video->episode) && blank($video->part)) {
             return Collection::make();
         }
@@ -46,6 +47,10 @@ class GetSimilarVideos
 
         // Get the name in the current locale, falling back if necessary
         $name = $video->getTranslation('name', $locale);
+
+        if (blank($name)) {
+            return Collection::make();
+        }
 
         // Fetch all same-series episodes in order, then split into "after" and "before"
         // the current video so the next episode surfaces first.
