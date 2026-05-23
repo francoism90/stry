@@ -35,10 +35,12 @@ class GetSimilarVideos
      */
     protected function seriesMatches(Video $video, int $limit = 10): Collection
     {
-        // Get the current locale
+        // Get the current locale and fallback locale for name matching
         $locale = App::currentLocale();
 
-        // Get the video name in the current locale
+        $fallback = App::getFallbackLocale();
+
+        // Get the name in the current locale, falling back if necessary
         $name = $video->getTranslation('name', $locale);
 
         if (blank($name)) {
@@ -49,7 +51,7 @@ class GetSimilarVideos
         // the current video so the next episode surfaces first.
         [$after, $before] = Video::query()
             ->whereKeyNot($video)
-            ->whereJsonContainsLocale('name', $locale, $name)
+            ->whereJsonContainsLocales('name', array_unique([$locale, $fallback]), $name)
             ->with('tags')
             ->verified()
             ->orderBy('season')
