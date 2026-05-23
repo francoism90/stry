@@ -80,9 +80,6 @@ RUN apt-get update \
     intel-media-va-driver-non-free \
     libavif-bin jpegoptim optipng pngquant gifsicle
 
-# Strip file capabilities from frankenphp (not needed on port 8000, and incompatible with NoNewPrivileges)
-RUN setcap -r /usr/local/bin/frankenphp
-
 # Create non-root user
 RUN groupadd -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
@@ -131,6 +128,9 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 # Entrypoint
 COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Strip file capabilities from frankenphp
+RUN setcap -r /usr/local/bin/frankenphp
 
 # Clean up
 RUN apt-get clean && apt-get autoremove -y \
