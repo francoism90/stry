@@ -32,7 +32,7 @@ const onFiltersChange = (values: string[]) => {
 
 const onSubmit = () => {
   form.submit({
-    only: ['items', 'filters', 'sort'],
+    only: ['items', 'filter', 'sort'],
     reset: ['items'],
     preserveState: true,
   })
