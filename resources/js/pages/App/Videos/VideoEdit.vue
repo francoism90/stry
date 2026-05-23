@@ -11,9 +11,12 @@ import { Head, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
 import { computed } from 'vue'
 
+type LocaleOption = { label: string; value: string }
+
 const props = defineProps<{
   video: Video
   progress: number | null
+  locales: LocaleOption[]
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })

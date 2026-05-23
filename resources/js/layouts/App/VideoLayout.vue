@@ -6,14 +6,17 @@ import { index as transcodes } from '@/actions/App/Web/Videos/Controllers/VideoT
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { index } from '@/routes/videos'
 import type { Video } from '@/types'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
+  locales?: SelectItem[]
 }>()
+
+const page = usePage()
 
 const links: NavigationMenuItem[] = [
   {
@@ -48,6 +51,7 @@ const tabs: NavigationMenuItem[] = [
 ]
 
 const meta = computed(() => [props.video.timestamp, props.video.filesize, props.video.user?.name].filter(Boolean))
+const locale = computed(() => page.props.locale)
 
 useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
 useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
@@ -63,10 +67,7 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(
 
     <template #body>
       <UPage class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-        <UPageHeader
-          :title="video.title"
-          :links="links"
-        >
+        <UPageHeader :title="video.title">
           <template #description>
             <div class="dot-separated flex flex-wrap items-center text-sm text-muted">
               <span
@@ -76,6 +77,26 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(
                 {{ item }}
               </span>
             </div>
+          </template>
+
+          <template #links>
+            <USelect
+              v-if="props.locales"
+              :model-value="locale"
+              :items="props.locales"
+              class="w-28"
+            />
+
+            <UButton
+              v-for="link in links"
+              :key="link.label"
+              :label="link.label"
+              :icon="link.icon as string"
+              :to="link.to as string"
+              color="neutral"
+              variant="outline"
+              size="sm"
+            />
           </template>
         </UPageHeader>
 

@@ -11,6 +11,7 @@ use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
+use Domain\Users\Enums\UserLocale;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
@@ -116,6 +117,7 @@ class VideoController extends Controller implements HasMiddleware
         return Inertia::render('App/Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            'locales' => fn () => UserLocale::options(),
         ]);
     }
 
