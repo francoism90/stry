@@ -50,7 +50,6 @@ FROM docker.io/dunglas/frankenphp:latest AS base
 ARG UID=1000
 ARG GID=1000
 ARG TZ=UTC
-ARG DEV=false
 ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
 
@@ -141,23 +140,14 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS production
 
-ARG DEV
-ARG APP_REPO
-ARG APP_REF=main
-
 WORKDIR /app
-
-# Clone repository at the specified branch, tag, or commit
-RUN git clone "${APP_REPO}" . \
-    && git checkout "${APP_REF}" \
-    && chown -R docker:docker /app
 
 # Switch to non-root user
 USER docker
 
 # Install PHP dependencies
 RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID} \
-    composer install --prefer-dist $([ "$DEV" != "true" ] && echo "--no-dev") --optimize-autoloader --no-interaction --no-scripts
+    composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Install Node.js dependencies
 RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
