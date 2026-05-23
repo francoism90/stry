@@ -39,7 +39,6 @@ const onSubmit = () => {
     variant="none"
     clear
     @update:modelValue="onSubmit"
-    @clear="onSubmit"
   />
 
   <USelectMenu
@@ -55,6 +54,5 @@ const onSubmit = () => {
     variant="none"
     clear
     @update:modelValue="onSubmit"
-    @clear="onSubmit"
   />
 </template>
