@@ -105,9 +105,9 @@ class GroupController extends Controller implements HasMiddleware
         return Inertia::render('App/Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'filters' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
         ]);
     }
 
