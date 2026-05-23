@@ -19,11 +19,14 @@ class GetSimilarVideos
     {
         $collect = VideoCollection::make();
 
+        // Split the limit across different strategies to get a diverse set of similar videos.
+        $take = (int) ceil($limit / 2);
+
         return $collect->merge([
-            ...$this->seriesMatches($video, $limit),
-            ...$this->phraseMatches($video, $limit),
-            ...$this->tagMatches($video, $limit),
-            ...$this->randomCandidates($video, $limit),
+            ...$this->seriesMatches($video, $take),
+            ...$this->phraseMatches($video, $take),
+            ...$this->tagMatches($video, $take),
+            ...$this->randomCandidates($video, $take),
         ])->unique('id')->take($limit);
     }
 
