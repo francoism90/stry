@@ -88,7 +88,7 @@ RUN mkdir -p ${PNPM_HOME} \
 
 # Add PostgreSQL APT repository and install client
 RUN mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://postgresql.org | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg \
     && CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME") \
     && echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt ${CODENAME}-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
