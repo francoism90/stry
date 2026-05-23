@@ -42,8 +42,9 @@ class GetSimilarVideos
             return Collection::make();
         }
 
-        // Find videos with the same name in the current locale, excluding the original video
-        return Video::query()
+        // Fetch all same-series episodes in order, then split into "after" and "before"
+        // the current video so the next episode surfaces first.
+        [$after, $before] = Video::query()
             ->whereKeyNot($video)
             ->whereJsonContainsLocale('name', $locale, $name)
             ->with('tags')
@@ -51,8 +52,14 @@ class GetSimilarVideos
             ->orderBy('season')
             ->orderBy('episode')
             ->orderBy('part')
-            ->take($limit)
-            ->get();
+            ->get()
+            ->partition(fn (Video $model): bool => [
+                $model->season ?? '', $model->episode ?? '', $model->part ?? '',
+            ] > [
+                $video->season ?? '', $video->episode ?? '', $video->part ?? '',
+            ]);
+
+        return $after->merge($before)->take($limit);
     }
 
     /**
