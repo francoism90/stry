@@ -75,7 +75,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     bash ca-certificates libcap2-bin curl wget unzip awscli \
-    python3 git openssh-client postgresql-client-common \
+    python3 vi git openssh-client postgresql-client-common \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
@@ -142,11 +142,15 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 FROM base AS production
 
 ARG DEV
+ARG APP_REPO
+ARG APP_REF=main
 
 WORKDIR /app
 
-# Copy application source
-COPY --chown=docker:docker . /app
+# Clone repository at the specified branch, tag, or commit
+RUN git clone "${APP_REPO}" . \
+    && git checkout "${APP_REF}" \
+    && chown -R docker:docker /app
 
 # Switch to non-root user
 USER docker
