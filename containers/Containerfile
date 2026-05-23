@@ -50,6 +50,7 @@ FROM docker.io/dunglas/frankenphp:latest AS base
 ARG UID=1000
 ARG GID=1000
 ARG TZ=UTC
+ARG DEV=false
 ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
 
@@ -140,6 +141,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 FROM base AS production
 
+ARG DEV
+
 WORKDIR /app
 
 # Copy application source
@@ -150,7 +153,7 @@ USER docker
 
 # Install PHP dependencies
 RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID} \
-    composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
+    composer install --prefer-dist $([ "$DEV" != "true" ] && echo "--no-dev") --optimize-autoloader --no-interaction --no-scripts
 
 # Install Node.js dependencies
 RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \

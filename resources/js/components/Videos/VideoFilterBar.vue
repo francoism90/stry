@@ -29,7 +29,7 @@ const formFilters = computed<string[]>({
 })
 
 const onSubmit = () => {
-  form.submit({
+  form.get(window.location.pathname, {
     only: ['items', 'filter', 'sort'],
     reset: ['items'],
     preserveState: true,

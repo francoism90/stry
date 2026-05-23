@@ -14,7 +14,7 @@ const form = useForm('get', '', {
 })
 
 const onSubmit = () => {
-  form.submit({
+  form.get(window.location.pathname, {
     only: ['items', 'sort'],
     reset: ['items'],
     preserveState: true,
