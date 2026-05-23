@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SearchBar from '@/components/Search/SearchBar.vue'
-import TagFilters from '@/components/Tags/TagFilters.vue'
+import TagFilterBar from '@/components/Tags/TagFilterBar.vue'
 import TagList from '@/components/Tags/TagList.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -37,7 +37,7 @@ defineProps<{
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <TagFilters
+            <TagFilterBar
               :results="Boolean(items?.data?.length)"
               :types="types"
               :type="type ?? undefined"

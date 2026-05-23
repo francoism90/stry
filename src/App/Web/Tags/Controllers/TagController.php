@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
 use Support\Scout\Sorts\VideosSorter;
 
@@ -86,6 +87,7 @@ class TagController extends Controller implements HasMiddleware
             ->whereIn('tagged', [$tag->getKey()])
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
+                AllowedFilter::custom('unseen', new FiltersUnseen),
             )
             ->allowedSorts(
                 $recommendedSort,

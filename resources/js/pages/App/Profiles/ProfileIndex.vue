@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
 import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
-import ProfileFilters from '@/components/Profiles/ProfileFilters.vue'
+import ProfileFilterBar from '@/components/Profiles/ProfileFilterBar.vue'
 import ProfileList from '@/components/Profiles/ProfileList.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Profile, ProfileCollection } from '@/types'
@@ -33,7 +33,7 @@ const switchProfile = (item: Profile) =>
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <ProfileFilters
+            <ProfileFilterBar
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
               :sort="sort"

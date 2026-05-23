@@ -1,21 +1,36 @@
 <script setup lang="ts">
+import type { VideoFilters } from '@/types'
+import { modelFilters } from '@/utils/model'
 import { useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
+import { computed } from 'vue'
 
 const props = defineProps<{
   results?: boolean
   sorters?: SelectMenuItem[]
   sort?: string | undefined
-  captioned?: string | undefined
+  filters?: VideoFilters
 }>()
 
-const captionedOptions: SelectMenuItem[] = [{ label: 'Captioned', value: 'true' }]
+const videoOptions: SelectMenuItem[] = [
+  { label: 'Captioned', value: 'captioned' },
+  { label: 'Unseen', value: 'unseen' },
+]
+
+const activeVideoFilters = computed(() => modelFilters(props.filters))
 
 const form = useForm('get', '', {
   sort: props.sort,
-  'filter[captioned]': props.captioned,
+  'filter[captioned]': props.filters?.captioned,
+  'filter[unseen]': props.filters?.unseen,
   'page[number]': 1,
 })
+
+const onFiltersChange = (values: string[]) => {
+  form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
+  form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
+  onSubmit()
+}
 
 const onSubmit = () => {
   form.submit({
@@ -44,17 +59,17 @@ const onSubmit = () => {
   />
 
   <USelectMenu
-    v-model="form['filter[captioned]']"
-    :model-modifiers="{ nullable: true }"
-    :items="captionedOptions"
+    :model-value="activeVideoFilters"
+    :items="videoOptions"
     :search-input="false"
-    :ui="{ base: 'px-0', content: 'min-w-36' }"
+    :ui="{ base: 'px-0', content: 'min-w-40' }"
     placeholder="All videos"
     label-key="label"
     value-key="value"
     variant="none"
+    multiple
     clear
-    @update:modelValue="onSubmit"
-    @clear="onSubmit"
+    @update:model-value="onFiltersChange"
+    @clear="() => onFiltersChange([])"
   />
 </template>

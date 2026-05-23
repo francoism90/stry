@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
-import TagFilters from '@/components/Tags/TagFilters.vue'
+import TagFilterBar from '@/components/Tags/TagFilterBar.vue'
 import TagList from '@/components/Tags/TagList.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useAuth } from '@/composables/auth'
@@ -29,7 +29,7 @@ const { hasAnyRole } = useAuth()
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <TagFilters
+            <TagFilterBar
               :results="Boolean(items?.data?.length)"
               :types="types"
               :type="type"

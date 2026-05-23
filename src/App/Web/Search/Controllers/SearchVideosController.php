@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
+use Support\Scout\Filters\FiltersTagged;
+use Support\Scout\Filters\FiltersUnseen;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class SearchVideosController extends Controller implements HasMiddleware
@@ -48,6 +50,8 @@ class SearchVideosController extends Controller implements HasMiddleware
                 AllowedFilter::exact('season'),
                 AllowedFilter::exact('episode'),
                 AllowedFilter::exact('part'),
+                AllowedFilter::custom('unseen', new FiltersUnseen),
+                AllowedFilter::custom('tagged', new FiltersTagged),
             )
             ->allowedSorts(
                 $recommendedSort,

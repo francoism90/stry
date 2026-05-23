@@ -8,7 +8,16 @@ export type FlashData = {
   readonly type?: FlashType
 }
 
-export type Filters = Record<string, string>
+export type VideoFilters = {
+  captioned?: string | boolean
+  unseen?: string | boolean
+  adult?: string | boolean
+  tagged?: string
+  state?: string
+  season?: string
+  episode?: string
+  part?: string
+}
 
 export type FilterOption = {
   label: string

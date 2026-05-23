@@ -184,7 +184,7 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <UFormField
               label="Published"
               :error="form.errors.published_at"

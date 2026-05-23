@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GroupFilters from '@/components/Groups/GroupFilters.vue'
+import GroupFilterBar from '@/components/Groups/GroupFilterBar.vue'
 import GroupList from '@/components/Groups/GroupList.vue'
 import SearchBar from '@/components/Search/SearchBar.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
@@ -37,7 +37,7 @@ defineProps<{
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <GroupFilters
+            <GroupFilterBar
               :results="Boolean(items?.data?.length)"
               :sorters="sorters"
               :sort="sort"
