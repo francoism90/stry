@@ -476,7 +476,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, titles, identifier, description, tags, synonyms, released',
+                    'query_by' => 'name, titles, identifier, part, description, tags, synonyms, released',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],
