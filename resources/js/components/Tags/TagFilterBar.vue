@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
@@ -17,10 +17,10 @@ const form = useForm('get', '', {
 })
 
 const onSubmit = () => {
-  form.get(window.location.pathname, {
+  router.reload({
+    data: form.data(),
     only: ['items', 'filter', 'sort'],
     reset: ['items'],
-    preserveState: true,
   })
 }
 </script>
