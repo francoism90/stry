@@ -84,6 +84,9 @@ useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(
               v-if="props.locales"
               :model-value="locale"
               :items="props.locales"
+              color="neutral"
+              size="sm"
+              variant="outline"
               class="w-28"
             />
 
