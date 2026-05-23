@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { VideoFilters } from '@/types'
-import { modelFilters } from '@/utils/model'
 import { useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   results?: boolean
@@ -13,8 +12,6 @@ const props = defineProps<{
   filters?: VideoFilters
 }>()
 
-const formFilters = ref<string[]>(modelFilters(props.filters))
-
 const form = useForm('get', '', {
   sort: props.sort,
   'filter[captioned]': props.filters?.captioned,
@@ -22,13 +19,14 @@ const form = useForm('get', '', {
   'page[number]': 1,
 })
 
-const onFiltersChange = (values: string[]) => {
-  formFilters.value = values
-  form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
-  form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
-
-  onSubmit()
-}
+const formFilters = computed<string[]>({
+  get: () => (['captioned', 'unseen'] as const).filter((key) => !!form[`filter[${key}]`]),
+  set: (values) => {
+    form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
+    form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
+    onSubmit()
+  },
+})
 
 const onSubmit = () => {
   form.submit({
@@ -42,7 +40,7 @@ const onSubmit = () => {
 <template>
   <USelectMenu
     v-if="scopes?.length"
-    :model-value="formFilters"
+    v-model="formFilters"
     :items="scopes"
     :search-input="false"
     :ui="{ base: 'px-0', content: 'min-w-40' }"
@@ -52,8 +50,6 @@ const onSubmit = () => {
     variant="none"
     multiple
     clear
-    @update:modelValue="onFiltersChange"
-    @clear="onFiltersChange([])"
   />
 
   <USelectMenu

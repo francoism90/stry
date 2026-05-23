@@ -15,7 +15,7 @@ const form = useForm('get', '', {
 
 const onSubmit = () => {
   form.submit({
-    only: ['items', 'type', 'sort'],
+    only: ['items', 'sort'],
     reset: ['items'],
     preserveState: true,
   })
