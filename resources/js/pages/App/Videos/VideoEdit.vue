@@ -246,22 +246,6 @@ const onSubmit = () =>
 
           <USeparator />
 
-          <UFormField
-            label="Alternative names"
-            :error="form.errors.titles"
-          >
-            <UTextarea
-              v-model="form.titles"
-              :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="1"
-              autocapitalize="words"
-              placeholder="Separated by commas"
-              class="w-full"
-            />
-          </UFormField>
-
-          <USeparator />
-
           <div class="flex flex-col gap-3">
             <UFormField
               label="Summary"
@@ -273,6 +257,20 @@ const onSubmit = () =>
                 :rows="4"
                 autoresize
                 placeholder="Enter markdown"
+                class="w-full"
+              />
+            </UFormField>
+
+            <UFormField
+              label="Alternative names"
+              :error="form.errors.titles"
+            >
+              <UTextarea
+                v-model="form.titles"
+                :model-modifiers="{ nullable: true, string: true, trim: true }"
+                :rows="1"
+                autocapitalize="words"
+                placeholder="Separated by commas"
                 class="w-full"
               />
             </UFormField>
