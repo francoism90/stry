@@ -4,7 +4,6 @@ Description=RustFS container
 [Container]
 Image=docker.io/rustfs/rustfs:latest
 EnvironmentFile=%h/.config/containers/systemd/stry/config/rustfs.env
-LogDriver=none
 NoNewPrivileges=true
 Memory=2g
 Volume=stry-rustfs-data:/data:rw,Z,U
