@@ -89,6 +89,7 @@ class CreateNewVideoPlaylist
             $packager
                 ->withMpdOutput($playlist->file_name)
                 ->withAllowCodecSwitching()
+                ->withAllowApproximateSegmentTimeline()
                 ->withSegmentDuration($settings->segmentDuration)
                 ->withFragmentDuration($settings->fragmentDuration);
 
