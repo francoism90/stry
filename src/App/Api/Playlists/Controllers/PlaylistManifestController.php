@@ -14,6 +14,7 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Spatie\ResponseCache\Attributes\Cache;
 
 class PlaylistManifestController extends Controller implements HasMiddleware
 {
@@ -25,6 +26,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         ];
     }
 
+    #[Cache(lifetime: 10 * 60, tags: ['playlists'])]
     public function __invoke(Playlist $playlist, string $path): Responsable
     {
         Gate::authorize('view', $playlist);
