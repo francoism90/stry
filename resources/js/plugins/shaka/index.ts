@@ -37,8 +37,12 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
   overlay.configure({
     doubleClickForFullscreen: false,
     singleClickForPlayAndPause: false,
+    enableFullscreenOnRotation: true,
+    forceLandscapeOnFullscreen: true,
+    enableKeyboardPlaybackControlsInWindow: true,
+    keyboardSeekDistance: 10,
+    keyboardLargeSeekDistance: 30,
     seekOnTaps: true,
-    tapSeekDistance: 10,
     bigButtons: [],
     controlPanelElements: [
       'play_pause',
