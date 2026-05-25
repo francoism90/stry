@@ -9,14 +9,13 @@ import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { Head, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
+import type { SelectMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
-
-type LocaleOption = { label: string; value: string }
 
 const props = defineProps<{
   video: Video
   progress: number | null
-  locales: LocaleOption[]
+  locales: SelectMenuItem[]
 }>()
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })

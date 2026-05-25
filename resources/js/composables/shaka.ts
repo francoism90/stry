@@ -61,6 +61,19 @@ export function useShaka(
       abr: {
         restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
       },
+      streaming: {
+        bufferingGoal: 16,
+        ignoreTextStreamFailures: true,
+      },
+      manifest: {
+        dash: {
+          xlinkFailGracefully: true,
+        },
+        hls: {
+          ignoreTextStreamFailures: true,
+          ignoreImageStreamFailures: true,
+        },
+      },
     })
 
     // Restore saved mute state and playback speed
