@@ -66,6 +66,7 @@ class CreateNewVideoPlaylist
             // Add text streams for captions if they exist
             $captions->each(fn (CaptionStream $caption) => $packager->addTextStream($caption->path, "{$caption->id}_caption.vtt", [
                 'language' => $caption->language,
+                'dash_roles' => 'subtitle',
             ]));
 
             // Enable AES encryption with key rotation if configured
@@ -90,6 +91,9 @@ class CreateNewVideoPlaylist
                 ->withMpdOutput($playlist->file_name)
                 ->withAllowCodecSwitching()
                 ->withAllowApproximateSegmentTimeline()
+                ->withDefaultLanguage('en')
+                ->withDefaultTextLanguage('en')
+                ->withMinBufferTime(2)
                 ->withSegmentDuration($settings->segmentDuration)
                 ->withFragmentDuration($settings->fragmentDuration);
 
