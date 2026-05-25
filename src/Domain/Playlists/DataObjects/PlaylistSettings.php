@@ -11,6 +11,12 @@ class PlaylistSettings extends Dto
 {
     public string $disk;
 
+    public string $language;
+
+    public string $textLanguage;
+
+    public int $bufferTime;
+
     public int $segmentDuration;
 
     public int $fragmentDuration;
@@ -28,6 +34,9 @@ class PlaylistSettings extends Dto
     public function __construct()
     {
         $this->disk = Playlist::getDestinationDisk();
+        $this->language = Playlist::getLanguage();
+        $this->textLanguage = Playlist::getTextLanguage();
+        $this->bufferTime = Playlist::getBufferTime();
         $this->segmentDuration = Playlist::getSegmentDuration();
         $this->fragmentDuration = Playlist::getFragmentDuration();
         $this->encryption = Playlist::shouldUseEncryption();

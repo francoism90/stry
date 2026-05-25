@@ -269,6 +269,21 @@ class Playlist extends Model
         return Config::string('playlists.disk_name', 'segments');
     }
 
+    public static function getLanguage(): string
+    {
+        return Config::string('playlists.language', 'en');
+    }
+
+    public static function getTextLanguage(): string
+    {
+        return Config::string('playlists.text_language', 'en');
+    }
+
+    public static function getBufferTime(): int
+    {
+        return Config::integer('playlists.buffer_time', 2);
+    }
+
     public static function getSegmentDuration(): int
     {
         return Config::integer('playlists.segment_duration', 10);

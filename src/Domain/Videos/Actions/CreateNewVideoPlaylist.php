@@ -39,7 +39,7 @@ class CreateNewVideoPlaylist
             'id' => $caption->getKey(),
             'disk' => $caption->disk,
             'path' => $caption->getPath(),
-            'language' => $caption->getCustomProperty('language_code', 'en'),
+            'language' => $caption->getCustomProperty('language_code', $settings->textLanguage),
         ]));
 
         return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
@@ -91,9 +91,9 @@ class CreateNewVideoPlaylist
                 ->withMpdOutput($playlist->file_name)
                 ->withAllowCodecSwitching()
                 ->withAllowApproximateSegmentTimeline()
-                ->withDefaultLanguage('en')
-                ->withDefaultTextLanguage('en')
-                ->withMinBufferTime(2)
+                ->withDefaultLanguage($settings->language)
+                ->withDefaultTextLanguage($settings->textLanguage)
+                ->withMinBufferTime($settings->bufferTime)
                 ->withSegmentDuration($settings->segmentDuration)
                 ->withFragmentDuration($settings->fragmentDuration);
 

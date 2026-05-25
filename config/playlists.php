@@ -30,8 +30,43 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Playlist Language
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the default language for playlists.
+    |
+    */
+
+    'language' => (string) env('PLAYLIST_LANGUAGE', 'en'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Playlist Text Language
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the default text language for playlists.
+    |
+    */
+
+    'text_language' => (string) env('PLAYLIST_TEXT_LANGUAGE', 'en'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Buffer Time
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the minimum buffer time for the playlist in seconds.
+    | A common value is 2 seconds. Setting to 0 will use the default value.
+    |
+    */
+
+    'buffer_time' => (int) env('PLAYLIST_BUFFER_TIME', 2),
+
+    /*
+    |--------------------------------------------------------------------------
     | Segment Duration
     |--------------------------------------------------------------------------
+    |
     | This value determines the target duration of each media segment in seconds.
     | Common values are 6, 10, or 12 seconds. Shorter durations can reduce latency but may
     | increase overhead. Longer durations can improve efficiency but may increase latency.
@@ -44,6 +79,7 @@ return [
     |--------------------------------------------------------------------------
     | Fragment Duration
     |--------------------------------------------------------------------------
+    |
     | This value determines the target duration of each fragment in seconds.
     | Fragments are used for fMP4 segments and can help with faster start times.
     | Common values are 2 or 4 seconds. Setting to 0 will use the default value.
