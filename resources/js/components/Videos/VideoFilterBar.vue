@@ -16,14 +16,16 @@ const form = useForm('get', '', {
   sort: props.sort,
   'filter[captioned]': props.filters?.captioned,
   'filter[unseen]': props.filters?.unseen,
+  'filter[untagged]': props.filters?.untagged,
   'page[number]': 1,
 })
 
 const formFilters = computed<string[]>({
-  get: () => (['captioned', 'unseen'] as const).filter((key) => !!form[`filter[${key}]`]),
+  get: () => (['captioned', 'unseen', 'untagged'] as const).filter((key) => !!form[`filter[${key}]`]),
   set: (values) => {
     form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
     form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
+    form['filter[untagged]'] = values.includes('untagged') ? 'true' : undefined
     onSubmit()
   },
 })
