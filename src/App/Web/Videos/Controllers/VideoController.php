@@ -33,6 +33,7 @@ use Inertia\Response;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters\FiltersTagged;
 use Support\Scout\Filters\FiltersUnseen;
+use Support\Scout\Filters\FiltersUntagged;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class VideoController extends Controller implements HasMiddleware
@@ -57,8 +58,9 @@ class VideoController extends Controller implements HasMiddleware
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoProfileScope)
             ->allowedFilters(
-                AllowedFilter::custom('tagged', new FiltersTagged),
                 AllowedFilter::exact('captioned'),
+                AllowedFilter::custom('tagged', new FiltersTagged),
+                AllowedFilter::custom('untagged', new FiltersUntagged),
                 AllowedFilter::custom('unseen', new FiltersUnseen),
             )
             ->allowedSorts(

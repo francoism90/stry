@@ -10,6 +10,7 @@ enum VideoFilter: string implements Enumerable
 {
     case Captioned = 'captioned';
     case Unseen = 'unseen';
+    case Untagged = 'untagged';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum VideoFilter: string implements Enumerable
         return [
             'captioned' => __('Captioned'),
             'unseen' => __('Unseen'),
+            'untagged' => __('Untagged'),
         ];
     }
 }
