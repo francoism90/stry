@@ -29,7 +29,7 @@
         "pusher-js": "^8.5.0",
         "shaka-player": "^5.1.6",
         "tailwindcss": "^4.3.0",
-        "vue": "^3.5.34"
+        "vue": "^3.5.35"
     },
     "devDependencies": {
         "@iconify-json/lucide": "^1.2.109",
