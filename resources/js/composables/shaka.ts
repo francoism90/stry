@@ -192,7 +192,7 @@ export function useShaka(
       updatePlaylistSession(playlist.value, time)
       ticker.value = time
     }
-  }, 1200)
+  }, 1800)
 
   const onVolumeChange = () => {
     if (el.value) {
