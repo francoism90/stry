@@ -51,5 +51,6 @@ storage/**/*.php
 storage/debugbar/*
 tests
 Thumbs.db
+AGENTS.md
 UPGRADING.md
 vendor
