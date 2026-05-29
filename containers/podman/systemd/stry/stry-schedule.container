@@ -10,7 +10,7 @@ Environment=CONTAINER_ROLE=scheduler
 UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
-Memory=512m
+ShmSize=256mm
 Volume=${MEDIA_PATH}:/media:rw,z
 Volume=stry-cache:/cache:rw,z
 Network=stry.network

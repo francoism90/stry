@@ -5,7 +5,6 @@ Description=RustFS container
 Image=docker.io/rustfs/rustfs:latest
 EnvironmentFile=%h/.config/containers/systemd/stry/config/rustfs.env
 NoNewPrivileges=true
-Memory=4g
 Volume=stry-rustfs-data:/data:rw,Z,U
 Volume=stry-rustfs-logs:/logs:rw,Z,U
 Network=stry.network

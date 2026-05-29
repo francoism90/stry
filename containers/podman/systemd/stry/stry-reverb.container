@@ -10,7 +10,7 @@ Environment=CONTAINER_ROLE=reverb
 UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
-Memory=512m
+ShmSize=128m
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001

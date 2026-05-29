@@ -6,7 +6,6 @@ Image=docker.io/library/postgres:latest
 AutoUpdate=registry
 EnvironmentFile=%h/.config/containers/systemd/stry/config/postgres.env
 NoNewPrivileges=true
-Memory=2g
 ShmSize=512m
 Volume=stry-pgsql:/var/lib/postgresql:rw,Z,U
 Network=stry.network
