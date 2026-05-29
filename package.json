@@ -21,7 +21,7 @@
         "@iconify/vue": "^5.0.1",
         "@inertiajs/vite": "^3.3.0",
         "@inertiajs/vue3": "^3.3.0",
-        "@internationalized/date": "^3.12.1",
+        "@internationalized/date": "^3.12.2",
         "@laravel/echo-vue": "^2.3.4",
         "@nuxt/ui": "^4.8.0",
         "@vueuse/core": "^14.3.0",
