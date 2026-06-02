@@ -7,7 +7,7 @@
     },
     // Podman-only extras, please comment if you are using Docker:
     // Make sure to create the network first with: systemctl --user start stry-network
-    "runArgs": ["--userns=keep-id", "--network=systemd-stry", "--init"],
+    "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
     // Optional Docker-only extras:
     // "runArgs": ["--init"],
     // Optional SSH mount for either Docker or Podman when you need host SSH keys in the container.
