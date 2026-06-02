@@ -15,18 +15,6 @@ class FiltersUntagged implements Filter
             return;
         }
 
-        $previousCallback = $query->callback;
-
-        $query->callback = function ($typesense, $scoutQuery, $options) use ($previousCallback) {
-            $options['filter_by'] = filled($options['filter_by'] ?? '')
-                ? sprintf('%s && tagged:=[]', $options['filter_by'])
-                : 'tagged:=[]';
-
-            if ($previousCallback) {
-                return $previousCallback($typesense, $scoutQuery, $options);
-            }
-
-            return $typesense->search($options);
-        };
+        $query->where('tagged_count', 0);
     }
 }

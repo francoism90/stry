@@ -255,6 +255,7 @@ class Video extends Model implements HasMedia
             'adult' => (bool) $this->adult,
             'tags' => (string) $this->tags->translated(),
             'tagged' => (array) $this->tags->modelKeys(),
+            'tagged_count' => (int) $this->tags->count(),
             'synonyms' => (string) $this->tags->synonyms(),
             'expires_at' => (int) $this->expires_at?->getTimestamp(),
             'released_at' => (int) $this->released_at?->getTimestamp(),

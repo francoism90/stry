@@ -393,6 +393,10 @@ return [
                             'optional' => true,
                         ],
                         [
+                            'name' => 'tagged_count',
+                            'type' => 'int64',
+                        ],
+                        [
                             'name' => 'duration',
                             'type' => 'float',
                             'sort' => true,
