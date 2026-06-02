@@ -69,7 +69,7 @@ const lucideMap: Record<ShakaIconName, string> = {
   FULLSCREEN: 'maximize',
   LANGUAGE: 'languages',
   LOOP: 'repeat',
-  MUTE: 'volume-x',
+  MUTE: 'volume-2',
   OPEN_OVERFLOW: 'ellipsis-vertical',
   PAUSE: 'pause',
   PIP: 'picture-in-picture',
@@ -85,7 +85,7 @@ const lucideMap: Record<ShakaIconName, string> = {
   STATISTICS_ON: 'bar-chart-4',
   TOGGLE_STEREOSCOPIC: 'glasses',
   UNLOOP: 'repeat-1',
-  UNMUTE: 'volume-2',
+  UNMUTE: 'volume-x',
   VIDEO_TYPE: 'film',
 }
 
