@@ -70,7 +70,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     ca-certificates libcap2-bin curl unzip awscli \
-    python3 python3-venv python3-pip gpg gnupg nano \
+    python3 python3-venv python3-pip gpg gnupg \
     mesa-va-drivers mesa-vulkan-drivers \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
     intel-media-va-driver-non-free \
@@ -183,7 +183,7 @@ ENV OCTANE="${OCTANE} --watch"
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    git openssh-client \
+    nano git openssh-client \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
