@@ -46,7 +46,6 @@ public/hot
 public/storage
 public/vendor
 storage/**/*.blade.php
-storage/**/*.key
 storage/**/*.php
 storage/debugbar/*
 tests
