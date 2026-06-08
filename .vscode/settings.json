@@ -15,7 +15,6 @@
     "files.associations": {
         "*.css": "tailwindcss"
     },
-    "html.customData": ["./node_modules/vidstack/vscode.html-data.json"],
     "tailwindCSS.classAttributes": ["class", "ui"],
     "tailwindCSS.experimental.classRegex": [
         ":\\s*?[\"'`]([^\"'`]*).*?,",
