@@ -27,7 +27,7 @@
         "@vueuse/core": "^14.3.0",
         "laravel-echo": "^2.3.7",
         "pusher-js": "^8.5.0",
-        "shaka-player": "^5.1.7",
+        "shaka-player": "^5.1.8",
         "tailwindcss": "^4.3.0",
         "vue": "^3.5.35"
     },
