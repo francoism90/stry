@@ -28,7 +28,7 @@
         "laravel/fortify": "^1.37.2",
         "laravel/framework": "^13.15",
         "laravel/horizon": "^5.47.2",
-        "laravel/octane": "^2.17.4",
+        "laravel/octane": "^2.17.5",
         "laravel/prompts": "^0.3.18",
         "laravel/reverb": "^1.10.2",
         "laravel/sanctum": "^4.3.2",
