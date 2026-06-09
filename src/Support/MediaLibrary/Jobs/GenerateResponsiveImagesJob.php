@@ -29,7 +29,7 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     /**
      * @var int
      */
-    public $timeout = 60;
+    public $timeout = 300;
 
     /**
      * @var bool
@@ -47,7 +47,9 @@ class GenerateResponsiveImagesJob extends BaseGenerateResponsiveImagesJob implem
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(10),
+            (new WithoutOverlapping($this->uniqueId()))
+                ->expireAfter($this->timeout)
+                ->releaseAfter(30),
         ];
     }
 

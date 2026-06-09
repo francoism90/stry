@@ -35,7 +35,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 1800;
+    public $timeout = 300;
 
     /**
      * @var bool
@@ -64,7 +64,9 @@ class ProcessVideo implements ShouldQueueAfterCommit
     public function middleware(VideoHasBeenAddedEvent|VideoHasBeenUpdatedEvent $event): array
     {
         return [
-            (new WithoutOverlapping($event->video->getKey()))->releaseAfter(10),
+            (new WithoutOverlapping($event->video->getKey()))
+                ->expireAfter($this->timeout)
+                ->releaseAfter(30),
         ];
     }
 }

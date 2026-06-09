@@ -61,7 +61,7 @@ class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
 
     public function retryUntil(): CarbonInterface
     {
-        return now()->addSeconds($this->timeout + 60);
+        return now()->addSeconds($this->timeout);
     }
 
     public function handle(): void
@@ -75,7 +75,9 @@ class ImportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(60),
+            (new WithoutOverlapping($this->uniqueId()))
+                ->expireAfter($this->timeout)
+                ->releaseAfter(30),
         ];
     }
 

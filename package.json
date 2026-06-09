@@ -27,7 +27,7 @@
         "@vueuse/core": "^14.3.0",
         "laravel-echo": "^2.3.7",
         "pusher-js": "^8.5.0",
-        "shaka-player": "^5.1.7",
+        "shaka-player": "^5.1.8",
         "tailwindcss": "^4.3.0",
         "vue": "^3.5.35"
     },
@@ -37,7 +37,7 @@
         "@tailwindcss/vite": "^4.3.0",
         "@tsconfig/node24": "^24.0.4",
         "@types/jsdom": "^28.0.3",
-        "@types/node": "^25.9.1",
+        "@types/node": "^25.9.2",
         "@vitejs/plugin-vue": "^6.0.7",
         "@vitest/eslint-plugin": "^1.6.19",
         "@vue/eslint-config-prettier": "^10.2.0",
@@ -57,6 +57,6 @@
         "typescript": "~6.0.3",
         "vite": "^8.0.16",
         "vitest": "^4.1.8",
-        "vue-tsc": "^3.3.3"
+        "vue-tsc": "^3.3.4"
     }
 }

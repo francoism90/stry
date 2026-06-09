@@ -83,13 +83,15 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(60),
+            (new WithoutOverlapping($this->uniqueId()))
+                ->expireAfter($this->timeout)
+                ->releaseAfter(30),
         ];
     }
 
     public function retryUntil(): CarbonInterface
     {
-        return now()->addSeconds($this->timeout + 60);
+        return now()->addSeconds($this->timeout);
     }
 
     public function uniqueId(): string

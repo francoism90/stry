@@ -64,7 +64,7 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
 
     public function retryUntil(): CarbonInterface
     {
-        return now()->addSeconds($this->timeout + 60);
+        return now()->addSeconds($this->timeout);
     }
 
     /**
@@ -73,7 +73,9 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->timeout)->releaseAfter(60),
+            (new WithoutOverlapping($this->uniqueId()))
+                ->expireAfter($this->timeout)
+                ->releaseAfter(30),
         ];
     }
 
