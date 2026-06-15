@@ -1,29 +1,23 @@
-name: Tests
+name: IDE Helper
 
 on:
     push:
         branches:
             - main
-    pull_request:
 
 permissions:
-    contents: read
+    contents: write
 
 concurrency:
-    group: tests-${{ github.workflow }}-${{ github.ref }}
+    group: ide-helper-${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
 jobs:
-    tests:
+    ide-helper:
+        if: github.actor != 'github-actions[bot]'
         runs-on: ubuntu-latest
-        timeout-minutes: 15
-
-        strategy:
-            fail-fast: true
-            matrix:
-                php: [8.5, 8.4]
-
-        name: PHP ${{ matrix.php }}
+        timeout-minutes: 10
+        name: Update IDE Helper Files
 
         services:
             postgres:
@@ -61,11 +55,14 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.ref }}
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: ${{ matrix.php }}
+                  php-version: 8.5
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, pdo_pgsql, bcmath, intl, gd, exif, iconv, imagick, fileinfo, redis
                   coverage: none
 
@@ -84,17 +81,6 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-interaction --no-progress
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v5
-              with:
-                  version: latest
-
-            - name: Install Node.js
-              uses: actions/setup-node@v6
-              with:
-                  node-version: 24
-                  cache: 'pnpm'
-
             - name: Wait for Typesense
               run: |
                   for i in $(seq 1 30); do
@@ -102,17 +88,34 @@ jobs:
                       echo "Typesense is ready"
                       break
                     fi
+
                     echo "Waiting for Typesense... ($i/30)"
                     sleep 2
+
+                    if [[ "$i" == "30" ]]; then
+                      echo "Typesense failed to become ready"
+                      exit 1
+                    fi
                   done
 
-            - name: Build application
+            - name: Prepare application
               run: |
                   cp .env.ci .env
                   php artisan key:generate
-                  php artisan wayfinder:generate
-                  pnpm install --no-frozen-lockfile
-                  pnpm build
+                  php artisan migrate --force
 
-            - name: Execute tests
-              run: php artisan test
+            - name: Regenerate IDE helper files
+              run: |
+                  php artisan ide-helper:generate
+                  php artisan ide-helper:meta
+                  php artisan ide-helper:models --nowrite
+
+            - name: Commit and push changes
+              uses: stefanzweifel/git-auto-commit-action@v7
+              with:
+                  commit_message: chore: update IDE helper files [skip ci]
+                  commit_user_name: github-actions[bot]
+                  commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+                  file_pattern: |
+                    _ide_helper*.php
+                    .phpstorm.meta.php
