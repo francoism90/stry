@@ -113,7 +113,8 @@ jobs:
             - name: Commit and push changes
               uses: stefanzweifel/git-auto-commit-action@v7
               with:
-                  commit_message: chore: update IDE helper files [skip ci]
-                  commit_user_name: github-actions[bot]
-                  commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-                  file_pattern: _ide_helper*.php .phpstorm.meta.php
+                  commit_message: 'chore: update IDE helper files [skip ci]'
+                  commit_user_name: 'github-actions[bot]'
+                  commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+                  file_pattern: '_ide_helper*.php .phpstorm.meta.php'
+                  add_options: '-f'
