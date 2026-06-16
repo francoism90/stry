@@ -35,8 +35,8 @@ export default defineConfig(({ mode }) => {
         input: ['resources/js/app.ts'],
         refresh: true,
         fonts: [
-          google('Geist', { weights: ['300..900'], alias: 'geist' }),
-          google('Geist Mono', { weights: ['300..900'], alias: 'geist-mono' }),
+          google('Geist', { weights: ['400', '500', '600', '700'], alias: 'geist' }),
+          google('Geist Mono', { weights: ['400', '500', '600', '700'], alias: 'geist-mono' }),
         ],
       }),
       inertia({
