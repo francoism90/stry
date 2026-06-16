@@ -20,7 +20,7 @@ export function useShaka(
 
   const player = shallowRef<shaka.Player>()
   const ui = shallowRef<shaka.ui.Overlay>()
-  const error = ref<shaka.util.Error | null>(null)
+  const error = ref<shaka.util.Error | Error | null>(null)
   const ready = ref<boolean>(false)
   const ticker = ref<number>(startTime.value ?? 0)
 
@@ -35,6 +35,12 @@ export function useShaka(
 
     // Load Shaka Player library and polyfills (if not already loaded)
     const shaka = await loadShaka()
+
+    if (!shaka.Player.isBrowserSupported()) {
+      error.value = new Error('Your browser cannot play this stream with the current media/DRM settings.')
+      ready.value = false
+      return
+    }
 
     // Create new Shaka Player
     player.value = new shaka.Player()
@@ -162,10 +168,14 @@ export function useShaka(
 
         // Set ready state
         ready.value = true
-      } catch {
+      } catch (err) {
         // Handled by error event listener
         // Reset ready state on load failure
         ready.value = false
+
+        if (err instanceof Error) {
+          error.value = err
+        }
       }
     }
   }
