@@ -27,7 +27,7 @@ if [ ! -f "/config/app.env" ]; then
 fi
 
 log "INFO" "Loading runtime environment configuration from /config/app.env..."
-cp "/config/app.env" .env
+cp /config/app.env /app/.env
 
 # Ensure APP_KEY is provided in runtime configuration
 if ! grep -q '^APP_KEY=' .env && [ -z "${APP_KEY:-}" ]; then

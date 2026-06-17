@@ -159,6 +159,9 @@ COPY --chown=docker:docker . /app
 # Switch to non-root user
 USER docker
 
+# Make sure an .env file exists
+RUN cp .env.example .env
+
 # Install PHP dependencies
 RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID} \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
