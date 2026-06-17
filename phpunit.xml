@@ -18,35 +18,17 @@
         </include>
     </source>
     <php>
-        <env name="APP_DEBUG" value="true"/>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="BROADCAST_CONNECTION" value="log"/>
+        <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_CONNECTION" value="pgsql"/>
-        <env name="DB_HOST" value="localhost"/>
-        <env name="DB_PORT" value="5432"/>
         <env name="DB_DATABASE" value="testing"/>
-        <env name="DB_USERNAME" value="user"/>
-        <env name="DB_PASSWORD" value="password"/>
         <env name="DB_URL" value=""/>
-        <env name="FILESYSTEM_DISK" value="local"/>
-        <env name="MAIL_MAILER" value="log"/>
-        <env name="REDIS_CLIENT" value="phpredis"/>
-        <env name="REDIS_HOST" value="127.0.0.1"/>
-        <env name="REDIS_PASSWORD" value="null"/>
-        <env name="REDIS_PORT" value="6379"/>
-        <env name="SCOUT_DRIVER" value="typesense"/>
-        <env name="SCOUT_QUEUE" value="false"/>
+        <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
-        <env name="SESSION_ENCRYPT" value="false"/>
-        <env name="TYPESENSE_API_KEY" value="masterKey"/>
-        <env name="TYPESENSE_HOST" value="localhost"/>
-        <env name="TYPESENSE_PORT" value="8108"/>
-        <env name="TYPESENSE_PROTOCOL" value="http"/>
-        <env name="PWA_ENABLED" value="false"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
