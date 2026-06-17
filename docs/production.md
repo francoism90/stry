@@ -71,14 +71,18 @@ AWS_ENDPOINT_URL=https://fs.stry.example.com
 AWS_ACCESS_KEY_ID=<access-key>
 AWS_SECRET_ACCESS_KEY=<secret-key>
 
-# Media paths (create these on host)
-MEDIA_PATH=/var/lib/stry/media
-IMPORT_PATH=/var/lib/stry/import
+# Local paths (create these on host)
+APP_PATH=/home/user/projects/stry
+MEDIA_PATH=/mnt/stry/media
+IMPORT_PATH=/mnt/stry/import
+```
 
 # Additional config (see config/ directory for all options)
+
 PLAYLIST_TYPE=packager
 PLAYLIST_ENCRYPTION=raw_key_encryption
-```
+
+````
 
 ### 3. Set Up Reverse Proxy
 
@@ -88,7 +92,7 @@ Follow the **[Proxy Setup](proxy.md)** guide:
 
 ```bash
 cp -r containers/podman/systemd/proxy ~/.config/containers/systemd/
-```
+````
 
 Create `~/.config/containers/systemd/proxy/config/Caddyfile` with your domain and certificate configuration.
 
