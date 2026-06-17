@@ -27,12 +27,6 @@ class HandleInertiaRequests extends Middleware
                 user: $request->user() ?? null,
                 appends: ['name', 'email', 'avatar', 'settings'])
             ),
-            'echo' => Inertia::once(fn (): array => [
-                'key' => Config::string('reverb.apps.0.key', ''),
-                'host' => Config::string('reverb.apps.0.host', 'localhost'),
-                'port' => Config::integer('reverb.apps.0.port', 6001),
-                'scheme' => Config::string('reverb.apps.0.scheme', 'http'),
-            ]),
         ]);
     }
 
