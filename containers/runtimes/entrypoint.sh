@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONTAINER_ENV=${CONTAINER_ENV:-'production'}
-CONTAINER_ROLE=${CONTAINER_ROLE:-'app'}
+APP_SERVICE=${APP_SERVICE:-'app'}
+RUNTIME_APP_ENV=${APP_ENV:-'production'}
 
 log() {
     local type="$1"
@@ -20,11 +20,26 @@ if [ ! -f "database/database.sqlite" ]; then
     touch database/database.sqlite
 fi
 
-# Set up environment configuration if it doesn't exist
-if [ ! -f ".env" ]; then
-    log "INFO" "Creating environment configuration..."
-    cp .env.example .env
-    ${ARTISAN} key:generate
+# Set up environment configuration
+if [ ! -f "/config/app.env" ]; then
+    log "ERROR" "Missing /config/app.env. Provide a full env file mounted at /config/app.env."
+    exit 1
+fi
+
+log "INFO" "Loading runtime environment configuration from /config/app.env..."
+cp "/config/app.env" .env
+
+# Ensure APP_KEY is provided in runtime configuration
+if ! grep -q '^APP_KEY=' .env && [ -z "${APP_KEY:-}" ]; then
+    GENERATED_KEY="$(${ARTISAN} key:generate --show || true)"
+
+    if [ -n "${GENERATED_KEY}" ]; then
+        log "ERROR" "APP_KEY is missing from runtime configuration. Paste this line into app.env: APP_KEY=${GENERATED_KEY}"
+    else
+        log "ERROR" "APP_KEY is missing from runtime configuration."
+    fi
+
+    exit 1
 fi
 
 # Clear any stale caches
@@ -36,7 +51,7 @@ log "INFO" "Creating storage symlinks..."
 ${ARTISAN} storage:link
 
 # Application-specific setup
-if [ "${CONTAINER_ROLE}" = "app" ] && [ "${CONTAINER_ENV}" = "production" ]; then
+if [ "${APP_SERVICE}" = "app" ] && [ "${RUNTIME_APP_ENV}" = "production" ]; then
     # Ensure migrations are up to date
     log "INFO" "Running any pending migrations..."
     ${ARTISAN} migrate --force
@@ -51,7 +66,7 @@ if [ "${CONTAINER_ROLE}" = "app" ] && [ "${CONTAINER_ENV}" = "production" ]; the
 fi
 
 # Optimize for production
-if [ "${CONTAINER_ENV}" = "production" ]; then
+if [ "${RUNTIME_APP_ENV}" = "production" ]; then
     # Ensure package structures are cached
     log "INFO" "Optimizing packages..."
     ${ARTISAN} data:cache-structures
@@ -61,8 +76,8 @@ if [ "${CONTAINER_ENV}" = "production" ]; then
     ${ARTISAN} optimize
 fi
 
-log "INFO" "Container role: ${CONTAINER_ROLE}"
-case ${CONTAINER_ROLE} in
+log "INFO" "App service: ${APP_SERVICE}"
+case ${APP_SERVICE} in
     app)
         log "INFO" "Starting Octane..."
         exec ${OCTANE}
@@ -88,7 +103,7 @@ case ${CONTAINER_ROLE} in
         exec /usr/bin/env bash
         ;;
     *)
-        log "ERROR" "Unknown container role: ${CONTAINER_ROLE}"
+        log "ERROR" "Unknown app service: ${APP_SERVICE}"
         exit 1
         ;;
 esac

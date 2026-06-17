@@ -6,13 +6,14 @@ BindsTo=stry.container
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=CONTAINER_ROLE=horizon
+Environment=APP_SERVICE=horizon
 UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
 GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
 ShmSize=256m
+Volume=%h/.config/containers/systemd/stry/config/app.env:/config/app.env:ro,z
 Volume=${MEDIA_PATH}:/media:rw,z
 Volume=${IMPORT_PATH}:/import:rw,z
 Volume=stry-cache:/cache:rw,z

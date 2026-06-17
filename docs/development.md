@@ -44,7 +44,8 @@ Apply the following adjustments for development:
 
 ```bash
 # Edit: ~/.config/containers/systemd/stry/config/app.env
-CONTAINER_ENV=development
+APP_PATH=/path/to/stry
+APP_ENV=development
 ```
 
 **Step 2:** Add the app volume to these containers:

@@ -175,13 +175,12 @@ Replace `${MEDIA_PATH}` and `${IMPORT_PATH}` with the actual paths from your `ap
 
 ### Environment Variables (`app.env`)
 
-| Key             | Purpose                                                   |
-| --------------- | --------------------------------------------------------- |
-| `UID`, `GID`    | Mapped user/group IDs for rootless container processes    |
-| `CONTAINER_ENV` | Application environment (e.g. production)                 |
-| `APP_PATH`      | Host path of source checkout (bind if enabling live code) |
-| `MEDIA_PATH`    | Host path bind-mounted to `/media` (media files)          |
-| `IMPORT_PATH`   | Host path bind-mounted to `/import` (files to import)     |
+| Key           | Purpose                                                |
+| ------------- | ------------------------------------------------------ |
+| `UID`, `GID`  | Mapped user/group IDs for rootless container processes |
+| `APP_ENV`     | Application environment (e.g. production)              |
+| `MEDIA_PATH`  | Host path bind-mounted to `/media` (media files)       |
+| `IMPORT_PATH` | Host path bind-mounted to `/import` (files to import)  |
 
 Ensure the paths exist and are owned by the matching UID/GID:
 
