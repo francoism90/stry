@@ -14,8 +14,8 @@ if (typeof window !== 'undefined') {
   window.Pusher = Pusher
 }
 
-// FIX: Pull type directly from instance fallback array to satisfy linter and module constraints
 type NativeEchoInstance = InstanceType<typeof Echo>
+
 const echo = shallowRef<NativeEchoInstance | null>(null)
 
 interface QueueItem {
@@ -30,9 +30,7 @@ export function useEcho() {
     if (!config.value || !config.value.key) return
 
     const wsConfig = toRaw(config.value)
-    console.log('Initializing Echo with config:', wsConfig)
 
-    // Using core constructor boots the network socket stream instantly
     echo.value = new Echo({
       broadcaster: 'reverb',
       key: wsConfig.key,
