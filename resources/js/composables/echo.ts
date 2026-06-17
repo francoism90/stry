@@ -1,20 +1,14 @@
+import type { EchoConfig } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { configureEcho } from '@laravel/echo-vue'
 import { watchOnce } from '@vueuse/core'
 import type Echo from 'laravel-echo'
 import { computed, shallowRef, toRaw, watchEffect } from 'vue'
 
-interface EchoPageProps {
-  key: string
-  host: string
-  port: number
-  scheme: string
-}
-
 const echo = shallowRef<Echo<'pusher'> | null>(null)
 
 export function useEcho() {
-  const config = computed(() => usePage().props.echo as EchoPageProps | null)
+  const config = computed(() => usePage().props.echo as EchoConfig | null)
 
   // watchEffect handles tracking, initial boot, and hot-swap cleanups in one block
   watchEffect((onCleanup) => {
@@ -23,7 +17,6 @@ export function useEcho() {
     const cleanConfig = toRaw(config.value)
     console.log('Initializing Echo with config:', cleanConfig)
 
-    // 1. Boot up the new connection instance
     echo.value = configureEcho({
       broadcaster: 'reverb',
       key: cleanConfig.key,
@@ -36,7 +29,6 @@ export function useEcho() {
       authEndpoint: '/broadcasting/auth',
     }) as unknown as Echo<'pusher'>
 
-    // 2. Automatically tear down connection when config changes or component unmounts
     onCleanup(() => {
       if (echo.value) {
         echo.value.connector?.disconnect()
