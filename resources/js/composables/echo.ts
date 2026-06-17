@@ -1,7 +1,7 @@
 import { usePage } from '@inertiajs/vue3'
 import { configureEcho } from '@laravel/echo-vue'
 import type Echo from 'laravel-echo'
-import { computed, shallowRef, toRaw, watchEffect } from 'vue'
+import { computed, shallowRef, toRaw, watch, watchEffect } from 'vue'
 
 interface EchoPageProps {
   key: string
@@ -40,8 +40,41 @@ export function useEcho() {
     })
   })
 
+  const channel = (channelName: string, isPrivate = true) => {
+    // FIX: Explicitly type the callback parameter here as (data: any) => void
+    const listenersQueue: { event: string; cb: (data: unknown) => void }[] = []
+
+    const chain = {
+      // FIX: Cast your generic callback assignment function so it maps cleanly to the raw parameters queue
+      listen: <T = unknown>(eventName: string, callback: (data: T) => void) => {
+        if (echo.value) {
+          const targetChannel = isPrivate ? echo.value.private(channelName) : echo.value.channel(channelName)
+          targetChannel.listen(eventName, callback)
+        } else {
+          // Storing it as a casted type here completely satisfies the TypeScript compiler
+          listenersQueue.push({ event: eventName, cb: callback as (data: unknown) => void })
+        }
+        return chain
+      },
+    }
+
+    if (!echo.value) {
+      const unwatch = watch(echo, (instance) => {
+        if (instance) {
+          const targetChannel = isPrivate ? instance.private(channelName) : instance.channel(channelName)
+          listenersQueue.forEach(({ event, cb }) => targetChannel.listen(event, cb))
+          unwatch()
+        }
+      })
+    }
+
+    return chain
+  }
+
   return {
     config,
     echo,
+    publicChannel: (name: string) => channel(name, false),
+    privateChannel: (name: string) => channel(name, true),
   }
 }
