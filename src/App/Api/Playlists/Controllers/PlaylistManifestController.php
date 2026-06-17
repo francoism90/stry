@@ -10,11 +10,11 @@ use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Foxws\Shaka\Facades\Shaka;
 use Foxws\Streamer\Facades\Streamer;
-use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Spatie\ResponseCache\Attributes\Cache;
 
 class PlaylistManifestController extends Controller implements HasMiddleware
 {
@@ -26,8 +26,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         ];
     }
 
-    #[Cache(lifetime: 10 * 60, tags: ['playlists'])]
-    public function __invoke(Playlist $playlist, string $path): Responsable
+    public function __invoke(Request $request, Playlist $playlist, string $path): Response
     {
         Gate::authorize('view', $playlist);
 
@@ -41,10 +40,18 @@ class PlaylistManifestController extends Controller implements HasMiddleware
             default => throw PlaylistTypeException::invalidType($playlist->getType()),
         };
 
+        // Get the manifest cache lifetime
+        $manifestCacheLifetime = Playlist::getManifestCacheLifetime();
+
+        // Set appropriate cache headers
+        $request->headers->set('Cache-Control', "public, max-age={$manifestCacheLifetime}, stale-while-revalidate=30");
+
+        // Generate the manifest response
         return $manifestHandler
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
             ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
+            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+            ->toResponse($request);
     }
 }
