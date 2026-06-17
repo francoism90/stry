@@ -4,12 +4,13 @@ import SecurityController from '@/actions/App/Web/Account/Controllers/SecurityCo
 import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useAuth } from '@/composables/auth'
-import { echo } from '@/composables/echo'
+import { useEcho } from '@/composables/echo'
 import { Head, router } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const { user } = useAuth()
+const { listen } = useEcho()
 
 const joinedAt = computed(() => {
   if (!user.value?.created_at) {
@@ -44,7 +45,7 @@ const tabs: NavigationMenuItem[] = [
   },
 ]
 
-echo.value?.channel(`users.${user.value?.id}`).listen('.user.updated', () => {
+listen(`users.${user.value?.id}`, '.user.updated', () => {
   router.reload({ only: ['auth', 'user'] })
 })
 </script>
