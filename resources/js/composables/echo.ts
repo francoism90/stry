@@ -1,7 +1,7 @@
 import { usePage } from '@inertiajs/vue3'
 import { configureEcho } from '@laravel/echo-vue'
 import type Echo from 'laravel-echo'
-import { computed, shallowRef, toRaw, watch, watchEffect } from 'vue'
+import { computed, shallowRef, toRaw, watchEffect } from 'vue'
 
 interface EchoPageProps {
   key: string
@@ -40,29 +40,8 @@ export function useEcho() {
     })
   })
 
-  const channel = (channelName: string) => {
-    const chain = {
-      listen: <T = unknown>(eventName: string, callback: (data: T) => void) => {
-        if (echo.value) {
-          echo.value.private(channelName).listen(eventName, callback)
-        } else {
-          const unwatch = watch(echo, (instance) => {
-            if (instance) {
-              instance.private(channelName).listen(eventName, callback)
-              unwatch()
-            }
-          })
-        }
-        return chain
-      },
-    }
-
-    return chain
-  }
-
   return {
     config,
     echo,
-    channel,
   }
 }
