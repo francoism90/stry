@@ -4,10 +4,10 @@ import { index as media } from '@/actions/App/Web/Videos/Controllers/VideoMediaC
 import { index as playlists } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import { index as transcodes } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import { useEcho } from '@/composables/echo'
 import { index } from '@/routes/videos'
 import type { Video } from '@/types'
 import { Head, router, usePage } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
@@ -17,6 +17,7 @@ const props = defineProps<{
 }>()
 
 const page = usePage()
+const { privateChannel } = useEcho()
 
 const links: NavigationMenuItem[] = [
   {
@@ -53,8 +54,9 @@ const tabs: NavigationMenuItem[] = [
 const meta = computed(() => [props.video.timestamp, props.video.filesize, props.video.user?.name].filter(Boolean))
 const locale = computed(() => page.props.locale)
 
-useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
+privateChannel(`videos.${props.video.id}`)
+  .listen('.video.updated', () => router.reload({ only: ['video'] }))
+  .listen('.video.trashed', () => router.visit(index.url()))
 </script>
 
 <template>

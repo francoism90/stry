@@ -22,7 +22,6 @@
         "@inertiajs/vite": "^3.4.0",
         "@inertiajs/vue3": "^3.4.0",
         "@internationalized/date": "^3.12.2",
-        "@laravel/echo-vue": "^2.3.7",
         "@nuxt/ui": "^4.8.2",
         "@vueuse/core": "^14.3.0",
         "laravel-echo": "^2.3.7",

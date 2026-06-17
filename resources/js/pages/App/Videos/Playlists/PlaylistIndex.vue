@@ -2,11 +2,11 @@
 import PlaylistCreateModal from '@/components/Playlists/PlaylistCreateModal.vue'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import ActionBar from '@/components/Ui/ActionBar.vue'
+import { useEcho } from '@/composables/echo'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { PlaylistCollection, Video } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
@@ -15,15 +15,12 @@ const props = defineProps<{
   items: PlaylistCollection
 }>()
 
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
+const { privateChannel } = useEcho()
+
+privateChannel(`videos.${props.video.id}`)
+  .listen('.playlist.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.playlist.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.playlist.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
 </script>
 
 <template>

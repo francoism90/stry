@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useShaka } from '@/composables/shaka'
-import { router, usePoll } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { ref } from 'vue'
 
 const ui = ref<HTMLDivElement | undefined>()
 const el = ref<HTMLMediaElement | undefined>()
-
-usePoll(90_000, () => ({ only: ['playlist'] }), { mode: 'rest', keepAlive: true })
 
 const { ready, error } = useShaka(ui, el)
 

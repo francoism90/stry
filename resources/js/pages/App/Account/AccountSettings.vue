@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
+import { useEcho } from '@/composables/echo'
 import AccountLayout from '@/layouts/App/AccountLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { User, UserSettings } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 
 const props = defineProps<{
   user: User
 }>()
 
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
+
+const { privateChannel } = useEcho()
 
 const form = useForm({
   ...(props.user.settings as UserSettings),
@@ -22,7 +24,7 @@ const onSubmit = () =>
     preserveState: true,
   })
 
-useEcho<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ only: ['user'] }))
+privateChannel(`users.${props.user.id}`).listen('.user.updated', () => router.reload({ only: ['user'] }))
 </script>
 
 <template>

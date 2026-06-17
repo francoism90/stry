@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import MediaViewModal from '@/components/Media/MediaViewModal.vue'
+import { useEcho } from '@/composables/echo'
 import { useMedia } from '@/composables/media'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { MediaCollection, Video } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 
 const props = defineProps<{
   video: Video
@@ -15,11 +15,13 @@ const props = defineProps<{
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
+const { privateChannel } = useEcho()
 const { getStreamInfo } = useMedia()
 
-useEcho<Video>(`videos.${props.video.id}`, '.media.created', () => router.reload({ only: ['items'], reset: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
+privateChannel(`videos.${props.video.id}`)
+  .listen('.media.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.media.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.media.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
 </script>
 
 <template>
