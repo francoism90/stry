@@ -33,6 +33,7 @@ trait InteractsWithPlaylists
     public function createPlaylist(array $attributes = []): Playlist
     {
         return $this->playlists()->create([
+            'file_name' => 'index.mpd',
             'disk' => Playlist::getDestinationDisk(),
             'type' => Playlist::getDefaultType(),
             'expires_at' => Playlist::getExpiresAfter(),

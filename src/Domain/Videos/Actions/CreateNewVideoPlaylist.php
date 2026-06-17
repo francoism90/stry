@@ -80,7 +80,6 @@ class CreateNewVideoPlaylist
 
             /** @var Playlist $playlist */
             $playlist = $video->createPlaylist([
-                'file_name' => 'index.mpd',
                 'encryption_key_id' => $keyData['key_id'] ?? null,
                 'encryption_key' => $keyData['key'] ?? null,
                 'type' => $type,
