@@ -46,13 +46,16 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-const { listen } = useEcho()
+// 1. Initialize the composable helper
+const { privateChannel } = useEcho()
 
-listen<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
-listen<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
-listen<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
-listen<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
-listen<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.reload({ only: ['playlist'] }))
+// 2. Chain your listeners seamlessly as a single, continuous statement
+privateChannel(`videos.${props.video.id}`)
+  .listen('.videos.updated', () => router.reload({ only: ['video'] }))
+  .listen('.videos.trashed', () => router.visit(index.url()))
+  .listen('.playlist.created', () => router.reload({ only: ['playlist'] }))
+  .listen('.playlist.updated', () => router.reload({ only: ['playlist'] }))
+  .listen('.playlist.deleted', () => router.reload({ only: ['playlist'] }))
 </script>
 
 <template>
