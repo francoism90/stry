@@ -15,12 +15,13 @@ const props = defineProps<{
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
+const { privateChannel } = useEcho()
 const { getStreamInfo } = useMedia()
-const { listen } = useEcho()
 
-listen<Video>(`videos.${props.video.id}`, '.media.created', () => router.reload({ only: ['items'], reset: ['items'] }))
-listen<Video>(`videos.${props.video.id}`, '.media.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
-listen<Video>(`videos.${props.video.id}`, '.media.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
+privateChannel(`videos.${props.video.id}`)
+  .listen('.media.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.media.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.media.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
 </script>
 
 <template>

@@ -15,17 +15,12 @@ const props = defineProps<{
   items: PlaylistCollection
 }>()
 
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
-listen<Video>(`videos.${props.video.id}`, '.playlist.created', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
-listen<Video>(`videos.${props.video.id}`, '.playlist.updated', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
-listen<Video>(`videos.${props.video.id}`, '.playlist.deleted', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
+privateChannel(`videos.${props.video.id}`)
+  .listen('.playlist.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.playlist.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.playlist.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
 </script>
 
 <template>

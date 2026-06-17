@@ -17,7 +17,7 @@ const props = defineProps<{
 }>()
 
 const page = usePage()
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
 const links: NavigationMenuItem[] = [
   {
@@ -54,8 +54,9 @@ const tabs: NavigationMenuItem[] = [
 const meta = computed(() => [props.video.timestamp, props.video.filesize, props.video.user?.name].filter(Boolean))
 const locale = computed(() => page.props.locale)
 
-listen<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
-listen<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
+privateChannel(`videos.${props.video.id}`)
+  .listen('.video.updated', () => router.reload({ only: ['video'] }))
+  .listen('.video.trashed', () => router.visit(index.url()))
 </script>
 
 <template>

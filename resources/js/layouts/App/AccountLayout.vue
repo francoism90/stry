@@ -10,7 +10,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const { user } = useAuth()
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
 const joinedAt = computed(() => {
   if (!user.value?.created_at) {
@@ -45,7 +45,7 @@ const tabs: NavigationMenuItem[] = [
   },
 ]
 
-listen(`users.${user.value?.id}`, '.user.updated', () => {
+privateChannel(`users.${user.value?.id}`).listen('.user.updated', () => {
   router.reload({ only: ['auth', 'user'] })
 })
 </script>

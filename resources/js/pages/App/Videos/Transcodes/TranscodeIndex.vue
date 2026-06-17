@@ -16,20 +16,15 @@ const props = defineProps<{
   items: TranscodeCollection
 }>()
 
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
 const createTranscode = () =>
   router.post(VideoDispatchTranscodeController.url(props.video.id), {}, { preserveScroll: true })
 
-listen<Video>(`videos.${props.video.id}`, '.transcode.created', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
-listen<Video>(`videos.${props.video.id}`, '.transcode.updated', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
-listen<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
-  router.reload({ only: ['items'], reset: ['items'] }),
-)
+privateChannel(`videos.${props.video.id}`)
+  .listen('.transcode.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.transcode.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.transcode.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
 </script>
 
 <template>

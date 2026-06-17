@@ -27,10 +27,11 @@ const links = computed<NavigationMenuItem[]>(() => [
   },
 ])
 
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
-listen<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
-listen<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
+privateChannel(`groups.${props.group.id}`)
+  .listen('.group.updated', () => router.reload({ only: ['group'] }))
+  .listen('.group.trashed', () => router.visit(index.url()))
 </script>
 
 <template>

@@ -25,10 +25,11 @@ const links: NavigationMenuItem[] = [
   },
 ]
 
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
-listen<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
-listen<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
+privateChannel(`tags.${props.tag.id}`)
+  .listen('.tag.updated', () => router.reload({ only: ['tag'] }))
+  .listen('.tag.deleted', () => router.visit(index.url()))
 </script>
 
 <template>

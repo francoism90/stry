@@ -22,6 +22,7 @@ const props = defineProps<{
 const isAddModalOpen = ref(false)
 
 const { toggleLike, toggleSave } = useVideo(props.video)
+const { privateChannel } = useEcho()
 
 const links = computed<ButtonProps[]>(() => [
   {
@@ -46,10 +47,6 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-// 1. Initialize the composable helper
-const { privateChannel } = useEcho()
-
-// 2. Chain your listeners seamlessly as a single, continuous statement
 privateChannel(`videos.${props.video.id}`)
   .listen('.videos.updated', () => router.reload({ only: ['video'] }))
   .listen('.videos.trashed', () => router.visit(index.url()))

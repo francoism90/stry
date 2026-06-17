@@ -12,7 +12,7 @@ const props = defineProps<{
 
 defineOptions({ layout: [DefaultLayout, AccountLayout] })
 
-const { listen } = useEcho()
+const { privateChannel } = useEcho()
 
 const form = useForm({
   ...(props.user.settings as UserSettings),
@@ -24,7 +24,7 @@ const onSubmit = () =>
     preserveState: true,
   })
 
-listen<User>(`users.${props.user.id}`, '.user.updated', () => router.reload({ only: ['user'] }))
+privateChannel(`users.${props.user.id}`).listen('.user.updated', () => router.reload({ only: ['user'] }))
 </script>
 
 <template>
