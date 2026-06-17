@@ -24,6 +24,12 @@ class HandleInertiaRequests extends Middleware
             'nonce' => Inertia::once(fn (): string => app('csp-nonce')),
             'locale' => Inertia::once(fn (): string => $request->getLocale()),
             'auth' => Inertia::once(fn (): ?UserResourceProperty => new UserResourceProperty($request->user(), ['name', 'email', 'avatar', 'settings'])),
+            'echo' => Inertia::once(fn (): array => [
+                'key' => Config::string('reverb.apps.0.key', ''),
+                'host' => Config::string('reverb.apps.0.host', 'localhost'),
+                'port' => Config::integer('reverb.apps.0.port', 6001),
+                'scheme' => Config::string('reverb.apps.0.scheme', 'http'),
+            ]),
         ]);
     }
 

@@ -2,7 +2,8 @@ import { initializeEcho, type LaravelEchoConfig } from '@/plugins/echo'
 import '@/plugins/iconify'
 import { createInertiaApp } from '@inertiajs/vue3'
 import ui from '@nuxt/ui/vue-plugin'
-import { createSSRApp, h, type DefineComponent } from 'vue'
+import type { DefineComponent } from 'vue' // Type-only import
+import { createSSRApp, h } from 'vue'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import '../css/app.css'
@@ -18,11 +19,10 @@ createInertiaApp({
     return pages[`./pages/${name}.vue`]() as Promise<DefineComponent>
   },
   setup({ el, App, props, plugin }) {
-    // Safely verify and extract the dynamic env variables
-    const envConfig = props.initialPage.props.env as LaravelEchoConfig | undefined
+    const echoConfig = props.initialPage.props.echo as LaravelEchoConfig | undefined
 
-    // Initialize websockets using the extracted environment variables
-    initializeEcho(envConfig)
+    // Initialize websockets
+    initializeEcho(echoConfig)
 
     // Instantiate your Vue instance using the capital 'App' signature
     const vueApp = createSSRApp({ render: () => h(App, props) })
