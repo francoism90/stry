@@ -28,10 +28,10 @@ class HandleInertiaRequests extends Middleware
                 appends: ['name', 'email', 'avatar', 'settings'])
             ),
             'echo' => Inertia::once(fn (): array => [
-                'key' => Config::string('reverb.apps.0.key', ''),
-                'host' => Config::string('reverb.apps.0.host', 'localhost'),
-                'port' => Config::integer('reverb.apps.0.port', 6001),
-                'scheme' => Config::string('reverb.apps.0.scheme', 'http'),
+                'key' => env('VITE_REVERB_APP_KEY', 'app-key'),
+                'host' => env('VITE_REVERB_HOST', 'localhost'),
+                'port' => env('VITE_REVERB_PORT', 6001),
+                'scheme' => env('VITE_REVERB_SCHEME', 'http'),
             ]),
         ]);
     }
