@@ -187,6 +187,7 @@ class Playlist extends Model
     {
         $this->updateOrFail([
             'state' => Failed::class,
+            'transcoded_at' => Carbon::now(),
         ]);
     }
 
