@@ -82,7 +82,7 @@ return [
                     'scheme' => env('REVERB_SCHEME', 'https'),
                     'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
                     'wsKey' => (string) env('VITE_REVERB_APP_KEY', env('REVERB_APP_KEY')),
-                    'wsHost' => (string) env('VITE_REVERB_WS_HOST', env('REVERB_HOST')),
+                    'wsHost' => (string) env('VITE_REVERB_HOST', env('REVERB_HOST')),
                     'wsPort' => (int) env('VITE_REVERB_PORT', env('REVERB_PORT', 6001)),
                     'wsScheme' => (string) env('VITE_REVERB_SCHEME', env('REVERB_SCHEME', 'https')),
                 ],
