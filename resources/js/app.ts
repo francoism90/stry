@@ -14,8 +14,8 @@ createInertiaApp({
   layout: () => DefaultLayout,
   progress: false,
   resolve: (name) => {
-    const pages = import.meta.glob('./Pages/**/*.vue')
-    return pages[`./Pages/${name}.vue`]() as Promise<DefineComponent>
+    const pages = import.meta.glob('./pages/**/*.vue')
+    return pages[`./pages/${name}.vue`]() as Promise<DefineComponent>
   },
   setup({ el, App, props, plugin }) {
     // Safely verify and extract the dynamic env variables
