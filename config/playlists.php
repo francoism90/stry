@@ -93,31 +93,36 @@ return [
     | Encryption Method
     |--------------------------------------------------------------------------
     |
-    | This value determines the encryption method for the playlist.
-    | Options: 'raw_key_encryption' (AES-128 SAMPLE-AES, requires TS),
-    | 'clearkey' (W3C Clear Key EME, works with fMP4, browser-native),
-    | or null for no encryption.
+    | This value determines the encryption method for the streaming segments.
+    | Options:
+    | - 'raw_key_encryption': Standard AES-128 Envelope Encryption. The player
+    |   decrypts the segments in memory before decoding. Native hardware paths
+    |   remain open (Allows HEVC on Linux/Firefox). Requires TS or fMP4 segments.
+    | - 'clearkey': W3C Clear Key EME. Native browser-level decryption using
+    |   Common Encryption. Does NOT require external DRM license servers. Note:
+    |   Firefox blocks ClearKey when used with HEVC profiles, but fully supports AV1/H.264.
+    | - null: No encryption. Media streams completely in the clear.
     |
     */
 
-    'encryption' => (string) env('PLAYLIST_ENCRYPTION', 'raw_key_encryption'),
+    'encryption' => (string) env('PLAYLIST_ENCRYPTION', ''),
 
     /*
     |--------------------------------------------------------------------------
     | Protection Scheme
     |--------------------------------------------------------------------------
     |
-    | Protection scheme for encryption:
-    | - 'cenc' (AES-CTR) for Widevine/PlayReady/Clear Key (best for HLS
-    |   with fMP4 and key rotation)
-    | - 'cbcs' (AES-CBC) for FairPlay/Safari (use with DASH, not HLS)
-    | - 'cbc1' legacy HLS, limited browser support
-    | - null (SAMPLE-AES) widest compatibility with TS segments, no
-    |   key rotation support
+    | Protection scheme used alongside native browser EME (clearkey):
+    | - 'cenc' : AES-CTR mode. The cross-browser standard for DASH pipelines
+    |            and modern fragmented MP4 (fMP4) architectures.
+    | - 'cbcs' : AES-CBC mode. Primarily utilized for Apple FairPlay and modern
+    |            unified HLS/CMAF cross-platform deployments.
+    | - null   : No protection scheme mapping. Required when utilizing traditional
+    |            'raw_key_encryption' envelope encryption frameworks.
     |
     */
 
-    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', 'cenc'),
+    'protection_scheme' => (string) env('PLAYLIST_PROTECTION_SCHEME', ''),
 
     /*
     |--------------------------------------------------------------------------

@@ -25,11 +25,11 @@ class PlaylistSettings extends Dto
 
     public bool $keyRotation;
 
-    public ?string $encryptionMethod;
+    public ?string $encryptionMethod = null;
 
-    public ?string $protectionScheme;
+    public ?string $protectionScheme = null;
 
-    public ?int $keyRotationDuration;
+    public ?int $keyRotationDuration = null;
 
     public function __construct()
     {

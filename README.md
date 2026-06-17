@@ -24,7 +24,7 @@
 
 - 🎥 **DASH Streaming** - Built-in DASH playlist generation
 - 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand
-- 🔐 **Stream Encryption** - Secure video content with encryption for both HLS and DASH
+- 🔐 **Stream Encryption** - Optional secure video content with encryption for both HLS and DASH
 - 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
 - 📲 **Installable PWA** - Install stry on mobile and desktop
 - 🖥️ **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
