@@ -49,6 +49,7 @@ Update to:
 ```env
 APP_ENV=local
 APP_DEBUG=true
+APP_PATH=/path/to/stry
 ```
 
 **Step 2:** Mount application code for live editing. Edit these container files:
@@ -58,10 +59,10 @@ APP_DEBUG=true
 - `~/.config/containers/systemd/stry/stry-reverb.container`
 - `~/.config/containers/systemd/stry/stry-schedule.container`
 
-Add this line to the `[Container]` section of each file (replace `/path/to/stry` with your actual path):
+Add this line to the `[Container]` section of each file:
 
 ```ini
-Volume=/path/to/stry:/app:rw,z,U
+Volume=${APP_PATH}:/app:rw,z,U
 ```
 
 Example for `stry.container`:
@@ -69,7 +70,7 @@ Example for `stry.container`:
 ```ini
 [Container]
 Image=stry.build
-Volume=/path/to/stry:/app:rw,z,U
+Volume=${APP_PATH}:/app:rw,z,U
 # ... other configuration ...
 ```
 
