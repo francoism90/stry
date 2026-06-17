@@ -141,8 +141,7 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
 RUN setcap -r /usr/local/bin/frankenphp
 
 # Entrypoint
-COPY containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY --chmod=755 containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Clean up unnecessary files and caches to reduce image size
 RUN apt-get clean && apt-get autoremove -y \
