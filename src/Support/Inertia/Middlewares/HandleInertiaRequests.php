@@ -28,7 +28,7 @@ class HandleInertiaRequests extends Middleware
                 appends: ['name', 'email', 'avatar', 'settings'])
             ),
             'echo' => Inertia::once(fn (): array => [
-                'key' => Config::string('reverb.apps.apps.0.wsKey', ''),
+                'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),
                 'port' => Config::integer('reverb.apps.apps.0.options.wsPort', 6001),
                 'scheme' => Config::string('reverb.apps.apps.0.options.wsScheme', 'http'),
