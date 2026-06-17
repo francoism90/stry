@@ -286,7 +286,7 @@ class Playlist extends Model
 
     public static function getSegmentDuration(): int
     {
-        return Config::integer('playlists.segment_duration', 10);
+        return Config::integer('playlists.segment_duration', 6);
     }
 
     public static function getFragmentDuration(): int
