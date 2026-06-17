@@ -1,8 +1,8 @@
 import { usePage } from '@inertiajs/vue3'
 import { configureEcho } from '@laravel/echo-vue'
-import { tryOnMounted, watchOnce } from '@vueuse/core'
+import { watchOnce } from '@vueuse/core'
 import type Echo from 'laravel-echo'
-import { computed, nextTick, shallowRef, toRaw } from 'vue'
+import { computed, shallowRef, toRaw, watchEffect } from 'vue'
 
 interface EchoPageProps {
   key: string
@@ -11,27 +11,19 @@ interface EchoPageProps {
   scheme: string
 }
 
-// Keep the global instance persistent across layout shifts
 const echo = shallowRef<Echo<'pusher'> | null>(null)
 
 export function useEcho() {
-  // 1. Dynamic computed page lookup fixes layout tracking drops during page switches
-  const config = computed(() => {
-    const pageProps = usePage().props as unknown as { echo?: EchoPageProps }
-    return pageProps.echo || null
-  })
+  const config = computed(() => usePage().props.echo as EchoPageProps | null)
 
-  const initialize = async () => {
-    // Wait for the Inertia frame to finish loading deferred page variables completely
-    await nextTick()
+  // watchEffect handles tracking, initial boot, and hot-swap cleanups in one block
+  watchEffect((onCleanup) => {
+    if (!config.value) return
 
-    if (!config.value || echo.value) return
-
-    console.log('Initializing Echo with clean config:', toRaw(config.value))
-
-    // 2. Extract raw values using toRaw to peel back the Vue Proxy layer
     const cleanConfig = toRaw(config.value)
+    console.log('Initializing Echo with config:', cleanConfig)
 
+    // 1. Boot up the new connection instance
     echo.value = configureEcho({
       broadcaster: 'reverb',
       key: cleanConfig.key,
@@ -41,31 +33,25 @@ export function useEcho() {
       forceTLS: cleanConfig.scheme === 'https',
       enabledTransports: ['ws', 'wss'],
       disableStats: true,
-      // Forces authorization relative to current site, solving local cross-origin network errors
       authEndpoint: '/broadcasting/auth',
     }) as unknown as Echo<'pusher'>
-  }
+
+    // 2. Automatically tear down connection when config changes or component unmounts
+    onCleanup(() => {
+      if (echo.value) {
+        echo.value.connector?.disconnect()
+        echo.value = null
+      }
+    })
+  })
 
   const listen = <T = Record<string, unknown>>(channelName: string, eventName: string, callback: (data: T) => void) => {
     if (echo.value) {
       echo.value.channel(channelName).listen(eventName, callback)
-      return
+    } else {
+      watchOnce(echo, (instance) => instance?.channel(channelName).listen(eventName, callback))
     }
-
-    watchOnce(echo, (instance: Echo<'pusher'> | null) => {
-      if (instance) {
-        instance.channel(channelName).listen(eventName, callback)
-      }
-    })
   }
 
-  tryOnMounted(() => {
-    initialize()
-  })
-
-  return {
-    config,
-    echo,
-    listen,
-  }
+  return { config, echo, listen }
 }
