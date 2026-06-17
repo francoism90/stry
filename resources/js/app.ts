@@ -1,6 +1,7 @@
-import '@/plugins/iconify'
 import { createInertiaApp } from '@inertiajs/vue3'
 import ui from '@nuxt/ui/vue-plugin'
+
+import '@/plugins/iconify'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import '../css/app.css'
