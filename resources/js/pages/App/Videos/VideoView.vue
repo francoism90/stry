@@ -49,7 +49,7 @@ const links = computed<ButtonProps[]>(() => [
 const { echo } = useEcho()
 
 echo.value
-  ?.channel(`videos.${props.video.id}`)
+  ?.private(`videos.${props.video.id}`)
   .listen('.videos.updated', () => router.reload({ only: ['video'] }))
   .listen('.videos.trashed', () => router.visit(index.url()))
   .listen('.playlist.created', () => router.reload({ only: ['playlist'] }))
