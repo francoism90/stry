@@ -14,16 +14,16 @@ export function useEcho() {
   watchEffect((onCleanup) => {
     if (!config.value) return
 
-    const cleanConfig = toRaw(config.value)
-    console.log('Initializing Echo with config:', cleanConfig)
+    const wsConfig = toRaw(config.value)
+    console.log('Initializing Echo with config:', wsConfig)
 
     echo.value = configureEcho({
       broadcaster: 'reverb',
-      key: cleanConfig.key,
-      wsHost: cleanConfig.host,
-      wsPort: cleanConfig.port,
-      wssPort: cleanConfig.port,
-      forceTLS: cleanConfig.scheme === 'https',
+      key: wsConfig.key,
+      wsHost: wsConfig.host,
+      wsPort: wsConfig.port,
+      wssPort: wsConfig.port,
+      forceTLS: wsConfig.scheme === 'https',
       enabledTransports: ['ws', 'wss'],
       disableStats: true,
       authEndpoint: '/broadcasting/auth',
