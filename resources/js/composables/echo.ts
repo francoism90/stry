@@ -1,27 +1,32 @@
-import type { EchoConfig } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { configureEcho } from '@laravel/echo-vue'
-import { watchOnce } from '@vueuse/core'
 import type Echo from 'laravel-echo'
-import { computed, shallowRef, toRaw, watchEffect } from 'vue'
+import { computed, shallowRef, toRaw, watch, watchEffect } from 'vue'
+
+interface EchoPageProps {
+  key: string
+  host: string
+  port: number
+  scheme: string
+}
 
 const echo = shallowRef<Echo<'pusher'> | null>(null)
 
 export function useEcho() {
-  const config = computed(() => usePage().props.echo as EchoConfig | null)
+  const config = computed(() => usePage().props.echo as EchoPageProps | null)
 
   watchEffect((onCleanup) => {
-    if (!config.value) return
+    if (typeof window === 'undefined' || !config.value || !config.value.key) return
 
-    const wsConfig = toRaw(config.value)
+    const cleanConfig = toRaw(config.value)
 
     echo.value = configureEcho({
       broadcaster: 'reverb',
-      key: wsConfig.key,
-      wsHost: wsConfig.host,
-      wsPort: wsConfig.port,
-      wssPort: wsConfig.port,
-      forceTLS: wsConfig.scheme === 'https',
+      key: cleanConfig.key,
+      wsHost: cleanConfig.host,
+      wsPort: cleanConfig.port,
+      wssPort: cleanConfig.port,
+      forceTLS: cleanConfig.scheme === 'https',
       enabledTransports: ['ws', 'wss'],
       disableStats: true,
       authEndpoint: '/broadcasting/auth',
@@ -35,13 +40,29 @@ export function useEcho() {
     })
   })
 
-  const listen = <T = Record<string, unknown>>(channelName: string, eventName: string, callback: (data: T) => void) => {
-    if (echo.value) {
-      echo.value.channel(channelName).listen(eventName, callback)
-    } else {
-      watchOnce(echo, (instance) => instance?.channel(channelName).listen(eventName, callback))
+  const channel = (channelName: string) => {
+    const chain = {
+      listen: <T = unknown>(eventName: string, callback: (data: T) => void) => {
+        if (echo.value) {
+          echo.value.private(channelName).listen(eventName, callback)
+        } else {
+          const unwatch = watch(echo, (instance) => {
+            if (instance) {
+              instance.private(channelName).listen(eventName, callback)
+              unwatch()
+            }
+          })
+        }
+        return chain
+      },
     }
+
+    return chain
   }
 
-  return { config, echo, listen }
+  return {
+    config,
+    echo,
+    channel,
+  }
 }
