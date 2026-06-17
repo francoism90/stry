@@ -19,9 +19,9 @@ const props = defineProps<{
   groups?: Group[] | undefined
 }>()
 
-const { toggleLike, toggleSave } = useVideo(props.video)
-
 const isAddModalOpen = ref(false)
+
+const { toggleLike, toggleSave } = useVideo(props.video)
 
 const links = computed<ButtonProps[]>(() => [
   {

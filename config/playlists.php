@@ -90,6 +90,56 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Manifest Cache Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in seconds) for caching generated DASH manifests.
+    | Keep this shorter than media URL lifetime so cached manifests don't carry
+    | stale signed segment URLs.
+    |
+    */
+
+    'manifest_cache_lifetime' => (int) env('PLAYLIST_MANIFEST_CACHE_LIFETIME', 300),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manifest URL Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in seconds) for the signed manifest URL. This protects the
+    | playlist route itself (api.play.manifest).
+    |
+    */
+
+    'manifest_url_lifetime' => (int) env('PLAYLIST_MANIFEST_URL_LIFETIME', 3600),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media URL Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in seconds) for signed segment / init URLs embedded into the
+    | manifest. Keep this longer than manifest cache lifetime to avoid mid-play
+    | expiry during long sessions.
+    |
+    */
+
+    'media_url_lifetime' => (int) env('PLAYLIST_MEDIA_URL_LIFETIME', 7200),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Key URL Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in seconds) for signed encryption key URLs. If null, media URL
+    | lifetime will be used.
+    |
+    */
+
+    'key_url_lifetime' => (int) env('PLAYLIST_KEY_URL_LIFETIME', 7200),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Method
     |--------------------------------------------------------------------------
     |

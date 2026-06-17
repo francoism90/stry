@@ -27,12 +27,12 @@
         "@vueuse/core": "^14.3.0",
         "laravel-echo": "^2.3.7",
         "pusher-js": "^8.5.0",
-        "shaka-player": "^5.1.8",
+        "shaka-player": "^5.1.9",
         "tailwindcss": "^4.3.1",
         "vue": "^3.5.38"
     },
     "devDependencies": {
-        "@iconify-json/lucide": "^1.2.112",
+        "@iconify-json/lucide": "^1.2.113",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@tailwindcss/vite": "^4.3.1",
         "@tsconfig/node24": "^24.0.4",
@@ -46,17 +46,17 @@
         "chokidar": "^5.0.0",
         "concurrently": "^10.0.3",
         "eslint": "^10.5.0",
-        "eslint-plugin-oxlint": "~1.69.0",
+        "eslint-plugin-oxlint": "~1.70.0",
         "eslint-plugin-vue": "^10.9.2",
         "jiti": "^2.7.0",
         "laravel-vite-plugin": "^3.1.0",
         "npm-run-all2": "^9.0.2",
-        "oxlint": "~1.69.0",
+        "oxlint": "~1.70.0",
         "prettier": "3.8.4",
         "prettier-plugin-tailwindcss": "^0.8.0",
         "typescript": "~6.0.3",
         "vite": "^8.0.16",
-        "vitest": "^4.1.8",
+        "vitest": "^4.1.9",
         "vue-tsc": "^3.3.5"
     }
 }
