@@ -10,7 +10,6 @@ const echo = shallowRef<Echo<'pusher'> | null>(null)
 export function useEcho() {
   const config = computed(() => usePage().props.echo as EchoConfig | null)
 
-  // watchEffect handles tracking, initial boot, and hot-swap cleanups in one block
   watchEffect((onCleanup) => {
     if (!config.value) return
 
