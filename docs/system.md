@@ -1,23 +1,36 @@
 ---
-title: System Configuration
-order: 1
+title: System Tuning
+order: 10
 tags:
-    - podman
-    - quadlet
-    - containers
+    - performance
     - resources
+    - optimization
 ---
 
-# System Configuration
+# System Resource Tuning
 
-## 💻 Resource Limiting
+## Overview
 
-### Overview
-
-You can limit CPU and memory resources for containers to prevent resource exhaustion and ensure stable performance.
+This guide covers runtime resource management for **stry** containers. For comprehensive resource reference including pre-configured defaults, see **[Podman Reference](podman-reference.md)**.
 
 > [!TIP]
-> Resource limits can be applied in real-time or permanently via container configuration files.
+> Container files ship with sensible defaults tuned for ~16GB development machines. Most deployments work with defaults—only adjust if needed.
+
+---
+
+## Quick Reference
+
+Default resource allocation (for ~16GB machine):
+
+| Container      | Memory    | Notes                     |
+| -------------- | --------- | ------------------------- |
+| `stry`         | 2 GB      | Scale with Octane workers |
+| `stry-queue`   | 3 GB      | FFmpeg needs resources    |
+| `stry-pgsql`   | 2 GB      | 4-8 GB in production      |
+| `stry-redis`   | 512 MB    | 1-2 GB in production      |
+| Other services | 256MB-1GB | See reference for details |
+
+See **[Podman Reference: Resource Limits](podman-reference.md#resource-limits)** for complete table.
 
 ---
 

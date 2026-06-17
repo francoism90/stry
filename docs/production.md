@@ -1,13 +1,21 @@
 ---
-title: Running on production
+title: Production Setup
 order: 1
 tags:
-    - podman
-    - quadlet
-    - usage
+    - production
+    - deployment
+    - security
 ---
 
 # Production Setup
+
+## Overview
+
+This guide covers deploying **stry** to production using Podman/Quadlet on Linux servers.
+
+**Estimated time:** 30-60 minutes for initial setup + ongoing monitoring.
+
+---
 
 ## Prerequisites
 
@@ -15,108 +23,331 @@ tags:
 
 - 🐧 Linux (Debian, Fedora, CentOS, Arch, Ubuntu, etc.)
 - 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
-
-> [!WARNING]
-> Ensure your system meets all prerequisites before proceeding with production deployment.
+- 🔐 Root access or sudo privileges for system configuration
+- 📡 Public IP address or domain name
+- 💾 Sufficient disk space for media files and databases
 
 ---
 
-## Installation
+## Step-by-Step Setup
 
-### Clone the Project
-
-Clone the repository to your working directory (e.g., `~/projects`):
+### 1. Clone the Project
 
 ```bash
 cd ~/projects
 git clone https://github.com/francoism90/stry.git
+cd stry
 ```
 
-### Configure Podman
+### 2. Configure Containers
 
-Follow the comprehensive [Podman Quadlet](podman.md) guide for container setup.
+Follow the **[Podman Quick Start](podman-quickstart.md)** guide to set up basic container infrastructure:
 
-> [!TIP]
-> Make sure to review the Podman guide thoroughly to ensure proper configuration for production.
+```bash
+mkdir -p ~/.config/containers/systemd
+cp -r containers/podman/systemd/stry ~/.config/containers/systemd/
+```
 
-### Setup Proxy (Required)
+Edit `~/.config/containers/systemd/stry/config/app.env` with your production values:
 
-A reverse proxy is **required** to interact with the container services securely.
+```env
+APP_NAME=stry
+APP_ENV=production          # Critical: must be 'production'
+APP_DEBUG=false
+APP_KEY=base64:...          # Generate with: php artisan key:generate --show
+APP_URL=https://stry.example.com
 
-Follow the [Proxy Setup](proxy.md) guide for detailed configuration.
+# Database
+DB_HOST=systemd-stry-pgsql
+DB_DATABASE=stry
+DB_USERNAME=stry_user
+DB_PASSWORD=<strong-password>
+
+# Redis/Cache
+REDIS_HOST=systemd-stry-redis
+
+# S3 Storage
+AWS_ENDPOINT_URL=https://fs.stry.example.com
+AWS_ACCESS_KEY_ID=<access-key>
+AWS_SECRET_ACCESS_KEY=<secret-key>
+
+# Media paths (create these on host)
+MEDIA_PATH=/var/lib/stry/media
+IMPORT_PATH=/var/lib/stry/import
+
+# Additional config (see config/ directory for all options)
+PLAYLIST_TYPE=packager
+PLAYLIST_ENCRYPTION=raw_key_encryption
+```
+
+### 3. Set Up Reverse Proxy
+
+A **Caddy** reverse proxy is required for HTTPS termination and service routing.
+
+Follow the **[Proxy Setup](proxy.md)** guide:
+
+```bash
+cp -r containers/podman/systemd/proxy ~/.config/containers/systemd/
+```
+
+Create `~/.config/containers/systemd/proxy/config/Caddyfile` with your domain and certificate configuration.
+
+### 4. Create Media Directories
+
+```bash
+sudo mkdir -p /var/lib/stry/media /var/lib/stry/import
+sudo chown 1000:1000 /var/lib/stry/media /var/lib/stry/import
+sudo chmod 700 /var/lib/stry/media /var/lib/stry/import
+```
+
+### 5. Configure S3 Storage
+
+Follow the **[Object Storage (S3)](s3.md)** setup guide to initialize buckets and configure media storage:
+
+```bash
+podman exec systemd-stry ./bin/setup-s3
+```
+
+### 6. Start Services
+
+```bash
+systemctl --user daemon-reload
+systemctl --user start stry
+```
+
+Monitor startup (takes 5-10 minutes first time):
+
+```bash
+journalctl --user -u stry -f
+```
+
+### 7. Run Database Migrations
+
+```bash
+podman exec systemd-stry php artisan migrate --force
+```
+
+### 8. Verify Deployment
+
+```bash
+# Check status
+systemctl --user status stry
+
+# Test endpoints
+curl -I https://stry.example.com/
+
+# View logs
+journalctl --user -u 'stry*' -f
+```
 
 ---
 
-## 🔒 Security Considerations
+## 🔒 Security Hardening
 
 > [!IMPORTANT]
-> **Production Checklist:**
->
-> - ✅ Use strong, unique passwords for all services
-> - ✅ Configure firewall rules appropriately
-> - ✅ Enable HTTPS with valid SSL certificates
-> - ✅ Regularly update containers and dependencies
-> - ✅ Set up automated backups
-> - ✅ Monitor logs and system resources
-> - ✅ Never use development/testing seeders in production
+> **Production Security Checklist:**
+
+- ✅ **Strong Passwords** — Use `openssl rand -hex 32` to generate strong secrets
+
+    ```bash
+    # Generate for APP_KEY
+    php artisan key:generate --show
+
+    # Generate for S3 credentials
+    openssl rand -hex 16  # Access key
+    openssl rand -hex 32  # Secret key
+    ```
+
+- ✅ **HTTPS/SSL** — Enable automatic HTTPS with Caddy (included in proxy setup)
+
+- ✅ **Firewall** — Restrict access to essential ports only
+
+    ```bash
+    sudo ufw allow 22/tcp       # SSH
+    sudo ufw allow 80/tcp       # HTTP (Caddy redirect)
+    sudo ufw allow 443/tcp      # HTTPS (Caddy)
+    sudo ufw enable
+    ```
+
+- ✅ **Database** — Use strong passwords and restrict network access
+
+    ```bash
+    # PostgreSQL credentials in app.env
+    DB_PASSWORD=<use-strong-password>
+    ```
+
+- ✅ **Secrets Management** — Never commit credentials to git
+
+    ```bash
+    # app.env should NOT be in version control
+    # Only .env.example with placeholders
+    ```
+
+- ✅ **Container Updates** — Keep Podman and containers updated
+
+    ```bash
+    sudo apt update && sudo apt upgrade podman
+    systemctl --user restart stry-build
+    systemctl --user restart stry
+    ```
+
+- ✅ **Automated Backups** — Schedule regular database backups
+
+    ```bash
+    # Cron job example (daily at 2 AM)
+    0 2 * * * podman exec systemd-stry-pgsql pg_dump -U stry_user -d stry | gzip > /backups/stry-$(date +\%Y\%m\%d).sql.gz
+    ```
+
+- ✅ **Monitoring & Alerts** — Set up log monitoring
+
+    ```bash
+    # Real-time monitoring
+    journalctl --user -u 'stry*' -f
+
+    # Check for errors
+    journalctl --user -u 'stry*' --priority=err
+    ```
+
+- ✅ **No Development Data** — Clean databases before production
+    ```bash
+    # Verify app.env has APP_ENV=production
+    # Never run seeders on production data
+    ```
 
 ---
 
 ## ⚡ Performance Optimization
 
-### Shaka Packager Configuration
+### Resource Allocation
 
-Shaka Packager handles DASH/HLS video packaging and streaming.
+See **[System Configuration](system.md)** for detailed resource tuning. Key production guidelines:
 
-> [!TIP]
-> **Shaka Packager Benefits:**
->
-> - ✅ DASH/HLS packaging
-> - ✅ Encryption and key rotation support
-> - ✅ Handles multiple codec and bitrate profiles
->
-> Review the [Laravel Shaka](https://github.com/foxws/laravel-shaka) documentation for advanced configuration options.
+| Container       | Memory | Notes                           |
+| --------------- | ------ | ------------------------------- |
+| `stry` (Octane) | 4-6 GB | Scale with worker count         |
+| `stry-queue`    | 6-8 GB | FFmpeg encoding needs resources |
+| `stry-pgsql`    | 4-8 GB | Increase for large datasets     |
+| `stry-redis`    | 1-2 GB | Cache management                |
 
-### Reduce Container Logging Overhead
+Update container files:
 
-For production deployments, consider disabling Podman container logging to prevent performance degradation:
+```ini
+[Container]
+Memory=6gb
+CPUQuota=400000  # 4 cores
+```
 
-Add `LogDriver=none` to your container files in `~/.config/containers/systemd/stry/*.container`:
+Reload and restart:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user restart stry
+```
+
+### Container Logging
+
+Disable container logging for high-throughput services to reduce I/O overhead:
 
 ```ini
 [Container]
 LogDriver=none
 ```
 
-> [!TIP]
-> **Benefits of `LogDriver=none`:**
->
-> - ✅ Eliminates disk I/O overhead from container logs
-> - ✅ Prevents log files from consuming disk space
->
-> **Trade-offs:**
->
-> - ⚠️ Container logs won't be available via `journalctl` or `podman logs`
-> - ⚠️ Application logs remain accessible via Laravel's logging system
+> [!NOTE]
+> Application logs remain available through Laravel's logging system in `storage/logs/`.
 
-If you need selective logging, apply `LogDriver=none` only to high-throughput containers (e.g., `stry-queue.container`, `stry-reverb.container`) while keeping logs enabled for critical services.
+### Video Processing
 
-### Media Encoding and Processing
+For optimal encoding performance:
 
-For optimal video processing performance:
+- Allocate 6-8 GB memory to `stry-queue` container
+- Configure job timeouts in `config/queue.php`
+- Monitor FFmpeg CPU usage: `podman stats systemd-stry-queue`
+- Use hardware acceleration (`AddDevice=/dev/dri:/dev/dri/`) if available
 
-- Ensure adequate CPU and memory allocation for encoding jobs
-- Consider using the queue system for large batch processing
-- Monitor FFmpeg resource usage during peak periods
-- Configure appropriate job timeouts in `config/queue.php`
+### Database Optimization
+
+```sql
+-- PostgreSQL performance tuning
+-- In postgresql.conf or via podman exec:
+shared_buffers = 2GB        # ~25% of container memory
+effective_cache_size = 6GB  # ~75% of container memory
+work_mem = 50MB
+maintenance_work_mem = 512MB
+```
 
 ---
 
-## Next Steps
+## 📊 Monitoring & Maintenance
 
-After installation:
+### Daily Checks
 
-1. 📖 Review the [Configuration](configuration.md) guide
-2. 🔧 Set up [S3 Storage](s3.md) for media files
-3. 🎮 Learn about [Interaction](interaction.md) commands
-4. 📈 Monitor your instance with [Laravel Horizon](https://stry.test/horizon)
+```bash
+# Container status
+systemctl --user status stry
+
+# Real-time stats
+podman stats
+
+# Recent errors
+journalctl --user -u 'stry*' --priority=err | tail -50
+```
+
+### Regular Maintenance
+
+```bash
+# Weekly: Check disk usage
+du -sh ~/.config/containers/systemd/stry/
+
+# Monthly: Prune old images and containers
+podman system prune -a
+
+# Quarterly: Update base images and dependencies
+git pull origin main
+systemctl --user restart stry-build
+systemctl --user restart stry
+```
+
+### Backup Strategy
+
+1. **Database** — Automated daily backups to external storage
+2. **Media** — Replicate S3 bucket to backup location
+3. **Configuration** — Version control app.env changes (in private repo)
+
+---
+
+## 🆘 Troubleshooting
+
+**Container Won't Start**
+
+```bash
+journalctl --user -u stry -f  # Check logs
+# Common issues: missing app.env, missing APP_KEY, port conflicts
+```
+
+**High Memory Usage**
+
+```bash
+podman stats                   # Identify heavy containers
+systemctl --user restart stry  # Restart to reset memory
+# Increase Memory= in container files if persistent
+```
+
+**Performance Issues**
+
+```bash
+podman exec systemd-stry php artisan optimize          # Cache config/routes
+podman exec systemd-stry php artisan scout:sync        # Re-index search
+systemctl --user restart stry-queue                    # Restart workers
+```
+
+---
+
+## 📖 Next Steps
+
+1. Review **[Application Configuration](configuration.md)** for app-specific settings
+2. Set up **[CLI Interaction](interaction.md)** for easy command execution
+3. Schedule **[automated upgrades](podman-operations.md#upgrading)**
+4. Monitor using **[System Configuration](system.md)** guidelines
+5. 🎮 Learn about [Interaction](interaction.md) commands
+6. 📈 Monitor your instance with [Laravel Horizon](https://stry.test/horizon)

@@ -6,11 +6,12 @@ BindsTo=stry.container
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=CONTAINER_ROLE=scheduler
+Environment=APP_SERVICE=scheduler
 UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
 ShmSize=256m
+Volume=%h/.config/containers/systemd/stry/config/app.env:/config/app.env:ro,z
 Volume=${MEDIA_PATH}:/media:rw,z
 Volume=stry-cache:/cache:rw,z
 Network=stry.network

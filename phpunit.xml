@@ -32,7 +32,5 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
-        <env name="GOOGLE_FONTS_DISK" value="public"/>
-        <env name="GOOGLE_FONTS_FALLBACK" value="true"/>
     </php>
 </phpunit>

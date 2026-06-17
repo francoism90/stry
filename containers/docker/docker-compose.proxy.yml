@@ -25,7 +25,7 @@ services:
             - proxy
 
     # ---------------------------------------------------------------------------
-    # Application — attach proxy-facing roles to the proxy network
+    # Application — attach proxy-facing services to the proxy network
     # ---------------------------------------------------------------------------
 
     app:

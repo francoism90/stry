@@ -108,7 +108,7 @@ jobs:
 
             - name: Build application
               run: |
-                  cp .env.ci .env
+                  cp .env.example .env
                   php artisan key:generate
                   php artisan wayfinder:generate
                   pnpm install --no-frozen-lockfile

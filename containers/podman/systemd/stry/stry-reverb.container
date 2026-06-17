@@ -6,11 +6,12 @@ BindsTo=stry.container
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=CONTAINER_ROLE=reverb
+Environment=APP_SERVICE=reverb
 UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
 ShmSize=128m
+Volume=%h/.config/containers/systemd/stry/config/app.env:/config/app.env:ro,z
 Network=stry.network
 Network=proxy.network
 ExposeHostPort=6001

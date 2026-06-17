@@ -11,6 +11,7 @@ UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
 ShmSize=256m
+Volume=%h/.config/containers/systemd/stry/config/app.env:/config/app.env:ro,z
 Volume=${MEDIA_PATH}:/media:rw,z,U
 Volume=${IMPORT_PATH}:/import:rw,z,U
 Volume=stry-cache:/cache:rw,z,U

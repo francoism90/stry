@@ -1,8 +1,8 @@
 [Build]
-Environment=UID=${UID}
-Environment=GID=${GID}
-Environment=CONTAINER_ENV=${CONTAINER_ENV}
-Target=${CONTAINER_ENV}
+Environment=UID=${UID:-1000}
+Environment=GID=${GID:-1000}
+Environment=APP_ENV=${APP_ENV:-production}
+Target=${APP_ENV:-production}
 ImageTag=localhost/stry:latest
 File=containers/Containerfile
 SetWorkingDirectory=${APP_PATH}

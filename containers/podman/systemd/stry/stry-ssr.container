@@ -6,10 +6,11 @@ BindsTo=stry.container
 [Container]
 Image=stry.build
 AutoUpdate=local
-Environment=CONTAINER_ROLE=ssr
+Environment=APP_SERVICE=ssr
 UserNS=keep-id
 NoNewPrivileges=true
 DropCapability=ALL
+Volume=%h/.config/containers/systemd/stry/config/app.env:/config/app.env:ro,z
 Network=stry.network
 ExposeHostPort=13714
 

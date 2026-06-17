@@ -103,7 +103,7 @@ services:
             - '8025:8025' # Web UI
 
     # ---------------------------------------------------------------------------
-    # Application (shared image, different roles via CONTAINER_ROLE)
+    # Application (shared image, different services via APP_SERVICE)
     # ---------------------------------------------------------------------------
 
     app:
@@ -136,7 +136,7 @@ services:
         image: stry.build
         restart: always
         environment:
-            CONTAINER_ROLE: horizon
+            APP_SERVICE: horizon
         env_file:
             - ../config/app.env
         shm_size: 128m
@@ -156,7 +156,7 @@ services:
         image: stry.build
         restart: always
         environment:
-            CONTAINER_ROLE: scheduler
+            APP_SERVICE: scheduler
         env_file:
             - ../config/app.env
         volumes:
@@ -171,7 +171,7 @@ services:
         image: stry.build
         restart: always
         environment:
-            CONTAINER_ROLE: reverb
+            APP_SERVICE: reverb
         env_file:
             - ../config/app.env
         networks:
@@ -186,7 +186,7 @@ services:
         image: stry.build
         restart: always
         environment:
-            CONTAINER_ROLE: ssr
+            APP_SERVICE: ssr
         env_file:
             - ../config/app.env
         networks:

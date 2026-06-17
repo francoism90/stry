@@ -1,35 +1,83 @@
 ---
-title: Configuration
-order: 6
+title: Application Configuration
+order: 7
 tags:
     - config
     - environment
     - customizing
 ---
 
-# Configuration
+# Application Configuration
 
-## Introduction
+## Overview
 
-You can customize **stry** by either:
-
-- ✅ **Recommended**: Setting environment variables in `.env` file
-- ⚠️ **Alternative**: Modifying configuration files in `config/*.php`
+This guide explains how to customize **stry** application settings. All configuration is done via environment variables in `app.env` (for runtime) or `.env.example` (for development).
 
 > [!TIP]
-> Always prefer environment variables over editing config files directly for easier updates and deployments.
+> Always prefer environment variables over editing `config/*.php` files directly. This makes deployments cleaner and configuration more portable.
 
-## Environment Variable Examples
+---
 
-These configurations control codec, resolution, timeout, and temporary file handling for each processing engine.
+## Configuration Hierarchy
 
-**View full configuration options online:**
+Configuration is read in this order:
 
-- [Laravel Shaka Packager](https://github.com/foxws/laravel-shaka/blob/main/config/laravel-shaka.php) - Segment duration, packager options, encryption
-- [Laravel Streamer](https://github.com/foxws/laravel-streamer/blob/main/config/streamer.php) - Audio/video codecs, resolutions, segment duration
-- [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1/blob/main/config/ab-av1.php) - Preset, VMAF targeting, encoder options
+1. **Runtime `app.env`** — Primary configuration, mounted at container startup (production)
+2. **Development `.env`** — Local overrides for development, loaded from repo (development only)
+3. **PHP config files** — Fine-grained control via `config/*.php` (rarely needed)
 
-### Playlists (stry)
+---
+
+## Essential Configuration
+
+These settings control core application behavior and are required for all deployments.
+
+### Core Application
+
+```env
+APP_NAME=stry
+APP_ENV=production          # production, local, or testing
+APP_DEBUG=false             # false in production
+APP_KEY=base64:...          # Generate with: php artisan key:generate
+APP_URL=https://stry.example.com
+APP_TIMEZONE=UTC
+APP_LOCALE=en
+```
+
+### Database Connection
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=systemd-stry-pgsql
+DB_PORT=5432
+DB_DATABASE=stry
+DB_USERNAME=stry_user
+DB_PASSWORD=<strong-password>
+```
+
+### Cache & Session
+
+```env
+CACHE_STORE=redis
+SESSION_DRIVER=database     # or 'cookie'
+QUEUE_CONNECTION=database   # or 'sync' for development
+```
+
+### Mail
+
+```env
+MAIL_MAILER=log            # or 'smtp' for production
+MAIL_FROM_ADDRESS=info@stry.example.com
+MAIL_FROM_NAME="Stry"
+```
+
+---
+
+## Advanced Configuration
+
+Fine-tune encoding, streaming, and playback options.
+
+### Playlists
 
 ```env
 # Playlist generation mode: 'packager' (fastest, no re-encoding) or 'streamer' (slower, with encoding)
@@ -54,7 +102,7 @@ PLAYLIST_KEY_ROTATION_DURATION=300
 PLAYLIST_EXPIRES_AFTER=1209600
 ```
 
-### Videos (stry)
+### Videos
 
 ```env
 # Disk where videos are imported from
@@ -99,7 +147,7 @@ STREAMER_SEGMENT_DURATION=10
 STREAMER_CONCURRENCY_WORKERS=32
 ```
 
-### ab-av1 Encoder
+### AV1 Encoding (ab-av1)
 
 ```env
 # Encoding preset (0-12, higher = slower but better quality)
@@ -109,7 +157,7 @@ AB_AV1_PRESET=6
 # Options: av1_svtenc (CPU), av1_qsv (Intel QuickSync), av1_vaapi (AMD/Intel VAAPI)
 AB_AV1_ENCODER=av1_vaapi
 
-# FFmpeg input options passed before the input file, typically for hardware acceleration.
+# FFmpeg input options for hardware acceleration
 # Intel QSV example: "hwaccel=qsv qsv_device=/dev/dri/renderD128"
 # AMD/Intel VAAPI:   "hwaccel=vaapi hwaccel_output_format=vaapi"
 AB_AV1_FFMPEG_INPUT_OPTIONS="hwaccel=vaapi hwaccel_output_format=vaapi"
@@ -120,26 +168,49 @@ AB_AV1_MIN_VMAF=80
 
 ---
 
-## 🗂️ Configuration Files Overview
+## Related Documentation
 
-The following configuration files are available for customization:
+- 📖 **[Application Configuration](configuration.md)** — This guide
+- 📖 **[Production Setup](production.md)** — Security and performance checklist
+- 📖 **[Development Setup](development.md)** — Local development configuration
+- 📖 **[S3 Object Storage](s3.md)** — Media storage configuration
 
-| Config File               | Description                        | Key Features                                                                                                      |
-| ------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| 📹 `config/playlists.php` | Playlist generation settings       | Type (packager/streamer), encryption (raw_key/clearkey), protection schemes (cenc/cbcs), key rotation, expiration |
-| 🎬 `config/videos.php`    | Video import and playback settings | Import disk, batch size, playlist creation, completion threshold, transcode disk                                  |
+---
 
-### Package Configuration
+## Configuration File Reference
 
-For more advanced configuration of video processing pipelines, you may need to publish and customize the configuration files for the underlying packages:
+| Config File                | Description                        | Key Settings                                                     |
+| -------------------------- | ---------------------------------- | ---------------------------------------------------------------- |
+| `config/playlists.php`     | Playlist generation settings       | Type, encryption, protection, key rotation, expiration           |
+| `config/videos.php`        | Video import and playback settings | Import disk, batch size, playlist creation, completion threshold |
+| `config/laravel-shaka.php` | Shaka Packager options             | Segment duration, concurrency, packager args                     |
+| `config/streamer.php`      | Shaka Streamer options             | Codecs, resolutions, segment duration, concurrency               |
+| `config/ab-av1.php`        | AV1 encoder options                | Preset, encoder, VMAF, FFmpeg options                            |
+
+---
+
+## Publishing Package Configuration
+
+For advanced customization, publish and edit configuration files:
 
 ```bash
-# Publish Laravel Shaka Packager configuration
+# Publish Shaka Packager configuration
 php artisan vendor:publish --tag="shaka-config"
 
-# Publish Laravel Streamer configuration
+# Publish Streamer configuration
 php artisan vendor:publish --tag="streamer-config"
 
-# Publish Laravel ab-av1 Encoder configuration
+# Publish ab-av1 Encoder configuration
 php artisan vendor:publish --tag="ab-av1-config"
 ```
+
+After publishing, edit the files in `config/` directory and customize as needed.
+
+---
+
+## Getting Help
+
+- 🐍 **Laravel** — [Configuration Basics](https://laravel.com/docs/configuration)
+- 📹 **Shaka Packager** — [GitHub: foxws/laravel-shaka](https://github.com/foxws/laravel-shaka)
+- 🎬 **Streamer** — [GitHub: foxws/laravel-streamer](https://github.com/foxws/laravel-streamer)
+- 🎞️ **ab-av1** — [GitHub: foxws/laravel-ab-av1](https://github.com/foxws/laravel-ab-av1)
