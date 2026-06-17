@@ -14,7 +14,6 @@ export function useEcho() {
     if (!config.value) return
 
     const wsConfig = toRaw(config.value)
-    console.log('Initializing Echo with config:', wsConfig)
 
     echo.value = configureEcho({
       broadcaster: 'reverb',
