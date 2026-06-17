@@ -90,6 +90,43 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Manifest URL Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in minutes) for the signed manifest URL. This protects the
+    | playlist route itself (api.play.manifest).
+    |
+    */
+
+    'manifest_url_lifetime' => (int) env('PLAYLIST_MANIFEST_URL_LIFETIME', 60),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media URL Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in minutes) for signed segment / init URLs embedded into the
+    | manifest. Keep this longer than manifest cache lifetime to avoid mid-play
+    | expiry during long sessions.
+    |
+    */
+
+    'media_url_lifetime' => (int) env('PLAYLIST_MEDIA_URL_LIFETIME', 120),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Key URL Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Lifetime (in minutes) for signed encryption key URLs. If null, media URL
+    | lifetime will be used.
+    |
+    */
+
+    'key_url_lifetime' => (int) env('PLAYLIST_KEY_URL_LIFETIME', 120),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Method
     |--------------------------------------------------------------------------
     |

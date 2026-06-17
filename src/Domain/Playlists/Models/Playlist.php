@@ -240,7 +240,7 @@ class Playlist extends Model
 
     public function getUrlResolver(string $path): string
     {
-        return URL::temporarySignedRoute('api.play.manifest', now()->addHour(), [
+        return URL::temporarySignedRoute('api.play.manifest', now()->addMinutes(static::getManifestUrlLifetime()), [
             'playlist' => $this,
             'path' => $path,
         ]);
@@ -248,14 +248,16 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        $expiration = once(fn () => now()->addHour());
+        $expiration = now()->addMinutes(static::getMediaUrlLifetime());
 
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        return $this->getFilesystem()->temporaryUrl($this->getPath($path), now()->addHour());
+        $expiration = now()->addMinutes(static::getKeyUrlLifetime());
+
+        return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
     }
 
     public static function getDefaultType(): PlaylistType
@@ -293,6 +295,21 @@ class Playlist extends Model
     public static function getFragmentDuration(): int
     {
         return Config::integer('playlists.fragment_duration', 2);
+    }
+
+    public static function getManifestUrlLifetime(): int
+    {
+        return Config::integer('playlists.manifest_url_lifetime', 60);
+    }
+
+    public static function getMediaUrlLifetime(): int
+    {
+        return Config::integer('playlists.media_url_lifetime', 120);
+    }
+
+    public static function getKeyUrlLifetime(): int
+    {
+        return Config::integer('playlists.key_url_lifetime', static::getMediaUrlLifetime());
     }
 
     public static function getExpiresAfter(): ?Carbon
