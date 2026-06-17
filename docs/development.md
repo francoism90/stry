@@ -31,62 +31,77 @@ Clone the project to your working directory (e.g., `~/projects`):
 ```bash
 cd ~/projects
 git clone git@github.com:francoism90/stry.git
+cd stry
 ```
 
-### Configure Podman
+### Setup Containers
 
-> [!NOTE]
-> See the [Podman Quadlet](podman.md) guide for complete details.
+First, follow the [Podman Quick Start](podman-quickstart.md) guide to set up basic container configuration. Then apply these development-specific adjustments:
 
-Apply the following adjustments for development:
-
-**Step 1:** Change environment to development in your config:
+**Step 1:** Set development environment in `app.env`:
 
 ```bash
-# Edit: ~/.config/containers/systemd/stry/config/app.env
-APP_PATH=/path/to/stry
-APP_ENV=development
+vi ~/.config/containers/systemd/stry/config/app.env
 ```
 
-**Step 2:** Add the app volume to these containers:
+Update to:
 
-- `stry.container`
-- `stry-queue.container`
-- `stry-reverb.container`
-- `stry-schedule.container`
-
-Add this line to each container file:
-
-```diff
-+Volume=${APP_PATH}:/app:rw,z
+```env
+APP_ENV=local
+APP_DEBUG=true
 ```
 
-> [!IMPORTANT]
-> Append the `U` flag **only** in `stry.container`: `Volume=${APP_PATH}:/app:rw,z,U`
+**Step 2:** Mount application code for live editing. Edit these container files:
 
-**Step 3:** Remove SSR dependency:
+- `~/.config/containers/systemd/stry/stry.container`
+- `~/.config/containers/systemd/stry/stry-queue.container`
+- `~/.config/containers/systemd/stry/stry-reverb.container`
+- `~/.config/containers/systemd/stry/stry-schedule.container`
+
+Add this line to the `[Container]` section of each file (replace `/path/to/stry` with your actual path):
+
+```ini
+Volume=/path/to/stry:/app:rw,z,U
+```
+
+Example for `stry.container`:
+
+```ini
+[Container]
+Image=stry.build
+Volume=/path/to/stry:/app:rw,z,U
+# ... other configuration ...
+```
+
+> [!NOTE]
+> The `z` flag allows the container to access the mounted volume, and `U` ensures proper user mapping in rootless Podman.
+
+**Step 3 (Optional):** Skip the SSR renderer in development by removing this line from `stry.container`:
 
 ```diff
 -Wants=stry-ssr.container
 ```
 
-### Setup Development Container
-
-Open the cloned project in VSCode as a devcontainer (recommended) or enter the container:
+**Step 4:** Reload and restart:
 
 ```bash
-podman exec -ti systemd-stry /bin/bash
+systemctl --user daemon-reload
+systemctl --user restart stry
 ```
 
-Run the initial setup commands:
+### Initialize Development Environment
+
+Enter the container shell and run setup commands:
 
 ```bash
+podman exec -it systemd-stry /bin/bash
+
+# Inside the container:
 composer install
 php artisan storage:link
 php artisan key:generate
 php artisan migrate --seed
 php artisan scout:sync
-php artisan google-fonts:fetch
 pnpm install
 ```
 
@@ -96,36 +111,246 @@ Follow the [Proxy Setup](proxy.md) guide to enable local HTTPS access.
 
 ### Start Development Watchers
 
-Run the Vite development server:
+Run the Vite development server for live asset rebuilding:
 
 ```bash
-stry pnpm dev
+# From your host machine (repo root):
+pnpm dev
+```
+
+Or from inside the container:
+
+```bash
+podman exec -it systemd-stry pnpm dev
 ```
 
 > [!TIP]
-> The watcher will automatically rebuild assets when you make changes to frontend files.
+> Vite watches for changes and automatically rebuilds assets. Your browser will refresh automatically with the new changes via the Vite HMR websocket.
 
 ---
 
-## 🔧 IDE Integration
+## 🧠 IDE Setup
 
-For enhanced [IDE support](https://github.com/barryvdh/laravel-ide-helper) with Laravel autocomplete and type hints:
+### VS Code Devcontainer
+
+Open the project in VS Code and install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers):
 
 ```bash
-php artisan ide-helper:generate
-php artisan ide-helper:meta
-php artisan ide-helper:models --nowrite
+code ~/projects/stry
+```
+
+The `.devcontainer/` configuration will automatically connect to the running `systemd-stry` container, providing:
+
+- Full PHP IntelliSense and debugging
+- Integrated terminal inside the container
+- Extension support (ESLint, Prettier, Pest, Inertia, etc.)
+
+### Laravel IDE Helper
+
+Generate IDE helper files for better autocomplete and type hints:
+
+```bash
+podman exec systemd-stry php artisan ide-helper:generate
+podman exec systemd-stry php artisan ide-helper:meta
+podman exec systemd-stry php artisan ide-helper:models --nowrite
 ```
 
 ---
 
-## 🤖 Laravel Boost
+## 🤖 AI-Powered Development
 
-To enable [Laravel Boost](https://boost.laravel.com/installed) AI assistance:
+### Laravel Boost
 
-1. **Open Command Palette**: `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
-2. **Select**: "MCP: List Servers"
-3. **Choose**: `laravel-boost`
-4. **Action**: Select "Start server"
+Enable [Laravel Boost](https://boost.laravel.com/) MCP server for AI-powered Laravel development:
 
-✅ You're ready to use AI-powered Laravel development!
+1. Open VS Code Command Palette: `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
+2. Search and select: "MCP: List Servers"
+3. Find and start: `laravel-boost`
+
+✅ You now have AI assistance for Laravel development with Copilot!
+
+### GitHub Copilot
+
+Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) for inline AI code suggestions.
+
+---
+
+## 🧪 Testing
+
+### Run Tests
+
+```bash
+# Run all tests
+podman exec systemd-stry php artisan test
+
+# Run with coverage
+podman exec systemd-stry php artisan test --coverage
+
+# Run specific test file
+podman exec systemd-stry php artisan test tests/Feature/SomeTest.php
+
+# Run with filter
+podman exec systemd-stry php artisan test --filter=testMethodName
+```
+
+### Code Quality
+
+```bash
+# Run Pint (Laravel code formatter)
+podman exec systemd-stry vendor/bin/pint
+
+# Run Larastan (static analysis)
+podman exec systemd-stry vendor/bin/larastan
+```
+
+---
+
+## 🐛 Debugging
+
+### Laravel Tinker
+
+Interactive REPL for testing code:
+
+```bash
+podman exec -it systemd-stry php artisan tinker
+```
+
+### View Logs
+
+Real-time application logs:
+
+```bash
+# Laravel logs
+podman exec systemd-stry tail -f storage/logs/*.log
+
+# System logs
+journalctl --user -u stry -f
+```
+
+### Database Inspection
+
+```bash
+# Access PostgreSQL shell
+podman exec -it systemd-stry-pgsql psql -U user -d stry
+
+# Run migrations
+podman exec systemd-stry php artisan migrate
+
+# Seed the database
+podman exec systemd-stry php artisan db:seed
+```
+
+---
+
+## 📦 Dependency Management
+
+### Composer
+
+```bash
+# Install dependencies
+podman exec systemd-stry composer install
+
+# Update dependencies
+podman exec systemd-stry composer update
+
+# Add new package
+podman exec systemd-stry composer require vendor/package
+```
+
+### npm / pnpm
+
+```bash
+# Install frontend dependencies
+podman exec systemd-stry pnpm install
+
+# Add package
+podman exec systemd-stry pnpm add package-name
+
+# Remove package
+podman exec systemd-stry pnpm remove package-name
+```
+
+---
+
+## 💾 Database Management
+
+### Fresh Database
+
+Reset everything and start fresh:
+
+```bash
+podman exec systemd-stry php artisan migrate:fresh --seed
+```
+
+### Backup Database
+
+```bash
+podman exec systemd-stry-pgsql pg_dump -U user -d stry > backup.sql
+```
+
+### Restore Database
+
+```bash
+podman exec -i systemd-stry-pgsql psql -U user -d stry < backup.sql
+```
+
+---
+
+## 🔄 Rebuilding After Changes
+
+If you modify dependencies or PHP configuration, rebuild the image:
+
+```bash
+systemctl --user restart stry-build
+systemctl --user restart stry
+```
+
+If you only changed code (with mounted volume), restart without rebuilding:
+
+```bash
+systemctl --user restart stry
+```
+
+---
+
+## 🆘 Troubleshooting
+
+### Container Won't Start
+
+Check logs:
+
+```bash
+journalctl --user -u stry -f
+```
+
+Common issues:
+
+- **Missing app.env** — Ensure `~/.config/containers/systemd/stry/config/app.env` exists
+- **Missing APP_KEY** — Generate with `php artisan key:generate`
+- **Port conflicts** — Check if ports 8000, 5173, 6001 are free
+
+### Permission Issues
+
+If files created in container aren't writable on host:
+
+```bash
+# Fix ownership (replace with your uid/gid)
+chown -R 1000:1000 ~/projects/stry/storage
+```
+
+### Assets Not Compiling
+
+Clear Vite cache and rebuild:
+
+```bash
+rm -rf ~/projects/stry/bootstrap/ssr
+podman exec systemd-stry npm run build
+```
+
+---
+
+## 🚀 Next Steps
+
+- Explore [CLI Interaction](interaction.md) for helpful commands
+- Review [Podman Operations](podman-operations.md) for container management
+- Check [Application Configuration](configuration.md) for app-specific settings
