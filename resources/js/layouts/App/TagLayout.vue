@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { index, show } from '@/actions/App/Web/Tags/Controllers/TagController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import { useEcho } from '@/composables/echo'
 import type { Tag } from '@/types'
 import { Head, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -12,8 +12,10 @@ const props = defineProps<{
 
 const meta = computed(() => [props.tag.category, props.tag.created_at].filter(Boolean))
 
-useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
-useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
+const { listen } = useEcho()
+
+listen<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
+listen<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
 </script>
 
 <template>

@@ -4,8 +4,8 @@ import SecurityController from '@/actions/App/Web/Account/Controllers/SecurityCo
 import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useAuth } from '@/composables/auth'
+import { echo } from '@/composables/echo'
 import { Head, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
@@ -44,7 +44,9 @@ const tabs: NavigationMenuItem[] = [
   },
 ]
 
-useEcho(`users.${user.value?.id}`, '.user.updated', () => router.reload({ only: ['auth', 'user'] }))
+echo.value?.channel(`users.${user.value?.id}`).listen('.user.updated', () => {
+  router.reload({ only: ['auth', 'user'] })
+})
 </script>
 
 <template>

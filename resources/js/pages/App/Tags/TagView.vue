@@ -3,9 +3,9 @@ import { edit, index } from '@/actions/App/Web/Tags/Controllers/TagController'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
+import { useEcho } from '@/composables/echo'
 import type { Tag, VideoCollection, VideoFilters } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
@@ -25,8 +25,10 @@ const links: NavigationMenuItem[] = [
   },
 ]
 
-useEcho<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
-useEcho<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
+const { listen } = useEcho()
+
+listen<Tag>(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
+listen<Tag>(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
 </script>
 
 <template>

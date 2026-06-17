@@ -3,11 +3,11 @@ import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controlle
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import ActionBar from '@/components/Ui/ActionBar.vue'
+import { useEcho } from '@/composables/echo'
 import VideoLayout from '@/layouts/App/VideoLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { TranscodeCollection, Video } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 
 defineOptions({ layout: [DefaultLayout, VideoLayout] })
 
@@ -16,16 +16,18 @@ const props = defineProps<{
   items: TranscodeCollection
 }>()
 
+const { listen } = useEcho()
+
 const createTranscode = () =>
   router.post(VideoDispatchTranscodeController.url(props.video.id), {}, { preserveScroll: true })
 
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.created', () =>
+listen<Video>(`videos.${props.video.id}`, '.transcode.created', () =>
   router.reload({ only: ['items'], reset: ['items'] }),
 )
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.updated', () =>
+listen<Video>(`videos.${props.video.id}`, '.transcode.updated', () =>
   router.reload({ only: ['items'], reset: ['items'] }),
 )
-useEcho<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
+listen<Video>(`videos.${props.video.id}`, '.transcode.deleted', () =>
   router.reload({ only: ['items'], reset: ['items'] }),
 )
 </script>

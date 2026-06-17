@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { useAppearance } from '@/composables/appearance'
-import { useEcho } from '@/composables/echo'
 import { useFlash } from '@/composables/flash'
 import { Head } from '@inertiajs/vue3'
 
 const { nonce } = useAppearance()
-
 useFlash()
-useEcho()
 </script>
 
 <template>

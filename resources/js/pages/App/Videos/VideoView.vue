@@ -5,11 +5,11 @@ import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
+import { useEcho } from '@/composables/echo'
 import { useVideo } from '@/composables/video'
 import { index } from '@/routes/videos'
 import type { Group, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
@@ -46,11 +46,13 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-useEcho<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
-useEcho<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.reload({ only: ['playlist'] }))
+const { listen } = useEcho()
+
+listen<Video>(`videos.${props.video.id}`, '.video.updated', () => router.reload({ only: ['video'] }))
+listen<Video>(`videos.${props.video.id}`, '.video.trashed', () => router.visit(index.url()))
+listen<Video>(`videos.${props.video.id}`, '.playlist.created', () => router.reload({ only: ['playlist'] }))
+listen<Video>(`videos.${props.video.id}`, '.playlist.updated', () => router.reload({ only: ['playlist'] }))
+listen<Video>(`videos.${props.video.id}`, '.playlist.deleted', () => router.reload({ only: ['playlist'] }))
 </script>
 
 <template>

@@ -9,7 +9,6 @@
 @pwaHead
 @fonts
 @vite('resources/js/app.ts')
-<x-echo />
 <x-inertia::head />
 </head>
 

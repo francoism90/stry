@@ -1,4 +1,4 @@
-import type { FlashData, User } from '@/types'
+import type { EchoConfig, FlashData, User } from '@/types'
 import type { Page } from '@inertiajs/vue3'
 
 declare module '@inertiajs/core' {
@@ -11,6 +11,7 @@ declare module '@inertiajs/core' {
     readonly nonce: string
     readonly locale: string
     readonly auth: User | undefined
+    readonly echo: EchoConfig | undefined
   }
 }
 

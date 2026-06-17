@@ -3,9 +3,9 @@ import { edit, index } from '@/actions/App/Web/Groups/Controllers/GroupControlle
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
+import { useEcho } from '@/composables/echo'
 import type { Group, VideoCollection, VideoFilters } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem, SelectMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
@@ -27,8 +27,10 @@ const links = computed<NavigationMenuItem[]>(() => [
   },
 ])
 
-useEcho<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
-useEcho<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
+const { listen } = useEcho()
+
+listen<Group>(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
+listen<Group>(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
 </script>
 
 <template>
