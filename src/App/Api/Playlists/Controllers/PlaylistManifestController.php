@@ -43,15 +43,17 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         // Get the manifest cache lifetime
         $manifestCacheLifetime = Playlist::getManifestCacheLifetime();
 
-        // Set appropriate cache headers
-        $request->headers->set('Cache-Control', "public, max-age={$manifestCacheLifetime}, stale-while-revalidate=30");
-
         // Generate the manifest response
-        return $manifestHandler
+        $response = $manifestHandler
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
             ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
             ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
             ->toResponse($request);
+
+        // Set appropriate cache headers
+        $response->headers->set('Cache-Control', "public, max-age={$manifestCacheLifetime}, stale-while-revalidate=30");
+
+        return $response;
     }
 }
