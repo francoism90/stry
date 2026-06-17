@@ -240,7 +240,9 @@ class Playlist extends Model
 
     public function getUrlResolver(string $path): string
     {
-        return URL::temporarySignedRoute('api.play.manifest', now()->addSeconds(static::getManifestUrlLifetime()), [
+        $expiration = now()->addSeconds(static::getManifestUrlLifetime());
+
+        return URL::temporarySignedRoute('api.play.manifest', $expiration, [
             'playlist' => $this,
             'path' => $path,
         ]);
@@ -314,7 +316,7 @@ class Playlist extends Model
 
     public static function getKeyUrlLifetime(): int
     {
-        return Config::integer('playlists.key_url_lifetime', static::getMediaUrlLifetime());
+        return Config::integer('playlists.key_url_lifetime', 300);
     }
 
     public static function getExpiresAfter(): ?Carbon
