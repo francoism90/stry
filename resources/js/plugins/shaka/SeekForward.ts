@@ -23,8 +23,10 @@ export class SeekForward extends shaka.ui.Element {
     parent.appendChild(this.button)
 
     this.eventManager?.listen(this.button, 'click', () => {
+      const player = this.controls?.getPlayer()
       const video = this.controls?.getVideo()
-      if (video) {
+
+      if (player && video) {
         video.currentTime = Math.min(video.duration || Infinity, video.currentTime + 30)
       }
     })

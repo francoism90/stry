@@ -23,8 +23,10 @@ export class SeekRewind extends shaka.ui.Element {
     parent.appendChild(this.button)
 
     this.eventManager?.listen(this.button, 'click', () => {
+      const player = this.controls?.getPlayer()
       const video = this.controls?.getVideo()
-      if (video) {
+
+      if (player && video) {
         video.currentTime = Math.max(0, video.currentTime - 15)
       }
     })
