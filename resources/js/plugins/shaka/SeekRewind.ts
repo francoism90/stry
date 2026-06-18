@@ -10,27 +10,17 @@ export class SeekRewind extends shaka.ui.Element {
     this.button = document.createElement('button')
     this.button.type = 'button'
     this.button.title = 'Seek back 15 seconds'
-    this.button.className = 'shaka-seek-rewind hidden md:block'
-    this.button.style.width = '32px'
-    this.button.style.height = '32px'
-    this.button.style.backgroundColor = 'currentColor'
+    this.button.className = 'shaka-seek-back-15 hidden md:inline-flex'
 
-    const maskUrl = `url("${iconDataUrl('rewind')}")`
-    this.button.style.maskImage = maskUrl
-    this.button.style.webkitMaskImage = maskUrl
-    this.button.style.maskRepeat = 'no-repeat'
-    this.button.style.webkitMaskRepeat = 'no-repeat'
-    this.button.style.maskPosition = 'center'
-    this.button.style.webkitMaskPosition = 'center'
-    this.button.style.maskSize = '24px'
-    this.button.style.webkitMaskSize = '24px'
+    const img = document.createElement('img')
+    img.src = iconDataUrl('rewind')
+    this.button.appendChild(img)
+
+    const textLabel = document.createElement('span')
+    textLabel.textContent = '15'
+    this.button.appendChild(textLabel)
 
     parent.appendChild(this.button)
-
-    const label = document.createElement('span')
-    label.textContent = '15'
-    label.className = 'sr-only'
-    this.button.appendChild(label)
 
     this.eventManager?.listen(this.button, 'click', () => {
       const video = this.controls?.getVideo()
