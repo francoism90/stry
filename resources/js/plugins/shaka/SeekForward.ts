@@ -1,11 +1,5 @@
-import iconSet from '@iconify-json/lucide/icons.json'
 import shaka from 'shaka-player/dist/shaka-player.ui'
-
-interface IconRecord {
-  body: string
-  width?: number
-  height?: number
-}
+import { iconDataUrl } from './icons'
 
 export class SeekForward extends shaka.ui.Element {
   private button: HTMLButtonElement
@@ -17,42 +11,21 @@ export class SeekForward extends shaka.ui.Element {
     this.button.type = 'button'
     this.button.title = 'Seek forward 30 seconds'
     this.button.className = 'shaka-seek-forward-15 hidden md:inline-flex'
-
-    const iconData = (iconSet.icons as Record<string, IconRecord>)['fast-forward']
-    if (iconData) {
-      const width = iconData.width ?? iconSet.width
-      const height = iconData.height ?? iconSet.height
-
-      const svgNamespace = 'http://w3.org'
-      const svg = document.createElementNS(svgNamespace, 'svg')
-
-      svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
-      svg.setAttribute('fill', 'none')
-      svg.setAttribute('stroke', 'currentColor')
-      svg.setAttribute('stroke-width', '2')
-      svg.setAttribute('stroke-linecap', 'round')
-      svg.setAttribute('stroke-linejoin', 'round')
-      svg.setAttribute('style', 'width: 18px; height: 18px; flex-shrink: 0; color: white;')
-
-      svg.innerHTML = iconData.body
-      this.button.appendChild(svg)
-    }
-
-    const textLabel = document.createElement('span')
-    textLabel.textContent = '30'
-    textLabel.setAttribute(
-      'style',
-      'color: white; font-size: 11px; font-weight: 600; line-height: 1; user-select: none; margin-left: 2px;',
-    )
-    this.button.appendChild(textLabel)
-
     parent.appendChild(this.button)
 
-    this.eventManager?.listen(this.button, 'click', () => {
-      const player = this.controls?.getPlayer()
-      const video = this.controls?.getVideo()
+    const icon = new shaka.ui.Icon(null, { url: iconDataUrl('fast-forward'), size: 24, path: null, viewBox: null })
+    const svgEl = icon.getSvgElement()
+    if (svgEl) {
+      this.button.appendChild(svgEl)
+    }
 
-      if (player && video) {
+    const label = document.createElement('span')
+    label.textContent = '30'
+    this.button.appendChild(label)
+
+    this.eventManager?.listen(this.button, 'click', () => {
+      const video = this.controls?.getVideo()
+      if (video) {
         video.currentTime = Math.min(video.duration || Infinity, video.currentTime + 30)
       }
     })
