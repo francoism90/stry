@@ -1,3 +1,4 @@
+/* Force brand font on the UI container and all its pseudo-elements */
 .shaka-video-container,
 .shaka-video-container *,
 .shaka-video-container *::before,
@@ -8,6 +9,7 @@
 .shaka-seek-back-15,
 .shaka-seek-forward-15 {
   @apply inline-flex cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150;
+  /* 📏 Fix: Enforce basic dimensions so Shaka doesn't crush the layout */
   height: 32px !important;
   min-width: 32px !important;
 }
@@ -17,6 +19,7 @@
   @apply opacity-100;
 }
 
+/* Updated selectors to cleanly target our generated img data tags */
 .shaka-seek-back-15 svg,
 .shaka-seek-back-15 img,
 .shaka-seek-forward-15 svg,
@@ -30,92 +33,6 @@
   user-select: none;
 }
 
-.shaka-seek-back-15:focus,
-.shaka-seek-forward-15:focus {
-  outline: none;
-}
-
 .shaka-seek-bar-container {
   @apply top-1.25 mb-1 h-1.25 border-t-8 border-b-8;
-  background: transparent;
-  border-left: 0 !important;
-  border-right: 0 !important;
-}
-
-.shaka-progress-bar {
-  background: rgba(255, 255, 255, 0.3) !important;
-  height: 4px !important;
-  border-radius: 2px !important;
-}
-
-.shaka-play-progress {
-  background-color: var(--color-primary-500, #3b82f6) !important;
-}
-
-.shaka-buffered-progress {
-  background-color: rgba(255, 255, 255, 0.5) !important;
-}
-
-.shaka-scrubber-button {
-  background-color: var(--color-primary-500, #3b82f6) !important;
-  width: 12px !important;
-  height: 12px !important;
-  border-radius: 50% !important;
-  border: 2px solid #ffffff !important;
-}
-
-.shaka-control-panel {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 80%, transparent 100%) !important;
-  padding: 0 16px 8px 16px !important;
-  height: auto !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.shaka-controls-container {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-end !important;
-}
-
-.shaka-video-container button {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-}
-
-.shaka-current-time {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: #f3f4f6 !important;
-  padding: 0 4px !important;
-}
-
-.shaka-play-button {
-  background-color: rgba(0, 0, 0, 0.6) !important;
-  border-radius: 50% !important;
-  padding: 16px !important;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.shaka-play-button:hover {
-  transform: scale(1.1) !important;
-  background-color: var(--color-primary-600, #2563eb) !important;
-}
-
-.shaka-overflow-menu,
-.shaka-settings-menu {
-  background-color: rgba(15, 23, 42, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
-  color: #f3f4f6 !important;
-}
-
-.shaka-overflow-menu button:hover,
-.shaka-settings-menu button:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
 }
