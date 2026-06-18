@@ -10,13 +10,20 @@ export class SeekRewind extends shaka.ui.Element {
     this.button = document.createElement('button')
     this.button.type = 'button'
     this.button.title = 'Seek back 15 seconds'
-    this.button.className = 'shaka-rewind hidden md:block'
+    this.button.className = 'shaka-seek-rewind hidden md:block'
+    this.button.style.width = '32px'
+    this.button.style.height = '32px'
+    this.button.style.backgroundColor = 'currentColor'
 
-    // Custom SVG data URL injected cleanly via CSS mask-image properties
-    this.button.style.maskImage = `url("${iconDataUrl('rewind')}")`
-    this.button.style.webkitMaskImage = `url("${iconDataUrl('rewind')}")`
+    const maskUrl = `url("${iconDataUrl('rewind')}")`
+    this.button.style.maskImage = maskUrl
+    this.button.style.webkitMaskImage = maskUrl
     this.button.style.maskRepeat = 'no-repeat'
+    this.button.style.webkitMaskRepeat = 'no-repeat'
     this.button.style.maskPosition = 'center'
+    this.button.style.webkitMaskPosition = 'center'
+    this.button.style.maskSize = '24px'
+    this.button.style.webkitMaskSize = '24px'
 
     parent.appendChild(this.button)
 
@@ -25,7 +32,6 @@ export class SeekRewind extends shaka.ui.Element {
     label.className = 'sr-only'
     this.button.appendChild(label)
 
-    // Register event binding via native Shaka EventManager
     this.eventManager?.listen(this.button, 'click', () => {
       const video = this.controls?.getVideo()
       if (video) {

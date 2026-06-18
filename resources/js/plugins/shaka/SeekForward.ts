@@ -11,12 +11,19 @@ export class SeekForward extends shaka.ui.Element {
     this.button.type = 'button'
     this.button.title = 'Seek forward 30 seconds'
     this.button.className = 'shaka-seek-forward hidden md:block'
+    this.button.style.width = '32px'
+    this.button.style.height = '32px'
+    this.button.style.backgroundColor = 'currentColor'
 
-    // This mirrors how Shaka natively applies icons to remain styleable by currentColor
-    this.button.style.maskImage = `url("${iconDataUrl('fast-forward')}")`
-    this.button.style.webkitMaskImage = `url("${iconDataUrl('fast-forward')}")`
+    const maskUrl = `url("${iconDataUrl('fast-forward')}")`
+    this.button.style.maskImage = maskUrl
+    this.button.style.webkitMaskImage = maskUrl
     this.button.style.maskRepeat = 'no-repeat'
+    this.button.style.webkitMaskRepeat = 'no-repeat'
     this.button.style.maskPosition = 'center'
+    this.button.style.webkitMaskPosition = 'center'
+    this.button.style.maskSize = '24px' // Standard player button density
+    this.button.style.webkitMaskSize = '24px'
 
     parent.appendChild(this.button)
 
@@ -25,7 +32,6 @@ export class SeekForward extends shaka.ui.Element {
     label.className = 'sr-only'
     this.button.appendChild(label)
 
-    // ✅ Use native Shaka EventManager
     this.eventManager?.listen(this.button, 'click', () => {
       const video = this.controls?.getVideo()
       if (video) {
