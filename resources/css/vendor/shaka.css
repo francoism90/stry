@@ -8,8 +8,6 @@
 .shaka-seek-back-15,
 .shaka-seek-forward-15 {
   @apply inline-flex cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150;
-  height: 32px !important;
-  min-width: 32px !important;
 }
 
 .shaka-seek-back-15:hover,
