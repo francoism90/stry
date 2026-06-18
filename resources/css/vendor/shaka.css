@@ -22,7 +22,7 @@
 .shaka-seek-back-15 img,
 .shaka-seek-forward-15 svg,
 .shaka-seek-forward-15 img {
-  @apply size-4.5 shrink-0;
+  @apply size-4.5 shrink-0 text-white;
 }
 
 .shaka-seek-back-15 span,
