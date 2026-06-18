@@ -1,9 +1,5 @@
 import iconSet from '@iconify-json/lucide/icons.json'
 
-/**
- * Mirrors shaka.ui.Enums.MaterialDesignSVGIcons as a typed constant,
- * so icon names can be referenced as ShakaIcon.Play, ShakaIcon.Pause, etc.
- */
 export const ShakaIcon = {
   Airplay: 'AIRPLAY',
   Back: 'BACK',
@@ -46,9 +42,6 @@ export const ShakaIcon = {
 
 export type ShakaIconName = (typeof ShakaIcon)[keyof typeof ShakaIcon]
 
-/**
- * Maps every Shaka UI icon name to a Lucide icon name from @iconify-json/lucide.
- */
 const lucideMap: Record<ShakaIconName, string> = {
   AIRPLAY: 'airplay',
   BACK: 'arrow-left',
@@ -95,23 +88,16 @@ type LucideIconName = keyof IconSetIcons
 export function iconDataUrl(iconName: LucideIconName): string {
   const icon = (iconSet.icons as Record<string, { body: string; width?: number; height?: number }>)[iconName]
 
-  // Return blank fallback if icon missing from package
   if (!icon) return 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
   const width = icon.width ?? iconSet.width
   const height = icon.height ?? iconSet.height
   const body = icon.body
-
-  // Injected standard Lucide styling parameters directly into SVG template context
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`
+  const svg = `<svg xmlns="http://w3.org" viewBox="0 0 ${width} ${height}" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
 }
 
-/**
- * Registers all Shaka UI icons with Lucide equivalents from @iconify-json/lucide.
- * Must be called before the Shaka player is instantiated.
- */
 export function registerLucideIcons(shaka: typeof import('shaka-player/dist/shaka-player.ui').default): void {
   for (const [shakaName, lucideName] of Object.entries(lucideMap) as [ShakaIconName, LucideIconName][]) {
     shaka.ui.IconRegistry.register(shakaName, {
