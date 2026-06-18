@@ -5,10 +5,14 @@ let _shaka: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
   if (!_shaka) {
-    const [mod, { SeekRewind }, { SeekForward }] = await Promise.all([
+    const [mod, seekRewindMod, seekForwardMod] = await Promise.all([
       import('shaka-player/dist/shaka-player.ui'),
-      import('./SeekRewind'),
-      import('./SeekForward'),
+      import('./SeekRewind') as Promise<{
+        SeekRewind: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
+      }>,
+      import('./SeekForward') as Promise<{
+        SeekForward: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
+      }>,
     ])
 
     _shaka = mod.default as unknown as typeof shaka
@@ -18,11 +22,11 @@ export async function loadShaka(): Promise<typeof shaka> {
     registerLucideIcons(_shaka)
 
     _shaka.ui.Controls.registerElement('seek_rewind', {
-      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekRewind(parent, controls),
+      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new seekRewindMod.SeekRewind(parent, controls),
     })
 
     _shaka.ui.Controls.registerElement('seek_forward', {
-      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new SeekForward(parent, controls),
+      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new seekForwardMod.SeekForward(parent, controls),
     })
   }
 
