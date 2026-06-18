@@ -23,5 +23,7 @@ class ViewServiceProvider extends ServiceProvider
         Vite::useStyleAttributeBy(fn () => [
             'crossorigin' => 'anonymous',
         ]);
+
+        Vite::prefetch(concurrency: 3);
     }
 }
