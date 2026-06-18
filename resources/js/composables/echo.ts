@@ -4,9 +4,9 @@ import { tryOnScopeDispose, whenever } from '@vueuse/core'
 import Echo from 'laravel-echo'
 import { computed, shallowRef, toRaw, watchEffect } from 'vue'
 
-type EchoInstance = InstanceType<typeof Echo>
+type NativeEchoInstance = InstanceType<typeof Echo>
 
-const echo = shallowRef<EchoInstance | null>(null)
+const echo = shallowRef<NativeEchoInstance | null>(null)
 
 interface QueueItem {
   event: string
@@ -44,9 +44,10 @@ export function useEcho() {
 
   const privateChannel = (channelName: string) => {
     if (typeof window === 'undefined') {
-      return {
-        listen: () => ({ listen: () => {} }),
+      const chainMock = {
+        listen: () => chainMock,
       }
+      return chainMock
     }
 
     const listenersQueue: QueueItem[] = []
