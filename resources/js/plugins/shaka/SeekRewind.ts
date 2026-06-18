@@ -21,6 +21,7 @@ export class SeekRewind extends shaka.ui.Element {
 
     const label = document.createElement('span')
     label.textContent = '15'
+    label.className = 'sr-only'
     this.button.appendChild(label)
 
     this.eventManager?.listen(this.button, 'click', () => {
