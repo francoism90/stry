@@ -19,16 +19,18 @@
 }
 
 .shaka-seek-back-15 svg,
-.shaka-seek-back-15 img,
-.shaka-seek-forward-15 svg,
-.shaka-seek-forward-15 img {
-  @apply size-4.5 shrink-0 text-white;
+.shaka-seek-forward-15 svg {
+  @apply size-4.5 shrink-0;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
 }
 
 .shaka-seek-back-15 span,
 .shaka-seek-forward-15 span {
   @apply text-[11px] leading-none font-semibold;
-  user-select: none;
 }
 
 .shaka-seek-bar-container {

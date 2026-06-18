@@ -1,5 +1,11 @@
+import iconSet from '@iconify-json/lucide/icons.json'
 import shaka from 'shaka-player/dist/shaka-player.ui'
-import { iconDataUrl } from './icons'
+
+interface IconRecord {
+  body: string
+  width?: number
+  height?: number
+}
 
 export class SeekRewind extends shaka.ui.Element {
   private button: HTMLButtonElement
@@ -12,9 +18,18 @@ export class SeekRewind extends shaka.ui.Element {
     this.button.title = 'Seek back 15 seconds'
     this.button.className = 'shaka-seek-back-15 hidden md:inline-flex'
 
-    const img = document.createElement('img')
-    img.src = iconDataUrl('rewind')
-    this.button.appendChild(img)
+    const iconData = (iconSet.icons as Record<string, IconRecord>)['rewind']
+    if (iconData) {
+      const width = iconData.width ?? iconSet.width
+      const height = iconData.height ?? iconSet.height
+
+      const svgNamespace = 'http://w3.org'
+      const svg = document.createElementNS(svgNamespace, 'svg')
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
+      svg.innerHTML = iconData.body
+
+      this.button.appendChild(svg)
+    }
 
     const textLabel = document.createElement('span')
     textLabel.textContent = '15'
