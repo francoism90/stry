@@ -17,6 +17,7 @@ export function useEcho() {
   const config = computed(() => usePage().props.echo as EchoConfig | null)
 
   watchEffect((onCleanup) => {
+    if (typeof window === 'undefined') return
     if (!config.value || !config.value.key) return
 
     const wsConfig = toRaw(config.value)
@@ -42,6 +43,12 @@ export function useEcho() {
   })
 
   const privateChannel = (channelName: string) => {
+    if (typeof window === 'undefined') {
+      return {
+        listen: () => ({ listen: () => {} }),
+      }
+    }
+
     const listenersQueue: QueueItem[] = []
     const registeredEvents = new Set<string>()
 
