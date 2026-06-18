@@ -3,7 +3,9 @@
 @import '@nuxt/ui';
 
 /* Shaka Player UI */
-@import 'shaka-player/dist/controls.css';
+@layer base {
+  @import 'shaka-player/dist/controls.css';
+}
 
 /* Blade & Vue */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
