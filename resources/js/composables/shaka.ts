@@ -11,24 +11,27 @@ export function useShaka(
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
 ) {
-  const playlist = computed(() => usePage().props.playlist as Playlist | null)
-  const startTime = computed(() => usePage().props.progress as number | null)
-
   const { get, update } = useSettings('player')
   const { updatePlaylistSession } = usePlaylistSession()
-  const el = computed(() => toValue(element))
 
   const player = shallowRef<shaka.Player>()
   const ui = shallowRef<shaka.ui.Overlay>()
   const initializing = ref<boolean>(false)
+  const ready = ref<boolean>(false)
   const error = ref<shaka.util.Error | Error | null>(null)
-  const ticker = ref<number>(startTime.value ?? 0)
+  const ticker = ref<number>(0)
 
-  const ready = computed<boolean>(() => !!player.value)
+  const playlist = computed(() => usePage().props.playlist as Playlist | null)
+  const startTime = computed(() => usePage().props.progress as number | null)
+  const el = computed(() => toValue(element))
 
   const initialize = async () => {
+    // Prevent multiple initializations
     if (initializing.value) return
+
+    // Set the ticker to the start time if it exists
     initializing.value = true
+    ticker.value = startTime.value ?? 0
 
     try {
       if (player.value) {
@@ -37,6 +40,7 @@ export function useShaka(
 
       if (!el.value) return
 
+      // Load shaka player
       const shakaInstance = await loadShaka()
 
       if (!shakaInstance.Player.isBrowserSupported()) {
@@ -44,17 +48,22 @@ export function useShaka(
         return
       }
 
+      // Create a new player instance
       player.value = new shakaInstance.Player()
 
+      // Create a new UI instance
       ui.value = new shakaInstance.ui.Overlay(
         player.value,
         toValue(container) as HTMLElement,
         toValue(element) as HTMLMediaElement,
       )
 
+      // Configure the UI
       configureOverlay(ui.value)
+
       await player.value.attach(el.value)
 
+      // Configure the player
       const quality = get('quality', 'auto')!
 
       player.value.configure({
@@ -73,10 +82,12 @@ export function useShaka(
         },
       })
 
+      // Configure the media element
       el.value.muted = get('muted', false)!
       el.value.volume = get('volume', 1)!
       el.value.playbackRate = get('playback_speed', 1)!
 
+      // Load the playlist
       await load()
     } finally {
       initializing.value = false
@@ -120,16 +131,23 @@ export function useShaka(
       }
 
       try {
+        // Configure the player with DRM settings if available
         if (config.drm) {
           player.value.configure(config)
         }
 
+        // Load the manifest and start playback
         await player.value.load(manifestUri, startTime.value)
 
+        // Select the first text track if captions are enabled
         const textTracks = player.value.getTextTracks()
+
         if (get('captions', true) && textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
+
+        // Set the ready state to true
+        ready.value = true
       } catch (err) {
         if (err instanceof Error) {
           error.value = err
@@ -151,6 +169,7 @@ export function useShaka(
 
     if (shakaError.severity === getShaka()?.util.Error.Severity.CRITICAL) {
       error.value = shakaError
+      ready.value = false
     }
 
     console.error('Shaka Player Error:', shakaError)
@@ -183,6 +202,7 @@ export function useShaka(
 
     ui.value = undefined
     player.value = undefined
+    ready.value = false
     error.value = null
   }
 
