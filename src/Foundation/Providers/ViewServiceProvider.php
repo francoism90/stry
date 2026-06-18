@@ -16,6 +16,12 @@ class ViewServiceProvider extends ServiceProvider
 
     protected function configureViteFetching(): void
     {
-        Vite::useAggressivePrefetching();
+        Vite::usePreloadAttributes([
+            'crossorigin' => 'anonymous',
+        ]);
+
+        Vite::useStyleAttributeBy(fn () => [
+            'crossorigin' => 'anonymous',
+        ]);
     }
 }
