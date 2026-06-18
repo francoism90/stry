@@ -32,7 +32,7 @@ export class SeekForward extends shaka.ui.Element {
       svg.setAttribute('stroke-width', '2')
       svg.setAttribute('stroke-linecap', 'round')
       svg.setAttribute('stroke-linejoin', 'round')
-      svg.setAttribute('class', 'size-4.5 shrink-0 text-white')
+      svg.setAttribute('style', 'width: 18px; height: 18px; flex-shrink: 0; color: white;')
 
       svg.innerHTML = iconData.body
       this.button.appendChild(svg)
@@ -40,7 +40,10 @@ export class SeekForward extends shaka.ui.Element {
 
     const textLabel = document.createElement('span')
     textLabel.textContent = '30'
-    textLabel.className = 'text-[11px] leading-none font-semibold text-white select-none'
+    textLabel.setAttribute(
+      'style',
+      'color: white; font-size: 11px; font-weight: 600; line-height: 1; user-select: none; margin-left: 2px;',
+    )
     this.button.appendChild(textLabel)
 
     parent.appendChild(this.button)

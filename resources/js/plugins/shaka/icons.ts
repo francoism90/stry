@@ -93,7 +93,8 @@ export function iconDataUrl(iconName: LucideIconName): string {
   const width = icon.width ?? iconSet.width
   const height = icon.height ?? iconSet.height
   const body = icon.body
-  const svg = `<svg xmlns="http://w3.org" viewBox="0 0 ${width} ${height}" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`
+
+  const svg = `<svg xmlns="http://w3.org" viewBox="0 0 ${width} ${height}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`
 
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
 }
