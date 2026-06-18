@@ -1,5 +1,4 @@
 import shaka from 'shaka-player/dist/shaka-player.ui'
-
 import { iconDataUrl } from './icons'
 
 export class SeekRewind extends shaka.ui.Element {
@@ -11,7 +10,7 @@ export class SeekRewind extends shaka.ui.Element {
     this.button = document.createElement('button')
     this.button.type = 'button'
     this.button.title = 'Seek back 15 seconds'
-    this.button.className = 'shaka-rewind hidden md:block'
+    this.button.className = 'shaka-seek-back-15 hidden md:inline-flex'
     parent.appendChild(this.button)
 
     const icon = new shaka.ui.Icon(null, { url: iconDataUrl('rewind'), size: 24, path: null, viewBox: null })
@@ -25,7 +24,7 @@ export class SeekRewind extends shaka.ui.Element {
     label.className = 'sr-only'
     this.button.appendChild(label)
 
-    this.button.addEventListener('click', () => {
+    this.eventManager?.listen(this.button, 'click', () => {
       const video = this.controls?.getVideo()
       if (video) {
         video.currentTime = Math.max(0, video.currentTime - 15)

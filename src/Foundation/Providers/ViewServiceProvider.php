@@ -16,6 +16,6 @@ class ViewServiceProvider extends ServiceProvider
 
     protected function configureViteFetching(): void
     {
-        Vite::useAggressivePrefetching();
+        Vite::prefetch(concurrency: 3);
     }
 }

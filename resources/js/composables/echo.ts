@@ -4,9 +4,9 @@ import { tryOnScopeDispose, whenever } from '@vueuse/core'
 import Echo from 'laravel-echo'
 import { computed, shallowRef, toRaw, watchEffect } from 'vue'
 
-type EchoInstance = InstanceType<typeof Echo>
+type NativeEchoInstance = InstanceType<typeof Echo>
 
-const echo = shallowRef<EchoInstance | null>(null)
+const echo = shallowRef<NativeEchoInstance | null>(null)
 
 interface QueueItem {
   event: string
@@ -17,6 +17,7 @@ export function useEcho() {
   const config = computed(() => usePage().props.echo as EchoConfig | null)
 
   watchEffect((onCleanup) => {
+    if (typeof window === 'undefined') return
     if (!config.value || !config.value.key) return
 
     const wsConfig = toRaw(config.value)
@@ -42,6 +43,13 @@ export function useEcho() {
   })
 
   const privateChannel = (channelName: string) => {
+    if (typeof window === 'undefined') {
+      const chainMock = {
+        listen: () => chainMock,
+      }
+      return chainMock
+    }
+
     const listenersQueue: QueueItem[] = []
     const registeredEvents = new Set<string>()
 

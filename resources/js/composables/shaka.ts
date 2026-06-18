@@ -3,176 +3,152 @@ import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import { usePlaylistSession } from '@/plugins/shaka/session'
 import type { Playlist } from '@/types'
 import { usePage } from '@inertiajs/vue3'
-import { useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
+import { tryOnScopeDispose, useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, onBeforeUnmount, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
+import { computed, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
 ) {
-  const playlist = computed(() => usePage().props.playlist as Playlist | null)
-  const startTime = computed(() => usePage().props.progress as number | null)
-
   const { get, update } = useSettings('player')
   const { updatePlaylistSession } = usePlaylistSession()
-  const el = computed(() => toValue(element))
 
   const player = shallowRef<shaka.Player>()
   const ui = shallowRef<shaka.ui.Overlay>()
-  const error = ref<shaka.util.Error | Error | null>(null)
+  const initializing = ref<boolean>(false)
   const ready = ref<boolean>(false)
-  const ticker = ref<number>(startTime.value ?? 0)
+  const error = ref<shaka.util.Error | Error | null>(null)
+  const ticker = ref<number>(0)
+
+  const playlist = computed(() => usePage().props.playlist as Playlist | null)
+  const startTime = computed(() => usePage().props.progress as number | null)
+  const el = computed(() => toValue(element))
 
   const initialize = async () => {
-    // If a player instance already exists, destroy it before re-initializing
-    if (player.value) {
-      await destroy()
-    }
+    // Prevent multiple initializations
+    if (initializing.value) return
 
-    // Ensure video element is available before creating player
-    if (!el.value) return
+    // Set the ticker to the start time if it exists
+    initializing.value = true
+    ticker.value = startTime.value ?? 0
 
-    // Load Shaka Player library and polyfills (if not already loaded)
-    const shaka = await loadShaka()
+    try {
+      if (player.value) {
+        await destroy()
+      }
 
-    if (!shaka.Player.isBrowserSupported()) {
-      error.value = new Error('Your browser cannot play this stream with the current media/DRM settings.')
-      ready.value = false
-      return
-    }
+      if (!el.value) return
 
-    // Create new Shaka Player
-    player.value = new shaka.Player()
+      // Load shaka player
+      const shakaInstance = await loadShaka()
 
-    // Create UI overlay for player controls
-    ui.value = new shaka.ui.Overlay(
-      player.value,
-      toValue(container) as HTMLElement,
-      toValue(element) as HTMLMediaElement,
-    )
+      if (!shakaInstance.Player.isBrowserSupported()) {
+        error.value = new Error('Your browser cannot play this stream with the current media/DRM settings.')
+        return
+      }
 
-    // Configure UI: disable double-tap fullscreen, enable tap-to-seek, add seek buttons
-    configureOverlay(ui.value)
+      // Create a new player instance
+      player.value = new shakaInstance.Player()
 
-    // Attach player to video element
-    await player.value.attach(el.value)
+      // Create a new UI instance
+      ui.value = new shakaInstance.ui.Overlay(
+        player.value,
+        toValue(container) as HTMLElement,
+        toValue(element) as HTMLMediaElement,
+      )
 
-    // Configure player preferences
-    const quality = get('quality', 'auto')!
+      // Configure the UI
+      configureOverlay(ui.value)
 
-    player.value.configure({
-      preferredAudio: [{ language: get('audio_language', 'en')! }],
-      preferredText: [{ language: get('caption_language', 'en')! }],
-      abr: {
-        restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
-      },
-      streaming: {
-        bufferingGoal: 16,
-        ignoreTextStreamFailures: true,
-      },
-      manifest: {
-        dash: {
-          xlinkFailGracefully: true,
+      await player.value.attach(el.value)
+
+      // Configure the player
+      const quality = get('quality', 'auto')!
+
+      player.value.configure({
+        preferredAudio: [{ language: get('audio_language', 'en')! }],
+        preferredText: [{ language: get('caption_language', 'en')! }],
+        abr: {
+          restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
         },
-        hls: {
+        streaming: {
+          bufferingGoal: 16,
           ignoreTextStreamFailures: true,
-          ignoreImageStreamFailures: true,
         },
-      },
-    })
+        manifest: {
+          dash: { xlinkFailGracefully: true },
+          hls: { ignoreTextStreamFailures: true, ignoreImageStreamFailures: true },
+        },
+      })
 
-    // Restore saved mute state and playback speed
-    el.value.muted = get('muted', false)!
-    el.value.volume = get('volume', 1)!
-    el.value.playbackRate = get('playback_speed', 1)!
+      // Configure the media element
+      el.value.muted = get('muted', false)!
+      el.value.volume = get('volume', 1)!
+      el.value.playbackRate = get('playback_speed', 1)!
 
-    // Load the manifest and start playback
-    await load()
+      // Load the playlist
+      await load()
+    } finally {
+      initializing.value = false
+    }
   }
 
   const load = async () => {
-    // Reset error state before evaluating new playlist
     error.value = null
+    const shakaInstance = await loadShaka()
 
-    // Load Shaka Player library and polyfills (if not already loaded)
-    const shaka = await loadShaka()
-
-    // On failed set critical error state
     if (playlist.value?.failed) {
-      error.value = new shaka.util.Error(
-        shaka.util.Error.Severity.CRITICAL,
-        shaka.util.Error.Category.MANIFEST,
-        shaka.util.Error.Code.MEDIA_SOURCE_OPERATION_FAILED,
+      error.value = new shakaInstance.util.Error(
+        shakaInstance.util.Error.Severity.CRITICAL,
+        shakaInstance.util.Error.Category.MANIFEST,
+        shakaInstance.util.Error.Code.MEDIA_SOURCE_OPERATION_FAILED,
       )
-
       return
     }
 
-    // On expired set critical error state
     if (playlist.value?.expired) {
-      error.value = new shaka.util.Error(
-        shaka.util.Error.Severity.CRITICAL,
-        shaka.util.Error.Category.MANIFEST,
-        shaka.util.Error.Code.EXPIRED,
+      error.value = new shakaInstance.util.Error(
+        shakaInstance.util.Error.Severity.CRITICAL,
+        shakaInstance.util.Error.Category.MANIFEST,
+        shakaInstance.util.Error.Code.EXPIRED,
       )
-
       return
     }
 
-    // Get manifest URI from playlist asset
     const manifestUri = playlist.value?.asset ?? null
+    if (!manifestUri || !el.value || !player.value) return
 
-    // Ensure manifest URI and video element are available before attempting to load
-    if (!manifestUri || !el.value) return
-
-    // If player instance doesn't exist, initialize it first (will call load again on completion)
-    if (!player.value) {
-      await initialize()
-      return
-    }
-
-    // Only attempt to load if playlist is valid (not expired or failed)
     if (playlist.value?.valid) {
-      // Build DRM configuration with clear keys (if available)
       const config: Partial<shaka.extern.PlayerConfiguration> = {}
-
-      // Configure DRM with clear keys (if available)
       const keyId = playlist.value?.encryption_key_id?.toLowerCase() ?? ''
       const keyContent = playlist.value?.encryption_key?.toLowerCase() ?? ''
 
       if (keyId && keyContent) {
         config.drm = {
-          clearKeys: {
-            [keyId]: keyContent,
-          },
+          clearKeys: { [keyId]: keyContent },
         } as shaka.extern.DrmConfiguration
       }
 
-      // Attempt to load manifest and start playback
       try {
-        // Apply DRM configuration to player (if any)
+        // Configure the player with DRM settings if available
         if (config.drm) {
           player.value.configure(config)
         }
 
-        // Load the manifest with optional resume time
+        // Load the manifest and start playback
         await player.value.load(manifestUri, startTime.value)
 
-        // Enable the first available subtitle track if captions are enabled
+        // Select the first text track if captions are enabled
         const textTracks = player.value.getTextTracks()
 
         if (get('captions', true) && textTracks.length > 0) {
           player.value.selectTextTrack(textTracks[0])
         }
 
-        // Set ready state
+        // Set the ready state to true
         ready.value = true
       } catch (err) {
-        // Handled by error event listener
-        // Reset ready state on load failure
-        ready.value = false
-
         if (err instanceof Error) {
           error.value = err
         }
@@ -180,12 +156,20 @@ export function useShaka(
     }
   }
 
+  const setup = async () => {
+    if (!player.value) {
+      await initialize()
+    } else {
+      await load()
+    }
+  }
+
   const onErrorEvent = (event: Event) => {
     const shakaError = (event as CustomEvent).detail as shaka.util.Error
 
-    // Only set error state for non-recoverable errors
     if (shakaError.severity === getShaka()?.util.Error.Severity.CRITICAL) {
       error.value = shakaError
+      ready.value = false
     }
 
     console.error('Shaka Player Error:', shakaError)
@@ -193,11 +177,8 @@ export function useShaka(
 
   const onTimeUpdate = useThrottleFn(() => {
     const currentTime = el.value?.currentTime ?? 0
-
-    // Round to 2 decimal places and ensure valid number
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
-    // Only store if playlist valid, time > 0, and time has changed (> 0.25 seconds)
     if (playlist.value?.valid && time > 0 && Math.abs((ticker.value ?? 0) - time) > 0.25) {
       updatePlaylistSession(playlist.value, time)
       ticker.value = time
@@ -212,37 +193,33 @@ export function useShaka(
 
   const destroy = async () => {
     try {
-      // Pause video to stop playback and clean MediaSource state
       el.value?.pause()
-
-      // Destroy UI overlay before the player
       await ui.value?.destroy()
-
-      // Destroy Shaka player instance
       await player.value?.destroy()
     } catch (err) {
       console.error('Error destroying Shaka player:', err)
     }
 
-    // Reset state
     ui.value = undefined
     player.value = undefined
     ready.value = false
     error.value = null
   }
 
-  useEventListener(player, 'error', onErrorEvent)
+  useEventListener(() => player.value, 'error', onErrorEvent)
   useEventListener(el, 'timeupdate', onTimeUpdate)
   useEventListener(el, 'volumechange', onVolumeChange)
 
   whenever(el, () => initialize(), { immediate: true })
-  watchDeep(playlist, () => load())
-  onBeforeUnmount(() => destroy())
+  watchDeep(playlist, () => setup())
+
+  tryOnScopeDispose(() => destroy())
 
   return {
     player,
     playlist,
     ready,
+    initializing,
     error,
     initialize,
     destroy,

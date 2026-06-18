@@ -1,4 +1,3 @@
-/* Force brand font on the UI container and all its pseudo-elements */
 .shaka-video-container,
 .shaka-video-container *,
 .shaka-video-container *::before,
@@ -14,16 +13,6 @@
 .shaka-seek-back-15:hover,
 .shaka-seek-forward-15:hover {
   @apply opacity-100;
-}
-
-.shaka-seek-back-15 svg,
-.shaka-seek-forward-15 svg {
-  @apply size-4.5 shrink-0;
-}
-
-.shaka-seek-back-15 span,
-.shaka-seek-forward-15 span {
-  @apply text-[11px] leading-none font-semibold;
 }
 
 .shaka-seek-bar-container {
