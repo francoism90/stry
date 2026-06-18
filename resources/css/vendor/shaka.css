@@ -19,7 +19,6 @@
   @apply opacity-100;
 }
 
-/* Updated selectors to cleanly target our generated img data tags */
 .shaka-seek-back-15 svg,
 .shaka-seek-back-15 img,
 .shaka-seek-forward-15 svg,
