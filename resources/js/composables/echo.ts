@@ -1,22 +1,12 @@
 import type { EchoConfig } from '@/types'
 import { usePage } from '@inertiajs/vue3'
+import { tryOnScopeDispose, whenever } from '@vueuse/core'
 import Echo from 'laravel-echo'
-import Pusher from 'pusher-js'
-import { computed, shallowRef, toRaw, watch, watchEffect } from 'vue'
+import { computed, shallowRef, toRaw, watchEffect } from 'vue'
 
-declare global {
-  interface Window {
-    Pusher: typeof Pusher
-  }
-}
+type EchoInstance = InstanceType<typeof Echo>
 
-if (typeof window !== 'undefined') {
-  window.Pusher = Pusher
-}
-
-type NativeEchoInstance = InstanceType<typeof Echo>
-
-const echo = shallowRef<NativeEchoInstance | null>(null)
+const echo = shallowRef<EchoInstance | null>(null)
 
 interface QueueItem {
   event: string
@@ -53,9 +43,18 @@ export function useEcho() {
 
   const privateChannel = (channelName: string) => {
     const listenersQueue: QueueItem[] = []
+    const registeredEvents = new Set<string>()
+
+    tryOnScopeDispose(() => {
+      if (echo.value) {
+        echo.value.leave(channelName)
+      }
+    })
 
     const chain = {
       listen: <T = Record<string, unknown>>(eventName: string, callback: (data: T) => void) => {
+        registeredEvents.add(eventName)
+
         if (echo.value) {
           echo.value.private(channelName).listen(eventName, callback)
         } else {
@@ -68,15 +67,19 @@ export function useEcho() {
       },
     }
 
-    if (!echo.value) {
-      const unwatch = watch(echo, (instance) => {
-        if (instance) {
-          const targetChannel = instance.private(channelName)
-          listenersQueue.forEach(({ event, cb }) => targetChannel.listen(event, cb))
-          unwatch()
-        }
-      })
-    }
+    const stopWatch = whenever(
+      echo,
+      (instance) => {
+        const targetChannel = instance.private(channelName)
+        listenersQueue.forEach(({ event, cb }) => targetChannel.listen(event, cb))
+        listenersQueue.length = 0
+      },
+      { immediate: true },
+    )
+
+    tryOnScopeDispose(() => {
+      stopWatch()
+    })
 
     return chain
   }
