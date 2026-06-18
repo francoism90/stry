@@ -1,5 +1,4 @@
 import shaka from 'shaka-player/dist/shaka-player.ui'
-
 import { iconDataUrl } from './icons'
 
 export class SeekRewind extends shaka.ui.Element {
@@ -12,20 +11,22 @@ export class SeekRewind extends shaka.ui.Element {
     this.button.type = 'button'
     this.button.title = 'Seek back 15 seconds'
     this.button.className = 'shaka-rewind hidden md:block'
-    parent.appendChild(this.button)
 
-    const icon = new shaka.ui.Icon(null, { url: iconDataUrl('rewind'), size: 24, path: null, viewBox: null })
-    const svgEl = icon.getSvgElement()
-    if (svgEl) {
-      this.button.appendChild(svgEl)
-    }
+    // Custom SVG data URL injected cleanly via CSS mask-image properties
+    this.button.style.maskImage = `url("${iconDataUrl('rewind')}")`
+    this.button.style.webkitMaskImage = `url("${iconDataUrl('rewind')}")`
+    this.button.style.maskRepeat = 'no-repeat'
+    this.button.style.maskPosition = 'center'
+
+    parent.appendChild(this.button)
 
     const label = document.createElement('span')
     label.textContent = '15'
     label.className = 'sr-only'
     this.button.appendChild(label)
 
-    this.button.addEventListener('click', () => {
+    // Register event binding via native Shaka EventManager
+    this.eventManager?.listen(this.button, 'click', () => {
       const video = this.controls?.getVideo()
       if (video) {
         video.currentTime = Math.max(0, video.currentTime - 15)
