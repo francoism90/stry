@@ -87,7 +87,7 @@ privateChannel(`videos.${props.video.id}`)
               :model-value="locale"
               :items="props.locales"
               color="neutral"
-              size="sm"
+              size="md"
               variant="outline"
               class="w-28"
             />
@@ -99,8 +99,8 @@ privateChannel(`videos.${props.video.id}`)
               :icon="link.icon as string"
               :to="link.to as string"
               color="neutral"
+              size="md"
               variant="outline"
-              size="sm"
             />
           </template>
         </UPageHeader>
