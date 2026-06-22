@@ -40,7 +40,7 @@
         "@vitejs/plugin-vue": "^6.0.7",
         "@vitest/eslint-plugin": "^1.6.20",
         "@vue/eslint-config-prettier": "^10.2.0",
-        "@vue/eslint-config-typescript": "^14.8.0",
+        "@vue/eslint-config-typescript": "^14.9.0",
         "@vue/tsconfig": "^0.9.1",
         "chokidar": "^5.0.0",
         "concurrently": "^10.0.3",
