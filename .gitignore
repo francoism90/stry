@@ -1,6 +1,5 @@
 _ide_helper_models.php
 _ide_helper.php
-.devcontainer
 .DS_Store
 .env
 .env.backup
@@ -22,6 +21,7 @@ _ide_helper.php
 /.phpunit.cache
 /.vscode
 /.zed
+/.devcontainer
 /auth.json
 /bootstrap/ssr
 /node_modules
