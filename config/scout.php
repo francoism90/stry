@@ -401,6 +401,7 @@ return [
                             'name' => 'duration',
                             'type' => 'float',
                             'sort' => true,
+                            'range_index' => true,
                         ],
                         [
                             'name' => 'filesize',
