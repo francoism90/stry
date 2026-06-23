@@ -7,14 +7,14 @@ namespace Support\Scout\Filters;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
-class FiltersAdult implements Filter
+class FilterShorts implements Filter
 {
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
-        if (blank($value)) {
+        if (! filter_var($value, FILTER_VALIDATE_BOOLEAN)) {
             return;
         }
 
-        $query->where('adult', filter_var($value, FILTER_VALIDATE_BOOLEAN));
+        $query->where('duration', '<=', 300);
     }
 }

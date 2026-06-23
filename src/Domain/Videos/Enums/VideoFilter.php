@@ -9,6 +9,7 @@ use Domain\Shared\Contracts\Enumerable;
 enum VideoFilter: string implements Enumerable
 {
     case Captioned = 'captioned';
+    case Shorts = 'shorts';
     case Unseen = 'unseen';
     case Untagged = 'untagged';
 
@@ -22,6 +23,7 @@ enum VideoFilter: string implements Enumerable
     {
         return [
             'captioned' => __('Captioned'),
+            'shorts' => __('Shorts'),
             'unseen' => __('Unseen'),
             'untagged' => __('Untagged'),
         ];

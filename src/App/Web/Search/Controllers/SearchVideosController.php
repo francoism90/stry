@@ -20,8 +20,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters\FiltersTagged;
-use Support\Scout\Filters\FiltersUnseen;
+use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class SearchVideosController extends Controller implements HasMiddleware
@@ -45,13 +44,11 @@ class SearchVideosController extends Controller implements HasMiddleware
         $scout = ScoutBuilder::for(Video::search($query))
             ->tap(new VideoProfileScope)
             ->allowedFilters(
-                AllowedFilter::exact('state'),
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::exact('season'),
-                AllowedFilter::exact('episode'),
-                AllowedFilter::exact('part'),
-                AllowedFilter::custom('unseen', new FiltersUnseen),
-                AllowedFilter::custom('tagged', new FiltersTagged),
+                AllowedFilter::custom('shorts', new Filters\FilterShorts),
+                AllowedFilter::custom('tagged', new Filters\FilterTagged),
+                AllowedFilter::custom('untagged', new Filters\FilterUntagged),
+                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
             )
             ->allowedSorts(
                 $recommendedSort,

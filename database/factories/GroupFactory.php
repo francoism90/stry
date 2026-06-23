@@ -27,13 +27,6 @@ class GroupFactory extends Factory
         ];
     }
 
-    public function favorite(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'type' => GroupType::Favorite,
-        ]);
-    }
-
     public function mixer(): static
     {
         return $this->state(fn (array $attributes) => [
