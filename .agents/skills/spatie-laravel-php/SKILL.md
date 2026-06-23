@@ -9,24 +9,29 @@ metadata:
 # Spatie Laravel & PHP Guidelines
 
 ## Overview
+
 Apply Spatie's Laravel and PHP guidelines to keep code style consistent and Laravel-native.
 
 ## When to Activate
+
 - Activate this skill for any Laravel or PHP coding work, even if the user does not explicitly mention Spatie.
 - Activate this skill when asked to generate, edit, format, refactor, review, or align Laravel/PHP code.
 - Activate this skill when working on `.php` or `.blade.php` files, routes, controllers, models, config, validation, migrations, or tests.
 
 ## Scope
+
 - In scope: `.php`, `.blade.php`, Laravel conventions (routes, controllers, config, validation, migrations, tests).
 - Out of scope: JS/TS, CSS, infrastructure, database schema design, non-Laravel frameworks.
 
 ## Workflow
+
 1. Identify the artifact (controller, route, config, model, Blade, test, etc.).
 2. Read `references/spatie-laravel-php-guidelines.md` and focus on the relevant sections.
 3. Apply the core Laravel principle first, then PHP standards, then section-specific rules.
 4. If a rule conflicts with existing project conventions, follow Laravel conventions and keep changes consistent.
 
 ## Core Rules (Summary)
+
 - Follow Laravel conventions first.
 - Follow PSR-1, PSR-2, and PSR-12.
 - Prefer typed properties and explicit return types (including `void`).
@@ -39,6 +44,7 @@ Apply Spatie's Laravel and PHP guidelines to keep code style consistent and Lara
 - Happy path last: handle error conditions first.
 
 ## Do and Don't
+
 Do:
 - Use kebab-case URLs, camelCase route names, and camelCase route parameters.
 - Use tuple notation for routes: `[Controller::class, 'method']`.
@@ -58,6 +64,7 @@ Don't:
 - Write down methods in migrations, only up methods.
 
 ## Examples
+
 ```php
 // Happy path last with early returns
 if (! $user) {
@@ -89,4 +96,5 @@ class MyClass {
 ```
 
 ## References
+
 - `references/spatie-laravel-php-guidelines.md`

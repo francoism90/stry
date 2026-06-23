@@ -1,7 +1,7 @@
 {
     "agents": [
         "copilot",
-        "junie"
+        "zed"
     ],
     "cloud": false,
     "guidelines": true,
