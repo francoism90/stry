@@ -6,8 +6,9 @@
     "HOME": "/home/docker",
     "APP_SERVICE": "shell"
   },
-  // Add "--network=systemd-stry-network" to have access to the systemd network
-  "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--init"],
+  "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
+  "initializeCommand": "podman image exists localhost/stry:latest || echo 'Image loaded'",
+  "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
   "build": {
     "context": "./../",
     "dockerfile": "./../containers/Containerfile",

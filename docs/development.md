@@ -17,7 +17,7 @@ tags:
 
 - 🐧 Linux (Debian, Fedora, CentOS, Arch, Ubuntu, etc.)
 - 🐳 [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support
-- 💻 [VSCode](https://code.visualstudio.com/) with [Podman extension](https://github.com/jorchube/devcontainer-definitions)
+- 💻 [VSCode](https://code.visualstudio.com/) or [zed](https://zed.dev/) with [Podman SDK extension](https://github.com/francoism90/org.freedesktop.Sdk.Extension.podman)
 - 🤖 [GitHub Copilot](https://github.com/features/copilot) (optional, recommended)
 
 ---
@@ -132,7 +132,15 @@ podman exec -it systemd-stry pnpm dev
 
 ## 🧠 IDE Setup
 
-### VS Code Devcontainer
+### VSCode Devcontainer
+
+Make sure you have the [Podman SDK extension](https://github.com/francoism90/org.freedesktop.Sdk.Extension.podman) installed in VSCode.
+
+Start the container in development mode:
+
+```bash
+systemctl --user start stry
+```
 
 Open the project in VS Code and install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers):
 
