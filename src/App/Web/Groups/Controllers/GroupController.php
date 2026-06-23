@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters\FiltersUnseen;
+use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class GroupController extends Controller implements HasMiddleware
@@ -88,7 +88,7 @@ class GroupController extends Controller implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('unseen', new FiltersUnseen),
+                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
             )
             ->allowedSorts(
                 $recommendedSort,

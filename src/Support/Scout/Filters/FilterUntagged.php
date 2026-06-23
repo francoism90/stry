@@ -7,7 +7,7 @@ namespace Support\Scout\Filters;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
-class FiltersUntagged implements Filter
+class FilterUntagged implements Filter
 {
     public function __invoke(Builder $query, mixed $value, string $property): void
     {

@@ -11,7 +11,7 @@ use Foxws\ScoutBuilder\Filters\Filter;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Builder;
 
-class FiltersUnseen implements Filter
+class FilterUnseen implements Filter
 {
     public function __invoke(Builder $query, mixed $value, string $property): void
     {

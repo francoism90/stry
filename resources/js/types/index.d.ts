@@ -17,6 +17,7 @@ export type FlashData = {
 
 export type VideoFilters = {
   captioned?: string | boolean
+  shorts?: string | boolean
   unseen?: string | boolean
   untagged?: string | boolean
   tagged?: string

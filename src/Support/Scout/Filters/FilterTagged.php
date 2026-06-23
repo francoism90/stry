@@ -8,11 +8,11 @@ use Domain\Tags\Models\Tag;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
-class FiltersTagged implements Filter
+class FilterTagged implements Filter
 {
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
-        if (blank($value)) {
+        if (blank($value) || ! is_string($value)) {
             return;
         }
 
