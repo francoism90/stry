@@ -2,7 +2,7 @@
 set -euo pipefail
 
 APP_SERVICE=${APP_SERVICE:-'app'}
-RUNTIME_APP_ENV=${APP_ENV:-'production'}
+APP_ENV=${APP_ENV:-'production'}
 
 log() {
     local type="$1"
@@ -51,7 +51,7 @@ log "INFO" "Creating storage symlinks..."
 ${ARTISAN} storage:link
 
 # Application-specific setup
-if [ "${APP_SERVICE}" = "app" ] && [ "${RUNTIME_APP_ENV}" = "production" ]; then
+if [ "${APP_SERVICE}" = "app" ] && [ "${APP_ENV}" = "production" ]; then
     # Ensure migrations are up to date
     log "INFO" "Running any pending migrations..."
     ${ARTISAN} migrate --force
@@ -66,7 +66,7 @@ if [ "${APP_SERVICE}" = "app" ] && [ "${RUNTIME_APP_ENV}" = "production" ]; then
 fi
 
 # Optimize for production
-if [ "${RUNTIME_APP_ENV}" = "production" ]; then
+if [ "${APP_ENV}" = "production" ]; then
     # Ensure package structures are cached
     log "INFO" "Optimizing packages..."
     ${ARTISAN} data:cache-structures
