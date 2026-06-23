@@ -22,7 +22,7 @@ const form = useForm('get', '', {
 })
 
 const formFilters = computed<string[]>({
-  get: () => (['captioned', 'unseen', 'untagged'] as const).filter((key) => !!form[`filter[${key}]`]),
+  get: () => (['captioned', 'shorts', 'unseen', 'untagged'] as const).filter((key) => !!form[`filter[${key}]`]),
   set: (values) => {
     form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
     form['filter[shorts]'] = values.includes('shorts') ? 'true' : undefined
