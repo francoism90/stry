@@ -7,7 +7,6 @@
   },
   // Add "--network=systemd-stry-network" to have access to the systemd network
   "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--init"],
-  // Optional Docker-only extras:
   "build": {
     "context": "./../",
     "dockerfile": "./../containers/Containerfile",
@@ -15,6 +14,18 @@
     "args": {
       "UID": "1000", // Replace with your desired UID (id -u)
       "GID": "1000" // Replace with your desired GID (id -g)
+    }
+  },
+  "customizations": {
+    "zed": {
+      "settings": {
+        "context_servers": {
+          "laravel-boost": {
+            "command": "php",
+            "args": ["artisan", "boost:mcp"]
+          }
+        }
+      }
     }
   }
 }
