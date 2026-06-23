@@ -44,13 +44,17 @@ First, follow the [Podman Quick Start](podman-quickstart.md) guide to set up bas
 vi ~/.config/containers/systemd/stry/config/app.env
 ```
 
-Update to:
+Make sure to update the `app.env` file to use the local environment:
 
 ```env
 APP_ENV=local
 APP_DEBUG=true
 APP_PATH=/path/to/stry
 ```
+
+> [!NOTE]
+> You may need to copy the `app.env` file to `~/projects/stry/.env` if you use a devcontainer.
+> This will allow you to use the same environment variables in the devcontainer as you do locally.
 
 **Step 2:** Mount application code for live editing. Edit these container files:
 
