@@ -1,5 +1,6 @@
 {
   "name": "stry-devcontainer",
+  "image": "localhost/stry:latest",
   "containerUser": "docker",
   "containerEnv": {
     "HOME": "/home/docker",
