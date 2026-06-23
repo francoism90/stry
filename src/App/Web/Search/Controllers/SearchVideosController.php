@@ -54,7 +54,7 @@ class SearchVideosController extends Controller implements HasMiddleware
                 $recommendedSort,
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
-                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('ordered', 'title'),
                 AllowedSort::field('shortest', 'duration'),
                 AllowedSort::field('longest', 'duration')->defaultDescending(),
                 AllowedSort::field('filesize')->defaultDescending(),

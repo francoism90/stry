@@ -202,7 +202,6 @@ return [
                             'name' => 'name',
                             'type' => 'string',
                             'sort' => true,
-                            'facet' => true,
                         ],
                         [
                             'name' => 'email',
@@ -234,10 +233,9 @@ return [
                             'name' => '__soft_deleted',
                             'type' => 'int64',
                             'optional' => true,
+                            'sort' => true,
                         ],
                     ],
-
-                    'default_sorting_field' => 'created_at',
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|'],
 
@@ -310,8 +308,6 @@ return [
                         ],
                     ],
 
-                    'default_sorting_field' => 'order',
-
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
 
                 ],
@@ -339,14 +335,9 @@ return [
                             'sort' => true,
                         ],
                         [
-                            'name' => 'description',
+                            'name' => 'title',
                             'type' => 'string',
-                            'optional' => true,
-                        ],
-                        [
-                            'name' => 'titles',
-                            'type' => 'string',
-                            'optional' => true,
+                            'sort' => true,
                         ],
                         [
                             'name' => 'identifier',
@@ -355,6 +346,16 @@ return [
                             'sort' => true,
                             'infix' => true,
                             'facet' => true,
+                        ],
+                        [
+                            'name' => 'titles',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'description',
+                            'type' => 'string',
+                            'optional' => true,
                         ],
                         [
                             'name' => 'season',
@@ -458,10 +459,9 @@ return [
                             'name' => '__soft_deleted',
                             'type' => 'int64',
                             'optional' => true,
+                            'sort' => true,
                         ],
                     ],
-
-                    'default_sorting_field' => 'created_at',
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
 
@@ -470,7 +470,7 @@ return [
                         'a', 'an', 'the', 'and', 'or', 'of', 'in', 'to',
 
                         // Generic media terms.
-                        'movie', 'film', 'part', 'show', 'tv', 'series', 'episode', 'season',
+                        'part', 'episode', 'season',
 
                         // Quality and source tags.
                         'full', 'hd', 'fhd', 'uhd', 'hdr', '4k', '720p', '1080p', '2160p',
@@ -495,6 +495,7 @@ return [
                         [
                             'name' => 'user_id',
                             'type' => 'string',
+                            'optional' => true,
                         ],
                         [
                             'name' => 'name',
@@ -536,10 +537,9 @@ return [
                             'name' => '__soft_deleted',
                             'type' => 'int64',
                             'optional' => true,
+                            'sort' => true,
                         ],
                     ],
-
-                    'default_sorting_field' => 'created_at',
 
                     'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
 
@@ -616,8 +616,6 @@ return [
                             'sort' => true,
                         ],
                     ],
-
-                    'default_sorting_field' => 'updated_at',
 
                 ],
 
