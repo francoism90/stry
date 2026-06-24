@@ -42,7 +42,14 @@ return [
     |
     */
 
-    'ignore_paths' => (array) env('PWA_IGNORE_PATHS', ['/api/', '/livewire/', '/_inertia/', '/segments/', '/secrets/']),
+    'ignore_paths' => (array) env('PWA_IGNORE_PATHS', [
+        '/api/',
+        '/livewire/',
+        '/_inertia/',
+        '/actions/',
+        '/segments/',
+        '/secrets/',
+    ]),
 
     /*
     |--------------------------------------------------------------------------
