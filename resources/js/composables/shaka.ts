@@ -73,12 +73,23 @@ export function useShaka(
           restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
         },
         streaming: {
-          bufferingGoal: 16,
+          bufferingGoal: 60,
+          bufferBehind: 60,
+          rebufferingGoal: 2,
+          segmentPrefetchLimit: 3,
           ignoreTextStreamFailures: true,
         },
         manifest: {
+          retryParameters: {
+            baseDelay: 100,
+          },
           dash: { xlinkFailGracefully: true },
           hls: { ignoreTextStreamFailures: true, ignoreImageStreamFailures: true },
+        },
+        drm: {
+          retryParameters: {
+            baseDelay: 100,
+          },
         },
       })
 
