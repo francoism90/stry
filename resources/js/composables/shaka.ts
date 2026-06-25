@@ -80,11 +80,11 @@ export function useShaka(
           ignoreTextStreamFailures: true,
         },
         manifest: {
+          dash: { xlinkFailGracefully: true },
+          hls: { ignoreTextStreamFailures: true, ignoreImageStreamFailures: true },
           retryParameters: {
             baseDelay: 100,
           },
-          dash: { xlinkFailGracefully: true },
-          hls: { ignoreTextStreamFailures: true, ignoreImageStreamFailures: true },
         },
         drm: {
           retryParameters: {
