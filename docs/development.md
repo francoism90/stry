@@ -3,6 +3,7 @@ title: Development
 order: 2
 tags:
     - vscode
+    - zed
     - podman
     - devcontainer
     - boost
@@ -49,7 +50,12 @@ Make sure to update the `app.env` file to use the local environment:
 ```env
 APP_ENV=local
 APP_DEBUG=true
-APP_PATH=/path/to/stry
+```
+
+Make sure to set `APP_RUNTIME_ENV=development` in the `global.env` file:
+
+```env
+APP_RUNTIME_ENV=development
 ```
 
 > [!NOTE]
