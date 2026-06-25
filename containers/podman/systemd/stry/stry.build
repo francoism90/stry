@@ -7,4 +7,4 @@ File=containers/Containerfile
 SetWorkingDirectory=${APP_PATH}
 
 [Service]
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
+EnvironmentFile=%h/.config/containers/systemd/stry/config/global.env

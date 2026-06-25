@@ -17,7 +17,7 @@ Volume=stry-cache:/cache:rw,z
 Network=stry.network
 
 [Service]
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
+EnvironmentFile=%h/.config/containers/systemd/stry/config/global.env
 Restart=always
 RestartSec=5
 TimeoutStartSec=300

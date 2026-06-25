@@ -17,7 +17,7 @@ Network=proxy.network
 ExposeHostPort=6001
 
 [Service]
-EnvironmentFile=%h/.config/containers/systemd/stry/config/app.env
+EnvironmentFile=%h/.config/containers/systemd/stry/config/global.env
 Restart=always
 RestartSec=5
 TimeoutStartSec=300
