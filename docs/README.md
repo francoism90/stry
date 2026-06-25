@@ -86,13 +86,13 @@ All guides follow this structure:
 
 - **global.env** — Single source of truth for application configuration at runtime, mounted from host at `/config/global.env`
 - **APP_SERVICE** — Determines which service the container runs (app, ssr, horizon, reverb, scheduler)
-- **APP_ENV** — Controls production-specific startup behavior (production, local, testing)
+- **APP_RUNTIME_ENV** — Controls production-specific startup behavior (production, local, testing)
 - **Quadlet** — Systemd integration for managing containers with automatic dependency ordering
 
 ### Development vs Production
 
-- **Development** — Mount application code in container for live editing, set `APP_ENV=local`
-- **Production** — Application code baked into image, set `APP_ENV=production`, use runtime `global.env` for configuration
+- **Development** — Mount application code in container for live editing, set `APP_RUNTIME_ENV=local`
+- **Production** — Application code baked into image, set `APP_RUNTIME_ENV=production`, use runtime `global.env` for configuration
 
 ---
 
