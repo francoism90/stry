@@ -2,11 +2,13 @@
     "context_servers": {
         "laravel-boost": {
             "command": "php",
-            "args": ["artisan", "boost:mcp"]
+            "args": ["artisan", "boost:mcp"],
+            "remote": true
         },
         "nuxt-ui": {
             "command": "npx",
-            "args": ["-y", "@nuxt/ui-mcp-server"]
+            "args": ["-y", "mcp-remote", "https://ui.nuxt.com/mcp"],
+            "remote": true
         }
     }
 }
