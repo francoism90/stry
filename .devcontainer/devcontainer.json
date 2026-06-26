@@ -1,33 +1,21 @@
 {
-  "name": "stry-devcontainer",
-  "image": "localhost/stry:latest",
-  "containerUser": "docker",
-  "containerEnv": {
-    "HOME": "/home/docker",
-    "APP_SERVICE": "shell"
-  },
-  "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
-  "initializeCommand": "podman image exists localhost/stry:latest || echo 'Image loaded'",
-  "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
-  "build": {
-    "context": "./../",
-    "dockerfile": "./../containers/Containerfile",
-    "target": "development",
-    "args": {
-      "UID": "1000", // Replace with your desired UID (id -u)
-      "GID": "1000" // Replace with your desired GID (id -g)
-    }
-  },
-  "customizations": {
-    "zed": {
-      "settings": {
-        "context_servers": {
-          "laravel-boost": {
-            "command": "php",
-            "args": ["artisan", "boost:mcp"]
-          }
+    "name": "stry-devcontainer",
+    "image": "localhost/stry:latest",
+    "containerUser": "docker",
+    "containerEnv": {
+        "HOME": "/home/docker",
+        "APP_SERVICE": "shell"
+    },
+    "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
+    "initializeCommand": "podman image exists localhost/stry:latest || echo 'Image loaded'",
+    "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
+    "build": {
+        "context": "./../",
+        "dockerfile": "./../containers/Containerfile",
+        "target": "development",
+        "args": {
+            "UID": "1000", // Replace with your desired UID (id -u)
+            "GID": "1000" // Replace with your desired GID (id -g)
         }
-      }
     }
-  }
 }
