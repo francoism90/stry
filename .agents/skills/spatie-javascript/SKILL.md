@@ -9,34 +9,28 @@ metadata:
 # Spatie JavaScript Guidelines
 
 ## Overview
-
 Apply Spatie's JavaScript coding standards to keep JS/TS code consistent and readable.
 
 ## When to Activate
-
 - Activate this skill for any JavaScript or TypeScript coding work.
 - Activate this skill when working on `.js`, `.ts`, `.jsx`, `.tsx`, or `.vue` files.
 - Activate this skill when configuring Prettier or ESLint for a project.
 
 ## Scope
-
 - In scope: JavaScript, TypeScript, Vue single-file components, Prettier/ESLint configuration.
 - Out of scope: PHP, Laravel, CSS-only files, server configuration.
 
 ## Prettier Configuration
-
 - Indentation: 4 spaces (via `.editorconfig`, not Prettier default of 2)
 - Print width: 120 characters (not Prettier default of 80)
 - Quote style: single quotes
 
 ## Variable Declarations
-
 - Prefer `const` over `let`. Only use `let` when a variable will be reassigned.
 - Never use `var`.
 - Reassigning object properties is fine with `const` — the reference is not reassigned.
 
 ## Variable Names
-
 - Don't abbreviate variable names in multi-line functions. Use full, descriptive names.
 - Exception: single-line arrow functions where context is obvious.
 
@@ -51,7 +45,6 @@ userSessions.forEach(s => saveUserSession(s));
 ```
 
 ## Comparisons
-
 - Always use `===` (strict equality). Never use `==`.
 - If unsure of the type, cast it first:
 
@@ -66,18 +59,15 @@ if (number === 5) {
 ## Functions
 
 ### Function Declarations
-
 - Use the `function` keyword for named functions to clearly signal it's a function.
 
 ### Arrow Functions
-
 - Use for terse, single-line operations.
 - Use for anonymous callbacks.
 - Use in higher-order functions when it improves readability.
 - Don't use arrow functions when you need `this` context (e.g., jQuery event handlers).
 
 ### Object Methods
-
 - Use shorthand method syntax:
 
 ```javascript
@@ -97,7 +87,6 @@ const obj = {
 ```
 
 ## Destructuring
-
 - Prefer destructuring over manual property/index access:
 
 ```javascript
