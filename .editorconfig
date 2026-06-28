@@ -11,15 +11,12 @@ insert_final_newline = true
 draw_white_space = all
 trim_trailing_white_space_on_save = true
 
-[Makefile]
-indent_style = tab
-
-[{Caddyfile,*.Caddyfile}]
-indent_style = tab
-indent_size = 4
-
 [*.{php,json,yml,xml,md}]
 indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false
+
+[{Caddyfile,*.Caddyfile}]
+indent_style = tab
+indent_size = 4
