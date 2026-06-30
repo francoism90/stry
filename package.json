@@ -20,7 +20,7 @@
     "dependencies": {
         "@iconify/vue": "^5.0.1",
         "@inertiajs/vite": "^3.4.0",
-        "@inertiajs/vue3": "^3.4.0",
+        "@inertiajs/vue3": "^3.5.0",
         "@internationalized/date": "^3.12.2",
         "@nuxt/ui": "^4.9.0",
         "@vueuse/core": "^14.3.0",
