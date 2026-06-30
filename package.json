@@ -28,7 +28,7 @@
         "pusher-js": "^8.5.0",
         "shaka-player": "^5.1.10",
         "tailwindcss": "^4.3.1",
-        "vue": "^3.5.38"
+        "vue": "^3.5.39"
     },
     "devDependencies": {
         "@iconify-json/lucide": "^1.2.114",
