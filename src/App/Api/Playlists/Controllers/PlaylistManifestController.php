@@ -23,6 +23,7 @@ class PlaylistManifestController extends Controller implements HasMiddleware
         return [
             new Middleware('throttle:vod'),
             new Middleware('signed'),
+            new Middleware('cache.bypass'),
         ];
     }
 
