@@ -13,7 +13,6 @@ use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Shared\Casts\AsDateTime;
-use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -39,7 +38,6 @@ class Playlist extends Model
     use HasFactory;
     use HasStates;
     use HasUlids;
-    use InteractsWithCache;
     use InteractsWithUser;
     use Prunable;
 

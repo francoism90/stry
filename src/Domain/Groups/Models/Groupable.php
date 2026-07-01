@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Models;
 
-use Domain\Shared\Concerns\InteractsWithCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +14,6 @@ use Laravel\Scout\Searchable;
 
 class Groupable extends MorphPivot
 {
-    use InteractsWithCache;
     use Searchable;
 
     /**

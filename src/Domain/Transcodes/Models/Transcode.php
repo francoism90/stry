@@ -6,7 +6,6 @@ namespace Domain\Transcodes\Models;
 
 use Database\Factories\TranscodeFactory;
 use Domain\Shared\Casts\AsDateTime;
-use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Transcodes\Collections\TranscodeCollection;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Observers\TranscodeObserver;
@@ -36,7 +35,6 @@ class Transcode extends Model
     use HasFactory;
     use HasStates;
     use HasUlids;
-    use InteractsWithCache;
     use InteractsWithUser;
     use Prunable;
 

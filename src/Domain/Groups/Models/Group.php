@@ -11,7 +11,6 @@ use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Shared\Casts\AsDateTime;
-use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\Channel;
@@ -41,7 +40,6 @@ class Group extends Model implements HasMedia, Sortable
     use HasStates;
     use HasTranslations;
     use HasUlids;
-    use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithUser;
     use Notifiable;
