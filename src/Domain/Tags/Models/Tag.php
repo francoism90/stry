@@ -9,6 +9,7 @@ use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Relates\Concerns\InteractsWithRelated;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
@@ -34,6 +35,7 @@ class Tag extends BaseTag implements HasMedia
     use HasFactory;
     use HasSearchableRelations;
     use HasUlids;
+    use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithRelated;
     use InteractsWithUser;

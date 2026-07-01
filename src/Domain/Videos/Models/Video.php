@@ -8,6 +8,7 @@ use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
@@ -45,6 +46,7 @@ class Video extends Model implements HasMedia
     use HasTags;
     use HasTranslations;
     use HasUlids;
+    use InteractsWithCache;
     use InteractsWithGroups;
     use InteractsWithMedia;
     use InteractsWithModelCache;

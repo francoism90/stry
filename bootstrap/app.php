@@ -28,6 +28,7 @@ use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Support\Inertia\Middlewares\HandleInertiaRequests;
 use Support\Scout\Commands\SyncScoutCommand;
@@ -72,12 +73,17 @@ $app = Application::configure(basePath: $basePath)
             'role' => RoleMiddleware::class,
         ]);
 
-        // Add Inertia middleware globally to ensure proper handling of Inertia requests and asset preloading
+        // Configure web middleware
         $middleware->web(append: [
             AddCspHeaders::class,
             ResolveCurrentProfile::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
+        // Configure API middleware
+        $middleware->api(append: [
+            CacheResponse::class,
         ]);
 
         // Sanctum middleware for API authentication and rate limiting

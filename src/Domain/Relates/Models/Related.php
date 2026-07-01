@@ -6,12 +6,15 @@ namespace Domain\Relates\Models;
 
 use Domain\Relates\Collections\RelatedCollection;
 use Domain\Relates\QueryBuilders\RelatedQueryBuilder;
+use Domain\Shared\Concerns\InteractsWithCache;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Related extends Model
 {
+    use InteractsWithCache;
+
     /**
      * @var string
      */

@@ -15,7 +15,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Spatie\ResponseCache\Attributes\Cache;
+use Spatie\ResponseCache\Attributes\FlexibleCache;
 use Support\Scout\Sorts\VideosSorter;
 
 class TagController extends Controller implements HasMiddleware
@@ -28,7 +28,7 @@ class TagController extends Controller implements HasMiddleware
         ];
     }
 
-    #[Cache(lifetime: 10 * 60, tags: ['tags'])]
+    #[FlexibleCache(lifetime: 60 * 60, grace: 5 * 60, tags: ['tags'])]
     public function index(): Paginator
     {
         Gate::authorize('viewAny', Tag::class);

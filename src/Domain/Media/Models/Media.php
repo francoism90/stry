@@ -6,6 +6,7 @@ namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
+use Domain\Shared\Concerns\InteractsWithCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,6 +16,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 class Media extends BaseMedia
 {
     use BroadcastsEvents;
+    use InteractsWithCache;
 
     /**
      * @var array<int, string>

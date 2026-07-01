@@ -12,6 +12,7 @@ use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
 use Domain\Profiles\Support\CurrentProfileContext;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -31,6 +32,7 @@ class Profile extends Model implements HasMedia
     use HasFactory;
     use HasStates;
     use HasUlids;
+    use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithUser;
 
