@@ -19,7 +19,7 @@
     },
     "dependencies": {
         "@iconify/vue": "^5.0.1",
-        "@inertiajs/vite": "^3.5.0",
+        "@inertiajs/vite": "^3.6.0",
         "@inertiajs/vue3": "^3.6.0",
         "@internationalized/date": "^3.12.2",
         "@nuxt/ui": "^4.9.0",
