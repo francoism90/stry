@@ -118,8 +118,8 @@ importers:
         specifier: ^4.1.9
         version: 4.1.9(@types/node@26.0.1)(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0))
       vue-tsc:
-        specifier: ^3.3.5
-        version: 3.3.5(typescript@6.0.3)
+        specifier: ^3.3.6
+        version: 3.3.6(typescript@6.0.3)
 
 packages:
 
@@ -1284,8 +1284,8 @@ packages:
       typescript:
         optional: true
 
-  '@vue/language-core@3.3.5':
-    resolution: {integrity: sha512-UkKu5nhX89fg4VhlG/FOeI10G3cj/7radKT/cy9BT4Q9qJmJlSTAc/dP63Xqs29aypN4f39xUV6PsLNk/dcD6g==}
+  '@vue/language-core@3.3.6':
+    resolution: {integrity: sha512-LgBMZAy2sR3cQWknpyaxnI6yBkqDfLBPkbdhwRhQCvzfNJRQXPilgQIrdI/v4ytJ0sAq9bWhaPsjqBqneomJ3Q==}
 
   '@vue/reactivity@3.5.39':
     resolution: {integrity: sha512-TpsuBJ9gGlZa5d23XcM2y8EXanz9dZeVDQBXRwzy46ItgvM+rWpzs+UVM0wcRLxGvcav0HE5jz2gNL53xlRAog==}
@@ -2214,6 +2214,10 @@ packages:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
+    engines: {node: '>=12'}
+
   pidtree@1.0.0:
     resolution: {integrity: sha512-avfAvjB9Dd0wdj3rjJX//yS+G79OO0KrS5pJHFJENjYGX6N4SMgEDBBI/yFy0lloOYSaC6XQxzpOAMPfSYFV/Q==}
     engines: {node: '>=18'}
@@ -2819,8 +2823,8 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
 
-  vue-tsc@3.3.5:
-    resolution: {integrity: sha512-Rzh/G2MmNlMSAMTiQEjDrsb4dgB/jbtEM47rVN2NtidF1dfb/q4w4QvpQBtW5+y3y5H27Hjh7deVwk+YB02fNg==}
+  vue-tsc@3.3.6:
+    resolution: {integrity: sha512-ERXGgbKSBGFUkavrJ1Iwj0ZVxKqB/5UOx65IXy7fPf2UsoI21n3ssQLwdvx8xyUGgJe9PvSZTM/FYzIdwUDPFA==}
     hasBin: true
     peerDependencies:
       typescript: '>=5.0.0'
@@ -4110,7 +4114,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vue/language-core@3.3.5':
+  '@vue/language-core@3.3.6':
     dependencies:
       '@volar/language-core': 2.4.28
       '@vue/compiler-dom': 3.5.39
@@ -4118,7 +4122,7 @@ snapshots:
       alien-signals: 3.2.1
       muggle-string: 0.4.1
       path-browserify: 1.0.1
-      picomatch: 4.0.4
+      picomatch: 4.0.5
 
   '@vue/reactivity@3.5.39':
     dependencies:
@@ -4981,6 +4985,8 @@ snapshots:
 
   picomatch@4.0.4: {}
 
+  picomatch@4.0.5: {}
+
   pidtree@1.0.0: {}
 
   pkg-types@1.3.1:
@@ -5313,7 +5319,7 @@ snapshots:
       magic-string: 0.30.21
       mlly: 1.8.2
       pathe: 2.0.3
-      picomatch: 4.0.4
+      picomatch: 4.0.5
       pkg-types: 2.3.1
       scule: 1.3.0
       strip-literal: 3.1.0
@@ -5336,7 +5342,7 @@ snapshots:
   unplugin-utils@0.3.2:
     dependencies:
       pathe: 2.0.3
-      picomatch: 4.0.4
+      picomatch: 4.0.5
 
   unplugin-vue-components@32.1.0(@nuxt/kit@4.4.8)(esbuild@0.27.7)(rolldown@1.1.3)(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0))(vue@3.5.39(typescript@6.0.3)):
     dependencies:
@@ -5367,7 +5373,7 @@ snapshots:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       acorn: 8.17.0
-      picomatch: 4.0.4
+      picomatch: 4.0.5
       webpack-virtual-modules: 0.6.2
 
   unplugin@3.3.0(esbuild@0.27.7)(rolldown@1.1.3)(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0)):
@@ -5478,10 +5484,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-tsc@3.3.5(typescript@6.0.3):
+  vue-tsc@3.3.6(typescript@6.0.3):
     dependencies:
       '@volar/typescript': 2.4.28
-      '@vue/language-core': 3.3.5
+      '@vue/language-core': 3.3.6
       typescript: 6.0.3
 
   vue@3.5.39(typescript@6.0.3):
