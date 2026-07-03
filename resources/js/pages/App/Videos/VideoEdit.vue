@@ -51,6 +51,22 @@ const releasedAt = computed({
   },
 })
 
+const capitalizeName = (): void => {
+  form.name = capitalize(form.name)
+}
+
+const setSnapshotFromProgress = (): void => {
+  form.snapshot = props.progress || null
+}
+
+const setPublishedAtNow = (): void => {
+  publishedAt.value = nowDateTime()
+}
+
+const setReleasedAtNow = (): void => {
+  releasedAt.value = nowDateTime()
+}
+
 const onSubmit = () =>
   form.submit({
     preserveState: true,
@@ -95,7 +111,7 @@ const onSubmit = () =>
                   size="sm"
                   icon="i-lucide-wand-sparkles"
                   aria-label="Capitalize"
-                  @click.prevent="form.name = capitalize(form.name)"
+                  @click.prevent="capitalizeName"
                 />
               </template>
             </UInput>
@@ -166,7 +182,7 @@ const onSubmit = () =>
                     size="sm"
                     icon="i-lucide-image-down"
                     aria-label="From progress"
-                    @click.prevent="form.snapshot = progress || null"
+                    @click.prevent="setSnapshotFromProgress"
                   />
                 </template>
               </UInput>
@@ -188,7 +204,7 @@ const onSubmit = () =>
                     size="sm"
                     icon="i-lucide-calendar-clock"
                     aria-label="Set to now"
-                    @click.prevent="publishedAt = nowDateTime()"
+                    @click.prevent="setPublishedAtNow"
                   />
                 </template>
               </UInputDate>
@@ -210,7 +226,7 @@ const onSubmit = () =>
                     size="sm"
                     icon="i-lucide-calendar-clock"
                     aria-label="Set to now"
-                    @click.prevent="releasedAt = nowDateTime()"
+                    @click.prevent="setReleasedAtNow"
                   />
                 </template>
               </UInputDate>
