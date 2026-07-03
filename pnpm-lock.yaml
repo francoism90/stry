@@ -12,8 +12,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(vue@3.5.39(typescript@6.0.3))
       '@inertiajs/vite':
-        specifier: ^3.5.0
-        version: 3.5.0(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0))
+        specifier: ^3.6.0
+        version: 3.6.0(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0))
       '@inertiajs/vue3':
         specifier: ^3.6.0
         version: 3.6.0(vue@3.5.39(typescript@6.0.3))
@@ -395,14 +395,6 @@ packages:
     peerDependencies:
       vue: '>=3.0.0'
 
-  '@inertiajs/core@3.5.0':
-    resolution: {integrity: sha512-k0RpPULYD6d+FsYUIaSkUbvLbMGBRkzMc+qHhwfTVrMwCvXd6FyQ+O99PT5AN4j3BKy96XT45AKDwBhhti8Tgg==}
-    peerDependencies:
-      axios: ^1.15.2
-    peerDependenciesMeta:
-      axios:
-        optional: true
-
   '@inertiajs/core@3.6.0':
     resolution: {integrity: sha512-56L16uTtv6rtTfSkqqjte39DO4P5nyNf4Df0HCnn8YBteff5rjifO/2bX8he5unXI7udnJj3YWg9KxRyEkYRHQ==}
     peerDependencies:
@@ -411,8 +403,8 @@ packages:
       axios:
         optional: true
 
-  '@inertiajs/vite@3.5.0':
-    resolution: {integrity: sha512-3SgnCTU8KgBoD3DWZi/qwJ5WJ6GkA8TmjnsIMYQCH7oStUPk4qsqQdH/ncj5baDXHj/6LsI1EXgS9tQxNL3Mzw==}
+  '@inertiajs/vite@3.6.0':
+    resolution: {integrity: sha512-+q4SxVIHdpx64pXryboN6p/boJjMApo98yn3Ny+wwIkOIk7sgzaDSex4XN6x5wBWP11jEyJ7AuyigpKn7FQh7g==}
     peerDependencies:
       vite: ^7.0.0 || ^8.0.0
 
@@ -2214,6 +2206,10 @@ packages:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
+    engines: {node: '>=12'}
+
   pidtree@1.0.0:
     resolution: {integrity: sha512-avfAvjB9Dd0wdj3rjJX//yS+G79OO0KrS5pJHFJENjYGX6N4SMgEDBBI/yFy0lloOYSaC6XQxzpOAMPfSYFV/Q==}
     engines: {node: '>=18'}
@@ -3103,21 +3099,15 @@ snapshots:
       '@iconify/types': 2.0.0
       vue: 3.5.39(typescript@6.0.3)
 
-  '@inertiajs/core@3.5.0':
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.31
-      es-toolkit: 1.49.0
-      laravel-precognition: 2.0.0
-
   '@inertiajs/core@3.6.0':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       es-toolkit: 1.49.0
       laravel-precognition: 2.0.0
 
-  '@inertiajs/vite@3.5.0(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0))':
+  '@inertiajs/vite@3.6.0(vite@8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0))':
     dependencies:
-      '@inertiajs/core': 3.5.0
+      '@inertiajs/core': 3.6.0
       tinyglobby: 0.2.17
       vite: 8.1.1(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
@@ -4546,9 +4536,9 @@ snapshots:
     dependencies:
       reusify: 1.1.0
 
-  fdir@6.5.0(picomatch@4.0.4):
+  fdir@6.5.0(picomatch@4.0.5):
     optionalDependencies:
-      picomatch: 4.0.4
+      picomatch: 4.0.5
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -4981,6 +4971,8 @@ snapshots:
 
   picomatch@4.0.4: {}
 
+  picomatch@4.0.5: {}
+
   pidtree@1.0.0: {}
 
   pkg-types@1.3.1:
@@ -5239,8 +5231,8 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
 
   tinyrainbow@3.1.0: {}
 
