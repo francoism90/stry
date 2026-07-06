@@ -49,7 +49,7 @@ const actions = ref<ButtonProps[]>([
     <div
       ref="ui"
       v-show="ready && !error"
-      class="aspect-video max-h-[35dvh] w-full overflow-hidden rounded-lg md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:rounded-none"
+      class="aspect-video max-h-[35dvh] w-full [clip-path:inset(0_round_0.5rem)] md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
     >
       <video
         ref="el"
@@ -58,7 +58,6 @@ const actions = ref<ButtonProps[]>([
         preload="metadata"
         playsinline
         autoplay
-        autoPictureInPicture
       />
     </div>
   </figure>
