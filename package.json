@@ -31,14 +31,14 @@
         "vue": "^3.5.39"
     },
     "devDependencies": {
-        "@iconify-json/lucide": "^1.2.115",
+        "@iconify-json/lucide": "^1.2.116",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@tailwindcss/vite": "^4.3.2",
         "@tsconfig/node24": "^24.0.4",
         "@types/jsdom": "^28.0.3",
         "@types/node": "^26.1.0",
         "@vitejs/plugin-vue": "^6.0.7",
-        "@vitest/eslint-plugin": "^1.6.20",
+        "@vitest/eslint-plugin": "^1.6.21",
         "@vue/eslint-config-prettier": "^10.2.0",
         "@vue/eslint-config-typescript": "^14.9.0",
         "@vue/tsconfig": "^0.9.1",

@@ -124,4 +124,17 @@ return [
      */
     'apple_touch_icon' => (string) env('PWA_APPLE_TOUCH_ICON', '/storage/images/icons/apple-touch-icon.png'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | PWA Service Worker Update Interval
+    |--------------------------------------------------------------------------
+    |
+    | How often (in hours) the page should proactively call registration.update()
+    | to check for a new service worker. Set to 0 or null to rely solely on the
+    | browser's built-in per-navigation check.
+    |
+    */
+
+    'update_interval' => env('PWA_UPDATE_INTERVAL', 24),
+
 ];
