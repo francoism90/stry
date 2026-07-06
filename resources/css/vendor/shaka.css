@@ -5,16 +5,10 @@
   font-family: var(--font-sans) !important;
 }
 
-.shaka-seek-back-15,
-.shaka-seek-forward-15 {
-  @apply inline-flex cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150;
-}
-
-.shaka-seek-back-15:hover,
-.shaka-seek-forward-15:hover {
-  @apply opacity-100;
-}
-
 .shaka-seek-bar-container {
   @apply top-1.25 mb-1 h-1.25 border-t-8 border-b-8;
+}
+
+.shaka-seek-button {
+  @apply hidden cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150 lg:inline-flex;
 }

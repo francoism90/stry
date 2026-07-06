@@ -9,8 +9,8 @@ export class SeekRewind extends shaka.ui.Element {
 
     this.button = document.createElement('button')
     this.button.type = 'button'
-    this.button.title = 'Seek back 15 seconds'
-    this.button.className = 'shaka-seek-back-15 hidden md:inline-flex'
+    this.button.ariaLabel = 'Seek back 15 seconds'
+    this.button.className = 'shaka-seek-button shaka-tooltip shaka-no-propagation'
     parent.appendChild(this.button)
 
     const icon = new shaka.ui.Icon(null, { url: iconDataUrl('rewind'), size: 24, path: null, viewBox: null })
@@ -18,11 +18,6 @@ export class SeekRewind extends shaka.ui.Element {
     if (svgEl) {
       this.button.appendChild(svgEl)
     }
-
-    const label = document.createElement('span')
-    label.textContent = '15'
-    label.className = 'sr-only'
-    this.button.appendChild(label)
 
     this.eventManager?.listen(this.button, 'click', () => {
       const video = this.controls?.getVideo()
