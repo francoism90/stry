@@ -17,15 +17,23 @@ class SetVideoProgress
             return;
         }
 
+        // Cache the viewed time and progress for the video
+        $viewedKey = 'viewed';
+
         $progressKey = 'progress';
 
+        // Normalize the progress time to a float between 0 and the video duration
         $time = $this->normalizeProgress($video, $attributes);
 
-        if (! $video->modelCacheHas($progressKey) || ! $user->isInGroup($video, GroupType::Viewed)) {
+        // Mark the video as viewed if the user is in the viewed group, or mark them as viewing if not
+        if (! $video->modelCacheHas($viewedKey)) {
             $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
         }
 
-        $video->modelCache($progressKey, $time, now()->addMinutes(30));
+        // Cache the viewed time for 20 minutes, and the progress for 1 day
+        $video->modelCache($viewedKey, $time, now()->addMinutes(20));
+
+        $video->modelCache($progressKey, $time, now()->addDay());
     }
 
     protected function normalizeProgress(Video $video, ?array $attributes = null): float
