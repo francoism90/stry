@@ -29,10 +29,13 @@ class PlaylistSessionController extends Controller implements HasMiddleware
     public function __invoke(Playlist $playlist, PlaylistViewRequest $request): Response|RedirectResponse
     {
         // Authorize the user to view the playlist
-        Gate::authorize('view', [$model = $playlist->getModel(), $playlist]);
+        Gate::authorize('view', $playlist);
 
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
+
+        /** @var Video $model */
+        $model = $playlist->getModel();
 
         // Dispatch the viewed event
         VideoHasBeenViewedEvent::dispatchIf($model instanceof Video,
