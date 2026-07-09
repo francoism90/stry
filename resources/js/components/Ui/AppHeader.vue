@@ -56,7 +56,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
     :toggle="false"
     :ui="{
       root: 'sticky top-0 z-40 w-full border-default bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
-      left: '*:inline-flex *:items-center sm:gap-3',
+      left: '*:inline-flex *:items-center sm:gap-2.5',
     }"
   >
     <template #left>
