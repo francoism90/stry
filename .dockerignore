@@ -53,5 +53,6 @@ storage/debugbar/*
 tests
 Thumbs.db
 AGENTS.md
+CLAUDE.md
 UPGRADING.md
 vendor
