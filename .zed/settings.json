@@ -1,27 +1,29 @@
 {
+    "languages": {
+        "CSS": {
+            "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
+        },
+    },
     "context_servers": {
         "laravel-boost": {
             "command": "php",
             "args": ["artisan", "boost:mcp"],
-            "remote": true
+            "remote": true,
         },
         "nuxt-ui": {
             "command": "npx",
             "args": ["-y", "mcp-remote", "https://ui.nuxt.com/mcp"],
-            "remote": true
-        }
+            "remote": true,
+        },
     },
     "lsp": {
         "tailwindcss-language-server": {
             "settings": {
                 "classFunctions": ["cva", "cx", "tv"],
                 "experimental": {
-                    "classRegex": [
-                        "[cls|className]\\s\\:\\=\\s\"([^\"]*)",
-                        ":\\bui\\b=\"\\{[^}]*:\\s*'([^']*)'\\}"
-                    ]
-                }
-            }
-        }
-    }
+                    "classRegex": ["[cls|className]\\s\\:\\=\\s\"([^\"]*)", ":\\bui\\b=\"\\{[^}]*:\\s*'([^']*)'\\}"],
+                },
+            },
+        },
+    },
 }
