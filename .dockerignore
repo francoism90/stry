@@ -5,6 +5,7 @@ _ide_helper.php
 .env.*
 !.env.example
 .agents
+.claude
 .git
 .gitattributes
 .github
