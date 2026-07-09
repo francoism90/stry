@@ -25,11 +25,11 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # Shaka Packager
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.7.2/packager-linux-x64" ; \
-        PACKAGER_SHA256="88b022b8cb12602ddb539972efd07a3496ea64f8662a484798c96e95afa41fd8" ;; \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.8.0/packager-linux-x64" ; \
+        PACKAGER_SHA256="225a33d1c3523dc1e80ead90b44266a4f545e8dbdb6ac30e553b8a7e4066096d" ;; \
       aarch64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.7.2/packager-linux-arm64" ; \
-        PACKAGER_SHA256="e4a43aaa8fdb87d0306876bc41581b371d7082e9d1b8469aef06a4e74004fd69" ;; \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.8.0/packager-linux-arm64" ; \
+        PACKAGER_SHA256="d0b7f0e9a1f80455ff1a7c9072928efce400f2ce1a5dfde78a2a55a5873c94da" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
@@ -183,6 +183,7 @@ WORKDIR /app
 # Set watch on development
 ENV OCTANE="${OCTANE} --watch"
 
+# Install development dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     nano git openssh-client \
