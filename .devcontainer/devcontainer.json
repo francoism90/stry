@@ -1,13 +1,11 @@
 {
     "name": "stry-devcontainer",
-    "image": "localhost/stry:latest",
     "containerUser": "docker",
     "containerEnv": {
         "HOME": "/home/docker",
         "APP_SERVICE": "shell"
     },
     "runArgs": ["--network=systemd-stry", "--init"],
-    "initializeCommand": "podman image exists localhost/stry:latest || echo 'Image loaded'",
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
     "build": {
         "context": "./../",

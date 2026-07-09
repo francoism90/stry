@@ -15,7 +15,8 @@
     "files.associations": {
         "*.css": "tailwindcss"
     },
-    "tailwindCSS.classAttributes": ["class", "ui"],
+    "tailwindCSS.classAttributes": ["class", "className", "ngClass", "class:list", "ui"],
+    "tailwindCSS.classFunctions": ["cva", "cx", "tv"],
     "tailwindCSS.experimental.classRegex": [
         ":\\s*?[\"'`]([^\"'`]*).*?,",
         "(?:const|let|var)\\s+[\\w$_][_\\w\\d]*\\s*=\\s*['\\\"](.*?)['\\\"]",
@@ -28,11 +29,9 @@
         ["\\s*.className\\s*=\\s*['\\\"](.*?)['\\\"]"],
         ["classList.(?:add|remove|toggle)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"]
     ],
+    "tailwindCSS.experimental.configFile": "resources/css/app.css",
     "tailwindCSS.includeLanguages": {
         "blade": "html",
-        "blade.php": "html",
-        "plaintext": "html",
-        "vue": "html",
-        "vue-html": "html"
+        "blade.php": "html"
     }
 }
