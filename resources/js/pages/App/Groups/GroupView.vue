@@ -14,7 +14,7 @@ const props = defineProps<{
   items: VideoCollection
   filters: VideoFilters
   sorters: SelectMenuItem[]
-  sort?: string
+  sort?: string | null
 }>()
 
 const links = computed<NavigationMenuItem[]>(() => [

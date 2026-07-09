@@ -8,8 +8,8 @@ const props = defineProps<{
   results?: boolean
   sorters?: SelectMenuItem[]
   scopes?: SelectMenuItem[]
-  sort?: string | undefined
   filters?: VideoFilters
+  sort?: string | null
 }>()
 
 const form = useForm('get', '', {

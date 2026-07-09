@@ -12,7 +12,7 @@ defineProps<{
   profile: Profile | null
   items: ProfileCollection
   sorters: SelectMenuItem[]
-  sort?: string
+  sort?: string | null
 }>()
 
 const switchProfile = (item: Profile) =>

@@ -3,9 +3,9 @@ import { router, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
-  results?: boolean
   sorters?: SelectMenuItem[]
-  sort?: string | undefined
+  results?: boolean | null
+  sort?: string | null
 }>()
 
 const form = useForm('get', '', {

@@ -4,8 +4,8 @@ import type { SelectMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
   results?: boolean
-  type?: string | undefined
-  sort?: string | undefined
+  type?: string | null
+  sort?: string | null
   types?: SelectMenuItem[]
   sorters?: SelectMenuItem[]
 }>()

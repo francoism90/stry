@@ -10,7 +10,7 @@ import type { SelectMenuItem } from '@nuxt/ui'
 defineProps<{
   items: GroupCollection
   sorters: SelectMenuItem[]
-  sort?: string
+  sort?: string | null
 }>()
 </script>
 

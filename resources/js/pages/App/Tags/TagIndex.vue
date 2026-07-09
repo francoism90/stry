@@ -11,9 +11,9 @@ import type { SelectMenuItem } from '@nuxt/ui'
 defineProps<{
   items: TagCollection
   types: SelectMenuItem[]
-  type?: string
   sorters: SelectMenuItem[]
-  sort?: string
+  type?: string | null
+  sort?: string | null
 }>()
 
 const { hasAnyRole } = useAuth()

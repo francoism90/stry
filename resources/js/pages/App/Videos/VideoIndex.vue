@@ -11,7 +11,7 @@ defineProps<{
   filters: VideoFilters
   sorters: SelectMenuItem[]
   scopes: SelectMenuItem[]
-  sort?: string
+  sort?: string | null
 }>()
 </script>
 
