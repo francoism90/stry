@@ -30,13 +30,13 @@ log "INFO" "Loading runtime environment configuration from /config/app.env..."
 cp /config/app.env /app/.env
 
 # Ensure APP_KEY is provided in runtime configuration
-if ! grep -q '^APP_KEY=' .env && [ -z "${APP_KEY:-}" ]; then
+if ! grep -q '^APP_KEY=.' /app/.env && [ -z "${APP_KEY:-}" ]; then
     GENERATED_KEY="$(${ARTISAN} key:generate --show || true)"
 
     if [ -n "${GENERATED_KEY}" ]; then
         log "ERROR" "APP_KEY is missing from runtime configuration. Paste this line into app.env: APP_KEY=${GENERATED_KEY}"
     else
-        log "ERROR" "APP_KEY is missing from runtime configuration."
+        log "ERROR" "APP_KEY is missing from runtime configuration and generation failed."
     fi
 
     exit 1
