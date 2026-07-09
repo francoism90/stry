@@ -17,4 +17,5 @@
 /vendor
 composer.lock
 package-lock.json
+skills-lock.json
 pnpm-lock.yaml
