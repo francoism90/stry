@@ -4,6 +4,7 @@
 *.sql.gz
 *.sqlite
 **/.agents
+**/.claude
 **/.git
 **/.github
 **/.hg

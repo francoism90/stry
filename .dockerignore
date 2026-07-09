@@ -18,6 +18,7 @@ _ide_helper.php
 .phpunit.result.cache
 .pnpm-store
 .vscode
+.mcp.json
 .zed
 *.key
 *.log
@@ -38,6 +39,7 @@ eslint.config.ts
 llms.txt
 node_modules
 npm-debug.log*
+boost.json
 pest-plugins.json
 phpstan.neon.dist
 phpunit.xml
