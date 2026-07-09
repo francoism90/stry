@@ -1,9 +1,4 @@
 {
-    "languages": {
-        "CSS": {
-            "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
-        },
-    },
     "context_servers": {
         "laravel-boost": {
             "command": "php",
@@ -16,12 +11,30 @@
             "remote": true,
         },
     },
+    "languages": {
+        "CSS": {
+            "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
+        },
+    },
     "lsp": {
         "tailwindcss-language-server": {
             "settings": {
+                "classAttributes": ["class", "className", "ngClass", "class:list", "ui"],
                 "classFunctions": ["cva", "cx", "tv"],
+                "configFile": "resources/css/app.css",
                 "experimental": {
-                    "classRegex": ["[cls|className]\\s\\:\\=\\s\"([^\"]*)", ":\\bui\\b=\"\\{[^}]*:\\s*'([^']*)'\\}"],
+                    "classRegex": [
+                        ":\\s*?[\"'`]([^\"'`]*).*?,",
+                        "(?:const|let|var)\\s+[\\w$_][_\\w\\d]*\\s*=\\s*['\\\"](.*?)['\\\"]",
+                        "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
+                        ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
+                        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+                        ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+                        ["twJoin\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"],
+                        ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"],
+                        ["\\s*.className\\s*=\\s*['\\\"](.*?)['\\\"]"],
+                        ["classList.(?:add|remove|toggle)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+                    ],
                 },
             },
         },
