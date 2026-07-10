@@ -6,6 +6,7 @@ namespace Domain\Videos\Models;
 
 use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
+use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
@@ -31,7 +32,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 use Spatie\ModelStates\HasStates;
 use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
@@ -172,7 +173,7 @@ class Video extends Model implements HasMedia
             ]);
     }
 
-    public function registerMediaConversions(?Media $media = null): void
+    public function registerMediaConversions(?BaseMedia $media = null): void
     {
         $this
             ->addMediaConversion('thumb')
@@ -245,19 +246,20 @@ class Video extends Model implements HasMedia
             'title' => (string) $this->title,
             'titles' => (string) $this->titles,
             'identifier' => (string) $this->identifier,
+            'duration' => (float) $this->duration,
             'season' => (string) $this->season,
             'episode' => (string) $this->episode,
             'part' => (string) $this->part,
             'description' => (string) $this->summary,
-            'duration' => (float) $this->duration,
-            'filesize' => (int) $this->total_size,
             'released' => (string) $this->released,
+            'clips' => (array) $this->clips,
+            'filesize' => (int) $this->total_size,
             'captioned' => (bool) $this->captioned,
             'adult' => (bool) $this->adult,
-            'tags' => (string) $this->tags->translated(),
             'tagged' => (array) $this->tags->modelKeys(),
             'tagged_count' => (int) $this->tags->count(),
-            'synonyms' => (string) $this->tags->synonyms(),
+            'synonyms' => (array) $this->tags->synonyms()->toArray(),
+            'tags' => (array) $this->tags->translated()->toArray(),
             'expires_at' => (int) $this->expires_at?->getTimestamp(),
             'released_at' => (int) $this->released_at?->getTimestamp(),
             'published_at' => (int) $this->published_at?->getTimestamp(),
@@ -300,10 +302,15 @@ class Video extends Model implements HasMedia
 
     public function getClips(): MediaCollection
     {
-        return $this->getMedia('clips')->sortBy([
-            ['custom_properties->streams->height', 'desc'],
-            ['custom_properties->streams->width', 'desc'],
-        ]);
+        return $this->getMedia('clips')->sortByDesc(function (Media $media) {
+            $stream = $media->getVideoStream();
+
+            return [
+                $stream['height'] ?? 0,
+                $stream['width'] ?? 0,
+                $stream['bit_rate'] ?? 0,
+            ];
+        });
     }
 
     public function getCaptions(): MediaCollection
@@ -345,9 +352,9 @@ class Video extends Model implements HasMedia
         return $this->getCaptionStreams()->isNotEmpty();
     }
 
-    protected function getThumbMedia(): ?Media
+    protected function getThumbMedia(): ?BaseMedia
     {
-        $media = $this->getFirstMedia('clips');
+        $media = $this->getClips()->first();
 
         if (! $media) {
             return null;
@@ -424,6 +431,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->thumbnailSrcset(),
+        )->shouldCache();
+    }
+
+    protected function clips(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): array => $this->getClips()->pluck('file_name')->toArray(),
         )->shouldCache();
     }
 

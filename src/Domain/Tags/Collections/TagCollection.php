@@ -22,19 +22,18 @@ class TagCollection extends Collection
             ->map(fn (Tag $related) => $related->only(['name', 'description']))
             ->flatten()
             ->filter()
-            ->unique()
-            ->implode(', ');
+            ->unique();
     }
 
     public function translated(): mixed
     {
-        return $this->map(fn (Tag $item) => [
-            'name' => $item->getTranslations('name'),
-            'description' => $item->getTranslations('description'),
-        ])
+        return $this
+            ->map(fn (Tag $item) => [
+                'name' => $item->getTranslations('name'),
+                'description' => $item->getTranslations('description'),
+            ])
             ->flatten()
             ->filter()
-            ->unique()
-            ->implode(', ');
+            ->unique();
     }
 }

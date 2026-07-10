@@ -215,6 +215,53 @@ it('casts snapshot as decimal', function () {
     expect($video->snapshot)->toBe('12.50');
 });
 
+it('returns array-typed fields in the searchable array', function () {
+    $video = Video::factory()->create();
+
+    $video->attachTag('Documentary');
+    $video->refresh();
+
+    $searchable = $video->toSearchableArray();
+
+    expect($searchable['clips'])->toBeArray()
+        ->and($searchable['tags'])->toBeArray()
+        ->and($searchable['synonyms'])->toBeArray();
+});
+
+it('sorts clips by resolution and then bit rate, descending', function () {
+    $video = Video::factory()->create();
+
+    $makeClip = fn (string $name, int $height, int $width, int $bitRate) => $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => $name,
+        'file_name' => "{$name}.mp4",
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [
+            'streams' => [
+                ['codec_type' => 'video', 'height' => $height, 'width' => $width, 'bit_rate' => $bitRate],
+                ['codec_type' => 'audio'],
+            ],
+        ],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    $low = $makeClip('low', 720, 1280, 1_000_000);
+    $highLowBitRate = $makeClip('high-low-bitrate', 1080, 1920, 2_000_000);
+    $highHighBitRate = $makeClip('high-high-bitrate', 1080, 1920, 5_000_000);
+
+    $clips = $video->getClips();
+
+    expect($clips->pluck('name')->values()->toArray())->toBe([
+        $highHighBitRate->name,
+        $highLowBitRate->name,
+        $low->name,
+    ]);
+});
+
 it('can store seasonal information', function () {
     $video = Video::factory()->create([
         'season' => 2,

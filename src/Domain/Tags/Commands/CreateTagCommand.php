@@ -18,7 +18,7 @@ class CreateTagCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'tags:create';
+    protected $signature = 'tags:create {--locale= : The locale for the tag (default: app locale)}';
 
     /**
      * @var string
@@ -38,7 +38,7 @@ class CreateTagCommand extends Command implements Isolatable
             required: true,
         );
 
-        $tag = Tag::findOrCreate($name, $type);
+        $tag = Tag::findOrCreate($name, $type, $this->option('locale') ?? app()->getLocale());
 
         info("Tag `{$tag->name}` has been created successfully.");
     }

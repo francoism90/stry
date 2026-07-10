@@ -196,7 +196,8 @@ class Tag extends BaseTag implements HasMedia
             'category' => (string) $this->category,
             'type' => (string) $this->type?->value ?? '',
             'adult' => (bool) $this->adult,
-            'synonyms' => (string) $this->synonyms,
+            'synonyms' => (array) $this->synonyms->toArray(),
+            'translated' => (array) $this->translated->toArray(),
             'order' => (int) $this->order_column,
             'videos' => (int) $this->videos_count,
             'created_at' => (int) $this->created_at->getTimestamp(),
@@ -241,6 +242,13 @@ class Tag extends BaseTag implements HasMedia
     {
         return Attribute::make(
             get: fn () => TagCollection::make($this->getRelates())->synonyms(),
+        )->shouldCache();
+    }
+
+    protected function translated(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => TagCollection::make([$this])->translated(),
         )->shouldCache();
     }
 }
