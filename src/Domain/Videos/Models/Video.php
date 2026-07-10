@@ -245,19 +245,20 @@ class Video extends Model implements HasMedia
             'title' => (string) $this->title,
             'titles' => (string) $this->titles,
             'identifier' => (string) $this->identifier,
+            'duration' => (float) $this->duration,
             'season' => (string) $this->season,
             'episode' => (string) $this->episode,
             'part' => (string) $this->part,
             'description' => (string) $this->summary,
-            'duration' => (float) $this->duration,
-            'filesize' => (int) $this->total_size,
             'released' => (string) $this->released,
+            'clips' => (array) $this->clips,
+            'filesize' => (int) $this->total_size,
             'captioned' => (bool) $this->captioned,
             'adult' => (bool) $this->adult,
-            'tags' => (string) $this->tags->translated(),
             'tagged' => (array) $this->tags->modelKeys(),
             'tagged_count' => (int) $this->tags->count(),
-            'synonyms' => (string) $this->tags->synonyms(),
+            'synonyms' => (array) $this->tags->synonyms()->toArray(),
+            'tags' => (array) $this->tags->translated()->toArray(),
             'expires_at' => (int) $this->expires_at?->getTimestamp(),
             'released_at' => (int) $this->released_at?->getTimestamp(),
             'published_at' => (int) $this->published_at?->getTimestamp(),
@@ -347,7 +348,7 @@ class Video extends Model implements HasMedia
 
     protected function getThumbMedia(): ?Media
     {
-        $media = $this->getFirstMedia('clips');
+        $media = $this->getClips()->first();
 
         if (! $media) {
             return null;
@@ -424,6 +425,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->thumbnailSrcset(),
+        )->shouldCache();
+    }
+
+    protected function clips(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): array => $this->getClips()->pluck('file_name')->toArray(),
         )->shouldCache();
     }
 

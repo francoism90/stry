@@ -215,6 +215,19 @@ it('casts snapshot as decimal', function () {
     expect($video->snapshot)->toBe('12.50');
 });
 
+it('returns array-typed fields in the searchable array', function () {
+    $video = Video::factory()->create();
+
+    $video->attachTag('Documentary');
+    $video->refresh();
+
+    $searchable = $video->toSearchableArray();
+
+    expect($searchable['clips'])->toBeArray()
+        ->and($searchable['tags'])->toBeArray()
+        ->and($searchable['synonyms'])->toBeArray();
+});
+
 it('can store seasonal information', function () {
     $video = Video::factory()->create([
         'season' => 2,

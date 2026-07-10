@@ -278,7 +278,12 @@ return [
                         ],
                         [
                             'name' => 'synonyms',
-                            'type' => 'string',
+                            'type' => 'string[]',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'translated',
+                            'type' => 'string[]',
                             'optional' => true,
                         ],
                         [
@@ -313,7 +318,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, description, synonyms, category',
+                    'query_by' => 'name, description, synonyms, translated, category',
                     'facet_by' => 'category, type, adult',
                 ],
             ],
@@ -380,12 +385,12 @@ return [
                         ],
                         [
                             'name' => 'tags',
-                            'type' => 'string',
+                            'type' => 'string[]',
                             'optional' => true,
                         ],
                         [
                             'name' => 'synonyms',
-                            'type' => 'string',
+                            'type' => 'string[]',
                             'optional' => true,
                         ],
                         [
@@ -402,6 +407,11 @@ return [
                             'type' => 'float',
                             'sort' => true,
                             'range_index' => true,
+                        ],
+                        [
+                            'name' => 'clips',
+                            'type' => 'string[]',
+                            'optional' => true,
                         ],
                         [
                             'name' => 'filesize',
@@ -481,7 +491,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'name, titles, identifier, part, description, tags, synonyms, released',
+                    'query_by' => 'name, titles, identifier, part, description, tags, synonyms, released, clips',
                     'facet_by' => 'state, adult, captioned, season, episode, part',
                 ],
             ],

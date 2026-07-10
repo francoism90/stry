@@ -30,3 +30,24 @@ it('can cast type enum', function () {
 
     expect($tag->type)->toBe(TagType::Genre);
 });
+
+it('returns synonyms as an array in the searchable array', function () {
+    $tag = Tag::factory()->create();
+    $related = Tag::factory()->count(2)->create();
+
+    $tag->syncRelated($related);
+    $tag->refresh();
+
+    expect($tag->toSearchableArray()['synonyms'])->toBeArray();
+});
+
+it('returns translated as an array in the searchable array', function () {
+    $tag = Tag::factory()->create([
+        'name' => ['en' => 'Documentary', 'es' => 'Documental'],
+    ]);
+
+    $searchable = $tag->toSearchableArray();
+
+    expect($searchable['translated'])->toBeArray()
+        ->and($searchable['translated'])->toContain('Documentary', 'Documental');
+});
