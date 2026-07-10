@@ -215,17 +215,21 @@ it('casts snapshot as decimal', function () {
     expect($video->snapshot)->toBe('12.50');
 });
 
-it('returns array-typed fields in the searchable array', function () {
+it('returns array-typed fields as lists in the searchable array', function () {
     $video = Video::factory()->create();
 
     $video->attachTag('Documentary');
+    $video->attachTag('Nature');
     $video->refresh();
 
     $searchable = $video->toSearchableArray();
 
     expect($searchable['clips'])->toBeArray()
+        ->and(array_is_list($searchable['clips']))->toBeTrue()
         ->and($searchable['tags'])->toBeArray()
-        ->and($searchable['synonyms'])->toBeArray();
+        ->and(array_is_list($searchable['tags']))->toBeTrue()
+        ->and($searchable['synonyms'])->toBeArray()
+        ->and(array_is_list($searchable['synonyms']))->toBeTrue();
 });
 
 it('sorts clips by resolution and then bit rate, descending', function () {

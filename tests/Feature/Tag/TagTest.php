@@ -31,23 +31,34 @@ it('can cast type enum', function () {
     expect($tag->type)->toBe(TagType::Genre);
 });
 
-it('returns synonyms as an array in the searchable array', function () {
+it('returns synonyms as a list in the searchable array', function () {
     $tag = Tag::factory()->create();
-    $related = Tag::factory()->count(2)->create();
+    // An empty description in a non-trailing position leaves a gap in the
+    // underlying array once filtered, which json_encode() would otherwise
+    // serialize as a JSON object instead of an array.
+    $related = [
+        Tag::factory()->create(['description' => ['en' => '']]),
+        Tag::factory()->create(),
+    ];
 
     $tag->syncRelated($related);
     $tag->refresh();
 
-    expect($tag->toSearchableArray()['synonyms'])->toBeArray();
+    $synonyms = $tag->toSearchableArray()['synonyms'];
+
+    expect($synonyms)->toBeArray()
+        ->and(array_is_list($synonyms))->toBeTrue();
 });
 
-it('returns translated as an array in the searchable array', function () {
+it('returns translated as a list in the searchable array', function () {
     $tag = Tag::factory()->create([
         'name' => ['en' => 'Documentary', 'es' => 'Documental'],
+        'description' => ['en' => '', 'es' => 'Un film'],
     ]);
 
-    $searchable = $tag->toSearchableArray();
+    $translated = $tag->toSearchableArray()['translated'];
 
-    expect($searchable['translated'])->toBeArray()
-        ->and($searchable['translated'])->toContain('Documentary', 'Documental');
+    expect($translated)->toBeArray()
+        ->and(array_is_list($translated))->toBeTrue()
+        ->and($translated)->toContain('Documentary', 'Documental', 'Un film');
 });

@@ -22,7 +22,8 @@ class TagCollection extends Collection
             ->map(fn (Tag $related) => $related->only(['name', 'description']))
             ->flatten()
             ->filter()
-            ->unique();
+            ->unique()
+            ->values();
     }
 
     public function translated(): mixed
@@ -34,6 +35,7 @@ class TagCollection extends Collection
             ])
             ->flatten()
             ->filter()
-            ->unique();
+            ->unique()
+            ->values();
     }
 }
