@@ -9,6 +9,7 @@ use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -70,6 +71,14 @@ class Media extends BaseMedia
     public function getStreams(): array
     {
         return $this->getCustomProperty('streams', []);
+    }
+
+    /**
+     * @return array{codec_type?: string, width?: int, height?: int, bit_rate?: int}
+     */
+    public function getVideoStream(): array
+    {
+        return Arr::first($this->getStreams(), fn (array $stream) => ($stream['codec_type'] ?? null) === 'video') ?? [];
     }
 
     /**

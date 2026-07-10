@@ -6,6 +6,7 @@ namespace Domain\Videos\Models;
 
 use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
+use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
@@ -31,7 +32,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 use Spatie\ModelStates\HasStates;
 use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
@@ -172,7 +173,7 @@ class Video extends Model implements HasMedia
             ]);
     }
 
-    public function registerMediaConversions(?Media $media = null): void
+    public function registerMediaConversions(?BaseMedia $media = null): void
     {
         $this
             ->addMediaConversion('thumb')
@@ -301,10 +302,15 @@ class Video extends Model implements HasMedia
 
     public function getClips(): MediaCollection
     {
-        return $this->getMedia('clips')->sortBy([
-            ['custom_properties->streams->height', 'desc'],
-            ['custom_properties->streams->width', 'desc'],
-        ]);
+        return $this->getMedia('clips')->sortByDesc(function (Media $media) {
+            $stream = $media->getVideoStream();
+
+            return [
+                $stream['height'] ?? 0,
+                $stream['width'] ?? 0,
+                $stream['bit_rate'] ?? 0,
+            ];
+        });
     }
 
     public function getCaptions(): MediaCollection
@@ -346,7 +352,7 @@ class Video extends Model implements HasMedia
         return $this->getCaptionStreams()->isNotEmpty();
     }
 
-    protected function getThumbMedia(): ?Media
+    protected function getThumbMedia(): ?BaseMedia
     {
         $media = $this->getClips()->first();
 
