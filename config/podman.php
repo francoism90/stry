@@ -88,12 +88,11 @@ return [
     | Publish Path
     |--------------------------------------------------------------------------
     |
-    | This value is the path where "podman:setup"/"podman:install" write a
-    | rendered ".quadlets" file instead of installing it, either when passed
-    | --publish or automatically when the "podman" binary can't be found
-    | (e.g. running Artisan inside a plain PHP container). Run
-    | "podman quadlet install" against the written file on the host
-    | afterwards to finish installing the service.
+    | This value is the path where "podman:setup"/"podman:install" always
+    | render a service's ".quadlets" file, before installing it. Actually
+    | installing is skipped when --no-install is passed or the "podman"
+    | binary can't be found, leaving the rendered file as the only output —
+    | run "podman quadlet install" against it on the host to finish.
     |
     */
 
@@ -166,6 +165,7 @@ return [
     'runtimes' => env('PODMAN_DEFAULT_RUNTIMES', [
         'frankenphp-octane',
         'proxy',
+        's3',
     ]),
 
     /*
