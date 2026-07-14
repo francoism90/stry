@@ -70,7 +70,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates libcap2-bin unzip git sqlite3 nano \
+    gnupg curl ca-certificates libcap2-bin unzip \
     python3 python3-venv python3-pip \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
@@ -196,14 +196,19 @@ WORKDIR /app
 # Set watch on development
 ENV APP_COMMAND="${APP_COMMAND} --watch"
 
+# Development dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    nano openssh-client git \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 
 # Custom PHP configuration for development
 COPY runtimes/frankenphp-octane/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
-
-# Set proper ownership
-RUN chown -R docker:docker /app /pnpm
 
 USER docker
 
