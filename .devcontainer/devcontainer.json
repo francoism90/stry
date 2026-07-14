@@ -8,7 +8,9 @@
         "APP_SERVICE": "shell"
     },
     "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
-    "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+    "workspaceFolder": "/app",
+    // "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
     "features": {
         "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
     },
