@@ -33,8 +33,8 @@ return [
     | Working Path
     |--------------------------------------------------------------------------
     |
-    | The host path baked into the "{{base-path}}"/"{{runtime-path}}"/
-    | "{{config-path}}" placeholders. It does not affect where Artisan
+    | The host path baked into the "{{workingPath}}"/"{{runtimePath}}"/
+    | "{{configPath}}" placeholders. It does not affect where Artisan
     | itself reads or writes files — that's always base_path(). Defaults
     | to base_path(); override when rendering happens somewhere whose
     | filesystem view of the project isn't the host's, e.g. inside the

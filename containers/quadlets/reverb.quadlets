@@ -10,7 +10,7 @@ AutoUpdate=local
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
 UserNS=keep-id
 ShmSize=128m
-Secret={{application}}-env,target=/config/app.env,mode=0400,uid={{app-uid}},gid={{app-gid}}
+Secret={{application}}-env,target=/config/app.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
 Network={{proxy}}.network

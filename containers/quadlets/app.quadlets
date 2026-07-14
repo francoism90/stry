@@ -1,13 +1,13 @@
 # FileName={{application}}
 [Build]
 ImageTag=localhost/{{application}}:latest
-Target={{app-env}}
-Environment=APP_ENV={{app-env}}
-Environment=UID={{app-uid}}
-Environment=GID={{app-gid}}
-File={{runtime-path}}/frankenphp-octane/Containerfile
-IgnoreFile={{runtime-path}}/frankenphp-octane/dockerignore
-SetWorkingDirectory={{base-path}}
+Target={{appEnv}}
+Environment=APP_ENV={{appEnv}}
+Environment=UID={{appUid}}
+Environment=GID={{appGid}}
+File={{runtimePath}}/frankenphp-octane/Containerfile
+IgnoreFile={{runtimePath}}/frankenphp-octane/dockerignore
+SetWorkingDirectory={{workingPath}}
 ---
 # FileName={{application}}
 [Unit]
@@ -21,7 +21,7 @@ Image={{application}}.build
 AutoUpdate=local
 UserNS=keep-id
 ShmSize=128m
-Secret={{application}}-env,target=/app/.env,mode=0400,uid={{app-uid}},gid={{app-gid}}
+Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume={{application}}-config:/config:rw,z,U
 Volume={{application}}-data:/data:rw,z,U
 Volume={{application}}-cache:/cache:rw,z,U
