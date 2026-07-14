@@ -109,7 +109,7 @@ sudo chmod 700 /var/lib/stry/media /var/lib/stry/import
 Follow the **[Object Storage (S3)](s3.md)** setup guide to initialize buckets and configure media storage:
 
 ```bash
-podman exec systemd-stry ./bin/setup-s3
+podman exec systemd-stry php artisan podman:s3-setup
 ```
 
 ### 6. Start Services
