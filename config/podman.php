@@ -30,6 +30,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Working Path
+    |--------------------------------------------------------------------------
+    |
+    | The host path baked into the "{{base-path}}"/"{{runtime-path}}"/
+    | "{{config-path}}" placeholders. It does not affect where Artisan
+    | itself reads or writes files — that's always base_path(). Defaults
+    | to base_path(); override when rendering happens somewhere whose
+    | filesystem view of the project isn't the host's, e.g. inside the
+    | container used by "Setting up without PHP on the host".
+    |
+    */
+
+    'working_path' => env('PODMAN_WORKING_PATH'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Service UID and GID
     |--------------------------------------------------------------------------
     |
@@ -66,6 +82,22 @@ return [
     */
 
     'config_path' => env('PODMAN_CONFIG_PATH', 'runtimes'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Publish Path
+    |--------------------------------------------------------------------------
+    |
+    | This value is the path where "podman:setup"/"podman:install" write a
+    | rendered ".quadlets" file instead of installing it, either when passed
+    | --publish or automatically when the "podman" binary can't be found
+    | (e.g. running Artisan inside a plain PHP container). Run
+    | "podman quadlet install" against the written file on the host
+    | afterwards to finish installing the service.
+    |
+    */
+
+    'publish_path' => env('PODMAN_PUBLISH_PATH', 'storage/app/podman'),
 
     /*
     |--------------------------------------------------------------------------
@@ -113,6 +145,9 @@ return [
         'horizon',
         'reverb',
         'schedule',
+        'mailpit',
+        'rustfs',
+        'typesense',
         'inertia-ssr',
     ]),
 
@@ -147,13 +182,15 @@ return [
     */
 
     's3_buckets' => env('PODMAN_S3_BUCKETS', [
-        'assets',
-        'media',
+        'local',
         'conversions',
+        'segments',
+        'secrets',
     ]),
 
     's3_cors_buckets' => env('PODMAN_S3_CORS_BUCKETS', [
-        'assets',
         'conversions',
+        'segments',
+        'secrets',
     ]),
 ];
