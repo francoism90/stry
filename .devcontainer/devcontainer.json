@@ -4,16 +4,10 @@
     "containerUser": "docker",
     "containerEnv": {
         "HOME": "/home/docker",
-        "APP_ENV": "local",
-        "APP_SERVICE": "shell"
+        "APP_ENV": "local"
     },
-    "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
-    "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
-    "workspaceFolder": "/app",
-    // "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
-    "features": {
-        "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
-    },
+    "runArgs": ["--security-opt=label=disable", "--network=systemd-stry", "--userns=keep-id", "--init"],
+    "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
     "build": {
         "context": "./../",
         "dockerfile": "./../runtimes/frankenphp-octane/Containerfile",
