@@ -1,0 +1,53 @@
+# FileName={{application}}
+[Build]
+ImageTag=localhost/{{application}}:latest
+Target={{app-env}}
+Environment=APP_ENV={{app-env}}
+Environment=UID={{app-uid}}
+Environment=GID={{app-gid}}
+File={{runtime-path}}/frankenphp-octane/Containerfile
+IgnoreFile={{runtime-path}}/frankenphp-octane/dockerignore
+SetWorkingDirectory={{base-path}}
+---
+# FileName={{application}}
+[Unit]
+Description=Laravel App (Octane) container
+Requires={{application}}-pgsql.container {{application}}-valkey.container
+After={{application}}-pgsql.container {{application}}-valkey.container
+Wants={{application}}-mailpit.container {{application}}-horizon.container {{application}}-reverb.container {{application}}-schedule.container {{application}}-rustfs.container {{application}}-typesense.container {{application}}-inertia-ssr.container
+
+[Container]
+Image={{application}}.build
+AutoUpdate=local
+UserNS=keep-id
+ShmSize=128m
+Secret={{application}}-env,target=/app/.env,mode=0400,uid={{app-uid}},gid={{app-gid}}
+Volume={{application}}-config:/config:rw,z,U
+Volume={{application}}-data:/data:rw,z,U
+Volume={{application}}-cache:/cache:rw,z,U
+Network={{application}}.network
+Network={{proxy}}.network
+ExposeHostPort=8000
+ExposeHostPort=5173
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+---
+# FileName={{application}}-config
+[Volume]
+Label={{application}}-config
+---
+# FileName={{application}}-data
+[Volume]
+Label={{application}}-data
+---
+# FileName={{application}}-cache
+[Volume]
+Label={{application}}-cache
+---
+# FileName={{application}}
+[Network]
+Label={{application}}

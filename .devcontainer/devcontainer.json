@@ -4,15 +4,18 @@
     "containerUser": "docker",
     "containerEnv": {
         "HOME": "/home/docker",
-        "APP_RUNTIME_ENV": "development",
+        "APP_ENV": "local",
         "APP_SERVICE": "shell"
     },
     "runArgs": ["--userns=keep-id", "--security-opt=label=disable", "--network=systemd-stry", "--init"],
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
+    "features": {
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
+    },
     "build": {
         "context": "./../",
-        "dockerfile": "./../containers/Containerfile",
-        "target": "development",
+        "dockerfile": "./../runtimes/frankenphp-octane/Containerfile",
+        "target": "local",
         "args": {
             "UID": "1000", // Replace with your desired UID (id -u)
             "GID": "1000" // Replace with your desired GID (id -g)

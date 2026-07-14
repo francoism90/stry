@@ -45,20 +45,21 @@ FROM docker.io/dunglas/frankenphp:latest AS base
 
 ARG UID=1000
 ARG GID=1000
-ARG TZ=UTC
 ARG NODE_VERSION=24
 ARG POSTGRES_VERSION=18
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=${TZ}
-ENV PNPM_HOME="/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
-ENV PHP_CLI="php -d variables_order=EGPCS"
-ENV FRANKEN_CLI="frankenphp php-cli"
-ENV ARTISAN="${FRANKEN_CLI} /app/artisan"
-ENV OCTANE="${FRANKEN_CLI} /app/artisan octane:frankenphp --host=0.0.0.0 --port=8000"
+ARG PHP_EXTENSIONS=""
 
 WORKDIR /tmp
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV LANG=C.UTF-8
+ENV PNPM_HOME="/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+ENV FRANKEN_CLI="frankenphp php-cli /app/artisan"
+ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
+ENV APP_COMMAND="${FRANKEN_CLI} octane:frankenphp --host=0.0.0.0 --port=8000 --admin-port=2019"
+ENV APP_USER="docker"
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
@@ -69,22 +70,15 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    ca-certificates libcap2-bin curl unzip awscli \
-    python3 python3-venv python3-pip gpg gnupg \
-    mesa-va-drivers mesa-vulkan-drivers \
-    libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
-    intel-media-va-driver-non-free \
+    gnupg curl ca-certificates libcap2-bin unzip git sqlite3 nano \
+    python3 python3-venv python3-pip \
     libavif-bin jpegoptim optipng pngquant gifsicle \
+    libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
+    mesa-va-drivers mesa-vulkan-drivers \
+    intel-media-va-driver-non-free \
+    && apt-get -y autoremove \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create non-root user
-RUN groupadd -g ${GID} docker \
-    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
-
-# Create pnpm home directory
-RUN mkdir -p ${PNPM_HOME} \
-    && chown -R docker:docker ${PNPM_HOME}
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add PostgreSQL APT repository and install client
 RUN mkdir -p /etc/apt/keyrings \
@@ -93,8 +87,9 @@ RUN mkdir -p /etc/apt/keyrings \
     && echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt ${CODENAME}-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends postgresql-client-${POSTGRES_VERSION} \
+    && apt-get -y autoremove \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add NodeSource APT repository and install Node.js
 RUN mkdir -p /etc/apt/keyrings \
@@ -102,23 +97,17 @@ RUN mkdir -p /etc/apt/keyrings \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends nodejs \
+    && apt-get -y autoremove \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Create necessary directories
+# Create non-root user
+RUN groupadd --force -g ${GID} docker \
+    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+
+# Create directories and set ownership
 RUN mkdir -p /app /config /data /cache /media /import \
     && chown -R docker:docker /app /config /data /cache /media /import
-
-# Build Shaka Streamer and set up Python environment
-RUN python3 -m venv /opt/shaka-streamer-env \
-    && /opt/shaka-streamer-env/bin/pip install --no-cache-dir shaka-streamer \
-    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
-
-# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
-COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
-COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
@@ -129,26 +118,46 @@ RUN install-php-extensions @composer \
     igbinary imagick inotify intl pcntl \
     pdo_pgsql redis sockets uv zip
 
-# Custom PHP configuration
-COPY containers/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+# Install additional PHP extensions if specified
+RUN if [ -n "$PHP_EXTENSIONS" ]; then \
+    install-php-extensions $PHP_EXTENSIONS; \
+fi
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && corepack enable && corepack prepare pnpm@latest --activate \
+    && mkdir -p ${PNPM_HOME}/store \
+    && chown -R docker:docker ${PNPM_HOME} \
     && pnpm config set store-dir ${PNPM_HOME}/store
+
+# Build Shaka Streamer and set up Python environment
+RUN python3 -m venv /opt/shaka-streamer-env \
+    && /opt/shaka-streamer-env/bin/pip install --no-cache-dir shaka-streamer \
+    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
 
 # Strip file capabilities from frankenphp
 RUN setcap -r /usr/local/bin/frankenphp
 
+# Custom PHP configuration
+COPY runtimes/frankenphp-octane/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+
+# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
+COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
+COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
+
 # Entrypoint
-COPY --chmod=755 containers/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chmod=755 runtimes/frankenphp-octane/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Clean up unnecessary files and caches to reduce image size
-RUN apt-get clean && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.npm /root/.config
+RUN apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+# Production Stage
 FROM base AS production
 
 WORKDIR /app
@@ -159,7 +168,7 @@ COPY --chown=docker:docker . /app
 # Switch to non-root user
 USER docker
 
-# Make sure an .env file exists
+# Make sure an basic .env file exists
 RUN cp .env.example .env
 
 # Install PHP dependencies
@@ -174,27 +183,24 @@ RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
 RUN composer dump-autoload --optimize \
     && pnpm build && pnpm build:ssr && pnpm prune --prod
 
+# Remove .env file for production
+RUN rm -f .env
+
 EXPOSE 6001 8000 13714
 
-FROM base AS development
+# Development Stage
+FROM base AS local
 
 WORKDIR /app
 
 # Set watch on development
-ENV OCTANE="${OCTANE} --watch"
-
-# Install development dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    nano git openssh-client \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+ENV APP_COMMAND="${APP_COMMAND} --watch"
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 
 # Custom PHP configuration for development
-COPY containers/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY runtimes/frankenphp-octane/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Set proper ownership
 RUN chown -R docker:docker /app /pnpm

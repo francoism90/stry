@@ -1,0 +1,24 @@
+# FileName={{application}}-typesense
+[Unit]
+Description=Typesense container
+PartOf={{application}}.container
+
+[Container]
+Image=docker.io/typesense/typesense:30.2
+AutoUpdate=registry
+Environment=TYPESENSE_DATA_DIR=/data
+Environment=TYPESENSE_LOG_LEVEL=error
+Secret={{application}}-typesense-api-key,type=env,target=TYPESENSE_API_KEY
+Volume={{application}}-typesense:/data:rw,Z,U
+Network={{application}}.network
+ExposeHostPort=8108
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60
+---
+# FileName={{application}}-typesense
+[Volume]
+Label={{application}}-typesense

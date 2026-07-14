@@ -32,6 +32,7 @@ _ide_helper.php
 /public/storage
 /public/sw.js
 /public/vendor
+/runtimes
 /resources/js/actions
 /resources/js/routes
 /resources/js/wayfinder
