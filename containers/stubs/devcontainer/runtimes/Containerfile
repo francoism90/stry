@@ -1,4 +1,4 @@
-FROM docker.io/dunglas/frankenphp:latest
+FROM docker.io/library/php:8.5-cli
 
 ARG UID=1000
 ARG GID=1000
@@ -20,7 +20,7 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 
 # Main dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates libcap2-bin unzip \
+    gnupg curl ca-certificates unzip \
     git nano openssh-client awscli \
     && apt-get -y autoremove \
     && apt-get clean \
@@ -51,12 +51,8 @@ RUN mkdir -p /etc/apt/keyrings \
 RUN groupadd --force -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
-# Create directories and set ownership
-RUN mkdir -p /app /config \
-    && chown -R docker:docker /app /config
-
-# PHP Configuration
-RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
+# Add install-php-extensions script
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # Install PHP extensions
 RUN install-php-extensions @composer \
@@ -68,12 +64,6 @@ RUN install-php-extensions @composer \
 RUN if [ -n "$PHP_EXTENSIONS" ]; then \
     install-php-extensions $PHP_EXTENSIONS; \
 fi
-
-# Strip file capabilities from frankenphp
-RUN setcap -r /usr/local/bin/frankenphp
-
-# Custom PHP configuration for development
-COPY podman/devcontainer/runtimes/php-devcontainer.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
@@ -89,4 +79,4 @@ RUN apt-get autoremove -y \
 
 USER docker
 
-ENTRYPOINT ["/usr/bin/bash"]
+CMD ["/usr/bin/env", "bash"]
