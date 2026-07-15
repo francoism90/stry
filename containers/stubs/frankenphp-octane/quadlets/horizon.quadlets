@@ -11,7 +11,7 @@ AutoUpdate=local
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon"
 UserNS=keep-id
 ShmSize=128m
-Secret={{application}}-env,target=/config/app.env,mode=0400,uid={{appUid}},gid={{appGid}}
+Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
 
