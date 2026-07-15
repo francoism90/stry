@@ -2,7 +2,12 @@
     "name": "laravel-podman-devcontainer",
     "remoteUser": "docker",
     "containerUser": "docker",
-    "runArgs": ["--security-opt", "label=disable", "--userns=keep-id:uid=1000,gid=1000"],
+    "runArgs": [
+        "--security-opt=label=disable",
+        "--network=systemd-stry",
+        "--userns=keep-id:uid=1000,gid=1000",
+        "--init"
+    ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
     "workspaceFolder": "/workspace",
     "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
