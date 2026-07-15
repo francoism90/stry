@@ -16,7 +16,7 @@ Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Secret={{application}}-rustfs-access-key,type=env,target=RUSTFS_ACCESS_KEY
 Secret={{application}}-rustfs-secret-key,type=env,target=RUSTFS_SECRET_KEY
 Volume={{application}}-rustfs-data:/data:rw,Z,U
-Volume={{application}}-rustfs-logs:/data:rw,Z,U
+Volume={{application}}-rustfs-logs:/logs:rw,Z,U
 Network={{application}}.network
 Network={{proxy}}.network
 ExposeHostPort=9000
