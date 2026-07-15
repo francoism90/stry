@@ -172,9 +172,17 @@ RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID}
 RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
     pnpm install --frozen-lockfile
 
-# Complete composer setup and build assets
-RUN composer dump-autoload --optimize \
-    && pnpm build && pnpm build:ssr && pnpm prune --prod
+# Complete composer setup
+RUN composer dump-autoload --optimize
+
+# Generate application key
+RUN ${PHP_CLI} key:generate
+
+# Build frontend assets
+RUN pnpm build && pnpm build:ssr && pnpm prune --prod
+
+# Remove .env file if it exists
+RUN rm -f .env
 
 EXPOSE 6001 8000 13714
 
