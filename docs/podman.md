@@ -21,16 +21,16 @@ tags:
 
 Published under `containers/stubs/` — customize a preset there (see [Customizing](https://github.com/foxws/laravel-podman/blob/main/docs/customizing.md)) without touching the others:
 
-| Preset              | Purpose                                                           |
-| ------------------- | ------------------------------------------------------------------ |
-| `frankenphp-octane` | The application and its sibling services (table below)             |
-| `proxy`             | Caddy reverse proxy — see [Proxy](proxy.md)                        |
-| `s3`                | RustFS bucket/CORS setup — see [S3](s3.md)                         |
-| `devcontainer`      | VS Code Dev Containers image — see [Development](development.md)   |
+| Preset              | Purpose                                                          |
+| ------------------- | ---------------------------------------------------------------- |
+| `frankenphp-octane` | The application and its sibling services (table below)           |
+| `proxy`             | Caddy reverse proxy — see [Proxy](proxy.md)                      |
+| `s3`                | RustFS bucket/CORS setup — see [S3](s3.md)                       |
+| `devcontainer`      | VS Code Dev Containers image — see [Development](development.md) |
 
 `frankenphp-octane` installs these services (unit names use the `stry` prefix by default — the `PODMAN_QUADLET_PREFIX` env var, which defaults to `APP_NAME`):
 
-| Unit               | Role                                          |
+| Unit               | Role                                           |
 | ------------------ | ---------------------------------------------- |
 | `stry`             | HTTP app server (Octane) — :8000, :5173 (Vite) |
 | `stry-pgsql`       | PostgreSQL — :5432                             |
@@ -79,7 +79,7 @@ See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the p
 
 Resource limits (`Memory=`, `ShmSize=`, ...) live directly in `containers/stubs/frankenphp-octane/quadlets/*.quadlets`. After editing, re-render (`php artisan podman:generate frankenphp-octane`) and reinstall (`lpod install ... --replace`).
 
-The application image bundles VA-API drivers, but no GPU is passed through by default. To enable hardware-accelerated transcoding, add to `stry-horizon.container` in `horizon.quadlets`:
+The application image bundles VA-API drivers, and `horizon.quadlets` passes `/dev/dri` through to `stry-horizon` by default for hardware-accelerated transcoding:
 
 ```ini
 [Container]
@@ -87,4 +87,23 @@ AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
 ```
 
+> [!NOTE]
+> `/dev/dri` must exist on the host — on a machine without a GPU (or most cloud/CI boxes), `stry-horizon` will fail to start unless you remove these two lines first (see below).
+
 See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html) for driver setup.
+
+On SELinux hosts (e.g. Fedora), rootless Podman is blocked from accessing `/dev/dri` by default even with `AddDevice=`. Allow it once:
+
+```bash
+sudo setsebool -P container_use_devices=true
+```
+
+> [!NOTE]
+> This is a host-wide boolean, not scoped to one container — it applies to every rootless Podman container on the machine.
+
+**To disable GPU passthrough** (e.g. to force software encoding, or the container otherwise shouldn't touch `/dev/dri`), remove both lines from `containers/stubs/frankenphp-octane/quadlets/horizon.quadlets` (and `development/quadlets/horizon.quadlets` if you use that preset), then re-render and reinstall:
+
+```bash
+php artisan podman:generate frankenphp-octane
+vendor/bin/lpod install frankenphp-octane/horizon.quadlets --replace
+```

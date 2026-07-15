@@ -11,6 +11,8 @@ AutoUpdate=local
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon"
 UserNS=keep-id
 ShmSize=128m
+AddDevice=/dev/dri:/dev/dri
+GroupAdd=keep-groups
 Volume={{workingPath}}:/app:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network

@@ -47,6 +47,8 @@ vendor/bin/lpod stry artisan podman:s3-setup
 vendor/bin/lpod stry artisan migrate --force
 ```
 
+`stry-horizon` passes `/dev/dri` through for hardware-accelerated transcoding by default, so the host must have a GPU with `/dev/dri` present — see [Hardware acceleration](podman.md#tuning--hardware-acceleration) for driver setup, the SELinux `setsebool` step, and how to disable it if the host has no GPU.
+
 Verify:
 
 ```bash
