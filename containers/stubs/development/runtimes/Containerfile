@@ -127,7 +127,7 @@ fi
 RUN setcap -r /usr/local/bin/frankenphp
 
 # Custom PHP configuration
-COPY runtimes/frankenphp-octane/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY podman/frankenphp-octane/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
@@ -148,7 +148,7 @@ RUN python3 -m venv /opt/shaka-streamer-env \
     && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
 
 # Entrypoint
-COPY --chmod=755 runtimes/frankenphp-octane/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chmod=755 podman/frankenphp-octane/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Clean up unnecessary files and caches to reduce image size
 RUN apt-get autoremove -y \
