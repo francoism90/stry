@@ -16,6 +16,7 @@ return [
     */
 
     'presets' => env('PODMAN_DEFAULT_PRESETS', [
+        // 'development',
         'frankenphp-octane',
         'proxy',
         's3',

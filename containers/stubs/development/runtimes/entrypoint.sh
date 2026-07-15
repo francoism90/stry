@@ -44,10 +44,6 @@ ${FRANKEN_CLI} optimize:clear
 log "INFO" "Creating storage symlinks..."
 ${FRANKEN_CLI} storage:link
 
-# Ensure all caches are warmed up
-log "INFO" "Optimizing application..."
-${FRANKEN_CLI} optimize
-
 # Run the provided command
 log "INFO" "Starting command..."
 exec ${APP_COMMAND}

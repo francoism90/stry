@@ -1,0 +1,37 @@
+# FileName={{application}}-rustfs
+[Unit]
+Description=RustFS container
+
+[Container]
+Image=docker.io/rustfs/rustfs:latest
+AutoUpdate=registry
+Environment=RUSTFS_VOLUMES=/data
+Environment=RUSTFS_ADDRESS=0.0.0.0:9000
+Environment=RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
+Environment=RUSTFS_CONSOLE_ENABLE=true
+Environment=RUSTFS_CORS_ALLOWED_ORIGINS=*
+Environment=RUSTFS_BUFFER_PROFILE=WebWorkload
+Environment=RUSTFS_OBS_LOG_STDOUT_ENABLED=true
+Environment=RUSTFS_OBS_LOGGER_LEVEL=error
+Secret={{application}}-rustfs-access-key,type=env,target=RUSTFS_ACCESS_KEY
+Secret={{application}}-rustfs-secret-key,type=env,target=RUSTFS_SECRET_KEY
+Volume={{application}}-rustfs-data:/data:rw,Z,U
+Volume={{application}}-rustfs-logs:/data:rw,Z,U
+Network={{application}}.network
+Network={{proxy}}.network
+ExposeHostPort=9000
+ExposeHostPort=9001
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=60
+---
+# FileName={{application}}-rustfs-data
+[Volume]
+Label={{application}}-rustfs-data
+---
+# FileName={{application}}-rustfs-logs
+[Volume]
+Label={{application}}-rustfs-logs
