@@ -85,76 +85,62 @@ The application will be available at **http://localhost:8000**
 
 ### With Caddy Reverse Proxy (HTTPS)
 
-```bash
-# First, set up Caddy configuration:
-mkdir -p containers/podman/systemd/proxy/config
-cp containers/podman/systemd/proxy/config/Caddyfile.example containers/podman/systemd/proxy/config/Caddyfile
-vi containers/podman/systemd/proxy/config/Caddyfile
+`docker-compose.proxy.yml` adds a `proxy` (Caddy) service on top of the base file — see [Proxy Configuration](proxy.md) for the subdomains it expects and a Caddyfile to adapt (`containers/stubs/proxy/runtimes/Caddyfile`):
 
-# Then start with proxy overlay:
+```bash
 docker compose \
   -f containers/docker/docker-compose.yml \
   -f containers/docker/docker-compose.proxy.yml \
   up -d
 ```
 
-> [!TIP]
-> See the [Proxy Setup](proxy.md) guide for Caddyfile examples and domain configuration.
-
 ---
 
 ## Service Overview
 
-| Service          | Purpose                            | Port      |
-| ---------------- | ---------------------------------- | --------- |
-| `stry`           | Main application server (Octane)   | 8000      |
-| `stry-ssr`       | Server-side rendering (Node.js)    | 13714     |
-| `stry-queue`     | Background job processor (Horizon) | —         |
-| `stry-reverb`    | WebSocket server                   | 6001      |
-| `stry-schedule`  | Task scheduler                     | —         |
-| `stry-postgres`  | Database                           | 5432      |
-| `stry-redis`     | Cache & sessions                   | 6379      |
-| `stry-typesense` | Full-text search                   | 8108      |
-| `stry-rustfs`    | S3-compatible storage              | 9000-9001 |
-| `stry-mailpit`   | Development email                  | 8025      |
-| `proxy`          | Caddy reverse proxy (optional)     | 80, 443   |
+Service names below match the keys in `containers/docker/docker-compose.yml` — containers are named `stry-{service}` by Compose (e.g. `stry-app`).
+
+| Service      | Purpose                            | Port      |
+| ------------ | ----------------------------------- | --------- |
+| `app`        | Main application server (Octane)    | 8000      |
+| `ssr`        | Server-side rendering (Node.js)     | 13714     |
+| `queue`      | Background job processor (Horizon)  | —         |
+| `reverb`     | WebSocket server                    | 6001      |
+| `schedule`   | Task scheduler                      | —         |
+| `pgsql`      | Database                            | 5432      |
+| `redis`      | Cache & sessions                    | 6379      |
+| `typesense`  | Full-text search                    | 8108      |
+| `rustfs`     | S3-compatible storage               | 9000-9001 |
+| `mailpit`    | Development email                   | 8025      |
+| `proxy`      | Caddy reverse proxy (optional overlay) | 80, 443 |
 
 ---
 
 ## Common Commands
 
 ```bash
-# Start services
+# Start / stop / restart
 docker compose -f containers/docker/docker-compose.yml up -d
-
-# Stop services
 docker compose -f containers/docker/docker-compose.yml down
-
-# View logs
-docker compose -f containers/docker/docker-compose.yml logs -f stry
-
-# Run migrations
-docker exec stry php artisan migrate --force
-
-# Access shell
-docker exec -it stry /bin/bash
-
-# Restart services
 docker compose -f containers/docker/docker-compose.yml restart
+
+# Logs
+docker compose -f containers/docker/docker-compose.yml logs -f app
+
+# Migrations / shell
+docker exec stry-app php artisan migrate --force
+docker exec -it stry-app /bin/bash
 ```
 
 ---
 
 ## Development Setup
 
-For local development with live code reloading:
-
-**Step 1:** Mount the application directory in `docker-compose.yml`:
+Mount the application directory in `docker-compose.yml` for live code reloading:
 
 ```yaml
 services:
-    stry:
-        # ... existing config ...
+    app:
         volumes:
             - ./:/app:rw
             - /app/vendor # Prevent vendor from mounting
@@ -164,114 +150,17 @@ services:
             APP_DEBUG: 'true'
 ```
 
-**Step 2:** Start Vite development server:
+Then run Vite from the container:
 
 ```bash
-docker exec -it stry pnpm dev
+docker exec -it stry-app pnpm dev
 ```
-
----
-
-## Resource Limits
-
-Adjust resource limits in the compose file for your hardware:
-
-```yaml
-services:
-    stry:
-        deploy:
-            resources:
-                limits:
-                    cpus: '4'
-                    memory: 4G
-                reservations:
-                    cpus: '2'
-                    memory: 2G
-```
-
-Recommended for production:
-
-| Service         | CPU | Memory |
-| --------------- | --- | ------ |
-| `stry`          | 4-8 | 4-6GB  |
-| `stry-queue`    | 4-6 | 6-8GB  |
-| `stry-postgres` | 2-4 | 4-8GB  |
-| `stry-redis`    | 1-2 | 1-2GB  |
-
----
-
-## Troubleshooting
-
-### Container Won't Start
-
-```bash
-docker compose -f containers/docker/docker-compose.yml logs stry
-```
-
-### Permission Denied Errors
-
-```bash
-# Fix volume ownership
-sudo chown -R $USER:$USER ~/projects/stry
-```
-
-### Port Already in Use
-
-```bash
-# Change port in compose file
-ports:
-  - "8001:8000"  # Change external port
-```
-
-### Database Connection Failed
-
-```bash
-# Verify PostgreSQL is running and healthy
-docker compose -f containers/docker/docker-compose.yml ps
-
-# Check database credentials in app.env
-docker compose -f containers/docker/docker-compose.yml exec stry-postgres psql -U user -d stry
-```
-
----
-
-## Known Limitations vs Podman
-
-⚠️ **Docker Compose lacks these Podman features:**
-
-- `UserNS=keep-id` — File ownership mapping in rootless containers
-- `AutoUpdate` — Automatic image updates
-- GPU support via `AddDevice` — Limited on Docker Desktop
-- Systemd integration — Manual service management
-
----
-
-## Next Steps
-
-- Review **[Production Setup](production.md)** for security checklist
-- Set up **[Proxy Configuration](proxy.md)** for HTTPS
-- Configure **[Object Storage (S3)](s3.md)** for media files
-- Check **[Application Configuration](configuration.md)** for customization
-
-| Service              | Role                         | Default Port            |
-| -------------------- | ---------------------------- | ----------------------- |
-| `app`                | FrankenPHP / Octane (HTTP)   | 8000                    |
-| `queue`              | Laravel Horizon worker       | —                       |
-| `schedule`           | Laravel scheduler            | —                       |
-| `reverb`             | Laravel Reverb WebSockets    | 6001                    |
-| `ssr`                | Inertia.js SSR               | 13714                   |
-| `redis`              | Valkey (Redis-compatible)    | 6379                    |
-| `pgsql`              | PostgreSQL                   | 5432                    |
-| `typesense`          | Typesense search             | 8108                    |
-| `rustfs`             | S3-compatible object storage | 9000 / 9001             |
-| `mailpit`            | Dev mail catcher             | 1025 (SMTP) / 8025 (UI) |
-| `proxy` _(optional)_ | Caddy reverse proxy          | 80 / 443                |
 
 ---
 
 ## GPU Acceleration
 
-To enable GPU access for video encoding in the `queue` service, uncomment the `devices` block in `containers/docker/docker-compose.yml`:
+Uncomment the `devices` block for the `queue` service in `containers/docker/docker-compose.yml`:
 
 ```yaml
 queue:
@@ -280,16 +169,26 @@ queue:
 ```
 
 > [!NOTE]
-> You may also need to install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies on the host. See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
+> Requires VAAPI (Intel), mesa (AMD), or NVENC (Nvidia) drivers on the host — see the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html). GPU passthrough is more limited on Docker Desktop than on native Linux.
 
 ---
 
-## Stopping & Cleanup
+## Troubleshooting
 
-```bash
-# Stop all services
-docker compose -f containers/docker/docker-compose.yml down
+- **Container won't start** — `docker compose -f containers/docker/docker-compose.yml logs app`
+- **Permission denied** — `sudo chown -R $USER:$USER ~/projects/stry`
+- **Port already in use** — change the host-side port under `ports:` for that service
+- **Database connection failed** — check `containers/config/postgres.env` and `docker compose ... ps`
 
-# Stop and remove volumes (destructive!)
-docker compose -f containers/docker/docker-compose.yml down -v
-```
+## Known limitations vs Podman
+
+Docker Compose doesn't have Podman-specific features used by the Quadlet setup: `UserNS=keep-id` (rootless file ownership), `AutoUpdate`, and systemd-managed lifecycle/autostart. Manage services yourself accordingly.
+
+---
+
+## Next Steps
+
+- Review **[Production Setup](production.md)** for the security checklist
+- Set up **[Proxy Configuration](proxy.md)** for HTTPS
+- Configure **[Object Storage (S3)](s3.md)** for media files
+- Check **[Application Configuration](configuration.md)** for customization
