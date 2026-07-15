@@ -5,8 +5,8 @@ Target={{appEnv}}
 Environment=APP_ENV={{appEnv}}
 Environment=UID={{appUid}}
 Environment=GID={{appGid}}
-File={{runtimePath}}/frankenphp-octane/Containerfile
-IgnoreFile={{runtimePath}}/frankenphp-octane/dockerignore
+File={{runtimePath}}/Containerfile
+IgnoreFile={{runtimePath}}/dockerignore
 SetWorkingDirectory={{workingPath}}
 ---
 # FileName={{application}}
