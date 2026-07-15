@@ -73,7 +73,7 @@ fi
 RUN setcap -r /usr/local/bin/frankenphp
 
 # Custom PHP configuration for development
-COPY runtimes/frankenphp-octane/php-devcontainer.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY runtimes/devcontainer/php-devcontainer.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
