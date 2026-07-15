@@ -1,5 +1,5 @@
 {
-    "name": "stry-devcontainer",
+    "name": "laravel-podman-devcontainer",
     "remoteUser": "docker",
     "containerUser": "docker",
     "containerEnv": {
