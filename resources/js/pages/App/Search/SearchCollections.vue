@@ -2,6 +2,7 @@
 import GroupFilterBar from '@/components/Groups/GroupFilterBar.vue'
 import GroupList from '@/components/Groups/GroupList.vue'
 import SearchBar from '@/components/Search/SearchBar.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { GroupCollection } from '@/types'
@@ -56,6 +57,10 @@ defineProps<{
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

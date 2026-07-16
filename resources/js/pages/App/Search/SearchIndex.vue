@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import GroupList from '@/components/Groups/GroupList.vue'
 import TagList from '@/components/Tags/TagList.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
@@ -171,6 +172,10 @@ watchDebounced(
           </template>
         </UPageBody>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit, index } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
@@ -72,6 +73,10 @@ privateChannel(`groups.${props.group.id}`)
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

@@ -2,6 +2,7 @@
 import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
 import GroupFilterBar from '@/components/Groups/GroupFilterBar.vue'
 import GroupList from '@/components/Groups/GroupList.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { GroupCollection } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
@@ -47,6 +48,10 @@ defineProps<{
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

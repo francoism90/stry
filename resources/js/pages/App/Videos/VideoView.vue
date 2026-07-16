@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { edit } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import GroupVideoModal from '@/components/Groups/GroupVideoModal.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
@@ -106,6 +107,10 @@ privateChannel(`videos.${props.video.id}`)
           </UPageBody>
         </Deferred>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

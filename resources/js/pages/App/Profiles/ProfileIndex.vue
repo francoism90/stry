@@ -3,6 +3,7 @@ import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/Swit
 import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
 import ProfileFilterBar from '@/components/Profiles/ProfileFilterBar.vue'
 import ProfileList from '@/components/Profiles/ProfileList.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Profile, ProfileCollection } from '@/types'
 import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
@@ -58,6 +59,10 @@ const switchProfile = (item: Profile) =>
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

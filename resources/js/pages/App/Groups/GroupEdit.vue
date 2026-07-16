@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { show, update } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import type { Group } from '@/types'
 import { Head, useForm } from '@inertiajs/vue3'
@@ -121,6 +122,10 @@ const onSubmit = () =>
           </UPageCard>
         </UPageBody>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

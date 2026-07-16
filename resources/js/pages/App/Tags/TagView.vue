@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { edit, index } from '@/actions/App/Web/Tags/Controllers/TagController'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
@@ -71,6 +72,10 @@ privateChannel(`tags.${props.tag.id}`)
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

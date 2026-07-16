@@ -2,6 +2,7 @@
 import SearchBar from '@/components/Search/SearchBar.vue'
 import TagFilterBar from '@/components/Tags/TagFilterBar.vue'
 import TagList from '@/components/Tags/TagList.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { TagCollection } from '@/types'
@@ -56,6 +57,10 @@ defineProps<{
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

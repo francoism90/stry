@@ -2,6 +2,7 @@
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
 import TagFilterBar from '@/components/Tags/TagFilterBar.vue'
 import TagList from '@/components/Tags/TagList.vue'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useAuth } from '@/composables/auth'
 import type { TagCollection } from '@/types'
@@ -57,6 +58,10 @@ const { hasAnyRole } = useAuth()
           />
         </InfiniteScroll>
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>
