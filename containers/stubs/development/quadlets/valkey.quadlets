@@ -1,0 +1,17 @@
+# FileName={{application}}-valkey
+[Unit]
+Description=Valkey container
+
+[Container]
+Image=docker.io/valkey/valkey:latest
+AutoUpdate=registry
+Exec=valkey-server --save --loglevel warning
+Volume={{application}}-valkey:/data:rw,Z,U
+Network={{application}}.network
+ExposeHostPort=6379
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

@@ -1,0 +1,52 @@
+# FileName={{application}}
+[Build]
+ImageTag=localhost/{{application}}:latest
+Target=development
+Environment=UID={{appUid}}
+Environment=GID={{appGid}}
+File={{runtimePath}}/Containerfile
+IgnoreFile={{runtimePath}}/dockerignore
+SetWorkingDirectory={{workingPath}}
+---
+# FileName={{application}}
+[Unit]
+Description=Laravel App (Octane) container
+Requires={{application}}-pgsql.container {{application}}-valkey.container
+After={{application}}-pgsql.container {{application}}-valkey.container
+Wants={{application}}-mailpit.container {{application}}-horizon.container {{application}}-reverb.container {{application}}-schedule.container {{application}}-rustfs.container {{application}}-typesense.container
+
+[Container]
+Image={{application}}.build
+AutoUpdate=local
+UserNS=keep-id
+ShmSize=128m
+Volume={{workingPath}}:/app:rw,z,U
+Volume={{application}}-config:/config:rw,z,U
+Volume={{application}}-data:/data:rw,z,U
+Volume={{application}}-cache:/cache:rw,z,U
+Network={{application}}.network
+Network={{proxy}}.network
+ExposeHostPort=8000
+ExposeHostPort=5173
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+---
+# FileName={{application}}-config
+[Volume]
+Label={{application}}-config
+---
+# FileName={{application}}-data
+[Volume]
+Label={{application}}-data
+---
+# FileName={{application}}-cache
+[Volume]
+Label={{application}}-cache
+---
+# FileName={{application}}
+[Network]
+Label={{application}}

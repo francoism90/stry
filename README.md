@@ -66,7 +66,7 @@ That means **stry** focuses on repackaging/transcoding and adaptive streaming wo
 | **Backend**           | [Laravel 13.x](https://laravel.com/)                                                |
 | **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
-| **Containers**        | [Podman 5.x](https://podman.io/)                                                    |
+| **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)              |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
 | **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)                    |
 | **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)                      |
@@ -99,17 +99,19 @@ See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hard
 
 Comprehensive guides are available in the `docs/` folder:
 
-| Guide                                    | Description                 |
-| ---------------------------------------- | --------------------------- |
-| [Production Setup](docs/production.md)   | Deploy to production        |
-| [Development Guide](docs/development.md) | Local development setup     |
-| [Configuration](docs/configuration.md)   | Configuration options       |
-| [System Setup](docs/system.md)           | System requirements         |
-| [Podman Guide](docs/podman.md)           | Container management        |
-| [Docker Compose](docs/docker.md)         | Docker Compose setup        |
-| [Proxy Setup](docs/proxy.md)             | Reverse proxy configuration |
-| [S3 Storage](docs/s3.md)                 | Object storage setup        |
-| [Interaction](docs/interaction.md)       | CLI usage and commands      |
+| Guide                                    | Description                                     |
+| ---------------------------------------- | ------------------------------------------------ |
+| [Production Setup](docs/production.md)   | Deploy to production                              |
+| [Development Guide](docs/development.md) | Local development setup                           |
+| [Configuration](docs/configuration.md)   | Configuration options                             |
+| [Podman Quadlet](docs/podman.md)         | Container orchestration (services, install, secrets) |
+| [Docker Compose](docs/docker.md)         | Alternative, best-effort containerization        |
+| [Proxy Setup](docs/proxy.md)             | Reverse proxy configuration                       |
+| [S3 Storage](docs/s3.md)                 | Object storage setup                              |
+| [Interaction](docs/interaction.md)       | CLI usage and commands                            |
+
+> [!TIP]
+> Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman) — see its own docs for the `lpod` CLI, secrets, and customizing presets. The guides above only cover what's specific to **stry**.
 
 > [!TIP]
 > Quick start: Choose between [Production](docs/production.md) or [Development](docs/development.md) setup.
@@ -129,7 +131,7 @@ The instance will be available at: **<https://stry.test>**
 ### Seed Database
 
 ```bash
-stry a db:seed --force
+vendor/bin/lpod stry a db:seed --force
 ```
 
 ### Creating an Admin User
@@ -137,14 +139,14 @@ stry a db:seed --force
 For testing purposes only, seed a super-admin user:
 
 ```bash
-stry a db:seed --class=AdminSeeder
+vendor/bin/lpod stry a db:seed --class=AdminSeeder
 ```
 
 > [!WARNING]
 > Only seed admins for testing! Never use the seeder in production.
 
 > [!TIP]
-> See the [Interaction Guide](docs/interaction.md) for a Laravel Sail-style shell utility approach.
+> See the [Interaction Guide](docs/interaction.md) for `lpod`, stry's Laravel Sail-style container CLI.
 
 ### Admin Services
 

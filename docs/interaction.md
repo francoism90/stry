@@ -1,8 +1,7 @@
 ---
 title: Interaction
-order: 5
+order: 6
 tags:
-    - fish
     - shell
     - bash
     - commands
@@ -10,139 +9,73 @@ tags:
 
 # CLI Interaction
 
-## Introduction
-
-**stry** provides a shell utility similar to [Laravel Sail](https://github.com/laravel/sail/blob/1.x/bin/sail), adapted for Podman Quadlet.
-
-> [!NOTE]
-> This utility works with both **production** and **development** environments.
-
----
-
-## Setup Shell Alias
-
-Create a shell alias for easy access. For [fish-shell](https://fishshell.com/docs/current/cmds/alias.html):
-
-```fish
-alias --save stry '~/projects/stry/bin/quadlet'
-```
-
-For **bash/zsh**, add to your `~/.bashrc` or `~/.zshrc`:
+**stry** uses [`lpod`](https://github.com/foxws/laravel-podman/blob/main/docs/lpod.md), a Laravel Sail-style CLI shipped by `foxws/laravel-podman`, for day-to-day container interaction.
 
 ```bash
-alias stry='~/projects/stry/bin/quadlet'
+vendor/bin/lpod stry up                     # start
+vendor/bin/lpod stry shell                  # shell in (alias: bash)
+vendor/bin/lpod stry tinker                 # Laravel Tinker
+vendor/bin/lpod stry artisan migrate        # or: lpod stry a migrate
 ```
 
 > [!TIP]
-> After setting the alias, restart your shell or run `source ~/.bashrc` (or equivalent).
+> Shorten `vendor/bin/lpod` to `lpod` with a shell alias or `PATH` entry — see [Shortening the `lpod` call](https://github.com/foxws/laravel-podman/blob/main/docs/lpod.md#shortening-the-vendor-bin-lpod-call).
 
----
+## stry's Artisan commands
 
-## 🚀 Usage Examples
+Run any of these via `lpod stry artisan ...` (or the `a` shorthand):
 
-Interact with your Podman containers using intuitive commands:
+### Users
 
-### Basic Commands
+| Command                     | Description                          |
+| ---------------------------- | ------------------------------------- |
+| `users:create`                | Create a user account (interactive)   |
+| `users:create --admin`        | ...and assign the admin role          |
+| `users:create --super-admin`  | ...and assign the super-admin role    |
+
+### Videos
+
+| Command           | Description                                 |
+| ------------------ | -------------------------------------------- |
+| `videos:import`     | Import videos for a user                     |
+| `videos:clear`      | Remove soft-deleted videos from filesystem   |
+
+### Tags
+
+| Command       | Description                       |
+| -------------- | ----------------------------------- |
+| `tags:create`   | Create a new tag                    |
+| `tags:sort`     | Sort tags alphabetically by type    |
+
+### Playlists & media
+
+| Command                                                    | Description                                     |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| `playlists:clear`                                             | Remove generated DASH playlists from filesystem     |
+| `transcodes:clear`                                            | Force delete failed transcodes                      |
+| `transcodes:clear --all`                                      | Force delete all expired transcodes                 |
+| `groups:clear`                                                 | Detach all videos from groups of a given type        |
+| `media-library:regenerate --only-missing --queue-all`          | Regenerate missing media conversions                 |
+
+### Search
+
+| Command                          | Description                                                            |
+| ---------------------------------- | -------------------------------------------------------------------------- |
+| `scout:sync`                        | Sync Typesense indexes (configure collections)                             |
+| `scout:sync --import`               | ...and import all model records                                            |
+| `scout:sync --delete`               | Delete all indexes and re-sync (clears existing data)                      |
+| `scout:delete-index Model`          | Delete a specific index (useful for corrupted indexes)                     |
+| `scout:import Model`                | Import a specific model into its search index                             |
+
+## Direct Podman access
 
 ```bash
-stry help                           # Show all available commands
-stry shell                          # Enter the main container shell
-stry tinker                         # Open Laravel Tinker REPL
-```
-
-### Artisan Commands
-
-```bash
-stry artisan optimize               # Optimize Laravel application
-stry a migrate                      # Run database migrations (shorthand)
-stry a horizon:forget --all         # Clear Horizon failed jobs
-stry a videos:import                # Import videos
-```
-
-### Service Interactions
-
-```bash
-stry redis flushall                 # Flush Redis cache
-```
-
----
-
-## Direct Podman Access
-
-You can also interact with containers directly using Podman:
-
-```bash
-# Execute commands in containers
 podman exec -it systemd-stry php artisan help
-podman exec -it systemd-stry-queue /bin/bash
-podman exec -ti systemd-stry-redis /bin/bash
+podman exec -it systemd-stry-horizon /bin/bash
 ```
 
----
+## See also
 
-## Available Commands
-
-Run `stry help` for a complete list. Here are the most commonly used:
-
-### 👥 User Management
-
-| Command                             | Description                                   |
-| ----------------------------------- | --------------------------------------------- |
-| `stry a users:create`               | Create a new user account (interactive)       |
-| `stry a users:create --admin`       | Create a user and assign the admin role       |
-| `stry a users:create --super-admin` | Create a user and assign the super-admin role |
-
-### 🎬 Video Management
-
-| Command                | Description                                |
-| ---------------------- | ------------------------------------------ |
-| `stry a videos:import` | Import videos for a user                   |
-| `stry a videos:clear`  | Remove soft-deleted videos from filesystem |
-
-### 🏷️ Tag Management
-
-| Command              | Description                      |
-| -------------------- | -------------------------------- |
-| `stry a tags:create` | Create a new tag                 |
-| `stry a tags:sort`   | Sort tags alphabetically by type |
-
-### 📹 Playlist & Media
-
-| Command                                                      | Description                                     |
-| ------------------------------------------------------------ | ----------------------------------------------- |
-| `stry a playlists:clear`                                     | Remove generated DASH playlists from filesystem |
-| `stry a transcodes:clear`                                    | Force delete failed transcodes                  |
-| `stry a transcodes:clear --all`                              | Force delete all expired transcodes             |
-| `stry a groups:clear`                                        | Detach all videos from groups of a given type   |
-| `stry a media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions            |
-
-### 🔍 Search & Indexing
-
-| Command                           | Description                                                               |
-| --------------------------------- | ------------------------------------------------------------------------- |
-| `stry a scout:sync`               | Sync Typesense indexes (configure collections)                            |
-| `stry a scout:sync --import`      | Sync indexes and import all model records                                 |
-| `stry a scout:sync --delete`      | Delete all indexes and re-sync (clears existing data — useful for resets) |
-| `stry a scout:delete-index Model` | Delete a specific index (useful for fixing corrupted indexes)             |
-| `stry a scout:import Model`       | Import a specific model into its search index                             |
-
----
-
-## 💡 Tips & Tricks
-
-> [!TIP]
-> **Pro Tips:**
->
-> - Use `stry a` as shorthand for `stry artisan`
-> - Run `stry shell` to enter the container and execute multiple commands
-> - Use `stry tinker` for quick Laravel/database testing
-> - Check logs with `stry logs` or specific containers with `podman logs systemd-stry`
-
----
-
-## Related Documentation
-
-- 📖 **[Development Setup](development.md)** — Local development workflow
-- 📖 **[Podman Operations](podman-operations.md)** — Container management commands
-- 📖 **[Application Configuration](configuration.md)** — App settings and customization
-- 📖 **[Object Storage (S3)](s3.md)** — Media file management
+- [Podman Quadlet](podman.md) — service names and the install/secrets flow
+- [Application Configuration](configuration.md) — app settings
+- [Object Storage (S3)](s3.md) — media file management

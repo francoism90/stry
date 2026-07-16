@@ -14,6 +14,7 @@ _ide_helper.php
 *.log
 *.tsbuildinfo
 /.codex
+/.phpstorm
 /.cursor
 /.fleet
 /.idea
@@ -31,6 +32,8 @@ _ide_helper.php
 /public/manifest.json
 /public/storage
 /public/sw.js
+/docker
+/podman
 /public/vendor
 /resources/js/actions
 /resources/js/routes
@@ -40,12 +43,12 @@ _ide_helper.php
 /storage/pail
 /vendor
 auth.json
+settings.json
+settings.local.json
 auto-imports.d.ts
 components.d.ts
 env.d.ts
 frankenphp
-Homestead.json
-Homestead.yaml
 npm-debug.log
 Thumbs.db
 yarn-error.log

@@ -8,152 +8,45 @@ tags:
 
 # Proxy Configuration
 
-## Introduction
+The `proxy` preset installs [Caddy](https://caddyserver.com/) for automatic HTTPS and routing — see [Podman Quadlet](podman.md) for the general install flow. Its Caddyfile (`containers/stubs/proxy/runtimes/`) routes these subdomains, based on `APP_URL`'s host (`{{appHost}}`):
 
-[Caddy](https://caddyserver.com/) is the recommended reverse proxy for **stry**, providing automatic HTTPS and easy configuration.
+| Subdomain            | Routes to                | Purpose                  |
+| --------------------- | -------------------------- | --------------------------- |
+| `{host}`               | `stry:8000`                 | Main application            |
+| `vite.{host}`          | `stry:5173`                 | Vite dev server              |
+| `ws.{host}`            | `stry-reverb:6001`           | Laravel Reverb (WebSocket)  |
+| `s3.{host}`            | `stry-rustfs:9000`           | S3-compatible API           |
+| `fs.{host}`            | `stry-rustfs:9001`           | RustFS console               |
+| `mail.{host}`          | `stry-mailpit:8025`          | Mailpit UI (dev)             |
 
-> [!NOTE]
-> While Caddy is recommended, you can use alternatives like Traefik or Nginx. This guide focuses on Caddy.
-
----
-
-## ⚙️ Setup Caddy Proxy
-
-### Install Container Files
-
-Setup the Caddy container configuration:
+## Install
 
 ```bash
-mkdir -p ~/.config/containers/systemd
-cp -r ~/projects/stry/containers/podman/systemd/proxy ~/.config/containers/systemd/
+php artisan podman:generate proxy
+vendor/bin/lpod install proxy/proxy.quadlets --replace
+vendor/bin/lpod proxy up
 ```
 
-### Configure Caddy
+## Local DNS
 
-Edit the Caddy configuration files:
-
-```bash
-cd ~/.config/containers/systemd/proxy/config
-vi Caddyfile sites/stry.caddy
-```
-
-> [!TIP]
-> Check the Caddyfile for domain names and adjust them to match your setup.
-
----
-
-## 🚀 Starting the Proxy
-
-Reload systemd and start the proxy service:
-
-```bash
-systemctl --user daemon-reload
-systemctl --user restart proxy
-```
-
-### Verify Status
-
-```bash
-systemctl --user status proxy
-journalctl --user -u proxy -f
-```
-
----
-
-## DNS Configuration
-
-### Option 1: Local Development (Hosts File)
-
-For local development, add these entries to `/etc/hosts`:
+Add these to `/etc/hosts` (adjust the domain to match `APP_URL`):
 
 ```text
-127.0.0.1 stry.test ws.stry.test vite.stry.test s3.stry.test mc.stry.test
-::1 stry.test ws.stry.test vite.stry.test s3.stry.test mc.stry.test
+127.0.0.1 stry.test ws.stry.test vite.stry.test s3.stry.test fs.stry.test mail.stry.test
+::1       stry.test ws.stry.test vite.stry.test s3.stry.test fs.stry.test mail.stry.test
 ```
 
-### Option 2: Homelab Setup (Recommended)
+For a homelab with multiple devices, use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) (or similar) to rewrite `*.stry.test` to your server's IP instead.
 
-> [!TIP]
-> **For Homelab Users:**
->
-> Use [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) for DNS management.
->
-> Configure DNS rewrites to point:
->
-> - `stry.test` → Your server IP
-> - `*.stry.test` → Your server IP
+## Trusting the local certificate
 
-This provides network-wide access without modifying hosts files on each device.
-
----
-
-## SSL Certificate Setup
-
-### Trust Self-Signed Certificate
-
-For local development, export and trust Caddy's CA certificate:
-
-#### 1. Export the Certificate
-
-```bash
-podman cp systemd-proxy:/data/caddy/pki/authorities/local/root.crt ~/proxy.crt
-```
-
-#### 2. Import to Browser/System
-
-**macOS:**
-
-```bash
-sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ~/proxy.crt
-```
-
-**Linux (Arch/Debian/Ubuntu):**
-
-```bash
-sudo cp ~/proxy.crt /usr/local/share/ca-certificates/caddy.crt
-sudo update-ca-certificates
-```
-
-**Firefox:**
-
-1. Settings → Privacy & Security → Certificates → View Certificates
-2. Import `~/proxy.crt`
-3. Trust for identifying websites
+Caddy issues a locally-trusted certificate automatically in development. Export and trust it once — see [Trusting the local certificate](https://github.com/foxws/laravel-podman/blob/main/docs/proxy.md#trusting-the-local-certificate) in the package docs.
 
 > [!WARNING]
-> For production deployments, use proper SSL certificates from Let's Encrypt or a commercial CA.
+> For production, use a real certificate (e.g. Let's Encrypt) instead — see [Production Setup](production.md).
 
----
+## Troubleshooting
 
-## 🔍 Available Services
-
-After setup, these services will be available:
-
-| Service          | URL                      | Description             |
-| ---------------- | ------------------------ | ----------------------- |
-| 🏠 Main App      | <https://stry.test>      | Main application        |
-| 🔌 WebSocket     | <https://ws.stry.test>   | Laravel Reverb          |
-| ⚡ Vite Dev      | <https://vite.stry.test> | Vite development server |
-| ☁️ S3 API        | <https://s3.stry.test>   | Object storage endpoint |
-| 🗄️ MinIO Console | <https://mc.stry.test>   | S3 management interface |
-
----
-
-## 💡 Troubleshooting
-
-> [!TIP]
-> **Common Issues:**
->
-> - **Certificate not trusted**: Re-import the CA certificate and restart browser
-> - **Connection refused**: Check proxy status with `systemctl --user status proxy`
-> - **404 errors**: Verify Caddyfile configuration and upstream container status
-> - **Port conflicts**: Ensure ports 80/443 are not in use by other services
-
----
-
-## Related Documentation
-
-- 📖 **[Production Setup](production.md)** — Security and deployment guidelines
-- 📖 **[Podman Operations](podman-operations.md)** — Container management
-- 📖 **[Development Setup](development.md)** — Local development with HTTPS
-- 📖 **[System Tuning](system.md)** — Performance and resource management
+- **Connection refused** — `systemctl --user status proxy`
+- **404** — check the Caddyfile and that the upstream container is running
+- **Certificate not trusted** — re-import the CA certificate and restart the browser

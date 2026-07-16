@@ -1,0 +1,28 @@
+# FileName={{application}}-mailpit
+[Unit]
+Description=Mailpit container
+PartOf={{application}}.container
+
+[Container]
+Image=docker.io/axllent/mailpit:latest
+AutoUpdate=registry
+Environment=MP_MAX_MESSAGES=5000
+Environment=MP_DATABASE=/data/mailpit.db
+Environment=MP_SMTP_AUTH_ACCEPT_ANY=1
+Environment=MP_SMTP_AUTH_ALLOW_INSECURE=1
+Volume={{application}}-mailpit:/data:rw,Z,U
+Network={{application}}.network
+Network={{proxy}}.network
+ExposeHostPort=1025
+ExposeHostPort=1110
+ExposeHostPort=8025
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60
+---
+# FileName={{application}}-mailpit
+[Volume]
+Label={{application}}-mailpit

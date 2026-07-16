@@ -1,0 +1,21 @@
+# FileName={{application}}-schedule
+[Unit]
+Description=Laravel Schedule container
+After={{application}}.container
+BindsTo={{application}}.container
+
+[Container]
+Image={{application}}.build
+AutoUpdate=local
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan schedule:work"
+UserNS=keep-id
+ShmSize=128m
+Volume={{workingPath}}:/app:rw,z
+Volume={{application}}-cache:/cache:rw,z
+Network={{application}}.network
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

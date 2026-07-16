@@ -1,0 +1,23 @@
+# FileName={{application}}-reverb
+[Unit]
+Description=Laravel Reverb container
+After={{application}}.container
+BindsTo={{application}}.container
+
+[Container]
+Image={{application}}.build
+AutoUpdate=local
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
+UserNS=keep-id
+ShmSize=128m
+Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
+Volume={{application}}-cache:/cache:rw,z
+Network={{application}}.network
+Network={{proxy}}.network
+ExposeHostPort=6001
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

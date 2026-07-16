@@ -1,0 +1,33 @@
+# FileName={{proxy}}
+[Unit]
+Description=Proxy Caddy container
+
+[Container]
+Image=docker.io/library/caddy:latest
+AutoUpdate=registry
+AddCapability=CAP_NET_BIND_SERVICE
+Volume={{runtimePath}}:/etc/caddy:rw,z,U
+Volume={{proxy}}-config:/config:rw,z,U
+Volume={{proxy}}-data:/data:rw,z,U
+Network={{proxy}}.network
+PublishPort=80:80
+PublishPort=443:443
+PublishPort=443:443/udp
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+---
+# FileName={{proxy}}-config
+[Volume]
+Label={{proxy}}-config
+---
+# FileName={{proxy}}-data
+[Volume]
+Label={{proxy}}-data
+---
+# FileName={{proxy}}
+[Network]
+Label={{proxy}}

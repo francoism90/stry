@@ -75,7 +75,7 @@ jobs:
 
             - name: Prepare application
               run: |
-                  cp .env.example .env
+                  cp .env.ci .env
                   php artisan key:generate
                   php artisan migrate --force
 

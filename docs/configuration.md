@@ -11,7 +11,7 @@ tags:
 
 ## Overview
 
-This guide explains how to customize **stry** application settings. All configuration is done via environment variables in `app.env` (for runtime) or `.env.example` (for development).
+This guide explains how to customize **stry** application settings. All configuration is done via environment variables — in `.env` (development), or stored as the `stry-env` Podman secret via `vendor/bin/lpod secrets stry` (production, see [Podman Quadlet](podman.md)).
 
 > [!TIP]
 > Always prefer environment variables over editing `config/*.php` files directly. This makes deployments cleaner and configuration more portable.
@@ -22,7 +22,7 @@ This guide explains how to customize **stry** application settings. All configur
 
 Configuration is read in this order:
 
-1. **Runtime `app.env`** — Primary configuration, mounted at container startup (production)
+1. **`stry-env` secret** — Mounted as `/app/.env` at container startup (production)
 2. **Development `.env`** — Local overrides for development, loaded from repo (development only)
 3. **PHP config files** — Fine-grained control via `config/*.php` (rarely needed)
 

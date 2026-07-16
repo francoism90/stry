@@ -1,0 +1,25 @@
+{{appHost}} {
+	import compress
+	reverse_proxy systemd-{{application}}:8000
+}
+
+vite.{{appHost}} {
+	import compress
+	reverse_proxy systemd-{{application}}:5173
+}
+
+ws.{{appHost}} {
+	reverse_proxy systemd-{{application}}-reverb:6001
+}
+
+s3.{{appHost}} {
+	reverse_proxy systemd-{{application}}-rustfs:9000
+}
+
+fs.{{appHost}} {
+	reverse_proxy systemd-{{application}}-rustfs:9001
+}
+
+mail.{{appHost}} {
+	reverse_proxy systemd-{{application}}-mailpit:8025
+}

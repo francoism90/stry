@@ -1,0 +1,25 @@
+# FileName={{application}}-pgsql
+[Unit]
+Description=PostgreSQL container
+
+[Container]
+Image=docker.io/library/postgres:latest
+AutoUpdate=registry
+Secret={{application}}-pgsql-db,type=env,target=POSTGRES_DB
+Secret={{application}}-pgsql-user,type=env,target=POSTGRES_USER
+Secret={{application}}-pgsql-password,type=env,target=POSTGRES_PASSWORD
+Secret={{application}}-pgsql-password,type=env,target=PGPASSWORD
+ShmSize=256m
+Volume={{application}}-pgsql:/var/lib/postgresql:rw,Z,U
+Network={{application}}.network
+ExposeHostPort=5432
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60
+---
+# FileName={{application}}-pgsql
+[Volume]
+Label={{application}}-pgsql
