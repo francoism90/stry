@@ -5,10 +5,10 @@ Description=PostgreSQL container
 [Container]
 Image=docker.io/library/postgres:latest
 AutoUpdate=registry
-Secret={{application}}-pgsql-db,type=env,target=POSTGRES_DB
-Secret={{application}}-pgsql-user,type=env,target=POSTGRES_USER
-Secret={{application}}-pgsql-password,type=env,target=POSTGRES_PASSWORD
-Secret={{application}}-pgsql-password,type=env,target=PGPASSWORD
+Environment=POSTGRES_DB=laravel
+Environment=POSTGRES_USER=user
+Environment=POSTGRES_PASSWORD=password
+Environment=PGPASSWORD=password
 ShmSize=256m
 Volume={{application}}-pgsql:/var/lib/postgresql:rw,Z,U
 Network={{application}}.network

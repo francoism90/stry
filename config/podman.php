@@ -1,6 +1,20 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Enabled
+    |--------------------------------------------------------------------------
+    |
+    | This value determines whether "podman:generate", "podman:setup",
+    | "podman:publish" and "podman:s3-setup" are allowed to run. Disable it
+    | to guard against these commands running by accident in an environment
+    | where installing/replacing services is meant to only happen over SSH
+    | with "lpod" (for example production).
+    |
+    */
+
+    'enabled' => env('PODMAN_ENABLED', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -137,17 +151,4 @@ return [
     */
 
     'selinux_volume_mapping' => env('PODMAN_SELINUX_VOLUME_MAPPING', true),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Reload Systemd
-    |--------------------------------------------------------------------------
-    |
-    | This value determines whether to reload systemd after installing a quadlet.
-    | The default value is true, which means that systemd will be reloaded after installation.
-    |
-    */
-
-    'reload_systemd' => env('PODMAN_RELOAD_SYSTEMD', true),
-
 ];
