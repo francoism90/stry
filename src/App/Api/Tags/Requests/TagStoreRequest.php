@@ -24,7 +24,7 @@ class TagStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', Rule::enum(TagType::class)],
-            'description' => ['sometimes', 'nullable', 'string', 'max:4096'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:8096'],
         ];
     }
 }
