@@ -66,7 +66,7 @@ That means **stry** focuses on repackaging/transcoding and adaptive streaming wo
 | **Backend**           | [Laravel 13.x](https://laravel.com/)                                                |
 | **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
-| **Containers**        | [Podman 5.x](https://podman.io/)                                                    |
+| **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)              |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
 | **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)                    |
 | **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)                      |
