@@ -40,7 +40,7 @@ useFlash()
               links: 'order-last mt-3 flex-nowrap lg:mt-0',
             },
             pageBody: {
-              base: 'mt-3 space-y-6',
+              base: 'mt-3 space-y-6 pb-12',
             },
             dropdownMenu: {
               content: 'z-50',
