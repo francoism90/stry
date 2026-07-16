@@ -17,7 +17,7 @@
         "php": "^8.3",
         "foxws/laravel-ab-av1": "^1.0.1",
         "foxws/laravel-modelcache": "^1.4.1",
-        "foxws/laravel-podman": "^1.0.3",
+        "foxws/laravel-podman": "^1.0.4",
         "foxws/laravel-pwa": "^2.2",
         "foxws/laravel-scout-builder": "^0.0.4",
         "foxws/laravel-scout-relations": "^0.0.2",
