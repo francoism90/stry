@@ -15,3 +15,7 @@ Restart=always
 RestartSec=5
 TimeoutStartSec=120
 TimeoutStopSec=60
+---
+# FileName={{application}}-valkey
+[Volume]
+Label={{application}}-valkey
