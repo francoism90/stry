@@ -17,7 +17,7 @@
         "php": "^8.3",
         "foxws/laravel-ab-av1": "^1.0.1",
         "foxws/laravel-modelcache": "^1.4.1",
-        "foxws/laravel-podman": "^1.0.1",
+        "foxws/laravel-podman": "^1.0.3",
         "foxws/laravel-pwa": "^2.2",
         "foxws/laravel-scout-builder": "^0.0.4",
         "foxws/laravel-scout-relations": "^0.0.2",
@@ -61,7 +61,7 @@
         "laravel/pint": "^1.29.3",
         "laravel/telescope": "^5.20.0",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.9.4",
+        "nunomaduro/collision": "^8.9.5",
         "pestphp/pest": "^4.7.5",
         "pestphp/pest-plugin-laravel": "^4.1",
         "spatie/guidelines-skills": "^1.0"
