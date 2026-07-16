@@ -14,6 +14,8 @@ ShmSize=128m
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
+Volume=/mnt/media/videos:/media:rw,z
+Volume=/mnt/media/import:/import:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
 

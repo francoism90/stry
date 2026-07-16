@@ -11,6 +11,8 @@ Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan schedule:work
 UserNS=keep-id
 ShmSize=128m
 Volume={{workingPath}}:/app:rw,z
+Volume=/mnt/media/videos:/media:rw,z
+Volume=/mnt/media/import:/import:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
 
