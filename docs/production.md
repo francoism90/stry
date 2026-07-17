@@ -27,24 +27,27 @@ php artisan key:generate
 
 Set at least `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, and the database/S3 credentials in `.env` — these get baked into the `stry-env` Podman secret in the next step. See [Application Configuration](configuration.md) for the full list of app-specific options.
 
-Render, install, and start the containers — see [Podman Quadlet](podman.md) for the full command list and the actual service names:
+`foxws/laravel-podman` is a `require-dev` package, so the `composer install --no-dev` above didn't install it — `vendor/bin/lpod` and the `podman:*` Artisan commands don't exist on this host. Render the Quadlet units on a machine with the full `vendor/` (dev dependencies included), or a disposable container, then copy the rendered `podman/` output plus the standalone `bin/lpod`/`bin/lpod-secrets` scripts here (anywhere on `PATH`). See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for the full workflow, and [Podman Quadlet](podman.md) for the actual service names.
 
 ```bash
+# Elsewhere, where the package is installed:
 php artisan podman:setup
-vendor/bin/lpod install frankenphp-octane/app.quadlets --replace
-# ...install every service you need, see podman/frankenphp-octane/...
-vendor/bin/lpod secrets stry
-# ...and secrets for every service that needs them...
-vendor/bin/lpod install proxy/proxy.quadlets --replace
 
-vendor/bin/lpod stry up
+# Copy podman/ and bin/lpod, bin/lpod-secrets to this host, then:
+lpod install frankenphp-octane/app.quadlets --replace
+# ...install every service you need, see podman/frankenphp-octane/...
+lpod secrets stry
+# ...and secrets for every service that needs them...
+lpod install proxy/proxy.quadlets --replace
+
+lpod stry up
 ```
 
 Then set up object storage — see [Object Storage (S3)](s3.md) — and run migrations:
 
 ```bash
-vendor/bin/lpod stry artisan podman:s3-setup
-vendor/bin/lpod stry artisan migrate --force
+lpod stry artisan podman:s3-setup
+lpod stry artisan migrate --force
 ```
 
 `stry-horizon` passes `/dev/dri` through for hardware-accelerated transcoding by default, so the host must have a GPU with `/dev/dri` present — see [Hardware acceleration](podman.md#tuning--hardware-acceleration) for driver setup, the SELinux `setsebool` step, and how to disable it if the host has no GPU.
@@ -68,7 +71,7 @@ journalctl --user -u 'stry*' -f
 
     ```bash
     # Daily at 2am
-    0 2 * * * vendor/bin/lpod stry-pgsql run pg_dump -U user -d stry | gzip > /backups/stry-$(date +\%Y\%m\%d).sql.gz
+    0 2 * * * lpod stry-pgsql run pg_dump -U user -d stry | gzip > /backups/stry-$(date +\%Y\%m\%d).sql.gz
     ```
 
 ## Next steps

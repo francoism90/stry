@@ -17,7 +17,6 @@
         "php": "^8.3",
         "foxws/laravel-ab-av1": "^1.0.1",
         "foxws/laravel-modelcache": "^1.4.1",
-        "foxws/laravel-podman": "^1.0.4",
         "foxws/laravel-pwa": "^2.2",
         "foxws/laravel-scout-builder": "^0.0.4",
         "foxws/laravel-scout-relations": "^0.0.2",
@@ -52,8 +51,10 @@
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
+        "aws/aws-sdk-php": "^3.388.8",
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
+        "foxws/laravel-podman": "^1.1",
         "larastan/larastan": "^3.10.0",
         "laravel/boost": "^2.4.12",
         "laravel/envoy": "^2.12.2",

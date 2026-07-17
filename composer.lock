@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1630334b7e34377e45d885fbb585b56",
+    "content-hash": "d43f6a7b2f129b20f41c0f05fc39d629",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.388.7",
+            "version": "3.388.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9ad7cc3619513bb7379e2f1dc8f6763cc54dcb28"
+                "reference": "ff7499bfa2b987c8fbae495fe0e851cfdde6172f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9ad7cc3619513bb7379e2f1dc8f6763cc54dcb28",
-                "reference": "9ad7cc3619513bb7379e2f1dc8f6763cc54dcb28",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ff7499bfa2b987c8fbae495fe0e851cfdde6172f",
+                "reference": "ff7499bfa2b987c8fbae495fe0e851cfdde6172f",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.388.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.388.8"
             },
-            "time": "2026-07-15T18:08:26+00:00"
+            "time": "2026-07-16T18:07:15+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1354,102 +1354,6 @@
             "time": "2026-04-15T10:12:48+00:00"
         },
         {
-            "name": "foxws/laravel-podman",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "6f19aa6a28af6c4e1d923a94e739497dfafce666"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/6f19aa6a28af6c4e1d923a94e739497dfafce666",
-                "reference": "6f19aa6a28af6c4e1d923a94e739497dfafce666",
-                "shasum": ""
-            },
-            "require": {
-                "composer-runtime-api": "^2.0",
-                "illuminate/console": "^11.0|^12.0|^13.0",
-                "illuminate/contracts": "^11.0||^12.0||^13.0",
-                "illuminate/filesystem": "^11.0|^12.0|^13.0",
-                "illuminate/support": "^11.0|^12.0|^13.0",
-                "php": "^8.4",
-                "spatie/laravel-package-tools": "^1.16",
-                "symfony/console": "^6.0|^7.0|^8.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^3.322",
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^11.0.0||^10.0.0||^9.0.0",
-                "pestphp/pest": "^4.0",
-                "pestphp/pest-plugin-arch": "^4.0",
-                "pestphp/pest-plugin-laravel": "^4.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "spatie/laravel-ray": "^1.35"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Required to use the \"podman:s3-setup\" command (^3.322)."
-            },
-            "bin": [
-                "bin/lpod",
-                "bin/lpod-secrets",
-                "bin/lpod-setup"
-            ],
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Podman": "Foxws\\Podman\\Facades\\Podman"
-                    },
-                    "providers": [
-                        "Foxws\\Podman\\PodmanServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Foxws\\Podman\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "francoism90",
-                    "email": "francoism90@users.noreply.github.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Podman Quadlet support to your Laravel application",
-            "homepage": "https://github.com/foxws/laravel-podman",
-            "keywords": [
-                "foxws",
-                "laravel",
-                "laravel-podman",
-                "podman",
-                "podman-quadlet",
-                "podman-quadlets",
-                "systemd"
-            ],
-            "support": {
-                "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/1.0.4"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Foxws",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-07-16T10:57:54+00:00"
-        },
-        {
             "name": "foxws/laravel-pwa",
             "version": "2.2.0",
             "source": {
@@ -2216,16 +2120,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.5",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09"
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9365d578a9fd1552ad6ca9c3cb530708526feb09",
-                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dad89620b7a6edb60c15858442eb2e408b45d8f4",
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4",
                 "shasum": ""
             },
             "require": {
@@ -2315,7 +2219,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.5"
+                "source": "https://github.com/guzzle/psr7/tree/2.13.0"
             },
             "funding": [
                 {
@@ -2331,7 +2235,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-13T01:27:20+00:00"
+            "time": "2026-07-16T22:23:49+00:00"
         },
         {
             "name": "guzzlehttp/uri-template",
@@ -13378,6 +13282,102 @@
                 }
             ],
             "time": "2025-08-08T12:00:00+00:00"
+        },
+        {
+            "name": "foxws/laravel-podman",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/foxws/laravel-podman.git",
+                "reference": "e00b68cb2c3592b8b97f40a288613c052e6d1f5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/e00b68cb2c3592b8b97f40a288613c052e6d1f5b",
+                "reference": "e00b68cb2c3592b8b97f40a288613c052e6d1f5b",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.0",
+                "illuminate/console": "^11.0|^12.0|^13.0",
+                "illuminate/contracts": "^11.0||^12.0||^13.0",
+                "illuminate/filesystem": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "php": "^8.4",
+                "spatie/laravel-package-tools": "^1.16",
+                "symfony/console": "^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^3.322",
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^11.0.0||^10.0.0||^9.0.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "spatie/laravel-ray": "^1.35"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Required to use the \"podman:s3-setup\" command (^3.322)."
+            },
+            "bin": [
+                "bin/lpod",
+                "bin/lpod-secrets",
+                "bin/lpod-setup"
+            ],
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Podman": "Foxws\\Podman\\Facades\\Podman"
+                    },
+                    "providers": [
+                        "Foxws\\Podman\\PodmanServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Foxws\\Podman\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "francoism90",
+                    "email": "francoism90@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Podman Quadlet support to your Laravel application",
+            "homepage": "https://github.com/foxws/laravel-podman",
+            "keywords": [
+                "foxws",
+                "laravel",
+                "laravel-podman",
+                "podman",
+                "podman-quadlet",
+                "podman-quadlets",
+                "systemd"
+            ],
+            "support": {
+                "issues": "https://github.com/foxws/laravel-podman/issues",
+                "source": "https://github.com/foxws/laravel-podman/tree/1.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Foxws",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-07-17T09:56:00+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",

@@ -61,7 +61,7 @@ vendor/bin/lpod secrets stry-pgsql
 vendor/bin/lpod stry up
 ```
 
-See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full flow, and [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) if Podman and PHP aren't on the same machine.
+See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full flow. `foxws/laravel-podman` is a `require-dev` package, so `vendor/bin/lpod` and `podman:*` only exist where dev dependencies were installed — on a `composer install --no-dev` host (e.g. production), render elsewhere and copy over the standalone `bin/lpod`/`bin/lpod-secrets` scripts instead, see [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md).
 
 ## Day-to-day
 
