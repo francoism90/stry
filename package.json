@@ -33,7 +33,7 @@
     "devDependencies": {
         "@iconify-json/lucide": "^1.2.117",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
-        "@tailwindcss/vite": "^4.3.2",
+        "@tailwindcss/vite": "^4.3.3",
         "@tsconfig/node24": "^24.0.4",
         "@types/jsdom": "^28.0.3",
         "@types/node": "^26.1.1",
