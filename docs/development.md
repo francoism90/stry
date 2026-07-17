@@ -28,14 +28,21 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Install the `frankenphp-octane` and `proxy` presets as described in [Podman Quadlet](podman.md), then set `APP_ENV=local`/`APP_DEBUG=true` (and any other local overrides) before storing them with `lpod secrets stry`.
+Choose one preset for the app image, then generate and install it together with `proxy` (see [Podman Quadlet](podman.md) for the full service list):
 
-The `development` preset (`containers/stubs/development/`) mounts the working directory into `/app` for live code editing instead of baking it into the image — publish/generate/install it in place of `frankenphp-octane` if you want that instead of a devcontainer:
+- **`development`** — live-mounts your working copy into the container, for local editing. Use this day-to-day.
+- **`frankenphp-octane`** — production-style image with the app code baked in. Use this to test the production build locally.
 
 ```bash
-php artisan podman:generate development
+php artisan podman:setup --preset=development --preset=proxy
+# or: --preset=frankenphp-octane --preset=proxy
+
 vendor/bin/lpod install development/app.quadlets --replace
+vendor/bin/lpod install development/pgsql.quadlets --replace
+# ...and so on for every service (see podman.md)
 ```
+
+Set `APP_ENV=local`/`APP_DEBUG=true` (and any other local overrides) before storing them with `lpod secrets stry`.
 
 Once containers are up, install dependencies and seed data:
 

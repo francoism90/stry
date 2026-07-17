@@ -22,13 +22,13 @@
         "@inertiajs/vite": "^3.6.1",
         "@inertiajs/vue3": "^3.6.1",
         "@internationalized/date": "^3.12.2",
-        "@nuxt/ui": "^4.9.0",
+        "@nuxt/ui": "^4.10.0",
         "@vueuse/core": "^14.3.0",
         "laravel-echo": "^2.4.0",
         "pusher-js": "^8.5.0",
         "shaka-player": "^5.2.1",
         "tailwindcss": "^4.3.2",
-        "vue": "^3.5.39"
+        "vue": "^3.5.40"
     },
     "devDependencies": {
         "@iconify-json/lucide": "^1.2.117",
@@ -54,7 +54,7 @@
         "prettier": "3.9.5",
         "prettier-plugin-tailwindcss": "^0.8.1",
         "typescript": "~6.0.3",
-        "vite": "^8.1.4",
+        "vite": "^8.1.5",
         "vitest": "^4.1.10",
         "vue-tsc": "^3.3.7"
     }
