@@ -10,12 +10,18 @@ tags:
 
 # Podman Quadlet
 
-**stry** ships as [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) units, rendered and installed with [foxws/laravel-podman](https://github.com/foxws/laravel-podman). That package's own docs are the reference for anything generic — the `lpod` CLI, secrets, customizing presets, setting up without PHP on the host, etc. This page only covers what's specific to **stry**.
+**stry** ships as [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) units, rendered with [foxws/laravel-podman](https://github.com/foxws/laravel-podman) and managed day-to-day with [`lpod`](https://github.com/foxws/lpod), its standalone companion CLI. Both packages' own docs are the reference for anything generic — customizing presets, secrets, setting up without PHP on the host, etc. This page only covers what's specific to **stry**.
 
 ## Prerequisites
 
 - Linux with systemd (rootless or system-wide)
 - [Podman 5.3+](https://podman.io/) with the `quadlet` CLI plugin (`podman quadlet --help` should work)
+- [`lpod`](https://github.com/foxws/lpod) — install it once per host, it's a dependency-free bash script:
+
+    ```bash
+    curl -fsSL -o ~/.local/bin/lpod https://github.com/foxws/lpod/releases/latest/download/lpod
+    chmod +x ~/.local/bin/lpod
+    ```
 
 ## Presets
 
@@ -49,31 +55,34 @@ Published under `containers/stubs/` — customize a preset there (see [Customizi
 php artisan podman:setup   # renders every preset above into podman/{preset}/
 
 # Install every rendered service (see the "podman/{preset}/" folder for the full list):
-vendor/bin/lpod install frankenphp-octane/app.quadlets --replace
-vendor/bin/lpod install frankenphp-octane/pgsql.quadlets --replace
+lpod install frankenphp-octane/app.quadlets --replace
+lpod install frankenphp-octane/pgsql.quadlets --replace
 # ...
 
 # Then set each service's secrets:
-vendor/bin/lpod secrets stry
-vendor/bin/lpod secrets stry-pgsql
+lpod stry secrets
+lpod stry-pgsql secrets
 # ...
 
-vendor/bin/lpod stry up
+lpod stry up
 ```
 
-See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full flow. `foxws/laravel-podman` is a `require-dev` package, so `vendor/bin/lpod` and `podman:*` only exist where dev dependencies were installed — on a `composer install --no-dev` host (e.g. production), render elsewhere and copy over the standalone `bin/lpod`/`bin/lpod-secrets` scripts instead, see [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md).
+See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full flow.
+
+> [!NOTE]
+> `php artisan podman:setup`/`podman:generate` need `foxws/laravel-podman`, a `require-dev` package. On a `composer install --no-dev` host (e.g. production), render elsewhere (or in a disposable container) and copy the rendered `podman/` output over instead — `lpod` has no such dependency, it's the standalone tool installed in [Prerequisites](#prerequisites). See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for the full workflow.
 
 ## Day-to-day
 
 ```bash
-vendor/bin/lpod stry up                    # start
-vendor/bin/lpod stry shell                 # shell in
-vendor/bin/lpod stry artisan migrate       # run Artisan
-systemctl --user status stry               # or use systemctl/journalctl directly
+lpod stry up                    # start
+lpod stry shell                 # shell in
+lpod stry artisan migrate       # run Artisan
+systemctl --user status stry    # or use systemctl/journalctl directly
 journalctl --user -u stry -f
 ```
 
-See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the package's [`lpod` reference](https://github.com/foxws/laravel-podman/blob/main/docs/lpod.md) for the full command set (`secrets`, `remove`, `list`, `print`, `uninstall`, ...).
+See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the [`lpod` docs](https://github.com/foxws/lpod) for the full command set (`secrets`, `remove`, `list`, `print`, `uninstall`, ...).
 
 ## Tuning & hardware acceleration
 
@@ -105,5 +114,5 @@ sudo setsebool -P container_use_devices=true
 
 ```bash
 php artisan podman:generate frankenphp-octane
-vendor/bin/lpod install frankenphp-octane/horizon.quadlets --replace
+lpod install frankenphp-octane/horizon.quadlets --replace
 ```

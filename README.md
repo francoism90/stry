@@ -85,6 +85,7 @@ Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) 
 
 - Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
 - [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
+- [`lpod`](https://github.com/foxws/lpod) — install separately, see [Podman Quadlet](docs/podman.md#prerequisites)
 - Basic tools: `git`, `bash`
 
 > [!NOTE]
@@ -111,10 +112,7 @@ Comprehensive guides are available in the `docs/` folder:
 | [Interaction](docs/interaction.md)       | CLI usage and commands                            |
 
 > [!TIP]
-> Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman) — see its own docs for the `lpod` CLI, secrets, and customizing presets. The guides above only cover what's specific to **stry**.
-
-> [!TIP]
-> Quick start: Choose between [Production](docs/production.md) or [Development](docs/development.md) setup.
+> Quick start: choose between [Production](docs/production.md) or [Development](docs/development.md) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
 
 ---
 
@@ -131,7 +129,7 @@ The instance will be available at: **<https://stry.test>**
 ### Seed Database
 
 ```bash
-vendor/bin/lpod stry a db:seed --force
+lpod stry a db:seed --force
 ```
 
 ### Creating an Admin User
@@ -139,7 +137,7 @@ vendor/bin/lpod stry a db:seed --force
 For testing purposes only, seed a super-admin user:
 
 ```bash
-vendor/bin/lpod stry a db:seed --class=AdminSeeder
+lpod stry a db:seed --class=AdminSeeder
 ```
 
 > [!WARNING]

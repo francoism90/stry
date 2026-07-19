@@ -11,7 +11,7 @@ tags:
 
 ## Overview
 
-This guide explains how to customize **stry** application settings. All configuration is done via environment variables — in `.env` (development), or stored as the `stry-env` Podman secret via `vendor/bin/lpod secrets stry` (production, see [Podman Quadlet](podman.md)).
+This guide explains how to customize **stry** application settings. All configuration is done via environment variables — in `.env` (development), or stored as the `stry-env` Podman secret via `lpod stry secrets` (production, see [Podman Quadlet](podman.md)).
 
 > [!TIP]
 > Always prefer environment variables over editing `config/*.php` files directly. This makes deployments cleaner and configuration more portable.
@@ -168,15 +168,6 @@ AB_AV1_MIN_VMAF=80
 
 ---
 
-## Related Documentation
-
-- 📖 **[Application Configuration](configuration.md)** — This guide
-- 📖 **[Production Setup](production.md)** — Security and performance checklist
-- 📖 **[Development Setup](development.md)** — Local development configuration
-- 📖 **[S3 Object Storage](s3.md)** — Media storage configuration
-
----
-
 ## Configuration File Reference
 
 | Config File                | Description                        | Key Settings                                                     |
@@ -208,9 +199,10 @@ After publishing, edit the files in `config/` directory and customize as needed.
 
 ---
 
-## Getting Help
+## See also
 
-- 🐍 **Laravel** — [Configuration Basics](https://laravel.com/docs/configuration)
-- 📹 **Shaka Packager** — [GitHub: foxws/laravel-shaka](https://github.com/foxws/laravel-shaka)
-- 🎬 **Streamer** — [GitHub: foxws/laravel-streamer](https://github.com/foxws/laravel-streamer)
-- 🎞️ **ab-av1** — [GitHub: foxws/laravel-ab-av1](https://github.com/foxws/laravel-ab-av1)
+- [Production Setup](production.md) — security and performance checklist
+- [Development Setup](development.md) — local development configuration
+- [S3 Object Storage](s3.md) — media storage configuration
+- [Laravel Configuration Basics](https://laravel.com/docs/configuration)
+- Video pipeline packages — [laravel-shaka](https://github.com/foxws/laravel-shaka), [laravel-streamer](https://github.com/foxws/laravel-streamer), [laravel-ab-av1](https://github.com/foxws/laravel-ab-av1)
