@@ -28,7 +28,7 @@ Welcome to **stry** documentation. Choose your path below:
 | [CLI Interaction](interaction.md)         | `lpod` and stry's own Artisan commands              |
 
 > [!TIP]
-> Podman/Quadlet is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman) — its own docs are the reference for the `lpod` CLI, secrets, and customizing presets. The guides above only cover what's specific to **stry**.
+> Podman/Quadlet is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — their own docs are the reference for secrets and customizing presets. The guides above only cover what's specific to **stry**.
 
 ## Key Concepts
 
@@ -40,19 +40,19 @@ Welcome to **stry** documentation. Choose your path below:
 
 ```bash
 # Start/stop/status
-vendor/bin/lpod stry up
-vendor/bin/lpod stry down
+lpod stry up
+lpod stry down
 systemctl --user status stry
 
 # Logs
 journalctl --user -u stry -f
 
 # Shell / Artisan
-vendor/bin/lpod stry shell
-vendor/bin/lpod stry artisan migrate --force
+lpod stry shell
+lpod stry artisan migrate --force
 ```
 
 ## Need Help?
 
-- 📖 [Podman Quadlet](podman.md) and the [`lpod` reference](https://github.com/foxws/laravel-podman/blob/main/docs/lpod.md)
+- 📖 [Podman Quadlet](podman.md) and the [`lpod` reference](https://github.com/foxws/lpod)
 - 🐛 `journalctl --user -u stry -f` / `podman logs -f systemd-stry`

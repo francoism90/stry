@@ -15,6 +15,7 @@ tags:
 ## Prerequisites
 
 - Linux with systemd, [Podman 5.3+](https://podman.io/)
+- [`lpod`](https://github.com/foxws/lpod) — see [Podman Quadlet](podman.md#prerequisites) for the install command
 - [VSCode](https://code.visualstudio.com/) or [Zed](https://zed.dev/) with the [Podman SDK extension](https://github.com/francoism90/org.freedesktop.Sdk.Extension.podman) (optional)
 
 ## Setup
@@ -37,17 +38,17 @@ Choose one preset for the app image, then generate and install it together with 
 php artisan podman:setup --preset=development --preset=proxy
 # or: --preset=frankenphp-octane --preset=proxy
 
-vendor/bin/lpod install development/app.quadlets --replace
-vendor/bin/lpod install development/pgsql.quadlets --replace
+lpod install development/app.quadlets --replace
+lpod install development/pgsql.quadlets --replace
 # ...and so on for every service (see podman.md)
 ```
 
-Set `APP_ENV=local`/`APP_DEBUG=true` (and any other local overrides) before storing them with `lpod secrets stry`.
+Set `APP_ENV=local`/`APP_DEBUG=true` (and any other local overrides) before storing them with `lpod stry secrets`.
 
 Once containers are up, install dependencies and seed data:
 
 ```bash
-vendor/bin/lpod stry shell
+lpod stry shell
 composer install
 php artisan storage:link
 php artisan migrate --seed
@@ -74,9 +75,9 @@ code ~/projects/stry
 ### Laravel IDE Helper
 
 ```bash
-vendor/bin/lpod stry artisan ide-helper:generate
-vendor/bin/lpod stry artisan ide-helper:meta
-vendor/bin/lpod stry artisan ide-helper:models --nowrite
+lpod stry artisan ide-helper:generate
+lpod stry artisan ide-helper:meta
+lpod stry artisan ide-helper:models --nowrite
 ```
 
 ## AI-assisted development
@@ -86,17 +87,17 @@ vendor/bin/lpod stry artisan ide-helper:models --nowrite
 ## Testing & code quality
 
 ```bash
-vendor/bin/lpod stry artisan test
-vendor/bin/lpod stry artisan test --filter=testMethodName
-vendor/bin/lpod stry bin pint
-vendor/bin/lpod stry bin larastan
+lpod stry artisan test
+lpod stry artisan test --filter=testMethodName
+lpod stry bin pint
+lpod stry bin larastan
 ```
 
 ## Troubleshooting
 
 - **Container won't start** — `journalctl --user -u stry -f`; check for a missing/invalid `stry-env` secret or a port conflict (8000, 5173, 6001).
 - **Permission issues** — `chown -R 1000:1000 ~/projects/stry/storage` (match your `PODMAN_QUADLET_UID`/`GID` if overridden).
-- **Assets not compiling** — `rm -rf bootstrap/ssr && vendor/bin/lpod stry npm run build`.
+- **Assets not compiling** — `rm -rf bootstrap/ssr && lpod stry npm run build`.
 
 ## Next steps
 

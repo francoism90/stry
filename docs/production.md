@@ -27,16 +27,24 @@ php artisan key:generate
 
 Set at least `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, and the database/S3 credentials in `.env` — these get baked into the `stry-env` Podman secret in the next step. See [Application Configuration](configuration.md) for the full list of app-specific options.
 
-`foxws/laravel-podman` is a `require-dev` package, so the `composer install --no-dev` above didn't install it — `vendor/bin/lpod` and the `podman:*` Artisan commands don't exist on this host. Render the Quadlet units on a machine with the full `vendor/` (dev dependencies included), or a disposable container, then copy the rendered `podman/` output plus the standalone `bin/lpod`/`bin/lpod-secrets` scripts here (anywhere on `PATH`). See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for the full workflow, and [Podman Quadlet](podman.md) for the actual service names.
+Install [`lpod`](https://github.com/foxws/lpod) on this host — it's a dependency-free bash script, no PHP/Composer required:
+
+```bash
+curl -fsSL -o ~/.local/bin/lpod https://github.com/foxws/lpod/releases/latest/download/lpod
+chmod +x ~/.local/bin/lpod
+```
+
+> [!NOTE]
+> `foxws/laravel-podman` is a `require-dev` package, so `composer install --no-dev` above didn't install it — the `podman:*` Artisan commands that render the Quadlet units don't exist on this host. Render them on a machine with the full `vendor/` (dev dependencies included), or a disposable container, then copy the rendered `podman/` output here. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for the full workflow, and [Podman Quadlet](podman.md) for the actual service names.
 
 ```bash
 # Elsewhere, where the package is installed:
 php artisan podman:setup
 
-# Copy podman/ and bin/lpod, bin/lpod-secrets to this host, then:
+# Copy podman/ to this host, then:
 lpod install frankenphp-octane/app.quadlets --replace
 # ...install every service you need, see podman/frankenphp-octane/...
-lpod secrets stry
+lpod stry secrets
 # ...and secrets for every service that needs them...
 lpod install proxy/proxy.quadlets --replace
 
@@ -62,7 +70,7 @@ journalctl --user -u 'stry*' -f
 
 ## Security checklist
 
-- Use `openssl rand -hex 32`-strength secrets for everything stored via `lpod secrets` — never reuse development credentials.
+- Use `openssl rand -hex 32`-strength secrets for everything stored via `lpod SERVICE secrets` — never reuse development credentials.
 - Terminate HTTPS with the bundled `proxy` preset (Caddy) — see [Proxy Configuration](proxy.md).
 - Restrict the firewall to 22/80/443.
 - Never run seeders (`db:seed`) against production data.

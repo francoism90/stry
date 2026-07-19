@@ -9,17 +9,17 @@ tags:
 
 # CLI Interaction
 
-**stry** uses [`lpod`](https://github.com/foxws/laravel-podman/blob/main/docs/lpod.md), a Laravel Sail-style CLI shipped by `foxws/laravel-podman`, for day-to-day container interaction.
+**stry** uses [`lpod`](https://github.com/foxws/lpod), a Laravel Sail-style CLI paired with `foxws/laravel-podman`, for day-to-day container interaction.
 
 ```bash
-vendor/bin/lpod stry up                     # start
-vendor/bin/lpod stry shell                  # shell in (alias: bash)
-vendor/bin/lpod stry tinker                 # Laravel Tinker
-vendor/bin/lpod stry artisan migrate        # or: lpod stry a migrate
+lpod stry up                     # start
+lpod stry shell                  # shell in (alias: bash)
+lpod stry tinker                 # Laravel Tinker
+lpod stry artisan migrate        # or: lpod stry a migrate
 ```
 
 > [!TIP]
-> Shorten `vendor/bin/lpod` to `lpod` with a shell alias or `PATH` entry — see [Shortening the `lpod` call](https://github.com/foxws/laravel-podman/blob/main/docs/lpod.md#shortening-the-vendor-bin-lpod-call).
+> `lpod` is a standalone tool, installed once per host — see [Podman Quadlet](podman.md#prerequisites) for the install command.
 
 ## stry's Artisan commands
 

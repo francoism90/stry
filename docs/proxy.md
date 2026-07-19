@@ -23,8 +23,8 @@ The `proxy` preset installs [Caddy](https://caddyserver.com/) for automatic HTTP
 
 ```bash
 php artisan podman:generate proxy
-vendor/bin/lpod install proxy/proxy.quadlets --replace
-vendor/bin/lpod proxy up
+lpod install proxy/proxy.quadlets --replace
+lpod proxy up
 ```
 
 ## Local DNS
