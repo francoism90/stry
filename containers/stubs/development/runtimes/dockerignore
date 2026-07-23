@@ -37,7 +37,6 @@ eslint.config.ts
 llms.txt
 node_modules
 npm-debug.log*
-boost.json
 pest-plugins.json
 phpstan.neon.dist
 phpunit.xml
@@ -47,7 +46,6 @@ public/build
 public/hot
 public/storage
 public/vendor
-storage/**/*.blade.php
 storage/**/*.php
 storage/debugbar/*
 tests
