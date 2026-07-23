@@ -44,6 +44,10 @@ ${FRANKEN_CLI} optimize:clear
 log "INFO" "Creating storage symlinks..."
 ${FRANKEN_CLI} storage:link
 
+# Create PWA manifest
+log "INFO" "Creating PWA manifest..."
+${FRANKEN_CLI} pwa:generate
+
 # Ensure all caches are warmed up
 log "INFO" "Optimizing application..."
 ${FRANKEN_CLI} optimize
