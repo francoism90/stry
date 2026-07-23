@@ -1,0 +1,82 @@
+FROM docker.io/library/php:8.5-cli
+
+ARG UID=1000
+ARG GID=1000
+ARG NODE_VERSION=24
+ARG POSTGRES_VERSION=18
+ARG PHP_EXTENSIONS=""
+
+WORKDIR /tmp
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV LANG=C.UTF-8
+ENV PNPM_HOME="/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+ENV APP_USER="docker"
+
+# Set timezone
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+# Main dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gnupg curl ca-certificates unzip \
+    git nano openssh-client awscli \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Add PostgreSQL APT repository and install client
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg \
+    && CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME") \
+    && echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt ${CODENAME}-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-${POSTGRES_VERSION} \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Add NodeSource APT repository and install Node.js
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+    # Create non-root user
+RUN groupadd --force -g ${GID} docker \
+    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+
+# Add install-php-extensions script
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+# Install PHP extensions
+RUN install-php-extensions @composer \
+    apcu bcmath exif ffi gd \
+    igbinary imagick intl pcntl \
+    pdo_pgsql redis sockets zip
+
+# Install additional PHP extensions if specified
+RUN if [ -n "$PHP_EXTENSIONS" ]; then \
+    install-php-extensions $PHP_EXTENSIONS; \
+fi
+
+# Node.js Configuration
+RUN npm install -g npm@latest corepack@latest svgo@latest \
+    && corepack enable && corepack prepare pnpm@latest --activate \
+    && mkdir -p ${PNPM_HOME}/store \
+    && chown -R docker:docker ${PNPM_HOME} \
+    && pnpm config set store-dir ${PNPM_HOME}/store
+
+# Clean up unnecessary files and caches to reduce image size
+RUN apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+USER docker
+
+CMD ["/usr/bin/env", "bash"]

@@ -8,7 +8,7 @@ const props = defineProps<{
   index?: number
 }>()
 
-const isAboveFold = (props.index ?? 0) < 4
+const isAboveFold = (props.index ?? 0) < 12
 const isLcp = props.index === 0
 </script>
 

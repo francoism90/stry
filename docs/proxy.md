@@ -2,22 +2,22 @@
 title: Proxy
 order: 4
 tags:
-    - proxy
-    - caddy
+  - proxy
+  - caddy
 ---
 
 # Proxy Configuration
 
 The `proxy` preset installs [Caddy](https://caddyserver.com/) for automatic HTTPS and routing — see [Podman Quadlet](podman.md) for the general install flow. Its Caddyfile (`containers/stubs/proxy/runtimes/`) routes these subdomains, based on `APP_URL`'s host (`{{appHost}}`):
 
-| Subdomain            | Routes to                | Purpose                  |
-| --------------------- | -------------------------- | --------------------------- |
-| `{host}`               | `stry:8000`                 | Main application            |
-| `vite.{host}`          | `stry:5173`                 | Vite dev server              |
-| `ws.{host}`            | `stry-reverb:6001`           | Laravel Reverb (WebSocket)  |
-| `s3.{host}`            | `stry-rustfs:9000`           | S3-compatible API           |
-| `fs.{host}`            | `stry-rustfs:9001`           | RustFS console               |
-| `mail.{host}`          | `stry-mailpit:8025`          | Mailpit UI (dev)             |
+| Subdomain     | Routes to           | Purpose                    |
+| ------------- | ------------------- | -------------------------- |
+| `{host}`      | `stry:8000`         | Main application           |
+| `vite.{host}` | `stry:5173`         | Vite dev server            |
+| `ws.{host}`   | `stry-reverb:6001`  | Laravel Reverb (WebSocket) |
+| `s3.{host}`   | `stry-rustfs:9000`  | S3-compatible API          |
+| `fs.{host}`   | `stry-rustfs:9001`  | RustFS console             |
+| `mail.{host}` | `stry-mailpit:8025` | Mailpit UI (dev)           |
 
 ## Install
 

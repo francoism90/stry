@@ -2,9 +2,9 @@
 title: Production Setup
 order: 1
 tags:
-    - production
-    - deployment
-    - security
+  - production
+  - deployment
+  - security
 ---
 
 # Production Setup
@@ -77,10 +77,10 @@ journalctl --user -u 'stry*' -f
 - Keep Podman and base images updated (`podman pull ...`, then `lpod install ... --replace`).
 - Schedule automated database backups:
 
-    ```bash
-    # Daily at 2am
-    0 2 * * * lpod stry-pgsql run pg_dump -U user -d stry | gzip > /backups/stry-$(date +\%Y\%m\%d).sql.gz
-    ```
+  ```bash
+  # Daily at 2am
+  0 2 * * * lpod stry-pgsql run pg_dump -U user -d stry | gzip > /backups/stry-$(date +\%Y\%m\%d).sql.gz
+  ```
 
 ## Next steps
 

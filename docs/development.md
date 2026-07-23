@@ -2,12 +2,12 @@
 title: Development
 order: 2
 tags:
-    - vscode
-    - zed
-    - podman
-    - devcontainer
-    - boost
-    - ai
+  - vscode
+  - zed
+  - podman
+  - devcontainer
+  - boost
+  - ai
 ---
 
 # Development Setup

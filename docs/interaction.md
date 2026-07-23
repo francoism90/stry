@@ -2,9 +2,9 @@
 title: Interaction
 order: 6
 tags:
-    - shell
-    - bash
-    - commands
+  - shell
+  - bash
+  - commands
 ---
 
 # CLI Interaction
@@ -27,45 +27,45 @@ Run any of these via `lpod stry artisan ...` (or the `a` shorthand):
 
 ### Users
 
-| Command                     | Description                          |
-| ---------------------------- | ------------------------------------- |
-| `users:create`                | Create a user account (interactive)   |
-| `users:create --admin`        | ...and assign the admin role          |
-| `users:create --super-admin`  | ...and assign the super-admin role    |
+| Command                      | Description                         |
+| ---------------------------- | ----------------------------------- |
+| `users:create`               | Create a user account (interactive) |
+| `users:create --admin`       | ...and assign the admin role        |
+| `users:create --super-admin` | ...and assign the super-admin role  |
 
 ### Videos
 
-| Command           | Description                                 |
-| ------------------ | -------------------------------------------- |
-| `videos:import`     | Import videos for a user                     |
-| `videos:clear`      | Remove soft-deleted videos from filesystem   |
+| Command         | Description                                |
+| --------------- | ------------------------------------------ |
+| `videos:import` | Import videos for a user                   |
+| `videos:clear`  | Remove soft-deleted videos from filesystem |
 
 ### Tags
 
-| Command       | Description                       |
-| -------------- | ----------------------------------- |
-| `tags:create`   | Create a new tag                    |
-| `tags:sort`     | Sort tags alphabetically by type    |
+| Command       | Description                      |
+| ------------- | -------------------------------- |
+| `tags:create` | Create a new tag                 |
+| `tags:sort`   | Sort tags alphabetically by type |
 
 ### Playlists & media
 
-| Command                                                    | Description                                     |
-| ------------------------------------------------------------ | -------------------------------------------------- |
-| `playlists:clear`                                             | Remove generated DASH playlists from filesystem     |
-| `transcodes:clear`                                            | Force delete failed transcodes                      |
-| `transcodes:clear --all`                                      | Force delete all expired transcodes                 |
-| `groups:clear`                                                 | Detach all videos from groups of a given type        |
-| `media-library:regenerate --only-missing --queue-all`          | Regenerate missing media conversions                 |
+| Command                                               | Description                                     |
+| ----------------------------------------------------- | ----------------------------------------------- |
+| `playlists:clear`                                     | Remove generated DASH playlists from filesystem |
+| `transcodes:clear`                                    | Force delete failed transcodes                  |
+| `transcodes:clear --all`                              | Force delete all expired transcodes             |
+| `groups:clear`                                        | Detach all videos from groups of a given type   |
+| `media-library:regenerate --only-missing --queue-all` | Regenerate missing media conversions            |
 
 ### Search
 
-| Command                          | Description                                                            |
-| ---------------------------------- | -------------------------------------------------------------------------- |
-| `scout:sync`                        | Sync Typesense indexes (configure collections)                             |
-| `scout:sync --import`               | ...and import all model records                                            |
-| `scout:sync --delete`               | Delete all indexes and re-sync (clears existing data)                      |
-| `scout:delete-index Model`          | Delete a specific index (useful for corrupted indexes)                     |
-| `scout:import Model`                | Import a specific model into its search index                             |
+| Command                    | Description                                            |
+| -------------------------- | ------------------------------------------------------ |
+| `scout:sync`               | Sync Typesense indexes (configure collections)         |
+| `scout:sync --import`      | ...and import all model records                        |
+| `scout:sync --delete`      | Delete all indexes and re-sync (clears existing data)  |
+| `scout:delete-index Model` | Delete a specific index (useful for corrupted indexes) |
+| `scout:import Model`       | Import a specific model into its search index          |
 
 ## Direct Podman access
 

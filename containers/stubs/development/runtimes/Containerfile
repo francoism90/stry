@@ -25,11 +25,11 @@ RUN arch="$(uname -m)" && case "$arch" in \
 # Shaka Packager
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.8.0/packager-linux-x64" ; \
-        PACKAGER_SHA256="225a33d1c3523dc1e80ead90b44266a4f545e8dbdb6ac30e553b8a7e4066096d" ;; \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.9.2/packager-linux-x64" ; \
+        PACKAGER_SHA256="9c8ca9966cc406f7a9189d8ec163e66494348510fc8fef75df68ca2e12c7f5f6" ;; \
       aarch64) \
-        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.8.0/packager-linux-arm64" ; \
-        PACKAGER_SHA256="d0b7f0e9a1f80455ff1a7c9072928efce400f2ce1a5dfde78a2a55a5873c94da" ;; \
+        PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.9.2/packager-linux-arm64" ; \
+        PACKAGER_SHA256="e23ea347e239aeabafa3b5c157f474ab8c060fdea6d9023c4b61732606a83004" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
     && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
@@ -58,7 +58,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 ENV FRANKEN_CLI="frankenphp php-cli /app/artisan"
 ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
-ENV APP_COMMAND="${FRANKEN_CLI} octane:frankenphp --host=0.0.0.0 --port=8000 --admin-port=2019 --watch"
+ENV APP_COMMAND="${FRANKEN_CLI} octane:frankenphp --host=0.0.0.0 --port=8000 --watch"
 ENV APP_USER="docker"
 
 # Set timezone
@@ -131,9 +131,9 @@ COPY podman/frankenphp-octane/runtimes/php-development.ini /usr/local/etc/php/co
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
-    && corepack enable && corepack prepare pnpm@latest --activate \
     && mkdir -p ${PNPM_HOME}/store \
     && chown -R docker:docker ${PNPM_HOME} \
+    && corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm config set store-dir ${PNPM_HOME}/store
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage

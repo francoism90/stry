@@ -11,11 +11,11 @@ class ViewServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->configureViteFetching();
+        $this->configureVitePrefetching();
     }
 
-    protected function configureViteFetching(): void
+    protected function configureVitePrefetching(): void
     {
-        Vite::prefetch(concurrency: 3);
+        Vite::useAggressivePrefetching();
     }
 }

@@ -2,9 +2,9 @@
 title: Application Configuration
 order: 7
 tags:
-    - config
-    - environment
-    - customizing
+  - config
+  - environment
+  - customizing
 ---
 
 # Application Configuration

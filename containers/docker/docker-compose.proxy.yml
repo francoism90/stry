@@ -10,65 +10,65 @@
 name: stry
 
 services:
-    # ---------------------------------------------------------------------------
-    # Infrastructure — attach proxy-facing services to the proxy network
-    # ---------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Infrastructure — attach proxy-facing services to the proxy network
+  # ---------------------------------------------------------------------------
 
-    rustfs:
-        networks:
-            - stry
-            - proxy
+  rustfs:
+    networks:
+      - stry
+      - proxy
 
-    mailpit:
-        networks:
-            - stry
-            - proxy
+  mailpit:
+    networks:
+      - stry
+      - proxy
 
-    # ---------------------------------------------------------------------------
-    # Application — attach proxy-facing services to the proxy network
-    # ---------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Application — attach proxy-facing services to the proxy network
+  # ---------------------------------------------------------------------------
 
-    app:
-        networks:
-            - stry
-            - proxy
+  app:
+    networks:
+      - stry
+      - proxy
 
-    reverb:
-        networks:
-            - stry
-            - proxy
+  reverb:
+    networks:
+      - stry
+      - proxy
 
-    # ---------------------------------------------------------------------------
-    # Reverse proxy
-    # ---------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Reverse proxy
+  # ---------------------------------------------------------------------------
 
-    proxy:
-        image: docker.io/library/caddy:latest
-        restart: always
-        cap_add:
-            - NET_BIND_SERVICE
-        volumes:
-            - ../podman/systemd/proxy/config:/etc/caddy
-            - caddy-data:/data
-            - caddy-config:/config
-        networks:
-            - proxy
-        ports:
-            - '80:80'
-            - '443:443'
-            - '443:443/udp'
+  proxy:
+    image: docker.io/library/caddy:latest
+    restart: always
+    cap_add:
+      - NET_BIND_SERVICE
+    volumes:
+      - ../podman/systemd/proxy/config:/etc/caddy
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - proxy
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
 
 # -----------------------------------------------------------------------------
 # Additional volumes for proxy
 # -----------------------------------------------------------------------------
 
 volumes:
-    caddy-data:
-    caddy-config:
+  caddy-data:
+  caddy-config:
 
 # -----------------------------------------------------------------------------
 # Networks
 # -----------------------------------------------------------------------------
 
 networks:
-    proxy:
+  proxy:

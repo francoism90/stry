@@ -100,16 +100,16 @@ See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hard
 
 Comprehensive guides are available in the `docs/` folder:
 
-| Guide                                    | Description                                     |
-| ---------------------------------------- | ------------------------------------------------ |
-| [Production Setup](docs/production.md)   | Deploy to production                              |
-| [Development Guide](docs/development.md) | Local development setup                           |
-| [Configuration](docs/configuration.md)   | Configuration options                             |
+| Guide                                    | Description                                          |
+| ---------------------------------------- | ---------------------------------------------------- |
+| [Production Setup](docs/production.md)   | Deploy to production                                 |
+| [Development Guide](docs/development.md) | Local development setup                              |
+| [Configuration](docs/configuration.md)   | Configuration options                                |
 | [Podman Quadlet](docs/podman.md)         | Container orchestration (services, install, secrets) |
-| [Docker Compose](docs/docker.md)         | Alternative, best-effort containerization        |
-| [Proxy Setup](docs/proxy.md)             | Reverse proxy configuration                       |
-| [S3 Storage](docs/s3.md)                 | Object storage setup                              |
-| [Interaction](docs/interaction.md)       | CLI usage and commands                            |
+| [Docker Compose](docs/docker.md)         | Alternative, best-effort containerization            |
+| [Proxy Setup](docs/proxy.md)             | Reverse proxy configuration                          |
+| [S3 Storage](docs/s3.md)                 | Object storage setup                                 |
+| [Interaction](docs/interaction.md)       | CLI usage and commands                               |
 
 > [!TIP]
 > Quick start: choose between [Production](docs/production.md) or [Development](docs/development.md) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.

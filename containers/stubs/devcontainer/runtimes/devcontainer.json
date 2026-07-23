@@ -1,8 +1,13 @@
 {
-  "name": "stry-devcontainer",
+  "name": "{{application}}-devcontainer",
   "remoteUser": "docker",
   "containerUser": "docker",
-  "runArgs": ["--security-opt=label=disable", "--network=systemd-stry", "--userns=keep-id:uid=1000,gid=1000", "--init"],
+  "runArgs": [
+    "--security-opt=label=disable",
+    "--network=systemd-{{application}}",
+    "--userns=keep-id:uid={{appUid}},gid={{appGid}}",
+    "--init"
+  ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
   "workspaceFolder": "/workspace",
   "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
@@ -10,8 +15,8 @@
     "context": "./../",
     "dockerfile": "./../podman/devcontainer/runtimes/Containerfile",
     "args": {
-      "UID": "1000", // Replace with your desired UID (id -u)
-      "GID": "1000" // Replace with your desired GID (id -g)
+      "UID": "{{appUid}}",
+      "GID": "{{appGid}}"
     }
   }
 }

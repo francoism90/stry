@@ -1,9 +1,9 @@
 ---
 title: Documentation
 tags:
-    - guides
-    - documentation
-    - index
+  - guides
+  - documentation
+  - index
 ---
 
 # Documentation
@@ -18,14 +18,14 @@ Welcome to **stry** documentation. Choose your path below:
 
 ## 📚 Guides
 
-| Guide                                    | Description                                        |
-| ----------------------------------------- | --------------------------------------------------- |
-| [Podman Quadlet](podman.md)               | Container orchestration (services, install, secrets)|
-| [Docker Compose](docker.md)               | Alternative, best-effort containerization           |
-| [Proxy Configuration](proxy.md)           | Caddy reverse proxy setup with automatic HTTPS      |
-| [Object Storage (S3)](s3.md)              | S3-compatible storage for media and segments        |
-| [Application Configuration](configuration.md) | Playlist, video, and encoding settings          |
-| [CLI Interaction](interaction.md)         | `lpod` and stry's own Artisan commands              |
+| Guide                                         | Description                                          |
+| --------------------------------------------- | ---------------------------------------------------- |
+| [Podman Quadlet](podman.md)                   | Container orchestration (services, install, secrets) |
+| [Docker Compose](docker.md)                   | Alternative, best-effort containerization            |
+| [Proxy Configuration](proxy.md)               | Caddy reverse proxy setup with automatic HTTPS       |
+| [Object Storage (S3)](s3.md)                  | S3-compatible storage for media and segments         |
+| [Application Configuration](configuration.md) | Playlist, video, and encoding settings               |
+| [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands               |
 
 > [!TIP]
 > Podman/Quadlet is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — their own docs are the reference for secrets and customizing presets. The guides above only cover what's specific to **stry**.
