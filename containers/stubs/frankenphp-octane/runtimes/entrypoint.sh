@@ -19,6 +19,14 @@ if [ "$(id -u)" = '0' ]; then
 
     chown -R docker:docker /app/storage /app/bootstrap/cache
 
+    # Podman's Volume=...,U chowns these to the image's declared USER, which
+    # is root (see above) -- not to PUID/PGID, so it needs redoing here.
+    # Skipped for /media and /import: those are host bind mounts that already
+    # line up via UserNS=keep-id, and could be too large to chown on every start.
+    for dir in /config /data /cache; do
+        [ -d "${dir}" ] && chown -R docker:docker "${dir}"
+    done
+
     exec gosu docker "$0" "$@"
 fi
 

@@ -15,7 +15,7 @@ ShmSize=128m
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume=/mnt/media/videos:/media:rw,z
 Volume=/mnt/media/import:/import:rw,z
-Volume={{application}}-cache:/cache:rw,z
+Volume={{application}}-cache:/cache:rw,z,U
 Network={{application}}.network
 
 [Service]
