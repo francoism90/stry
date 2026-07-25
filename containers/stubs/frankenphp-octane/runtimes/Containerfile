@@ -70,7 +70,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates libcap2-bin unzip \
+    gnupg curl ca-certificates libcap2-bin unzip gosu \
     python3 python3-venv python3-pip \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
@@ -183,6 +183,10 @@ RUN pnpm build && pnpm build:ssr && pnpm prune --prod
 
 # Remove .env file if it exists
 RUN rm -f .env
+
+# Run as root so the entrypoint can renumber the "docker" user to the
+# runtime PUID/PGID before dropping privileges
+USER root
 
 EXPOSE 6001 8000 13714
 

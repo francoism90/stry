@@ -8,6 +8,8 @@ Wants={{application}}-mailpit.container {{application}}-horizon.container {{appl
 [Container]
 Image={{image}}
 AutoUpdate=registry
+Environment=PUID={{appUid}}
+Environment=PGID={{appGid}}
 UserNS=keep-id
 ShmSize=128m
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
