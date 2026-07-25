@@ -9,6 +9,18 @@ IgnoreFile={{runtimePath}}/dockerignore
 SetWorkingDirectory={{workingPath}}
 ---
 # FileName={{application}}
+[Pod]
+PodName={{application}}
+Network={{application}}.network
+Network={{proxy}}.network
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+---
+# FileName={{application}}
 [Unit]
 Description=Laravel App (Octane) container
 Requires={{application}}-pgsql.container {{application}}-valkey.container
@@ -20,14 +32,13 @@ Image={{application}}.build
 AutoUpdate=local
 UserNS=keep-id
 ShmSize=128m
+Pod={{application}}.pod
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume=/mnt/media/videos:/media:rw,z,U
 Volume=/mnt/media/import:/import:rw,z,U
 Volume={{application}}-config:/config:rw,z,U
 Volume={{application}}-data:/data:rw,z,U
 Volume={{application}}-cache:/cache:rw,z,U
-Network={{application}}.network
-Network={{proxy}}.network
 ExposeHostPort=8000
 ExposeHostPort=5173
 

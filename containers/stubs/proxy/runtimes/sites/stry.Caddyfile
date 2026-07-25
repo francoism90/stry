@@ -1,15 +1,15 @@
 {{appHost}} {
 	import compress
-	reverse_proxy systemd-{{application}}:8000
+	reverse_proxy {{application}}:8000
 }
 
 vite.{{appHost}} {
 	import compress
-	reverse_proxy systemd-{{application}}:5173
+	reverse_proxy {{application}}:5173
 }
 
 ws.{{appHost}} {
-	reverse_proxy systemd-{{application}}-reverb:6001
+	reverse_proxy {{application}}:6001
 }
 
 s3.{{appHost}} {
