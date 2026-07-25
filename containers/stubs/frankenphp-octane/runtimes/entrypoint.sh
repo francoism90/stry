@@ -1,6 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Renumber the "docker" user/group to match the host's PUID/PGID, then drop
+# from root down to it. The image itself is always built with UID/GID 1000;
+# this is what lets one shared, prebuilt image still write correctly-owned
+# files on hosts where the deploying user isn't 1000.
+if [ "$(id -u)" = '0' ]; then
+    PUID=${PUID:-1000}
+    PGID=${PGID:-1000}
+
+    if [ "$(id -g docker)" != "${PGID}" ]; then
+        groupmod -o -g "${PGID}" docker
+    fi
+
+    if [ "$(id -u docker)" != "${PUID}" ]; then
+        usermod -o -u "${PUID}" docker
+    fi
+
+    chown -R docker:docker /app/storage /app/bootstrap/cache
+
+    exec gosu docker "$0" "$@"
+fi
+
 APP_COMMAND=${APP_COMMAND:-'/usr/bin/bash'}
 
 log() {

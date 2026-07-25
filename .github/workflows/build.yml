@@ -1,0 +1,176 @@
+name: Build
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+    release:
+        types: [published]
+    workflow_dispatch:
+
+concurrency:
+    group: docker-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.event.repository.name }}
+    IMAGE: ghcr.io/${{ github.repository }}
+    CACHE_IMAGE: ghcr.io/${{ github.repository }}-cache
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        name: Build (${{ matrix.platform }})
+        runs-on: ${{ matrix.runner }}
+        timeout-minutes: 30
+        permissions:
+            contents: read
+            packages: write
+
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - platform: linux/amd64
+                      runner: ubuntu-latest
+                    - platform: linux/arm64
+                      runner: ubuntu-24.04-arm
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v7
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.5
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, pdo_pgsql, bcmath, intl, gd, exif, iconv, imagick, fileinfo, redis
+                  coverage: none
+
+            - name: Get Composer cache directory
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v6
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-interaction --no-progress
+
+            - name: Render Podman quadlets
+              run: |
+                  cp .env.ci .env
+                  php artisan key:generate
+                  php artisan podman:generate frankenphp-octane
+
+            - name: Set platform pair
+              id: platform
+              env:
+                  PLATFORM: ${{ matrix.platform }}
+              run: echo "pair=${PLATFORM//\//-}" >> "$GITHUB_OUTPUT"
+
+            - name: Login to GitHub Container Registry
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            - name: Determine build args
+              id: buildargs
+              run: |
+                  {
+                    echo "args<<EOF"
+                    echo "--target=production"
+                    echo "--cache-from=${CACHE_IMAGE}"
+                    if [ "${{ github.event_name }}" != "pull_request" ]; then
+                      echo "--cache-to=${CACHE_IMAGE}"
+                    fi
+                    echo "EOF"
+                  } >> "$GITHUB_OUTPUT"
+
+            - name: Build image
+              id: build
+              uses: redhat-actions/buildah-build@v3
+              with:
+                  image: ${{ env.IMAGE_NAME }}
+                  tags: ci-${{ steps.platform.outputs.pair }}-${{ github.sha }}
+                  containerfiles: podman/frankenphp-octane/runtimes/Containerfile
+                  context: .
+                  platform: ${{ matrix.platform }}
+                  layers: true
+                  squash: false
+                  extra-args: ${{ steps.buildargs.outputs.args }}
+
+            - name: Push image by tag
+              if: ${{ github.event_name != 'pull_request' }}
+              id: push
+              uses: redhat-actions/push-to-registry@v3
+              with:
+                  image: ${{ steps.build.outputs.image }}
+                  tags: ${{ steps.build.outputs.tags }}
+                  registry: ${{ env.REGISTRY }}/${{ github.repository_owner }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+                  digestfile: /tmp/digest.txt
+
+            - name: Upload digest
+              if: ${{ github.event_name != 'pull_request' }}
+              uses: actions/upload-artifact@v7
+              with:
+                  name: digests-${{ steps.platform.outputs.pair }}
+                  path: /tmp/digest.txt
+                  if-no-files-found: error
+                  retention-days: 1
+
+    merge:
+        name: Merge & push manifest
+        needs: build
+        if: ${{ github.event_name != 'pull_request' }}
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Download digests
+              uses: actions/download-artifact@v8
+              with:
+                  path: /tmp/digests
+                  pattern: digests-*
+
+            - name: Login to GitHub Container Registry
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            - name: Generate image tags
+              id: meta
+              uses: docker/metadata-action@v6
+              with:
+                  images: ${{ env.IMAGE }}
+                  flavor: |
+                      latest=false
+                  tags: |
+                      type=ref,event=branch
+                      type=sha,format=long,prefix=commit-
+                      type=semver,pattern={{version}}
+                      type=semver,pattern={{major}}.{{minor}}
+                      type=raw,value=latest,enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
+
+            - name: Create and push manifest list
+              run: |
+                  podman manifest create manifest-list
+
+                  for digest_file in /tmp/digests/*/digest.txt; do
+                    digest=$(tr -d '[:space:]' < "$digest_file")
+                    podman manifest add manifest-list "docker://${IMAGE}@${digest}"
+                  done
+
+                  while IFS= read -r tag; do
+                    [ -z "$tag" ] && continue
+                    podman manifest push --all manifest-list "docker://${tag}"
+                  done <<< "${{ steps.meta.outputs.tags }}"

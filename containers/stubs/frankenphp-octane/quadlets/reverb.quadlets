@@ -5,8 +5,10 @@ After={{application}}.container
 BindsTo={{application}}.container
 
 [Container]
-Image={{application}}.build
-AutoUpdate=local
+Image={{image}}
+AutoUpdate=registry
+Environment=PUID={{appUid}}
+Environment=PGID={{appGid}}
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
 UserNS=keep-id
 ShmSize=128m
