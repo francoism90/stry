@@ -1,14 +1,4 @@
 # FileName={{application}}
-[Build]
-ImageTag=localhost/{{application}}:latest
-Target=production
-Environment=UID={{appUid}}
-Environment=GID={{appGid}}
-File={{runtimePath}}/Containerfile
-IgnoreFile={{runtimePath}}/dockerignore
-SetWorkingDirectory={{workingPath}}
----
-# FileName={{application}}
 [Unit]
 Description=Laravel App (Octane) container
 Requires={{application}}-pgsql.container {{application}}-valkey.container
@@ -16,8 +6,8 @@ After={{application}}-pgsql.container {{application}}-valkey.container
 Wants={{application}}-mailpit.container {{application}}-horizon.container {{application}}-reverb.container {{application}}-schedule.container {{application}}-inertia-ssr.container {{application}}-rustfs.container {{application}}-typesense.container
 
 [Container]
-Image={{application}}.build
-AutoUpdate=local
+Image={{image}}
+AutoUpdate=registry
 UserNS=keep-id
 ShmSize=128m
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}

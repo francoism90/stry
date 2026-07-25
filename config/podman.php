@@ -126,6 +126,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Custom Substitutions
+    |--------------------------------------------------------------------------
+    |
+    | Extra "{{placeholder}}" => value pairs merged into every rendered
+    | template, on top of the built-in ones.
+    |
+    */
+
+    'substitutions' => [
+        '{{image}}' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:latest'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Publish Path
     |--------------------------------------------------------------------------
     |
