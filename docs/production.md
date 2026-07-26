@@ -88,6 +88,9 @@ curl -I https://your-domain/
 journalctl --user -u 'stry*' -f
 ```
 
+> [!NOTE]
+> Once the services are installed, the cloned repo is no longer needed — the app runs entirely from the pre-built image, and the Quadlet units and secrets are already registered with Podman/systemd. You can safely remove `~/projects/stry` or move it off the server (e.g. keep it only on the machine you use to regenerate Quadlet files after upgrades).
+
 ## Security checklist
 
 - Use strong, random secrets (`openssl rand -hex 32`) for everything stored via `lpod SERVICE secrets` — never reuse development credentials.
