@@ -11,26 +11,24 @@ tags:
 
 ## Overview
 
-This guide explains how to customize **stry** application settings. All configuration is done via environment variables — in `.env` (development), or stored as the `stry-env` Podman secret via `lpod stry secrets` (production, see [Podman Quadlet](podman.md)).
+**stry** is configured entirely through environment variables — in `.env` (development), or stored as the `stry-env` Podman secret via `lpod stry secrets` (production, see [Podman Quadlet](podman.md)).
 
 > [!TIP]
-> Always prefer environment variables over editing `config/*.php` files directly. This makes deployments cleaner and configuration more portable.
+> Prefer environment variables over editing `config/*.php` files directly — it keeps deployments cleaner and configuration portable.
 
 ---
 
-## Configuration Hierarchy
+## Configuration hierarchy
 
-Configuration is read in this order:
-
-1. **`stry-env` secret** — Mounted as `/app/.env` at container startup (production)
-2. **Development `.env`** — Local overrides for development, loaded from repo (development only)
-3. **PHP config files** — Fine-grained control via `config/*.php` (rarely needed)
+1. **`stry-env` secret** — mounted as `/app/.env` at container startup (production)
+2. **Development `.env`** — local overrides, loaded from the repo (development only)
+3. **PHP config files** — fine-grained control via `config/*.php` (rarely needed)
 
 ---
 
-## Essential Configuration
+## Essential configuration
 
-These settings control core application behavior and are required for all deployments.
+Core settings, required for every deployment.
 
 ### Core Application
 
@@ -73,9 +71,9 @@ MAIL_FROM_NAME="Stry"
 
 ---
 
-## Advanced Configuration
+## Advanced configuration
 
-Fine-tune encoding, streaming, and playback options.
+Fine-tune encoding, streaming, and playback.
 
 ### Playlists
 
@@ -168,9 +166,9 @@ AB_AV1_MIN_VMAF=80
 
 ---
 
-## Configuration File Reference
+## Configuration file reference
 
-| Config File                | Description                        | Key Settings                                                     |
+| Config file                | Description                        | Key settings                                                     |
 | -------------------------- | ---------------------------------- | ---------------------------------------------------------------- |
 | `config/playlists.php`     | Playlist generation settings       | Type, encryption, protection, key rotation, expiration           |
 | `config/videos.php`        | Video import and playback settings | Import disk, batch size, playlist creation, completion threshold |
@@ -180,9 +178,9 @@ AB_AV1_MIN_VMAF=80
 
 ---
 
-## Publishing Package Configuration
+## Publishing package configuration
 
-For advanced customization, publish and edit configuration files:
+For advanced customization, publish the config files and edit them directly:
 
 ```bash
 # Publish Shaka Packager configuration
@@ -195,7 +193,7 @@ php artisan vendor:publish --tag="streamer-config"
 php artisan vendor:publish --tag="ab-av1-config"
 ```
 
-After publishing, edit the files in `config/` directory and customize as needed.
+Published files land in `config/` — edit them there.
 
 ---
 

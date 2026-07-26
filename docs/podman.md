@@ -10,7 +10,7 @@ tags:
 
 # Podman Quadlet
 
-**stry** ships as [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) units, rendered with [foxws/laravel-podman](https://github.com/foxws/laravel-podman) and managed day-to-day with [`lpod`](https://github.com/foxws/lpod), its standalone companion CLI. Both packages' own docs are the reference for anything generic — customizing presets, secrets, setting up without PHP on the host, etc. This page only covers what's specific to **stry**.
+**stry** ships as [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) units — config files that let systemd run and manage each container. They're rendered with [foxws/laravel-podman](https://github.com/foxws/laravel-podman) and run day-to-day with [`lpod`](https://github.com/foxws/lpod), its standalone companion CLI. Both packages' own docs are the reference for anything generic — customizing presets, secrets, setting up without PHP on the host, etc. This page only covers what's specific to **stry**.
 
 ## Prerequisites
 
@@ -70,7 +70,9 @@ lpod stry up
 See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full flow.
 
 > [!NOTE]
-> `php artisan podman:setup`/`podman:generate` need `foxws/laravel-podman`, a `require-dev` package. On a `composer install --no-dev` host (e.g. production), render elsewhere (or in a disposable container) and copy the rendered `podman/` output over instead — `lpod` has no such dependency, it's the standalone tool installed in [Prerequisites](#prerequisites). See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for the full workflow.
+> `php artisan podman:setup`/`podman:generate` need `foxws/laravel-podman`, a `require-dev` package — not installed on a `composer install --no-dev` host (e.g. production). `lpod` itself has no such dependency; it's the standalone tool installed in [Prerequisites](#prerequisites). On a host without PHP, either render elsewhere and copy the `podman/` output over, or use `lpod setup` to render inside a disposable container. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for both workflows, and [Production Setup](production.md) for **stry**'s own walkthrough.
+
+The `frankenphp-octane` preset's app container runs a pre-built image (CI builds and pushes it to `ghcr.io/francoism90/stry`) rather than building locally — Podman just pulls it. Override the image with `PODMAN_IMAGE_REGISTRY` in `.env` if you push to your own registry.
 
 ## Day-to-day
 

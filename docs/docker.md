@@ -12,22 +12,22 @@ tags:
 
 ## Overview
 
-Docker Compose is an **alternative** to the recommended Podman/Quadlet setup. Use Docker Compose if:
+Docker Compose is an **alternative** to the recommended Podman/Quadlet setup. Use it if:
 
 - You prefer Docker over Podman
 - You need cross-platform support (Linux, macOS, Windows)
-- Your infrastructure is Docker-native
+- Your infrastructure is already Docker-native
 
 > [!NOTE]
-> The recommended and tested setup for this project is [Podman Quadlet](podman.md). Docker Compose files are maintained on a best-effort basis and may require adjustments.
+> [Podman Quadlet](podman.md) is the recommended, tested setup. These Docker Compose files are maintained on a best-effort basis and may need adjustments.
 
 ---
 
 ## Prerequisites
 
-- 🐳 [Docker Engine](https://docs.docker.com/engine/install/) or [Docker Desktop](https://docs.docker.com/desktop/)
-- 🛠️ [Docker Compose v2+](https://docs.docker.com/compose/install/) (included with Docker Desktop)
-- 🔧 Basic tools: `git`, `bash`
+- [Docker Engine](https://docs.docker.com/engine/install/) or [Docker Desktop](https://docs.docker.com/desktop/)
+- [Docker Compose v2+](https://docs.docker.com/compose/install/) (included with Docker Desktop)
+- Basic tools: `git`, `bash`
 
 ---
 
@@ -182,7 +182,7 @@ queue:
 
 ## Known limitations vs Podman
 
-Docker Compose doesn't have Podman-specific features used by the Quadlet setup: `UserNS=keep-id` (rootless file ownership), `AutoUpdate`, and systemd-managed lifecycle/autostart. Manage services yourself accordingly.
+Docker Compose doesn't have the Podman-specific features the Quadlet setup relies on: `UserNS=keep-id` (rootless file ownership), `AutoUpdate`, and systemd-managed lifecycle/autostart. You'll need to manage those yourself.
 
 ---
 

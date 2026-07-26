@@ -12,7 +12,7 @@ tags:
 
 # Development Setup
 
-## Prerequisites
+## What you need
 
 - Linux with systemd, [Podman 5.3+](https://podman.io/)
 - [`lpod`](https://github.com/foxws/lpod) — see [Podman Quadlet](podman.md#prerequisites) for the install command
@@ -29,10 +29,10 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Choose one preset for the app image, then generate and install it together with `proxy` (see [Podman Quadlet](podman.md) for the full service list):
+Pick one preset for the app image, then generate and install it together with `proxy` (see [Podman Quadlet](podman.md) for the full service list):
 
-- **`development`** — live-mounts your working copy into the container, for local editing. Use this day-to-day.
-- **`frankenphp-octane`** — production-style image with the app code baked in. Use this to test the production build locally.
+- **`development`** — mounts your working copy into the container live, so edits show up instantly. Use this day to day.
+- **`frankenphp-octane`** — the same image production uses, code baked in. Use this to test a production-style build locally.
 
 ```bash
 php artisan podman:setup --preset=development --preset=proxy
@@ -45,7 +45,7 @@ lpod install development/pgsql.quadlets --replace
 
 Set `APP_ENV=local`/`APP_DEBUG=true` (and any other local overrides) before storing them with `lpod stry secrets`.
 
-Once containers are up, install dependencies and seed data:
+Once the containers are up, install dependencies and seed data:
 
 ```bash
 lpod stry shell
@@ -70,7 +70,7 @@ The `devcontainer` preset builds a dedicated image for the [Dev Containers exten
 code ~/projects/stry
 ```
 
-`.devcontainer/devcontainer.json` connects to the `systemd-stry` network and provides PHP IntelliSense, debugging, and an integrated terminal.
+`.devcontainer/devcontainer.json` connects to the `systemd-stry` network and gives you PHP IntelliSense, debugging, and an integrated terminal.
 
 ### Laravel IDE Helper
 
@@ -96,7 +96,7 @@ lpod stry bin larastan
 ## Troubleshooting
 
 - **Container won't start** — `journalctl --user -u stry -f`; check for a missing/invalid `stry-env` secret or a port conflict (8000, 5173, 6001).
-- **Permission issues** — `chown -R 1000:1000 ~/projects/stry/storage` (match your `PODMAN_QUADLET_UID`/`GID` if overridden).
+- **Permission issues** — `chown -R 1000:1000 ~/projects/stry/storage` (match your `PODMAN_QUADLET_UID`/`GID` if you changed them).
 - **Assets not compiling** — `rm -rf bootstrap/ssr && lpod stry npm run build`.
 
 ## Next steps

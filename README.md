@@ -14,13 +14,13 @@
 [![Podman](https://img.shields.io/badge/Podman-5.x-892CA0?logo=podman)](https://podman.io)
 [![Demo](https://img.shields.io/badge/Demo-Screenshots-181717?logo=github)](https://github.com/francoism90/.github/tree/main/stry)
 
-[Demo](https://github.com/francoism90/.github/tree/main/stry) • [Documentation](#-documentation) • [Installation](#-usage)
+[Demo](https://github.com/francoism90/.github/tree/main/stry) • [Documentation](#documentation) • [Installation](#usage)
 
 ---
 
 ## Introduction
 
-**stry** is a video-on-demand (VOD) media distribution system that allows users to access videos, television shows and movies with streaming capabilities.
+**stry** is a video-on-demand (VOD) platform for streaming videos, TV shows, and movies.
 
 ### Key Features
 
@@ -48,8 +48,7 @@ For WIP screenshots, please check out: <https://github.com/francoism90/.github/t
 
 ## Jellyfin / Plex vs stry
 
-Jellyfin/Plex are media servers first, while **stry** is a streaming delivery platform first.
-That means **stry** focuses on repackaging/transcoding and adaptive streaming workflows (DASH-first, HLS-ready), which gives more control but requires a more advanced setup.
+Jellyfin and Plex are media servers first. **stry** is a streaming delivery platform first — it focuses on repackaging/transcoding and adaptive streaming (DASH-first, HLS-ready). That gives more control, at the cost of a more advanced setup.
 
 | Topic                | Jellyfin / Plex                                   | stry                                                |
 | -------------------- | ------------------------------------------------- | --------------------------------------------------- |
@@ -80,10 +79,9 @@ That means **stry** focuses on repackaging/transcoding and adaptive streaming wo
 
 ## Prerequisites
 
-You need a basic knowledge of Laravel, Inertia.js, and containerization concepts.
-Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) is a plus.
+Basic knowledge of Laravel, Inertia.js, and containers helps. Familiarity with video streaming (DASH, HLS) and encoding (FFmpeg) is a plus, but not required.
 
-**System Requirements:**
+**System requirements:**
 
 - Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
 - [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
@@ -91,10 +89,9 @@ Familiarity with video streaming technologies (DASH, HLS) and encoding (FFmpeg) 
 - Basic tools: `git`, `bash`
 
 > [!NOTE]
-> Docker is not officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and can be made to work with minor adjustments.
+> Docker isn't officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and works with minor adjustments.
 
-For hardware acceleration: install VAAPI drivers (Intel), mesa packages, or NVENC (Nvidia) dependencies.
-See [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
+For hardware acceleration, install VAAPI drivers (Intel), mesa packages (AMD), or NVENC (Nvidia). See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 
 ---
 
@@ -114,7 +111,7 @@ Comprehensive guides are available in the `docs/` folder:
 | [Interaction](docs/interaction.md)       | CLI usage and commands                               |
 
 > [!TIP]
-> Quick start: choose between [Production](docs/production.md) or [Development](docs/development.md) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
+> Quick start: pick [Production](docs/production.md) or [Development](docs/development.md) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
 
 ---
 
@@ -136,7 +133,7 @@ lpod stry a db:seed --force
 
 ### Creating an Admin User
 
-For testing purposes only, seed a super-admin user:
+For testing only, seed a super-admin user:
 
 ```bash
 lpod stry a db:seed --class=AdminSeeder

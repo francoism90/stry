@@ -8,35 +8,33 @@ tags:
 
 # Documentation
 
-Welcome to **stry** documentation. Choose your path below:
+## Getting started
 
-## 🚀 Getting Started
+**[Production Deployment](production.md)** — deploying to a server? Start here.
 
-**[Production Deployment](production.md)** — Ready to deploy? Start here.
+**[Development Setup](development.md)** — developing locally? Start here.
 
-**[Development Setup](development.md)** — Want to develop locally? Start here.
+## Guides
 
-## 📚 Guides
-
-| Guide                                         | Description                                          |
-| --------------------------------------------- | ---------------------------------------------------- |
-| [Podman Quadlet](podman.md)                   | Container orchestration (services, install, secrets) |
-| [Docker Compose](docker.md)                   | Alternative, best-effort containerization            |
-| [Proxy Configuration](proxy.md)               | Caddy reverse proxy setup with automatic HTTPS       |
-| [Object Storage (S3)](s3.md)                  | S3-compatible storage for media and segments         |
-| [Application Configuration](configuration.md) | Playlist, video, and encoding settings               |
-| [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands               |
+| Guide                                         | Description                                  |
+| --------------------------------------------- | -------------------------------------------- |
+| [Podman Quadlet](podman.md)                   | Running the services (install, secrets, GPU) |
+| [Docker Compose](docker.md)                   | Alternative setup, best-effort               |
+| [Proxy Configuration](proxy.md)               | Caddy reverse proxy with automatic HTTPS     |
+| [Object Storage (S3)](s3.md)                  | S3-compatible storage for media and segments |
+| [Application Configuration](configuration.md) | Playlist, video, and encoding settings       |
+| [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands       |
 
 > [!TIP]
-> Podman/Quadlet is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — their own docs are the reference for secrets and customizing presets. The guides above only cover what's specific to **stry**.
+> Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their docs for anything generic (secrets, customizing presets). The guides above only cover what's specific to **stry**.
 
-## Key Concepts
+## Key concepts
 
-- **`stry-env` secret** — the application's `.env` file, stored as a Podman secret and mounted at `/app/.env` in every app-role container
-- **Presets** — `containers/stubs/{preset}/` — `frankenphp-octane` (app + services), `proxy` (Caddy), `s3` (buckets/CORS), `devcontainer` (VS Code)
-- **Quadlet** — systemd integration managing containers with automatic dependency ordering
+- **`stry-env` secret** — the app's `.env` file, stored as a Podman secret and mounted at `/app/.env` in every app-role container
+- **Presets** — `containers/stubs/{preset}/`: `frankenphp-octane` (app + services), `proxy` (Caddy), `s3` (buckets/CORS), `devcontainer` (VS Code)
+- **Quadlet** — systemd integration that runs containers, in the right order, on boot
 
-## Common Tasks
+## Common tasks
 
 ```bash
 # Start/stop/status
@@ -52,7 +50,7 @@ lpod stry shell
 lpod stry artisan migrate --force
 ```
 
-## Need Help?
+## Need help?
 
-- 📖 [Podman Quadlet](podman.md) and the [`lpod` reference](https://github.com/foxws/lpod)
-- 🐛 `journalctl --user -u stry -f` / `podman logs -f systemd-stry`
+- [Podman Quadlet](podman.md) and the [`lpod` reference](https://github.com/foxws/lpod)
+- `journalctl --user -u stry -f` / `podman logs -f systemd-stry`

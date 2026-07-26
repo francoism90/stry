@@ -9,7 +9,7 @@ tags:
 
 # CLI Interaction
 
-**stry** uses [`lpod`](https://github.com/foxws/lpod), a Laravel Sail-style CLI paired with `foxws/laravel-podman`, for day-to-day container interaction.
+**stry** uses [`lpod`](https://github.com/foxws/lpod) for day-to-day container interaction — think Laravel Sail, but for Podman.
 
 ```bash
 lpod stry up                     # start

@@ -8,7 +8,7 @@ tags:
 
 # Proxy Configuration
 
-The `proxy` preset installs [Caddy](https://caddyserver.com/) for automatic HTTPS and routing — see [Podman Quadlet](podman.md) for the general install flow. Its Caddyfile (`containers/stubs/proxy/runtimes/`) routes these subdomains, based on `APP_URL`'s host (`{{appHost}}`):
+The `proxy` preset installs [Caddy](https://caddyserver.com/), which handles HTTPS and routes traffic to the right service — see [Podman Quadlet](podman.md) for the general install flow. Its Caddyfile (`containers/stubs/proxy/runtimes/`) routes these subdomains, based on `APP_URL`'s host (`{{appHost}}`):
 
 | Subdomain     | Routes to           | Purpose                    |
 | ------------- | ------------------- | -------------------------- |
