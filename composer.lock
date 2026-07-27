@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "502eef0a0f3e1dd60ddca5266a6c0138",
+    "content-hash": "bde4288fbfd8d3bef8810ddbca7aa81a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1595,16 +1595,16 @@
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "2.0.2",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "67f712f8e635954e5be1a9312694a0903f7c6d3d"
+                "reference": "8811703e796c17c2ce4765c3f033bff25ceccf8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/67f712f8e635954e5be1a9312694a0903f7c6d3d",
-                "reference": "67f712f8e635954e5be1a9312694a0903f7c6d3d",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/8811703e796c17c2ce4765c3f033bff25ceccf8e",
+                "reference": "8811703e796c17c2ce4765c3f033bff25ceccf8e",
                 "shasum": ""
             },
             "require": {
@@ -1621,6 +1621,7 @@
             "require-dev": {
                 "larastan/larastan": "^3.0",
                 "laravel/pint": "^1.14",
+                "league/flysystem-aws-s3-v3": "^3.35",
                 "nunomaduro/collision": "^8.8",
                 "orchestra/testbench": "^10.0 || ^11.0",
                 "pestphp/pest": "^4.0",
@@ -1673,7 +1674,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/2.0.2"
+                "source": "https://github.com/foxws/laravel-shaka/tree/2.1.1"
             },
             "funding": [
                 {
@@ -1681,20 +1682,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-26T13:34:41+00:00"
+            "time": "2026-07-27T13:41:04+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "1.8.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "e392b5f0ef50a9b096ecacb70bf3a6b4d9bdede3"
+                "reference": "f3ba7ee17348172e0f37b37dc0fdcdbb22384dfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/e392b5f0ef50a9b096ecacb70bf3a6b4d9bdede3",
-                "reference": "e392b5f0ef50a9b096ecacb70bf3a6b4d9bdede3",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/f3ba7ee17348172e0f37b37dc0fdcdbb22384dfc",
+                "reference": "f3ba7ee17348172e0f37b37dc0fdcdbb22384dfc",
                 "shasum": ""
             },
             "require": {
@@ -1711,6 +1712,7 @@
             "require-dev": {
                 "larastan/larastan": "^3.0",
                 "laravel/pint": "^1.14",
+                "league/flysystem-aws-s3-v3": "^3.35",
                 "nunomaduro/collision": "^8.8",
                 "orchestra/testbench": "^10.0 || ^11.0",
                 "pestphp/pest": "^4.0",
@@ -1763,7 +1765,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/1.8.0"
+                "source": "https://github.com/foxws/laravel-streamer/tree/2.0.0"
             },
             "funding": [
                 {
@@ -1771,7 +1773,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-26T13:35:35+00:00"
+            "time": "2026-07-27T13:46:18+00:00"
         },
         {
             "name": "fruitcake/php-cors",

@@ -1,5 +1,6 @@
 import type { FlashData, FlashType } from '@/types'
 import { router } from '@inertiajs/vue3'
+import { useToast } from '@nuxt/ui/composables'
 import { createSharedComposable, tryOnUnmounted } from '@vueuse/core'
 
 const typeMap: Record<FlashType, { icon: string; color: FlashType }> = {

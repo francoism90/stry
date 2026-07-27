@@ -123,6 +123,6 @@ return [
     |
     */
 
-    'concurrency_workers' => (int) env('PACKAGER_CONCURRENCY_WORKERS', 20),
+    'concurrency_workers' => (int) env('PACKAGER_CONCURRENCY_WORKERS', 30),
 
 ];
