@@ -71,7 +71,7 @@ class CreateNewVideoStream
                     // Find the highest supported resolution for the video stream
                     $resolution = VideoResolution::make(
                         $videoStream->getDimensions()->getHeight()
-                    )->first();
+                    )->last();
 
                     if ($resolution && ! in_array($resolution, $resolutions, strict: true)) {
                         $resolutions[] = $resolution;
@@ -94,8 +94,10 @@ class CreateNewVideoStream
             ]));
 
             // Enable AES encryption with key rotation if configured
+            $encryptionKey = null;
+
             if ($settings->encryption) {
-                $keyData = $streamer->withAESEncryption('key', $settings->protectionScheme);
+                $encryptionKey = $streamer->withAESEncryption('key', $settings->protectionScheme);
 
                 if ($settings->keyRotation) {
                     $streamer->withKeyRotationDuration($settings->keyRotationDuration);
@@ -104,8 +106,8 @@ class CreateNewVideoStream
 
             /** @var Playlist $playlist */
             $playlist = $video->createPlaylist([
-                'encryption_key_id' => $keyData['key_id'] ?? null,
-                'encryption_key' => $keyData['key'] ?? null,
+                'encryption_key_id' => $encryptionKey?->keyId,
+                'encryption_key' => $encryptionKey?->key,
                 'type' => $type,
             ]);
 
