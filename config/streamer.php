@@ -176,6 +176,6 @@ return [
     |
     */
 
-    'concurrency_workers' => (int) env('STREAMER_CONCURRENCY_WORKERS', 20),
+    'concurrency_workers' => (int) env('STREAMER_CONCURRENCY_WORKERS', 30),
 
 ];
