@@ -87,16 +87,15 @@ class CreateNewVideoPlaylist
                 'type' => $type,
             ]);
 
-            // Configure the packager with common settings
+            // Configure the packager with common settings. Segment/fragment/buffer
+            // duration are left unset here so they fall back to the packager's own
+            // configured defaults (config/laravel-shaka.php).
             $packager
                 ->withMpdOutput($playlist->file_name)
                 ->withAllowCodecSwitching()
                 ->withAllowApproximateSegmentTimeline()
                 ->withDefaultLanguage($settings->language)
-                ->withDefaultTextLanguage($settings->textLanguage)
-                ->withMinBufferTime($settings->bufferTime)
-                ->withSegmentDuration($settings->segmentDuration)
-                ->withFragmentDuration($settings->fragmentDuration);
+                ->withDefaultTextLanguage($settings->textLanguage);
 
             // Export the playlist to the configured disk and path
             try {

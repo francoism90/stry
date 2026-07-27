@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'segment_duration' => (int) env('PACKAGER_SEGMENT_DURATION', 6),
+    'segment_duration' => (int) env('PACKAGER_SEGMENT_DURATION', 4),
 
     /*
     |--------------------------------------------------------------------------
