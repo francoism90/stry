@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bde4288fbfd8d3bef8810ddbca7aa81a",
+    "content-hash": "888abd21c842224e63aaa1e3c0b4d291",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1355,16 +1355,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "c02b60d9c6f39cd52010f91157114c27f8e61b92"
+                "reference": "ce695a178e5559f3b8b8eae58d31539da513f0d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/c02b60d9c6f39cd52010f91157114c27f8e61b92",
-                "reference": "c02b60d9c6f39cd52010f91157114c27f8e61b92",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/ce695a178e5559f3b8b8eae58d31539da513f0d8",
+                "reference": "ce695a178e5559f3b8b8eae58d31539da513f0d8",
                 "shasum": ""
             },
             "require": {
@@ -1425,7 +1425,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/2.2.0"
+                "source": "https://github.com/foxws/laravel-pwa/tree/2.3.0"
             },
             "funding": [
                 {
@@ -1433,20 +1433,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-06T07:35:58+00:00"
+            "time": "2026-07-27T14:58:24+00:00"
         },
         {
             "name": "foxws/laravel-scout-builder",
-            "version": "0.0.4",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-builder.git",
-                "reference": "c5a0563c52c5fa1d4001ccb4ee3eef4ee1b4baca"
+                "reference": "d5c808e4e24c210bd8e051675088fbd90a1268b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/c5a0563c52c5fa1d4001ccb4ee3eef4ee1b4baca",
-                "reference": "c5a0563c52c5fa1d4001ccb4ee3eef4ee1b4baca",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/d5c808e4e24c210bd8e051675088fbd90a1268b4",
+                "reference": "d5c808e4e24c210bd8e051675088fbd90a1268b4",
                 "shasum": ""
             },
             "require": {
@@ -1504,7 +1504,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-builder/issues",
-                "source": "https://github.com/foxws/laravel-scout-builder/tree/0.0.4"
+                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1512,20 +1512,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-09T15:37:01+00:00"
+            "time": "2026-07-27T15:19:19+00:00"
         },
         {
             "name": "foxws/laravel-scout-relations",
-            "version": "0.0.2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-relations.git",
-                "reference": "03d0a13ec9f799a00639a230fc9bb2e646114a68"
+                "reference": "b5739ab1876dd32c5cf67d173881702bfd95cc55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/03d0a13ec9f799a00639a230fc9bb2e646114a68",
-                "reference": "03d0a13ec9f799a00639a230fc9bb2e646114a68",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/b5739ab1876dd32c5cf67d173881702bfd95cc55",
+                "reference": "b5739ab1876dd32c5cf67d173881702bfd95cc55",
                 "shasum": ""
             },
             "require": {
@@ -1583,7 +1583,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-relations/issues",
-                "source": "https://github.com/foxws/laravel-scout-relations/tree/0.0.2"
+                "source": "https://github.com/foxws/laravel-scout-relations/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1591,7 +1591,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-21T15:10:52+00:00"
+            "time": "2026-07-27T15:30:32+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
@@ -2609,16 +2609,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.22.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "d354afa45334cdac523fbc015f203a78d7e2f5c6"
+                "reference": "92a707229148e57f08a249211c8a5a194159c619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/d354afa45334cdac523fbc015f203a78d7e2f5c6",
-                "reference": "d354afa45334cdac523fbc015f203a78d7e2f5c6",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/92a707229148e57f08a249211c8a5a194159c619",
+                "reference": "92a707229148e57f08a249211c8a5a194159c619",
                 "shasum": ""
             },
             "require": {
@@ -2644,7 +2644,7 @@
                 "league/flysystem": "^3.25.1",
                 "league/flysystem-local": "^3.25.1",
                 "league/uri": "^7.5.1",
-                "monolog/monolog": "^3.0",
+                "monolog/monolog": "^3.10",
                 "nesbot/carbon": "^3.8.4",
                 "nunomaduro/termwind": "^2.0",
                 "php": "^8.3",
@@ -2832,7 +2832,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-24T20:38:48+00:00"
+            "time": "2026-07-27T14:48:58+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -7942,16 +7942,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "7.4.2",
+            "version": "8.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "15a9daf02ba02d3ae77aaa6da582708231ef999b"
+                "reference": "60e8ed5b2fbf043c2264433fc2680c76b8b66aa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/15a9daf02ba02d3ae77aaa6da582708231ef999b",
-                "reference": "15a9daf02ba02d3ae77aaa6da582708231ef999b",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/60e8ed5b2fbf043c2264433fc2680c76b8b66aa6",
+                "reference": "60e8ed5b2fbf043c2264433fc2680c76b8b66aa6",
                 "shasum": ""
             },
             "require": {
@@ -7964,6 +7964,7 @@
             },
             "require-dev": {
                 "larastan/larastan": "^3.9",
+                "laravel/octane": "^2.0",
                 "laravel/passport": "^13.0",
                 "laravel/pint": "^1.0",
                 "orchestra/testbench": "^10.0|^11.0",
@@ -7979,8 +7980,8 @@
                     ]
                 },
                 "branch-alias": {
-                    "dev-main": "7.x-dev",
-                    "dev-master": "7.x-dev"
+                    "dev-main": "8.x-dev",
+                    "dev-master": "8.x-dev"
                 }
             },
             "autoload": {
@@ -8017,7 +8018,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/7.4.2"
+                "source": "https://github.com/spatie/laravel-permission/tree/8.3.0"
             },
             "funding": [
                 {
@@ -8025,7 +8026,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-30T19:21:26+00:00"
+            "time": "2026-07-03T15:36:01+00:00"
         },
         {
             "name": "spatie/laravel-responsecache",
