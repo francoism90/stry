@@ -61,6 +61,7 @@ export function useShaka(
       // Configure the UI
       configureOverlay(ui.value)
 
+      // Attach the player to the media element
       await player.value.attach(el.value)
 
       // Configure the player
@@ -109,6 +110,7 @@ export function useShaka(
     const shakaInstance = await loadShaka()
 
     if (playlist.value?.failed) {
+      ready.value = false
       error.value = new shakaInstance.util.Error(
         shakaInstance.util.Error.Severity.CRITICAL,
         shakaInstance.util.Error.Category.MANIFEST,
@@ -118,6 +120,7 @@ export function useShaka(
     }
 
     if (playlist.value?.expired) {
+      ready.value = false
       error.value = new shakaInstance.util.Error(
         shakaInstance.util.Error.Severity.CRITICAL,
         shakaInstance.util.Error.Category.MANIFEST,
@@ -159,8 +162,11 @@ export function useShaka(
         // Set the ready state to true
         ready.value = true
       } catch (err) {
-        if (err instanceof Error) {
-          error.value = err
+        // shaka.util.Error intentionally does not extend the native Error at
+        // runtime, so both types must be checked to catch real playback errors.
+        if (err instanceof Error || err instanceof shakaInstance.util.Error) {
+          ready.value = false
+          error.value = err as shaka.util.Error | Error
         }
       }
     }
