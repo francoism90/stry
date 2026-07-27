@@ -30,6 +30,11 @@ export default defineConfig(({ mode }) => {
         '!': fileURLToPath(new URL('./vendor', import.meta.url)),
       },
     },
+    ssr: {
+      // @nuxt/ui relies on Vite-only virtual modules (e.g. `#imports`) that
+      // only resolve while bundling, so it must never be externalized for SSR.
+      noExternal: ['@nuxt/ui'],
+    },
     plugins: [
       laravel({
         input: ['resources/js/app.ts'],
