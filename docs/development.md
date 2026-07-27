@@ -43,7 +43,10 @@ lpod install development/pgsql.quadlets --replace
 # ...and so on for every service (see podman.md)
 ```
 
-Set `APP_ENV=local`/`APP_DEBUG=true` (and any other local overrides) before storing them with `lpod stry secrets`.
+> [!TIP]
+> Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,s3,devcontainer,proxy`) to skip passing `--preset` on every `podman:setup` run.
+
+Set `APP_ENV=local`/`APP_DEBUG=true`/`PWA_ENABLED=false` (and any other local overrides) before storing them with `lpod stry secrets`.
 
 Once the containers are up, install dependencies and seed data:
 
@@ -98,6 +101,7 @@ lpod stry bin larastan
 - **Container won't start** — `journalctl --user -u stry -f`; check for a missing/invalid `stry-env` secret or a port conflict (8000, 5173, 6001).
 - **Permission issues** — `chown -R 1000:1000 ~/projects/stry/storage` (match your `PODMAN_QUADLET_UID`/`GID` if you changed them).
 - **Assets not compiling** — `rm -rf bootstrap/ssr && lpod stry npm run build`.
+- **Tests fail with `could not translate host name "systemd-stry-pgsql"`** — you're running `php artisan test` directly on the host instead of inside the container network. Run `lpod stry up` first, then use `lpod stry artisan test`.
 
 ## Next steps
 

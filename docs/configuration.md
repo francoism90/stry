@@ -119,11 +119,13 @@ VIDEO_COMPLETION_THRESHOLD=0.95
 ### Shaka Packager
 
 ```env
-# Segment duration for DASH/HLS segments (in seconds)
-PACKAGER_SEGMENT_DURATION=10
+# Segment duration for DASH/HLS segments (in seconds). Lower values reduce
+# seek latency (a seek waits for the segment covering the target time to
+# download) at the cost of more HTTP requests.
+PACKAGER_SEGMENT_DURATION=4
 
-# Number of concurrent write workers for s3. Default: 10
-PACKAGER_CONCURRENCY_WORKERS=32
+# Number of concurrent write workers for s3. Default: 30
+PACKAGER_CONCURRENCY_WORKERS=40
 ```
 
 ### Shaka Streamer
@@ -135,15 +137,16 @@ STREAMER_AUDIO_CODECS=aac,opus
 # Default video codecs (comma-separated)
 STREAMER_VIDEO_CODECS=hw:h264,hw:vp9
 
-# Default resolutions to generate (comma-separated)
-STREAMER_RESOLUTIONS=1080p,720p,480p
+# Segment duration for streaming (in seconds). Same seek-latency trade-off
+# as PACKAGER_SEGMENT_DURATION above.
+STREAMER_SEGMENT_DURATION=4
 
-# Segment duration for streaming (in seconds)
-STREAMER_SEGMENT_DURATION=10
-
-# Number of concurrent write workers for s3. Default: 10
-STREAMER_CONCURRENCY_WORKERS=32
+# Number of concurrent write workers for s3. Default: 30
+STREAMER_CONCURRENCY_WORKERS=40
 ```
+
+> [!NOTE]
+> Streamer resolutions aren't set via `.env` — they're detected automatically per video from the source stream's height (see `Foxws\Streamer\Support\VideoResolution`).
 
 ### AV1 Encoding (ab-av1)
 
