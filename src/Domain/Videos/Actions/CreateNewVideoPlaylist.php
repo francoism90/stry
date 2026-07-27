@@ -70,8 +70,10 @@ class CreateNewVideoPlaylist
             ]));
 
             // Enable AES encryption with key rotation if configured
+            $encryptionKey = null;
+
             if ($settings->encryption) {
-                $keyData = $packager->withAESEncryption('key', $settings->protectionScheme);
+                $encryptionKey = $packager->withAESEncryption('key', $settings->protectionScheme);
 
                 if ($settings->keyRotation) {
                     $packager->withKeyRotationDuration($settings->keyRotationDuration);
@@ -80,8 +82,8 @@ class CreateNewVideoPlaylist
 
             /** @var Playlist $playlist */
             $playlist = $video->createPlaylist([
-                'encryption_key_id' => $keyData['key_id'] ?? null,
-                'encryption_key' => $keyData['key'] ?? null,
+                'encryption_key_id' => $encryptionKey?->keyId,
+                'encryption_key' => $encryptionKey?->key,
                 'type' => $type,
             ]);
 
