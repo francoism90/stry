@@ -284,21 +284,6 @@ class Playlist extends Model
         return Config::string('playlists.text_language', 'en');
     }
 
-    public static function getBufferTime(): int
-    {
-        return Config::integer('playlists.buffer_time', 2);
-    }
-
-    public static function getSegmentDuration(): int
-    {
-        return Config::integer('playlists.segment_duration', 6);
-    }
-
-    public static function getFragmentDuration(): int
-    {
-        return Config::integer('playlists.fragment_duration', 2);
-    }
-
     public static function getManifestUrlLifetime(): int
     {
         return Config::integer('playlists.manifest_url_lifetime', 3600);

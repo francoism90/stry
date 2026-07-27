@@ -85,7 +85,7 @@ export function useShaka(
           },
         },
         manifest: {
-          dash: { ignoreMinBufferTime: true, xlinkFailGracefully: true },
+          dash: { xlinkFailGracefully: true },
           hls: { ignoreImageStreamFailures: true, ignoreTextStreamFailures: true },
           retryParameters: {
             baseDelay: 100,
