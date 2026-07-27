@@ -22,7 +22,7 @@
     "foxws/laravel-scout-relations": "^0.0.2",
     "foxws/laravel-shaka": "^2.0.2",
     "foxws/laravel-streamer": "^1.8",
-    "guzzlehttp/guzzle": "^7.15.1",
+    "guzzlehttp/guzzle": "^7.15.2",
     "http-interop/http-factory-guzzle": "^1.2.1",
     "inertiajs/inertia-laravel": "^3.1.1",
     "laravel/fortify": "^1.37.3",
