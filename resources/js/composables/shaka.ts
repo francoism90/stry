@@ -65,19 +65,23 @@ export function useShaka(
 
       // Configure the player
       const quality = get('quality', 'auto')!
+      const maxHeight = quality !== 'auto' ? Number.parseInt(quality, 10) : NaN
 
       player.value.configure({
         preferredAudio: [{ language: get('audio_language', 'en')! }],
         preferredText: [{ language: get('caption_language', 'en')! }],
         abr: {
-          restrictions: quality !== 'auto' ? { maxHeight: parseInt(quality), minHeight: parseInt(quality) } : {},
+          restrictions: Number.isFinite(maxHeight) ? { maxHeight } : {},
         },
         streaming: {
-          bufferingGoal: 60,
-          bufferBehind: 60,
-          rebufferingGoal: 2,
+          bufferingGoal: 30,
+          bufferBehind: 30,
+          rebufferingGoal: 0,
           segmentPrefetchLimit: 3,
           ignoreTextStreamFailures: true,
+          retryParameters: {
+            baseDelay: 100,
+          },
         },
         manifest: {
           dash: { ignoreMinBufferTime: true, xlinkFailGracefully: true },
