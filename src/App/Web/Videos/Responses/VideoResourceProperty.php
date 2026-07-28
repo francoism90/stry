@@ -18,11 +18,6 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): ?VideoResource => $this->getResource());
-    }
-
-    protected function getResource(): ?VideoResource
-    {
         if (! $this->video) {
             return null;
         }

@@ -6,6 +6,9 @@ namespace App\Web\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Shared\Responses\ResourceProperties;
+use App\Shared\Responses\ScoutBuilderOptions;
+use App\Shared\Responses\ScoutBuilderProperties;
 use App\Web\Videos\Responses\VideoGroupsProperty;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
@@ -45,7 +48,7 @@ class VideoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Video::class);
 
@@ -74,13 +77,12 @@ class VideoController extends Controller implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Videos/VideoIndex', [
+        return Inertia::render('Resources/ResourceIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'filters' => fn () => Options::forEnum(VideoFilter::class),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filter' => fn () => $request->input('filter'),
-            'sort' => fn () => $request->input('sort'),
-            'query' => fn () => $request->input('query'),
+            'resource' => fn () => new ResourceProperties(Video::class),
+            'filters' => fn () => new ScoutBuilderOptions(VideoFilter::class),
+            'sorters' => fn () => new ScoutBuilderOptions(VideoSorter::class),
+            $properties,
         ]);
     }
 
@@ -94,7 +96,7 @@ class VideoController extends Controller implements HasMiddleware
             $video,
         );
 
-        return Inertia::render('App/Videos/VideoView', [
+        return Inertia::render('Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
@@ -107,13 +109,15 @@ class VideoController extends Controller implements HasMiddleware
     {
         Gate::authorize('create', Video::class);
 
-        return Inertia::render('App/Videos/VideoCreate', [
+        return Inertia::render('Videos/VideoCreate', [
             'locales' => fn () => UserLocale::options(),
         ]);
     }
 
-    // Store a newly created resource in storage
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        //
+    }
 
     public function edit(Video $video): Response
     {
@@ -128,7 +132,7 @@ class VideoController extends Controller implements HasMiddleware
             'filesize',
         ];
 
-        return Inertia::render('App/Videos/VideoEdit', [
+        return Inertia::render('Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'locales' => fn () => UserLocale::options(),

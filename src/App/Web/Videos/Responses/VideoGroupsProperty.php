@@ -19,12 +19,6 @@ readonly class VideoGroupsProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn () => $this->getGroups());
-    }
-
-    /** @return Collection<int, array{id: mixed, name: string, inGroup: bool}> */
-    protected function getGroups(): Collection
-    {
         if (! $this->video || ! $this->user) {
             return Collection::empty();
         }

@@ -9,6 +9,14 @@ import { InfiniteScroll } from '@inertiajs/vue3'
 defineProps<{
   items: VideoCollection
 }>()
+
+defineOptions({
+  layout: {
+    id: 'videos',
+    title: 'Forgot password',
+    description: 'Enter your email to receive a password reset link',
+  },
+})
 </script>
 
 <template>

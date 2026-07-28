@@ -66,7 +66,7 @@ class TagController extends Controller implements HasMiddleware
             ->defaultSort($videosSort)
             ->jsonSimplePaginate(defaultSize: 20);
 
-        return Inertia::render('App/Tags/TagIndex', [
+        return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'filters' => fn () => Options::forEnum(TagType::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
@@ -106,7 +106,7 @@ class TagController extends Controller implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Tags/TagView', [
+        return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'filters' => fn () => Options::forEnum(VideoFilter::class),
@@ -138,7 +138,7 @@ class TagController extends Controller implements HasMiddleware
     {
         Gate::authorize('update', $tag);
 
-        return Inertia::render('App/Tags/TagEdit', [
+        return Inertia::render('Tags/TagEdit', [
             'tag' => fn () => new TagResourceProperty($tag, ['relates', 'description']),
             'types' => fn () => Options::forEnum(TagType::class),
         ]);

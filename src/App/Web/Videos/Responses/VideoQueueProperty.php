@@ -7,7 +7,6 @@ namespace App\Web\Videos\Responses;
 use App\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Models\Video;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
@@ -19,11 +18,6 @@ readonly class VideoQueueProperty implements ProvidesInertiaProperty
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
-    {
-        return once(fn () => $this->getCollection());
-    }
-
-    protected function getCollection(): ResourceCollection
     {
         if (! $this->video) {
             return VideoResource::collection([]);

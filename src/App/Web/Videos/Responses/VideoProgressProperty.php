@@ -19,11 +19,6 @@ readonly class VideoProgressProperty implements ProvidesInertiaProperty
 
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): int|float => $this->getProgress());
-    }
-
-    protected function getProgress(): int|float
-    {
         if (! $this->video || ! $this->user) {
             return 0;
         }

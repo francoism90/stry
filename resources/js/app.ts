@@ -4,14 +4,24 @@ import ui from '@nuxt/ui/vue-plugin'
 import '@/plugins/iconify'
 import '@/plugins/pusher'
 
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AppLayout from '@/layouts/AppLayout.vue'
+import ResourceLayout from '@/layouts/Resources/ResourceLayout.vue'
 import '../css/app.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
 createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),
-  layout: () => DefaultLayout,
+  layout: (name) => {
+    console.log('layout', name)
+
+    switch (true) {
+      case name.startsWith('Resources/'):
+        return [AppLayout, ResourceLayout]
+      default:
+        return AppLayout
+    }
+  },
   progress: false,
   withApp(app) {
     app.use(ui)

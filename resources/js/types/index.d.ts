@@ -21,6 +21,7 @@ export type QueryFilters = Record<string, QueryFilter>
 
 export type Model = {
   id: string
+  subject: string
   created_at: string
   updated_at: string
 }
