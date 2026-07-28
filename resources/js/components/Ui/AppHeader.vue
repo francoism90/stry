@@ -9,11 +9,6 @@ const { user } = useAuth()
 
 const navItems: NavigationMenuItem[] = [
   {
-    label: 'Videos',
-    to: '/',
-    exact: true,
-  },
-  {
     label: 'Collections',
     to: '/collections',
   },
