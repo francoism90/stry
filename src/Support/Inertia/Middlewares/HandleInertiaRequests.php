@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Web\Users\Responses\UserResourceProperty;
+use App\Modules\Users\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
@@ -23,10 +23,7 @@ class HandleInertiaRequests extends Middleware
             'app' => Inertia::once(fn (): string => Config::string('app.name', 'Laravel')),
             'nonce' => Inertia::once(fn (): string => app('csp-nonce')),
             'locale' => Inertia::once(fn (): string => $request->getLocale()),
-            'auth' => Inertia::once(fn (): ?UserResourceProperty => new UserResourceProperty(
-                user: $request->user() ?? null,
-                appends: ['name', 'email', 'avatar', 'settings'])
-            ),
+            'auth' => Inertia::once(fn () => $request->user()?->toResource(UserResource::class)),
             'echo' => Inertia::once(fn (): array => [
                 'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Domain\Groups\Commands\ClearGroupCommand;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Tags\Commands\CreateTagCommand;
@@ -76,7 +75,6 @@ $app = Application::configure(basePath: $basePath)
         // Configure web middleware
         $middleware->web(append: [
             AddCspHeaders::class,
-            ResolveCurrentProfile::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);

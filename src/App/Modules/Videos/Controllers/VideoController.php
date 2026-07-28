@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Modules\Videos\Controllers;
 
+use App\Modules\Videos\Enums\VideoFilter;
+use App\Modules\Videos\Enums\VideoSorter;
 use App\Modules\Videos\Requests\VideoUpdateRequest;
-use Domain\Videos\Enums\VideoFilter;
-use Domain\Videos\Enums\VideoSorter;
+use App\Modules\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Properties\ModelProperties;
-use Foundation\Http\Properties\ScoutBuilderOptions;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
@@ -18,11 +17,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
-use Modules\Videos\Resources\VideoResource;
+use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
@@ -68,9 +66,8 @@ class VideoController implements HasMiddleware
 
         return Inertia::render('Resources/ResourceIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'model' => fn () => new ModelProperties(Video::class),
-            'filters' => fn () => new ScoutBuilderOptions(VideoFilter::class),
-            'sorters' => fn () => new ScoutBuilderOptions(VideoSorter::class),
+            'filters' => fn () => Options::forEnum(VideoFilter::class),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
             $properties,
         ]);
     }

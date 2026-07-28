@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Videos\Enums;
+namespace App\Modules\Videos\Enums;
 
 enum VideoSorter: string
 {

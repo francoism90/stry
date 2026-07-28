@@ -16,7 +16,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimits();
         $this->configureResourceParameters();
-        $this->configureRoutePatterns();
     }
 
     protected function configureRateLimits(): void
@@ -40,10 +39,5 @@ class RouteServiceProvider extends ServiceProvider
             'collections' => 'group',
             'media' => 'media',
         ]);
-    }
-
-    protected function configureRoutePatterns(): void
-    {
-        Route::pattern('query', '.*');
     }
 }
