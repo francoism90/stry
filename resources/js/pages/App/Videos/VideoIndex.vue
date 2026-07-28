@@ -27,9 +27,9 @@ defineProps<{
         <UDashboardToolbar>
           <template #left>
             <FilterBar
+              :results="Boolean(items?.data?.length)"
               :filters="filters"
               :sorters="sorters"
-              :results="items?.data?.length"
               :filter="filter"
               :sort="sort"
             />

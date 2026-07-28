@@ -8,7 +8,7 @@ const props = defineProps<{
   sorters?: SelectMenuItem[]
   filter?: QueryFilters
   sort?: QueryFilter
-  results?: number
+  results?: boolean
 }>()
 
 const { form, formFilters, onSubmit } = useQuery({

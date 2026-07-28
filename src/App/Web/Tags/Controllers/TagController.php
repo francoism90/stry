@@ -68,10 +68,10 @@ class TagController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
-            'type' => fn () => $request->input('filter.type'),
+            'filters' => fn () => Options::forEnum(TagType::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
-            'types' => fn () => Options::forEnum(TagType::class),
+            'filter' => fn () => $request->input('filter'),
+            'sort' => fn () => $request->input('sort'),
         ]);
     }
 

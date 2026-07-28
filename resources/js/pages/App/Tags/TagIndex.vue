@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
-import TagFilterBar from '@/components/Tags/TagFilterBar.vue'
 import TagList from '@/components/Tags/TagList.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import FilterBar from '@/components/Ui/FilterBar.vue'
 import { useAuth } from '@/composables/auth'
-import type { TagCollection } from '@/types'
+import type { QueryFilter, QueryFilters, TagCollection } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   items: TagCollection
-  types: SelectMenuItem[]
-  sorters: SelectMenuItem[]
-  type?: string | null
-  sort?: string | null
+  filters?: SelectMenuItem[]
+  sorters?: SelectMenuItem[]
+  filter?: QueryFilters
+  sort?: QueryFilter
 }>()
 
 const { hasAnyRole } = useAuth()
@@ -30,11 +30,11 @@ const { hasAnyRole } = useAuth()
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <TagFilterBar
+            <FilterBar
               :results="Boolean(items?.data?.length)"
-              :types="types"
-              :type="type"
+              :filters="filters"
               :sorters="sorters"
+              :filter="filter"
               :sort="sort"
             />
           </template>
@@ -43,7 +43,7 @@ const { hasAnyRole } = useAuth()
             v-if="hasAnyRole(['admin', 'super-admin'])"
             #right
           >
-            <TagCreateModal :types="types" />
+            <TagCreateModal :types="filters" />
           </template>
         </UDashboardToolbar>
 
