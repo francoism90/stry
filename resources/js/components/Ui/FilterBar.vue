@@ -32,14 +32,14 @@ watchDebounced(
     <template #left>
       <UFormField
         :error="form.errors.query"
-        class="min-w-0 flex-1"
+        class="w-full flex-1"
       >
         <UInput
           v-model="form.query"
           :model-modifiers="{ nullable: true, string: true, trim: true }"
           :placeholder="'Search...'"
           variant="soft"
-          size="xl"
+          size="lg"
           color="neutral"
           class="w-full"
           icon="i-lucide-search"
@@ -55,11 +55,12 @@ watchDebounced(
         :model-modifiers="{ nullable: true }"
         :items="filters"
         :search-input="false"
-        :ui="{ base: 'px-0', content: 'min-w-40' }"
+        :ui="{ content: 'min-w-40' }"
         placeholder="Filters"
         label-key="label"
         value-key="value"
-        variant="none"
+        variant="ghost"
+        size="lg"
         multiple
         clear
         @update:modelValue="onSubmit"
@@ -71,11 +72,12 @@ watchDebounced(
         :model-modifiers="{ nullable: true }"
         :items="sorters"
         :search-input="false"
-        :ui="{ base: 'px-0', content: 'min-w-40' }"
+        :ui="{ content: 'min-w-40' }"
         placeholder="Sort by"
         label-key="label"
         value-key="value"
-        variant="none"
+        variant="ghost"
+        size="lg"
         clear
         @update:modelValue="onSubmit"
       />

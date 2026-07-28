@@ -52,47 +52,39 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
 </script>
 
 <template>
-  <UHeader
-    :toggle="false"
-    :ui="{
-      root: 'w-full bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
-    }"
-  >
-    <template #left>
-      <AppLogo />
+  <div class="sticky top-0 z-40 w-full bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150">
+    <UDashboardNavbar :toggle="false">
+      <template #left>
+        <AppLogo />
 
-      <UNavigationMenu
-        :items="navItems"
-        variant="link"
-      />
-    </template>
-
-    <template #right>
-      <UButton
-        variant="ghost"
-        color="neutral"
-        icon="i-lucide-search"
-        to="/search"
-      />
-
-      <UButton
-        variant="ghost"
-        color="neutral"
-        icon="i-lucide-bell"
-        to="/notifications"
-      />
-
-      <UDropdownMenu
-        :items="menuItems"
-        :content="{ align: 'end', collisionPadding: 12 }"
-      >
-        <UAvatar
-          :src="user?.avatar ?? undefined"
-          :alt="user?.name ?? 'User'"
-          :ui="{ root: 'cursor-pointer' }"
-          size="sm"
+        <UNavigationMenu
+          :items="navItems"
+          variant="link"
         />
-      </UDropdownMenu>
-    </template>
-  </UHeader>
+      </template>
+
+      <template #right>
+        <UButton
+          variant="ghost"
+          color="neutral"
+          icon="i-lucide-bell"
+          to="/notifications"
+        />
+
+        <UDropdownMenu
+          :items="menuItems"
+          :content="{ align: 'end', collisionPadding: 12 }"
+        >
+          <UAvatar
+            :src="user?.avatar ?? undefined"
+            :alt="user?.name ?? 'User'"
+            :ui="{ root: 'cursor-pointer' }"
+            size="sm"
+          />
+        </UDropdownMenu>
+      </template>
+    </UDashboardNavbar>
+
+    <slot />
+  </div>
 </template>

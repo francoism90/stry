@@ -20,11 +20,7 @@ defineProps<{
 <template>
   <UDashboardPanel id="videos">
     <template #header>
-      <AppHeader />
-    </template>
-
-    <template #body>
-      <UPage>
+      <AppHeader>
         <FilterBar
           :results="Boolean(items?.data?.length)"
           :filters="filters"
@@ -33,7 +29,11 @@ defineProps<{
           :sort="sort"
           :query="query"
         />
+      </AppHeader>
+    </template>
 
+    <template #body>
+      <UPage>
         <InfiniteScroll
           data="items"
           items-element="#infinite-items"
