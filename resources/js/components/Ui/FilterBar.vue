@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { useQuery } from '@/composables/query'
 import type { QueryFilter, QueryFilters } from '@/types'
-import { router, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
 
 const props = defineProps<{
   filters?: SelectMenuItem[]
@@ -12,30 +11,11 @@ const props = defineProps<{
   results?: number
 }>()
 
-const form = useForm('get', '', {
-  sort: props.sort,
-  filters: props.filter,
-  'page[number]': 1,
+const { form, formFilters, onSubmit } = useQuery({
+  filters: () => props.filters,
+  filter: () => props.filter,
+  sort: () => props.sort,
 })
-
-const formFilters = computed<string[]>({
-  get: () => (['captioned', 'shorts', 'unseen', 'untagged'] as const).filter((key) => !!form[`filter[${key}]`]),
-  set: (values) => {
-    form['filter[captioned]'] = values.includes('captioned') ? 'true' : undefined
-    form['filter[shorts]'] = values.includes('shorts') ? 'true' : undefined
-    form['filter[unseen]'] = values.includes('unseen') ? 'true' : undefined
-    form['filter[untagged]'] = values.includes('untagged') ? 'true' : undefined
-    onSubmit()
-  },
-})
-
-const onSubmit = () => {
-  router.reload({
-    data: form.data(),
-    only: ['items', 'filter', 'sort'],
-    reset: ['items'],
-  })
-}
 </script>
 
 <template>
@@ -52,9 +32,8 @@ const onSubmit = () => {
     variant="none"
     multiple
     clear
+    @update:modelValue="onSubmit"
   />
-
-  {{ filter }}
 
   <USelectMenu
     v-if="sorters?.length && results"
