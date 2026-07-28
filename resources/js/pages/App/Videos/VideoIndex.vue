@@ -3,17 +3,11 @@ import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterBar from '@/components/Ui/FilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { QueryFilter, QueryFilters, VideoCollection } from '@/types'
+import type { VideoCollection } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   items: VideoCollection
-  filters?: SelectMenuItem[]
-  sorters?: SelectMenuItem[]
-  filter?: QueryFilters
-  sort?: QueryFilter
-  query?: QueryFilter
 }>()
 </script>
 
@@ -21,15 +15,7 @@ defineProps<{
   <UDashboardPanel id="videos">
     <template #header>
       <AppHeader>
-        <FilterBar
-          placeholder="Search videos"
-          :results="Boolean(items?.data?.length)"
-          :filters="filters"
-          :sorters="sorters"
-          :filter="filter"
-          :sort="sort"
-          :query="query"
-        />
+        <FilterBar placeholder="Search videos" />
       </AppHeader>
     </template>
 
