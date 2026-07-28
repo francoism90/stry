@@ -14,7 +14,7 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Create Video" />
+  <Head title="Create video" />
 
   <UPageBody>
     <UForm
