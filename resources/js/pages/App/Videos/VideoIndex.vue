@@ -25,18 +25,14 @@ defineProps<{
 
     <template #body>
       <UPage>
-        <UDashboardToolbar>
-          <template #left>
-            <FilterBar
-              :results="Boolean(items?.data?.length)"
-              :filters="filters"
-              :sorters="sorters"
-              :filter="filter"
-              :sort="sort"
-              :query="query"
-            />
-          </template>
-        </UDashboardToolbar>
+        <FilterBar
+          :results="Boolean(items?.data?.length)"
+          :filters="filters"
+          :sorters="sorters"
+          :filter="filter"
+          :sort="sort"
+          :query="query"
+        />
 
         <InfiniteScroll
           data="items"
