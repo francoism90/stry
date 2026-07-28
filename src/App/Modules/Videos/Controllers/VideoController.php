@@ -65,6 +65,8 @@ class VideoController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Resources/ResourceIndex', [
+            'id' => fn () => 'videos',
+            'type' => fn () => 'video',
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'filters' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),

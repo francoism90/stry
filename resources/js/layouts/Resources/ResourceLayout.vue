@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import type { Model } from '@/types'
 
 type Props = {
-  title?: string | null
-  resource?: Model | undefined
+  id?: string | undefined
+  title?: string | undefined
+  type?: 'video' | 'image' | 'audio' | 'document' | 'label'
 }
 
 withDefaults(defineProps<Props>(), {
-  id: '',
-  title: '',
-  resource: () => <Model>{},
+  id: 'resource',
+  title: 'Items',
+  type: 'video',
 })
 </script>
 
@@ -41,7 +41,7 @@ withDefaults(defineProps<Props>(), {
       </template>
 
       <template #body>
-        {{ resource }}
+        {{ type }}
         <slot />
       </template>
 
