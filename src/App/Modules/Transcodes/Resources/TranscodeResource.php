@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Transcodes\Resources;
+namespace App\Modules\Transcodes\Resources;
 
-use App\Api\Shared\Resources\ModelResource;
+use App\Modules\Shared\Resources\ModelResource;
 use Domain\Transcodes\Models\Transcode;
 use Illuminate\Http\Resources\Json\JsonResource;
 

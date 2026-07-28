@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Playlists\Responses;
 
-use App\Api\Playlists\Resources\PlaylistResource;
+use App\Modules\Playlists\Resources\PlaylistResource;
 use Domain\Playlists\Models\Playlist;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;

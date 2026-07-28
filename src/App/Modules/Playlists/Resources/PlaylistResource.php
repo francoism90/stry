@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Playlists\Resources;
+namespace App\Modules\Playlists\Resources;
 
-use App\Api\Shared\Resources\ModelResource;
+use App\Modules\Shared\Resources\ModelResource;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Http\Resources\Json\JsonResource;
 

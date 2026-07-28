@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Groups\Resources;
+namespace App\Modules\Groups\Resources;
 
 use Domain\Groups\Models\Group;
 use Illuminate\Http\Resources\Json\JsonResource;

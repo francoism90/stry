@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Transcodes\Broadcasting;
+namespace App\Modules\Transcodes\Broadcasting;
 
 use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;

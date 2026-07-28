@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Users\Responses;
 
-use App\Api\Users\Resources\UserResource;
+use App\Modules\Users\Resources\UserResource;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Inertia\PropertyContext;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Notifications\Resources;
+namespace App\Modules\Notifications\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Notifications\DatabaseNotification;

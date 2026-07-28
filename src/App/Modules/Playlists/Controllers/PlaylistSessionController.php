@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Playlists\Controllers;
+namespace App\Modules\Playlists\Controllers;
 
-use App\Api\Playlists\Requests\PlaylistViewRequest;
+use App\Modules\Playlists\Requests\PlaylistViewRequest;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;

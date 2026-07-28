@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Tags\Broadcasting;
+namespace App\Modules\Tags\Broadcasting;
 
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Profiles\Resources;
+namespace App\Modules\Profiles\Resources;
 
 use Domain\Profiles\Models\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;

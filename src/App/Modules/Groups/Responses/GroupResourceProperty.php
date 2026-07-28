@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Groups\Responses;
 
-use App\Api\Groups\Resources\GroupResource;
+use App\Modules\Groups\Resources\GroupResource;
 use Domain\Groups\Models\Group;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;

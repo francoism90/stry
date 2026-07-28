@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Profiles\Broadcasting;
+namespace App\Modules\Profiles\Broadcasting;
 
 use Domain\Profiles\Models\Profile;
 use Domain\Users\Models\User;

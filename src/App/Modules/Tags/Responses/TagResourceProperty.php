@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Tags\Responses;
 
-use App\Api\Tags\Resources\TagResource;
+use App\Modules\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;

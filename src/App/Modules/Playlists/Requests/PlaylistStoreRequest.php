@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Playlists\Requests;
+namespace App\Modules\Playlists\Requests;
 
 use Domain\Playlists\Enums\PlaylistType;
 use Illuminate\Contracts\Validation\ValidationRule;

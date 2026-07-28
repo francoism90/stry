@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Users\Actions;
 
-use App\Api\Users\Requests\UserUpdateRequest;
+use App\Modules\Users\Requests\UserUpdateRequest;
 use Domain\Users\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Arr;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Playlists\Controllers;
 
-use App\Api\Playlists\Requests\PlaylistUpdateRequest;
+use App\Modules\Playlists\Requests\PlaylistUpdateRequest;
 use Domain\Playlists\Models\Playlist;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;

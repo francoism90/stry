@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Groups\Broadcasting;
+namespace App\Modules\Groups\Broadcasting;
 
 use Domain\Groups\Models\Group;
 use Domain\Users\Models\User;

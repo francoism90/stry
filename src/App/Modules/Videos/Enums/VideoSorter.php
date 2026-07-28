@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Enums;
+namespace Modules\Videos\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
-
-enum VideoSorter: string implements Enumerable
+enum VideoSorter: string
 {
     case Newest = 'newest';
     case Oldest = 'oldest';

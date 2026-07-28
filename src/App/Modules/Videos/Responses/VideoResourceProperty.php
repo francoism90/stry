@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Responses;
 
-use App\Api\Videos\Resources\VideoResource;
+use App\Modules\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;

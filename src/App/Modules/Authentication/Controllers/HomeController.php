@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Authentication\Controllers;
+namespace App\Modules\Authentication\Controllers;
 
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Transcodes\Controllers;
 
-use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
+use App\Modules\Transcodes\Requests\TranscodeUpdateRequest;
 use Domain\Transcodes\Models\Transcode;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;

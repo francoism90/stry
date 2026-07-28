@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Media\Responses;
 
-use App\Api\Media\Resources\MediaResource;
+use App\Modules\Media\Resources\MediaResource;
 use Domain\Media\Models\Media;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;

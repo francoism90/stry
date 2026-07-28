@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Tags\Controllers;
+namespace App\Modules\Tags\Controllers;
 
-use App\Api\Tags\Resources\TagResource;
+use App\Modules\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Foundation\Http\Controllers\Controller;

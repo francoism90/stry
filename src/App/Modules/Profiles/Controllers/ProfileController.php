@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Profiles\Controllers;
 
-use App\Api\Profiles\Requests\ProfileIndexRequest;
-use App\Api\Profiles\Requests\ProfileStoreRequest;
-use App\Api\Profiles\Requests\ProfileUpdateRequest;
-use App\Api\Profiles\Resources\ProfileResource;
+use App\Modules\Profiles\Requests\ProfileIndexRequest;
+use App\Modules\Profiles\Requests\ProfileStoreRequest;
+use App\Modules\Profiles\Requests\ProfileUpdateRequest;
+use App\Modules\Profiles\Resources\ProfileResource;
 use App\Web\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;

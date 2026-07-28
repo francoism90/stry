@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Transcodes\Controllers;
+namespace App\Modules\Transcodes\Controllers;
 
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;

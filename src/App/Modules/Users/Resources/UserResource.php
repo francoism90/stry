@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Users\Resources;
+namespace App\Modules\Users\Resources;
 
 use Domain\Users\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;

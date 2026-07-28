@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Resources;
+namespace App\Modules\Videos\Resources;
 
-use App\Api\Tags\Resources\TagResource;
-use App\Api\Users\Resources\UserResource;
-use Domain\Groups\Enums\GroupType;
-use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Groups\Enums\GroupType;
+use Modules\Tags\Resources\TagResource;
+use Modules\Users\Resources\UserResource;
+use Modules\Videos\Models\Video;
 
 /**
  * @mixin Video
@@ -38,9 +38,9 @@ class VideoResource extends JsonResource
             'thumb_srcset' => $this->thumb_srcset,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
-            'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
-            'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
-            'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
+            // 'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
+            // 'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
+            // 'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
             'titles' => $this->whenAppended('titles'),
             'summary' => $this->whenAppended('summary'),
             'content' => $this->whenAppended('content'),
@@ -53,8 +53,8 @@ class VideoResource extends JsonResource
             'deleted_at' => $this->deleted_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'user' => UserResource::make($this->whenLoaded('user')),
+            // 'tags' => TagResource::collection($this->whenLoaded('tags')),
+            // 'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

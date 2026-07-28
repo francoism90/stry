@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
-use App\Api\Transcodes\Resources\TranscodeResource;
+use App\Modules\Transcodes\Requests\TranscodeUpdateRequest;
+use App\Modules\Transcodes\Resources\TranscodeResource;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;

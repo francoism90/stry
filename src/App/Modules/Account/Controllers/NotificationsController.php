@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Account\Controllers;
 
-use App\Api\Notifications\Resources\NotificationResource;
+use App\Modules\Notifications\Resources\NotificationResource;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

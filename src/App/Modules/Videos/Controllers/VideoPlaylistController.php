@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Playlists\Requests\PlaylistStoreRequest;
-use App\Api\Playlists\Requests\PlaylistUpdateRequest;
-use App\Api\Playlists\Resources\PlaylistResource;
+use App\Modules\Playlists\Requests\PlaylistStoreRequest;
+use App\Modules\Playlists\Requests\PlaylistUpdateRequest;
+use App\Modules\Playlists\Resources\PlaylistResource;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;

@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Enums;
+namespace Modules\Videos\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
-
-enum VideoFilter: string implements Enumerable
+enum VideoFilter: string
 {
     case Captioned = 'captioned';
     case Shorts = 'shorts';

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Controllers;
 
-use App\Api\Media\Resources\MediaResource;
+use App\Modules\Media\Resources\MediaResource;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;

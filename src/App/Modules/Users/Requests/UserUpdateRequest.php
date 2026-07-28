@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Users\Requests;
+namespace App\Modules\Users\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

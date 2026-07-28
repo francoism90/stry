@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Transcodes\Requests;
+namespace App\Modules\Transcodes\Requests;
 
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Illuminate\Contracts\Validation\ValidationRule;

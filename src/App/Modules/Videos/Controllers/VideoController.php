@@ -2,26 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
-use App\Api\Videos\Requests\VideoUpdateRequest;
-use App\Api\Videos\Resources\VideoResource;
-use App\Shared\Responses\ResourceProperties;
-use App\Shared\Responses\ScoutBuilderOptions;
-use App\Shared\Responses\ScoutBuilderProperties;
-use App\Web\Videos\Responses\VideoGroupsProperty;
-use App\Web\Videos\Responses\VideoPlaylistProperty;
-use App\Web\Videos\Responses\VideoProgressProperty;
-use App\Web\Videos\Responses\VideoQueueProperty;
-use App\Web\Videos\Responses\VideoResourceProperty;
-use Domain\Users\Enums\UserLocale;
-use Domain\Videos\Actions\UpdateVideoDetails;
+use App\Modules\Videos\Requests\VideoUpdateRequest;
 use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoSorter;
-use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Scopes\VideoProfileScope;
-use Foundation\Http\Controllers\Controller;
+use Foundation\Http\Properties\ModelProperties;
+use Foundation\Http\Properties\ScoutBuilderOptions;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -33,11 +22,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\LaravelOptions\Options;
+use Modules\Videos\Resources\VideoResource;
 use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
-class VideoController extends Controller implements HasMiddleware
+class VideoController implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -57,7 +46,7 @@ class VideoController extends Controller implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
-            ->tap(new VideoProfileScope)
+            // ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
                 AllowedFilter::custom('shorts', new Filters\FilterShorts),
@@ -79,7 +68,7 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('Resources/ResourceIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'resource' => fn () => new ResourceProperties(Video::class),
+            'model' => fn () => new ModelProperties(Video::class),
             'filters' => fn () => new ScoutBuilderOptions(VideoFilter::class),
             'sorters' => fn () => new ScoutBuilderOptions(VideoSorter::class),
             $properties,
@@ -91,17 +80,17 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('view', $video);
 
         // Dispatch the job to create a playlist if necessary
-        PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist(),
-            $video,
-        );
+        // PlaylistVideo::dispatchIf(
+        //     ! $video->hasPlaylist(),
+        //     $video,
+        // );
 
         return Inertia::render('Videos/VideoView', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
-            'playlist' => fn () => new VideoPlaylistProperty(video: $video),
-            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
-            'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
+            // 'video' => fn () => new VideoResourceProperty(video: $video),
+            // 'playlist' => fn () => new VideoPlaylistProperty(video: $video),
+            // 'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            // 'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
+            // 'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
         ]);
     }
 
@@ -110,7 +99,7 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('create', Video::class);
 
         return Inertia::render('Videos/VideoCreate', [
-            'locales' => fn () => UserLocale::options(),
+            // 'locales' => fn () => UserLocale::options(),
         ]);
     }
 
@@ -133,9 +122,9 @@ class VideoController extends Controller implements HasMiddleware
         ];
 
         return Inertia::render('Videos/VideoEdit', [
-            'video' => fn () => new VideoResourceProperty($video, $appends),
-            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'locales' => fn () => UserLocale::options(),
+            // 'video' => fn () => new VideoResourceProperty($video, $appends),
+            // 'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            // 'locales' => fn () => UserLocale::options(),
         ]);
     }
 
@@ -144,10 +133,10 @@ class VideoController extends Controller implements HasMiddleware
         Gate::authorize('update', $video);
 
         // Update video details
-        app(UpdateVideoDetails::class)->handle(
-            video: $video,
-            attributes: $request->safe()->all()
-        );
+        // app(UpdateVideoDetails::class)->handle(
+        //     video: $video,
+        //     attributes: $request->safe()->all()
+        // );
 
         // Notify the user
         Inertia::flash([

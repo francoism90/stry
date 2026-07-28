@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Groups\Controllers;
 
-use App\Api\Groups\Requests\GroupStoreRequest;
-use App\Api\Groups\Requests\GroupUpdateRequest;
-use App\Api\Groups\Resources\GroupResource;
-use App\Api\Videos\Resources\VideoResource;
+use App\Modules\Groups\Requests\GroupStoreRequest;
+use App\Modules\Groups\Requests\GroupUpdateRequest;
+use App\Modules\Groups\Resources\GroupResource;
+use App\Modules\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupSorter;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Tags\Resources;
+namespace App\Modules\Tags\Resources;
 
 use Domain\Tags\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;

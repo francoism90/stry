@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Videos\Requests;
+namespace App\Modules\Videos\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

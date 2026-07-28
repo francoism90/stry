@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Media\Controllers;
 
-use App\Api\Media\Requests\MediaUpdateRequest;
+use App\Modules\Media\Requests\MediaUpdateRequest;
 use Domain\Media\Models\Media;
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;

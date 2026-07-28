@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Playlists\Controllers;
+namespace App\Modules\Playlists\Controllers;
 
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;

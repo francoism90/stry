@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Tags\Requests;
+namespace App\Modules\Tags\Requests;
 
 use Domain\Tags\Enums\TagType;
 use Illuminate\Contracts\Validation\ValidationRule;

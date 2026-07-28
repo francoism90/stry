@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Playlists\Broadcasting;
+namespace App\Modules\Playlists\Broadcasting;
 
 use Domain\Playlists\Models\Playlist;
 use Domain\Users\Models\User;

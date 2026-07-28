@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Transcodes\Responses;
 
-use App\Api\Transcodes\Resources\TranscodeResource;
+use App\Modules\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Models\Transcode;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;

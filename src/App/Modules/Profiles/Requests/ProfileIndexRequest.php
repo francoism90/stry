@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Profiles\Requests;
+namespace App\Modules\Profiles\Requests;
 
 use Domain\Profiles\Enums\ProfileSorter;
 use Illuminate\Contracts\Validation\ValidationRule;
