@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
-import { useAuth } from '@/composables/auth'
-import { router } from '@inertiajs/vue3'
-import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import ContentMenu from '@/components/Ui/ContentMenu.vue'
+import UserMenu from '@/components/Ui/UserMenu.vue'
+import UserNotifications from '@/components/Ui/UserNotifications.vue'
+import type { NavigationMenuItem } from '@nuxt/ui'
 
-const { user } = useAuth()
-
-const navItems: NavigationMenuItem[] = [
+const items: NavigationMenuItem[] = [
   {
     label: 'Videos',
     to: '/',
@@ -22,69 +20,27 @@ const navItems: NavigationMenuItem[] = [
     to: '/tags',
   },
 ]
-
-const menuItems = computed<DropdownMenuItem[][]>(() => [
-  [
-    {
-      label: 'Account',
-      icon: 'i-lucide-user',
-      to: '/account',
-    },
-    {
-      label: 'Settings',
-      icon: 'i-lucide-settings',
-      to: '/settings',
-    },
-    {
-      label: 'Profiles',
-      icon: 'i-lucide-users',
-      to: '/profiles',
-    },
-  ],
-  [
-    {
-      label: 'Log out',
-      icon: 'i-lucide-log-out',
-      onClick: () => router.post('/logout'),
-    },
-  ],
-])
 </script>
 
 <template>
-  <div class="sticky top-0 z-40 w-full bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150">
+  <header class="sticky top-0 z-40 w-full bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150">
     <UDashboardNavbar :toggle="false">
       <template #left>
         <AppLogo />
 
         <UNavigationMenu
-          :items="navItems"
+          :items="items"
           variant="link"
         />
       </template>
 
       <template #right>
-        <UButton
-          variant="ghost"
-          color="neutral"
-          icon="i-lucide-bell"
-          to="/notifications"
-        />
-
-        <UDropdownMenu
-          :items="menuItems"
-          :content="{ align: 'end', collisionPadding: 12 }"
-        >
-          <UAvatar
-            :src="user?.avatar ?? undefined"
-            :alt="user?.name ?? 'User'"
-            :ui="{ root: 'cursor-pointer' }"
-            size="sm"
-          />
-        </UDropdownMenu>
+        <ContentMenu />
+        <UserNotifications />
+        <UserMenu />
       </template>
     </UDashboardNavbar>
 
     <slot />
-  </div>
+  </header>
 </template>
