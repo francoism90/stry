@@ -17,10 +17,7 @@ defineProps<{
   <UDashboardPanel id="tags">
     <template #header>
       <AppHeader>
-        <FilterBar
-          placeholder="Search tags"
-          :results="Boolean(items?.data?.length)"
-        />
+        <FilterBar placeholder="Search tags" />
       </AppHeader>
     </template>
 
