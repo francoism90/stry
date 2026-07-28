@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import VideoTags from '@/components/Videos/VideoTags.vue'
+// import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import type { Video } from '@/types'
 
 const props = defineProps<{
@@ -17,7 +16,6 @@ const isLcp = props.index === 0
     variant="naked"
     :title="item.title"
     :date="item.released ?? undefined"
-    :to="show.url(item.id)"
     :ui="{
       root: 'gap-y-2 rounded-none',
       title: 'line-clamp-2 text-sm leading-snug font-medium capitalize',
@@ -70,7 +68,7 @@ const isLcp = props.index === 0
     </template>
 
     <template #description>
-      <VideoTags :items="item.tags" />
+      <!-- <VideoTags :items="item.tags" /> -->
     </template>
   </UBlogPost>
 </template>

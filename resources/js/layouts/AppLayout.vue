@@ -16,8 +16,7 @@ useFlash()
     <UTheme
       :ui="{
         dashboardPanel: {
-          // root: 'grid min-h-0 grid-cols-1 gap-0 divide-y',
-          body: 'flex-1 overflow-visible',
+          body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible',
         },
         dashboardNavbar: {
           root: 'mx-auto flex w-full max-w-(--ui-container) border-0',
