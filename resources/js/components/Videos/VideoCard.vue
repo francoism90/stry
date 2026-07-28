@@ -19,7 +19,7 @@ const isLcp = props.index === 0
     :date="item.released ?? undefined"
     :to="show.url(item.id)"
     :ui="{
-      root: 'gap-y-3 rounded-none',
+      root: 'gap-y-2 rounded-none',
       title: 'line-clamp-2 text-sm leading-snug font-medium capitalize',
       date: 'sr-only',
       body: 'p-0 sm:p-0 lg:px-0',
