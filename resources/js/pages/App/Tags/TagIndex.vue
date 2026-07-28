@@ -4,7 +4,7 @@ import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterBar from '@/components/Ui/FilterBar.vue'
 import type { TagCollection } from '@/types'
-import { InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 defineProps<{
   items: TagCollection
@@ -12,6 +12,8 @@ defineProps<{
 </script>
 
 <template>
+  <Head title="Tags" />
+
   <UDashboardPanel id="tags">
     <template #header>
       <AppHeader>
