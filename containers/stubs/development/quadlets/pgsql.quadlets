@@ -5,7 +5,7 @@ Description=PostgreSQL container
 [Container]
 Image=docker.io/library/postgres:latest
 AutoUpdate=registry
-Environment=POSTGRES_DB=laravel
+Environment=POSTGRES_DB=stry
 Environment=POSTGRES_USER=user
 Environment=POSTGRES_PASSWORD=password
 Environment=PGPASSWORD=password
