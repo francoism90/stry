@@ -23,7 +23,7 @@ useFlash()
         <UTheme
           :ui="{
             dropdownMenu: {
-              content: 'z-50',
+              content: 'z-50 min-w-36',
             },
             dashboardPanel: {
               body: 'mx-auto w-full max-w-(--ui-container) flex-1 self-center overflow-visible 2xl:px-0',
