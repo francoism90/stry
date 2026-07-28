@@ -26,7 +26,7 @@ useFlash()
               content: 'z-50 min-w-32',
             },
             dashboardPanel: {
-              body: 'mx-auto w-full max-w-(--ui-container) flex-1 self-center overflow-visible 2xl:px-0',
+              body: 'mx-auto w-full max-w-(--ui-container) flex-1 self-center overflow-visible xl:px-0',
             },
             dashboardNavbar: {
               center: 'mx-auto flex w-full max-w-(--ui-container) justify-between',
