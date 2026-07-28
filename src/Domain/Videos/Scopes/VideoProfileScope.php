@@ -13,7 +13,8 @@ readonly class VideoProfileScope
     public function __invoke(Builder $scout): void
     {
         $scout
-            ->query(fn (VideoQueryBuilder $query) => $query->with(['media', 'tags'])
+            ->query(fn (VideoQueryBuilder $query) => $query
+                ->with(['media', 'tags'])
                 ->forProfile(Profile::current()));
     }
 }

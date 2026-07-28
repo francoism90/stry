@@ -72,6 +72,7 @@ class TagController extends Controller implements HasMiddleware
             'sorters' => fn () => Options::forEnum(TagSorter::class),
             'filter' => fn () => $request->input('filter'),
             'sort' => fn () => $request->input('sort'),
+            'query' => fn () => $request->input('query'),
         ]);
     }
 
@@ -108,10 +109,11 @@ class TagController extends Controller implements HasMiddleware
         return Inertia::render('App/Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'filters' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
+            'filter' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
+            'query' => fn () => $request->input('query'),
         ]);
     }
 
