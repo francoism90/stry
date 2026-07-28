@@ -1,25 +1,9 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import ContentMenu from '@/components/Ui/ContentMenu.vue'
+import CreateMenu from '@/components/Ui/CreateMenu.vue'
 import UserMenu from '@/components/Ui/UserMenu.vue'
 import UserNotifications from '@/components/Ui/UserNotifications.vue'
-import type { NavigationMenuItem } from '@nuxt/ui'
-
-const items: NavigationMenuItem[] = [
-  {
-    label: 'Videos',
-    to: '/',
-    exact: true,
-  },
-  {
-    label: 'Collections',
-    to: '/collections',
-  },
-  {
-    label: 'Tags',
-    to: '/tags',
-  },
-]
 </script>
 
 <template>
@@ -27,15 +11,11 @@ const items: NavigationMenuItem[] = [
     <UDashboardNavbar :toggle="false">
       <template #left>
         <AppLogo />
-
-        <UNavigationMenu
-          :items="items"
-          variant="link"
-        />
+        <ContentMenu />
       </template>
 
       <template #right>
-        <ContentMenu />
+        <CreateMenu />
         <UserNotifications />
         <UserMenu />
       </template>

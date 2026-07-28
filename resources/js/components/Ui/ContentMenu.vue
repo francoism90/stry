@@ -6,29 +6,36 @@ const items = ref<DropdownMenuItem[]>([
   {
     label: 'Video',
     icon: 'i-lucide-file-video',
-    to: '/videos/create',
+    to: '/videos',
   },
   {
     label: 'Tag',
     icon: 'i-lucide-tag-plus',
-    to: '/tags/create',
+    to: '/tags',
   },
   {
     label: 'Collection',
     icon: 'i-lucide-folder',
-    to: '/collections/create',
+    to: '/collections',
   },
 ])
 </script>
 
 <template>
-  <UDropdownMenu :items="items">
+  <UDropdownMenu
+    v-slot="{ open }"
+    :modal="false"
+    :items="items"
+  >
     <UButton
-      icon="i-lucide-plus"
-      label="Create"
-      color="neutral"
-      variant="outline"
-      class="me-2"
+      label="Videos"
+      variant="subtle"
+      trailing-icon="i-lucide-chevron-down"
+      size="sm"
+      :class="['ms-1.5', open && 'bg-primary/15']"
+      :ui="{
+        trailingIcon: ['transition-transform duration-200', open ? 'rotate-180' : undefined].filter(Boolean).join(' '),
+      }"
     />
   </UDropdownMenu>
 </template>
