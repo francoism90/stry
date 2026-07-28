@@ -7,17 +7,18 @@ const page = usePage()
 
 const items = ref<DropdownMenuItem[]>([
   {
-    label: 'Video',
+    label: 'Videos',
     icon: 'i-lucide-file-video',
     to: '/',
+    exact: true,
   },
   {
-    label: 'Tag',
+    label: 'Tags',
     icon: 'i-lucide-tag-plus',
     to: '/tags',
   },
   {
-    label: 'Collection',
+    label: 'Collections',
     icon: 'i-lucide-folder',
     to: '/collections',
   },
@@ -38,9 +39,8 @@ const currentItem = computed(() =>
   >
     <UButton
       :label="currentItem?.label ?? 'Videos'"
-      variant="subtle"
+      variant="soft"
       trailing-icon="i-lucide-chevron-down"
-      size="sm"
       :class="['ms-1.5', open && 'bg-primary/15']"
       :ui="{
         trailingIcon: ['transition-transform duration-200', open ? 'rotate-180' : undefined].filter(Boolean).join(' '),
