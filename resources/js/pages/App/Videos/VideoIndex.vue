@@ -22,6 +22,7 @@ defineProps<{
     <template #header>
       <AppHeader>
         <FilterBar
+          placeholder="Search videos"
           :results="Boolean(items?.data?.length)"
           :filters="filters"
           :sorters="sorters"

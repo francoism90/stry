@@ -5,12 +5,13 @@ import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 
 const props = defineProps<{
+  results?: boolean
+  placeholder?: string
   filters?: SelectMenuItem[]
   sorters?: SelectMenuItem[]
   filter?: QueryFilters
   query?: QueryFilter
   sort?: QueryFilter
-  results?: boolean
 }>()
 
 const { form, formFilters, onSubmit } = useQuery({
@@ -37,7 +38,7 @@ watchDebounced(
         <UInput
           v-model="form.query"
           :model-modifiers="{ nullable: true, string: true, trim: true }"
-          :placeholder="'Search...'"
+          :placeholder="placeholder ?? 'Search...'"
           variant="soft"
           size="lg"
           color="neutral"
