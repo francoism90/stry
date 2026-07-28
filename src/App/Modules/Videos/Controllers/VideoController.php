@@ -73,7 +73,7 @@ class VideoController implements HasMiddleware
                 title: __('Videos'),
                 description: __('Browse and manage your videos.'),
                 id: 'videos.index',
-                type: 'videos',
+                type: 'video',
             ),
             $properties,
         ]);
