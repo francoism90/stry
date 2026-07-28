@@ -13,6 +13,7 @@ defineProps<{
   sorters?: SelectMenuItem[]
   filter?: QueryFilters
   sort?: QueryFilter
+  query?: QueryFilter
 }>()
 </script>
 
@@ -32,6 +33,7 @@ defineProps<{
               :sorters="sorters"
               :filter="filter"
               :sort="sort"
+              :query="query"
             />
           </template>
         </UDashboardToolbar>

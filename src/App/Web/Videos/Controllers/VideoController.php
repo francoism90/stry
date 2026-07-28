@@ -80,6 +80,7 @@ class VideoController extends Controller implements HasMiddleware
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'filter' => fn () => $request->input('filter'),
             'sort' => fn () => $request->input('sort'),
+            'query' => fn () => $request->input('query'),
         ]);
     }
 

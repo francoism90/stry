@@ -8,6 +8,7 @@ const isFilterActive = (value?: QueryFilter) => value === true || value === 'tru
 export function useQuery(options: {
   filters?: MaybeRefOrGetter<SelectMenuItem[] | undefined>
   filter?: MaybeRefOrGetter<QueryFilters | undefined>
+  query?: MaybeRefOrGetter<QueryFilter | undefined>
   sort?: MaybeRefOrGetter<QueryFilter | undefined>
   only?: string[]
   reset?: string[]
@@ -20,6 +21,7 @@ export function useQuery(options: {
     filter: Object.fromEntries(
       filterKeys.value.map((key) => [key, isFilterActive(toValue(options.filter)?.[key]) ? true : undefined]),
     ) as Record<string, true | undefined>,
+    query: toValue(options.query ?? null),
     sort: toValue(options.sort),
     page: { number: 1 },
   })
@@ -35,8 +37,8 @@ export function useQuery(options: {
   const onSubmit = () => {
     router.reload({
       data: form.data(),
-      only: options.only ?? ['items', 'filter', 'sort'],
-      reset: options.reset ?? ['items'],
+      only: options.only ?? ['page', 'items', 'filter', 'sort', 'query'],
+      reset: options.reset ?? ['page', 'items'],
     })
   }
 
