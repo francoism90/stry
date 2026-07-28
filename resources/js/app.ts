@@ -4,9 +4,11 @@ import ui from '@nuxt/ui/vue-plugin'
 import '@/plugins/iconify'
 import '@/plugins/pusher'
 
+import '../css/app.css'
+
 import AppLayout from '@/layouts/AppLayout.vue'
 import ResourceLayout from '@/layouts/Resources/ResourceLayout.vue'
-import '../css/app.css'
+import AuthLayout from './layouts/AuthLayout.vue'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
@@ -16,6 +18,8 @@ createInertiaApp({
     console.log('layout', name)
 
     switch (true) {
+      case name.startsWith('Auth/'):
+        return AuthLayout
       case name.startsWith('Resources/'):
         return [AppLayout, ResourceLayout]
       default:
