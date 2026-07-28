@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+
+const page = usePage()
 
 const items = ref<DropdownMenuItem[]>([
   {
     label: 'Video',
     icon: 'i-lucide-file-video',
-    to: '/videos',
+    to: '/',
   },
   {
     label: 'Tag',
@@ -19,6 +22,12 @@ const items = ref<DropdownMenuItem[]>([
     to: '/collections',
   },
 ])
+
+const currentItem = computed(() =>
+  (items.value as { to?: string; label?: string }[]).find((item) =>
+    item.to === '/' ? page.url === '/' : page.url.startsWith(item.to ?? ''),
+  ),
+)
 </script>
 
 <template>
@@ -28,7 +37,7 @@ const items = ref<DropdownMenuItem[]>([
     :items="items"
   >
     <UButton
-      label="Videos"
+      :label="currentItem?.label ?? 'Videos'"
       variant="subtle"
       trailing-icon="i-lucide-chevron-down"
       size="sm"
