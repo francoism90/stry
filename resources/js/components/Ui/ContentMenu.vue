@@ -1,27 +1,24 @@
 <script setup lang="ts">
-import { useAuth } from '@/composables/auth'
 import { router } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
 
-const { user } = useAuth()
-
 const items = ref<DropdownMenuItem[][]>([
   [
     {
-      label: 'Account',
-      icon: 'i-lucide-user',
-      to: '/account',
+      label: 'Video',
+      icon: 'i-lucide-file-video',
+      to: '/videos/create',
     },
     {
-      label: 'Settings',
-      icon: 'i-lucide-settings',
-      to: '/settings',
+      label: 'Tag',
+      icon: 'i-lucide-tag-plus',
+      to: '/tags/create',
     },
     {
-      label: 'Profiles',
-      icon: 'i-lucide-users',
-      to: '/profiles',
+      label: 'Collection',
+      icon: 'i-lucide-folder',
+      to: '/collections/create',
     },
   ],
   [
@@ -35,15 +32,13 @@ const items = ref<DropdownMenuItem[][]>([
 </script>
 
 <template>
-  <UDropdownMenu
-    :items="items"
-    :content="{ align: 'end', collisionPadding: 12 }"
-  >
-    <UAvatar
-      :src="user?.avatar ?? undefined"
-      :alt="user?.name ?? 'User'"
-      :ui="{ root: 'cursor-pointer' }"
-      size="sm"
+  <UDropdownMenu :items="items">
+    <UButton
+      icon="i-lucide-plus"
+      label="Create"
+      color="neutral"
+      variant="outline"
+      class="me-2"
     />
   </UDropdownMenu>
 </template>

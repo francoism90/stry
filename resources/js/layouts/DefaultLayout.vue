@@ -25,6 +25,9 @@ useFlash()
             dropdownMenu: {
               content: 'z-50',
             },
+            dashboardNavbar: {
+              right: 'gap-2',
+            },
             dashboardToolbar: {
               root: 'flex-col items-stretch gap-3 py-3 sm:flex-row',
               left: 'flex-1',
