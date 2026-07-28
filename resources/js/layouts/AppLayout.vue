@@ -12,7 +12,7 @@ useFlash()
       unit="rem"
       storage="local"
       storage-key="app"
-      class="relative w-full overflow-clip"
+      class="relative overflow-clip"
     >
       <slot />
     </UDashboardGroup>
