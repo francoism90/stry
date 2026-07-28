@@ -103,6 +103,18 @@ class VideoController extends Controller implements HasMiddleware
         ]);
     }
 
+    public function create(): Response
+    {
+        Gate::authorize('create', Video::class);
+
+        return Inertia::render('App/Videos/VideoCreate', [
+            'locales' => fn () => UserLocale::options(),
+        ]);
+    }
+
+    // Store a newly created resource in storage
+    public function store(Request $request) {}
+
     public function edit(Video $video): Response
     {
         Gate::authorize('update', $video);
