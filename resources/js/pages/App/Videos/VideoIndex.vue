@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
+import FilterBar from '@/components/Ui/FilterBar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { VideoCollection, VideoFilters } from '@/types'
+import type { QueryFilter, QueryFilters, VideoCollection } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 
 defineProps<{
   items: VideoCollection
-  filters: VideoFilters
-  sorters: SelectMenuItem[]
-  scopes: SelectMenuItem[]
-  sort?: string | null
+  filters?: SelectMenuItem[]
+  sorters?: SelectMenuItem[]
+  filter?: QueryFilters
+  sort?: QueryFilter
 }>()
 </script>
 
@@ -26,12 +26,12 @@ defineProps<{
       <UPage>
         <UDashboardToolbar>
           <template #left>
-            <VideoFilterBar
-              :results="Boolean(items?.data?.length)"
-              :sorters="sorters"
-              :scopes="scopes"
-              :sort="sort"
+            <FilterBar
               :filters="filters"
+              :sorters="sorters"
+              :results="items?.data?.length"
+              :filter="filter"
+              :sort="sort"
             />
           </template>
         </UDashboardToolbar>

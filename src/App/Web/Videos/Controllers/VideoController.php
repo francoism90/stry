@@ -76,9 +76,9 @@ class VideoController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
+            'filters' => Inertia::once(fn () => Options::forEnum(VideoFilter::class)),
+            'sorters' => Inertia::once(fn () => Options::forEnum(VideoSorter::class)),
+            'filter' => fn () => $request->input('filter'),
             'sort' => fn () => $request->input('sort'),
         ]);
     }

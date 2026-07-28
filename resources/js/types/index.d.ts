@@ -15,22 +15,9 @@ export type FlashData = {
   readonly type?: FlashType
 }
 
-export type VideoFilters = {
-  captioned?: string | boolean
-  shorts?: string | boolean
-  unseen?: string | boolean
-  untagged?: string | boolean
-  tagged?: string
-  state?: string
-  season?: string
-  episode?: string
-  part?: string
-}
+export type QueryFilter = string | number | boolean | null
 
-export type FilterOption = {
-  label: string
-  value: string
-}
+export type QueryFilters = Record<string, QueryFilter>
 
 export type Model = {
   id: string
