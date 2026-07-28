@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Foundation\Container\Attributes;
+namespace Foundation\Http\Container\Attributes;
 
 use Attribute;
 use Illuminate\Contracts\Container\Container;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Responses;
+namespace Foundation\Http\Properties;
 
 use Foundation\Container\Attributes\RequestInputParameter;
 use Inertia\ProvidesInertiaProperties;

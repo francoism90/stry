@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Responses;
+namespace Foundation\Http\Properties;
 
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
