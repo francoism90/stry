@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import FilterBar from '@/components/Ui/FilterBar.vue'
+
 defineProps<{
   filter?: string
   sort?: string
@@ -7,5 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div>{{ sort }}</div>
+  <div>
+    <FilterBar />
+  </div>
 </template>

@@ -13,13 +13,31 @@ useFlash()
 
 <template>
   <UApp :nonce="nonce">
-    <UDashboardGroup
-      unit="rem"
-      storage="local"
-      storage-key="app"
-      class="relative overflow-clip"
+    <UTheme
+      :ui="{
+        dashboardPanel: {
+          // root: 'grid min-h-0 grid-cols-1 gap-0 divide-y',
+          body: 'flex-1 overflow-visible',
+        },
+        dashboardNavbar: {
+          root: 'mx-auto flex w-full max-w-(--ui-container) border-0',
+        },
+        dashboardToolbar: {
+          root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-2 border-0 py-3 md:flex-row',
+        },
+        dropdownMenu: {
+          content: 'z-50 min-w-32',
+        },
+      }"
     >
-      <slot />
-    </UDashboardGroup>
+      <UDashboardGroup
+        unit="rem"
+        storage="local"
+        storage-key="app"
+        class="relative overflow-clip"
+      >
+        <slot />
+      </UDashboardGroup>
+    </UTheme>
   </UApp>
 </template>

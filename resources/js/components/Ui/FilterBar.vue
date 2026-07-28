@@ -33,55 +33,53 @@ watchDebounced(
 
 <template>
   <UDashboardToolbar>
-    <div class="mx-auto flex w-full max-w-(--ui-container) flex-col gap-2 py-3 md:flex-row">
-      <UFormField
-        :error="form.errors.query"
-        class="min-w-3/4 flex-1"
-      >
-        <UInput
-          v-model="form.query"
-          :model-modifiers="{ nullable: true, string: true, trim: true }"
-          :placeholder="placeholder ?? 'Search...'"
-          variant="soft"
-          size="lg"
-          color="neutral"
-          icon="i-lucide-search"
-          autofocus
-        />
-      </UFormField>
-
-      <USelectMenu
-        v-if="page.props.filters?.length"
-        v-model="formFilters"
-        :model-modifiers="{ nullable: true }"
-        :items="page.props.filters"
-        :search-input="false"
-        :ui="{ content: 'min-w-40' }"
-        placeholder="Filters"
-        label-key="label"
-        value-key="value"
-        variant="ghost"
+    <UFormField
+      :error="form.errors.query"
+      class="min-w-3/4 flex-1"
+    >
+      <UInput
+        v-model="form.query"
+        :model-modifiers="{ nullable: true, string: true, trim: true }"
+        :placeholder="placeholder ?? 'Search...'"
+        variant="soft"
         size="lg"
-        multiple
-        clear
-        @update:modelValue="onSubmit"
+        color="neutral"
+        icon="i-lucide-search"
+        autofocus
       />
+    </UFormField>
 
-      <USelectMenu
-        v-if="page.props.sorters?.length"
-        v-model="form.sort"
-        :model-modifiers="{ nullable: true }"
-        :items="page.props.sorters"
-        :search-input="false"
-        :ui="{ content: 'min-w-40' }"
-        placeholder="Sort by"
-        label-key="label"
-        value-key="value"
-        variant="ghost"
-        size="lg"
-        clear
-        @update:modelValue="onSubmit"
-      />
-    </div>
+    <USelectMenu
+      v-if="page.props.filters?.length"
+      v-model="formFilters"
+      :model-modifiers="{ nullable: true }"
+      :items="page.props.filters"
+      :search-input="false"
+      :ui="{ content: 'min-w-40' }"
+      placeholder="Filters"
+      label-key="label"
+      value-key="value"
+      variant="ghost"
+      size="lg"
+      multiple
+      clear
+      @update:modelValue="onSubmit"
+    />
+
+    <USelectMenu
+      v-if="page.props.sorters?.length"
+      v-model="form.sort"
+      :model-modifiers="{ nullable: true }"
+      :items="page.props.sorters"
+      :search-input="false"
+      :ui="{ content: 'min-w-40' }"
+      placeholder="Sort by"
+      label-key="label"
+      value-key="value"
+      variant="ghost"
+      size="lg"
+      clear
+      @update:modelValue="onSubmit"
+    />
   </UDashboardToolbar>
 </template>

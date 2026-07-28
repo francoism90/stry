@@ -7,16 +7,20 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
 </script>
 
 <template>
-  <UDashboardNavbar :toggle="false">
-    <div class="flex items-center gap-2">
-      <AppLogo />
-      <ContentMenu />
-    </div>
+  <div class="w-full border-b border-default">
+    <UDashboardNavbar :toggle="false">
+      <template #left>
+        <AppLogo />
+        <ContentMenu />
+      </template>
 
-    <div class="flex items-center gap-2">
-      <CreateMenu />
-      <UserNotifications />
-      <UserMenu />
-    </div>
-  </UDashboardNavbar>
+      <template #right>
+        <div class="flex items-center gap-2">
+          <CreateMenu />
+          <UserNotifications />
+          <UserMenu />
+        </div>
+      </template>
+    </UDashboardNavbar>
+  </div>
 </template>
