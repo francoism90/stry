@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Http\Properties;
 
-use Foundation\Container\Attributes\RequestInputParameter;
+use Foundation\Http\Container\Attributes\RequestInputParameter;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
 
