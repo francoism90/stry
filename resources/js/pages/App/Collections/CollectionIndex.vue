@@ -2,6 +2,7 @@
 import CollectionList from '@/components/Collections/CollectionList.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import FilterBar from '@/components/Ui/FilterBar.vue'
 import type { GroupCollection } from '@/types'
 import { InfiniteScroll } from '@inertiajs/vue3'
 

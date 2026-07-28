@@ -70,9 +70,10 @@ class GroupController extends Controller implements HasMiddleware
 
         return Inertia::render('App/Collections/CollectionIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
+            'sorters' => fn () => Options::forEnum(GroupSorter::class),
             'sort' => fn () => $request->input('sort'),
             'type' => fn () => $request->input('type'),
-            'sorters' => fn () => Options::forEnum(GroupSorter::class),
+            'query' => fn () => $request->input('query'),
         ]);
     }
 
