@@ -30,10 +30,10 @@ watchDebounced(
 
 <template>
   <UDashboardToolbar>
-    <template #left>
+    <div class="mx-auto flex w-full max-w-(--ui-container) flex-col gap-2 py-3 md:flex-row">
       <UFormField
         :error="form.errors.query"
-        class="w-full flex-1"
+        class="min-w-3/4 flex-1"
       >
         <UInput
           v-model="form.query"
@@ -42,14 +42,11 @@ watchDebounced(
           variant="soft"
           size="lg"
           color="neutral"
-          class="w-full"
           icon="i-lucide-search"
           autofocus
         />
       </UFormField>
-    </template>
 
-    <template #right>
       <USelectMenu
         v-if="filters?.length"
         v-model="formFilters"
@@ -82,6 +79,6 @@ watchDebounced(
         clear
         @update:modelValue="onSubmit"
       />
-    </template>
+    </div>
   </UDashboardToolbar>
 </template>

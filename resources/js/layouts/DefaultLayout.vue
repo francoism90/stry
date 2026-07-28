@@ -25,13 +25,17 @@ useFlash()
             dropdownMenu: {
               content: 'z-50',
             },
+            dashboardPanel: {
+              body: 'mx-auto w-full max-w-(--ui-container) flex-1 self-center overflow-visible',
+            },
             dashboardNavbar: {
-              right: 'gap-2',
+              center: 'mx-auto flex w-full max-w-(--ui-container) justify-between',
+              left: 'hidden',
+              right: 'hidden',
             },
             dashboardToolbar: {
-              root: 'flex-col items-stretch gap-3 py-3 sm:flex-row',
-              left: 'flex-1',
-              right: 'flex-wrap',
+              left: 'hidden',
+              right: 'hidden',
             },
             // pageHeader: {
             //   root: 'border-0 py-4 sm:py-6',
