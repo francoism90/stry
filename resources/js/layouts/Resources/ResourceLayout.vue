@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import FilterBar from '@/components/Ui/FilterBar.vue'
+import type { LayoutData } from '@/types'
 
 type Props = {
-  id?: string | undefined
-  title?: string | undefined
+  layout?: LayoutData
   type?: 'video' | 'image' | 'audio' | 'document' | 'label'
 }
 
 withDefaults(defineProps<Props>(), {
-  id: 'resource',
-  title: 'Items',
+  layout: () => ({
+    title: 'Resources',
+    description: 'Browse and manage your resources.',
+    id: 'resources.index',
+  }),
   type: 'video',
 })
 </script>
@@ -35,13 +39,14 @@ withDefaults(defineProps<Props>(), {
       },
     }"
   >
-    <UDashboardPanel :id="id">
+    <UDashboardPanel id="foo">
       <template #header>
         <AppHeader />
+        <FilterBar />
       </template>
 
       <template #body>
-        {{ type }}
+        {{ layout }}
         <slot />
       </template>
 

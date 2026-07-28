@@ -1,7 +1,8 @@
 <script setup lang="ts">
 defineProps<{
+  filter?: string
   sort?: string
-  title?: string
+  type: string
 }>()
 </script>
 

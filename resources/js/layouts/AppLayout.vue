@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useAppearance } from '@/composables/appearance'
 import { useFlash } from '@/composables/flash'
+import type { LayoutData } from '@/types'
+
+defineProps<{
+  layout?: LayoutData
+}>()
 
 const { nonce } = useAppearance()
 useFlash()

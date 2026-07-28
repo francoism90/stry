@@ -1,5 +1,11 @@
 import type { AvatarProps, BadgeProps, SelectMenuItem } from '@nuxt/ui'
 
+export type LayoutData = {
+  readonly id?: string | null
+  readonly title?: string | null
+  readonly description?: string | null
+}
+
 export type EchoConfig = {
   readonly key: string
   readonly host: string
