@@ -28,13 +28,8 @@ watchDebounced(
 </script>
 
 <template>
-  <UDashboardToolbar
-    :ui="{
-      root: 'min-h-16 border-b border-default',
-      left: 'flex-1',
-    }"
-  >
-    <div class="mx-auto flex w-full items-center gap-4 px-4">
+  <UDashboardToolbar>
+    <template #left>
       <UFormField
         :error="form.errors.query"
         class="min-w-0 flex-1"
@@ -51,37 +46,39 @@ watchDebounced(
           autofocus
         />
       </UFormField>
-    </div>
+    </template>
 
-    <USelectMenu
-      v-if="filters?.length"
-      v-model="formFilters"
-      :model-modifiers="{ nullable: true }"
-      :items="filters"
-      :search-input="false"
-      :ui="{ base: 'px-0', content: 'min-w-40' }"
-      placeholder="Filters"
-      label-key="label"
-      value-key="value"
-      variant="none"
-      multiple
-      clear
-      @update:modelValue="onSubmit"
-    />
+    <template #right>
+      <USelectMenu
+        v-if="filters?.length"
+        v-model="formFilters"
+        :model-modifiers="{ nullable: true }"
+        :items="filters"
+        :search-input="false"
+        :ui="{ base: 'px-0', content: 'min-w-40' }"
+        placeholder="Filters"
+        label-key="label"
+        value-key="value"
+        variant="none"
+        multiple
+        clear
+        @update:modelValue="onSubmit"
+      />
 
-    <USelectMenu
-      v-if="sorters?.length && results"
-      v-model="form.sort"
-      :model-modifiers="{ nullable: true }"
-      :items="sorters"
-      :search-input="false"
-      :ui="{ base: 'px-0', content: 'min-w-40' }"
-      placeholder="Sort by"
-      label-key="label"
-      value-key="value"
-      variant="none"
-      clear
-      @update:modelValue="onSubmit"
-    />
+      <USelectMenu
+        v-if="sorters?.length && results"
+        v-model="form.sort"
+        :model-modifiers="{ nullable: true }"
+        :items="sorters"
+        :search-input="false"
+        :ui="{ base: 'px-0', content: 'min-w-40' }"
+        placeholder="Sort by"
+        label-key="label"
+        value-key="value"
+        variant="none"
+        clear
+        @update:modelValue="onSubmit"
+      />
+    </template>
   </UDashboardToolbar>
 </template>
