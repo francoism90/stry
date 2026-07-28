@@ -55,10 +55,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
   <UHeader
     :toggle="false"
     :ui="{
-      root: 'w-full border-default bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
-      container: 'gap-2.5',
-      header: 'gap-2.5',
-      left: '*:inline-flex *:items-center sm:gap-2.5',
+      root: 'w-full bg-neutral-900/80 backdrop-blur-md backdrop-saturate-150',
     }"
   >
     <template #left>
@@ -92,10 +89,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
         <UAvatar
           :src="user?.avatar ?? undefined"
           :alt="user?.name ?? 'User'"
-          :ui="{
-            root: 'cursor-pointer p-1',
-            fallback: 'flex size-full items-center justify-center',
-          }"
+          :ui="{ root: 'cursor-pointer' }"
           size="sm"
         />
       </UDropdownMenu>
