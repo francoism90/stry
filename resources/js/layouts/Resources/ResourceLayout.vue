@@ -6,7 +6,6 @@ import type { LayoutData } from '@/types'
 
 type Props = {
   layout?: LayoutData
-  type?: 'video' | 'image' | 'audio' | 'document' | 'label'
 }
 
 withDefaults(defineProps<Props>(), {
@@ -14,8 +13,8 @@ withDefaults(defineProps<Props>(), {
     title: 'Resources',
     description: 'Browse and manage your resources.',
     id: 'resources.index',
+    type: 'video',
   }),
-  type: 'video',
 })
 </script>
 

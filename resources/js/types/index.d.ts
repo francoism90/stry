@@ -4,6 +4,8 @@ export type LayoutData = {
   readonly id?: string | null
   readonly title?: string | null
   readonly description?: string | null
+  readonly type?: 'video' | 'image' | 'audio' | 'document' | 'label'
+  readonly icon?: string | null
 }
 
 export type EchoConfig = {
