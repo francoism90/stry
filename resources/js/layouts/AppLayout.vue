@@ -51,9 +51,6 @@ useFlash()
 
           <template #body>
             <FilterBar v-if="showFilter" />
-
-            {{ id }}
-
             <slot />
           </template>
 
