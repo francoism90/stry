@@ -41,7 +41,6 @@ watchDebounced(
         size="lg"
         color="neutral"
         icon="i-lucide-search"
-        autofocus
       />
     </UFormField>
 
