@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Modules\Groups\Controllers;
 
 use Domain\Groups\Models\Group;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;

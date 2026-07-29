@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\Notifications\Controllers;
 
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

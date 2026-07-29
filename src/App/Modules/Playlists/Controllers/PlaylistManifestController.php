@@ -7,7 +7,6 @@ namespace App\Modules\Playlists\Controllers;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
-use Foundation\Http\Controllers\Controller;
 use Foxws\Shaka\Facades\Shaka;
 use Foxws\Streamer\Facades\Streamer;
 use Illuminate\Http\Request;

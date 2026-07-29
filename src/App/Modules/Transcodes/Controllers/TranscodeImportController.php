@@ -6,7 +6,6 @@ namespace App\Modules\Transcodes\Controllers;
 
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

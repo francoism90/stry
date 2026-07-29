@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\Authentication\Controllers;
 
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Spatie\ResponseCache\Attributes\Cache;
 

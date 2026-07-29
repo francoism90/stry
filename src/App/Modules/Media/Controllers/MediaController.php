@@ -6,7 +6,6 @@ namespace App\Modules\Media\Controllers;
 
 use App\Modules\Media\Requests\MediaUpdateRequest;
 use Domain\Media\Models\Media;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;

@@ -6,7 +6,6 @@ namespace App\Modules\Tags\Controllers;
 
 use Domain\Tags\Actions\SetTagsOrder;
 use Domain\Tags\Models\Tag;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

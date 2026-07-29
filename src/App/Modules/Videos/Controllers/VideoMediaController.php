@@ -8,7 +8,6 @@ use App\Modules\Media\Resources\MediaResource;
 use App\Modules\Videos\Responses\VideoResourceProperty;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;

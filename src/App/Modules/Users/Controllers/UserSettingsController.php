@@ -6,7 +6,6 @@ namespace App\Modules\Users\Controllers;
 
 use Domain\Users\Actions\UpdateUserSettings;
 use Domain\Users\DataObjects\UserSettings;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

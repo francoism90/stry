@@ -7,7 +7,6 @@ namespace App\Modules\Videos\Controllers;
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

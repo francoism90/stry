@@ -9,7 +9,6 @@ use App\Modules\Transcodes\Resources\TranscodeResource;
 use App\Modules\Videos\Responses\VideoResourceProperty;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;

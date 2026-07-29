@@ -6,7 +6,6 @@ namespace App\Modules\Videos\Controllers;
 
 use Domain\Videos\Actions\ProcessVideoImport;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

@@ -6,7 +6,6 @@ namespace App\Modules\Playlists\Controllers;
 
 use App\Modules\Playlists\Requests\PlaylistUpdateRequest;
 use Domain\Playlists\Models\Playlist;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;

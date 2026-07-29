@@ -6,7 +6,6 @@ namespace App\Modules\Groups\Controllers;
 
 use Domain\Groups\Models\Group;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Modules\Profiles\Controllers;
 
 use Domain\Profiles\Models\Profile;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
