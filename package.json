@@ -22,7 +22,7 @@
     "@inertiajs/vue3": "^3.6.1",
     "@internationalized/date": "^3.12.2",
     "@nuxt/ui": "^4.10.0",
-    "@vueuse/core": "^14.3.0",
+    "@vueuse/core": "^14.4.0",
     "laravel-echo": "^2.4.0",
     "pusher-js": "^8.6.0",
     "shaka-player": "^5.2.2",
