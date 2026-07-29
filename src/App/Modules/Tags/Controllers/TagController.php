@@ -108,8 +108,8 @@ class TagController implements HasMiddleware
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'filters' => fn () => Options::forEnum(VideoFilter::class),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            // 'filters' => fn () => Options::forEnum(VideoFilter::class),
+            // 'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'filter' => fn () => $request->input('filter', []),
             'sort' => fn () => $request->input('sort'),
             'query' => fn () => $request->input('query'),
@@ -121,7 +121,7 @@ class TagController implements HasMiddleware
         Gate::authorize('create', Tag::class);
 
         return Inertia::render('Tags/TagCreate', [
-            // 'locales' => fn () => UserLocale::options(),
+            'types' => fn () => Options::forEnum(TagType::class),
         ]);
     }
 

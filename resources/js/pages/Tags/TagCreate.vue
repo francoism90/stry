@@ -3,6 +3,11 @@ import { store } from '@/actions/App/Modules/Tags/Controllers/TagController'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
+
+defineProps<{
+  types: SelectMenuItem[]
+}>()
 
 defineOptions({
   layout: [
@@ -12,7 +17,9 @@ defineOptions({
 })
 
 const form = useForm(store(), {
-  name: '',
+  name: null,
+  type: null,
+  description: null,
 })
 
 const onSubmit = () =>
@@ -60,11 +67,38 @@ const onSubmit = () =>
             />
           </UFormField>
 
+          <UFormField
+            label="Type"
+            required
+            :error="form.errors.type"
+          >
+            <USelect
+              v-model="form.type"
+              :items="types"
+              placeholder="Select tag type"
+              label-key="label"
+              value-key="value"
+            />
+          </UFormField>
+
+          <UFormField
+            label="Description"
+            :error="form.errors.description"
+          >
+            <UTextarea
+              v-model="form.description"
+              :model-modifiers="{ nullable: true, string: true, trim: true }"
+              :rows="5"
+              autoresize
+              placeholder="Tag description (optional - markdown)"
+              class="w-full"
+            />
+          </UFormField>
+
           <UButton
             label="Create tag"
             type="submit"
             variant="soft"
-            color="primary"
             class="w-fit"
             loading-auto
           />
