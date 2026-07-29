@@ -1,27 +1,23 @@
 <script setup lang="ts">
 import { useQuery } from '@/composables/query'
-import type { QueryFilter, QueryFilters } from '@/types'
-import { usePage } from '@inertiajs/vue3'
+import type { QueryFilter, QueryValue } from '@/types'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { watchDebounced } from '@vueuse/core'
 
-defineProps<{
+const props = defineProps<{
+  filters?: SelectMenuItem[]
+  sorters?: SelectMenuItem[]
+  filter?: QueryFilter
+  query?: QueryValue
+  sort?: QueryValue
   placeholder?: string
 }>()
 
-const page = usePage<{
-  filters?: SelectMenuItem[]
-  sorters?: SelectMenuItem[]
-  filter?: QueryFilters
-  query?: QueryFilter
-  sort?: QueryFilter
-}>()
-
 const { form, formFilters, onSubmit } = useQuery({
-  filters: () => page.props.filters,
-  filter: () => page.props.filter,
-  sort: () => page.props.sort,
-  query: () => page.props.query,
+  filters: () => props.filters,
+  filter: () => props.filter,
+  sort: () => props.sort,
+  query: () => props.query,
 })
 
 watchDebounced(
@@ -50,10 +46,10 @@ watchDebounced(
     </UFormField>
 
     <USelectMenu
-      v-if="page.props.filters?.length"
+      v-if="filters?.length"
       v-model="formFilters"
       :model-modifiers="{ nullable: true }"
-      :items="page.props.filters"
+      :items="filters"
       :search-input="false"
       :ui="{ content: 'min-w-40' }"
       placeholder="Filters"
@@ -67,10 +63,10 @@ watchDebounced(
     />
 
     <USelectMenu
-      v-if="page.props.sorters?.length"
+      v-if="sorters?.length"
       v-model="form.sort"
       :model-modifiers="{ nullable: true }"
-      :items="page.props.sorters"
+      :items="sorters"
       :search-input="false"
       :ui="{ content: 'min-w-40' }"
       placeholder="Sort by"

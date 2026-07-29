@@ -1,13 +1,5 @@
 import type { AvatarProps, BadgeProps, SelectMenuItem } from '@nuxt/ui'
 
-export type LayoutData = {
-  readonly id?: string | undefined | null
-  readonly title?: string | undefined | null
-  readonly description?: string | undefined | null
-  readonly icon?: string | undefined | null
-  readonly type?: 'video' | 'image' | 'audio' | 'document' | 'label'
-}
-
 export type EchoConfig = {
   readonly key: string
   readonly host: string
@@ -23,9 +15,9 @@ export type FlashData = {
   readonly type?: FlashType
 }
 
-export type QueryFilter = string | number | boolean | null
+export type QueryValue = string | number | boolean | null
 
-export type QueryFilters = Record<string, QueryFilter>
+export type QueryFilter = Record<string, QueryValue>
 
 export type Model = {
   id: string

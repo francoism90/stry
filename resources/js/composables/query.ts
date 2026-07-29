@@ -1,15 +1,15 @@
-import type { QueryFilter, QueryFilters } from '@/types'
+import type { QueryFilter, QueryValue } from '@/types'
 import { router, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
 
-const isFilterActive = (value?: QueryFilter) => value === true || value === 'true'
+const isFilterActive = (value?: QueryValue) => value === true || value === 'true'
 
 export function useQuery(options: {
   filters?: MaybeRefOrGetter<SelectMenuItem[] | undefined>
-  filter?: MaybeRefOrGetter<QueryFilters | undefined>
-  query?: MaybeRefOrGetter<QueryFilter | undefined>
-  sort?: MaybeRefOrGetter<QueryFilter | undefined>
+  filter?: MaybeRefOrGetter<QueryFilter | undefined>
+  query?: MaybeRefOrGetter<QueryValue | undefined>
+  sort?: MaybeRefOrGetter<QueryValue | undefined>
   only?: string[]
   reset?: string[]
 }) {
