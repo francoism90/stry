@@ -32,7 +32,7 @@ watchDebounced(
 </script>
 
 <template>
-  <UDashboardToolbar class="px-0 sm:px-0">
+  <UDashboardToolbar>
     <UFormField
       :error="form.errors.query"
       class="min-w-3/4 flex-1"

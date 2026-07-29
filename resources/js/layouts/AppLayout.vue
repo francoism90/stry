@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import AppFooter from '@/components/Ui/AppFooter.vue'
-import AppHeader from '@/components/Ui/AppHeader.vue'
-import FilterBar from '@/components/Ui/FilterBar.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useFlash } from '@/composables/flash'
 
 withDefaults(
   defineProps<{
-    id?: string
-    showFilter?: boolean
+    unit?: 'rem' | 'px'
+    storage?: 'local' | 'cookie'
+    storageKey?: string
   }>(),
   {
-    id: 'resources.index',
-    showFilter: false,
+    unit: 'rem',
+    storage: 'local',
+    storageKey: 'app',
   },
 )
 
@@ -39,25 +38,12 @@ useFlash()
       }"
     >
       <UDashboardGroup
-        unit="rem"
-        storage="local"
-        storage-key="app"
+        :unit="unit"
+        :storage="storage"
+        :storage-key="storageKey"
         class="relative overflow-clip"
       >
-        <UDashboardPanel :id="id ?? 'resources.index'">
-          <template #header>
-            <AppHeader />
-          </template>
-
-          <template #body>
-            <FilterBar v-if="showFilter" />
-            <slot />
-          </template>
-
-          <template #footer>
-            <AppFooter />
-          </template>
-        </UDashboardPanel>
+        <slot />
       </UDashboardGroup>
     </UTheme>
   </UApp>

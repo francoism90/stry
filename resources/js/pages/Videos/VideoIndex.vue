@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import VideoList from '@/components/Videos/VideoList.vue'
+import ContentLayout from '@/layouts/App/ContentLayout.vue'
+import AppLayout from '@/layouts/AppLayout.vue'
 import type { VideoCollection } from '@/types'
-import { InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
+import { InfiniteScroll } from '@inertiajs/vue3'
 
 defineProps<{
   items: VideoCollection
 }>()
 
-setLayoutProps({
-  id: 'videos.index',
-  showFilter: true,
+defineOptions({
+  layout: [
+    [AppLayout, { title: 'Videos' }],
+    [ContentLayout, { id: 'foo' }],
+  ],
 })
 </script>
 
