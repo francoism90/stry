@@ -82,6 +82,11 @@ export default defineConfig(({ mode }) => {
               base: 'w-full',
             },
           },
+          textarea: {
+            slots: {
+              root: 'w-full',
+            },
+          },
         },
       }),
     ],

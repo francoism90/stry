@@ -60,7 +60,6 @@ const onSubmit = () =>
             <UInput
               v-model="form.name"
               :model-modifiers="{ string: true, trim: true }"
-              :ui="{ trailing: 'pe-1' }"
               autofocus
               autocapitalize="words"
               placeholder="Enter tag name"
@@ -91,7 +90,6 @@ const onSubmit = () =>
               :rows="5"
               autoresize
               placeholder="Tag description (optional - markdown)"
-              class="w-full"
             />
           </UFormField>
 
