@@ -25,7 +25,7 @@ useFlash()
 </script>
 
 <template>
-  <UDashboardPanel :id="id ?? 'resources.index'">
+  <UDashboardPanel :id="id">
     <template #header>
       <AppHeader />
       <FilterBar
