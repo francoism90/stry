@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use Domain\Videos\Jobs\TranscodeVideo;
 use Domain\Videos\Models\Video;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class VideoDispatchTranscodeController extends Controller implements HasMiddleware
+class VideoDispatchTranscodeController implements HasMiddleware
 {
     public static function middleware(): array
     {

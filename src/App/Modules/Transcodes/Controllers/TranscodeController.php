@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Transcodes\Controllers;
+namespace App\Modules\Transcodes\Controllers;
 
 use App\Modules\Transcodes\Requests\TranscodeUpdateRequest;
 use Domain\Transcodes\Models\Transcode;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TranscodeController extends Controller implements HasMiddleware
+class TranscodeController implements HasMiddleware
 {
     public static function middleware(): array
     {

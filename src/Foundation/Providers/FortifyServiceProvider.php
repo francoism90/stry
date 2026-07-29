@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
-use App\Web\Account\Responses\PasswordUpdateResponse;
-use App\Web\Account\Responses\ProfileInformationUpdatedResponse;
+use App\Modules\Account\Responses\PasswordUpdateResponse;
+use App\Modules\Account\Responses\ProfileInformationUpdatedResponse;
 use Domain\Users\Actions\CreateNewUser;
 use Domain\Users\Actions\ResetUserPassword;
 use Domain\Users\Actions\UpdateUserPassword;

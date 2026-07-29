@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Profiles\Controllers;
+namespace App\Modules\Profiles\Controllers;
 
 use Domain\Profiles\Models\Profile;
 use Foundation\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class SwitchProfileController extends Controller implements HasMiddleware
+class SwitchProfileController implements HasMiddleware
 {
     public static function middleware(): array
     {

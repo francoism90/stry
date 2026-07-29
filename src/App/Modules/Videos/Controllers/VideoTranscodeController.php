@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use App\Modules\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Modules\Transcodes\Resources\TranscodeResource;
-use App\Web\Videos\Responses\VideoResourceProperty;
+use App\Modules\Videos\Responses\VideoResourceProperty;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VideoTranscodeController extends Controller implements HasMiddleware
+class VideoTranscodeController implements HasMiddleware
 {
     public static function middleware(): array
     {

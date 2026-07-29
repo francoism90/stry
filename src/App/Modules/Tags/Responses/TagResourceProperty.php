@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Responses;
+namespace App\Modules\Tags\Responses;
 
 use App\Modules\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;

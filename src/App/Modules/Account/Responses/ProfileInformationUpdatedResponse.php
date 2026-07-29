@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Account\Responses;
+namespace App\Modules\Account\Responses;
 
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;

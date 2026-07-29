@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TranscodeImportController extends Controller implements HasMiddleware
+class TranscodeImportController implements HasMiddleware
 {
     public static function middleware(): array
     {

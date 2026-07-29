@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Groups\Controllers;
+namespace App\Modules\Groups\Controllers;
 
 use Domain\Groups\Models\Group;
 use Domain\Videos\Models\Video;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class GroupToggleController extends Controller implements HasMiddleware
+class GroupToggleController implements HasMiddleware
 {
     public static function middleware(): array
     {

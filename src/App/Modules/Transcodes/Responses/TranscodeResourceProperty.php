@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Transcodes\Responses;
+namespace App\Modules\Transcodes\Responses;
 
 use App\Modules\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Models\Transcode;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Groups\Controllers;
+namespace App\Modules\Groups\Controllers;
 
 use Domain\Groups\Models\Group;
 use Foundation\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class GroupClearController extends Controller implements HasMiddleware
+class GroupClearController implements HasMiddleware
 {
     public static function middleware(): array
     {

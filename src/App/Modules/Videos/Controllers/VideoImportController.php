@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use Domain\Videos\Actions\ProcessVideoImport;
 use Domain\Videos\Models\Video;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class VideoImportController extends Controller implements HasMiddleware
+class VideoImportController implements HasMiddleware
 {
     public static function middleware(): array
     {

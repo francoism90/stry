@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use App\Modules\Playlists\Requests\PlaylistStoreRequest;
 use App\Modules\Playlists\Requests\PlaylistUpdateRequest;
 use App\Modules\Playlists\Resources\PlaylistResource;
-use App\Web\Videos\Responses\VideoResourceProperty;
+use App\Modules\Videos\Responses\VideoResourceProperty;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Jobs\PlaylistVideo;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VideoPlaylistController extends Controller implements HasMiddleware
+class VideoPlaylistController implements HasMiddleware
 {
     public static function middleware(): array
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Media\Controllers;
+namespace App\Modules\Media\Controllers;
 
 use App\Modules\Media\Requests\MediaUpdateRequest;
 use Domain\Media\Models\Media;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class MediaController extends Controller implements HasMiddleware
+class MediaController implements HasMiddleware
 {
     public static function middleware(): array
     {

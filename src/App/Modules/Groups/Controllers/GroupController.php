@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Groups\Controllers;
+namespace App\Modules\Groups\Controllers;
 
 use App\Modules\Groups\Requests\GroupStoreRequest;
 use App\Modules\Groups\Requests\GroupUpdateRequest;
 use App\Modules\Groups\Resources\GroupResource;
 use App\Modules\Videos\Resources\VideoResource;
-use App\Web\Groups\Responses\GroupResourceProperty;
+use App\Modules\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
@@ -34,7 +34,7 @@ use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
-class GroupController extends Controller implements HasMiddleware
+class GroupController implements HasMiddleware
 {
     public static function middleware(): array
     {

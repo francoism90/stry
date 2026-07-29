@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use App\Modules\Media\Resources\MediaResource;
-use App\Web\Videos\Responses\VideoResourceProperty;
+use App\Modules\Videos\Responses\VideoResourceProperty;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Foundation\Http\Controllers\Controller;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VideoMediaController extends Controller implements HasMiddleware
+class VideoMediaController implements HasMiddleware
 {
     public static function middleware(): array
     {

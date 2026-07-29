@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Groups\Responses;
+namespace App\Modules\Groups\Responses;
 
 use App\Modules\Groups\Resources\GroupResource;
 use Domain\Groups\Models\Group;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Account\Controllers;
+namespace App\Modules\Account\Controllers;
 
 use App\Modules\Notifications\Resources\NotificationResource;
 use Foundation\Http\Controllers\Controller;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class NotificationsController extends Controller implements HasMiddleware
+class NotificationsController implements HasMiddleware
 {
     public static function middleware(): array
     {

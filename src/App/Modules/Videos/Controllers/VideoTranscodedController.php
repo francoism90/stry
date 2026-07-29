@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use Domain\Transcodes\Actions\ImportTranscode;
 use Domain\Transcodes\Models\Transcode;
@@ -17,7 +17,7 @@ use Inertia\Inertia;
 
 use function Illuminate\Support\defer;
 
-class VideoTranscodedController extends Controller implements HasMiddleware
+class VideoTranscodedController implements HasMiddleware
 {
     public static function middleware(): array
     {

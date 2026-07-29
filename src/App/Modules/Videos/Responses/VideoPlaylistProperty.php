@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Responses;
+namespace App\Modules\Videos\Responses;
 
 use App\Modules\Playlists\Resources\PlaylistResource;
 use Domain\Videos\Models\Video;

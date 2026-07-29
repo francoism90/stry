@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Account\Controllers;
+namespace App\Modules\Account\Controllers;
 
 use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class SecurityController extends Controller implements HasMiddleware
+class SecurityController implements HasMiddleware
 {
     public static function middleware(): array
     {

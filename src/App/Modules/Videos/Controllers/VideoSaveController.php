@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Controllers;
+namespace App\Modules\Videos\Controllers;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class VideoSaveController extends Controller implements HasMiddleware
+class VideoSaveController implements HasMiddleware
 {
     public static function middleware(): array
     {

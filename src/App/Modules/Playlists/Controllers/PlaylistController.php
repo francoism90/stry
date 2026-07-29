@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Playlists\Controllers;
+namespace App\Modules\Playlists\Controllers;
 
 use App\Modules\Playlists\Requests\PlaylistUpdateRequest;
 use Domain\Playlists\Models\Playlist;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class PlaylistController extends Controller implements HasMiddleware
+class PlaylistController implements HasMiddleware
 {
     public static function middleware(): array
     {

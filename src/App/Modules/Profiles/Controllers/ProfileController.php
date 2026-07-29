@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Profiles\Controllers;
+namespace App\Modules\Profiles\Controllers;
 
 use App\Modules\Profiles\Requests\ProfileIndexRequest;
 use App\Modules\Profiles\Requests\ProfileStoreRequest;
 use App\Modules\Profiles\Requests\ProfileUpdateRequest;
 use App\Modules\Profiles\Resources\ProfileResource;
-use App\Web\Profiles\Responses\ProfileResourceProperty;
+use App\Modules\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;
 use Domain\Profiles\Enums\ProfileSorter;
@@ -23,7 +23,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
 
-class ProfileController extends Controller implements HasMiddleware
+class ProfileController implements HasMiddleware
 {
     public static function middleware(): array
     {

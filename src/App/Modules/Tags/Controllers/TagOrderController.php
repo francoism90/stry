@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Controllers;
+namespace App\Modules\Tags\Controllers;
 
 use Domain\Tags\Actions\SetTagsOrder;
 use Domain\Tags\Models\Tag;
@@ -14,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TagOrderController extends Controller implements HasMiddleware
+class TagOrderController implements HasMiddleware
 {
     public static function middleware(): array
     {

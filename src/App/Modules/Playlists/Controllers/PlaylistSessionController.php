@@ -15,7 +15,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PlaylistSessionController extends Controller implements HasMiddleware
+class PlaylistSessionController implements HasMiddleware
 {
     public static function middleware(): array
     {

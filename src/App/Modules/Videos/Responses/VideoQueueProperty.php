@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Videos\Responses;
+namespace App\Modules\Videos\Responses;
 
 use App\Modules\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\GetSimilarVideos;

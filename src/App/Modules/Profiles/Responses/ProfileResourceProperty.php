@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Profiles\Responses;
+namespace App\Modules\Profiles\Responses;
 
 use App\Modules\Profiles\Resources\ProfileResource;
 use Domain\Profiles\Models\Profile;

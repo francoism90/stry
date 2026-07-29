@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Web\Tags\Controllers;
+namespace App\Modules\Tags\Controllers;
 
 use App\Modules\Tags\Requests\TagStoreRequest;
 use App\Modules\Tags\Requests\TagUpdateRequest;
 use App\Modules\Tags\Resources\TagResource;
+use App\Modules\Tags\Responses\TagResourceProperty;
 use App\Modules\Videos\Resources\VideoResource;
-use App\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
@@ -18,7 +18,6 @@ use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
-use Foundation\Http\Controllers\Controller;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -34,7 +33,7 @@ use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 use Support\Scout\Sorts\VideosSorter;
 
-class TagController extends Controller implements HasMiddleware
+class TagController implements HasMiddleware
 {
     public static function middleware(): array
     {
