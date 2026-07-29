@@ -39,9 +39,6 @@ useFlash()
     </template>
 
     <template #body>
-      content
-      {{ id }}
-      {{ filters }}
       <slot />
     </template>
 
