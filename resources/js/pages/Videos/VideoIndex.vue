@@ -12,7 +12,7 @@ defineProps<{
 defineOptions({
   layout: [
     [AppLayout, { title: 'Videos' }],
-    [ContentLayout, { id: 'foo' }],
+    [ContentLayout, { id: 'videos.index' }],
   ],
 })
 </script>
