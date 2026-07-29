@@ -9,7 +9,6 @@ use App\Modules\Videos\Enums\VideoSorter;
 use App\Modules\Videos\Requests\VideoUpdateRequest;
 use App\Modules\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Properties\LayoutProperties;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
@@ -65,16 +64,10 @@ class VideoController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('Resources/ResourceIndex', [
+        return Inertia::render('Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'filters' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'layout' => fn () => new LayoutProperties(
-                title: __('Videos'),
-                description: __('Browse and manage your videos.'),
-                id: 'videos.index',
-                type: 'video',
-            ),
             $properties,
         ]);
     }
