@@ -116,6 +116,15 @@ class TagController implements HasMiddleware
         ]);
     }
 
+    public function create(): Response
+    {
+        Gate::authorize('create', Tag::class);
+
+        return Inertia::render('Tags/TagCreate', [
+            // 'locales' => fn () => UserLocale::options(),
+        ]);
+    }
+
     public function store(TagStoreRequest $request): RedirectResponse
     {
         Gate::authorize('create', Tag::class);
