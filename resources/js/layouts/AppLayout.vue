@@ -35,6 +35,9 @@ useFlash()
         dropdownMenu: {
           content: 'z-50 min-w-32',
         },
+        pageCard: {
+          description: 'mb-2.5',
+        },
       }"
     >
       <UDashboardGroup
