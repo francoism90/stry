@@ -41,7 +41,7 @@ const currentItem = computed(() =>
       :label="currentItem?.label ?? 'Videos'"
       variant="soft"
       trailing-icon="i-lucide-chevron-down"
-      :class="['ms-1.5', open && 'bg-primary/15']"
+      :class="['ms-2', open && 'bg-primary/15']"
       :ui="{
         trailingIcon: ['transition-transform duration-200', open ? 'rotate-180' : undefined].filter(Boolean).join(' '),
       }"

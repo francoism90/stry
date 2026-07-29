@@ -28,7 +28,7 @@ const items = ref<DropdownMenuItem[]>([
       label="Create"
       color="neutral"
       variant="outline"
-      class="me-1.5"
+      class="me-2"
     />
   </UDropdownMenu>
 </template>
