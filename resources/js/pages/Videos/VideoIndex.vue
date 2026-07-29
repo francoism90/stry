@@ -17,11 +17,11 @@ setLayoutProps({
   <UPage>
     <InfiniteScroll
       data="items"
-      items-element="#infinite-items"
+      items-element="#video-index"
       :buffer="200"
     >
       <VideoList
-        id="infinite-items"
+        id="video-index"
         :items="items?.data"
       />
     </InfiniteScroll>
