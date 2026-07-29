@@ -3,7 +3,7 @@ import VideoList from '@/components/Videos/VideoList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { VideoCollection } from '@/types'
-import { InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 
 defineProps<{
   items: VideoCollection
@@ -18,6 +18,8 @@ defineOptions({
 </script>
 
 <template>
+  <Head title="Videos" />
+
   <UPage>
     <InfiniteScroll
       data="items"
