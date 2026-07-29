@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Profiles\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
-
-enum ProfileSorter: string implements Enumerable
+enum ProfileSorter: string
 {
     case Name = 'name';
     case Newest = 'newest';

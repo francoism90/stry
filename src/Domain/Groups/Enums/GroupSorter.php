@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
-
-enum GroupSorter: string implements Enumerable
+enum GroupSorter: string
 {
     case Name = 'name';
     case Videos = 'videos';

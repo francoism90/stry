@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
-
-enum PlaylistType: string implements Enumerable
+enum PlaylistType: string
 {
     case Packager = 'packager';
     case Streamer = 'streamer';

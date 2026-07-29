@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
-
-enum GroupType: string implements Enumerable
+enum GroupType: string
 {
     case Custom = 'custom';
     case Liked = 'liked';
