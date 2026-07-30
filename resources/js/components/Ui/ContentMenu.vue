@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
-import { computed, ref } from 'vue'
+import { useElementHover } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
 
 const page = usePage()
+
+const wrapper = useTemplateRef('wrapper')
+const hovered = useElementHover(wrapper, { delayLeave: 150 })
 
 const items = ref<DropdownMenuItem[]>([
   {
@@ -32,19 +36,24 @@ const currentItem = computed(() =>
 </script>
 
 <template>
-  <UDropdownMenu
-    v-slot="{ open }"
-    :modal="false"
-    :items="items"
-  >
-    <UButton
-      :label="currentItem?.label ?? 'Videos'"
-      variant="soft"
-      trailing-icon="i-lucide-chevron-down"
-      :class="['ms-2', open && 'bg-primary/15']"
-      :ui="{
-        trailingIcon: ['transition-transform duration-200', open ? 'rotate-180' : undefined].filter(Boolean).join(' '),
-      }"
-    />
-  </UDropdownMenu>
+  <div ref="wrapper">
+    <UDropdownMenu
+      v-model:open="hovered"
+      :modal="false"
+      :portal="false"
+      :items="items"
+    >
+      <UButton
+        :label="currentItem?.label ?? 'Videos'"
+        variant="soft"
+        trailing-icon="i-lucide-chevron-down"
+        :class="['ms-2', hovered && 'bg-primary/15']"
+        :ui="{
+          trailingIcon: ['transition-transform duration-200', hovered ? 'rotate-180' : undefined]
+            .filter(Boolean)
+            .join(' '),
+        }"
+      />
+    </UDropdownMenu>
+  </div>
 </template>
