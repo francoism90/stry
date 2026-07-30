@@ -6,8 +6,8 @@ import { computed, ref, useTemplateRef } from 'vue'
 
 const page = usePage()
 
-const wrapper = useTemplateRef('wrapper')
-const hovered = useElementHover(wrapper, { delayLeave: 150 })
+const element = useTemplateRef('contentMenu')
+const hovered = useElementHover(element, { delayLeave: 150 })
 
 const items = ref<DropdownMenuItem[]>([
   {
@@ -36,7 +36,7 @@ const currentItem = computed(() =>
 </script>
 
 <template>
-  <div ref="wrapper">
+  <div ref="contentMenu">
     <UDropdownMenu
       v-model:open="hovered"
       :modal="false"
