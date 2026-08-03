@@ -30,10 +30,10 @@ class SetVideoProgress
             $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
         }
 
-        // Cache the viewed time for 20 minutes, and the progress for 1 day
-        $video->modelCache($viewedKey, $time, now()->addMinutes(20));
+        // Update the progress time in the cache for the video
+        $video->modelCache($viewedKey, $time, now()->addMinutes(30));
 
-        $video->modelCache($progressKey, $time, now()->addDay());
+        $video->modelCache($progressKey, $time, now()->addWeek());
     }
 
     protected function normalizeProgress(Video $video, ?array $attributes = null): float
