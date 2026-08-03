@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+  <UBlogPosts class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 lg:gap-y-3 xl:grid-cols-5">
     <TagCard
       v-for="item in items"
       :key="item.id"
