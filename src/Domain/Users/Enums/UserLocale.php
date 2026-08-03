@@ -24,13 +24,4 @@ enum UserLocale: string implements Enumerable
             'nl' => __('Dutch'),
         ];
     }
-
-    /** @return array<int, array{label: string, value: string}> */
-    public static function options(): array
-    {
-        return array_map(
-            fn (self $case) => ['label' => $case->label(), 'value' => $case->value],
-            self::cases(),
-        );
-    }
 }

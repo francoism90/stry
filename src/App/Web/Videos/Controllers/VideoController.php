@@ -117,7 +117,7 @@ class VideoController implements HasMiddleware
         return Inertia::render('App/Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'locales' => fn () => UserLocale::options(),
+            'locales' => fn () => Options::forEnum(UserLocale::class),
         ]);
     }
 
