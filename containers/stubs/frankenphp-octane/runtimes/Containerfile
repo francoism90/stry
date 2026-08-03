@@ -119,7 +119,7 @@ RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 
 # Install PHP extensions
 RUN install-php-extensions @composer \
-    apcu bcmath exif ffi gd \
+    apcu bcmath exif ffi gd opcache \
     igbinary imagick inotify intl pcntl \
     pdo_pgsql redis sockets uv zip
 
