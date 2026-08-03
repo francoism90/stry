@@ -18,15 +18,13 @@ useFlash()
     />
   </Head>
 
-  <Suspense>
-    <UApp :nonce="nonce">
-      <UContainer class="flex h-dvh max-h-dvh flex-col items-center justify-center gap-3 py-4 sm:py-6">
-        <div class="py-2">
-          <AppLogo />
-        </div>
+  <UApp :nonce="nonce">
+    <UContainer class="flex h-dvh max-h-dvh flex-col items-center justify-center gap-3 py-4 sm:py-6">
+      <div class="py-2">
+        <AppLogo />
+      </div>
 
-        <slot />
-      </UContainer>
-    </UApp>
-  </Suspense>
+      <slot />
+    </UContainer>
+  </UApp>
 </template>
