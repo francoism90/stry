@@ -6,7 +6,6 @@ namespace App\Web\Users\Controllers;
 
 use Domain\Users\Actions\UpdateUserSettings;
 use Domain\Users\DataObjects\UserSettings;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,7 +14,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class UserSettingsController extends Controller implements HasMiddleware
+class UserSettingsController implements HasMiddleware
 {
     public static function middleware(): array
     {

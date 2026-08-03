@@ -13,7 +13,6 @@ use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;
 use Domain\Profiles\Enums\ProfileSorter;
 use Domain\Profiles\Models\Profile;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -23,7 +22,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
 
-class ProfileController extends Controller implements HasMiddleware
+class ProfileController implements HasMiddleware
 {
     public static function middleware(): array
     {

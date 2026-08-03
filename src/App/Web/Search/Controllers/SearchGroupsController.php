@@ -8,7 +8,6 @@ use App\Api\Groups\Resources\GroupResource;
 use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Models\Group;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
-use Foundation\Http\Controllers\Controller;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -20,7 +19,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
 
-class SearchGroupsController extends Controller implements HasMiddleware
+class SearchGroupsController implements HasMiddleware
 {
     public static function middleware(): array
     {

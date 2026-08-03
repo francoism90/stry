@@ -6,7 +6,6 @@ namespace App\Web\Videos\Controllers;
 
 use Domain\Videos\Actions\ProcessVideoImport;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -14,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class VideoImportController extends Controller implements HasMiddleware
+class VideoImportController implements HasMiddleware
 {
     public static function middleware(): array
     {

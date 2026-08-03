@@ -6,14 +6,13 @@ namespace App\Web\Playlists\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
 use Domain\Playlists\Models\Playlist;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class PlaylistController extends Controller implements HasMiddleware
+class PlaylistController implements HasMiddleware
 {
     public static function middleware(): array
     {

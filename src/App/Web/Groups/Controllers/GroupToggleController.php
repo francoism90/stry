@@ -6,7 +6,6 @@ namespace App\Web\Groups\Controllers;
 
 use Domain\Groups\Models\Group;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -14,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class GroupToggleController extends Controller implements HasMiddleware
+class GroupToggleController implements HasMiddleware
 {
     public static function middleware(): array
     {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Web\Notifications\Controllers;
 
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -12,7 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class MarkAllNotificationsReadController extends Controller implements HasMiddleware
+class MarkAllNotificationsReadController implements HasMiddleware
 {
     public static function middleware(): array
     {

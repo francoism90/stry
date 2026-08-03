@@ -6,14 +6,13 @@ namespace App\Web\Media\Controllers;
 
 use App\Api\Media\Requests\MediaUpdateRequest;
 use Domain\Media\Models\Media;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class MediaController extends Controller implements HasMiddleware
+class MediaController implements HasMiddleware
 {
     public static function middleware(): array
     {

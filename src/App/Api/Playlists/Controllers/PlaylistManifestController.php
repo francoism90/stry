@@ -7,7 +7,6 @@ namespace App\Api\Playlists\Controllers;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
-use Foundation\Http\Controllers\Controller;
 use Foxws\Shaka\Facades\Shaka;
 use Foxws\Streamer\Facades\Streamer;
 use Illuminate\Http\Request;
@@ -16,7 +15,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PlaylistManifestController extends Controller implements HasMiddleware
+class PlaylistManifestController implements HasMiddleware
 {
     public static function middleware(): array
     {

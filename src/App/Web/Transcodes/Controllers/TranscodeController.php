@@ -6,14 +6,13 @@ namespace App\Web\Transcodes\Controllers;
 
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use Domain\Transcodes\Models\Transcode;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TranscodeController extends Controller implements HasMiddleware
+class TranscodeController implements HasMiddleware
 {
     public static function middleware(): array
     {

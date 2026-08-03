@@ -9,7 +9,6 @@ use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
-use Foundation\Http\Controllers\Controller;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -22,7 +21,7 @@ use Inertia\Response;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Sorts\VideosSorter;
 
-class SearchTagsController extends Controller implements HasMiddleware
+class SearchTagsController implements HasMiddleware
 {
     public static function middleware(): array
     {

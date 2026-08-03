@@ -8,14 +8,13 @@ use App\Api\Media\Resources\MediaResource;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VideoMediaController extends Controller implements HasMiddleware
+class VideoMediaController implements HasMiddleware
 {
     public static function middleware(): array
     {

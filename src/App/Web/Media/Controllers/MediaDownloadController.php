@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Web\Media\Controllers;
 
 use Domain\Media\Models\Media;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class MediaDownloadController extends Controller implements HasMiddleware
+class MediaDownloadController implements HasMiddleware
 {
     public static function middleware(): array
     {

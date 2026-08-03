@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api\Authentication\Controllers;
 
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Spatie\ResponseCache\Attributes\Cache;
 
 #[Cache(lifetime: 60 * 60, tags: ['api'])]
-class HomeController extends Controller
+class HomeController
 {
     public function __invoke(): JsonResponse
     {

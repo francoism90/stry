@@ -8,14 +8,13 @@ use App\Api\Playlists\Requests\PlaylistViewRequest;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PlaylistSessionController extends Controller implements HasMiddleware
+class PlaylistSessionController implements HasMiddleware
 {
     public static function middleware(): array
     {

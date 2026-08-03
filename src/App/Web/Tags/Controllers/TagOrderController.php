@@ -6,7 +6,6 @@ namespace App\Web\Tags\Controllers;
 
 use Domain\Tags\Actions\SetTagsOrder;
 use Domain\Tags\Models\Tag;
-use Foundation\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -14,7 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TagOrderController extends Controller implements HasMiddleware
+class TagOrderController implements HasMiddleware
 {
     public static function middleware(): array
     {

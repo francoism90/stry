@@ -19,7 +19,6 @@ use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoGroupScope;
 use Domain\Videos\Scopes\VideoProfileScope;
-use Foundation\Http\Controllers\Controller;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -34,7 +33,7 @@ use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
-class GroupController extends Controller implements HasMiddleware
+class GroupController implements HasMiddleware
 {
     public static function middleware(): array
     {
