@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <ULink
-    class="flex items-center gap-1.5 text-sm font-bold tracking-widest text-white uppercase"
+    class="flex items-center gap-1.5 text-sm font-bold tracking-wider text-neutral-200 uppercase"
     :to="location || '/'"
   >
     <UIcon
