@@ -23,6 +23,7 @@ useFlash()
   </Head>
 
   <UApp :nonce="nonce">
+<<<<<<< HEAD
     <UDashboardGroup
       unit="rem"
       storage="local"
@@ -31,5 +32,14 @@ useFlash()
     >
       <slot />
     </UDashboardGroup>
+=======
+    <UContainer class="flex h-dvh max-h-dvh flex-col items-center justify-center gap-3 py-4 sm:py-6">
+      <div class="py-2">
+        <AppLogo />
+      </div>
+
+      <slot />
+    </UContainer>
+>>>>>>> 8853b7db (fix: remove unnecessary Suspense wrapper in AuthLayout component)
   </UApp>
 </template>
