@@ -58,6 +58,7 @@
     "foxws/laravel-podman": "^1.7",
     "larastan/larastan": "^3.10.0",
     "laravel/boost": "^2.4.13",
+    "laravel/doctor": "^0.1.0",
     "laravel/envoy": "^2.12.2",
     "laravel/pail": "^1.2.7",
     "laravel/pao": "^1.1.3",

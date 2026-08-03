@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb6edd25369fc3791b93ac42cfff93b1",
+    "content-hash": "d8084dcae768da31861a03fcc15660ca",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -13750,6 +13750,76 @@
                 "source": "https://github.com/laravel/boost"
             },
             "time": "2026-07-17T14:28:57+00:00"
+        },
+        {
+            "name": "laravel/doctor",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/doctor.git",
+                "reference": "6e634a0746f70f9dd9abaf4d9c8a4b81ceebdd4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/doctor/zipball/6e634a0746f70f9dd9abaf4d9c8a4b81ceebdd4c",
+                "reference": "6e634a0746f70f9dd9abaf4d9c8a4b81ceebdd4c",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.0",
+                "composer/semver": "^3.0",
+                "illuminate/console": "^12.0|^13.0",
+                "illuminate/contracts": "^12.0|^13.0",
+                "illuminate/process": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
+                "laravel/agent-detector": "^2.0.1",
+                "laravel/prompts": "^0.3.21",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.28.0",
+                "orchestra/testbench": "^10.0|^11.0",
+                "pestphp/pest": "^4.0",
+                "phpstan/phpstan": "^2.0",
+                "rector/rector": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Doctor\\DoctorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Doctor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "First-party diagnostics for Laravel applications",
+            "homepage": "https://github.com/laravel/doctor",
+            "keywords": [
+                "configuration",
+                "diagnostics",
+                "doctor",
+                "health",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/doctor/issues",
+                "source": "https://github.com/laravel/doctor"
+            },
+            "time": "2026-07-22T17:39:59+00:00"
         },
         {
             "name": "laravel/envoy",
