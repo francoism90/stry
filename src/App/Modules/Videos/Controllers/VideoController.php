@@ -122,10 +122,17 @@ class VideoController implements HasMiddleware
             'filesize',
         ];
 
+<<<<<<< HEAD:src/App/Modules/Videos/Controllers/VideoController.php
         return Inertia::render('Videos/VideoEdit', [
             // 'video' => fn () => new VideoResourceProperty($video, $appends),
             // 'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             // 'locales' => fn () => UserLocale::options(),
+=======
+        return Inertia::render('App/Videos/VideoEdit', [
+            'video' => fn () => new VideoResourceProperty($video, $appends),
+            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            'locales' => fn () => Options::forEnum(UserLocale::class),
+>>>>>>> 9ac2ca81 (fix: update locales retrieval in VideoController to use Options::forEnum method):src/App/Web/Videos/Controllers/VideoController.php
         ]);
     }
 
