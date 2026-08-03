@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Modules\Account\Controllers;
 
+<<<<<<< HEAD:src/App/Modules/Account/Controllers/AccountController.php
 use App\Modules\Users\Responses\UserResourceProperty;
+=======
+use App\Web\Users\Responses\UserResourceProperty;
+>>>>>>> b8d034dd (Refactor controllers to remove inheritance from Foundation\Http\Controllers\Controller):src/App/Web/Account/Controllers/AccountController.php
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;

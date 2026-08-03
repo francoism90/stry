@@ -9,7 +9,11 @@ use App\Modules\Videos\Enums\VideoSorter;
 use App\Modules\Videos\Requests\VideoUpdateRequest;
 use App\Modules\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
+<<<<<<< HEAD:src/App/Modules/Videos/Controllers/VideoController.php
 use Foundation\Http\Properties\ScoutBuilderProperties;
+=======
+use Domain\Videos\Scopes\VideoProfileScope;
+>>>>>>> b8d034dd (Refactor controllers to remove inheritance from Foundation\Http\Controllers\Controller):src/App/Web/Videos/Controllers/VideoController.php
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Modules\Account\Controllers;
 
+<<<<<<< HEAD:src/App/Modules/Account/Controllers/NotificationsController.php
 use App\Modules\Notifications\Resources\NotificationResource;
+=======
+use App\Api\Notifications\Resources\NotificationResource;
+>>>>>>> b8d034dd (Refactor controllers to remove inheritance from Foundation\Http\Controllers\Controller):src/App/Web/Account/Controllers/NotificationsController.php
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;

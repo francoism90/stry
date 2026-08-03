@@ -17,7 +17,11 @@ use Illuminate\Support\Facades\Gate;
 use Spatie\ResponseCache\Attributes\FlexibleCache;
 use Support\Scout\Sorts\VideosSorter;
 
+<<<<<<< HEAD:src/App/Modules/Tags/Controllers/TagFilterController.php
 class TagFilterController implements HasMiddleware
+=======
+class TagController implements HasMiddleware
+>>>>>>> b8d034dd (Refactor controllers to remove inheritance from Foundation\Http\Controllers\Controller):src/App/Api/Tags/Controllers/TagController.php
 {
     public static function middleware(): array
     {

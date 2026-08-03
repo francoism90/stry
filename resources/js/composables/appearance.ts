@@ -4,7 +4,7 @@ import { computed } from 'vue'
 export function useAppearance() {
   const nonce = computed(() => usePage().props.nonce)
 
-  const dynamicColor = (value?: string | null) => {
+  const dynamicColor = (value: string | null) => {
     if (!value) return `hsl(0, 0%, 50%)`
 
     let hash = 0
