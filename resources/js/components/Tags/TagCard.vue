@@ -1,5 +1,9 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import { show } from '@/actions/App/Modules/Tags/Controllers/TagController'
+=======
+import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
+>>>>>>> caaed9fe (fix: refactor tag and video list components to use dynamic color and update layout structure)
 import { useAppearance } from '@/composables/appearance'
 import type { Tag } from '@/types'
 
