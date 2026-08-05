@@ -215,6 +215,7 @@ export function useShaka(
     const mediaElement = toValue(element) as HTMLMediaElement | undefined
     const startsAt = toValue(progress) as number | null
 
+    // Re-initialize the player if the media element has changed
     if (initializing.value === false && mediaElement !== media.value) {
       await destroy()
       await initialize(videoContainer, mediaElement)
