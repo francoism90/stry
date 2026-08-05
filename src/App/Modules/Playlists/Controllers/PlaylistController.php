@@ -32,7 +32,7 @@ class PlaylistController implements HasMiddleware
 
         // Notify the user
         Inertia::flash([
-            'title' => (string) $playlist->file_name,
+            'title' => (string) $playlist->getRouteKey(),
             'description' => __('The playlist has been updated.'),
             'type' => 'success',
         ]);
@@ -49,7 +49,7 @@ class PlaylistController implements HasMiddleware
 
         // Notify the user
         Inertia::flash([
-            'title' => (string) $playlist->file_name,
+            'title' => (string) $playlist->getRouteKey(),
             'description' => __('The playlist has been deleted.'),
             'type' => 'warning',
         ]);
