@@ -226,7 +226,7 @@ export function useShaka(
     const el = event.target as HTMLMediaElement | null
 
     if (el) {
-      update({ muted: el.muted ?? false, volume: el.volume ?? 1 })
+      update({ muted: el.muted ?? null, volume: el.volume ?? null })
     }
   }
 
