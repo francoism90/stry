@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Playlists\Controllers;
+namespace App\Api\Videos\Controllers;
 
-use App\Api\Playlists\Requests\PlaylistViewRequest;
-use Domain\Playlists\Models\Playlist;
+use App\Api\Videos\Requests\VideoViewRequest;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +13,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 
-class PlaylistSessionController implements HasMiddleware
+class VideoSessionController implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -25,20 +24,14 @@ class PlaylistSessionController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Playlist $playlist, PlaylistViewRequest $request): Response|RedirectResponse
+    public function __invoke(Video $video, VideoViewRequest $request): Response|RedirectResponse
     {
-        // Authorize the user to view the playlist
-        Gate::authorize('view', $playlist);
-
-        // Ensure the playlist is not expired
-        abort_if($playlist->isExpired(), 410);
-
-        /** @var Video $model */
-        $model = $playlist->getModel();
+        // Authorize the user to view the video
+        Gate::authorize('view', $video);
 
         // Dispatch the viewed event
-        VideoHasBeenViewedEvent::dispatchIf($model instanceof Video,
-            $model,
+        VideoHasBeenViewedEvent::dispatch(
+            $video,
             $request->user(),
             $request->safe()->only(['time']),
         );
