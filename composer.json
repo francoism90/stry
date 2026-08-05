@@ -23,7 +23,7 @@
     "foxws/laravel-scout-relations": "^1.0",
     "foxws/laravel-shaka": "^2.1.1",
     "foxws/laravel-streamer": "^2.0",
-    "guzzlehttp/guzzle": "^7.15.2",
+    "guzzlehttp/guzzle": "^7.15.3",
     "http-interop/http-factory-guzzle": "^1.2.1",
     "inertiajs/inertia-laravel": "^3.3.1",
     "laravel/fortify": "^1.37.3",
@@ -52,7 +52,7 @@
     "typesense/typesense-php": "^6.0"
   },
   "require-dev": {
-    "aws/aws-sdk-php": "^3.390.4",
+    "aws/aws-sdk-php": "^3.390.5",
     "barryvdh/laravel-ide-helper": "^3.7",
     "fakerphp/faker": "^1.24.1",
     "foxws/laravel-podman": "^1.7",
@@ -62,7 +62,7 @@
     "laravel/envoy": "^2.12.2",
     "laravel/pail": "^1.2.7",
     "laravel/pao": "^1.1.3",
-    "laravel/pint": "^1.30.3",
+    "laravel/pint": "^1.30.4",
     "laravel/telescope": "^5.22.0",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.9.5",
