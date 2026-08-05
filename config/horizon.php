@@ -72,7 +72,8 @@ return [
 
     'middleware' => [
         'web',
-        'verified',
+        'csp.horizon',
+        'auth',
         'role:super-admin',
     ],
 

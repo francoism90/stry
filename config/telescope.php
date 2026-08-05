@@ -94,7 +94,7 @@ return [
 
     'middleware' => [
         'web',
-        'auth.basic',
+        'csp.telescope',
         Authorize::class,
     ],
 
