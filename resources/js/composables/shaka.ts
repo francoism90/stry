@@ -3,7 +3,7 @@ import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { computed, ref, shallowRef, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 import { useVideo } from './video'
 
 export function useShaka(
@@ -11,7 +11,7 @@ export function useShaka(
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
   video?: MaybeRefOrGetter<Video | null>,
   playlist?: MaybeRefOrGetter<Playlist | null>,
-  starts?: MaybeRefOrGetter<number | null>,
+  progress?: MaybeRefOrGetter<number | null>,
 ) {
   const { get, update } = useSettings('player')
   const { markViewed } = useVideo(video)
@@ -20,10 +20,11 @@ export function useShaka(
   const manager = shallowRef<shaka.util.EventManager>()
   const ui = shallowRef<shaka.ui.Overlay>()
 
-  const ready = ref<boolean>(false)
+  const initializing = ref<boolean>(false)
   const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number | null>(null)
 
+  const ready = computed(() => player.value !== undefined && !initializing.value)
   const manifest = computed(() => player.value?.getManifest() ?? null)
   const media = computed(() => player.value?.getMediaElement() ?? null)
 
@@ -31,6 +32,9 @@ export function useShaka(
     if (player.value || !videoContainer || !mediaElement) {
       return
     }
+
+    // Mark the player as initializing to prevent multiple initializations
+    initializing.value = true
 
     try {
       // Load shaka player
@@ -97,6 +101,9 @@ export function useShaka(
       manager.value.listen(player.value, 'error', onErrorEvent)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
+    } finally {
+      // Mark the player as no longer initializing
+      initializing.value = false
     }
   }
 
@@ -133,7 +140,6 @@ export function useShaka(
 
       // Reset the error state and mark the player as ready
       error.value = null
-      ready.value = true
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
     }
@@ -158,7 +164,7 @@ export function useShaka(
   }
 
   const reset = () => {
-    ready.value = false
+    initializing.value = false
     error.value = null
     ticker.value = null
   }
@@ -168,7 +174,6 @@ export function useShaka(
 
     if (shakaError.severity === getShaka()?.util.Error.Severity.CRITICAL) {
       error.value = shakaError
-      ready.value = false
     }
 
     console.error('Shaka Player Error:', shakaError)
@@ -204,28 +209,22 @@ export function useShaka(
     }
   }
 
-  watch(
-    () => [playlist, container, element],
-    async ([reqPlaylist, reqContainer, reqElement]) => {
-      const playlistValue = toValue(reqPlaylist) as Playlist | null
-      const videoContainer = toValue(reqContainer) as HTMLElement | undefined
-      const mediaElement = toValue(reqElement) as HTMLMediaElement | undefined
-      const startsAt = toValue(starts) as number | null
+  watchEffect(async () => {
+    const playlistValue = toValue(playlist) as Playlist | null
+    const videoContainer = toValue(container) as HTMLElement | undefined
+    const mediaElement = toValue(element) as HTMLMediaElement | undefined
+    const startsAt = toValue(progress) as number | null
 
-      // If the media element has changed, destroy the current player instance
-      if (mediaElement !== media.value) {
-        await destroy()
-      }
-
-      // Initialize the player with the new video container and media element
+    if (initializing.value === false && mediaElement !== media.value) {
+      await destroy()
       await initialize(videoContainer, mediaElement)
+    }
 
-      // Load the new manifest if it has changed
-      if (playlistValue?.asset !== manifest.value) {
-        await load(playlistValue, startsAt)
-      }
-    },
-  )
+    // Load the new manifest if it has changed
+    if (playlistValue?.asset !== manifest.value) {
+      await load(playlistValue, startsAt)
+    }
+  })
 
   tryOnScopeDispose(() => destroy())
 
