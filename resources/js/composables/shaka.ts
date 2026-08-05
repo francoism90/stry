@@ -26,7 +26,6 @@ export function useShaka(
   const ticker = ref<number | null>(null)
 
   const ready = computed(() => player.value !== undefined && !initializing.value)
-  const manifest = computed(() => player.value?.getManifest() ?? null)
   const media = computed(() => player.value?.getMediaElement() ?? null)
 
   const initialize = async (videoContainer: HTMLElement | undefined, mediaElement: HTMLMediaElement | undefined) => {
@@ -240,10 +239,7 @@ export function useShaka(
     }
 
     // Load the new manifest if it has changed
-    if (loading.value === false && playlistModel && playlistModel.asset !== manifest.value) {
-      console.log(playlistModel.asset)
-      console.log(manifest.value)
-
+    if (loading.value === false && playlistModel) {
       await load(playlistModel, startsAt)
     }
   })
@@ -254,8 +250,6 @@ export function useShaka(
     player,
     ready,
     error,
-    manifest,
-    media,
     initialize,
     replace,
     destroy,
