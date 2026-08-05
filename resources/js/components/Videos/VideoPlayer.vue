@@ -62,3 +62,13 @@ const actions = ref<ButtonProps[]>([
     </div>
   </figure>
 </template>
+
+<style lang="postcss">
+.shaka-seek-bar-container {
+  @apply top-1.25 mb-1 h-1.25 border-t-8 border-b-8;
+}
+
+.shaka-seek-button {
+  @apply hidden cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150 lg:inline-flex;
+}
+</style>

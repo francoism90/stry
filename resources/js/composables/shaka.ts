@@ -1,13 +1,13 @@
 import { useSettings } from '@/composables/settings'
 import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import { usePlaylistSession } from '@/plugins/shaka/session'
-import type { Playlist } from '@/types'
-import { usePage } from '@inertiajs/vue3'
 import { tryOnScopeDispose, useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
+import { ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(
+  assetUri?: MaybeRefOrGetter<string | null | undefined>,
+  startTime?: MaybeRefOrGetter<number | null | undefined>,
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
 ) {
@@ -16,29 +16,26 @@ export function useShaka(
 
   const player = shallowRef<shaka.Player>()
   const ui = shallowRef<shaka.ui.Overlay>()
+  const error = ref<shaka.util.Error | null>(null)
+
   const initializing = ref<boolean>(false)
   const ready = ref<boolean>(false)
-  const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number>(0)
 
-  const playlist = computed(() => usePage().props.playlist as Playlist | null)
-  const startTime = computed(() => usePage().props.progress as number | null)
-  const el = computed(() => toValue(element))
-
   const initialize = async () => {
-    // Prevent multiple initializations
-    if (initializing.value) return
+    // Get the current values of the container and media element
+    const videoContainer = toValue(container)
+    const mediaElement = toValue(element)
 
-    // Set the ticker to the start time if it exists
-    initializing.value = true
-    ticker.value = startTime.value ?? 0
+    if (!videoContainer || !mediaElement) {
+      return
+    }
 
     try {
+      // If a player instance already exists, destroy it before creating a new one
       if (player.value) {
         await destroy()
       }
-
-      if (!el.value) return
 
       // Load shaka player
       const shakaInstance = await loadShaka()
