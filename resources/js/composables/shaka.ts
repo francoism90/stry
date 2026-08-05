@@ -1,7 +1,7 @@
 import { useSettings } from '@/composables/settings'
 import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
-import { tryOnScopeDispose } from '@vueuse/core'
+import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
 import { computed, ref, shallowRef, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 import { useVideo } from './video'
@@ -200,7 +200,7 @@ export function useShaka(
     console.error('Shaka Player Error:', shakaError)
   }
 
-  const onTimeUpdate = (event: Event) => {
+  const onTimeUpdate = useThrottleFn((event: Event) => {
     const model = toValue(video) as Video | null
     const el = event.target as HTMLMediaElement | null
 
@@ -220,7 +220,7 @@ export function useShaka(
         }
       }
     }
-  }
+  }, 2500)
 
   const onVolumeChange = (event: Event) => {
     const el = event.target as HTMLMediaElement | null
