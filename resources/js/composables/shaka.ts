@@ -108,24 +108,25 @@ export function useShaka(
   }
 
   const load = async (playlist: Playlist | null, startTime?: number | null) => {
+    // Ensure the player and playlist are available before proceeding
     if (!player.value || !playlist) {
       return
     }
 
-    const config: Partial<shaka.extern.PlayerConfiguration> = {}
-    const keyId = playlist.encryption_key_id?.toLowerCase() ?? ''
-    const keyContent = playlist.encryption_key?.toLowerCase() ?? ''
-
-    if (keyId && keyContent) {
-      config.drm = {
-        clearKeys: { [keyId]: keyContent },
-      } as shaka.extern.DrmConfiguration
-    }
+    // Prepare the configuration for the player, including DRM settings if available
+    const config = player.value.getConfiguration()
+    const keyId = playlist.encryption_key_id?.toLowerCase() ?? null
+    const keyContent = playlist.encryption_key?.toLowerCase() ?? null
 
     try {
-      // Configure the player with DRM settings if available
-      if (config.drm) {
-        player.value.configure(config)
+      // If both the key ID and key content are available, configure the player with DRM settings
+      if (keyId && keyContent) {
+        player.value.configure({
+          ...config,
+          drm: {
+            clearKeys: { [keyId]: keyContent },
+          } as shaka.extern.DrmConfiguration,
+        })
       }
 
       // Load the manifest into the player
@@ -165,8 +166,8 @@ export function useShaka(
 
   const reset = () => {
     initializing.value = false
-    error.value = null
     ticker.value = null
+    error.value = null
   }
 
   const onErrorEvent = (event: Event) => {
