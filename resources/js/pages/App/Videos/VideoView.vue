@@ -9,13 +9,15 @@ import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useEcho } from '@/composables/echo'
 import { useVideo } from '@/composables/video'
 import { index } from '@/routes/videos'
-import type { Group, Video } from '@/types'
+import type { Group, Playlist, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
   video: Video
+  playlist?: Playlist | undefined
+  progress?: number | undefined
   queue?: Video[] | undefined
   groups?: Group[] | undefined
 }>()
@@ -66,7 +68,11 @@ privateChannel(`videos.${props.video.id}`)
 
     <template #body>
       <UPage class="mt-6">
-        <VideoPlayer />
+        <VideoPlayer
+          :video="video"
+          :playlist="playlist"
+          :progress="progress"
+        />
 
         <GroupVideoModal
           v-model:open="isAddModalOpen"

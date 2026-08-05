@@ -1,19 +1,21 @@
 import { useSettings } from '@/composables/settings'
 import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
-import { usePlaylistSession } from '@/plugins/shaka/session'
+import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
-
-const { get, update } = useSettings('player')
-const { updatePlaylistSession } = usePlaylistSession()
+import { computed, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { useVideo } from './video'
 
 export function useShaka(
-  asset?: MaybeRefOrGetter<string | null>,
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
+  video?: MaybeRefOrGetter<Video | null>,
+  playlist?: MaybeRefOrGetter<Playlist | null>,
   starts?: MaybeRefOrGetter<number | null>,
 ) {
+  const { get, update } = useSettings('player')
+  const { markViewed } = useVideo(video)
+
   const player = shallowRef<shaka.Player>()
   const manager = shallowRef<shaka.util.EventManager>()
   const ui = shallowRef<shaka.ui.Overlay>()
@@ -21,6 +23,9 @@ export function useShaka(
   const ready = ref<boolean>(false)
   const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number | null>(null)
+
+  const manifest = computed(() => player.value?.getManifest() ?? null)
+  const media = computed(() => player.value?.getMediaElement() ?? null)
 
   const initialize = async (videoContainer: HTMLElement | undefined, mediaElement: HTMLMediaElement | undefined) => {
     if (player.value || !videoContainer || !mediaElement) {
@@ -95,15 +100,38 @@ export function useShaka(
     }
   }
 
-  const load = async (manifest: string | null, startTime?: number | null) => {
-    if (!player.value || !manifest) {
+  const load = async (playlist: Playlist | null, startTime?: number | null) => {
+    if (!player.value || !playlist) {
       return
     }
 
-    try {
-      // Load the manifest into the player
-      await player.value.load(manifest, startTime)
+    const config: Partial<shaka.extern.PlayerConfiguration> = {}
+    const keyId = playlist.encryption_key_id?.toLowerCase() ?? ''
+    const keyContent = playlist.encryption_key?.toLowerCase() ?? ''
 
+    if (keyId && keyContent) {
+      config.drm = {
+        clearKeys: { [keyId]: keyContent },
+      } as shaka.extern.DrmConfiguration
+    }
+
+    try {
+      // Configure the player with DRM settings if available
+      if (config.drm) {
+        player.value.configure(config)
+      }
+
+      // Load the manifest into the player
+      await player.value.load(playlist.asset, startTime)
+
+      // Select the first text track if captions are enabled
+      const textTracks = player.value.getTextTracks()
+
+      if (get('captions', true) && textTracks.length > 0) {
+        player.value.selectTextTrack(textTracks[0])
+      }
+
+      // Reset the error state and mark the player as ready
       error.value = null
       ready.value = true
     } catch (err) {
@@ -147,15 +175,23 @@ export function useShaka(
   }
 
   const onTimeUpdate = (event: Event) => {
+    const model = toValue(video) as Video | null
     const el = event.target as HTMLMediaElement | null
 
-    if (el) {
+    if (model && el) {
       const currentTime = el.currentTime ?? 0
       const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
-      if (time > 0 && Math.abs((ticker.value ?? 0) - time) > 0.25) {
-        updatePlaylistSession(playlist.value, time)
-        ticker.value = time
+      // Prevent excessive updates by only marking as viewed if the time has changed significantly
+      if (time > 0 && Math.abs((ticker.value ?? 0) - time) > 2) {
+        // Update the ticker value to the current time
+        ticker.value = time ?? 0
+
+        try {
+          markViewed(time)
+        } catch (err) {
+          console.error('Error marking video as viewed:', err)
+        }
       }
     }
   }
@@ -164,22 +200,20 @@ export function useShaka(
     const el = event.target as HTMLMediaElement | null
 
     if (el) {
-      update({ muted: el.muted, volume: el.volume })
+      update({ muted: el.muted ?? false, volume: el.volume ?? 1 })
     }
   }
 
   watch(
-    () => [asset, container, element],
-    async ([reqAsset, reqContainer, reqElement]) => {
-      const manifest = toValue(reqAsset) as string | null
+    () => [playlist, container, element],
+    async ([reqPlaylist, reqContainer, reqElement]) => {
+      const playlistValue = toValue(reqPlaylist) as Playlist | null
       const videoContainer = toValue(reqContainer) as HTMLElement | undefined
       const mediaElement = toValue(reqElement) as HTMLMediaElement | undefined
+      const startsAt = toValue(starts) as number | null
 
-      const currentManifest = player.value?.getManifest() ?? null
-      const currentMediaElement = player.value?.getMediaElement() ?? null
-
-      // If the manifest or media element has changed, destroy the current player instance
-      if (mediaElement !== currentMediaElement) {
+      // If the media element has changed, destroy the current player instance
+      if (mediaElement !== media.value) {
         await destroy()
       }
 
@@ -187,8 +221,8 @@ export function useShaka(
       await initialize(videoContainer, mediaElement)
 
       // Load the new manifest if it has changed
-      if (manifest !== currentManifest) {
-        await load(manifest, toValue(starts) as number | null)
+      if (playlistValue?.asset !== manifest.value) {
+        await load(playlistValue, startsAt)
       }
     },
   )
@@ -199,6 +233,8 @@ export function useShaka(
     player,
     ready,
     error,
+    manifest,
+    media,
     initialize,
     destroy,
   }
