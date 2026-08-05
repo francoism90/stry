@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { index, show } from '@/actions/App/Web/Tags/Controllers/TagController'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useEcho } from '@/composables/echo'
 import type { Tag } from '@/types'
@@ -47,6 +48,10 @@ privateChannel(`tags.${props.tag.id}`)
 
         <slot />
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

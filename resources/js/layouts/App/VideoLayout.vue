@@ -3,6 +3,7 @@ import { edit, show } from '@/actions/App/Web/Videos/Controllers/VideoController
 import { index as media } from '@/actions/App/Web/Videos/Controllers/VideoMediaController'
 import { index as playlists } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
 import { index as transcodes } from '@/actions/App/Web/Videos/Controllers/VideoTranscodeController'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useEcho } from '@/composables/echo'
 import { index } from '@/routes/videos'
@@ -116,6 +117,10 @@ privateChannel(`videos.${props.video.id}`)
 
         <slot />
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>
