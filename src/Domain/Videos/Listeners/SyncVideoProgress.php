@@ -9,7 +9,7 @@ use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Number;
 
-class SyncPlaylistProgress
+class SyncVideoProgress
 {
     public function handle(VideoHasBeenViewedEvent $event): void
     {

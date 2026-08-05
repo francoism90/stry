@@ -163,7 +163,11 @@ export function useShaka(
 
   const destroy = async () => {
     try {
+      // Release the event manager and unload the player
       await manager.value?.release()
+      await player.value?.unload()
+
+      // Destroy the UI and player instances
       await ui.value?.destroy()
       await player.value?.destroy()
     } catch {
