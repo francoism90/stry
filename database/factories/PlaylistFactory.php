@@ -20,7 +20,7 @@ class PlaylistFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'playlistable_type' => Video::class,
+            'playlistable_type' => (new Video)->getMorphClass(),
             'playlistable_id' => Video::factory(),
             'disk' => 'segments',
             'file_name' => fake()->uuid().'.mpd',

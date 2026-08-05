@@ -1,3 +1,4 @@
+import { isPlaylistReplacement } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
 import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
@@ -258,7 +259,7 @@ export function useShaka(
       if (loaded.value === false) {
         // Load the initial manifest
         await load(playlistModel, startsAt)
-      } else if (playlistModel.id !== current.value?.id) {
+      } else if (isPlaylistReplacement(playlistModel, current.value)) {
         // Swap in a newly issued manifest (e.g. after the previous one expired) without a full re-initialize
         await replace(playlistModel)
       }

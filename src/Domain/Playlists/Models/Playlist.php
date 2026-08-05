@@ -14,6 +14,7 @@ use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
+use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -38,6 +39,7 @@ class Playlist extends Model
     use HasFactory;
     use HasStates;
     use HasUlids;
+    use InteractsWithModelCache;
     use InteractsWithUser;
     use Prunable;
 
@@ -286,7 +288,12 @@ class Playlist extends Model
 
     public static function getManifestUrlLifetime(): int
     {
-        return Config::integer('playlists.manifest_url_lifetime', 3600);
+        return Config::integer('playlists.manifest_url_lifetime', 7200);
+    }
+
+    public static function getManifestRefreshBefore(): int
+    {
+        return Config::integer('playlists.manifest_refresh_before', 300);
     }
 
     public static function getManifestCacheLifetime(): int

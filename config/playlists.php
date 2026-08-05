@@ -73,7 +73,21 @@ return [
     |
     */
 
-    'manifest_url_lifetime' => (int) env('PLAYLIST_MANIFEST_URL_LIFETIME', 3600),
+    'manifest_url_lifetime' => (int) env('PLAYLIST_MANIFEST_URL_LIFETIME', 7200),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manifest Refresh Before
+    |--------------------------------------------------------------------------
+    |
+    | While a video is actively being watched, the video session heartbeat
+    | re-signs and broadcasts a fresh manifest URL this many seconds before
+    | the current one expires, so long-running playback never hits an
+    | expired signed URL.
+    |
+    */
+
+    'manifest_refresh_before' => (int) env('PLAYLIST_MANIFEST_REFRESH_BEFORE', 300),
 
     /*
     |--------------------------------------------------------------------------
