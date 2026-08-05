@@ -1,13 +1,13 @@
 import type shaka from 'shaka-player/dist/shaka-player.ui'
 import { registerLucideIcons } from './icons'
 
-let _shaka: typeof shaka | undefined
+let instance: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
-  if (!_shaka) {
-    const [mod, seekRewindMod, seekForwardMod] = await Promise.all([
-      import('shaka-player/dist/controls.css'),
+  if (!instance) {
+    const [mod, _css, seekRewindMod, seekForwardMod] = await Promise.all([
       import('shaka-player/dist/shaka-player.ui'),
+      import('shaka-player/dist/controls.css'),
       import('./SeekRewind') as Promise<{
         SeekRewind: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
       }>,
@@ -16,26 +16,26 @@ export async function loadShaka(): Promise<typeof shaka> {
       }>,
     ])
 
-    _shaka = mod.default as unknown as typeof shaka
+    instance = mod.default as unknown as typeof shaka
 
-    _shaka.polyfill.installAll()
+    instance.polyfill.installAll()
 
-    registerLucideIcons(_shaka)
+    registerLucideIcons(instance)
 
-    _shaka.ui.Controls.registerElement('seek_rewind', {
+    instance.ui.Controls.registerElement('seek_rewind', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new seekRewindMod.SeekRewind(parent, controls),
     })
 
-    _shaka.ui.Controls.registerElement('seek_forward', {
+    instance.ui.Controls.registerElement('seek_forward', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new seekForwardMod.SeekForward(parent, controls),
     })
   }
 
-  return _shaka
+  return instance
 }
 
 export function getShaka(): typeof shaka | undefined {
-  return _shaka
+  return instance
 }
 
 export function configureOverlay(overlay: shaka.ui.Overlay): void {
