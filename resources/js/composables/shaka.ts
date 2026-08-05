@@ -110,7 +110,7 @@ export function useShaka(
 
   const load = async (playlist: Playlist | null, startTime?: number | null) => {
     // Ensure the player and playlist are available before proceeding
-    if (!player.value || !playlist?.asset?.length) {
+    if (!player.value || !playlist?.valid || !playlist.asset) {
       return
     }
 
