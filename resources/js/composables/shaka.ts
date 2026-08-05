@@ -1,10 +1,10 @@
 import { useSettings } from '@/composables/settings'
+import { useVideo } from '@/composables/video'
 import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
 import { computed, ref, shallowRef, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
-import { useVideo } from './video'
 
 export function useShaka(
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
