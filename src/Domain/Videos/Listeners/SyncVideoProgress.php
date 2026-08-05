@@ -2,38 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Actions;
+namespace Domain\Videos\Listeners;
 
 use Domain\Groups\Enums\GroupType;
-use Domain\Users\Models\User;
+use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Number;
 
-class SetVideoProgress
+class SyncVideoProgress
 {
-    public function handle(Video $video, ?User $user = null, ?array $attributes = null): void
+    public function handle(VideoHasBeenViewedEvent $event): void
     {
-        if (! $user || $video->duration <= 0) {
+        if (! ($video = $event->video) || ! ($user = $event->user)) {
             return;
         }
 
-        // Cache the viewed time and progress for the video
-        $viewedKey = 'viewed';
-
-        $progressKey = 'progress';
+        // Get the cache key for the viewed group
+        $viewedKey = GroupType::Viewed->value;
 
         // Normalize the progress time to a float between 0 and the video duration
-        $time = $this->normalizeProgress($video, $attributes);
+        $time = $this->normalizeProgress($video, $event->attributes);
 
         // Mark the video as viewed if the user is in the viewed group, or mark them as viewing if not
         if (! $video->modelCacheHas($viewedKey)) {
             $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
         }
 
-        // Update the progress time in the cache for the video
-        $video->modelCache($viewedKey, $time, now()->addMinutes(30));
+        // Cache the progress time for the video for 1 hour
+        $video->modelCache($viewedKey, $time, now()->addHour());
 
-        $video->modelCache($progressKey, $time, now()->addWeek());
+        // Cache the progress time for the video for 1 week
+        $video->modelCache('progress', $time, now()->addWeek());
     }
 
     protected function normalizeProgress(Video $video, ?array $attributes = null): float

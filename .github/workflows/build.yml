@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - main
-    pull_request:
     release:
         types: [published]
     workflow_dispatch:
@@ -48,7 +47,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.5
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, pdo_pgsql, bcmath, intl, gd, exif, iconv, imagick, fileinfo, redis
+                  extensions: dom, curl, libxml, mbstring, pcntl, exif, iconv, fileinfo, xml
                   coverage: none
 
             - name: Get Composer cache directory
@@ -88,9 +87,7 @@ jobs:
                     echo "args<<EOF"
                     echo "--target=production"
                     echo "--cache-from=${CACHE_IMAGE}"
-                    if [ "${{ github.event_name }}" != "pull_request" ]; then
-                      echo "--cache-to=${CACHE_IMAGE}"
-                    fi
+                    echo "--cache-to=${CACHE_IMAGE}"
                     echo "EOF"
                   } >> "$GITHUB_OUTPUT"
 
@@ -108,7 +105,6 @@ jobs:
                   extra-args: ${{ steps.buildargs.outputs.args }}
 
             - name: Push image by tag
-              if: ${{ github.event_name != 'pull_request' }}
               id: push
               uses: redhat-actions/push-to-registry@v3
               with:
@@ -120,7 +116,6 @@ jobs:
                   digestfile: /tmp/digest.txt
 
             - name: Upload digest
-              if: ${{ github.event_name != 'pull_request' }}
               uses: actions/upload-artifact@v7
               with:
                   name: digests-${{ steps.platform.outputs.pair }}
@@ -131,7 +126,6 @@ jobs:
     merge:
         name: Merge & push manifest
         needs: build
-        if: ${{ github.event_name != 'pull_request' }}
         runs-on: ubuntu-latest
         permissions:
             contents: read
