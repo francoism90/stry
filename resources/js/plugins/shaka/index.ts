@@ -7,7 +7,6 @@ export async function loadShaka(): Promise<typeof shaka> {
   if (!instance) {
     const [mod, seekRewindMod, seekForwardMod] = await Promise.all([
       import('shaka-player/dist/shaka-player.ui'),
-      import('shaka-player/dist/controls.css'),
       import('./SeekRewind') as Promise<{
         SeekRewind: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
       }>,
