@@ -1,13 +1,13 @@
 import { useSettings } from '@/composables/settings'
 import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
 import { usePlaylistSession } from '@/plugins/shaka/session'
-import type { Playlist } from '@/types'
-import { usePage } from '@inertiajs/vue3'
 import { tryOnScopeDispose, useEventListener, useThrottleFn, watchDeep, whenever } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
+import { ref, shallowRef, toValue, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(
+  manifestUri?: MaybeRefOrGetter<string | null>,
+  startTime?: MaybeRefOrGetter<number | null>,
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
   element?: MaybeRefOrGetter<HTMLMediaElement | undefined>,
 ) {
@@ -15,54 +15,43 @@ export function useShaka(
   const { updatePlaylistSession } = usePlaylistSession()
 
   const player = shallowRef<shaka.Player>()
-  const ui = shallowRef<shaka.ui.Overlay>()
-  const initializing = ref<boolean>(false)
-  const ready = ref<boolean>(false)
-  const error = ref<shaka.util.Error | Error | null>(null)
-  const ticker = ref<number>(0)
+  const error = shallowRef<shaka.util.Error | Error | null>(null)
 
-  const playlist = computed(() => usePage().props.playlist as Playlist | null)
-  const startTime = computed(() => usePage().props.progress as number | null)
-  const el = computed(() => toValue(element))
+  const ready = ref<boolean>(false)
+  const initializing = ref<boolean>(false)
 
   const initialize = async () => {
-    // Prevent multiple initializations
-    if (initializing.value) return
-
-    // Set the ticker to the start time if it exists
+    // Set the initializing state to true
     initializing.value = true
-    ticker.value = startTime.value ?? 0
+
+    const assetUri = toValue(manifestUri)
+    const videoContainer = toValue(container)
+    const mediaElement = toValue(element)
+
+    if (!videoContainer || !mediaElement) return
 
     try {
+      // Destroy the existing player if it exists
       if (player.value) {
         await destroy()
       }
 
-      if (!el.value) return
-
       // Load shaka player
-      const shakaInstance = await loadShaka()
+      const shaka = await loadShaka()
 
-      if (!shakaInstance.Player.isBrowserSupported()) {
+      if (!shaka.Player.isBrowserSupported()) {
         error.value = new Error('Your browser cannot play this stream with the current media/DRM settings.')
         return
       }
 
       // Create a new player instance
-      player.value = new shakaInstance.Player()
+      player.value = new shaka.Player()
 
       // Create a new UI instance
-      ui.value = new shakaInstance.ui.Overlay(
-        player.value,
-        toValue(container) as HTMLElement,
-        toValue(element) as HTMLMediaElement,
-      )
+      const ui = new shaka.ui.Overlay(player.value, videoContainer, mediaElement)
 
       // Configure the UI
-      configureOverlay(ui.value)
-
-      // Attach the player to the media element
-      await player.value.attach(el.value)
+      configureOverlay(ui)
 
       // Configure the player
       const quality = get('quality', 'auto')!
@@ -94,9 +83,9 @@ export function useShaka(
       })
 
       // Configure the media element
-      el.value.muted = get('muted', false)!
-      el.value.volume = get('volume', 1)!
-      el.value.playbackRate = get('playback_speed', 1)!
+      mediaElement.muted = get('muted', false)!
+      mediaElement.volume = get('volume', 1)!
+      mediaElement.playbackRate = get('playback_speed', 1)!
 
       // Load the playlist
       await load()
@@ -195,9 +184,8 @@ export function useShaka(
     const currentTime = el.value?.currentTime ?? 0
     const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
-    if (playlist.value?.valid && time > 0 && Math.abs((ticker.value ?? 0) - time) > 0.25) {
+    if (playlist.value?.valid && time > 0) {
       updatePlaylistSession(playlist.value, time)
-      ticker.value = time
     }
   }, 2500)
 
