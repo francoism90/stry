@@ -21,6 +21,7 @@ export function useShaka(
   const ui = shallowRef<shaka.ui.Overlay>()
 
   const initializing = ref<boolean>(false)
+  const loading = ref<boolean>(false)
   const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number | null>(null)
 
@@ -29,7 +30,8 @@ export function useShaka(
   const media = computed(() => player.value?.getMediaElement() ?? null)
 
   const initialize = async (videoContainer: HTMLElement | undefined, mediaElement: HTMLMediaElement | undefined) => {
-    if (player.value || !videoContainer || !mediaElement) {
+    // Ensure the video container and media element are available before proceeding
+    if (!videoContainer || !mediaElement) {
       return
     }
 
@@ -41,7 +43,7 @@ export function useShaka(
       const shakaInstance = await loadShaka()
 
       if (!shakaInstance.Player.isBrowserSupported()) {
-        console.error('Your browser cannot play this stream with the current media/DRM settings.')
+        onErrorEvent(new CustomEvent('error', { detail: new Error('Shaka Player is not supported in this browser.') }))
         return
       }
 
@@ -113,6 +115,10 @@ export function useShaka(
       return
     }
 
+    // Mark the player as loading and reset any previous errors
+    loading.value = true
+    error.value = null
+
     // Prepare the configuration for the player, including DRM settings if available
     const config = player.value.getConfiguration()
     const keyId = playlist.encryption_key_id?.toLowerCase() ?? null
@@ -138,9 +144,19 @@ export function useShaka(
       if (get('captions', true) && textTracks.length > 0) {
         player.value.selectTextTrack(textTracks[0])
       }
+    } catch (err) {
+      onErrorEvent(new CustomEvent('error', { detail: err }))
+    }
+  }
 
-      // Reset the error state and mark the player as ready
-      error.value = null
+  const replace = async (playlist: Playlist | null) => {
+    // Ensure the player and playlist are available before proceeding
+    if (!player.value || !playlist) {
+      return
+    }
+
+    try {
+      await player.value.load(playlist.asset)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
     }
@@ -151,8 +167,8 @@ export function useShaka(
       await manager.value?.release()
       await ui.value?.destroy()
       await player.value?.destroy()
-    } catch (err) {
-      onErrorEvent(new CustomEvent('error', { detail: err }))
+    } catch {
+      // Ignore errors during destruction
     } finally {
       // Reset the player, manager, and UI references
       ui.value = undefined
@@ -166,8 +182,9 @@ export function useShaka(
 
   const reset = () => {
     initializing.value = false
-    ticker.value = null
+    loading.value = false
     error.value = null
+    ticker.value = null
   }
 
   const onErrorEvent = (event: Event) => {
@@ -211,7 +228,7 @@ export function useShaka(
   }
 
   watchEffect(async () => {
-    const playlistValue = toValue(playlist) as Playlist | null
+    const playlistModel = toValue(playlist) as Playlist | null
     const videoContainer = toValue(container) as HTMLElement | undefined
     const mediaElement = toValue(element) as HTMLMediaElement | undefined
     const startsAt = toValue(progress) as number | null
@@ -223,8 +240,11 @@ export function useShaka(
     }
 
     // Load the new manifest if it has changed
-    if (playlistValue?.asset !== manifest.value) {
-      await load(playlistValue, startsAt)
+    if (loading.value === false && playlistModel && playlistModel.asset !== manifest.value) {
+      console.log(playlistModel.asset)
+      console.log(manifest.value)
+
+      await load(playlistModel, startsAt)
     }
   })
 
@@ -237,6 +257,7 @@ export function useShaka(
     manifest,
     media,
     initialize,
+    replace,
     destroy,
   }
 }
