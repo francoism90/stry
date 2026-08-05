@@ -5,7 +5,7 @@ let instance: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
   if (!instance) {
-    const [mod, _css, seekRewindMod, seekForwardMod] = await Promise.all([
+    const [mod, seekRewindMod, seekForwardMod] = await Promise.all([
       import('shaka-player/dist/shaka-player.ui'),
       import('shaka-player/dist/controls.css'),
       import('./SeekRewind') as Promise<{
