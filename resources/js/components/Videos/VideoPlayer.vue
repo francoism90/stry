@@ -14,7 +14,13 @@ const props = defineProps<{
 const container = ref<HTMLDivElement | undefined>()
 const media = ref<HTMLMediaElement | undefined>()
 
-const { ready, error } = useShaka(container, media, props.video, props.playlist, props.progress)
+const { ready, error } = useShaka(
+  container,
+  media,
+  () => props.video ?? null,
+  () => props.playlist ?? null,
+  () => props.progress ?? null,
+)
 
 const actions = ref<ButtonProps[]>([
   {

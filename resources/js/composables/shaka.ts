@@ -21,11 +21,12 @@ export function useShaka(
   const ui = shallowRef<shaka.ui.Overlay>()
 
   const initializing = ref<boolean>(false)
-  const loading = ref<boolean>(false)
+  const loaded = ref<boolean>(false)
+  const current = shallowRef<Playlist | null>(null)
   const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number | null>(null)
 
-  const ready = computed(() => player.value !== undefined && !initializing.value)
+  const ready = computed(() => player.value !== undefined && !initializing.value && loaded.value)
   const media = computed(() => player.value?.getMediaElement() ?? null)
 
   const initialize = async (videoContainer: HTMLElement | undefined, mediaElement: HTMLMediaElement | undefined) => {
@@ -114,10 +115,11 @@ export function useShaka(
       return
     }
 
-    // Mark the player as loading and reset any previous errors
-    loading.value = true
-    error.value = null
+    // Mark the manifest as loaded and reset any previous errors
+    loaded.value = true
+    current.value = playlist
     ticker.value = startTime ?? null
+    error.value = null
 
     // Prepare the configuration for the player, including DRM settings if available
     const config = player.value.getConfiguration()
@@ -151,12 +153,20 @@ export function useShaka(
 
   const replace = async (playlist: Playlist | null) => {
     // Ensure the player and playlist are available before proceeding
-    if (!player.value || !playlist) {
+    if (!player.value || !playlist?.valid || !playlist.asset) {
       return
     }
 
+    // Resume from the current playback position instead of restarting the manifest
+    const startTime = player.value.getMediaElement()?.currentTime ?? ticker.value
+
+    // Track the replaced playlist and reset any previous errors
+    current.value = playlist
+    error.value = null
+    ticker.value = startTime ?? null
+
     try {
-      await player.value.load(playlist.asset)
+      await player.value.load(playlist.asset, startTime)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
     }
@@ -186,7 +196,8 @@ export function useShaka(
 
   const reset = () => {
     initializing.value = false
-    loading.value = false
+    loaded.value = false
+    current.value = null
     error.value = null
     ticker.value = null
   }
@@ -243,9 +254,14 @@ export function useShaka(
       await initialize(videoContainer, mediaElement)
     }
 
-    // Load the new manifest if it has changed
-    if (loading.value === false && playlistModel) {
-      await load(playlistModel, startsAt)
+    if (playlistModel) {
+      if (loaded.value === false) {
+        // Load the initial manifest
+        await load(playlistModel, startsAt)
+      } else if (playlistModel.id !== current.value?.id) {
+        // Swap in a newly issued manifest (e.g. after the previous one expired) without a full re-initialize
+        await replace(playlistModel)
+      }
     }
   })
 
