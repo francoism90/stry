@@ -2,6 +2,7 @@
 import AccountController from '@/actions/App/Web/Account/Controllers/AccountController'
 import SecurityController from '@/actions/App/Web/Account/Controllers/SecurityController'
 import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
+import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import { useAuth } from '@/composables/auth'
 import { useEcho } from '@/composables/echo'
@@ -76,6 +77,10 @@ privateChannel(`users.${user.value?.id}`).listen('.user.updated', () => {
 
         <slot />
       </UPage>
+    </template>
+
+    <template #footer>
+      <AppFooter />
     </template>
   </UDashboardPanel>
 </template>

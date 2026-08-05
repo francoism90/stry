@@ -1,3 +1,7 @@
+/* Shaka Player UI */
+@import 'shaka-player/dist/controls.css';
+
+/* Custom Shaka Player UI */
 .shaka-video-container,
 .shaka-video-container *,
 .shaka-video-container *::before,
