@@ -117,6 +117,7 @@ export function useShaka(
     // Mark the player as loading and reset any previous errors
     loading.value = true
     error.value = null
+    ticker.value = startTime ?? null
 
     // Prepare the configuration for the player, including DRM settings if available
     const config = player.value.getConfiguration()
