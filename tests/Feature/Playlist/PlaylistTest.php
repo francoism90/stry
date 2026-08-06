@@ -25,7 +25,7 @@ it('can create a playlist with required attributes', function () {
     expect($playlist->exists)->toBeTrue()
         ->and($playlist->user_id)->toBe($user->getKey())
         ->and($playlist->playlistable_id)->toBe($video->getKey())
-        ->and($playlist->playlistable_type)->toBe(Video::class)
+        ->and($playlist->playlistable_type)->toBe($video->getMorphClass())
         ->and($playlist->disk)->toBe('segments')
         ->and($playlist->file_name)->toBe('playlist.m3u8');
 });
