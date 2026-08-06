@@ -1,6 +1,7 @@
+import { usePlaylist } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
-import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
+import { configureOverlay, createError, isCriticalError, loadShaka } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
@@ -14,7 +15,8 @@ export function useShaka(
   progress?: MaybeRefOrGetter<number | null>,
 ) {
   const { get, update } = useSettings('player')
-  const { markViewed } = useVideo(video)
+  const { isPlaylistReplacement } = usePlaylist()
+  const { markViewed } = useVideo()
 
   const player = shallowRef<shaka.Player>()
   const manager = shallowRef<shaka.util.EventManager>()
@@ -78,14 +80,12 @@ export function useShaka(
           bufferBehind: 30,
           rebufferingGoal: 0,
           segmentPrefetchLimit: 3,
-          ignoreTextStreamFailures: true,
           retryParameters: {
             baseDelay: 100,
           },
         },
         manifest: {
           dash: { xlinkFailGracefully: true },
-          hls: { ignoreImageStreamFailures: true, ignoreTextStreamFailures: true },
           retryParameters: {
             baseDelay: 100,
           },
@@ -120,6 +120,16 @@ export function useShaka(
     current.value = playlist
     ticker.value = startTime ?? null
     error.value = null
+
+    if (playlist.failed) {
+      error.value = createError('MEDIA_SOURCE_OPERATION_FAILED', 'MANIFEST')
+      return
+    }
+
+    if (playlist.expired) {
+      error.value = createError('EXPIRED', 'MANIFEST')
+      return
+    }
 
     // Prepare the configuration for the player, including DRM settings if available
     const config = player.value.getConfiguration()
@@ -203,16 +213,16 @@ export function useShaka(
   }
 
   const onErrorEvent = (event: Event) => {
-    const shakaError = (event as CustomEvent).detail as shaka.util.Error
+    const detail = (event as CustomEvent).detail as shaka.util.Error | Error
 
-    if (shakaError.severity === getShaka()?.util.Error.Severity.CRITICAL) {
-      error.value = shakaError
+    if (isCriticalError(detail)) {
+      error.value = detail
     }
 
-    console.error('Shaka Player Error:', shakaError)
+    console.error('Shaka Player Error:', detail)
   }
 
-  const onTimeUpdate = useThrottleFn((event: Event) => {
+  const onTimeUpdate = useThrottleFn(async (event: Event) => {
     const model = toValue(video) as Video | null
     const el = event.target as HTMLMediaElement | null
 
@@ -226,7 +236,7 @@ export function useShaka(
         ticker.value = time ?? 0
 
         try {
-          markViewed(time)
+          await markViewed(model, time)
         } catch (err) {
           console.error('Error marking video as viewed:', err)
         }
@@ -258,7 +268,7 @@ export function useShaka(
       if (loaded.value === false) {
         // Load the initial manifest
         await load(playlistModel, startsAt)
-      } else if (playlistModel.id !== current.value?.id) {
+      } else if (isPlaylistReplacement(playlistModel, current.value)) {
         // Swap in a newly issued manifest (e.g. after the previous one expired) without a full re-initialize
         await replace(playlistModel)
       }

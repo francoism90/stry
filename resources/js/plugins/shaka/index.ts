@@ -37,6 +37,40 @@ export function getShaka(): typeof shaka | undefined {
   return instance
 }
 
+/**
+ * Builds a shaka.util.Error, defaulting to CRITICAL severity when none is given.
+ * Throws if Shaka Player hasn't been loaded yet, since the error classes only exist on the loaded instance.
+ */
+export function createError(
+  code: keyof typeof shaka.util.Error.Code | null = null,
+  category: keyof typeof shaka.util.Error.Category | null = null,
+  severity: keyof typeof shaka.util.Error.Severity | null = null,
+): shaka.util.Error {
+  if (!instance) {
+    throw new Error('Shaka Player has not been loaded yet.')
+  }
+
+  return new instance.util.Error(
+    instance.util.Error.Severity[severity ?? 'CRITICAL'],
+    (category !== null ? instance.util.Error.Category[category] : null) as shaka.util.Error.Category,
+    (code !== null ? instance.util.Error.Code[code] : null) as shaka.util.Error.Code,
+  )
+}
+
+/**
+ * Determines whether an error should be surfaced to the user.
+ * shaka.util.Error instances are critical only at CRITICAL severity; any other thrown Error is always treated as critical.
+ */
+export function isCriticalError(error: shaka.util.Error | Error): boolean {
+  const ShakaError = instance?.util.Error
+
+  if (ShakaError && error instanceof ShakaError) {
+    return error.severity === ShakaError.Severity.CRITICAL
+  }
+
+  return error instanceof Error
+}
+
 export function configureOverlay(overlay: shaka.ui.Overlay): void {
   overlay.configure({
     doubleClickForFullscreen: false,

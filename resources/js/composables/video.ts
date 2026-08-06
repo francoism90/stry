@@ -3,39 +3,24 @@ import VideoLikeController from '@/actions/App/Web/Videos/Controllers/VideoLikeC
 import VideoSaveController from '@/actions/App/Web/Videos/Controllers/VideoSaveController'
 import type { Video } from '@/types'
 import { router, useHttp } from '@inertiajs/vue3'
-import { computed, toValue, type MaybeRefOrGetter } from 'vue'
 
-export function useVideo(video?: MaybeRefOrGetter<Video | null>) {
+export function useVideo() {
   const http = useHttp({ time: null as number | null })
 
-  const model = computed(() => toValue(video) as Video | null)
-
-  const markViewed = async (time?: number | null): Promise<void> => {
-    const videoId = model.value?.id ?? null
-
-    if (videoId) {
-      http.time = time ?? null
-      http.post(VideoSessionController.url({ video: videoId }))
-    }
+  const markViewed = async (video: Video, time?: number | null): Promise<void> => {
+    http.time = time ?? null
+    await http.post(VideoSessionController.url({ video: video.id }))
   }
 
-  const toggleLike = async () => {
-    const videoId = model.value?.id ?? null
-
-    if (videoId) {
-      toggleGroup(VideoLikeController.url({ video: videoId }))
-    }
+  const toggleLike = (video: Video): void => {
+    toggleGroup(VideoLikeController.url({ video: video.id }))
   }
 
-  const toggleSave = async () => {
-    const videoId = model.value?.id
-
-    if (videoId) {
-      toggleGroup(VideoSaveController.url({ video: videoId }))
-    }
+  const toggleSave = (video: Video): void => {
+    toggleGroup(VideoSaveController.url({ video: video.id }))
   }
 
-  const toggleGroup = async (url: string) =>
+  const toggleGroup = (url: string): void =>
     router.post(
       url,
       {},
