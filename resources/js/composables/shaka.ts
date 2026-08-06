@@ -1,7 +1,7 @@
 import { isPlaylistReplacement } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
-import { configureOverlay, getShaka, loadShaka } from '@/plugins/shaka'
+import { configureOverlay, createError, isCriticalError, loadShaka } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
@@ -122,6 +122,16 @@ export function useShaka(
     ticker.value = startTime ?? null
     error.value = null
 
+    if (playlist.failed) {
+      error.value = createError('MEDIA_SOURCE_OPERATION_FAILED', 'MANIFEST')
+      return
+    }
+
+    if (playlist.expired) {
+      error.value = createError('EXPIRED', 'MANIFEST')
+      return
+    }
+
     // Prepare the configuration for the player, including DRM settings if available
     const config = player.value.getConfiguration()
     const keyId = playlist.encryption_key_id?.toLowerCase() ?? null
@@ -204,13 +214,13 @@ export function useShaka(
   }
 
   const onErrorEvent = (event: Event) => {
-    const shakaError = (event as CustomEvent).detail as shaka.util.Error
+    const detail = (event as CustomEvent).detail as shaka.util.Error | Error
 
-    if (shakaError.severity === getShaka()?.util.Error.Severity.CRITICAL) {
-      error.value = shakaError
+    if (isCriticalError(detail)) {
+      error.value = detail
     }
 
-    console.error('Shaka Player Error:', shakaError)
+    console.error('Shaka Player Error:', detail)
   }
 
   const onTimeUpdate = useThrottleFn((event: Event) => {
