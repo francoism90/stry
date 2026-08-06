@@ -80,10 +80,9 @@ return [
     | Manifest Refresh Before
     |--------------------------------------------------------------------------
     |
-    | While a video is actively being watched, the video session heartbeat
-    | re-signs and broadcasts a fresh manifest URL this many seconds before
-    | the current one expires, so long-running playback never hits an
-    | expired signed URL.
+    | The player schedules a refetch of the manifest resource this many
+    | seconds before its signed URL expires, so long-running playback
+    | never hits an expired signed URL.
     |
     */
 

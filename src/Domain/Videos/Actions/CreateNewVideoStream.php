@@ -88,8 +88,10 @@ class CreateNewVideoStream
                 $streamer->withResolutions($resolutions);
             }
 
-            // Add text streams for captions if they exist
-            $captions->each(fn (CaptionStream $caption) => $streamer->addTextStream($caption->path, "{$caption->id}_caption.vtt", [
+            // Add text streams for captions if they exist. Fragmented into MP4 (rather than a raw
+            // .vtt sidecar) so shaka-packager can emit a real segment index — a bare .vtt output
+            // gets a <SegmentBase> with no @indexRange, which Shaka Player silently drops.
+            $captions->each(fn (CaptionStream $caption) => $streamer->addTextStream($caption->path, "{$caption->id}_caption.mp4", [
                 'language' => $caption->language,
             ]));
 
