@@ -222,7 +222,7 @@ export function useShaka(
     console.error('Shaka Player Error:', detail)
   }
 
-  const onTimeUpdate = useThrottleFn((event: Event) => {
+  const onTimeUpdate = useThrottleFn(async (event: Event) => {
     const model = toValue(video) as Video | null
     const el = event.target as HTMLMediaElement | null
 
@@ -236,7 +236,7 @@ export function useShaka(
         ticker.value = time ?? 0
 
         try {
-          markViewed(model, time)
+          await markViewed(model, time)
         } catch (err) {
           console.error('Error marking video as viewed:', err)
         }
