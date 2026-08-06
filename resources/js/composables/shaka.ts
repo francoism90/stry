@@ -80,14 +80,12 @@ export function useShaka(
           bufferBehind: 30,
           rebufferingGoal: 0,
           segmentPrefetchLimit: 3,
-          ignoreTextStreamFailures: true,
           retryParameters: {
             baseDelay: 100,
           },
         },
         manifest: {
           dash: { xlinkFailGracefully: true },
-          hls: { ignoreImageStreamFailures: true, ignoreTextStreamFailures: true },
           retryParameters: {
             baseDelay: 100,
           },
