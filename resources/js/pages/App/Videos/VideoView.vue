@@ -24,7 +24,7 @@ const props = defineProps<{
 
 const isAddModalOpen = ref(false)
 
-const { toggleLike, toggleSave } = useVideo(props.video)
+const { toggleLike, toggleSave } = useVideo()
 const { privateChannel } = useEcho()
 
 const links = computed<ButtonProps[]>(() => [
@@ -36,12 +36,12 @@ const links = computed<ButtonProps[]>(() => [
   {
     label: props.video.liked ? 'Unlike' : 'Like',
     icon: props.video.liked ? 'i-lucide-heart' : 'i-lucide-heart-plus',
-    onClick: () => toggleLike(),
+    onClick: () => toggleLike(props.video),
   },
   {
     label: props.video.saved ? 'Unsave' : 'Save',
     icon: props.video.saved ? 'i-lucide-bookmark' : 'i-lucide-bookmark-plus',
-    onClick: () => toggleSave(),
+    onClick: () => toggleSave(props.video),
   },
   {
     label: 'Add',

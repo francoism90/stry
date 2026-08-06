@@ -1,4 +1,4 @@
-import { isPlaylistReplacement } from '@/composables/playlist'
+import { usePlaylist } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
 import { configureOverlay, createError, isCriticalError, loadShaka } from '@/plugins/shaka'
@@ -15,7 +15,8 @@ export function useShaka(
   progress?: MaybeRefOrGetter<number | null>,
 ) {
   const { get, update } = useSettings('player')
-  const { markViewed } = useVideo(video)
+  const { isPlaylistReplacement } = usePlaylist()
+  const { markViewed } = useVideo()
 
   const player = shallowRef<shaka.Player>()
   const manager = shallowRef<shaka.util.EventManager>()
@@ -237,7 +238,7 @@ export function useShaka(
         ticker.value = time ?? 0
 
         try {
-          markViewed(time)
+          markViewed(model, time)
         } catch (err) {
           console.error('Error marking video as viewed:', err)
         }
