@@ -14,7 +14,6 @@ use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Users\Concerns\InteractsWithUser;
-use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -39,7 +38,6 @@ class Playlist extends Model
     use HasFactory;
     use HasStates;
     use HasUlids;
-    use InteractsWithModelCache;
     use InteractsWithUser;
     use Prunable;
 
@@ -175,6 +173,11 @@ class Playlist extends Model
     public function getUrl(): string
     {
         return $this->getUrlResolver($this->file_name ?? 'index.mpd');
+    }
+
+    public function getUrlRefreshIn(): int
+    {
+        return max(static::getManifestUrlLifetime() - static::getManifestRefreshBefore(), 0);
     }
 
     public function markAsReady(): void
