@@ -133,6 +133,24 @@ it('can get path', function () {
         ->and($path)->toContain('segment-001.ts');
 });
 
+it('can get seconds until the manifest url should be refreshed', function () {
+    config()->set('playlists.manifest_url_lifetime', 600);
+    config()->set('playlists.manifest_refresh_before', 300);
+
+    $playlist = Playlist::factory()->create();
+
+    expect($playlist->getUrlRefreshIn())->toBe(300);
+});
+
+it('clamps the manifest url refresh window at zero', function () {
+    config()->set('playlists.manifest_url_lifetime', 60);
+    config()->set('playlists.manifest_refresh_before', 300);
+
+    $playlist = Playlist::factory()->create();
+
+    expect($playlist->getUrlRefreshIn())->toBe(0);
+});
+
 it('can get model from playlistable', function () {
     $video = Video::factory()->create();
 

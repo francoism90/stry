@@ -26,6 +26,7 @@ class PlaylistResource extends JsonResource
             'encryption_key_id' => $this->encryption_key_id,
             'encryption_key' => $this->encryption_key,
             'asset' => $this->getUrl(),
+            'asset_refresh_in' => $this->getUrlRefreshIn(),
             'failed' => $this->isFailed(),
             'expired' => $this->isExpired(),
             'valid' => $this->isValid(),

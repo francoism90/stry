@@ -15,7 +15,7 @@ export function useShaka(
   progress?: MaybeRefOrGetter<number | null>,
 ) {
   const { get, update } = useSettings('player')
-  const { isPlaylistReplacement } = usePlaylist()
+  const { isPlaylistReplacement, scheduleAssetRefresh, cancelAssetRefresh } = usePlaylist()
   const { markViewed } = useVideo()
 
   const player = shallowRef<shaka.Player>()
@@ -156,6 +156,8 @@ export function useShaka(
       if (get('captions', true) && textTracks.length > 0) {
         player.value.selectTextTrack(textTracks[0])
       }
+
+      scheduleAssetRefresh(playlist)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
     }
@@ -177,6 +179,8 @@ export function useShaka(
 
     try {
       await player.value.load(playlist.asset, startTime)
+
+      scheduleAssetRefresh(playlist)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
     }
@@ -205,6 +209,8 @@ export function useShaka(
   }
 
   const reset = () => {
+    cancelAssetRefresh()
+
     initializing.value = false
     loaded.value = false
     current.value = null
