@@ -76,16 +76,11 @@ export function useShaka(
           restrictions: Number.isFinite(maxHeight) ? { maxHeight } : {},
         },
         streaming: {
-          bufferingGoal: 30,
-          bufferBehind: 30,
-          rebufferingGoal: 0,
-          segmentPrefetchLimit: 3,
           retryParameters: {
             baseDelay: 100,
           },
         },
         manifest: {
-          dash: { xlinkFailGracefully: true },
           retryParameters: {
             baseDelay: 100,
           },
@@ -99,6 +94,7 @@ export function useShaka(
 
       // Listen for events
       manager.value.listen(mediaElement, 'volumechange', onVolumeChange)
+      manager.value.listen(mediaElement, 'ratechange', onPlaybackRateChange)
       manager.value.listen(mediaElement, 'timeupdate', onTimeUpdate)
       manager.value.listen(player.value, 'error', onErrorEvent)
     } catch (err) {
@@ -254,7 +250,32 @@ export function useShaka(
     const el = event.target as HTMLMediaElement | null
 
     if (el) {
-      update({ muted: el.muted ?? null, volume: el.volume ?? null })
+      const muted = el.muted ?? null
+      const volume = el.volume ?? null
+
+      // Avoid persisting a redundant update when the values already match, e.g. right after
+      // the initial mediaElement.muted/volume assignment during initialization
+      if (muted === get('muted', false) && volume === get('volume', 1)) {
+        return
+      }
+
+      update({ muted, volume })
+    }
+  }
+
+  const onPlaybackRateChange = (event: Event) => {
+    const el = event.target as HTMLMediaElement | null
+
+    if (el) {
+      const playbackRate = el.playbackRate ?? null
+
+      // Avoid persisting a redundant update when the value already matches, e.g. right after
+      // the initial mediaElement.playbackRate assignment during initialization
+      if (playbackRate === get('playback_speed', 1)) {
+        return
+      }
+
+      update({ playback_speed: playbackRate })
     }
   }
 
