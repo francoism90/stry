@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'manifest_url_lifetime' => (int) env('PLAYLIST_MANIFEST_URL_LIFETIME', 7200),
+    'manifest_url_lifetime' => (int) env('PLAYLIST_MANIFEST_URL_LIFETIME', 14400),
 
     /*
     |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ return [
     |
     */
 
-    'media_url_lifetime' => (int) env('PLAYLIST_MEDIA_URL_LIFETIME', 7200),
+    'media_url_lifetime' => (int) env('PLAYLIST_MEDIA_URL_LIFETIME', 14400),
 
     /*
     |--------------------------------------------------------------------------

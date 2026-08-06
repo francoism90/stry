@@ -288,7 +288,7 @@ class Playlist extends Model
 
     public static function getManifestUrlLifetime(): int
     {
-        return Config::integer('playlists.manifest_url_lifetime', 7200);
+        return Config::integer('playlists.manifest_url_lifetime', 14400);
     }
 
     public static function getManifestRefreshBefore(): int
@@ -303,7 +303,7 @@ class Playlist extends Model
 
     public static function getMediaUrlLifetime(): int
     {
-        return Config::integer('playlists.media_url_lifetime', 7200);
+        return Config::integer('playlists.media_url_lifetime', 14400);
     }
 
     public static function getKeyUrlLifetime(): int
