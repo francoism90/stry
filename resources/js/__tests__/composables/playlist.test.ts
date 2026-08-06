@@ -1,8 +1,9 @@
-import { isPlaylistReplacement } from '@/composables/playlist'
+import { usePlaylist } from '@/composables/playlist'
 import type { Playlist } from '@/types'
 import { describe, expect, it } from 'vitest'
 
 const playlist = (id: string, asset: string): Playlist => ({ id, asset }) as Playlist
+const { isPlaylistReplacement } = usePlaylist()
 
 describe('isPlaylistReplacement', () => {
   it('is not a replacement when id and asset are unchanged', () => {

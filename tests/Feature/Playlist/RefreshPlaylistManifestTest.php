@@ -24,6 +24,9 @@ it('does not refresh again while the freshness window is still active', function
     app(RefreshPlaylistManifest::class)->handle($playlist);
     $refreshedAt = $playlist->fresh()->updated_at;
 
+    // Travel forward so a second (unwanted) touch would land on a detectably different timestamp
+    $this->travel(1)->second();
+
     app(RefreshPlaylistManifest::class)->handle($playlist);
 
     expect($playlist->fresh()->updated_at)->toEqual($refreshedAt);
