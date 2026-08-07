@@ -43,8 +43,11 @@ cd stry
 
 ### Build the Application Image
 
+Docker only picks up `.dockerignore` from the build context root, so copy the stub into place first — otherwise files like a local `.env` or `vendor/` end up baked into the image:
+
 ```bash
-docker build -f containers/Containerfile -t stry:latest .
+cp containers/stubs/frankenphp-octane/runtimes/dockerignore .dockerignore
+docker build -f containers/stubs/frankenphp-octane/runtimes/Containerfile -t stry:latest .
 ```
 
 ### Create Environment Files
