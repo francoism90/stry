@@ -69,9 +69,13 @@ fi
 log "INFO" "Clearing stale caches..."
 ${FRANKEN_CLI} optimize:clear
 
-# Create PWA manifest
-log "INFO" "Creating PWA manifest..."
-${FRANKEN_CLI} pwa:generate
+# Create PWA manifest — only the web server serves manifest.json/sw.js to
+# browsers, so skip this for the horizon/reverb/schedule/ssr containers
+# sharing this same image and entrypoint.
+if [[ "${APP_COMMAND}" == *octane:frankenphp* ]]; then
+    log "INFO" "Creating PWA manifest..."
+    ${FRANKEN_CLI} pwa:generate
+fi
 
 # Ensure all caches are warmed up
 log "INFO" "Optimizing application..."
