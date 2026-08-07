@@ -180,6 +180,9 @@ RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
 # Complete composer setup
 RUN composer dump-autoload --optimize
 
+# Create storage symlink
+RUN ${PHP_CLI} storage:link
+
 # Generate application key
 RUN ${PHP_CLI} key:generate
 

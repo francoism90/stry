@@ -4,8 +4,10 @@
 # Podman/rootless-specific options that have no Docker Compose equivalent:
 #   UserNS=keep-id, GroupAdd=keep-groups, AutoUpdate, AddDevice, LogDriver=none
 #
-# Build the application image first:
-#   docker build -f containers/Containerfile -t stry.build .
+# Build the application image first (from the repo root, so .dockerignore
+# is picked up — copy it into place before building or running "up --build"):
+#   cp containers/stubs/frankenphp-octane/runtimes/dockerignore .dockerignore
+#   docker build -f containers/stubs/frankenphp-octane/runtimes/Containerfile -t stry.build .
 #
 # Env files are expected at containers/config/*.env — create them from the
 # Quadlet config templates at containers/podman/systemd/stry/config/.
@@ -110,7 +112,7 @@ services:
     image: stry.build
     build:
       context: ../../
-      dockerfile: containers/Containerfile
+      dockerfile: containers/stubs/frankenphp-octane/runtimes/Containerfile
     restart: always
     env_file:
       - ../config/app.env

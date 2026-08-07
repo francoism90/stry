@@ -69,10 +69,6 @@ fi
 log "INFO" "Clearing stale caches..."
 ${FRANKEN_CLI} optimize:clear
 
-# Create storage symlinks
-log "INFO" "Creating storage symlinks..."
-${FRANKEN_CLI} storage:link
-
 # Create PWA manifest
 log "INFO" "Creating PWA manifest..."
 ${FRANKEN_CLI} pwa:generate
