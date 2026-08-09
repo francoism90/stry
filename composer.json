@@ -21,8 +21,8 @@
     "foxws/laravel-pwa": "^2.5",
     "foxws/laravel-scout-builder": "^1.0",
     "foxws/laravel-scout-relations": "^1.0",
-    "foxws/laravel-shaka": "^2.1.1",
-    "foxws/laravel-streamer": "^2.0",
+    "foxws/laravel-shaka": "^2.2.0",
+    "foxws/laravel-streamer": "^2.1",
     "guzzlehttp/guzzle": "^7.15.3",
     "http-interop/http-factory-guzzle": "^1.2.1",
     "inertiajs/inertia-laravel": "^3.3.1",
@@ -52,7 +52,7 @@
     "typesense/typesense-php": "^6.0"
   },
   "require-dev": {
-    "aws/aws-sdk-php": "^3.391.0",
+    "aws/aws-sdk-php": "^3.391.1",
     "barryvdh/laravel-ide-helper": "^3.7",
     "fakerphp/faker": "^1.24.1",
     "foxws/laravel-podman": "^1.7.1",

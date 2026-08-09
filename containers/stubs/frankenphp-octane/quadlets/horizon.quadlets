@@ -19,6 +19,9 @@ GroupAdd=keep-groups
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume=/mnt/media/videos:/media:rw,z
 Volume=/mnt/media/import:/import:rw,z
+# Tmpfs alternative (RAM instead of NVMe) - also needs PACKAGER_TEMPORARY_FILES_ROOT,
+# PACKAGER_TEMPORARY_MIN_FREE, and a Horizon maxProcesses cap; see docs/podman.md#storage-sizing-tmpfs
+# Tmpfs=/cache:rw,size=12g,mode=1777
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
 

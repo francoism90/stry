@@ -118,3 +118,36 @@ sudo setsebool -P container_use_devices=true
 php artisan podman:generate frankenphp-octane
 lpod install frankenphp-octane/horizon.quadlets --replace
 ```
+
+## Storage sizing (tmpfs)
+
+`horizon.quadlets` mounts `/cache` from the `{app}-cache` volume (NVMe-backed) by default. `laravel-shaka`/`laravel-streamer` write their packaging scratch space there, then push the finished output to S3 — nothing under `/cache` needs to survive a restart, which makes it a candidate for a `tmpfs` mount instead: RAM-speed I/O and zero NVMe wear for that traffic, at the cost of competing with every other service on the box for physical memory.
+
+A commented `Tmpfs=` line is already in the stub, next to the `Volume=` line it replaces:
+
+```ini
+# Tmpfs=/cache:rw,size=12g,mode=1777
+Volume={{application}}-cache:/cache:rw,z
+```
+
+Sizing it is a tradeoff against everything else running on the host (PostgreSQL, Valkey, Typesense, RustFS, the Octane app itself) - a `size=` larger than what's actually free gets you no protection at all (see [laravel-shaka's storage guards docs](https://github.com/foxws/laravel-shaka/blob/main/docs/CONFIGURATION.md#storage-space-guards) for why). These are starting points for an all-in-one single-host deployment, not a formula - measure your own jobs' real footprint (`du -sh` on a finished job's temp dir) and adjust:
+
+| RAM   | tmpfs `size=` | Min free  | maxProcesses\* |
+| ----- | ------------- | --------- | -------------- |
+| 8 GB  | -             | -         | -              |
+| 16 GB | `6g`          | `1 GiB`   | 3              |
+| 24 GB | `10g`         | `1.5 GiB` | 5              |
+| 32 GB | `14g`         | `2 GiB`   | 7              |
+
+At 8 GB, skip tmpfs entirely and keep the NVMe volume - there's rarely enough spare RAM left alongside Postgres/Valkey/Typesense/RustFS to justify it.
+
+\* Assumes roughly 1.5 GB of scratch space per concurrent packaging job (`temporary_files_size_multiplier` applied) - recompute for your actual rendition ladder and set it via the queue's supervisor config, so `workers x largest expected job footprint` stays comfortably under the tmpfs size.
+
+To apply it: uncomment `Tmpfs=`, remove the `Volume=` line above it, then set (`PACKAGER_TEMPORARY_MIN_FREE` is bytes, not the GiB shown above):
+
+```env
+PACKAGER_TEMPORARY_FILES_ROOT=/cache/temp/packager
+PACKAGER_TEMPORARY_MIN_FREE=1610612736   # 1.5 GiB, for the 24 GB row above
+```
+
+Then re-render and reinstall as above.
