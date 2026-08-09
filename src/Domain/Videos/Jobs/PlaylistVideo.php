@@ -43,7 +43,12 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
     /**
      * @var int
      */
-    public $maxExceptions = 1;
+    public $maxExceptions = 4;
+
+    /**
+     * @var array<int, int>
+     */
+    public $backoff = [10, 30, 60, 90];
 
     /**
      * @var bool
