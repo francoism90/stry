@@ -30,7 +30,12 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $maxExceptions = 1;
+    public $maxExceptions = 3;
+
+    /**
+     * @var array<int, int>
+     */
+    public $backoff = [10, 30, 60, 90];
 
     /**
      * @var int
