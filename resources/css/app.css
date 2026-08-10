@@ -2,13 +2,13 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
 
-/* Shaka Player UI */
-@import './vendor/shaka.css';
-
 /* Custom */
 @import './brand/variables.css';
 @import './brand/variants.css';
 @import './brand/utilities.css';
+
+/* Shaka Player UI */
+@import './vendor/shaka.css';
 
 /* Blade & Vue */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
