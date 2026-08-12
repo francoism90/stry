@@ -41,10 +41,43 @@ class BasicPreset implements Preset
             ->add(Directive::CONNECT, ["https://*.{$host}", "wss://*.{$host}"])
             ->add([Directive::FRAME, Directive::FONT, Directive::STYLE, Directive::IMG], "*.{$host}")
             ->addNonce(Directive::SCRIPT);
+
+        // The S3/rustfs and Reverb hosts aren't necessarily subdomains of the
+        // app host (e.g. app on "stry.domain.tld" with storage/websockets on
+        // sibling hosts like "stry-s3.domain.tld"), so add their actual
+        // configured hosts explicitly rather than relying on "*.{$host}".
+        if ($s3Host = $this->getS3Host()) {
+            $policy
+                ->add(Directive::CONNECT, "https://{$s3Host}")
+                ->add([Directive::FRAME, Directive::FONT, Directive::STYLE, Directive::IMG, Directive::MEDIA], $s3Host);
+        }
+
+        if ($reverbHost = $this->getReverbHost()) {
+            $policy->add(Directive::CONNECT, ["https://{$reverbHost}", "wss://{$reverbHost}"]);
+        }
     }
 
     protected function getHost(): ?string
     {
         return Uri::of(Config::string('app.url', 'localhost'))->host();
+    }
+
+    protected function getS3Host(): ?string
+    {
+        return $this->resolveHost((string) Config::get('filesystems.disks.s3.url'));
+    }
+
+    protected function getReverbHost(): ?string
+    {
+        return $this->resolveHost((string) Config::get('reverb.apps.apps.0.options.wsHost'));
+    }
+
+    protected function resolveHost(string $url): ?string
+    {
+        if ($url === '') {
+            return null;
+        }
+
+        return Uri::of($url)->host();
     }
 }
