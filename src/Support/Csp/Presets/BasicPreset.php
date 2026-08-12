@@ -69,7 +69,10 @@ class BasicPreset implements Preset
 
     protected function getReverbHost(): ?string
     {
-        return $this->resolveHost((string) Config::get('reverb.apps.apps.0.options.wsHost'));
+        // "wsHost" is a bare hostname (e.g. "ws.laravel.test"), not a URL.
+        $host = (string) Config::get('reverb.apps.apps.0.options.wsHost');
+
+        return $host === '' ? null : $host;
     }
 
     protected function resolveHost(string $url): ?string
