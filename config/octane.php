@@ -22,6 +22,7 @@ use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
+use Support\Octane\CaddySites;
 
 return [
 
@@ -220,4 +221,33 @@ return [
     */
 
     'max_execution_time' => 90,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Extra Caddy Sites
+    |--------------------------------------------------------------------------
+    |
+    | Sibling services (S3/rustfs, Reverb, ...) run on the same internal
+    | "stry" network as this container, so FrankenPHP's embedded Caddy can
+    | reverse proxy them directly by hostname instead of each one opening
+    | its own host port and needing its own reverse proxy entry upstream.
+    | Add a service by extending the map below with its public hostname
+    | and internal "host:port" upstream -- nothing else needs to change.
+    |
+    | This must read raw env() rather than config(), since config files
+    | cannot safely depend on each other's load order.
+    |
+    */
+
+    'caddy' => [
+        'env' => [
+            // Port must match the "--port" passed to "octane:frankenphp"
+            // in APP_COMMAND (see the frankenphp-octane Containerfile).
+            'CADDY_EXTRA_CONFIG' => CaddySites::render([
+                CaddySites::hostFromUrl((string) env('AWS_URL')) => 'systemd-stry-rustfs:9000',
+                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => 'systemd-stry-reverb:6001',
+                (string) env('MAILPIT_UI_HOST') => 'systemd-stry-mailpit:8025',
+            ], (int) env('OCTANE_PORT', 8000)),
+        ],
+    ],
 ];
