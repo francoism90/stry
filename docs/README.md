@@ -20,7 +20,7 @@ tags:
 | --------------------------------------------- | -------------------------------------------- |
 | [Podman Quadlet](podman.md)                   | Running the services (install, secrets, GPU) |
 | [Docker Compose](docker.md)                   | Alternative setup, best-effort               |
-| [Proxy Configuration](proxy.md)               | Caddy reverse proxy with automatic HTTPS     |
+| [Reverse Proxy](proxy.md)                     | Sibling routing; bring your own HTTPS        |
 | [Object Storage (S3)](s3.md)                  | S3-compatible storage for media and segments |
 | [Application Configuration](configuration.md) | Playlist, video, and encoding settings       |
 | [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands       |
@@ -31,7 +31,7 @@ tags:
 ## Key concepts
 
 - **`stry-env` secret** — the app's `.env` file, stored as a Podman secret and mounted at `/app/.env` in every app-role container
-- **Presets** — `containers/stubs/{preset}/`: `frankenphp-octane` (app + services), `proxy` (Caddy), `s3` (buckets/CORS), `devcontainer` (VS Code)
+- **Presets** — `containers/stubs/{preset}/`: `frankenphp-octane` (app + services), `s3` (buckets/CORS), `devcontainer` (VS Code)
 - **Quadlet** — systemd integration that runs containers, in the right order, on boot
 
 ## Common tasks

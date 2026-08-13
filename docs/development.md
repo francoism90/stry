@@ -29,14 +29,14 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Pick one preset for the app image, then generate and install it together with `proxy` (see [Podman Quadlet](podman.md) for the full service list):
+Pick one preset for the app image (see [Podman Quadlet](podman.md) for the full service list):
 
 - **`development`** — mounts your working copy into the container live, so edits show up instantly. Use this day to day.
 - **`frankenphp-octane`** — the same image production uses, code baked in. Use this to test a production-style build locally.
 
 ```bash
-php artisan podman:setup --preset=development --preset=proxy
-# or: --preset=frankenphp-octane --preset=proxy
+php artisan podman:setup --preset=development
+# or: --preset=frankenphp-octane
 
 lpod install development/app.quadlets --replace
 lpod install development/pgsql.quadlets --replace
@@ -44,7 +44,9 @@ lpod install development/pgsql.quadlets --replace
 ```
 
 > [!TIP]
-> Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,s3,devcontainer,proxy`) to skip passing `--preset` on every `podman:setup` run.
+> Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,s3,devcontainer`) to skip passing `--preset` on every `podman:setup` run.
+
+Once it's up, the app is available directly at `http://localhost:8000` — no reverse proxy needed locally (see [Reverse Proxy](proxy.md) if you want to test the production-style subdomain routing).
 
 Set `APP_ENV=local`/`APP_DEBUG=true`/`PWA_ENABLED=false` (and any other local overrides) before storing them with `lpod stry secrets`.
 

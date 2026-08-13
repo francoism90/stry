@@ -19,7 +19,6 @@ Volume={{application}}-config:/config:rw,z
 Volume={{application}}-data:/data:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
-Network={{proxy}}.network
 ExposeHostPort=8000
 ExposeHostPort=5173
 

@@ -33,7 +33,6 @@ return [
         // 'development',
         // 'devcontainer',
         'frankenphp-octane',
-        'proxy',
         's3',
     ]),
 

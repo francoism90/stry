@@ -13,7 +13,6 @@ ShmSize=128m
 Volume={{workingPath}}:/app:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
-Network={{proxy}}.network
 ExposeHostPort=6001
 
 [Service]

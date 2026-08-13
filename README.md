@@ -106,7 +106,7 @@ Comprehensive guides are available in the `docs/` folder:
 | [Configuration](docs/configuration.md)   | Configuration options                                |
 | [Podman Quadlet](docs/podman.md)         | Container orchestration (services, install, secrets) |
 | [Docker Compose](docs/docker.md)         | Alternative, best-effort containerization            |
-| [Proxy Setup](docs/proxy.md)             | Reverse proxy configuration                          |
+| [Reverse Proxy](docs/proxy.md)           | Sibling-service routing; bring your own HTTPS        |
 | [S3 Storage](docs/s3.md)                 | Object storage setup                                 |
 | [Interaction](docs/interaction.md)       | CLI usage and commands                               |
 
@@ -120,10 +120,10 @@ Comprehensive guides are available in the `docs/` folder:
 ### Starting the Instance
 
 ```bash
-systemctl --user start stry proxy
+systemctl --user start stry
 ```
 
-The instance will be available at: **<https://stry.test>**
+The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](docs/proxy.md) in front of it)
 
 ### Seed Database
 
@@ -149,10 +149,10 @@ lpod stry a db:seed --class=AdminSeeder
 
 The following services are only accessible when logged in as **super-admin**:
 
-| Service       | URL                           | Description                     |
-| ------------- | ----------------------------- | ------------------------------- |
-| **Horizon**   | <https://stry.test/horizon>   | Queue monitoring and management |
-| **Telescope** | <https://stry.test/telescope> | Debugging assistant (dev only)  |
+| Service       | URL                               | Description                     |
+| ------------- | --------------------------------- | ------------------------------- |
+| **Horizon**   | <http://localhost:8000/horizon>   | Queue monitoring and management |
+| **Telescope** | <http://localhost:8000/telescope> | Debugging assistant (dev only)  |
 
 ---
 

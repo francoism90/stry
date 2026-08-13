@@ -78,24 +78,13 @@ vi containers/config/app.env
 
 ## Usage
 
-### Without Reverse Proxy (Direct Port Access)
-
 ```bash
 docker compose -f containers/docker/docker-compose.yml up -d
 ```
 
 The application will be available at **http://localhost:8000**
 
-### With Caddy Reverse Proxy (HTTPS)
-
-`docker-compose.proxy.yml` adds a `proxy` (Caddy) service on top of the base file — see [Proxy Configuration](proxy.md) for the subdomains it expects and a Caddyfile to adapt (`containers/stubs/proxy/runtimes/Caddyfile`):
-
-```bash
-docker compose \
-  -f containers/docker/docker-compose.yml \
-  -f containers/docker/docker-compose.proxy.yml \
-  up -d
-```
+For HTTPS/subdomains, terminate TLS with your own reverse proxy in front of `:8000` — sibling services (Reverb, RustFS, Mailpit) are already reverse proxied by the app's own embedded Caddy instance, no extra `proxy` service needed. See [Reverse Proxy](proxy.md).
 
 ---
 
@@ -115,7 +104,6 @@ Service names below match the keys in `containers/docker/docker-compose.yml` —
 | `typesense` | Full-text search                       | 8108      |
 | `rustfs`    | S3-compatible storage                  | 9000-9001 |
 | `mailpit`   | Development email                      | 8025      |
-| `proxy`     | Caddy reverse proxy (optional overlay) | 80, 443   |
 
 ---
 
@@ -192,6 +180,6 @@ Docker Compose doesn't have the Podman-specific features the Quadlet setup relie
 ## Next Steps
 
 - Review **[Production Setup](production.md)** for the security checklist
-- Set up **[Proxy Configuration](proxy.md)** for HTTPS
+- Set up **[Reverse Proxy](proxy.md)** for HTTPS and subdomain routing
 - Configure **[Object Storage (S3)](s3.md)** for media files
 - Check **[Application Configuration](configuration.md)** for customization

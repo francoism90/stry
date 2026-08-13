@@ -69,7 +69,6 @@ lpod install frankenphp-octane/app.quadlets --replace
 # ...install every service you need, see podman/frankenphp-octane/...
 lpod stry secrets
 # ...and secrets for every service that needs them...
-lpod install proxy/proxy.quadlets --replace
 
 lpod stry up
 ```
@@ -97,7 +96,7 @@ journalctl --user -u 'stry*' -f
 ## Security checklist
 
 - Use strong, random secrets (`openssl rand -hex 32`) for everything stored via `lpod SERVICE secrets` — never reuse development credentials.
-- Terminate HTTPS with the bundled `proxy` preset (Caddy) — see [Proxy Configuration](proxy.md).
+- Terminate HTTPS at your own reverse proxy (router/NAS, Nginx Proxy Manager, Traefik, Cloudflare Tunnel, ...) in front of the app's `:8000` — see [Reverse Proxy](proxy.md) for the subdomain routing the app handles internally.
 - Restrict the firewall to ports 22, 80, and 443.
 - Never run seeders (`db:seed`) against production data.
 - Keep Podman and base images up to date (`podman pull ...`, then `lpod install ... --replace`).
@@ -112,4 +111,4 @@ journalctl --user -u 'stry*' -f
 
 - [Application Configuration](configuration.md) for app-specific settings
 - [CLI Interaction](interaction.md) for day-to-day commands
-- <https://stry.test/horizon> to monitor queues (super-admin only)
+- `https://your-domain/horizon` to monitor queues (super-admin only)

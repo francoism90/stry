@@ -30,7 +30,6 @@ Published under `containers/stubs/` — customize a preset there (see [Customizi
 | Preset              | Purpose                                                          |
 | ------------------- | ---------------------------------------------------------------- |
 | `frankenphp-octane` | The application and its sibling services (table below)           |
-| `proxy`             | Caddy reverse proxy — see [Proxy](proxy.md)                      |
 | `s3`                | RustFS bucket/CORS setup — see [S3](s3.md)                       |
 | `devcontainer`      | VS Code Dev Containers image — see [Development](development.md) |
 
@@ -42,12 +41,14 @@ Published under `containers/stubs/` — customize a preset there (see [Customizi
 | `stry-pgsql`       | PostgreSQL — :5432                             |
 | `stry-valkey`      | Cache/queue backend — :6379                    |
 | `stry-horizon`     | Queue worker                                   |
-| `stry-reverb`      | WebSocket server — :6001                       |
+| `stry-reverb`      | WebSocket server                               |
 | `stry-schedule`    | Scheduler                                      |
 | `stry-inertia-ssr` | Inertia SSR — :13714                           |
-| `stry-mailpit`     | Dev mail catcher — :8025                       |
-| `stry-rustfs`      | S3-compatible storage — :9000 / :9001          |
+| `stry-mailpit`     | Dev mail catcher — :1025 / :1110 (SMTP/POP3)   |
+| `stry-rustfs`      | S3-compatible storage                          |
 | `stry-typesense`   | Search — :8108                                 |
+
+Only `stry` (:8000, :5173) exposes a host port publicly. Reverb, RustFS, and Mailpit's web UI don't need one — the app's own embedded Caddy instance reverse proxies them by hostname instead, see [Reverse Proxy](proxy.md).
 
 ## Install
 
