@@ -30,6 +30,14 @@ Terminate HTTPS in front of `:8000` with whatever you already run — a router/N
 
 Extend the map passed to `CaddySites::render()` in `config/octane.php` with the service's public hostname and its internal `host:port`. Nothing else — no Quadlet, no host port, no reverse-proxy entry — needs to change anywhere else.
 
+## Using a different port
+
+The `:8000` above is the container-internal port FrankenPHP listens on (`--port=8000` in `APP_COMMAND`) — `config/octane.php`'s `OCTANE_PORT` must match it, since that's what `CaddySites` uses to build the `Host`-matched blocks.
+
+You don't need to change either of those just to publish on a different host port. In `app.quadlets`, `PublishPort=8001:8000` keeps FrankenPHP on `:8000` internally and only remaps the host side to `:8001` — then point your reverse proxy (and firewall) at `:8001` instead.
+
+Only set `OCTANE_PORT` (and change `APP_COMMAND`'s `--port`) if you need FrankenPHP itself to listen on a different port inside the container.
+
 ## Local development
 
 Local development doesn't need any of this — the app is reachable directly at `http://localhost:8000`, see [Development Setup](development.md).
