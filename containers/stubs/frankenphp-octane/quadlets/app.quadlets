@@ -20,7 +20,6 @@ Volume={{application}}-data:/data:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
 PublishPort=8000:8000
-PublishPort=5173:5173
 
 [Service]
 Restart=always

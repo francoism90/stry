@@ -35,20 +35,20 @@ Published under `containers/stubs/` — customize a preset there (see [Customizi
 
 `frankenphp-octane` installs these services (unit names use the `stry` prefix by default — the `PODMAN_QUADLET_PREFIX` env var, which defaults to `APP_NAME`):
 
-| Unit               | Role                                           |
-| ------------------ | ---------------------------------------------- |
-| `stry`             | HTTP app server (Octane) — :8000, :5173 (Vite) |
-| `stry-pgsql`       | PostgreSQL — :5432                             |
-| `stry-valkey`      | Cache/queue backend — :6379                    |
-| `stry-horizon`     | Queue worker                                   |
-| `stry-reverb`      | WebSocket server                               |
-| `stry-schedule`    | Scheduler                                      |
-| `stry-inertia-ssr` | Inertia SSR — :13714                           |
-| `stry-mailpit`     | Dev mail catcher — :1025 / :1110 (SMTP/POP3)   |
-| `stry-rustfs`      | S3-compatible storage                          |
-| `stry-typesense`   | Search — :8108                                 |
+| Unit               | Role                             |
+| ------------------ | -------------------------------- |
+| `stry`             | HTTP app server (Octane) — :8000 |
+| `stry-pgsql`       | PostgreSQL                       |
+| `stry-valkey`      | Cache/queue backend              |
+| `stry-horizon`     | Queue worker                     |
+| `stry-reverb`      | WebSocket server                 |
+| `stry-schedule`    | Scheduler                        |
+| `stry-inertia-ssr` | Inertia SSR                      |
+| `stry-mailpit`     | Dev mail catcher                 |
+| `stry-rustfs`      | S3-compatible storage            |
+| `stry-typesense`   | Search                           |
 
-Only `stry` (:8000, :5173) exposes a host port publicly. Reverb, RustFS, and Mailpit's web UI don't need one — the app's own embedded Caddy instance reverse proxies them by hostname instead, see [Reverse Proxy](proxy.md).
+Only `stry` (:8000) exposes a host port. Every other service is reachable solely over the internal `{{application}}.network` — either between sibling containers directly, or, for the handful the outside world needs (Reverb, RustFS, Mailpit's UI), through the app's own embedded Caddy instance, which reverse proxies them by hostname. See [Reverse Proxy](proxy.md).
 
 ## Install
 

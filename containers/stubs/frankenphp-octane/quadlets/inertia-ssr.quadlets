@@ -15,7 +15,6 @@ UserNS=keep-id
 ShmSize=128m
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Network={{application}}.network
-PublishPort=13714:13714
 
 [Service]
 Restart=always
