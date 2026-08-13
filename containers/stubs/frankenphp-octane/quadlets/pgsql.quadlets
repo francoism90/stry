@@ -12,7 +12,7 @@ Secret={{application}}-pgsql-password,type=env,target=PGPASSWORD
 ShmSize=256m
 Volume={{application}}-pgsql:/var/lib/postgresql:rw,Z,U
 Network={{application}}.network
-ExposeHostPort=5432
+PublishPort=5432:5432
 
 [Service]
 Restart=always

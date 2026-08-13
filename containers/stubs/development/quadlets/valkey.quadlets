@@ -8,7 +8,7 @@ AutoUpdate=registry
 Exec=valkey-server --save --loglevel warning
 Volume={{application}}-valkey:/data:rw,Z,U
 Network={{application}}.network
-ExposeHostPort=6379
+PublishPort=6379:6379
 
 [Service]
 Restart=always

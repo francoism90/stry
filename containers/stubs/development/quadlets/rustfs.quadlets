@@ -18,8 +18,8 @@ Environment=RUSTFS_SECRET_KEY=rustfsadmin
 Volume={{application}}-rustfs-data:/data:rw,Z,U
 Volume={{application}}-rustfs-logs:/logs:rw,Z,U
 Network={{application}}.network
-ExposeHostPort=9000
-ExposeHostPort=9001
+PublishPort=9000:9000
+PublishPort=9001:9001
 
 [Service]
 Restart=always

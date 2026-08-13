@@ -19,8 +19,8 @@ Volume={{application}}-config:/config:rw,z
 Volume={{application}}-data:/data:rw,z
 Volume={{application}}-cache:/cache:rw,z
 Network={{application}}.network
-ExposeHostPort=8000
-ExposeHostPort=5173
+PublishPort=8000:8000
+PublishPort=5173:5173
 
 [Service]
 Restart=always

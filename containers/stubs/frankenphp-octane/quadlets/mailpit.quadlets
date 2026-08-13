@@ -12,8 +12,8 @@ Environment=MP_SMTP_AUTH_ACCEPT_ANY=1
 Environment=MP_SMTP_AUTH_ALLOW_INSECURE=1
 Volume={{application}}-mailpit:/data:rw,Z,U
 Network={{application}}.network
-ExposeHostPort=1025
-ExposeHostPort=1110
+PublishPort=1025:1025
+PublishPort=1110:1110
 
 [Service]
 Restart=always
