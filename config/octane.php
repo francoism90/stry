@@ -244,9 +244,9 @@ return [
             // Port must match the "--port" passed to "octane:frankenphp"
             // in APP_COMMAND (see the frankenphp-octane Containerfile).
             'CADDY_EXTRA_CONFIG' => CaddySites::render([
-                CaddySites::hostFromUrl((string) env('AWS_URL')) => 'systemd-stry-rustfs:9000',
-                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => 'systemd-stry-reverb:6001',
-                (string) env('MAILPIT_UI_HOST') => 'systemd-stry-mailpit:8025',
+                CaddySites::hostFromUrl((string) env('AWS_URL')) => CaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
+                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => CaddySites::hostPort(env('REVERB_HOST'), env('REVERB_PORT', 6001)),
+                (string) env('MAILPIT_UI_HOST') => CaddySites::hostPort(env('MAIL_HOST'), 8025),
             ], (int) env('OCTANE_PORT', 8000)),
         ],
     ],

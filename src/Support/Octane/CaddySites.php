@@ -45,4 +45,33 @@ class CaddySites
 
         return (string) Uri::of($url)->host();
     }
+
+    /**
+     * Extract "host:port" from a URL, e.g. AWS_ENDPOINT, for use as an
+     * upstream in render(). Empty if the URL is empty or has no port
+     * (e.g. real AWS S3, which isn't reverse proxied through the app).
+     */
+    public static function hostPortFromUrl(string $url): string
+    {
+        if ($url === '') {
+            return '';
+        }
+
+        $uri = Uri::of($url);
+
+        return self::hostPort($uri->host(), $uri->port());
+    }
+
+    /**
+     * Build "host:port" for use as an upstream in render(), or an empty
+     * string if either half is missing -- render() skips those.
+     */
+    public static function hostPort(?string $host, int|string|null $port): string
+    {
+        if (empty($host) || empty($port)) {
+            return '';
+        }
+
+        return "{$host}:{$port}";
+    }
 }
