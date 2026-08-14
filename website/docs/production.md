@@ -1,6 +1,6 @@
 ---
 title: Production Setup
-order: 1
+sidebar_position: 2
 tags:
   - production
   - deployment

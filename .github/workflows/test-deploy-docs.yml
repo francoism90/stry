@@ -1,0 +1,33 @@
+name: Test deploy docs
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "website/**"
+      - ".github/workflows/deploy-docs.yml"
+      - ".github/workflows/test-deploy-docs.yml"
+
+jobs:
+  test-deploy:
+    name: Test build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: website
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        working-directory: website
+        run: pnpm build

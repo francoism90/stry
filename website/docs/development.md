@@ -1,6 +1,6 @@
 ---
 title: Development
-order: 2
+sidebar_position: 3
 tags:
   - vscode
   - zed

@@ -1,5 +1,6 @@
 ---
 title: Documentation
+sidebar_position: 1
 tags:
   - guides
   - documentation
@@ -17,7 +18,7 @@ tags:
 ## Guides
 
 | Guide                                         | Description                                  |
-| --------------------------------------------- | -------------------------------------------- |
+| --------------------------------------------- | --------------------------------------------- |
 | [Podman Quadlet](podman.md)                   | Running the services (install, secrets, GPU) |
 | [Docker Compose](docker.md)                   | Alternative setup, best-effort               |
 | [Reverse Proxy](proxy.md)                     | Sibling routing; bring your own HTTPS        |

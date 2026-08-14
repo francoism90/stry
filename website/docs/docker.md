@@ -1,6 +1,6 @@
 ---
 title: Docker Compose
-order: 8
+sidebar_position: 6
 tags:
   - docker
   - compose
