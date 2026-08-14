@@ -27,7 +27,7 @@ useFlash()
           root: 'border-0',
         },
         dashboardPanel: {
-          root: 'divide-y divide-neutral-800',
+          root: 'divide-y divide-default',
           body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-4 sm:py-4',
         },
         dashboardNavbar: { root: 'mx-auto flex w-full max-w-(--ui-container) border-0' },
