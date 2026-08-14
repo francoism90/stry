@@ -1,12 +1,17 @@
-name: Deploy docs
+name: Deploy Docs
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - "docs/**"
-      - ".github/workflows/deploy-docs.yml"
+      - 'docs/**'
+      - 'website/**'
+      - '.github/workflows/deploy-docs.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'website/**'
   workflow_dispatch:
 
 permissions:
@@ -19,41 +24,69 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build
+  test-deploy:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.34.5
+          package_json_file: website/package.json
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
-          cache-dependency-path: docs/pnpm-lock.yaml
+          cache-dependency-path: website/pnpm-lock.yaml
 
       - name: Install dependencies
-        working-directory: docs
+        working-directory: website
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        working-directory: docs
-        run: pnpm build
+      - name: Test build website
+        working-directory: website
+        run: pnpm run build
 
-      - uses: actions/upload-pages-artifact@v3
+  build:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
         with:
-          path: docs/build
+          package_json_file: website/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: website
+        run: pnpm install --frozen-lockfile
+
+      - name: Build website
+        working-directory: website
+        run: pnpm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/build
 
   deploy:
-    name: Deploy
+    if: github.event_name == 'push'
     needs: build
-    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

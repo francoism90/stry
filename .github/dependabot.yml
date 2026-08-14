@@ -26,6 +26,6 @@ updates:
           interval: 'daily'
 
     - package-ecosystem: 'npm'
-      directory: '/docs'
+      directory: '/website'
       schedule:
           interval: 'daily'

@@ -85,11 +85,11 @@ Basic knowledge of Laravel, Inertia.js, and containers helps. Familiarity with v
 
 - Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
 - [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
-- [`lpod`](https://github.com/foxws/lpod) — install separately, see [Podman Quadlet](https://francoism90.github.io/stry/docs/podman#prerequisites)
+- [`lpod`](https://github.com/foxws/lpod) — install separately, see [Podman Quadlet](docs/podman.md#prerequisites)
 - Basic tools: `git`, `bash`
 
 > [!NOTE]
-> Docker isn't officially supported, but a best-effort [Docker Compose setup](https://francoism90.github.io/stry/docs/docker) is available and works with minor adjustments.
+> Docker isn't officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and works with minor adjustments.
 
 For hardware acceleration, install VAAPI drivers (Intel), mesa packages (AMD), or NVENC (Nvidia). See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
 
@@ -97,21 +97,21 @@ For hardware acceleration, install VAAPI drivers (Intel), mesa packages (AMD), o
 
 ## Documentation
 
-Comprehensive guides are available on the [documentation site](https://francoism90.github.io/stry/):
+Comprehensive guides are available on the [documentation site](https://francoism90.github.io/stry/) (or browse [`docs/`](docs) directly):
 
-| Guide                                                                    | Description                                          |
-| ------------------------------------------------------------------------ | ---------------------------------------------------- |
-| [Production Setup](https://francoism90.github.io/stry/docs/production)   | Deploy to production                                 |
-| [Development Guide](https://francoism90.github.io/stry/docs/development) | Local development setup                              |
-| [Configuration](https://francoism90.github.io/stry/docs/configuration)   | Configuration options                                |
-| [Podman Quadlet](https://francoism90.github.io/stry/docs/podman)         | Container orchestration (services, install, secrets) |
-| [Docker Compose](https://francoism90.github.io/stry/docs/docker)         | Alternative, best-effort containerization            |
-| [Reverse Proxy](https://francoism90.github.io/stry/docs/proxy)           | Sibling-service routing; bring your own HTTPS        |
-| [S3 Storage](https://francoism90.github.io/stry/docs/s3)                 | Object storage setup                                 |
-| [Interaction](https://francoism90.github.io/stry/docs/interaction)       | CLI usage and commands                               |
+| Guide                                    | Description                                          |
+| ---------------------------------------- | ---------------------------------------------------- |
+| [Production Setup](docs/production.md)   | Deploy to production                                 |
+| [Development Guide](docs/development.md) | Local development setup                              |
+| [Configuration](docs/configuration.md)   | Configuration options                                |
+| [Podman Quadlet](docs/podman.md)         | Container orchestration (services, install, secrets) |
+| [Docker Compose](docs/docker.md)         | Alternative, best-effort containerization            |
+| [Reverse Proxy](docs/proxy.md)           | Sibling-service routing; bring your own HTTPS        |
+| [S3 Storage](docs/s3.md)                 | Object storage setup                                 |
+| [Interaction](docs/interaction.md)       | CLI usage and commands                               |
 
 > [!TIP]
-> Quick start: pick [Production](https://francoism90.github.io/stry/docs/production) or [Development](https://francoism90.github.io/stry/docs/development) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
+> Quick start: pick [Production](docs/production.md) or [Development](docs/development.md) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
 
 ---
 
@@ -123,7 +123,7 @@ Comprehensive guides are available on the [documentation site](https://francoism
 systemctl --user start stry
 ```
 
-The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](https://francoism90.github.io/stry/docs/proxy) in front of it)
+The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](docs/proxy.md) in front of it)
 
 ### Seed Database
 
@@ -143,7 +143,7 @@ lpod stry a db:seed --class=AdminSeeder
 > Only seed admins for testing! Never use the seeder in production.
 
 > [!TIP]
-> See the [Interaction Guide](https://francoism90.github.io/stry/docs/interaction) for `lpod`, stry's Laravel Sail-style container CLI.
+> See the [Interaction Guide](docs/interaction.md) for `lpod`, stry's Laravel Sail-style container CLI.
 
 ### Admin Services
 
