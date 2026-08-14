@@ -1,6 +1,6 @@
 ---
 title: Proxy
-order: 4
+sidebar_position: 7
 tags:
   - proxy
   - caddy

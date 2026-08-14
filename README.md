@@ -97,7 +97,7 @@ For hardware acceleration, install VAAPI drivers (Intel), mesa packages (AMD), o
 
 ## Documentation
 
-Comprehensive guides are available in the `docs/` folder:
+Comprehensive guides are available on the [documentation site](https://francoism90.github.io/stry/) (or browse [`docs/`](docs) directly):
 
 | Guide                                    | Description                                          |
 | ---------------------------------------- | ---------------------------------------------------- |

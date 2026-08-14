@@ -1,6 +1,6 @@
 ---
 title: Interaction
-order: 6
+sidebar_position: 9
 tags:
   - shell
   - bash
