@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import VideoList from '@/components/Videos/VideoList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 defineProps<{
   items: VideoCollection
@@ -20,12 +21,9 @@ defineOptions({
   <Head title="Videos" />
 
   <UPage>
-    <InfiniteScroll
-      data="items"
-      items-element="#video-index"
-      :buffer="200"
-    >
-      {{ items.data }}
-    </InfiniteScroll>
+    <VideoList
+      id="video-index"
+      :items="items?.data"
+    />
   </UPage>
 </template>

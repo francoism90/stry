@@ -8,7 +8,7 @@ import type { SelectMenuItem } from '@nuxt/ui'
 withDefaults(
   defineProps<{
     id?: string
-    showFilter?: boolean
+    filterable?: boolean
     filters?: SelectMenuItem[]
     sorters?: SelectMenuItem[]
     filter?: QueryFilter
@@ -17,7 +17,7 @@ withDefaults(
   }>(),
   {
     id: 'resources.index',
-    showFilter: true,
+    filterable: true,
   },
 )
 </script>
@@ -27,7 +27,7 @@ withDefaults(
     <template #header>
       <AppHeader />
       <FilterBar
-        v-if="showFilter"
+        v-if="filterable"
         :filters="filters"
         :sorters="sorters"
         :query="query"
