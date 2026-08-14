@@ -18,11 +18,11 @@ use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +44,7 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Video::class);
 
@@ -73,12 +73,11 @@ class VideoController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Videos/VideoIndex', [
+        return Inertia::render('Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'filters' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
-            'sort' => fn () => $request->input('sort'),
+            $properties,
         ]);
     }
 
@@ -92,7 +91,7 @@ class VideoController implements HasMiddleware
             $video,
         );
 
-        return Inertia::render('App/Videos/VideoView', [
+        return Inertia::render('Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
@@ -114,7 +113,7 @@ class VideoController implements HasMiddleware
             'filesize',
         ];
 
-        return Inertia::render('App/Videos/VideoEdit', [
+        return Inertia::render('Videos/VideoEdit', [
             'video' => fn () => new VideoResourceProperty($video, $appends),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'locales' => fn () => Options::forEnum(UserLocale::class),
