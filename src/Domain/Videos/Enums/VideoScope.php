@@ -6,10 +6,9 @@ namespace Domain\Videos\Enums;
 
 use Domain\Shared\Contracts\Enumerable;
 
-enum VideoFilter: string implements Enumerable
+enum VideoScope: string implements Enumerable
 {
     case All = 'all';
-    case Shorts = 'shorts';
     case Unseen = 'unseen';
 
     public function label(): string
@@ -22,7 +21,6 @@ enum VideoFilter: string implements Enumerable
     {
         return [
             'all' => __('All'),
-            'shorts' => __('Shorts'),
             'unseen' => __('Unseen'),
         ];
     }

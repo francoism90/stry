@@ -1,31 +1,25 @@
 <script setup lang="ts">
 import { useQuery } from '@/composables/query'
-import type { QueryFilter } from '@/types'
+import type { QueryValue } from '@/types'
 import type { TabsItem } from '@nuxt/ui'
-import { watchDebounced } from '@vueuse/core'
 
 const props = defineProps<{
-  active?: QueryFilter
+  active?: QueryValue
   items?: TabsItem[]
   title?: string
 }>()
 
-const { form, formFilters, onSubmit } = useQuery({
+const { form, onSubmit } = useQuery({
   filters: () => props.items,
   filter: () => props.active,
 })
-
-watchDebounced(
-  () => form.query,
-  () => onSubmit(),
-  { debounce: 350, maxWait: 1000 },
-)
 </script>
 
 <template>
   <UDashboardNavbar :title="title">
     <template #right>
       <UTabs
+        default-value="all"
         :items="items"
         :content="false"
         label-key="label"

@@ -14,6 +14,7 @@ use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Users\Enums\UserLocale;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
@@ -77,6 +78,7 @@ class VideoController implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'filters' => fn () => Options::forEnum(VideoFilter::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'scopes' => fn () => Options::forEnum(VideoScope::class),
             $properties,
         ]);
     }

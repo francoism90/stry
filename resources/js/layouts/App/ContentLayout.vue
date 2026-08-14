@@ -1,23 +1,25 @@
 <script setup lang="ts">
+import ContentScopeBar from '@/components/Content/ContentScopeBar.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import FilterBar from '@/components/Ui/FilterBar.vue'
 import type { QueryFilter, QueryValue } from '@/types'
-import type { SelectMenuItem } from '@nuxt/ui'
+import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
 
 withDefaults(
   defineProps<{
     id?: string
-    filterable?: boolean
+    title?: string
+    scopes?: TabsItem[]
+    scope?: QueryValue
     filters?: SelectMenuItem[]
-    sorters?: SelectMenuItem[]
     filter?: QueryFilter
-    query?: QueryValue
+    sorters?: SelectMenuItem[]
     sort?: QueryValue
+    query?: QueryValue
   }>(),
   {
     id: 'resources.index',
-    filterable: true,
+    title: 'Resources',
   },
 )
 </script>
@@ -26,13 +28,11 @@ withDefaults(
   <UDashboardPanel :id="id">
     <template #header>
       <AppHeader />
-      <FilterBar
-        v-if="filterable"
-        :filters="filters"
-        :sorters="sorters"
-        :query="query"
-        :filter="filter"
-        :sort="sort"
+
+      <ContentScopeBar
+        :title="title"
+        :active="scope"
+        :items="scopes"
       />
     </template>
 

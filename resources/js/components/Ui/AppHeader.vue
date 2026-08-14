@@ -8,7 +8,7 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
 
 <template>
   <div class="w-full border-b border-default">
-    <UDashboardNavbar :toggle="false">
+    <UHeader :toggle="false">
       <template #left>
         <AppLogo />
         <ContentMenu />
@@ -21,6 +21,6 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
           <UserMenu />
         </div>
       </template>
-    </UDashboardNavbar>
+    </UHeader>
   </div>
 </template>
