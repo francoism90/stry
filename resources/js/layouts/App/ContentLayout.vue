@@ -34,6 +34,8 @@ withDefaults(
         :active="scope"
         :items="scopes"
       />
+
+      <div></div>
     </template>
 
     <template #body>

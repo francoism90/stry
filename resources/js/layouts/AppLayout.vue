@@ -23,7 +23,13 @@ useFlash()
   <UApp :nonce="nonce">
     <UTheme
       :ui="{
-        dashboardPanel: { body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-4 sm:py-4' },
+        header: {
+          root: 'border-0',
+        },
+        dashboardPanel: {
+          root: 'divide-y divide-neutral-800',
+          body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-4 sm:py-4',
+        },
         dashboardNavbar: { root: 'mx-auto flex w-full max-w-(--ui-container) border-0' },
         dashboardToolbar: {
           root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-2 border-0 py-4 md:flex-row',

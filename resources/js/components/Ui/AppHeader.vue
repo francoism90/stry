@@ -7,7 +7,7 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
 </script>
 
 <template>
-  <div class="w-full border-b border-default">
+  <div class="w-full">
     <UHeader :toggle="false">
       <template #left>
         <AppLogo />
