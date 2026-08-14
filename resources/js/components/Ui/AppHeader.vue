@@ -7,7 +7,7 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="sticky top-0 z-50 border-b border-default bg-default/75 backdrop-blur">
     <UHeader :toggle="false">
       <template #left>
         <AppLogo />
@@ -22,5 +22,7 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
         </div>
       </template>
     </UHeader>
+
+    <slot />
   </div>
 </template>

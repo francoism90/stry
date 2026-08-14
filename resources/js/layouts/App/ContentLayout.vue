@@ -27,15 +27,13 @@ withDefaults(
 <template>
   <UDashboardPanel :id="id">
     <template #header>
-      <AppHeader />
-
-      <ContentScopeBar
-        :title="title"
-        :active="scope"
-        :items="scopes"
-      />
-
-      <div></div>
+      <AppHeader>
+        <ContentScopeBar
+          :title="title"
+          :active="scope"
+          :items="scopes"
+        />
+      </AppHeader>
     </template>
 
     <template #body>

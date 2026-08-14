@@ -24,10 +24,9 @@ useFlash()
     <UTheme
       :ui="{
         header: {
-          root: 'border-0',
+          root: 'relative',
         },
         dashboardPanel: {
-          root: 'divide-y divide-default',
           body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-4 sm:py-4',
         },
         dashboardNavbar: {
