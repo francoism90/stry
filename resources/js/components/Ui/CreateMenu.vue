@@ -31,7 +31,10 @@ const items = ref<DropdownMenuItem[]>([
       label="Create"
       color="neutral"
       variant="outline"
-      class="me-2"
+      :ui="{
+        base: 'me-2',
+        label: 'hidden sm:inline-flex',
+      }"
     />
   </UDropdownMenu>
 </template>

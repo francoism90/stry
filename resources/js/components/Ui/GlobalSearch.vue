@@ -16,7 +16,7 @@ defineShortcuts({
       ref="input"
       icon="i-lucide-search"
       placeholder="Search..."
-      class="sm:min-w-lg"
+      class="lg:min-w-lg"
     >
       <template #trailing>
         <UKbd value="/" />
