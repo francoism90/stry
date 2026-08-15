@@ -11,14 +11,23 @@ defineShortcuts({
 </script>
 
 <template>
-  <UInput
-    ref="input"
-    icon="i-lucide-search"
-    placeholder="Search..."
-    class="min-w-lg"
-  >
-    <template #trailing>
-      <UKbd value="/" />
-    </template>
-  </UInput>
+  <div class="flex items-center gap-2">
+    <UInput
+      ref="input"
+      icon="i-lucide-search"
+      placeholder="Search..."
+      class="min-w-lg"
+    >
+      <template #trailing>
+        <UKbd value="/" />
+      </template>
+    </UInput>
+
+    <UButton
+      size="sm"
+      icon="i-lucide-dices"
+      color="neutral"
+      variant="outline"
+    />
+  </div>
 </template>
