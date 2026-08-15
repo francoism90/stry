@@ -17,15 +17,22 @@ const { form, onSubmit } = useQuery({
 
 <template>
   <UDashboardToolbar :title="title">
-    <template #right>
-      <UTabs
-        default-value="all"
-        :items="items"
-        :content="false"
-        label-key="label"
-        value-key="value"
-        size="sm"
-      />
-    </template>
+    <URadioGroup
+      variant="card"
+      size="sm"
+      default-value="all"
+      label-key="label"
+      value-key="value"
+      orientation="horizontal"
+      color="neutral"
+      indicator="end"
+      :items="items"
+      :ui="{
+        container: 'sr-only',
+        wrapper: 'me-0',
+        item: 'border-0 bg-neutral-800/75 px-2 py-1.5 has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
+        label: 'text-inherit',
+      }"
+    />
   </UDashboardToolbar>
 </template>
