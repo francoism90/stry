@@ -36,6 +36,7 @@ const items = ref<DropdownMenuItem[][]>([
 
 <template>
   <UDropdownMenu
+    arrow
     :items="items"
     :content="{ align: 'end', collisionPadding: 12 }"
   >

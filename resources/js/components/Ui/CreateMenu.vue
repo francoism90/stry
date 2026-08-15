@@ -22,7 +22,10 @@ const items = ref<DropdownMenuItem[]>([
 </script>
 
 <template>
-  <UDropdownMenu :items="items">
+  <UDropdownMenu
+    arrow
+    :items="items"
+  >
     <UButton
       icon="i-lucide-plus"
       label="Create"
