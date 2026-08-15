@@ -39,15 +39,15 @@ class VideoController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth'),
-            new Middleware('verified'),
+            // new Middleware('auth'),
+            // new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
 
     public function index(ScoutBuilderProperties $properties): Response
     {
-        Gate::authorize('viewAny', Video::class);
+        // Gate::authorize('viewAny', Video::class);
 
         // Relevant sort options
         $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);

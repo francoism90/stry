@@ -16,7 +16,7 @@ const { form, onSubmit } = useQuery({
 </script>
 
 <template>
-  <UDashboardNavbar :title="title">
+  <UDashboardToolbar :title="title">
     <template #right>
       <UTabs
         default-value="all"
@@ -27,5 +27,5 @@ const { form, onSubmit } = useQuery({
         size="sm"
       />
     </template>
-  </UDashboardNavbar>
+  </UDashboardToolbar>
 </template>
