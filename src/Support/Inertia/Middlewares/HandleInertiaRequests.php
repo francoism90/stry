@@ -22,7 +22,7 @@ class HandleInertiaRequests extends Middleware
             'app' => fn (): string => Config::string('app.name', 'Laravel'),
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
-            'query' => fn (): array => $request->session()->cache()->get('query'),
+            'search' => fn (): ?string => $request->session()->cache()->get('search'),
             'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,
                 appends: ['name', 'email', 'avatar', 'settings']

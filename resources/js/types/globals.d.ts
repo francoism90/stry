@@ -17,6 +17,7 @@ declare module '@inertiajs/core' {
     readonly app: string
     readonly nonce: string
     readonly locale: string
+    readonly search: string | null
     readonly auth: User | undefined
     readonly echo: EchoConfig | undefined
   }
