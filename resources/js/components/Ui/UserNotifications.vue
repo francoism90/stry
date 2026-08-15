@@ -1,6 +1,6 @@
 <template>
   <UButton
-    variant="ghost"
+    variant="link"
     color="neutral"
     icon="i-lucide-bell"
     to="/notifications"
