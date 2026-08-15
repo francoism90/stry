@@ -27,7 +27,7 @@ defineShortcuts({
       size="sm"
       icon="i-lucide-dices"
       color="neutral"
-      variant="outline"
+      variant="link"
     />
   </div>
 </template>
