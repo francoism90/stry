@@ -30,33 +30,32 @@ watchDebounced(
     <template #left>
       <URadioGroup
         v-if="scopes"
+        v-model="form.filter.scope"
+        :items="scopes"
+        default-value="all"
         variant="card"
         size="sm"
         orientation="horizontal"
         color="neutral"
         indicator="end"
-        default-value="all"
-        v-model="form.filter.scope"
-        :items="scopes"
+        @update:model-value="onSubmit"
         :ui="{
           container: 'sr-only',
           wrapper: 'me-0',
-          item: 'border-0 bg-neutral-800/75 px-2 py-1.5 has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
+          item: 'border-0 bg-neutral-800/75 px-2.5 py-1.5 has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
           label: 'text-inherit',
         }"
-        @update:model-value="onSubmit"
       />
     </template>
 
     <template #right>
       <USelect
         v-if="sorters"
-        size="sm"
-        placeholder="Sort by"
-        class="w-36"
-        default-value="recommended"
         v-model="form.sort"
         :items="sorters"
+        default-value="recommended"
+        placeholder="Sort by"
+        class="w-36"
         @update:model-value="onSubmit"
       />
     </template>
