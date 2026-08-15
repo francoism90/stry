@@ -1,7 +1,11 @@
+import { usePage } from '@inertiajs/vue3'
 import { CalendarDateTime, parseDateTime } from '@internationalized/date'
+import { computed } from 'vue'
 
-export function useDateTime() {
-  function toDateTime(value: string | null): CalendarDateTime | null {
+export function useLocale() {
+  const locale = computed(() => usePage().props.locale)
+
+  const toDateTime = (value: string | null): CalendarDateTime | null => {
     if (!value) return null
 
     try {
@@ -11,13 +15,13 @@ export function useDateTime() {
     }
   }
 
-  function fromDateTime(value: CalendarDateTime | null): string | null {
+  const fromDateTime = (value: CalendarDateTime | null): string | null => {
     if (!value) return null
 
     return value.toString().replace('T', ' ')
   }
 
-  function nowDateTime(): CalendarDateTime {
+  const nowDateTime = (): CalendarDateTime => {
     const d = new Date()
 
     return new CalendarDateTime(
@@ -30,5 +34,10 @@ export function useDateTime() {
     )
   }
 
-  return { toDateTime, fromDateTime, nowDateTime }
+  return {
+    locale,
+    toDateTime,
+    fromDateTime,
+    nowDateTime,
+  }
 }

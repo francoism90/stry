@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useSearch } from '@/composables/search'
 import { useTemplateRef } from 'vue'
+
+const { search } = useSearch()
 
 const input = useTemplateRef('input')
 
@@ -17,6 +20,7 @@ defineShortcuts({
       icon="i-lucide-search"
       placeholder="Search..."
       class="lg:min-w-lg"
+      :default-value="search"
     >
       <template #trailing>
         <UKbd value="/" />
