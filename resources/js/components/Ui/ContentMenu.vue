@@ -32,11 +32,14 @@ const items = ref<NavigationMenuItem[]>([
   <UNavigationMenu
     arrow
     content-orientation="vertical"
+    type="single"
     color="primary"
     :items="items"
     :ui="{
       root: 'ms-2 [&>div]:min-w-60',
       childItem: 'w-full',
+      childLink: 'py-1.5',
+      childLinkIcon: 'size-4.5',
     }"
   />
 </template>
