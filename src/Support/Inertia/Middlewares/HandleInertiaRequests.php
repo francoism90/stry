@@ -7,7 +7,6 @@ namespace Support\Inertia\Middlewares;
 use App\Web\Users\Responses\UserResourceProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -19,20 +18,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
-            'app' => Inertia::once(fn (): string => Config::string('app.name', 'Laravel')),
-            'nonce' => Inertia::once(fn (): string => app('csp-nonce')),
-            'locale' => Inertia::once(fn (): string => $request->getLocale()),
-            'auth' => Inertia::once(fn (): ?UserResourceProperty => new UserResourceProperty(
+        return array_merge(parent::shareOnce($request), [
+            'app' => fn (): string => Config::string('app.name', 'Laravel'),
+            'nonce' => fn (): string => app('csp-nonce'),
+            'locale' => fn (): string => $request->getLocale(),
+            'query' => fn (): array => $request->session()->cache()->get('query'),
+            'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,
-                appends: ['name', 'email', 'avatar', 'settings'])
+                appends: ['name', 'email', 'avatar', 'settings']
             ),
-            'echo' => Inertia::once(fn (): array => [
+            'echo' => fn (): array => [
                 'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),
                 'port' => Config::integer('reverb.apps.apps.0.options.wsPort', 6001),
                 'scheme' => Config::string('reverb.apps.apps.0.options.wsScheme', 'http'),
-            ]),
+            ],
         ]);
     }
 
