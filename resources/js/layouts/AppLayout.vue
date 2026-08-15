@@ -30,7 +30,7 @@ useFlash()
           root: 'border-0',
         },
         dashboardToolbar: {
-          root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-2 border-0 md:flex-row',
+          root: 'mx-auto flex min-h-0 w-full max-w-(--ui-container) flex-col items-stretch gap-2 border-0 md:flex-row',
         },
         header: {
           root: 'relative',
