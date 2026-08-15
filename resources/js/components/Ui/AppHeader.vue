@@ -12,6 +12,7 @@ import GlobalSearch from './GlobalSearch.vue'
     <template #left>
       <AppLogo />
       <ContentMenu />
+      <UDashboardSearchButton />
     </template>
 
     <GlobalSearch />

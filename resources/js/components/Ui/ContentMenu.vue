@@ -36,8 +36,8 @@ const items = ref<NavigationMenuItem[]>([
     color="primary"
     :items="items"
     :ui="{
-      root: 'ms-2 [&>div]:min-w-60',
-      childItem: 'w-full',
+      root: 'ms-2',
+      viewport: 'min-w-60',
       childLink: 'py-1.5',
       childLinkIcon: 'size-4.5',
     }"
