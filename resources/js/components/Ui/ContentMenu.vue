@@ -30,7 +30,6 @@ const items = ref<NavigationMenuItem[]>([
 
 <template>
   <UNavigationMenu
-    arrow
     content-orientation="vertical"
     type="single"
     color="primary"

@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import ContentScopeBar from '@/components/Content/ContentScopeBar.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import ScopeGroup from '@/components/Ui/ScopeGroup.vue'
+import SortMenu from '@/components/Ui/SortMenu.vue'
 import type { QueryFilter, QueryValue } from '@/types'
-import type { SelectMenuItem, TabsItem } from '@nuxt/ui'
+import type { RadioGroupItem, SelectItem, SelectMenuItem } from '@nuxt/ui'
 
 withDefaults(
   defineProps<{
     id?: string
-    title?: string
-    scopes?: TabsItem[]
-    scope?: QueryValue
     filters?: SelectMenuItem[]
+    scopes?: RadioGroupItem[]
+    sorters?: SelectItem[]
     filter?: QueryFilter
-    sorters?: SelectMenuItem[]
+    scope?: QueryValue
     sort?: QueryValue
     query?: QueryValue
   }>(),
   {
     id: 'resources.index',
-    title: 'Resources',
   },
 )
 </script>
@@ -30,11 +29,21 @@ withDefaults(
       <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
         <AppHeader />
 
-        <ContentScopeBar
-          :title="title"
-          :active="scope"
-          :items="scopes"
-        />
+        <UDashboardToolbar>
+          <template #left>
+            <ScopeGroup
+              :items="scopes"
+              :active="scope"
+            />
+          </template>
+
+          <template #right>
+            <SortMenu
+              :items="sorters"
+              :active="sort"
+            />
+          </template>
+        </UDashboardToolbar>
       </div>
     </template>
 
