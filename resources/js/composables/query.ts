@@ -13,7 +13,7 @@ export function useQuery(options: {
 
   const form = reactive({
     filter: toValue(options.filter) ?? {},
-    query: toValue(options.query ?? search.value) ?? '',
+    query: toValue(options.query) ?? null,
     sort: toValue(options.sort) ?? null,
     page: { number: 1 },
   })
