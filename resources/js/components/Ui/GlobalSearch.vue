@@ -18,7 +18,7 @@ defineShortcuts({
     <UInput
       ref="input"
       icon="i-lucide-search"
-      placeholder="Search..."
+      placeholder="Search"
       :default-value="search"
       :ui="{
         root: 'w-full max-w-fit md:min-w-sm lg:min-w-lg',
