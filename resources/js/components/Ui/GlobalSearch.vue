@@ -19,7 +19,7 @@ defineShortcuts({
       ref="input"
       icon="i-lucide-search"
       placeholder="Search..."
-      class="lg:min-w-lg"
+      class="w-full max-w-fit md:min-w-sm lg:min-w-lg"
       :default-value="search"
     >
       <template #trailing>
@@ -32,6 +32,7 @@ defineShortcuts({
       icon="i-lucide-dices"
       color="neutral"
       variant="link"
+      class="hidden md:inline-flex"
     />
   </div>
 </template>
