@@ -33,7 +33,7 @@ const itemBody = ref()
         class="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-3 lg:gap-y-8 xl:grid-cols-4"
       >
         <VideoCard
-          v-for="(item, index) in items.data"
+          v-for="(item, index) in items?.data ?? []"
           :key="item.id"
           :item="item"
           :index="index"
