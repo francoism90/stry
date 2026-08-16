@@ -9,7 +9,7 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
 <template>
   <UDashboardNavbar>
     <template #leading>
-      <UDashboardSidebarToggle class="lg:inline-flex" />
+      <UDashboardSidebarToggle />
     </template>
 
     <template #left>

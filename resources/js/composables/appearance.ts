@@ -2,6 +2,7 @@ import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useAppearance() {
+  const app = computed(() => usePage().props.app)
   const nonce = computed(() => usePage().props.nonce)
 
   const dynamicColor = (value: string | null) => {
@@ -19,6 +20,7 @@ export function useAppearance() {
   }
 
   return {
+    app,
     nonce,
     dynamicColor,
   }
