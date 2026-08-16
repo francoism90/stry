@@ -19,8 +19,11 @@ defineShortcuts({
       ref="input"
       icon="i-lucide-search"
       placeholder="Search..."
-      class="w-full max-w-fit md:min-w-sm lg:min-w-lg"
       :default-value="search"
+      :ui="{
+        root: 'w-full max-w-fit md:min-w-sm lg:min-w-lg',
+        trailing: 'hidden md:inline-flex',
+      }"
     >
       <template #trailing>
         <UKbd value="/" />
