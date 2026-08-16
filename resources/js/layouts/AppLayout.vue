@@ -24,7 +24,7 @@ useFlash()
     <UTheme
       :ui="{
         dashboardPanel: {
-          body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-0 sm:py-2',
+          body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-0 sm:py-0',
         },
         dashboardToolbar: {
           root: 'mx-auto flex w-full max-w-(--ui-container) flex-col gap-2 border-0 py-4 md:flex-row',
