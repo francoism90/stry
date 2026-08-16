@@ -2,9 +2,9 @@
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import ContentMenu from '@/components/Ui/ContentMenu.vue'
 import CreateMenu from '@/components/Ui/CreateMenu.vue'
+import GlobalSearch from '@/components/Ui/GlobalSearch.vue'
 import UserMenu from '@/components/Ui/UserMenu.vue'
 import UserNotifications from '@/components/Ui/UserNotifications.vue'
-import GlobalSearch from './GlobalSearch.vue'
 </script>
 
 <template>

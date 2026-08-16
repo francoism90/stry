@@ -7,6 +7,7 @@ import type { OptionItem, QueryFilter, QueryValue } from '@/types'
 withDefaults(
   defineProps<{
     id?: string
+    title?: string
     scopes?: OptionItem[]
     sorters?: OptionItem[]
     filter?: QueryFilter
@@ -23,7 +24,7 @@ withDefaults(
   <UDashboardPanel :id="id">
     <template #header>
       <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
-        <AppHeader />
+        <AppHeader :title="title" />
 
         <FilterToolbar
           :scopes="scopes"

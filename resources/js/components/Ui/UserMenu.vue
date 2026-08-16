@@ -38,6 +38,7 @@ const items = ref<DropdownMenuItem[][]>([
   <UDropdownMenu
     :items="items"
     :content="{ align: 'end', collisionPadding: 12 }"
+    :portal="false"
   >
     <UAvatar
       :src="user?.avatar ?? undefined"
