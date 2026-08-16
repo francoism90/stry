@@ -29,6 +29,9 @@ useFlash()
         dashboardPanel: {
           body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-0 sm:py-0',
         },
+        dashboardNavbar: {
+          center: 'flex',
+        },
         dashboardToolbar: {
           root: 'mx-auto flex w-full max-w-(--ui-container) flex-col gap-2 border-0 py-4 md:flex-row',
         },

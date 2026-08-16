@@ -10,13 +10,13 @@ const { app } = useAppearance()
 
 <template>
   <ULink
-    class="ms-2 flex items-center gap-1.5 text-sm font-bold tracking-wider text-neutral-300"
+    class="flex items-center gap-1.5 text-sm font-bold tracking-wider text-neutral-300"
     :to="location || '/'"
   >
     <UIcon
       name="i-lucide-circle-play"
       class="size-6 shrink-0 text-primary"
     />
-    <span class="hidden sm:inline">{{ app }}</span>
+    <span class="inline">{{ app }}</span>
   </ULink>
 </template>

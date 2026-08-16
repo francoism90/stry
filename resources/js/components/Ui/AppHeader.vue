@@ -13,7 +13,7 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
     </template>
 
     <template #left>
-      <AppLogo />
+      <AppLogo class="ms-2 hidden lg:flex" />
     </template>
 
     <GlobalSearch />
