@@ -42,6 +42,7 @@ const currentItem = computed(() =>
     <UDropdownMenu
       v-model:open="hovered"
       :items="items"
+      :modal="false"
       :portal="false"
     >
       <UButton
