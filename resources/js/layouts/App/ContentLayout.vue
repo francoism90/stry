@@ -24,7 +24,7 @@ withDefaults(
   <UDashboardPanel :id="id">
     <template #header>
       <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
-        <AppHeader :title="title" />
+        <AppHeader />
 
         <FilterToolbar
           :scopes="scopes"

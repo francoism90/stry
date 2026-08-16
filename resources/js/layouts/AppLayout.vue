@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useFlash } from '@/composables/flash'
 
 withDefaults(
   defineProps<{
+    mode?: 'drawer' | 'slideover' | 'modal'
     unit?: 'rem' | 'px'
     storage?: 'local' | 'cookie'
     storageKey?: string
   }>(),
   {
+    mode: 'slideover',
     unit: 'rem',
     storage: 'local',
     storageKey: 'app',
@@ -43,6 +46,8 @@ useFlash()
         :storage-key="storageKey"
         class="relative overflow-clip"
       >
+        <AppSidebar :mode="mode" />
+
         <slot />
       </UDashboardGroup>
     </UTheme>

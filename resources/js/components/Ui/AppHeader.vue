@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLogo from '@/components/Ui/AppLogo.vue'
-import ContentMenu from '@/components/Ui/ContentMenu.vue'
 import CreateMenu from '@/components/Ui/CreateMenu.vue'
 import GlobalSearch from '@/components/Ui/GlobalSearch.vue'
 import UserMenu from '@/components/Ui/UserMenu.vue'
@@ -8,10 +7,13 @@ import UserNotifications from '@/components/Ui/UserNotifications.vue'
 </script>
 
 <template>
-  <UDashboardNavbar :toggle="false">
+  <UDashboardNavbar>
+    <template #leading>
+      <UDashboardSidebarToggle class="lg:inline-flex" />
+    </template>
+
     <template #left>
       <AppLogo />
-      <ContentMenu />
     </template>
 
     <GlobalSearch />
