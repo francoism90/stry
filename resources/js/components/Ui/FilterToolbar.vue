@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { useQuery } from '@/composables/query'
-import type { QueryFilter, QueryValue } from '@/types'
-import type { SelectItem, SelectMenuItem } from '@nuxt/ui'
+import type { OptionItem, QueryFilter, QueryValue } from '@/types'
 import { watchDebounced } from '@vueuse/core'
 
 const props = defineProps<{
-  scopes?: SelectMenuItem[]
-  sorters?: SelectItem[]
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
   filter?: QueryFilter
   sort?: QueryValue
   query?: QueryValue
 }>()
 
+const firstValue = (items: OptionItem[] | undefined) => {
+  if (!items || items.length === 0) return null
+  return items[0].value
+}
+
 const { form, onSubmit } = useQuery({
-  filter: () => props.filter ?? { scope: 'all' },
-  sort: () => props.sort ?? 'recommended',
-  query: () => props.query,
+  filter: () => props.filter ?? { scope: firstValue(props.scopes) },
+  sort: () => props.sort ?? firstValue(props.sorters),
+  query: () => props.query ?? null,
 })
 
 watchDebounced(
@@ -53,6 +57,7 @@ watchDebounced(
         v-if="sorters"
         v-model="form.sort"
         :items="sorters"
+        default-value="relevant"
         placeholder="Sort by"
         class="w-36"
         @update:model-value="onSubmit"

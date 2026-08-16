@@ -8,6 +8,7 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum TagType: string implements Enumerable
 {
+    case All = 'all';
     case Serie = 'serie';
     case Studio = 'studio';
     case Genre = 'genre';
@@ -23,6 +24,7 @@ enum TagType: string implements Enumerable
     public static function labels(): array
     {
         return [
+            'all' => __('All'),
             'serie' => __('Serie'),
             'studio' => __('Studio'),
             'genre' => __('Genre'),

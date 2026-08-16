@@ -18,6 +18,7 @@ use Domain\Videos\Enums\VideoFilter;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -44,33 +45,32 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Tag::class);
 
         // Scout builder
-        $videosSort = AllowedSort::custom('videos', new VideosSorter);
+        $defaultSort = AllowedSort::custom('videos', new VideosSorter);
 
         $scout = ScoutBuilder::for(Tag::class)
             ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
             ->allowedFilters(
-                AllowedFilter::exact('type'),
+                AllowedFilter::exact('scope', 'type'),
             )
             ->allowedSorts(
-                $videosSort,
+                $defaultSort,
                 AllowedSort::field('ordered', 'name'),
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
             )
-            ->defaultSort($videosSort)
+            ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 20);
 
-        return Inertia::render('App/Tags/TagIndex', [
+        return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
-            'type' => fn () => $request->input('filter.type'),
+            'scopes' => fn () => Options::forEnum(TagType::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
-            'types' => fn () => Options::forEnum(TagType::class),
+            $properties,
         ]);
     }
 
@@ -135,7 +135,7 @@ class TagController implements HasMiddleware
     {
         Gate::authorize('update', $tag);
 
-        return Inertia::render('App/Tags/TagEdit', [
+        return Inertia::render('Tags/TagEdit', [
             'tag' => fn () => new TagResourceProperty($tag, ['relates', 'description']),
             'types' => fn () => Options::forEnum(TagType::class),
         ]);

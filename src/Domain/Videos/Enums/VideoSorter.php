@@ -8,7 +8,7 @@ use Domain\Shared\Contracts\Enumerable;
 
 enum VideoSorter: string implements Enumerable
 {
-    case Recommended = 'recommended';
+    case Relevant = 'relevant';
     case Newest = 'newest';
     case Oldest = 'oldest';
     case Longest = 'longest';
@@ -25,7 +25,7 @@ enum VideoSorter: string implements Enumerable
     public static function labels(): array
     {
         return [
-            'recommended' => __('Recommended'),
+            'relevant' => __('Relevant'),
             'newest' => __('Newest'),
             'oldest' => __('Oldest'),
             'longest' => __('Longest'),

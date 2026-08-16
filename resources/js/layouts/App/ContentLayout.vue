@@ -2,14 +2,13 @@
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
-import type { QueryFilter, QueryValue } from '@/types'
-import type { SelectItem, SelectMenuItem } from '@nuxt/ui'
+import type { OptionItem, QueryFilter, QueryValue } from '@/types'
 
 withDefaults(
   defineProps<{
     id?: string
-    scopes?: SelectMenuItem[]
-    sorters?: SelectItem[]
+    scopes?: OptionItem[]
+    sorters?: OptionItem[]
     filter?: QueryFilter
     sort?: QueryValue
     query?: QueryValue
@@ -25,8 +24,6 @@ withDefaults(
     <template #header>
       <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
         <AppHeader />
-
-        {{ query }}
 
         <FilterToolbar
           :scopes="scopes"

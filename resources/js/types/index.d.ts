@@ -1,4 +1,4 @@
-import type { AvatarProps, BadgeProps, SelectMenuItem } from '@nuxt/ui'
+import type { AvatarProps, BadgeProps, SelectItem, SelectMenuItem } from '@nuxt/ui'
 
 export type EchoConfig = {
   readonly key: string
@@ -13,6 +13,12 @@ export type FlashData = {
   readonly title?: string
   readonly description?: string
   readonly type?: FlashType
+}
+
+export type OptionItem = SelectItem & {
+  label: string
+  value: string | number | boolean | null
+  disabled?: boolean
 }
 
 export type QueryValue = string | number | boolean | null

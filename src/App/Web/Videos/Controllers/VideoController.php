@@ -38,18 +38,18 @@ class VideoController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            // new Middleware('auth'),
-            // new Middleware('verified'),
+            new Middleware('auth'),
+            new Middleware('verified'),
             new Middleware('precognitive'),
         ];
     }
 
     public function index(ScoutBuilderProperties $properties): Response
     {
-        // Gate::authorize('viewAny', Video::class);
+        Gate::authorize('viewAny', Video::class);
 
         // Relevant sort options
-        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+        $defaultSort = AllowedSort::custom('recommended', new RecommendedSorter);
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
@@ -62,7 +62,7 @@ class VideoController implements HasMiddleware
                 AllowedFilter::custom('unseen', new Filters\FilterUnseen),
             )
             ->allowedSorts(
-                $recommendedSort,
+                $defaultSort,
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
                 AllowedSort::field('ordered', 'title'),
@@ -70,13 +70,13 @@ class VideoController implements HasMiddleware
                 AllowedSort::field('longest', 'duration')->defaultDescending(),
                 AllowedSort::field('filesize')->defaultDescending(),
             )
-            ->defaultSort($recommendedSort)
+            ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
             $properties,
         ]);
     }

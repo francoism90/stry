@@ -34,20 +34,28 @@ Route::get('/', [VideoController::class, 'index'])->name('home');
 // // Profiles
 // Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);
 
-// // Resources
+// Tags
+Route::resource('tags', TagController::class);
+
+// Collections
 // Route::resource('collections', GroupController::class);
-// Route::resource('tags', TagController::class);
+
+// Media
 // Route::resource('media', MediaController::class)->only(['update', 'destroy']);
+
+// Playlists
 // Route::resource('playlists', PlaylistController::class)->only(['update', 'destroy']);
+
+// Transcodes
 // Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
 
-// // Videos
+// Videos
 // Route::resource('videos', VideoController::class);
 // Route::resource('videos.media', VideoMediaController::class)->only(['index']);
 // Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['index', 'store', 'update', 'destroy']);
 // Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
 
-// // Search
+// Search
 // Route::prefix('search')->name('search.')->group(function () {
 //     Route::get('/{query}/videos', SearchVideosController::class)->name('videos');
 //     Route::get('/{query}/tags', SearchTagsController::class)->name('tags');
