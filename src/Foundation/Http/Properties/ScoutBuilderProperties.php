@@ -12,9 +12,9 @@ readonly class ScoutBuilderProperties implements ProvidesInertiaProperties
     public function toInertiaProperties(RenderContext $context): array
     {
         return [
+            'query' => $context->request->input('query'),
             'filter' => $context->request->input('filter'),
             'sort' => $context->request->input('sort'),
-            'query' => $context->request->input('query'),
             'page' => $context->request->input('page'),
         ];
     }
