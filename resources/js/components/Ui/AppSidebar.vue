@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
+import AppLogo from './AppLogo.vue'
 
 defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
@@ -26,21 +27,13 @@ const items: NavigationMenuItem[] = [
   <UDashboardSidebar
     :mode="mode"
     :ui="{
-      root: 'lg:hidden',
-      content: 'lg:flex',
+      root: 'max-w-xs lg:hidden',
+      content: 'max-w-xs lg:flex',
       overlay: 'lg:block',
     }"
   >
-    <template #header="{ collapsed }">
-      <Logo
-        v-if="!collapsed"
-        class="h-5 w-auto"
-      />
-      <UIcon
-        v-else
-        name="i-simple-icons-nuxtdotjs"
-        class="mx-auto size-5 text-primary"
-      />
+    <template #header>
+      <AppLogo />
     </template>
 
     <UNavigationMenu
