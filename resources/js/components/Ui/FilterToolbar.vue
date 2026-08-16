@@ -13,8 +13,8 @@ const props = defineProps<{
 }>()
 
 const { form, onSubmit } = useQuery({
-  filter: () => props.filter,
-  sort: () => props.sort,
+  filter: () => props.filter ?? { scope: 'all' },
+  sort: () => props.sort ?? 'recommended',
   query: () => props.query,
 })
 
@@ -53,7 +53,6 @@ watchDebounced(
         v-if="sorters"
         v-model="form.sort"
         :items="sorters"
-        default-value="recommended"
         placeholder="Sort by"
         class="w-36"
         @update:model-value="onSubmit"

@@ -3,7 +3,7 @@
   "remoteUser": "docker",
   "containerUser": "docker",
   "runArgs": ["--security-opt=label=disable", "--network=systemd-stry", "--userns=keep-id:uid=1000,gid=1000", "--init"],
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
   "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
   "build": {

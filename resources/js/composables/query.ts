@@ -19,8 +19,8 @@ export function useQuery(options: {
   const onSubmit = () => {
     router.reload({
       data: form,
-      only: toValue(options.only) ?? ['page', 'items', 'filter', 'sort', 'query'],
-      reset: toValue(options.reset) ?? ['page', 'items'],
+      reset: toValue(options.reset) ?? ['items', 'page'],
+      only: toValue(options.only) ?? ['items', 'page', 'filter', 'sort', 'query'],
     })
   }
 
