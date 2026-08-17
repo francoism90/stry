@@ -2,19 +2,32 @@
 import VideoCard from '@/components/Videos/VideoCard.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import type { VideoCollection } from '@/types'
+import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   items: VideoCollection
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
 
 defineOptions({
   layout: [AppLayout, ContentLayout],
 })
 
-setLayoutProps({ id: 'videos.index', title: 'Videos' })
+setLayoutProps({
+  id: 'videos.index',
+  title: 'Videos',
+  scopes: props.scopes,
+  sorters: props.sorters,
+  filter: props.filter,
+  sort: props.sort,
+  query: props.query,
+})
 
 const itemBody = ref()
 </script>

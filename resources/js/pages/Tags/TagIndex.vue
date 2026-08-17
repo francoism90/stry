@@ -2,19 +2,32 @@
 import TagCard from '@/components/Tags/TagCard.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import type { TagCollection } from '@/types'
+import type { OptionItem, QueryFilter, QueryValue, TagCollection } from '@/types'
 import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   items: TagCollection
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
 
 defineOptions({
   layout: [AppLayout, ContentLayout],
 })
 
-setLayoutProps({ id: 'tags.index', title: 'Tags' })
+setLayoutProps({
+  id: 'tags.index',
+  title: 'Tags',
+  scopes: props.scopes,
+  sorters: props.sorters,
+  filter: props.filter,
+  sort: props.sort,
+  query: props.query,
+})
 
 const itemBody = ref()
 </script>
