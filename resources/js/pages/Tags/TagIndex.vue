@@ -3,7 +3,7 @@ import TagCard from '@/components/Tags/TagCard.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { TagCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 defineProps<{
@@ -11,11 +11,10 @@ defineProps<{
 }>()
 
 defineOptions({
-  layout: [
-    [AppLayout, { title: 'Tags' }],
-    [ContentLayout, { id: 'tags.index', title: 'Tags' }],
-  ],
+  layout: [AppLayout, ContentLayout],
 })
+
+setLayoutProps({ id: 'tags.index', title: 'Tags' })
 
 const itemBody = ref()
 </script>

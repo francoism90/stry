@@ -3,7 +3,7 @@ import VideoCard from '@/components/Videos/VideoCard.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { VideoCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 defineProps<{
@@ -11,11 +11,10 @@ defineProps<{
 }>()
 
 defineOptions({
-  layout: [
-    [AppLayout, { title: 'Videos' }],
-    [ContentLayout, { id: 'videos.index', title: 'Videos' }],
-  ],
+  layout: [AppLayout, ContentLayout],
 })
+
+setLayoutProps({ id: 'videos.index', title: 'Videos' })
 
 const itemBody = ref()
 </script>
