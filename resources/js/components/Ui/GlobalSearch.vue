@@ -3,7 +3,6 @@ import { useSearch } from '@/composables/search'
 import { useTemplateRef } from 'vue'
 
 const { search } = useSearch()
-
 const input = useTemplateRef('input')
 
 defineShortcuts({
