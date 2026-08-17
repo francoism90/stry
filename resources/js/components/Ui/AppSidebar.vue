@@ -10,15 +10,18 @@ const items: NavigationMenuItem[] = [
   {
     label: 'Home',
     icon: 'i-lucide-house',
-    active: true,
+    to: '/',
+    exact: true,
   },
   {
-    label: 'Inbox',
-    icon: 'i-lucide-inbox',
+    label: 'Tags',
+    icon: 'i-lucide-tag',
+    to: '/tags',
   },
   {
-    label: 'Contacts',
-    icon: 'i-lucide-users',
+    label: 'Collections',
+    icon: 'i-lucide-folders',
+    to: '/collections',
   },
 ]
 </script>
@@ -39,6 +42,9 @@ const items: NavigationMenuItem[] = [
     <UNavigationMenu
       :items="items"
       orientation="vertical"
+      :ui="{
+        link: 'py-3',
+      }"
     />
   </UDashboardSidebar>
 </template>
