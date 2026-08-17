@@ -17,7 +17,7 @@ const isLcp = props.index === 0
     :title="item.title"
     :date="item.released ?? undefined"
     :ui="{
-      root: 'gap-y-2 rounded-none',
+      root: 'gap-y-1.5 rounded-none',
       title: 'line-clamp-2 text-sm leading-snug font-medium capitalize',
       date: 'sr-only',
       body: 'p-0 sm:p-0 lg:px-0',
