@@ -15,7 +15,7 @@ const items: NavigationMenuItem[] = [
   },
   {
     label: 'Tags',
-    icon: 'i-lucide-tag',
+    icon: 'i-lucide-tags',
     to: '/tags',
   },
   {
