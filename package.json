@@ -43,7 +43,7 @@
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/tsconfig": "^0.9.1",
     "chokidar": "^5.0.0",
-    "concurrently": "^10.0.4",
+    "concurrently": "^10.0.5",
     "eslint": "^10.8.1",
     "eslint-plugin-oxlint": "~1.78.0",
     "eslint-plugin-vue": "^10.10.0",
