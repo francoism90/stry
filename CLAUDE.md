@@ -58,7 +58,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Searching Documentation (IMPORTANT)
 
-- Always use `search-docs` before making code changes. Do not skip this step. It returns version-specific docs based on installed packages automatically.
+- Use `search-docs` before changes that depend on Laravel ecosystem APIs, behavior, configuration, or version-specific syntax. Skip it for copy-only edits and other changes where package documentation is irrelevant. Reuse sufficient results already in context instead of searching again.
 - Pass a `packages` array to scope results when you know which packages are relevant.
 - Use multiple broad, topic-based queries: `['rate limiting', 'routing rate limiting', 'routing']`. Expect the most relevant results first.
 - Do not add package names to queries because package info is already shared. Use `test resource table`, not `filament 4 test resource table`.
@@ -220,6 +220,6 @@ Vue components must have a single root element.
 - Always activate the `spatie-laravel-php` skill when writing, editing, reviewing, or formatting Laravel or PHP code.
 - Always activate the `spatie-javascript` skill when writing, editing, reviewing, or formatting JavaScript or TypeScript code.
 - Always activate the `spatie-version-control` skill when creating commits, branches, or managing Git operations.
-- Always activate the `spatie-security` skill when configuring security, reviewing authentication, or setting up servers and databases.
+- Always activate the `spatie-security` skill when configuring security, signing commits, reviewing authentication, or setting up servers and databases.
 
 </laravel-boost-guidelines>
