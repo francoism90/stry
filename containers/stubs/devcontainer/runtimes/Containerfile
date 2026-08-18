@@ -67,9 +67,9 @@ fi
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
-    && corepack enable && corepack prepare pnpm@latest --activate \
     && mkdir -p ${PNPM_HOME}/store \
     && chown -R docker:docker ${PNPM_HOME} \
+    && corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm config set store-dir ${PNPM_HOME}/store
 
 # Clean up unnecessary files and caches to reduce image size
