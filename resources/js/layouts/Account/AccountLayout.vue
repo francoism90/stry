@@ -38,16 +38,13 @@ const items: NavigationMenuItem[] = [
 <template>
   <UApp :nonce="nonce">
     <UDashboardGroup
+      unit="rem"
       storage-key="account"
       class="relative overflow-clip"
     >
       <UDashboardSidebar
-        mode="slideover"
-        :ui="{
-          root: 'max-w-xs lg:hidden',
-          content: 'max-w-xs lg:flex',
-          overlay: 'lg:block',
-        }"
+        :default-size="20"
+        :resizable="false"
       >
         <template #header>
           <AppLogo />
@@ -63,6 +60,14 @@ const items: NavigationMenuItem[] = [
       </UDashboardSidebar>
 
       <UDashboardPanel id="account">
+        <template #header>
+          <UDashboardNavbar>
+            <template #leading>
+              <AppLogo class="flex lg:hidden" />
+            </template>
+          </UDashboardNavbar>
+        </template>
+
         <template #body>
           <slot />
         </template>
