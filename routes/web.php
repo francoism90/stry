@@ -2,11 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Web\Account\Controllers\AccountController;
-use App\Web\Account\Controllers\AppearanceController;
 use App\Web\Account\Controllers\NotificationsController;
-use App\Web\Account\Controllers\SecurityController;
-use App\Web\Account\Controllers\SettingsController;
 use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
@@ -27,10 +23,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [VideoController::class, 'index'])->name('home');
 
 // // Account
-Route::get('/account', AccountController::class)->name('account');
-Route::get('/security', SecurityController::class)->name('security');
-Route::get('/settings', SettingsController::class)->name('settings');
-Route::get('/settings/appearance', AppearanceController::class)->name('settings.appearance');
 Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
 
 // // Profiles

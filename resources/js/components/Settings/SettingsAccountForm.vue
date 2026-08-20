@@ -1,20 +1,13 @@
 <script setup lang="ts">
 import { useAuth } from '@/composables/auth'
 import { update } from '@/routes/user-profile-information'
-import type { User } from '@/types'
-import { Head, setLayoutProps, useForm } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 
-const props = defineProps<{
-  user: User
-}>()
-
-setLayoutProps({ title: 'Account' })
-
-const { logOut } = useAuth()
+const { user, logOut } = useAuth()
 
 const form = useForm(update(), {
-  name: props.user.name || '',
-  email: props.user.email || '',
+  name: user.value?.name || '',
+  email: user.value?.email || '',
 })
 
 const onSubmit = () =>
@@ -26,9 +19,7 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Account" />
-
-  <UPageBody>
+  <div class="flex flex-col gap-4">
     <UForm
       :state="form"
       class="flex flex-col py-3"
@@ -99,5 +90,5 @@ const onSubmit = () =>
         />
       </template>
     </UPageCard>
-  </UPageBody>
+  </div>
 </template>

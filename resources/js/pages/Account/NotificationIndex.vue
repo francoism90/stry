@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { useNotifications } from '@/composables/notifications'
+import AppLayout from '@/layouts/AppLayout.vue'
+import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import type { NotificationCollection } from '@/types'
-import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
+import { Head, InfiniteScroll } from '@inertiajs/vue3'
 import { toRef } from 'vue'
 
 const props = defineProps<{
   notifications: NotificationCollection
 }>()
 
-setLayoutProps({ title: 'Notifications' })
+defineOptions({
+  layout: [AppLayout, ResourceLayout],
+})
 
 const { hasUnread, getTitle, getMessage, toggleRead, remove, markAllAsRead } = useNotifications(
   toRef(props, 'notifications'),

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SettingsModal from '@/components/Settings/SettingsModal.vue'
 import { useAuth } from '@/composables/auth'
 import { router } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
@@ -6,17 +7,30 @@ import { ref } from 'vue'
 
 const { user } = useAuth()
 
+const isSettingsOpen = ref(false)
+const settingsSection = ref('account')
+
+const openSettings = (section: string) => {
+  settingsSection.value = section
+  isSettingsOpen.value = true
+}
+
 const items = ref<DropdownMenuItem[][]>([
   [
     {
       label: 'Account',
       icon: 'i-lucide-user',
-      to: '/account',
+      onClick: () => openSettings('account'),
+    },
+    {
+      label: 'Security',
+      icon: 'i-lucide-shield',
+      onClick: () => openSettings('security'),
     },
     {
       label: 'Settings',
       icon: 'i-lucide-settings',
-      to: '/settings',
+      onClick: () => openSettings('general'),
     },
     {
       label: 'Profiles',
@@ -50,4 +64,9 @@ const items = ref<DropdownMenuItem[][]>([
       size="sm"
     />
   </UDropdownMenu>
+
+  <SettingsModal
+    v-model:open="isSettingsOpen"
+    v-model:section="settingsSection"
+  />
 </template>
