@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { show } from '@/routes/videos'
 import type { Video } from '@/types'
 
 const props = defineProps<{
@@ -16,6 +16,7 @@ const isLcp = props.index === 0
     variant="naked"
     :title="item.title"
     :date="item.released ?? undefined"
+    :to="show.url(item.id)"
     :ui="{
       root: 'gap-y-1.5 rounded-none',
       title: 'line-clamp-2 text-sm leading-snug font-medium capitalize',

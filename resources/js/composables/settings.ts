@@ -1,4 +1,4 @@
-import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
+import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
 import type { UserSettings } from '@/types'
 import { useHttp, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
@@ -19,7 +19,7 @@ export function useSettings<N extends keyof UserSettings>(namespace: N) {
   }
 
   function update(data: Partial<S>): void {
-    http.transform(() => ({ [namespace]: data })).patch(UserSettingsController.url())
+    http.transform(() => ({ [namespace]: data })).patch(SettingsController.url())
   }
 
   return { settings, get, only, update }
