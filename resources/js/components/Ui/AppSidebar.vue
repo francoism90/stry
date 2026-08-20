@@ -29,9 +29,11 @@ const items: NavigationMenuItem[] = [
 <template>
   <UDashboardSidebar
     :mode="mode"
+    :default-size="18"
+    :resizable="false"
     :ui="{
-      root: 'max-w-xs',
-      content: 'max-w-xs',
+      root: 'max-w-xs bg-(--ui-sidebar)',
+      content: 'max-w-xs bg-(--ui-sidebar)',
       overlay: 'lg:block',
     }"
   >
