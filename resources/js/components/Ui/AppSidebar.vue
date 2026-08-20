@@ -6,23 +6,32 @@ defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
 }>()
 
-const items: NavigationMenuItem[] = [
-  {
-    label: 'Home',
-    icon: 'i-lucide-house',
-    to: '/',
-    exact: true,
-  },
-  {
-    label: 'Tags',
-    icon: 'i-lucide-tags',
-    to: '/tags',
-  },
-  {
-    label: 'Collections',
-    icon: 'i-lucide-folders',
-    to: '/collections',
-  },
+const items: NavigationMenuItem[][] = [
+  [
+    {
+      label: 'Home',
+      icon: 'i-lucide-house',
+      to: '/',
+      exact: true,
+    },
+    {
+      label: 'Tags',
+      icon: 'i-lucide-tags',
+      to: '/tags',
+    },
+    {
+      label: 'Collections',
+      icon: 'i-lucide-folders',
+      to: '/collections',
+    },
+  ],
+  [
+    {
+      label: 'Transcodes',
+      icon: 'i-lucide-film',
+      to: '/transcodes',
+    },
+  ],
 ]
 </script>
 
@@ -31,11 +40,6 @@ const items: NavigationMenuItem[] = [
     :mode="mode"
     :default-size="18"
     :resizable="false"
-    :ui="{
-      root: 'max-w-xs bg-(--ui-sidebar)',
-      content: 'max-w-xs bg-(--ui-sidebar)',
-      overlay: 'lg:block',
-    }"
   >
     <template #header>
       <AppLogo />
@@ -46,6 +50,7 @@ const items: NavigationMenuItem[] = [
       orientation="vertical"
       :ui="{
         link: 'py-3',
+        separator: 'my-3',
       }"
     />
   </UDashboardSidebar>

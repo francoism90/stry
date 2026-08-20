@@ -16,6 +16,13 @@ const onSubmit = () =>
     replace: true,
     only: ['auth', 'user'],
   })
+
+defineExpose({
+  submit: onSubmit,
+  get processing() {
+    return form.processing
+  },
+})
 </script>
 
 <template>
@@ -61,16 +68,6 @@ const onSubmit = () =>
               :model-modifiers="{ string: true, trim: true }"
             />
           </UFormField>
-        </template>
-
-        <template #footer>
-          <UButton
-            label="Save changes"
-            type="submit"
-            color="primary"
-            variant="soft"
-            loading-auto
-          />
         </template>
       </UPageCard>
     </UForm>

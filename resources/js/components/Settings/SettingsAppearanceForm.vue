@@ -19,6 +19,13 @@ const onSubmit = () =>
     preserveState: true,
   })
 
+defineExpose({
+  submit: onSubmit,
+  get processing() {
+    return form.processing
+  },
+})
+
 const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 </script>
 
@@ -34,16 +41,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
       variant="naked"
       orientation="horizontal"
       class="mb-4"
-    >
-      <UButton
-        label="Save changes"
-        type="submit"
-        color="primary"
-        variant="soft"
-        loading-auto
-        class="w-fit lg:ms-auto"
-      />
-    </UPageCard>
+    />
 
     <UPageCard variant="subtle">
       <UFormField

@@ -13,6 +13,13 @@ const onSubmit = () =>
     preserveScroll: true,
     onSuccess: () => form.reset(),
   })
+
+defineExpose({
+  submit: onSubmit,
+  get processing() {
+    return form.processing
+  },
+})
 </script>
 
 <template>
@@ -79,16 +86,6 @@ const onSubmit = () =>
             />
           </UFormField>
         </div>
-      </template>
-
-      <template #footer>
-        <UButton
-          label="Update password"
-          type="submit"
-          color="primary"
-          variant="soft"
-          loading-auto
-        />
       </template>
     </UPageCard>
   </UForm>

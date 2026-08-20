@@ -36,6 +36,11 @@ useFlash()
         dashboardToolbar: {
           root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-3 border-0 py-4 md:flex-row md:items-center',
         },
+        dashboardSidebar: {
+          root: 'max-w-xs bg-(--ui-sidebar)',
+          content: 'max-w-xs bg-(--ui-sidebar)',
+          overlay: 'lg:block',
+        },
         header: {
           root: 'relative',
         },
