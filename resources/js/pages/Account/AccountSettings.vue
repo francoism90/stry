@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
-import { useEcho } from '@/composables/echo'
 import type { User, UserSettings } from '@/types'
-import { Head, router, setLayoutProps, useForm } from '@inertiajs/vue3'
+import { Head, setLayoutProps, useForm } from '@inertiajs/vue3'
 import type { TabsItem } from '@nuxt/ui'
 
 const props = defineProps<{
@@ -11,14 +10,12 @@ const props = defineProps<{
 
 setLayoutProps({ title: 'Settings' })
 
-const { privateChannel } = useEcho()
-
-const form = useForm({
+const form = useForm(UserSettingsController(), {
   ...(props.user.settings as UserSettings),
 })
 
 const onSubmit = () =>
-  form.patch(UserSettingsController.url(), {
+  form.submit({
     preserveScroll: true,
     preserveState: true,
   })
@@ -29,44 +26,30 @@ const tabs: TabsItem[] = [
 ]
 
 const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
-
-privateChannel(`users.${props.user.id}`).listen('.user.updated', () => router.reload({ only: ['user'] }))
 </script>
 
 <template>
   <Head title="Settings" />
 
-  <UPage>
-    <UPageBody>
-      <UForm
-        id="settings"
-        :state="form"
-        @submit="onSubmit"
+  <UPageBody>
+    <UForm
+      :state="form"
+      class="flex flex-col gap-6 py-3"
+      loading-auto
+      @submit="onSubmit"
+    >
+      <UTabs
+        :items="tabs"
+        class="w-full"
       >
-        <UPageCard
-          title="Settings"
-          description="Manage your general preferences and appearance."
-          variant="naked"
-          orientation="horizontal"
-          class="mb-4"
-        >
-          <UButton
-            form="settings"
-            label="Save changes"
-            color="primary"
-            variant="soft"
-            type="submit"
-            loading-auto
-            class="w-fit lg:ms-auto"
-          />
-        </UPageCard>
-
-        <UTabs
-          :items="tabs"
-          class="w-full"
-        >
-          <template #general>
-            <UPageCard variant="subtle">
+        <template #general>
+          <UPageCard
+            title="General"
+            description="Set your timezone, language, and date preferences."
+            variant="subtle"
+            orientation="vertical"
+          >
+            <template #body>
               <UFormField
                 label="Timezone"
                 description="Used to display dates and times throughout the app."
@@ -161,11 +144,28 @@ privateChannel(`users.${props.user.id}`).listen('.user.updated', () => router.re
                   ]"
                 />
               </UFormField>
-            </UPageCard>
-          </template>
+            </template>
 
-          <template #appearance>
-            <UPageCard variant="subtle">
+            <template #footer>
+              <UButton
+                label="Save changes"
+                type="submit"
+                color="primary"
+                variant="soft"
+                loading-auto
+              />
+            </template>
+          </UPageCard>
+        </template>
+
+        <template #appearance>
+          <UPageCard
+            title="Appearance"
+            description="Customize how the application looks and feels."
+            variant="subtle"
+            orientation="vertical"
+          >
+            <template #body>
               <UFormField
                 label="Theme"
                 description="Choose how the interface looks."
@@ -203,10 +203,20 @@ privateChannel(`users.${props.user.id}`).listen('.user.updated', () => router.re
                   ]"
                 />
               </UFormField>
-            </UPageCard>
-          </template>
-        </UTabs>
-      </UForm>
-    </UPageBody>
-  </UPage>
+            </template>
+
+            <template #footer>
+              <UButton
+                label="Save changes"
+                type="submit"
+                color="primary"
+                variant="soft"
+                loading-auto
+              />
+            </template>
+          </UPageCard>
+        </template>
+      </UTabs>
+    </UForm>
+  </UPageBody>
 </template>
