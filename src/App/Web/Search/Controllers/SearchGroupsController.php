@@ -6,12 +6,13 @@ namespace App\Web\Search\Controllers;
 
 use App\Api\Groups\Resources\GroupResource;
 use Domain\Groups\Enums\GroupSorter;
+use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -29,7 +30,7 @@ class SearchGroupsController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request, string $query = ''): Response
+    public function __invoke(ScoutBuilderProperties $properties, string $query = ''): Response
     {
         Gate::authorize('viewAny', Group::class);
 
@@ -38,7 +39,7 @@ class SearchGroupsController implements HasMiddleware
         $scout = ScoutBuilder::for(Group::search($query))
             ->query(fn (GroupQueryBuilder $builder) => $builder->withCount('groupables'))
             ->allowedFilters(
-                AllowedFilter::exact('type'),
+                AllowedFilter::exact('scope', 'type'),
             )
             ->allowedSorts(
                 AllowedSort::field('name'),
@@ -50,11 +51,12 @@ class SearchGroupsController implements HasMiddleware
             ->defaultSort($updatedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Search/SearchCollections', [
+        return Inertia::render('Search/SearchCollections', [
             'search' => fn () => $query,
-            'sort' => fn () => $request->input('sort'),
-            'sorters' => fn () => Options::forEnum(GroupSorter::class),
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(GroupType::class),
+            'sorters' => fn () => Options::forEnum(GroupSorter::class),
+            $properties,
         ]);
     }
 }

@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import SearchBar from '@/components/Search/SearchBar.vue'
-import TagFilterBar from '@/components/Tags/TagFilterBar.vue'
 import TagList from '@/components/Tags/TagList.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import type { TagCollection } from '@/types'
+import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
+import type { OptionItem, QueryFilter, QueryValue, TagCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
+import { ref } from 'vue'
 
 defineProps<{
   search: string
   items: TagCollection
-  types: SelectMenuItem[]
-  type?: string | null
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
+
+const itemBody = ref()
 </script>
 
 <template>
@@ -29,27 +34,24 @@ defineProps<{
         suffix="/tags"
         :back-href="`/search/${encodeURIComponent(search)}`"
       />
+
+      <FilterToolbar
+        :scopes="scopes"
+        :sorters="sorters"
+        :filter="filter"
+        :sort="sort"
+        :query="query"
+      />
     </template>
 
     <template #body>
       <UPage>
-        <UDashboardToolbar>
-          <template #left>
-            <TagFilterBar
-              :results="Boolean(items?.data?.length)"
-              :types="types"
-              :type="type ?? undefined"
-            />
-          </template>
-        </UDashboardToolbar>
-
         <InfiniteScroll
           data="items"
-          items-element="#infinite-items"
-          :buffer="200"
+          :items-element="() => itemBody?.$el"
         >
           <TagList
-            id="infinite-items"
+            ref="itemBody"
             :items="items?.data"
           />
         </InfiniteScroll>

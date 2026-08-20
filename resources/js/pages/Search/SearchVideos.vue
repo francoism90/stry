@@ -2,20 +2,23 @@
 import SearchBar from '@/components/Search/SearchBar.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
-import VideoFilterBar from '@/components/Videos/VideoFilterBar.vue'
+import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import type { VideoCollection, VideoFilters } from '@/types'
+import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
+import { ref } from 'vue'
 
 defineProps<{
   search: string
   items: VideoCollection
-  filters: VideoFilters
-  sorters: SelectMenuItem[]
-  scopes: SelectMenuItem[]
-  sort: string
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
+
+const itemBody = ref()
 </script>
 
 <template>
@@ -31,29 +34,24 @@ defineProps<{
         suffix="/videos"
         :back-href="`/search/${encodeURIComponent(search)}`"
       />
+
+      <FilterToolbar
+        :scopes="scopes"
+        :sorters="sorters"
+        :filter="filter"
+        :sort="sort"
+        :query="query"
+      />
     </template>
 
     <template #body>
       <UPage>
-        <UDashboardToolbar>
-          <template #left>
-            <VideoFilterBar
-              :results="Boolean(items?.data?.length)"
-              :sorters="sorters"
-              :scopes="scopes"
-              :sort="sort"
-              :filters="filters"
-            />
-          </template>
-        </UDashboardToolbar>
-
         <InfiniteScroll
           data="items"
-          items-element="#infinite-items"
-          :buffer="200"
+          :items-element="() => itemBody?.$el"
         >
           <VideoList
-            id="infinite-items"
+            ref="itemBody"
             :items="items?.data"
           />
         </InfiniteScroll>

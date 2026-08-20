@@ -9,10 +9,10 @@ use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -31,7 +31,7 @@ class SearchTagsController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request, string $query = ''): Response
+    public function __invoke(ScoutBuilderProperties $properties, string $query = ''): Response
     {
         Gate::authorize('viewAny', Tag::class);
 
@@ -40,7 +40,7 @@ class SearchTagsController implements HasMiddleware
         $scout = ScoutBuilder::for(Tag::search($query))
             ->query(fn (TagQueryBuilder $builder) => $builder->withCount('videos'))
             ->allowedFilters(
-                AllowedFilter::exact('type'),
+                AllowedFilter::exact('scope', 'type'),
             )
             ->allowedSorts(
                 $videosSort,
@@ -51,13 +51,12 @@ class SearchTagsController implements HasMiddleware
             ->defaultSort($videosSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Search/SearchTags', [
+        return Inertia::render('Search/SearchTags', [
             'search' => fn () => $query,
-            'sort' => fn () => $request->input('sort'),
-            'type' => fn () => $request->input('type'),
-            'sorters' => fn () => Options::forEnum(TagSorter::class),
-            'types' => fn () => Options::forEnum(TagType::class),
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(TagType::class),
+            'sorters' => fn () => Options::forEnum(TagSorter::class),
+            $properties,
         ]);
     }
 }

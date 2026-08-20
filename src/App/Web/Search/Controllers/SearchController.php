@@ -28,7 +28,7 @@ class SearchController implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        return Inertia::render('App/Search/SearchIndex', [
+        return Inertia::render('Search/SearchIndex', [
             'search' => fn () => $query,
             'videos' => fn () => new VideoSearchProperty($query),
             'tags' => fn () => new TagSearchProperty($query),

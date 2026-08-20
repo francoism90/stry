@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Web\Search\Controllers;
 
 use App\Api\Videos\Resources\VideoResource;
-use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -32,7 +32,7 @@ class SearchVideosController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request, string $query = ''): Response
+    public function __invoke(ScoutBuilderProperties $properties, string $query = ''): Response
     {
         Gate::authorize('viewAny', Video::class);
 
@@ -44,7 +44,7 @@ class SearchVideosController implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('shorts', new Filters\FilterShorts),
+                AllowedFilter::custom('scope', new Filters\FilterShorts),
                 AllowedFilter::custom('tagged', new Filters\FilterTagged),
                 AllowedFilter::custom('untagged', new Filters\FilterUntagged),
                 AllowedFilter::custom('unseen', new Filters\FilterUnseen),
@@ -61,13 +61,12 @@ class SearchVideosController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Search/SearchVideos', [
+        return Inertia::render('Search/SearchVideos', [
             'search' => fn () => $query,
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
-            'sort' => fn () => $request->input('sort'),
+            $properties,
         ]);
     }
 }
