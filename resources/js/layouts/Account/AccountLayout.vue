@@ -48,8 +48,9 @@ const items: NavigationMenuItem[] = [
       class="relative overflow-clip"
     >
       <UDashboardSidebar
-        :default-size="20"
+        :default-size="18"
         :resizable="false"
+        class="bg-elevated/25"
       >
         <template #header>
           <AppLogo />
