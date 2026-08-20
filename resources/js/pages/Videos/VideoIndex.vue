@@ -42,7 +42,7 @@ const itemBody = ref()
     >
       <VideoList
         ref="itemBody"
-        :items="items"
+        :items="items?.data"
       />
     </InfiniteScroll>
   </UPage>

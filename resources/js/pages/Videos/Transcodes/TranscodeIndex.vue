@@ -1,0 +1,92 @@
+<script setup lang="ts">
+import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
+import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
+import ActionBar from '@/components/Ui/ActionBar.vue'
+import { useEcho } from '@/composables/echo'
+import type { TranscodeCollection, Video } from '@/types'
+import { Head, InfiniteScroll, router } from '@inertiajs/vue3'
+
+const props = defineProps<{
+  video: Video
+  items: TranscodeCollection
+}>()
+
+const { privateChannel } = useEcho()
+
+const createTranscode = () =>
+  router.post(VideoDispatchTranscodeController.url(props.video.id), {}, { preserveScroll: true })
+
+privateChannel(`videos.${props.video.id}`)
+  .listen('.transcode.created', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.transcode.updated', () => router.reload({ only: ['items'], reset: ['items'] }))
+  .listen('.transcode.deleted', () => router.reload({ only: ['items'], reset: ['items'] }))
+</script>
+
+<template>
+  <Head :title="`${video.title} - Transcodes`" />
+
+  <UPageBody>
+    <ActionBar>
+      <template #left>
+        <TranscodeImportModal
+          v-if="items?.data?.length"
+          :video="video"
+        />
+
+        <UButton
+          icon="i-lucide-plus"
+          label="Create transcode"
+          color="neutral"
+          variant="outline"
+          size="sm"
+          @click="createTranscode"
+        />
+      </template>
+    </ActionBar>
+
+    <InfiniteScroll
+      data="items"
+      items-element="#infinite-items"
+      :buffer="200"
+    >
+      <div id="infinite-items">
+        <UEmpty
+          v-if="!items?.data?.length"
+          icon="i-lucide-cpu"
+          title="No transcodes"
+          description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
+        />
+
+        <UPageList
+          v-else
+          divide
+        >
+          <UPageCard
+            v-for="item in items?.data"
+            :key="item.id"
+            variant="naked"
+            class="py-4 first:pt-0 last:pb-0"
+          >
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.id"
+                :description="`${item.state.label} · ${item.file_size}`"
+                :avatar="{
+                  alt: item.id,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'rounded-sm size-12 me-1',
+                }"
+              />
+
+              <div class="z-10 flex items-center gap-2">
+                <TranscodeDeleteModal :item="item" />
+              </div>
+            </div>
+          </UPageCard>
+        </UPageList>
+      </div>
+    </InfiniteScroll>
+  </UPageBody>
+</template>

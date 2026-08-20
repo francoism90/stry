@@ -16,8 +16,8 @@ const props = defineProps<{
   video: Video
   playlist?: Playlist | undefined
   progress?: number | undefined
-  queue?: Video[] | undefined
   groups?: Group[] | undefined
+  queue?: Video[] | undefined
 }>()
 
 const isAddModalOpen = ref(false)
