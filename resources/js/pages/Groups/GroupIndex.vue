@@ -1,57 +1,55 @@
 <script setup lang="ts">
-import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
-import GroupFilterBar from '@/components/Groups/GroupFilterBar.vue'
-import GroupList from '@/components/Groups/GroupList.vue'
-import AppFooter from '@/components/Ui/AppFooter.vue'
-import AppHeader from '@/components/Ui/AppHeader.vue'
-import type { GroupCollection } from '@/types'
-import { InfiniteScroll } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
+import GroupCard from '@/components/Groups/GroupCard.vue'
+import ContentLayout from '@/layouts/App/ContentLayout.vue'
+import AppLayout from '@/layouts/AppLayout.vue'
+import type { GroupCollection, OptionItem, QueryFilter, QueryValue } from '@/types'
+import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   items: GroupCollection
-  sorters: SelectMenuItem[]
-  sort?: string | null
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
+
+defineOptions({
+  layout: [AppLayout, ContentLayout],
+})
+
+setLayoutProps({
+  id: 'collections.index',
+  title: 'Collections',
+  scopes: props.scopes,
+  sorters: props.sorters,
+  filter: props.filter,
+  sort: props.sort,
+  query: props.query,
+})
+
+const itemBody = ref()
 </script>
 
 <template>
-  <UDashboardPanel id="collections">
-    <template #header>
-      <AppHeader />
-    </template>
+  <Head title="Collections" />
 
-    <template #body>
-      <UPage>
-        <UDashboardToolbar>
-          <template #left>
-            <GroupFilterBar
-              :results="Boolean(items?.data?.length)"
-              :sorters="sorters"
-              :sort="sort"
-            />
-          </template>
-
-          <template #right>
-            <GroupCreateModal />
-          </template>
-        </UDashboardToolbar>
-
-        <InfiniteScroll
-          data="items"
-          items-element="#infinite-items"
-          :buffer="200"
-        >
-          <GroupList
-            id="infinite-items"
-            :items="items?.data"
-          />
-        </InfiniteScroll>
-      </UPage>
-    </template>
-
-    <template #footer>
-      <AppFooter />
-    </template>
-  </UDashboardPanel>
+  <UPage>
+    <InfiniteScroll
+      data="items"
+      :items-element="() => itemBody?.$el"
+    >
+      <UBlogPosts
+        ref="itemBody"
+        class="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-3 lg:gap-y-8 xl:grid-cols-4"
+      >
+        <GroupCard
+          v-for="item in items?.data ?? []"
+          :key="item.id"
+          :item="item"
+        />
+      </UBlogPosts>
+    </InfiniteScroll>
+  </UPage>
 </template>

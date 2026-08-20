@@ -56,9 +56,9 @@ Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->o
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
 
 // Search
-// Route::prefix('search')->name('search.')->group(function () {
-//     Route::get('/{query}/videos', SearchVideosController::class)->name('videos');
-//     Route::get('/{query}/tags', SearchTagsController::class)->name('tags');
-//     Route::get('/{query}/collections', SearchGroupsController::class)->name('collections');
-//     Route::get('/{query?}', SearchController::class)->name('index');
-// });
+Route::prefix('search')->name('search.')->group(function () {
+    Route::get('/{query}/videos', SearchVideosController::class)->name('videos');
+    Route::get('/{query}/tags', SearchTagsController::class)->name('tags');
+    Route::get('/{query}/collections', SearchGroupsController::class)->name('collections');
+    Route::get('/{query?}', SearchController::class)->name('index');
+});

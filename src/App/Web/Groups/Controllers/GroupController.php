@@ -19,6 +19,7 @@ use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoGroupScope;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -44,7 +45,7 @@ class GroupController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Group::class);
 
@@ -55,7 +56,7 @@ class GroupController implements HasMiddleware
             ->tap(new GroupProfileScope)
             ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
             ->allowedFilters(
-                AllowedFilter::exact('type'),
+                AllowedFilter::exact('scope', 'type'),
             )
             ->allowedSorts(
                 AllowedSort::field('name'),
@@ -69,9 +70,9 @@ class GroupController implements HasMiddleware
 
         return Inertia::render('Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
-            'type' => fn () => $request->input('type'),
+            'scopes' => fn () => Options::forEnum(GroupType::class),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
+            $properties,
         ]);
     }
 
