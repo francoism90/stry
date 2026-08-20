@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useNotifications } from '@/composables/notifications'
 import type { NotificationCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
 import { toRef } from 'vue'
 
 const props = defineProps<{
   notifications: NotificationCollection
 }>()
+
+setLayoutProps({ title: 'Notifications' })
 
 const { hasUnread, getTitle, getMessage, toggleRead, remove, markAllAsRead } = useNotifications(
   toRef(props, 'notifications'),

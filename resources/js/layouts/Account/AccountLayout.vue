@@ -8,6 +8,10 @@ import { useAppearance } from '@/composables/appearance'
 import { useFlash } from '@/composables/flash'
 import type { NavigationMenuItem } from '@nuxt/ui'
 
+defineProps<{
+  title?: string
+}>()
+
 const { nonce } = useAppearance()
 useFlash()
 
@@ -61,7 +65,7 @@ const items: NavigationMenuItem[] = [
 
       <UDashboardPanel id="account">
         <template #header>
-          <UDashboardNavbar>
+          <UDashboardNavbar :title="title">
             <template #leading>
               <AppLogo class="flex lg:hidden" />
             </template>

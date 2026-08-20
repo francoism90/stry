@@ -2,12 +2,14 @@
 import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
 import { useEcho } from '@/composables/echo'
 import type { User, UserSettings } from '@/types'
-import { Head, router, useForm } from '@inertiajs/vue3'
+import { Head, router, setLayoutProps, useForm } from '@inertiajs/vue3'
 import type { TabsItem } from '@nuxt/ui'
 
 const props = defineProps<{
   user: User
 }>()
+
+setLayoutProps({ title: 'Settings' })
 
 const { privateChannel } = useEcho()
 

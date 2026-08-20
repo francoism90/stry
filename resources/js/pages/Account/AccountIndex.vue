@@ -2,11 +2,13 @@
 import { useAuth } from '@/composables/auth'
 import { update } from '@/routes/user-profile-information'
 import type { User } from '@/types'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, setLayoutProps, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   user: User
 }>()
+
+setLayoutProps({ title: 'Account' })
 
 const { logOut } = useAuth()
 

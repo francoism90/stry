@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { update } from '@/routes/user-password'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, setLayoutProps, useForm } from '@inertiajs/vue3'
+
+setLayoutProps({ title: 'Security' })
 
 const form = useForm(update(), {
   current_password: '',
