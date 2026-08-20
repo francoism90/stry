@@ -69,8 +69,8 @@ export default defineConfig(({ mode }) => {
         ui: {
           colors: {
             primary: 'purple',
-            secondary: 'gray',
-            neutral: 'zinc',
+            secondary: 'neutral',
+            neutral: 'neutral',
           },
           input: {
             slots: {

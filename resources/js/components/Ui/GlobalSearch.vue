@@ -13,7 +13,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <div class="mx-3 flex items-center gap-1">
+  <div class="flex items-center gap-1">
     <UInput
       ref="input"
       icon="i-lucide-search"

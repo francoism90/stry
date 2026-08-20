@@ -30,6 +30,7 @@ useFlash()
           body: 'mx-auto flex w-full max-w-(--ui-container) flex-1 overflow-visible py-0 sm:py-0',
         },
         dashboardNavbar: {
+          root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-3 border-0 py-4 md:flex-row md:items-center',
           center: 'flex',
         },
         dashboardToolbar: {
