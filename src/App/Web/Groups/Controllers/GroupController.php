@@ -46,9 +46,14 @@ class GroupController implements HasMiddleware
         ];
     }
 
-    public function index(ScoutBuilderProperties $properties): Response
+    public function index(Request $request, ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Group::class);
+
+        // Remember the search term for the global search bar
+        if (($query = trim((string) $request->query('query', ''))) !== '') {
+            $request->session()->cache()->put('search', $query, now()->addHour());
+        }
 
         // Scout builder
         $updatedSort = AllowedSort::field('updated', 'updated_at')->defaultDescending();

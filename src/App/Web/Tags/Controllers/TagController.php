@@ -14,7 +14,7 @@ use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
-use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
@@ -45,9 +45,14 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(ScoutBuilderProperties $properties): Response
+    public function index(Request $request, ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Tag::class);
+
+        // Remember the search term for the global search bar
+        if (($query = trim((string) $request->query('query', ''))) !== '') {
+            $request->session()->cache()->put('search', $query, now()->addHour());
+        }
 
         // Scout builder
         $defaultSort = AllowedSort::custom('videos', new VideosSorter);
@@ -76,7 +81,7 @@ class TagController implements HasMiddleware
         ]);
     }
 
-    public function show(Tag $tag, Request $request): Response
+    public function show(Tag $tag, ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('view', $tag);
 
@@ -89,9 +94,7 @@ class TagController implements HasMiddleware
             ->whereIn('tagged', [$tag->getKey()])
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('shorts', new Filters\FilterShorts),
-                AllowedFilter::custom('tagged', new Filters\FilterTagged),
-                AllowedFilter::custom('untagged', new Filters\FilterUntagged),
+                AllowedFilter::custom('scope', new Filters\FilterShorts),
                 AllowedFilter::custom('unseen', new Filters\FilterUnseen),
             )
             ->allowedSorts(
@@ -109,10 +112,9 @@ class TagController implements HasMiddleware
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
-            'sort' => fn () => $request->input('sort'),
+            $properties,
         ]);
     }
 

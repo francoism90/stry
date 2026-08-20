@@ -6,9 +6,17 @@ import type { Tag, TagMenuItem } from '@/types'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
-const props = defineProps<{
-  item: Tag
-}>()
+const props = withDefaults(
+  defineProps<{
+    item: Tag
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
+const open = defineModel<boolean>('open')
 
 const types = computed(() => usePage().props.tagTypes)
 const { items, filter } = useTags(props.item.related || [])
@@ -29,18 +37,21 @@ const onSubmit = (close: () => void) =>
 
 <template>
   <FormModal
+    v-model:open="open"
     :title="`Edit ${item.name}`"
     :processing="form.processing"
     @submit="onSubmit"
   >
-    <slot>
-      <UButton
-        icon="i-lucide-pencil"
-        color="neutral"
-        variant="ghost"
-        size="sm"
-      />
-    </slot>
+    <template v-if="trigger" #default>
+      <slot>
+        <UButton
+          icon="i-lucide-pencil"
+          color="neutral"
+          variant="ghost"
+          size="sm"
+        />
+      </slot>
+    </template>
 
     <template #body>
       <UForm

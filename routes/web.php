@@ -7,7 +7,6 @@ use App\Web\Groups\Controllers\GroupController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
 use App\Web\Profiles\Controllers\ProfileController;
-use App\Web\Search\Controllers\SearchController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
 use App\Web\Videos\Controllers\VideoController;
@@ -45,6 +44,3 @@ Route::resource('videos', VideoController::class)->except(['create', 'store', 'e
 Route::resource('videos.media', VideoMediaController::class)->only(['index']);
 Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['index', 'store', 'update', 'destroy']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
-
-// Search
-Route::get('/search/{query?}', SearchController::class)->name('search.index');

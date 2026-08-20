@@ -2,6 +2,7 @@
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
+import SearchTypeSwitcher from '@/components/Ui/SearchTypeSwitcher.vue'
 import type { OptionItem, QueryFilter, QueryValue } from '@/types'
 
 withDefaults(
@@ -25,6 +26,11 @@ withDefaults(
     <template #header>
       <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
         <AppHeader />
+
+        <SearchTypeSwitcher
+          :id="id"
+          :query="query"
+        />
 
         <FilterToolbar
           :scopes="scopes"

@@ -1,11 +1,23 @@
 <script setup lang="ts">
 import { useSearch } from '@/composables/search'
-import { router, useForm } from '@inertiajs/vue3'
+import { index as collectionsIndex } from '@/routes/collections'
+import { index as tagsIndex } from '@/routes/tags'
+import { index as videosIndex } from '@/routes/videos'
+import { router, useForm, usePage } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
-import { useTemplateRef } from 'vue'
+import { computed, useTemplateRef } from 'vue'
+
+const searchTargets = {
+  'Videos/VideoIndex': { route: videosIndex, placeholder: 'Search videos' },
+  'Tags/TagIndex': { route: tagsIndex, placeholder: 'Search tags' },
+  'Groups/GroupIndex': { route: collectionsIndex, placeholder: 'Search collections' },
+} as const
 
 const { search } = useSearch()
+const page = usePage()
 const input = useTemplateRef('input')
+
+const target = computed(() => searchTargets[page.component as keyof typeof searchTargets] ?? null)
 
 const form = useForm({
   search: search.value ?? '',
@@ -14,7 +26,11 @@ const form = useForm({
 watchDebounced(
   () => form.search,
   (value) => {
-    router.visit(`/search/${encodeURIComponent(value)}`, {
+    if (!target.value) {
+      return
+    }
+
+    router.visit(target.value.route.url({ query: { query: value } }), {
       preserveState: true,
     })
   },
@@ -29,13 +45,16 @@ defineShortcuts({
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <div
+    v-if="target"
+    class="flex items-center gap-1"
+  >
     <UInput
       ref="input"
       v-model="form.search"
       :model-modifiers="{ string: true, trim: true }"
       icon="i-lucide-search"
-      placeholder="Search"
+      :placeholder="target.placeholder"
       variant="soft"
       size="lg"
       :ui="{

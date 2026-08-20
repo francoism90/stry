@@ -22,6 +22,7 @@ use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -43,9 +44,14 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    public function index(ScoutBuilderProperties $properties): Response
+    public function index(Request $request, ScoutBuilderProperties $properties): Response
     {
         Gate::authorize('viewAny', Video::class);
+
+        // Remember the search term for the global search bar
+        if (($query = trim((string) $request->query('query', ''))) !== '') {
+            $request->session()->cache()->put('search', $query, now()->addHour());
+        }
 
         // Relevant sort options
         $defaultSort = AllowedSort::custom('recommended', new RecommendedSorter);
