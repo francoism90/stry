@@ -1,17 +1,33 @@
 <script setup lang="ts">
+import AppearanceController from '@/actions/App/Web/Account/Controllers/AppearanceController'
+import SettingsController from '@/actions/App/Web/Account/Controllers/SettingsController'
 import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
 import type { User, UserSettings } from '@/types'
 import { Head, setLayoutProps, useForm } from '@inertiajs/vue3'
-import type { TabsItem } from '@nuxt/ui'
+import type { NavigationMenuItem } from '@nuxt/ui'
 
 const props = defineProps<{
   user: User
 }>()
 
-setLayoutProps({ title: 'Settings' })
+setLayoutProps({
+  title: 'Settings',
+  tabs: [
+    {
+      label: 'General',
+      icon: 'i-lucide-settings-2',
+      to: SettingsController.url(),
+    },
+    {
+      label: 'Appearance',
+      icon: 'i-lucide-palette',
+      to: AppearanceController.url(),
+    },
+  ] satisfies NavigationMenuItem[],
+})
 
 const form = useForm(UserSettingsController(), {
-  ...(props.user.settings as UserSettings),
+  general: (props.user.settings as UserSettings).general,
 })
 
 const onSubmit = () =>
@@ -19,11 +35,6 @@ const onSubmit = () =>
     preserveScroll: true,
     preserveState: true,
   })
-
-const tabs: TabsItem[] = [
-  { label: 'General', icon: 'i-lucide-settings-2', slot: 'general' },
-  { label: 'Appearance', icon: 'i-lucide-palette', slot: 'appearance' },
-]
 
 const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 </script>
@@ -34,189 +45,122 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
   <UPageBody>
     <UForm
       :state="form"
-      class="flex flex-col gap-6 py-3"
       loading-auto
       @submit="onSubmit"
     >
-      <UTabs
-        :items="tabs"
-        class="w-full"
+      <UPageCard
+        title="General"
+        description="Set your timezone, language, and date preferences."
+        variant="naked"
+        orientation="horizontal"
+        class="mb-4"
       >
-        <template #general>
-          <UPageCard
-            title="General"
-            description="Set your timezone, language, and date preferences."
-            variant="subtle"
-            orientation="vertical"
-          >
-            <template #body>
-              <UFormField
-                label="Timezone"
-                description="Used to display dates and times throughout the app."
-                name="general.timezone"
-                :error="form.errors['general.timezone']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.general.timezone"
-                  class="w-56"
-                  :items="[
-                    { label: 'UTC', value: 'UTC' },
-                    { label: 'Europe/Amsterdam', value: 'Europe/Amsterdam' },
-                  ]"
-                />
-              </UFormField>
+        <UButton
+          label="Save changes"
+          type="submit"
+          color="primary"
+          variant="soft"
+          loading-auto
+          class="w-fit lg:ms-auto"
+        />
+      </UPageCard>
 
-              <USeparator />
+      <UPageCard variant="subtle">
+        <UFormField
+          label="Timezone"
+          description="Used to display dates and times throughout the app."
+          name="general.timezone"
+          :error="form.errors['general.timezone']"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.general.timezone"
+            class="w-56"
+            :items="[
+              { label: 'UTC', value: 'UTC' },
+              { label: 'Europe/Amsterdam', value: 'Europe/Amsterdam' },
+            ]"
+          />
+        </UFormField>
 
-              <UFormField
-                label="Language"
-                description="The language used across the interface."
-                name="general.language"
-                :error="form.errors['general.language']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.general.language"
-                  class="w-56"
-                  :items="[{ label: 'English', value: 'en' }]"
-                />
-              </UFormField>
+        <USeparator />
 
-              <USeparator />
+        <UFormField
+          label="Language"
+          description="The language used across the interface."
+          name="general.language"
+          :error="form.errors['general.language']"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.general.language"
+            class="w-56"
+            :items="[{ label: 'English', value: 'en' }]"
+          />
+        </UFormField>
 
-              <UFormField
-                label="Locale"
-                description="Used to format numbers, dates, and currencies."
-                name="general.locale"
-                :error="form.errors['general.locale']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.general.locale"
-                  class="w-56"
-                  :items="[
-                    { label: 'English (US)', value: 'en-US' },
-                    { label: 'Dutch (Netherlands)', value: 'nl-NL' },
-                  ]"
-                />
-              </UFormField>
+        <USeparator />
 
-              <USeparator />
+        <UFormField
+          label="Locale"
+          description="Used to format numbers, dates, and currencies."
+          name="general.locale"
+          :error="form.errors['general.locale']"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.general.locale"
+            class="w-56"
+            :items="[
+              { label: 'English (US)', value: 'en-US' },
+              { label: 'Dutch (Netherlands)', value: 'nl-NL' },
+            ]"
+          />
+        </UFormField>
 
-              <UFormField
-                label="Date format"
-                description="How dates are displayed throughout the app."
-                name="general.date_format"
-                :error="form.errors['general.date_format']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.general.date_format"
-                  class="w-56"
-                  :items="[
-                    { label: 'YYYY-MM-DD', value: 'YYYY-MM-DD' },
-                    { label: 'MM/DD/YYYY', value: 'MM/DD/YYYY' },
-                    { label: 'DD/MM/YYYY', value: 'DD/MM/YYYY' },
-                    { label: 'DD.MM.YYYY', value: 'DD.MM.YYYY' },
-                    { label: 'MMM D, YYYY', value: 'MMM D, YYYY' },
-                  ]"
-                />
-              </UFormField>
+        <USeparator />
 
-              <USeparator />
+        <UFormField
+          label="Date format"
+          description="How dates are displayed throughout the app."
+          name="general.date_format"
+          :error="form.errors['general.date_format']"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.general.date_format"
+            class="w-56"
+            :items="[
+              { label: 'YYYY-MM-DD', value: 'YYYY-MM-DD' },
+              { label: 'MM/DD/YYYY', value: 'MM/DD/YYYY' },
+              { label: 'DD/MM/YYYY', value: 'DD/MM/YYYY' },
+              { label: 'DD.MM.YYYY', value: 'DD.MM.YYYY' },
+              { label: 'MMM D, YYYY', value: 'MMM D, YYYY' },
+            ]"
+          />
+        </UFormField>
 
-              <UFormField
-                label="Time format"
-                description="How times are displayed throughout the app."
-                name="general.time_format"
-                :error="form.errors['general.time_format']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.general.time_format"
-                  class="w-56"
-                  :items="[
-                    { label: '24-hour (HH:mm)', value: 'HH:mm' },
-                    { label: '12-hour (h:mm A)', value: 'h:mm A' },
-                    { label: '24-hour with seconds', value: 'HH:mm:ss' },
-                    { label: '12-hour with seconds', value: 'h:mm:ss A' },
-                  ]"
-                />
-              </UFormField>
-            </template>
+        <USeparator />
 
-            <template #footer>
-              <UButton
-                label="Save changes"
-                type="submit"
-                color="primary"
-                variant="soft"
-                loading-auto
-              />
-            </template>
-          </UPageCard>
-        </template>
-
-        <template #appearance>
-          <UPageCard
-            title="Appearance"
-            description="Customize how the application looks and feels."
-            variant="subtle"
-            orientation="vertical"
-          >
-            <template #body>
-              <UFormField
-                label="Theme"
-                description="Choose how the interface looks."
-                name="appearance.theme"
-                :error="form.errors['appearance.theme']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.appearance.theme"
-                  class="w-56"
-                  :items="[
-                    { label: 'Dark', value: 'dark' },
-                    { label: 'Light', value: 'light' },
-                    { label: 'System', value: 'system' },
-                  ]"
-                />
-              </UFormField>
-
-              <USeparator />
-
-              <UFormField
-                label="Default view"
-                description="The default layout used for browsing your library."
-                name="appearance.default_view"
-                :error="form.errors['appearance.default_view']"
-                :class="fieldClass"
-              >
-                <USelect
-                  v-model="form.appearance.default_view"
-                  class="w-56"
-                  :items="[
-                    { label: 'Vertical', value: 'vertical' },
-                    { label: 'Horizontal', value: 'horizontal' },
-                    { label: 'Grid', value: 'grid' },
-                  ]"
-                />
-              </UFormField>
-            </template>
-
-            <template #footer>
-              <UButton
-                label="Save changes"
-                type="submit"
-                color="primary"
-                variant="soft"
-                loading-auto
-              />
-            </template>
-          </UPageCard>
-        </template>
-      </UTabs>
+        <UFormField
+          label="Time format"
+          description="How times are displayed throughout the app."
+          name="general.time_format"
+          :error="form.errors['general.time_format']"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.general.time_format"
+            class="w-56"
+            :items="[
+              { label: '24-hour (HH:mm)', value: 'HH:mm' },
+              { label: '12-hour (h:mm A)', value: 'h:mm A' },
+              { label: '24-hour with seconds', value: 'HH:mm:ss' },
+              { label: '12-hour with seconds', value: 'h:mm:ss A' },
+            ]"
+          />
+        </UFormField>
+      </UPageCard>
     </UForm>
   </UPageBody>
 </template>

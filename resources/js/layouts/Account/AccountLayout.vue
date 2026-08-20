@@ -10,6 +10,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 defineProps<{
   title?: string
+  tabs?: NavigationMenuItem[]
 }>()
 
 const { nonce } = useAppearance()
@@ -65,11 +66,15 @@ const items: NavigationMenuItem[] = [
 
       <UDashboardPanel id="account">
         <template #header>
-          <UDashboardNavbar :title="title">
-            <template #leading>
-              <AppLogo class="flex lg:hidden" />
-            </template>
-          </UDashboardNavbar>
+          <UDashboardNavbar :title="title" />
+
+          <UDashboardToolbar v-if="tabs">
+            <UNavigationMenu
+              :items="tabs"
+              highlight
+              class="-mx-1 flex-1"
+            />
+          </UDashboardToolbar>
         </template>
 
         <template #body>
