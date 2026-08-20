@@ -18,9 +18,12 @@ defineShortcuts({
       ref="input"
       icon="i-lucide-search"
       placeholder="Search"
+      variant="soft"
+      size="lg"
       :default-value="search"
       :ui="{
         root: 'w-full max-w-fit md:min-w-sm lg:min-w-lg',
+        base: 'rounded-full',
         trailing: 'hidden md:inline-flex',
       }"
     >
