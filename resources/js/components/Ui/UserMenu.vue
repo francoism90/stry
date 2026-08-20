@@ -10,27 +10,12 @@ const { user } = useAuth()
 const isSettingsOpen = ref(false)
 const settingsSection = ref('account')
 
-const openSettings = (section: string) => {
-  settingsSection.value = section
-  isSettingsOpen.value = true
-}
-
 const items = ref<DropdownMenuItem[][]>([
   [
     {
-      label: 'Account',
-      icon: 'i-lucide-user',
-      onClick: () => openSettings('account'),
-    },
-    {
-      label: 'Security',
-      icon: 'i-lucide-shield',
-      onClick: () => openSettings('security'),
-    },
-    {
       label: 'Settings',
       icon: 'i-lucide-settings',
-      onClick: () => openSettings('general'),
+      onClick: () => (isSettingsOpen.value = true),
     },
     {
       label: 'Profiles',

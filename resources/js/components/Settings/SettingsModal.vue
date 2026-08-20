@@ -8,6 +8,7 @@ import { computed, ref, type Component } from 'vue'
 type SettingsFormInstance = {
   submit: () => void
   processing: boolean
+  recentlySuccessful: boolean
 }
 
 const open = defineModel<boolean>('open', { default: false })
@@ -52,6 +53,7 @@ const activeComponent = computed(() => definitions.find((item) => item.value ===
 
 const formRef = ref<SettingsFormInstance | null>(null)
 const saving = computed(() => formRef.value?.processing ?? false)
+const saved = computed(() => formRef.value?.recentlySuccessful ?? false)
 const save = () => formRef.value?.submit()
 </script>
 
@@ -100,8 +102,9 @@ const save = () => formRef.value?.submit()
       />
 
       <UButton
-        label="Save changes"
-        color="primary"
+        :label="saved ? 'Saved' : 'Save changes'"
+        :icon="saved ? 'i-lucide-check' : undefined"
+        :color="saved ? 'success' : 'primary'"
         variant="soft"
         :loading="saving"
         @click="save"

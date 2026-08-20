@@ -22,6 +22,9 @@ defineExpose({
   get processing() {
     return form.processing
   },
+  get recentlySuccessful() {
+    return form.recentlySuccessful
+  },
 })
 </script>
 
@@ -36,7 +39,7 @@ defineExpose({
       <UPageCard
         title="Account"
         description="Update your name and email address."
-        variant="subtle"
+        variant="naked"
         orientation="vertical"
         :ui="{
           body: 'flex w-full flex-col gap-3',
@@ -72,10 +75,12 @@ defineExpose({
       </UPageCard>
     </UForm>
 
+    <USeparator />
+
     <UPageCard
       title="Session"
       description="Log out of your account."
-      variant="subtle"
+      variant="naked"
       orientation="vertical"
     >
       <template #footer>

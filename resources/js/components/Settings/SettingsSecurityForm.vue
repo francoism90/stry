@@ -19,6 +19,9 @@ defineExpose({
   get processing() {
     return form.processing
   },
+  get recentlySuccessful() {
+    return form.recentlySuccessful
+  },
 })
 </script>
 
@@ -32,18 +35,13 @@ defineExpose({
     <UPageCard
       title="Change Password"
       description="Update your account password."
-      variant="subtle"
+      variant="naked"
       orientation="vertical"
       :ui="{
         body: 'flex w-full flex-col gap-4',
       }"
     >
       <template #body>
-        <div class="flex flex-col gap-1">
-          <p class="text-sm font-semibold text-highlighted">Change password</p>
-          <p class="text-sm text-muted">Choose a strong password and keep your account secure.</p>
-        </div>
-
         <UFormField
           label="Current password"
           required

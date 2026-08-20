@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { useAuth } from '@/composables/auth'
 import type { NavigationMenuItem } from '@nuxt/ui'
+import { computed } from 'vue'
 import AppLogo from './AppLogo.vue'
 
 defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
 }>()
 
-const items: NavigationMenuItem[][] = [
+const { hasRole } = useAuth()
+
+const items = computed<NavigationMenuItem[][]>(() => [
   [
     {
       label: 'Home',
@@ -25,14 +29,18 @@ const items: NavigationMenuItem[][] = [
       to: '/collections',
     },
   ],
-  [
-    {
-      label: 'Transcodes',
-      icon: 'i-lucide-film',
-      to: '/transcodes',
-    },
-  ],
-]
+  ...(hasRole('super-admin')
+    ? [
+        [
+          {
+            label: 'Transcodes',
+            icon: 'i-lucide-film',
+            to: '/transcodes',
+          },
+        ],
+      ]
+    : []),
+])
 </script>
 
 <template>
@@ -50,7 +58,7 @@ const items: NavigationMenuItem[][] = [
       orientation="vertical"
       :ui="{
         link: 'py-3',
-        separator: 'my-3',
+        separator: 'my-1',
       }"
     />
   </UDashboardSidebar>
