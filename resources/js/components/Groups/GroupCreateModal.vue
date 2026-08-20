@@ -3,6 +3,15 @@ import { store } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import { useForm } from '@inertiajs/vue3'
 
+withDefaults(
+  defineProps<{
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
 const open = defineModel<boolean>('open')
 
 const form = useForm(store(), {
@@ -28,16 +37,18 @@ const onSubmit = (close: () => void) =>
     :processing="form.processing"
     @submit="onSubmit"
   >
-    <slot>
-      <UButton
-        label="Create collection"
-        color="neutral"
-        variant="link"
-        size="sm"
-        icon="i-lucide-plus"
-        class="px-0"
-      />
-    </slot>
+    <template v-if="trigger" #default>
+      <slot>
+        <UButton
+          label="Create collection"
+          color="neutral"
+          variant="link"
+          size="sm"
+          icon="i-lucide-plus"
+          class="px-0"
+        />
+      </slot>
+    </template>
 
     <template #body>
       <UForm

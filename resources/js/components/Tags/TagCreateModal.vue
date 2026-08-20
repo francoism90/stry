@@ -4,6 +4,15 @@ import FormModal from '@/components/Ui/FormModal.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
+withDefaults(
+  defineProps<{
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
 const open = defineModel<boolean>('open')
 
 const types = computed(() => usePage().props.tagTypes)
@@ -32,16 +41,18 @@ const onSubmit = (close: () => void) =>
     :processing="form.processing"
     @submit="onSubmit"
   >
-    <slot>
-      <UButton
-        label="Create tag"
-        color="neutral"
-        variant="link"
-        size="sm"
-        icon="i-lucide-plus"
-        class="px-0"
-      />
-    </slot>
+    <template v-if="trigger" #default>
+      <slot>
+        <UButton
+          label="Create tag"
+          color="neutral"
+          variant="link"
+          size="sm"
+          icon="i-lucide-plus"
+          class="px-0"
+        />
+      </slot>
+    </template>
 
     <template #body>
       <UForm

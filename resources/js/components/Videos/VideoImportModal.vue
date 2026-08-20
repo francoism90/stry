@@ -4,6 +4,15 @@ import FormModal from '@/components/Ui/FormModal.vue'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
+withDefaults(
+  defineProps<{
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
 const open = defineModel<boolean>('open')
 
 const processing = ref(false)
@@ -31,7 +40,9 @@ const onSubmit = (close: () => void) => {
     :processing="processing"
     @submit="onSubmit"
   >
-    <slot />
+    <template v-if="trigger" #default>
+      <slot />
+    </template>
 
     <template #body>
       <div class="flex flex-col gap-2">

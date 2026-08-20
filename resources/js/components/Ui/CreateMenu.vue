@@ -45,15 +45,18 @@ const items = ref<DropdownMenuItem[]>([
     />
   </UDropdownMenu>
 
-  <VideoImportModal v-model:open="isVideoModalOpen">
-    <template #default />
-  </VideoImportModal>
+  <VideoImportModal
+    v-model:open="isVideoModalOpen"
+    :trigger="false"
+  />
 
-  <TagCreateModal v-model:open="isTagModalOpen">
-    <template #default />
-  </TagCreateModal>
+  <TagCreateModal
+    v-model:open="isTagModalOpen"
+    :trigger="false"
+  />
 
-  <GroupCreateModal v-model:open="isCollectionModalOpen">
-    <template #default />
-  </GroupCreateModal>
+  <GroupCreateModal
+    v-model:open="isCollectionModalOpen"
+    :trigger="false"
+  />
 </template>

@@ -8,30 +8,14 @@ import { index as collectionsIndex } from '@/routes/collections'
 import { index as tagsIndex } from '@/routes/tags'
 import { index as videosIndex } from '@/routes/videos'
 import type { Group, Tag, Video } from '@/types'
-import { Head, router, useForm } from '@inertiajs/vue3'
-import { watchDebounced } from '@vueuse/core'
+import { Head } from '@inertiajs/vue3'
 
-const props = defineProps<{
+defineProps<{
   search: string
   videos: Video[]
   tags: Tag[]
   collections: Group[]
 }>()
-
-const form = useForm({
-  search: props.search,
-})
-
-watchDebounced(
-  () => form.search,
-  (value) => {
-    router.visit(`/search/${encodeURIComponent(value)}`, {
-      preserveState: true,
-      only: ['search', 'videos', 'tags', 'collections'],
-    })
-  },
-  { debounce: 350, maxWait: 1000 },
-)
 </script>
 
 <template>
@@ -40,32 +24,6 @@ watchDebounced(
   <UDashboardPanel id="search">
     <template #header>
       <AppHeader />
-
-      <UDashboardToolbar
-        :ui="{
-          root: 'min-h-16 border-b border-default',
-          left: 'flex-1',
-        }"
-      >
-        <template #left>
-          <UFormField
-            :error="form.errors.search"
-            class="mx-auto w-full max-w-2xl"
-          >
-            <UInput
-              v-model="form.search"
-              :model-modifiers="{ string: true, trim: true }"
-              variant="soft"
-              size="xl"
-              color="neutral"
-              class="w-full"
-              placeholder="Search videos, tags, collections..."
-              icon="i-lucide-search"
-              autofocus
-            />
-          </UFormField>
-        </template>
-      </UDashboardToolbar>
     </template>
 
     <template #body>
