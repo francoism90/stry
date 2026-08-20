@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoCard from '@/components/Videos/VideoCard.vue'
+import VideoList from '@/components/Videos/VideoList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
@@ -40,17 +40,10 @@ const itemBody = ref()
       data="items"
       :items-element="() => itemBody?.$el"
     >
-      <UBlogPosts
+      <VideoList
         ref="itemBody"
-        class="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-3 lg:gap-y-8 xl:grid-cols-4"
-      >
-        <VideoCard
-          v-for="(item, index) in items?.data ?? []"
-          :key="item.id"
-          :item="item"
-          :index="index"
-        />
-      </UBlogPosts>
+        :items="items"
+      />
     </InfiniteScroll>
   </UPage>
 </template>

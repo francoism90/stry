@@ -33,7 +33,7 @@ useFlash()
           center: 'flex',
         },
         dashboardToolbar: {
-          root: 'mx-auto flex w-full max-w-(--ui-container) flex-col gap-2 border-0 py-4 md:flex-row',
+          root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-3 border-0 py-4 md:flex-row md:items-center',
         },
         dashboardSidebarToggle: {
           base: 'lg:inline-flex',
