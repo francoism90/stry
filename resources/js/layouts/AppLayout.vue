@@ -35,9 +35,6 @@ useFlash()
         dashboardToolbar: {
           root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-3 border-0 py-4 md:flex-row md:items-center',
         },
-        dashboardSidebarToggle: {
-          base: 'lg:inline-flex',
-        },
         header: {
           root: 'relative',
         },

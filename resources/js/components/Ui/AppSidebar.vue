@@ -30,8 +30,8 @@ const items: NavigationMenuItem[] = [
   <UDashboardSidebar
     :mode="mode"
     :ui="{
-      root: 'max-w-xs lg:hidden',
-      content: 'max-w-xs lg:flex',
+      root: 'max-w-xs',
+      content: 'max-w-xs',
       overlay: 'lg:block',
     }"
   >
