@@ -4,12 +4,9 @@ import TagList from '@/components/Tags/TagList.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import type { Group, Tag, Video } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
-
-defineOptions({ layout: DefaultLayout })
 
 const props = defineProps<{
   search: string
