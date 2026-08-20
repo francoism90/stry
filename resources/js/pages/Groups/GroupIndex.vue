@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GroupCard from '@/components/Groups/GroupCard.vue'
+import GroupList from '@/components/Groups/GroupList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { GroupCollection, OptionItem, QueryFilter, QueryValue } from '@/types'
@@ -40,16 +40,10 @@ const itemBody = ref()
       data="items"
       :items-element="() => itemBody?.$el"
     >
-      <UBlogPosts
+      <GroupList
         ref="itemBody"
-        class="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-3 lg:gap-y-8 xl:grid-cols-4"
-      >
-        <GroupCard
-          v-for="item in items?.data ?? []"
-          :key="item.id"
-          :item="item"
-        />
-      </UBlogPosts>
+        :items="items?.data"
+      />
     </InfiniteScroll>
   </UPage>
 </template>
