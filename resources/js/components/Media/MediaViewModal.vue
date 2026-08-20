@@ -1,0 +1,101 @@
+<script setup lang="ts">
+import type { Media } from '@/types'
+
+defineProps<{
+  item: Media
+}>()
+</script>
+
+<template>
+  <UModal
+    :title="item.file_name"
+    :ui="{ footer: 'justify-end' }"
+  >
+    <slot>
+      <UButton
+        icon="i-lucide-eye"
+        color="neutral"
+        variant="ghost"
+        size="sm"
+      />
+    </slot>
+
+    <template #body>
+      <dl class="divide-y divide-default">
+        <div class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0">
+          <dt class="text-sm text-muted">Name</dt>
+          <dd class="text-sm font-medium">{{ item.name }}</dd>
+        </div>
+
+        <div class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0">
+          <dt class="text-sm text-muted">File name</dt>
+          <dd class="max-w-xs truncate text-sm font-medium">{{ item.file_name }}</dd>
+        </div>
+
+        <div class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0">
+          <dt class="text-sm text-muted">Collection</dt>
+          <dd class="text-sm font-medium">{{ item.collection_name }}</dd>
+        </div>
+
+        <div class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0">
+          <dt class="text-sm text-muted">MIME type</dt>
+          <dd class="text-sm font-medium">{{ item.mime_type }}</dd>
+        </div>
+
+        <div class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0">
+          <dt class="text-sm text-muted">File size</dt>
+          <dd class="text-sm font-medium">{{ item.file_size }}</dd>
+        </div>
+
+        <div class="flex justify-between gap-4 py-2 first:pt-0 last:pb-0">
+          <dt class="text-sm text-muted">Disk</dt>
+          <dd class="text-sm font-medium">{{ item.disk }}</dd>
+        </div>
+
+        <div
+          v-if="item.generated_conversions"
+          class="flex flex-col gap-2 py-2 first:pt-0 last:pb-0"
+        >
+          <dt class="text-sm text-muted">Conversions</dt>
+          <dd>
+            <pre class="overflow-auto rounded bg-elevated p-2 text-xs">{{
+              JSON.stringify(item.generated_conversions, null, 2)
+            }}</pre>
+          </dd>
+        </div>
+
+        <div
+          v-if="item.custom_properties"
+          class="flex flex-col gap-2 py-2 first:pt-0 last:pb-0"
+        >
+          <dt class="text-sm text-muted">Metadata</dt>
+          <dd>
+            <pre class="overflow-auto rounded bg-elevated p-2 text-xs">{{
+              JSON.stringify(item.custom_properties, null, 2)
+            }}</pre>
+          </dd>
+        </div>
+      </dl>
+    </template>
+
+    <template #footer="{ close }">
+      <div class="flex justify-end gap-2">
+        <UButton
+          label="Close"
+          color="neutral"
+          variant="soft"
+          @click.prevent="close"
+        />
+
+        <UButton
+          :href="item.url ?? ''"
+          :disabled="!item.url"
+          label="Download"
+          icon="i-lucide-download"
+          variant="soft"
+          color="neutral"
+        />
+      </div>
+    </template>
+  </UModal>
+</template>
