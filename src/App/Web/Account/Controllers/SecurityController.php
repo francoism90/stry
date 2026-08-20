@@ -26,6 +26,6 @@ class SecurityController implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        return Inertia::render('App/Account/AccountSecurity');
+        return Inertia::render('Account/AccountSecurity');
     }
 }

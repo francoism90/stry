@@ -104,7 +104,7 @@ class TagController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Tags/TagView', [
+        return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoFilter::class),

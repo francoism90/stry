@@ -40,7 +40,7 @@ class VideoPlaylistController implements HasMiddleware
             ->latest()
             ->simplePaginate(perPage: 16);
 
-        return Inertia::render('App/Videos/Playlists/PlaylistIndex', [
+        return Inertia::render('Videos/Playlists/PlaylistIndex', [
             'video' => fn () => new VideoResourceProperty($video, ['filesize']),
             'items' => Inertia::scroll(fn () => PlaylistResource::collection($playlists)),
         ]);

@@ -27,7 +27,7 @@ class AccountController implements HasMiddleware
     {
         Gate::authorize('update', $request->user());
 
-        return Inertia::render('App/Account/AccountIndex', [
+        return Inertia::render('Account/AccountIndex', [
             'user' => fn () => new UserResourceProperty(
                 $request->user(),
                 ['name', 'email', 'avatar'],

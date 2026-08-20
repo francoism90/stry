@@ -37,7 +37,7 @@ class VideoTranscodeController implements HasMiddleware
             ->latest()
             ->simplePaginate(perPage: 16);
 
-        return Inertia::render('App/Videos/Transcodes/TranscodeIndex', [
+        return Inertia::render('Videos/Transcodes/TranscodeIndex', [
             'video' => fn () => new VideoResourceProperty($video, ['filesize']),
             'items' => Inertia::scroll(fn () => TranscodeResource::collection($transcodes)),
         ]);

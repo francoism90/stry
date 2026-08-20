@@ -67,7 +67,7 @@ class GroupController implements HasMiddleware
             ->defaultSort($updatedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Groups/GroupIndex', [
+        return Inertia::render('Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
             'sort' => fn () => $request->input('sort'),
             'type' => fn () => $request->input('type'),
@@ -101,7 +101,7 @@ class GroupController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Groups/GroupView', [
+        return Inertia::render('Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
@@ -135,7 +135,7 @@ class GroupController implements HasMiddleware
     {
         Gate::authorize('update', $group);
 
-        return Inertia::render('App/Groups/GroupEdit', [
+        return Inertia::render('Groups/GroupEdit', [
             'group' => fn () => new GroupResourceProperty($group),
         ]);
     }

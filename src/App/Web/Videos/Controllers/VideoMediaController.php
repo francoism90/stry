@@ -36,7 +36,7 @@ class VideoMediaController implements HasMiddleware
             ->simplePaginate(perPage: 16)
             ->through(fn ($item) => $item->append(['custom_properties', 'generated_conversions']));
 
-        return Inertia::render('App/Videos/Media/MediaIndex', [
+        return Inertia::render('Videos/Media/MediaIndex', [
             'video' => fn () => new VideoResourceProperty($video, ['filesize']),
             'items' => Inertia::scroll(fn () => MediaResource::collection($media)),
         ]);
