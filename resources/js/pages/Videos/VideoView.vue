@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import VideoGroupModal from '@/components/Videos/VideoGroupModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
@@ -71,7 +72,7 @@ privateChannel(`videos.${props.video.id}`)
           :progress="progress"
         />
 
-        <GroupVideoModal
+        <VideoGroupModal
           v-model:open="isAddModalOpen"
           :video="video"
           :groups="groups"
