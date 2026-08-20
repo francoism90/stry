@@ -3,6 +3,7 @@ import ui from '@nuxt/ui/vue-plugin'
 
 import '../css/app.css'
 
+import AccountLayout from '@/layouts/AccountLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import AuthLayout from './layouts/AuthLayout.vue'
 
@@ -16,6 +17,10 @@ createInertiaApp({
   layout: (name) => {
     if (name.startsWith('Auth/')) {
       return AuthLayout
+    }
+
+    if (name.startsWith('Account/')) {
+      return AccountLayout
     }
 
     return AppLayout
