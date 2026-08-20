@@ -134,15 +134,6 @@ class GroupController implements HasMiddleware
         return redirect()->route('collections.show', $group);
     }
 
-    public function edit(Group $group): Response
-    {
-        Gate::authorize('update', $group);
-
-        return Inertia::render('Groups/GroupEdit', [
-            'group' => fn () => new GroupResourceProperty($group),
-        ]);
-    }
-
     public function update(Group $group, GroupUpdateRequest $request): RedirectResponse
     {
         Gate::authorize('update', $group);

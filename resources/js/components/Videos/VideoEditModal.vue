@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
 import type { TagMenuItem, Video } from '@/types'
 import { capitalize } from '@/utils/case'
-import { Head, useForm } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
-import type { SelectMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
-  progress: number | null
-  locales: SelectMenuItem[]
+  progress?: number | null
 }>()
+
+const open = defineModel<boolean>('open')
 
 const { toDateTime, fromDateTime, nowDateTime } = useLocale()
 const { items, filter } = useTags(props.video.tags || [])
@@ -63,31 +64,27 @@ const setReleasedAtNow = (): void => {
   releasedAt.value = nowDateTime()
 }
 
-const onSubmit = () =>
+const onSubmit = (close: () => void) =>
   form.submit({
     preserveState: true,
-    replace: true,
+    onSuccess: () => close(),
   })
 </script>
 
 <template>
-  <Head :title="video.title" />
-
-  <UPageBody>
-    <UForm
-      :state="form"
-      class="flex flex-col py-3"
-      loading-auto
-      @submit="onSubmit"
-    >
-      <UPageCard
-        variant="subtle"
-        orientation="vertical"
-        :ui="{
-          body: 'flex w-full flex-col gap-3',
-        }"
-      >
-        <template #body>
+  <FormModal
+    v-model:open="open"
+    :title="`Edit ${video.title}`"
+    :processing="form.processing"
+    :ui="{ content: 'sm:max-w-2xl' }"
+    @submit="onSubmit"
+  >
+    <template #body>
+      <div class="flex flex-col gap-4">
+        <UForm
+          :state="form"
+          class="flex flex-col gap-3"
+        >
           <UFormField
             label="Name"
             required
@@ -293,29 +290,10 @@ const onSubmit = () =>
               />
             </UFormField>
           </div>
-        </template>
+        </UForm>
 
-        <template #footer>
-          <UButton
-            label="Save changes"
-            type="submit"
-            color="primary"
-            variant="soft"
-            loading-auto
-          />
-        </template>
-      </UPageCard>
-    </UForm>
+        <USeparator />
 
-    <UPageCard
-      variant="subtle"
-      orientation="vertical"
-      :ui="{
-        root: 'bg-linear-to-r from-error/5 to-transparent ring-error/25',
-        body: 'flex flex-col gap-3',
-      }"
-    >
-      <template #body>
         <div class="flex flex-col gap-2">
           <p class="text-sm font-semibold text-error">Delete video</p>
           <p class="text-sm text-muted">This may permanently remove this video and all associated data.</p>
@@ -331,7 +309,7 @@ const onSubmit = () =>
             />
           </VideoDeleteModal>
         </div>
-      </template>
-    </UPageCard>
-  </UPageBody>
+      </div>
+    </template>
+  </FormModal>
 </template>

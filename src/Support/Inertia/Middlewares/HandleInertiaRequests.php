@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Support\Inertia\Middlewares;
 
 use App\Web\Users\Responses\UserResourceProperty;
+use Domain\Tags\Enums\TagType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Middleware;
+use Spatie\LaravelOptions\Options;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -23,6 +25,7 @@ class HandleInertiaRequests extends Middleware
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
             'search' => fn (): ?string => $request->session()->cache()->get('search'),
+            'tagTypes' => fn (): Options => Options::forEnum(TagType::class),
             'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,
                 appends: ['name', 'email', 'avatar', 'settings']

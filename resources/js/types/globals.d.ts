@@ -1,5 +1,6 @@
 import type { EchoConfig, FlashData, User } from '@/types'
 import type { Page } from '@inertiajs/vue3'
+import type { SelectMenuItem } from '@nuxt/ui'
 import type Pusher from 'pusher-js'
 
 declare global {

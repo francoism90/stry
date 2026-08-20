@@ -4,6 +4,9 @@ import TagList from '@/components/Tags/TagList.vue'
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
+import { index as collectionsIndex } from '@/routes/collections'
+import { index as tagsIndex } from '@/routes/tags'
+import { index as videosIndex } from '@/routes/videos'
 import type { Group, Tag, Video } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
@@ -112,7 +115,7 @@ watchDebounced(
                   variant="link"
                   size="sm"
                   trailing-icon="i-lucide-arrow-right"
-                  :to="`/search/${encodeURIComponent(search)}/videos`"
+                  :to="videosIndex.url({ query: { query: search } })"
                 >
                   See all videos
                 </UButton>
@@ -135,7 +138,7 @@ watchDebounced(
                   variant="link"
                   size="sm"
                   trailing-icon="i-lucide-arrow-right"
-                  :to="`/search/${encodeURIComponent(search)}/tags`"
+                  :to="tagsIndex.url({ query: { query: search } })"
                 >
                   See all tags
                 </UButton>
@@ -158,7 +161,7 @@ watchDebounced(
                   variant="link"
                   size="sm"
                   trailing-icon="i-lucide-arrow-right"
-                  :to="`/search/${encodeURIComponent(search)}/collections`"
+                  :to="collectionsIndex.url({ query: { query: search } })"
                 >
                   See all collections
                 </UButton>

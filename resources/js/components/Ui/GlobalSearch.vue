@@ -1,9 +1,25 @@
 <script setup lang="ts">
 import { useSearch } from '@/composables/search'
+import { router, useForm } from '@inertiajs/vue3'
+import { watchDebounced } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
 const { search } = useSearch()
 const input = useTemplateRef('input')
+
+const form = useForm({
+  search: search.value ?? '',
+})
+
+watchDebounced(
+  () => form.search,
+  (value) => {
+    router.visit(`/search/${encodeURIComponent(value)}`, {
+      preserveState: true,
+    })
+  },
+  { debounce: 350, maxWait: 1000 },
+)
 
 defineShortcuts({
   '/': () => {
@@ -16,11 +32,12 @@ defineShortcuts({
   <div class="flex items-center gap-1">
     <UInput
       ref="input"
+      v-model="form.search"
+      :model-modifiers="{ string: true, trim: true }"
       icon="i-lucide-search"
       placeholder="Search"
       variant="soft"
       size="lg"
-      :default-value="search"
       :ui="{
         root: 'w-full max-w-fit md:min-w-sm lg:min-w-lg',
         base: 'rounded-full',

@@ -11,7 +11,6 @@ use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
-use Domain\Users\Enums\UserLocale;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
@@ -92,31 +91,11 @@ class VideoController implements HasMiddleware
         );
 
         return Inertia::render('Videos/VideoView', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
+            'video' => fn () => new VideoResourceProperty(video: $video, appends: ['titles', 'summary', 'snapshot']),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
-        ]);
-    }
-
-    public function edit(Video $video): Response
-    {
-        Gate::authorize('update', $video);
-
-        // Define the attributes to append to the video resource
-        $appends = [
-            'titles',
-            'content',
-            'summary',
-            'snapshot',
-            'filesize',
-        ];
-
-        return Inertia::render('Videos/VideoEdit', [
-            'video' => fn () => new VideoResourceProperty($video, $appends),
-            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'locales' => fn () => Options::forEnum(UserLocale::class),
         ]);
     }
 

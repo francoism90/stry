@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { edit, index } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { index } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import GroupEditModal from '@/components/Groups/GroupEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import { useEcho } from '@/composables/echo'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Group, OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
@@ -33,11 +34,13 @@ setLayoutProps({
   query: props.query,
 })
 
-const links = computed<NavigationMenuItem[]>(() => [
+const isEditModalOpen = ref(false)
+
+const links = computed<ButtonProps[]>(() => [
   {
     label: 'Edit collection',
     icon: 'i-lucide-pencil',
-    to: edit.url(props.group.id),
+    onClick: () => (isEditModalOpen.value = true),
     disabled: props.group.type !== 'custom',
     class: props.group.type !== 'custom' ? 'hidden' : undefined,
   },
@@ -60,6 +63,11 @@ const itemBody = ref()
       :title="group.title"
       :description="`${Intl.NumberFormat().format(group.videos ?? 0)} videos`"
       :links="links"
+    />
+
+    <GroupEditModal
+      v-model:open="isEditModalOpen"
+      :group="group"
     />
 
     <InfiniteScroll

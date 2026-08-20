@@ -8,9 +8,6 @@ use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
 use App\Web\Profiles\Controllers\ProfileController;
 use App\Web\Search\Controllers\SearchController;
-use App\Web\Search\Controllers\SearchGroupsController;
-use App\Web\Search\Controllers\SearchTagsController;
-use App\Web\Search\Controllers\SearchVideosController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
 use App\Web\Videos\Controllers\VideoController;
@@ -29,10 +26,10 @@ Route::resource('notifications', NotificationsController::class)->only(['index',
 Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);
 
 // Tags
-Route::resource('tags', TagController::class);
+Route::resource('tags', TagController::class)->except(['create', 'edit']);
 
 // Collections
-Route::resource('collections', GroupController::class);
+Route::resource('collections', GroupController::class)->except(['create', 'edit']);
 
 // Media
 Route::resource('media', MediaController::class)->only(['update', 'destroy']);
@@ -44,15 +41,10 @@ Route::resource('playlists', PlaylistController::class)->only(['update', 'destro
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
 
 // Videos
-Route::resource('videos', VideoController::class);
+Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);
 Route::resource('videos.media', VideoMediaController::class)->only(['index']);
 Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['index', 'store', 'update', 'destroy']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['index', 'update', 'destroy']);
 
 // Search
-Route::prefix('search')->name('search.')->group(function () {
-    Route::get('/{query}/videos', SearchVideosController::class)->name('videos');
-    Route::get('/{query}/tags', SearchTagsController::class)->name('tags');
-    Route::get('/{query}/collections', SearchGroupsController::class)->name('collections');
-    Route::get('/{query?}', SearchController::class)->name('index');
-});
+Route::get('/search/{query?}', SearchController::class)->name('search.index');

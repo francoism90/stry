@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
+import VideoEditModal from '@/components/Videos/VideoEditModal.vue'
 import VideoGroupModal from '@/components/Videos/VideoGroupModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
@@ -21,6 +22,7 @@ const props = defineProps<{
 }>()
 
 const isAddModalOpen = ref(false)
+const isEditModalOpen = ref(false)
 
 const { toggleLike, toggleSave } = useVideo()
 const { privateChannel } = useEcho()
@@ -29,7 +31,7 @@ const links = computed<ButtonProps[]>(() => [
   {
     label: 'Edit',
     icon: 'i-lucide-edit',
-    // to: edit.url(props.video.id),
+    onClick: () => void (isEditModalOpen.value = true),
   },
   {
     label: props.video.liked ? 'Unlike' : 'Like',
@@ -76,6 +78,12 @@ privateChannel(`videos.${props.video.id}`)
           v-model:open="isAddModalOpen"
           :video="video"
           :groups="groups"
+        />
+
+        <VideoEditModal
+          v-model:open="isEditModalOpen"
+          :video="video"
+          :progress="progress"
         />
 
         <UPageHeader

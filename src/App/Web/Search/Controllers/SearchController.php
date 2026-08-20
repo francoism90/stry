@@ -8,6 +8,7 @@ use App\Web\Search\Responses\GroupSearchProperty;
 use App\Web\Search\Responses\TagSearchProperty;
 use App\Web\Search\Responses\VideoSearchProperty;
 use Domain\Videos\Models\Video;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -24,9 +25,13 @@ class SearchController implements HasMiddleware
         ];
     }
 
-    public function __invoke(string $query = ''): Response
+    public function __invoke(Request $request, string $query = ''): Response
     {
         Gate::authorize('viewAny', Video::class);
+
+        if ($query !== '') {
+            $request->session()->cache()->put('search', $query, now()->addHour());
+        }
 
         return Inertia::render('Search/SearchIndex', [
             'search' => fn () => $query,

@@ -53,7 +53,7 @@ class TagController implements HasMiddleware
         $defaultSort = AllowedSort::custom('videos', new VideosSorter);
 
         $scout = ScoutBuilder::for(Tag::class)
-            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
+            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos')->with('related'))
             ->allowedFilters(
                 AllowedFilter::exact('scope', 'type'),
             )
@@ -65,6 +65,8 @@ class TagController implements HasMiddleware
             )
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 20);
+
+        $scout->getCollection()->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
 
         return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
@@ -129,16 +131,6 @@ class TagController implements HasMiddleware
         ]);
 
         return redirect()->route('tags.show', $tag);
-    }
-
-    public function edit(Tag $tag): Response
-    {
-        Gate::authorize('update', $tag);
-
-        return Inertia::render('Tags/TagEdit', [
-            'tag' => fn () => new TagResourceProperty($tag, ['relates', 'description']),
-            'types' => fn () => Options::forEnum(TagType::class),
-        ]);
     }
 
     public function update(Tag $tag, TagUpdateRequest $request): RedirectResponse

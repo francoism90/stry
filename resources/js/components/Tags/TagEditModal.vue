@@ -1,45 +1,44 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
 import FormModal from '@/components/Ui/FormModal.vue'
+import { useTags } from '@/composables/tags'
+import type { Tag, TagMenuItem } from '@/types'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
-const open = defineModel<boolean>('open')
+const props = defineProps<{
+  item: Tag
+}>()
 
 const types = computed(() => usePage().props.tagTypes)
+const { items, filter } = useTags(props.item.related || [])
 
-const form = useForm(store(), {
-  name: '',
-  type: null,
-  description: null,
+const form = useForm(update(props.item.id), {
+  name: props.item.name,
+  type: props.item.type,
+  related: props.item.related || [],
+  description: props.item.description || null,
 })
 
 const onSubmit = (close: () => void) =>
   form.submit({
     preserveScroll: true,
-    onSuccess: () => {
-      form.reset()
-      close()
-    },
+    onSuccess: () => close(),
   })
 </script>
 
 <template>
   <FormModal
-    v-model:open="open"
-    title="Create Tag"
-    submit-label="Create tag"
+    :title="`Edit ${item.name}`"
     :processing="form.processing"
     @submit="onSubmit"
   >
     <slot>
       <UButton
-        label="Create tag"
+        icon="i-lucide-pencil"
         color="neutral"
-        variant="link"
+        variant="ghost"
         size="sm"
-        icon="i-lucide-plus"
-        class="px-0"
       />
     </slot>
 
@@ -58,7 +57,6 @@ const onSubmit = (close: () => void) =>
             :model-modifiers="{ string: true, trim: true }"
             autofocus
             autocapitalize="words"
-            placeholder="Enter tag name"
           />
         </UFormField>
 
@@ -77,11 +75,36 @@ const onSubmit = (close: () => void) =>
         </UFormField>
 
         <UFormField
+          label="Related tags"
+          :error="form.errors.related"
+        >
+          <USelectMenu
+            v-model="form.related as TagMenuItem[]"
+            :items="items as TagMenuItem[]"
+            :ignore-filter="true"
+            label-key="name"
+            multiple
+            class="w-full"
+            placeholder="Add related tags"
+            @update:search-term="(value: string) => filter({ query: { query: value } })"
+          >
+            <template #item-label="{ item }">
+              {{ item.name }}
+
+              <span class="text-muted">
+                {{ item.category }}
+              </span>
+            </template>
+          </USelectMenu>
+        </UFormField>
+
+        <UFormField
           label="Description"
           :error="form.errors.description"
         >
           <UTextarea
             v-model="form.description"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
             :rows="3"
             autoresize
             placeholder="Enter markdown (optional)"

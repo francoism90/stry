@@ -1,22 +1,29 @@
 <script setup lang="ts">
+import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
+import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
+import VideoImportModal from '@/components/Videos/VideoImportModal.vue'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { ref } from 'vue'
+
+const isVideoModalOpen = ref(false)
+const isTagModalOpen = ref(false)
+const isCollectionModalOpen = ref(false)
 
 const items = ref<DropdownMenuItem[]>([
   {
     label: 'Video',
     icon: 'i-lucide-file-video',
-    to: '/videos/create',
+    onClick: () => (isVideoModalOpen.value = true),
   },
   {
     label: 'Tag',
     icon: 'i-lucide-tag-plus',
-    to: '/tags/create',
+    onClick: () => (isTagModalOpen.value = true),
   },
   {
     label: 'Collection',
     icon: 'i-lucide-folder',
-    to: '/collections/create',
+    onClick: () => (isCollectionModalOpen.value = true),
   },
 ])
 </script>
@@ -37,4 +44,16 @@ const items = ref<DropdownMenuItem[]>([
       }"
     />
   </UDropdownMenu>
+
+  <VideoImportModal v-model:open="isVideoModalOpen">
+    <template #default />
+  </VideoImportModal>
+
+  <TagCreateModal v-model:open="isTagModalOpen">
+    <template #default />
+  </TagCreateModal>
+
+  <GroupCreateModal v-model:open="isCollectionModalOpen">
+    <template #default />
+  </GroupCreateModal>
 </template>
