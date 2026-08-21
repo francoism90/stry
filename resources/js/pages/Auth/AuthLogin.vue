@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   action: string
@@ -20,6 +20,8 @@ const onSubmit = () =>
 </script>
 
 <template>
+  <Head title="Log In" />
+
   <UPageCard
     title="Login"
     description="Enter your credentials to access your account."
