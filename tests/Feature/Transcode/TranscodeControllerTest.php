@@ -34,6 +34,21 @@ it('forbids regular users from viewing the transcode index', function () {
     $response->assertForbidden();
 });
 
+it('filters the transcode index by scope', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $pending = Transcode::factory()->create();
+    $completed = Transcode::factory()->completed()->create();
+
+    $response = $this->actingAs($user)->get(action([TranscodeController::class, 'index'], ['filter' => ['scope' => 'completed']]));
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->has('items.data', 1)
+        ->where('items.data.0.id', $completed->getRouteKey()));
+});
+
 // destroy
 
 it('allows admins to delete any transcode', function () {

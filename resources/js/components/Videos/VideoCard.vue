@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { show } from '@/routes/videos'
 import type { Video } from '@/types'
+import VideoTags from './VideoTags.vue'
 
 const props = defineProps<{
   item: Video
@@ -69,7 +70,7 @@ const isLcp = props.index === 0
     </template>
 
     <template #description>
-      <!-- <VideoTags :items="item.tags" /> -->
+      <VideoTags :items="item.tags" />
     </template>
   </UBlogPost>
 </template>

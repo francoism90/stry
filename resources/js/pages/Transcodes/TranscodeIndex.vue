@@ -2,12 +2,15 @@
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import type { TranscodeCollection } from '@/types'
+import type { OptionItem, QueryFilter, QueryValue, TranscodeCollection } from '@/types'
 import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   items: TranscodeCollection
+  scopes?: OptionItem[]
+  filter?: QueryFilter
+  query?: QueryValue
 }>()
 
 defineOptions({
@@ -16,6 +19,9 @@ defineOptions({
 
 setLayoutProps({
   id: 'transcodes.index',
+  scopes: props.scopes,
+  filter: props.filter,
+  query: props.query,
 })
 
 const itemBody = ref()
