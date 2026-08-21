@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { useSearch } from '@/composables/search'
-import { index as collectionsIndex } from '@/routes/collections'
-import { index as tagsIndex } from '@/routes/tags'
-import { index as videosIndex } from '@/routes/videos'
 import { router, useForm, usePage } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
 import { computed, useTemplateRef } from 'vue'
 
 const searchTargets = {
-  'Videos/VideoIndex': { route: videosIndex, placeholder: 'Search videos' },
-  'Tags/TagIndex': { route: tagsIndex, placeholder: 'Search tags' },
-  'Groups/GroupIndex': { route: collectionsIndex, placeholder: 'Search collections' },
+  'Videos/VideoIndex': { placeholder: 'Search videos' },
+  'Tags/TagIndex': { placeholder: 'Search tags' },
+  'Tags/TagView': { placeholder: 'Search videos' },
+  'Groups/GroupIndex': { placeholder: 'Search collections' },
 } as const
 
 const { search } = useSearch()
@@ -30,7 +28,8 @@ watchDebounced(
       return
     }
 
-    router.visit(target.value.route.url({ query: { query: value } }), {
+    router.visit('', {
+      data: { query: value },
       preserveState: true,
     })
   },

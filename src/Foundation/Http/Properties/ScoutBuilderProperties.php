@@ -11,6 +11,11 @@ readonly class ScoutBuilderProperties implements ProvidesInertiaProperties
 {
     public function toInertiaProperties(RenderContext $context): array
     {
+        // Remember the search term for the global search bar
+        if (($query = trim((string) $context->request->query('query', ''))) !== '') {
+            $context->request->session()->cache()->put('search', $query, now()->addHour());
+        }
+
         return [
             'query' => $context->request->input('query'),
             'filter' => $context->request->input('filter'),
