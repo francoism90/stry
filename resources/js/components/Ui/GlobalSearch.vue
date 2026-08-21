@@ -38,7 +38,7 @@ watchDebounced(
       preserveState: true,
     })
   },
-  { debounce: 500, maxWait: 1000 },
+  { debounce: 450, maxWait: 1000 },
 )
 
 defineShortcuts({
