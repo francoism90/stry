@@ -2,7 +2,6 @@
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import MediaViewModal from '@/components/Media/MediaViewModal.vue'
 import { useMedia } from '@/composables/media'
-import { index as mediaIndex } from '@/routes/videos/media'
 import type { Media, Video } from '@/types'
 
 defineProps<{
@@ -15,17 +14,6 @@ const { getStreamInfo } = useMedia()
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex items-center justify-end">
-      <UButton
-        label="View all"
-        trailing-icon="i-lucide-arrow-right"
-        color="neutral"
-        variant="link"
-        size="sm"
-        :to="mediaIndex.url(video.id)"
-      />
-    </div>
-
     <div
       v-if="items === undefined"
       class="flex flex-col gap-2"

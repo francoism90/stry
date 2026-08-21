@@ -2,20 +2,13 @@
 import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
-import { index } from '@/routes/videos/transcodes'
 import type { Transcode, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
-const props = withDefaults(
-  defineProps<{
-    video?: Video
-    items?: Transcode[] | undefined
-    viewAllLink?: boolean
-  }>(),
-  {
-    viewAllLink: false,
-  },
-)
+const props = defineProps<{
+  video?: Video
+  items?: Transcode[] | undefined
+}>()
 
 const createTranscode = (): void =>
   void router.post(VideoDispatchTranscodeController.url(props.video!.id), {}, { preserveScroll: true })
@@ -25,32 +18,20 @@ const createTranscode = (): void =>
   <div class="flex flex-col gap-3">
     <div
       v-if="video"
-      class="flex items-center justify-between gap-2"
+      class="flex items-center gap-2"
     >
-      <div class="flex items-center gap-2">
-        <TranscodeImportModal
-          v-if="items?.length"
-          :video="video"
-        />
-
-        <UButton
-          icon="i-lucide-plus"
-          label="Create transcode"
-          color="neutral"
-          variant="outline"
-          size="sm"
-          @click="createTranscode"
-        />
-      </div>
+      <TranscodeImportModal
+        v-if="items?.length"
+        :video="video"
+      />
 
       <UButton
-        v-if="viewAllLink"
-        label="View all"
-        trailing-icon="i-lucide-arrow-right"
+        icon="i-lucide-plus"
+        label="Create transcode"
         color="neutral"
-        variant="link"
+        variant="outline"
         size="sm"
-        :to="index.url(video.id)"
+        @click="createTranscode"
       />
     </div>
 

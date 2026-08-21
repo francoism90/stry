@@ -6,8 +6,6 @@ namespace App\Web\Videos\Controllers;
 
 use App\Api\Playlists\Requests\PlaylistStoreRequest;
 use App\Api\Playlists\Requests\PlaylistUpdateRequest;
-use App\Api\Playlists\Resources\PlaylistResource;
-use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Jobs\PlaylistVideo;
@@ -17,7 +15,6 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class VideoPlaylistController implements HasMiddleware
 {
@@ -28,22 +25,6 @@ class VideoPlaylistController implements HasMiddleware
             new Middleware('verified'),
             new Middleware('precognitive'),
         ];
-    }
-
-    public function index(Video $video): Response
-    {
-        Gate::authorize('viewAny', Playlist::class);
-
-        // Fetch playlists for the video
-        $playlists = $video
-            ->playlists()
-            ->latest()
-            ->simplePaginate(perPage: 16);
-
-        return Inertia::render('Videos/Playlists/PlaylistIndex', [
-            'video' => fn () => new VideoResourceProperty($video, ['filesize']),
-            'items' => Inertia::scroll(fn () => PlaylistResource::collection($playlists)),
-        ]);
     }
 
     public function store(PlaylistStoreRequest $request, Video $video): RedirectResponse

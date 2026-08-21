@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Web\Videos\Controllers;
 
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
-use App\Api\Transcodes\Resources\TranscodeResource;
-use App\Web\Videos\Responses\VideoResourceProperty;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +12,6 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class VideoTranscodeController implements HasMiddleware
 {
@@ -25,22 +22,6 @@ class VideoTranscodeController implements HasMiddleware
             new Middleware('verified'),
             new Middleware('precognitive'),
         ];
-    }
-
-    public function index(Video $video): Response
-    {
-        Gate::authorize('viewAny', Transcode::class);
-
-        // Fetch transcodes for the video
-        $transcodes = $video
-            ->transcodes()
-            ->latest()
-            ->simplePaginate(perPage: 16);
-
-        return Inertia::render('Videos/Transcodes/TranscodeIndex', [
-            'video' => fn () => new VideoResourceProperty($video, ['filesize']),
-            'items' => Inertia::scroll(fn () => TranscodeResource::collection($transcodes)),
-        ]);
     }
 
     public function update(TranscodeUpdateRequest $request, Video $video, Transcode $transcode): RedirectResponse

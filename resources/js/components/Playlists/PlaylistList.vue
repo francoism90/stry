@@ -1,40 +1,21 @@
 <script setup lang="ts">
 import PlaylistCreateModal from '@/components/Playlists/PlaylistCreateModal.vue'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
-import { index } from '@/routes/videos/playlists'
 import type { Playlist, Video } from '@/types'
 
-withDefaults(
-  defineProps<{
-    video?: Video
-    items?: Playlist[] | undefined
-    viewAllLink?: boolean
-  }>(),
-  {
-    viewAllLink: false,
-  },
-)
+defineProps<{
+  video?: Video
+  items?: Playlist[] | undefined
+}>()
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
     <div
       v-if="video"
-      class="flex items-center justify-between gap-2"
+      class="flex items-center gap-2"
     >
-      <div class="flex items-center gap-2">
-        <PlaylistCreateModal :video="video" />
-      </div>
-
-      <UButton
-        v-if="viewAllLink"
-        label="View all"
-        trailing-icon="i-lucide-arrow-right"
-        color="neutral"
-        variant="link"
-        size="sm"
-        :to="index.url(video.id)"
-      />
+      <PlaylistCreateModal :video="video" />
     </div>
 
     <div
