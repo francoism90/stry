@@ -19,6 +19,7 @@ const props = defineProps<{
   progress?: number | undefined
   groups?: Group[] | undefined
   media?: Media[] | undefined
+  playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
   queue?: Video[] | undefined
 }>()
@@ -64,9 +65,9 @@ const links = computed<ButtonProps[]>(() => [
 privateChannel(`videos.${props.video.id}`)
   .listen('.videos.updated', () => router.reload({ only: ['video'] }))
   .listen('.videos.trashed', () => router.visit('/'))
-  .listen('.playlist.created', () => router.reload({ only: ['playlist'] }))
-  .listen('.playlist.updated', () => router.reload({ only: ['playlist'] }))
-  .listen('.playlist.deleted', () => router.reload({ only: ['playlist'] }))
+  .listen('.playlist.created', () => router.reload({ only: ['playlist', 'playlists'] }))
+  .listen('.playlist.updated', () => router.reload({ only: ['playlist', 'playlists'] }))
+  .listen('.playlist.deleted', () => router.reload({ only: ['playlist', 'playlists'] }))
   .listen('.transcode.created', () => router.reload({ only: ['transcodes'] }))
   .listen('.transcode.updated', () => router.reload({ only: ['transcodes'] }))
   .listen('.transcode.deleted', () => router.reload({ only: ['transcodes'] }))
@@ -96,6 +97,7 @@ privateChannel(`videos.${props.video.id}`)
       :video="video"
       :progress="progress"
       :media="media"
+      :playlists="playlists"
       :transcodes="transcodes"
     />
 
