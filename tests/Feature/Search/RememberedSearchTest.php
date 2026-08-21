@@ -8,6 +8,7 @@ use App\Web\Videos\Controllers\VideoController;
 use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
+use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -87,4 +88,16 @@ it('keeps the remembered search term isolated between the videos index, a tag vi
 
     $groupView = $this->actingAs($user)->get(action([GroupController::class, 'show'], $group));
     $groupView->assertInertia(fn (Assert $page) => $page->where('search', 'group view term'));
+});
+
+it('reflects the videos index search term on an individual video page', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+    $video = Video::factory()->create();
+
+    $this->actingAs($user)->get(action([VideoController::class, 'index'], ['query' => 'video term']));
+
+    $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
+
+    $response->assertInertia(fn (Assert $page) => $page->where('search', 'video term'));
 });

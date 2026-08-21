@@ -101,6 +101,7 @@ class VideoController implements HasMiddleware
             'playlists' => Inertia::defer(fn () => new VideoPlaylistsProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
+            new ScoutBuilderProperties('videos'),
         ]);
     }
 

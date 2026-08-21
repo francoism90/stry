@@ -8,7 +8,7 @@ import { useEcho } from '@/composables/echo'
 import { useVideo } from '@/composables/video'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import type { Group, Media, Playlist, Transcode, Video } from '@/types'
+import type { Group, Media, Playlist, QueryFilter, QueryValue, Transcode, Video } from '@/types'
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
@@ -22,6 +22,9 @@ const props = defineProps<{
   playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
   queue?: Video[] | undefined
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
 
 defineOptions({
@@ -31,6 +34,9 @@ defineOptions({
 setLayoutProps({
   id: 'play',
   fluid: true,
+  filter: props.filter,
+  sort: props.sort,
+  query: props.query,
 })
 
 const isAddModalOpen = ref(false)
