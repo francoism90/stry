@@ -16,6 +16,7 @@ use App\Web\Videos\Responses\VideoTranscodesProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
@@ -57,10 +58,8 @@ class VideoController implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('scope', new Filters\FilterShorts),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
                 AllowedFilter::custom('tagged', new Filters\FilterTagged),
-                AllowedFilter::custom('untagged', new Filters\FilterUntagged),
-                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
             )
             ->allowedSorts(
                 $defaultSort,

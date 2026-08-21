@@ -18,6 +18,7 @@ use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\Scopes\GroupProfileScope;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoGroupScope;
 use Domain\Videos\Scopes\VideoProfileScope;
@@ -33,7 +34,6 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class GroupController implements HasMiddleware
@@ -90,8 +90,7 @@ class GroupController implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('scope', new Filters\FilterShorts),
-                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
             )
             ->allowedSorts(
                 $recommendedSort,

@@ -16,6 +16,7 @@ use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Properties\ScoutBuilderProperties;
@@ -29,7 +30,6 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 use Support\Scout\Sorts\VideosSorter;
 
@@ -88,8 +88,7 @@ class TagController implements HasMiddleware
             ->whereIn('tagged', [$tag->getKey()])
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('scope', new Filters\FilterShorts),
-                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
             )
             ->allowedSorts(
                 $recommendedSort,
@@ -106,7 +105,7 @@ class TagController implements HasMiddleware
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoScope::class),
+            'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             new ScoutBuilderProperties('videos'),
         ]);

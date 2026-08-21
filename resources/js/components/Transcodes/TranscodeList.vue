@@ -6,18 +6,27 @@ import { index as transcodesIndex } from '@/routes/videos/transcodes'
 import type { Transcode, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
-const props = defineProps<{
-  video: Video
-  items?: Transcode[] | undefined
-}>()
+const props = withDefaults(
+  defineProps<{
+    video?: Video
+    items?: Transcode[] | undefined
+    viewAllLink?: boolean
+  }>(),
+  {
+    viewAllLink: true,
+  },
+)
 
 const createTranscode = (): void =>
-  void router.post(VideoDispatchTranscodeController.url(props.video.id), {}, { preserveScroll: true })
+  void router.post(VideoDispatchTranscodeController.url(props.video!.id), {}, { preserveScroll: true })
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex items-center justify-between gap-2">
+    <div
+      v-if="video"
+      class="flex items-center justify-between gap-2"
+    >
       <div class="flex items-center gap-2">
         <TranscodeImportModal
           v-if="items?.length"
@@ -35,6 +44,7 @@ const createTranscode = (): void =>
       </div>
 
       <UButton
+        v-if="viewAllLink"
         label="View all"
         trailing-icon="i-lucide-arrow-right"
         color="neutral"
@@ -59,7 +69,11 @@ const createTranscode = (): void =>
       v-else-if="!items.length"
       icon="i-lucide-cpu"
       title="No transcodes"
-      description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
+      :description="
+        video
+          ? 'Transcode this video to AV1 to possibly reduce file size while maintaining quality.'
+          : 'Transcodes will appear here once videos are being processed.'
+      "
     />
 
     <UPageList
@@ -74,7 +88,7 @@ const createTranscode = (): void =>
       >
         <div class="flex items-center justify-between">
           <UUser
-            :name="item.id"
+            :name="video ? item.id : (item.resource?.label ?? item.id)"
             :description="`${item.state.label} · ${item.file_size}`"
             :avatar="{
               alt: item.id,
