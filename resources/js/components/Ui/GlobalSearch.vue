@@ -25,7 +25,7 @@ const form = useForm({
 
 watchDebounced(
   () => form.search,
-  (value) => {
+  (value: string | null) => {
     if (!target.value) {
       return
     }
