@@ -1,55 +1,57 @@
 <script setup lang="ts">
 import VideoImportController from '@/actions/App/Web/Videos/Controllers/VideoImportController'
+import FormModal from '@/components/Ui/FormModal.vue'
 import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
-const handle = async (close: () => void) =>
+withDefaults(
+  defineProps<{
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
+const open = defineModel<boolean>('open')
+
+const processing = ref(false)
+
+const onSubmit = (close: () => void) => {
+  processing.value = true
+
   router.post(
     VideoImportController.url(),
     {},
     {
       preserveScroll: true,
+      onFinish: () => (processing.value = false),
       onSuccess: () => close(),
     },
   )
+}
 </script>
 
 <template>
-  <UModal
-    title="Import Videos"
-    :ui="{ footer: 'justify-end' }"
+  <FormModal
+    v-model:open="open"
+    title="Import videos"
+    submit-label="Import all"
+    :processing="processing"
+    @submit="onSubmit"
   >
-    <UButton
-      label="Import videos"
-      color="neutral"
-      variant="soft"
-      icon="i-lucide-upload"
-    />
+    <template
+      v-if="trigger"
+      #default
+    >
+      <slot />
+    </template>
 
     <template #body>
       <div class="flex flex-col gap-2">
-        <p>This will import all videos from the specified directory.</p>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          Supported formats: MP4, MKV, AVI, MOV, WMV, FLV, WebM, M4V
-        </p>
+        <h3>Are you sure you want to import all videos?</h3>
+        <p class="text-sm text-muted">Files will be processed in the background.</p>
       </div>
     </template>
-
-    <template #footer="{ close }">
-      <UButton
-        label="Cancel"
-        color="neutral"
-        variant="soft"
-        @click.prevent="close"
-      />
-
-      <UButton
-        label="Import videos"
-        variant="soft"
-        color="primary"
-        icon="i-lucide-upload"
-        loading-auto
-        @click.prevent="handle(close)"
-      />
-    </template>
-  </UModal>
+  </FormModal>
 </template>

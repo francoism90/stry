@@ -1,13 +1,25 @@
 <script setup lang="ts">
 import { store } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import FormModal from '@/components/Ui/FormModal.vue'
 import { useForm } from '@inertiajs/vue3'
+
+withDefaults(
+  defineProps<{
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
+const open = defineModel<boolean>('open')
 
 const form = useForm(store(), {
   name: '',
   content: null,
 })
 
-const create = async (close: () => void) =>
+const onSubmit = (close: () => void) =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => {
@@ -18,20 +30,28 @@ const create = async (close: () => void) =>
 </script>
 
 <template>
-  <UModal
+  <FormModal
+    v-model:open="open"
     title="Create Collection"
-    :ui="{ footer: 'justify-end' }"
+    submit-label="Create collection"
+    :processing="form.processing"
+    @submit="onSubmit"
   >
-    <slot>
-      <UButton
-        label="Create collection"
-        color="neutral"
-        variant="link"
-        size="sm"
-        icon="i-lucide-plus"
-        class="px-0"
-      />
-    </slot>
+    <template
+      v-if="trigger"
+      #default
+    >
+      <slot>
+        <UButton
+          label="Create collection"
+          color="neutral"
+          variant="link"
+          size="sm"
+          icon="i-lucide-plus"
+          class="px-0"
+        />
+      </slot>
+    </template>
 
     <template #body>
       <UForm
@@ -66,22 +86,5 @@ const create = async (close: () => void) =>
         </UFormField>
       </UForm>
     </template>
-
-    <template #footer="{ close }">
-      <UButton
-        label="Cancel"
-        color="neutral"
-        variant="soft"
-        @click.prevent="close"
-      />
-
-      <UButton
-        label="Create collection"
-        variant="soft"
-        color="primary"
-        loading-auto
-        @click.prevent="create(close)"
-      />
-    </template>
-  </UModal>
+  </FormModal>
 </template>

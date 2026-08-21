@@ -3,6 +3,7 @@
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
 use Domain\Tags\Models\Tag;
+use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 
@@ -559,6 +560,90 @@ return [
                 'search-parameters' => [
                     'query_by' => 'name, content',
                     'facet_by' => 'state',
+                ],
+            ],
+
+            Transcode::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'user_id',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'transcodable_type',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'transcodable_id',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'file_name',
+                            'type' => 'string',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'encoder',
+                            'type' => 'string',
+                            'optional' => true,
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'file_size',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'started_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'transcoded_at',
+                            'type' => 'int64',
+                            'optional' => true,
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|', '#', '/', ':', '(', ')', '[', ']'],
+
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'name, file_name',
+                    'facet_by' => 'state, encoder, transcodable_type',
                 ],
             ],
 

@@ -46,7 +46,7 @@ class ProfileController implements HasMiddleware
             ->ordered(order: $sort)
             ->simplePaginate(perPage: 24);
 
-        return Inertia::render('App/Profiles/ProfileIndex', [
+        return Inertia::render('Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty,
             'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
             'sort' => fn () => $sort,

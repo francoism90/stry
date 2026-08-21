@@ -11,10 +11,10 @@ class GeneralSettings extends Data
 {
     public function __construct(
         public string $timezone = 'UTC',
-        public string $locale = 'en_US',
+        public string $locale = 'en-US',
         public string $language = 'en',
-        public string $date_format = 'Y-m-d',
-        public string $time_format = 'H:i',
+        public string $date_format = 'YYYY-MM-DD',
+        public string $time_format = 'HH:mm',
     ) {}
 
     /** @return array<string, mixed[]> */

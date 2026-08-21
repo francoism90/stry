@@ -110,27 +110,6 @@ it('validates required fields on store', function () {
     $response->assertInvalid(['name']);
 });
 
-// edit
-
-it('allows the owner to access the group edit page', function () {
-    $user = User::factory()->create();
-    $group = Group::factory()->custom()->create(['user_id' => $user->getKey()]);
-
-    $response = $this->actingAs($user)->get(action([GroupController::class, 'edit'], $group));
-
-    $response->assertSuccessful();
-});
-
-it('forbids other users from accessing the group edit page', function () {
-    $owner = User::factory()->create();
-    $other = User::factory()->create();
-    $group = Group::factory()->create(['user_id' => $owner->getKey()]);
-
-    $response = $this->actingAs($other)->get(action([GroupController::class, 'edit'], $group));
-
-    $response->assertForbidden();
-});
-
 // update
 
 it('allows the owner to update their group', function () {

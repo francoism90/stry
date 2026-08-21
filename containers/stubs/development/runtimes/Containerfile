@@ -60,6 +60,7 @@ ENV FRANKEN_CLI="frankenphp php-cli /app/artisan"
 ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
 ENV APP_COMMAND="${FRANKEN_CLI} octane:frankenphp --host=0.0.0.0 --port=8000 --watch"
 ENV APP_USER="docker"
+ENV PLAYWRIGHT_BROWSERS_PATH=0
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
@@ -135,6 +136,12 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
     && chown -R docker:docker ${PNPM_HOME} \
     && corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm config set store-dir ${PNPM_HOME}/store
+
+# Playwright's OS-level browser deps; browsers are installed per-project via `npx playwright install`
+RUN npx -y playwright install-deps \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg

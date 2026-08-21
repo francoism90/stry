@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Profiles/Controllers/ProfileController'
+import FormModal from '@/components/Ui/FormModal.vue'
 import type { Profile } from '@/types'
 import { useForm } from '@inertiajs/vue3'
 
@@ -13,7 +14,7 @@ const form = useForm(update(props.item.id), {
   is_primary: props.item.is_primary,
 })
 
-const save = async (close: () => void) =>
+const onSubmit = (close: () => void) =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => close(),
@@ -21,9 +22,11 @@ const save = async (close: () => void) =>
 </script>
 
 <template>
-  <UModal
+  <FormModal
     :title="item.name"
-    :ui="{ footer: 'justify-end' }"
+    submit-label="Save profile"
+    :processing="form.processing"
+    @submit="onSubmit"
   >
     <slot>
       <UButton
@@ -68,22 +71,5 @@ const save = async (close: () => void) =>
         </UFormField>
       </UForm>
     </template>
-
-    <template #footer="{ close }">
-      <UButton
-        label="Cancel"
-        color="neutral"
-        variant="soft"
-        @click.prevent="close"
-      />
-
-      <UButton
-        label="Save profile"
-        color="primary"
-        variant="soft"
-        loading-auto
-        @click.prevent="save(close)"
-      />
-    </template>
-  </UModal>
+  </FormModal>
 </template>

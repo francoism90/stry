@@ -29,7 +29,7 @@ it('initialises default settings when user settings are null', function (): void
         ->toBeInstanceOf(GeneralSettings::class);
 
     expect($settings->general->timezone)->toBe('Europe/Paris');
-    expect($settings->general->locale)->toBe('en_US');
+    expect($settings->general->locale)->toBe('en-US');
 
     expect($settings->appearance)
         ->toBeInstanceOf(AppearanceSettings::class);

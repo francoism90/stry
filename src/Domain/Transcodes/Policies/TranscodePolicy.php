@@ -21,7 +21,7 @@ class TranscodePolicy
 
     public function view(User $user, Transcode $transcode): bool
     {
-        return $user->can('view', $transcode);
+        return $transcode->user()->is($user);
     }
 
     public function create(User $user): bool
@@ -31,17 +31,17 @@ class TranscodePolicy
 
     public function update(User $user, Transcode $transcode): bool
     {
-        return $user->can('update', $transcode);
+        return $transcode->user()->is($user);
     }
 
     public function delete(User $user, Transcode $transcode): bool
     {
-        return $user->can('delete', $transcode);
+        return $this->update($user, $transcode);
     }
 
     public function restore(User $user, Transcode $transcode): bool
     {
-        return $user->can('update', $transcode);
+        return $this->update($user, $transcode);
     }
 
     public function forceDelete(User $user, Transcode $transcode): bool

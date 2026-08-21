@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       laravel({
-        input: ['resources/js/app.ts'],
+        input: ['resources/css/app.css', 'resources/js/app.ts'],
         refresh: true,
         fonts: [
           google('Geist', { weights: ['400', '500', '600', '700'], alias: 'geist' }),
@@ -63,14 +63,16 @@ export default defineConfig(({ mode }) => {
         // Remove Roboto @font-face from shaka-player's controls.css — violates CSP font-src 'self'
         /@font-face\{[^}]*font-family:Roboto[^}]*fonts\.gstatic\.com[^}]*\}/g,
       ),
-      wayfinder(),
+      wayfinder({
+        formVariants: true,
+      }),
       ui({
         router: 'inertia',
         ui: {
           colors: {
             primary: 'purple',
-            secondary: 'gray',
-            neutral: 'zinc',
+            secondary: 'neutral',
+            neutral: 'neutral',
           },
           input: {
             slots: {

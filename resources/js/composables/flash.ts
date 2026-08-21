@@ -11,12 +11,12 @@ const typeMap: Record<FlashType, { icon: string; color: FlashType }> = {
   primary: { icon: 'i-lucide-info', color: 'primary' },
 }
 
-function resolveType(type?: string): { icon: string; color: FlashType } {
-  return typeMap[(type as FlashType) ?? ''] ?? typeMap.info
-}
-
 export const useFlash = createSharedComposable(() => {
   const toast = useToast()
+
+  const resolveType = (type?: string): { icon: string; color: FlashType } => {
+    return typeMap[(type as FlashType) ?? ''] ?? typeMap.info
+  }
 
   const unsubFlash = router.on('flash', (event) => {
     const flash = (event.detail?.flash ?? {}) as FlashData
@@ -33,4 +33,8 @@ export const useFlash = createSharedComposable(() => {
   tryOnUnmounted(() => {
     unsubFlash()
   })
+
+  return {
+    resolveType,
+  }
 })

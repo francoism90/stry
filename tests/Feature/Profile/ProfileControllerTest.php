@@ -18,7 +18,7 @@ it('renders the profiles page for authenticated users', function () {
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
-        ->component('App/Profiles/ProfileIndex')
+        ->component('Profiles/ProfileIndex')
         ->has('items.data', 2)
     );
 });

@@ -8,7 +8,10 @@
     <link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" crossorigin="anonymous" />
     @pwaHead
     @fonts
-    @vite('resources/js/app.ts')
+    @vite([
+        'resources/css/app.css',
+        'resources/js/app.ts',
+    ])
     <x-inertia::head />
 </head>
 

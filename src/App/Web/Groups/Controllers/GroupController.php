@@ -10,15 +10,20 @@ use App\Api\Groups\Resources\GroupResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
+use Domain\Groups\Enums\GroupScope;
 use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Filters\GroupScopeFilter;
 use Domain\Groups\Models\Group;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\Scopes\GroupProfileScope;
+use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoGroupScope;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
@@ -30,7 +35,6 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 
 class GroupController implements HasMiddleware
@@ -44,7 +48,7 @@ class GroupController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Group::class);
 
@@ -55,7 +59,7 @@ class GroupController implements HasMiddleware
             ->tap(new GroupProfileScope)
             ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
             ->allowedFilters(
-                AllowedFilter::exact('type'),
+                AllowedFilter::custom('scope', new GroupScopeFilter),
             )
             ->allowedSorts(
                 AllowedSort::field('name'),
@@ -67,11 +71,11 @@ class GroupController implements HasMiddleware
             ->defaultSort($updatedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Groups/GroupIndex', [
+        return Inertia::render('Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
-            'type' => fn () => $request->input('type'),
+            'scopes' => fn () => Options::forEnum(GroupScope::class),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
+            new ScoutBuilderProperties('groups'),
         ]);
     }
 
@@ -87,7 +91,7 @@ class GroupController implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
             )
             ->allowedSorts(
                 $recommendedSort,
@@ -101,12 +105,12 @@ class GroupController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Groups/GroupView', [
+        return Inertia::render('Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
-            'sort' => fn () => $request->input('sort'),
+            new ScoutBuilderProperties('groups.videos'),
         ]);
     }
 
@@ -129,15 +133,6 @@ class GroupController implements HasMiddleware
         ]);
 
         return redirect()->route('collections.show', $group);
-    }
-
-    public function edit(Group $group): Response
-    {
-        Gate::authorize('update', $group);
-
-        return Inertia::render('App/Groups/GroupEdit', [
-            'group' => fn () => new GroupResourceProperty($group),
-        ]);
     }
 
     public function update(Group $group, GroupUpdateRequest $request): RedirectResponse

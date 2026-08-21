@@ -1,11 +1,21 @@
 <script setup lang="ts">
 import { store } from '@/actions/App/Web/Tags/Controllers/TagController'
-import { useForm } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
+import FormModal from '@/components/Ui/FormModal.vue'
+import { useForm, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
-defineProps<{
-  types: SelectMenuItem[] | undefined
-}>()
+withDefaults(
+  defineProps<{
+    trigger?: boolean
+  }>(),
+  {
+    trigger: true,
+  },
+)
+
+const open = defineModel<boolean>('open')
+
+const types = computed(() => usePage().props.tagTypes)
 
 const form = useForm(store(), {
   name: '',
@@ -13,7 +23,7 @@ const form = useForm(store(), {
   description: null,
 })
 
-const create = async (close: () => void) =>
+const onSubmit = (close: () => void) =>
   form.submit({
     preserveScroll: true,
     onSuccess: () => {
@@ -24,20 +34,28 @@ const create = async (close: () => void) =>
 </script>
 
 <template>
-  <UModal
+  <FormModal
+    v-model:open="open"
     title="Create Tag"
-    :ui="{ footer: 'justify-end' }"
+    submit-label="Create tag"
+    :processing="form.processing"
+    @submit="onSubmit"
   >
-    <slot>
-      <UButton
-        label="Create tag"
-        color="neutral"
-        variant="link"
-        size="sm"
-        icon="i-lucide-plus"
-        class="px-0"
-      />
-    </slot>
+    <template
+      v-if="trigger"
+      #default
+    >
+      <slot>
+        <UButton
+          label="Create tag"
+          color="neutral"
+          variant="link"
+          size="sm"
+          icon="i-lucide-plus"
+          class="px-0"
+        />
+      </slot>
+    </template>
 
     <template #body>
       <UForm
@@ -86,22 +104,5 @@ const create = async (close: () => void) =>
         </UFormField>
       </UForm>
     </template>
-
-    <template #footer="{ close }">
-      <UButton
-        label="Cancel"
-        color="neutral"
-        variant="soft"
-        @click.prevent="close"
-      />
-
-      <UButton
-        label="Create tag"
-        variant="soft"
-        color="primary"
-        loading-auto
-        @click.prevent="create(close)"
-      />
-    </template>
-  </UModal>
+  </FormModal>
 </template>

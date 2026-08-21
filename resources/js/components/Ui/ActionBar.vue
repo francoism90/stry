@@ -1,24 +1,11 @@
 <template>
-  <UDashboardToolbar :ui="{ root: 'min-h-6 overflow-x-auto border-0 px-0 sm:px-0' }">
-    <template
-      v-if="$slots.left"
-      #left
-    >
+  <div class="flex items-center justify-between gap-1.5">
+    <div class="flex items-center gap-1.5">
       <slot name="left" />
-    </template>
+    </div>
 
-    <template
-      v-if="$slots.default"
-      #default
-    >
-      <slot />
-    </template>
-
-    <template
-      v-if="$slots.right"
-      #right
-    >
+    <div class="flex items-center gap-1.5">
       <slot name="right" />
-    </template>
-  </UDashboardToolbar>
+    </div>
+  </div>
 </template>

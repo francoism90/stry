@@ -14,22 +14,22 @@ use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
-use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\LaravelOptions\Options;
-use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
 use Support\Scout\Sorts\VideosSorter;
 
@@ -44,37 +44,38 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Tag::class);
 
         // Scout builder
-        $videosSort = AllowedSort::custom('videos', new VideosSorter);
+        $defaultSort = AllowedSort::custom('videos', new VideosSorter);
 
         $scout = ScoutBuilder::for(Tag::class)
-            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
+            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos')->with('related'))
             ->allowedFilters(
-                AllowedFilter::exact('type'),
+                AllowedFilter::exact('scope', 'type'),
             )
             ->allowedSorts(
-                $videosSort,
+                $defaultSort,
                 AllowedSort::field('ordered', 'name'),
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
             )
-            ->defaultSort($videosSort)
+            ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 20);
 
-        return Inertia::render('App/Tags/TagIndex', [
+        $scout->getCollection()->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
+
+        return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
-            'sort' => fn () => $request->input('sort'),
-            'type' => fn () => $request->input('filter.type'),
+            'scopes' => fn () => Options::forEnum(TagType::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
-            'types' => fn () => Options::forEnum(TagType::class),
+            new ScoutBuilderProperties('tags'),
         ]);
     }
 
-    public function show(Tag $tag, Request $request): Response
+    public function show(Tag $tag): Response
     {
         Gate::authorize('view', $tag);
 
@@ -87,10 +88,7 @@ class TagController implements HasMiddleware
             ->whereIn('tagged', [$tag->getKey()])
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('shorts', new Filters\FilterShorts),
-                AllowedFilter::custom('tagged', new Filters\FilterTagged),
-                AllowedFilter::custom('untagged', new Filters\FilterUntagged),
-                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
             )
             ->allowedSorts(
                 $recommendedSort,
@@ -104,13 +102,12 @@ class TagController implements HasMiddleware
             ->defaultSort($recommendedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Tags/TagView', [
+        return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
-            'sort' => fn () => $request->input('sort'),
+            new ScoutBuilderProperties('tags.videos'),
         ]);
     }
 
@@ -129,16 +126,6 @@ class TagController implements HasMiddleware
         ]);
 
         return redirect()->route('tags.show', $tag);
-    }
-
-    public function edit(Tag $tag): Response
-    {
-        Gate::authorize('update', $tag);
-
-        return Inertia::render('App/Tags/TagEdit', [
-            'tag' => fn () => new TagResourceProperty($tag, ['relates', 'description']),
-            'types' => fn () => Options::forEnum(TagType::class),
-        ]);
     }
 
     public function update(Tag $tag, TagUpdateRequest $request): RedirectResponse

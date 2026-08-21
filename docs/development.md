@@ -2,12 +2,12 @@
 title: Development
 sidebar_position: 3
 tags:
-  - vscode
-  - zed
-  - podman
-  - devcontainer
-  - boost
-  - ai
+    - vscode
+    - zed
+    - podman
+    - devcontainer
+    - boost
+    - ai
 ---
 
 # Development Setup

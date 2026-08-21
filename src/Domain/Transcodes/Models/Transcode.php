@@ -26,6 +26,7 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
+use Laravel\Scout\Searchable;
 use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(TranscodeObserver::class)]
@@ -37,6 +38,7 @@ class Transcode extends Model
     use HasUlids;
     use InteractsWithUser;
     use Prunable;
+    use Searchable;
 
     protected static function newFactory(): TranscodeFactory
     {
@@ -95,6 +97,35 @@ class Transcode extends Model
     public function transcodable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string) $this->getScoutKey(),
+            'user_id' => (string) $this->user_id,
+            'transcodable_type' => (string) $this->transcodable_type,
+            'transcodable_id' => (string) $this->transcodable_id,
+            'name' => (string) ($this->transcodable?->label ?? $this->file_name ?? ''),
+            'file_name' => (string) $this->file_name,
+            'encoder' => (string) $this->encoder?->value,
+            'file_size' => (int) $this->file_size,
+            'state' => (string) $this->state,
+            'started_at' => (int) $this->started_at?->getTimestamp(),
+            'transcoded_at' => (int) $this->transcoded_at?->getTimestamp(),
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
+        ];
+    }
+
+    public function makeSearchableUsing(TranscodeCollection $models): TranscodeCollection
+    {
+        return $models->loadMissing('transcodable');
+    }
+
+    protected function makeAllSearchableUsing(TranscodeQueryBuilder $query): TranscodeQueryBuilder
+    {
+        return $query->with('transcodable');
     }
 
     public function prunable(): TranscodeQueryBuilder

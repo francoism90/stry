@@ -2,8 +2,15 @@
   "name": "stry-devcontainer",
   "remoteUser": "docker",
   "containerUser": "docker",
-  "runArgs": ["--security-opt=label=disable", "--network=systemd-stry", "--userns=keep-id:uid=1000,gid=1000", "--init"],
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
+  "runArgs": [
+    "--security-opt=label=disable",
+    "--network=systemd-stry",
+    "--userns=keep-id:uid=1000,gid=1000",
+    "--init",
+    "-p",
+    "5173:5173"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
   "mounts": ["source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"],
   "build": {
@@ -13,5 +20,9 @@
       "UID": "1000", // Replace with your desired UID (id -u)
       "GID": "1000" // Replace with your desired GID (id -g)
     }
+  },
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": { "label": "Vite", "onAutoForward": "notify" }
   }
 }

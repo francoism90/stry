@@ -2,10 +2,10 @@
 title: Podman Quadlet
 sidebar_position: 5
 tags:
-  - podman
-  - quadlet
-  - containers
-  - systemd
+    - podman
+    - quadlet
+    - containers
+    - systemd
 ---
 
 # Podman Quadlet
@@ -18,10 +18,10 @@ tags:
 - [Podman 5.3+](https://podman.io/) with the `quadlet` CLI plugin (`podman quadlet --help` should work)
 - [`lpod`](https://github.com/foxws/lpod) — install it once per host, it's a dependency-free bash script:
 
-  ```bash
-  curl -fsSL -o ~/.local/bin/lpod https://github.com/foxws/lpod/releases/latest/download/lpod
-  chmod +x ~/.local/bin/lpod
-  ```
+    ```bash
+    curl -fsSL -o ~/.local/bin/lpod https://github.com/foxws/lpod/releases/latest/download/lpod
+    chmod +x ~/.local/bin/lpod
+    ```
 
 ## Presets
 

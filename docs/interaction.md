@@ -2,9 +2,9 @@
 title: Interaction
 sidebar_position: 9
 tags:
-  - shell
-  - bash
-  - commands
+    - shell
+    - bash
+    - commands
 ---
 
 # CLI Interaction

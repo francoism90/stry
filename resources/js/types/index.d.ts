@@ -1,4 +1,4 @@
-import type { AvatarProps, BadgeProps, SelectMenuItem } from '@nuxt/ui'
+import type { AvatarProps, BadgeProps, SelectItem, SelectMenuItem } from '@nuxt/ui'
 
 export type EchoConfig = {
   readonly key: string
@@ -15,22 +15,15 @@ export type FlashData = {
   readonly type?: FlashType
 }
 
-export type VideoFilters = {
-  captioned?: string | boolean
-  shorts?: string | boolean
-  unseen?: string | boolean
-  untagged?: string | boolean
-  tagged?: string
-  state?: string
-  season?: string
-  episode?: string
-  part?: string
+export type OptionItem = SelectItem & {
+  label: string
+  value: string | number | boolean | null
+  disabled?: boolean
 }
 
-export type FilterOption = {
-  label: string
-  value: string
-}
+export type QueryValue = string | number | boolean | null
+
+export type QueryFilter = Record<string, QueryValue>
 
 export type Model = {
   id: string
@@ -60,7 +53,9 @@ export type User = Model & {
   permissions?: string[] | null
   settings?: UserSettings
   videos_count?: number
+  state?: ModelState
   email_verified_at?: string | null
+  deleted_at?: string | null
 }
 
 export type UserCollection = Omit<Paginator, 'data'> & {

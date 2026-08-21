@@ -2,9 +2,9 @@
 title: Application Configuration
 sidebar_position: 4
 tags:
-  - config
-  - environment
-  - customizing
+    - config
+    - environment
+    - customizing
 ---
 
 # Application Configuration

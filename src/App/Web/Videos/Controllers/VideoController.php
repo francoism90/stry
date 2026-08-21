@@ -7,22 +7,25 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoGroupsProperty;
+use App\Web\Videos\Responses\VideoMediaProperty;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
+use App\Web\Videos\Responses\VideoPlaylistsProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
-use Domain\Users\Enums\UserLocale;
+use App\Web\Videos\Responses\VideoTranscodesProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Enums\VideoFilter;
+use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -44,25 +47,23 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Video::class);
 
         // Relevant sort options
-        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+        $defaultSort = AllowedSort::custom('recommended', new RecommendedSorter);
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('shorts', new Filters\FilterShorts),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
                 AllowedFilter::custom('tagged', new Filters\FilterTagged),
-                AllowedFilter::custom('untagged', new Filters\FilterUntagged),
-                AllowedFilter::custom('unseen', new Filters\FilterUnseen),
             )
             ->allowedSorts(
-                $recommendedSort,
+                $defaultSort,
                 AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
                 AllowedSort::field('ordered', 'title'),
@@ -70,15 +71,14 @@ class VideoController implements HasMiddleware
                 AllowedSort::field('longest', 'duration')->defaultDescending(),
                 AllowedSort::field('filesize')->defaultDescending(),
             )
-            ->defaultSort($recommendedSort)
+            ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('App/Videos/VideoIndex', [
+        return Inertia::render('Videos/VideoIndex', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoFilter::class),
+            'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            'filters' => fn () => $request->input('filter', []),
-            'sort' => fn () => $request->input('sort'),
+            new ScoutBuilderProperties('videos'),
         ]);
     }
 
@@ -92,32 +92,15 @@ class VideoController implements HasMiddleware
             $video,
         );
 
-        return Inertia::render('App/Videos/VideoView', [
-            'video' => fn () => new VideoResourceProperty(video: $video),
+        return Inertia::render('Videos/VideoView', [
+            'video' => fn () => new VideoResourceProperty(video: $video, appends: ['titles', 'summary', 'snapshot']),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
+            'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
+            'playlists' => Inertia::defer(fn () => new VideoPlaylistsProperty($video)),
+            'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
-        ]);
-    }
-
-    public function edit(Video $video): Response
-    {
-        Gate::authorize('update', $video);
-
-        // Define the attributes to append to the video resource
-        $appends = [
-            'titles',
-            'content',
-            'summary',
-            'snapshot',
-            'filesize',
-        ];
-
-        return Inertia::render('App/Videos/VideoEdit', [
-            'video' => fn () => new VideoResourceProperty($video, $appends),
-            'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'locales' => fn () => Options::forEnum(UserLocale::class),
         ]);
     }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import VideoTags from '@/components/Videos/VideoTags.vue'
+import { show } from '@/routes/videos'
 import type { Video } from '@/types'
+import VideoTags from './VideoTags.vue'
 
 const props = defineProps<{
   item: Video
@@ -19,7 +19,7 @@ const isLcp = props.index === 0
     :date="item.released ?? undefined"
     :to="show.url(item.id)"
     :ui="{
-      root: 'gap-y-2 rounded-none',
+      root: 'gap-y-1.5 rounded-none',
       title: 'line-clamp-2 text-sm leading-snug font-medium capitalize',
       date: 'sr-only',
       body: 'p-0 sm:p-0 lg:px-0',
