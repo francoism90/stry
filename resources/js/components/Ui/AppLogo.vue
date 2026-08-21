@@ -10,7 +10,7 @@ const { app } = useAppearance()
 
 <template>
   <ULink
-    class="flex items-center gap-1.5 text-sm font-bold tracking-wider text-neutral-300"
+    class="flex w-full items-center gap-1.5 text-sm font-bold tracking-wider text-neutral-300"
     :to="location || '/'"
   >
     <UIcon
