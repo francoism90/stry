@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Web\Groups\Controllers\GroupController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Videos\Controllers\VideoController;
+use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -54,13 +55,21 @@ it('keeps remembered search terms isolated per resource', function () {
     $videos->assertInertia(fn (Assert $page) => $page->where('search', 'video term'));
 });
 
-it('shares the remembered search term between the videos index and a tag view', function () {
+it('keeps the remembered search term isolated between the videos index, a tag view, and a group view', function () {
     $user = User::factory()->create();
     $tag = Tag::factory()->create();
+    $group = Group::factory()->for($user)->create();
 
-    $this->actingAs($user)->get(action([VideoController::class, 'index'], ['query' => 'shared term']));
+    $this->actingAs($user)->get(action([VideoController::class, 'index'], ['query' => 'video term']));
+    $this->actingAs($user)->get(action([TagController::class, 'show'], [$tag, 'query' => 'tag view term']));
+    $this->actingAs($user)->get(action([GroupController::class, 'show'], [$group, 'query' => 'group view term']));
 
-    $response = $this->actingAs($user)->get(action([TagController::class, 'show'], $tag));
+    $videos = $this->actingAs($user)->get(action([VideoController::class, 'index']));
+    $videos->assertInertia(fn (Assert $page) => $page->where('search', 'video term'));
 
-    $response->assertInertia(fn (Assert $page) => $page->where('search', 'shared term'));
+    $tagView = $this->actingAs($user)->get(action([TagController::class, 'show'], $tag));
+    $tagView->assertInertia(fn (Assert $page) => $page->where('search', 'tag view term'));
+
+    $groupView = $this->actingAs($user)->get(action([GroupController::class, 'show'], $group));
+    $groupView->assertInertia(fn (Assert $page) => $page->where('search', 'group view term'));
 });

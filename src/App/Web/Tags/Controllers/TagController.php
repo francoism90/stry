@@ -107,7 +107,7 @@ class TagController implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            new ScoutBuilderProperties('videos'),
+            new ScoutBuilderProperties('tags.videos'),
         ]);
     }
 

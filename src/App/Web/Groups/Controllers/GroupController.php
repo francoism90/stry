@@ -110,7 +110,7 @@ class GroupController implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            new ScoutBuilderProperties('videos'),
+            new ScoutBuilderProperties('groups.videos'),
         ]);
     }
 
