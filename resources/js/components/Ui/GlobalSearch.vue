@@ -6,9 +6,11 @@ import { computed, useTemplateRef } from 'vue'
 
 const searchTargets = {
   'Videos/VideoIndex': { placeholder: 'Search videos' },
+  'Videos/VideoView': { placeholder: 'Search videos' },
   'Tags/TagIndex': { placeholder: 'Search tags' },
   'Tags/TagView': { placeholder: 'Search videos' },
   'Groups/GroupIndex': { placeholder: 'Search collections' },
+  'Groups/GroupView': { placeholder: 'Search videos' },
 } as const
 
 const { search } = useSearch()

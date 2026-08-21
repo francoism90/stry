@@ -9,18 +9,26 @@ use Inertia\RenderContext;
 
 readonly class ScoutBuilderProperties implements ProvidesInertiaProperties
 {
+    public function __construct(
+        private string $scope,
+    ) {}
+
     public function toInertiaProperties(RenderContext $context): array
     {
-        // Remember the search term for the global search bar
-        if (($query = trim((string) $context->request->query('query', ''))) !== '') {
-            $context->request->session()->cache()->put('search', $query, now()->addHour());
+        $request = $context->request;
+        $key = "search.{$this->scope}";
+
+        // Remember the search term for the global search bar, scoped per resource
+        if (($query = trim((string) $request->query('query', ''))) !== '') {
+            $request->session()->cache()->put($key, $query, now()->addHour());
         }
 
         return [
-            'query' => $context->request->input('query'),
-            'filter' => $context->request->input('filter'),
-            'sort' => $context->request->input('sort'),
-            'page' => $context->request->input('page'),
+            'search' => $request->session()->cache()->get($key),
+            'query' => $request->input('query'),
+            'filter' => $request->input('filter'),
+            'sort' => $request->input('sort'),
+            'page' => $request->input('page'),
         ];
     }
 }

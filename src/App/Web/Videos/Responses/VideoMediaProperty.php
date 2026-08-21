@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Web\Videos\Responses;
 
-use App\Api\Transcodes\Resources\TranscodeResource;
-use Domain\Transcodes\Models\Transcode;
+use App\Api\Media\Resources\MediaResource;
+use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Gate;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
 
-readonly class VideoTranscodesProperty implements ProvidesInertiaProperty
+readonly class VideoMediaProperty implements ProvidesInertiaProperty
 {
     public function __construct(
         protected ?Video $video = null,
@@ -26,15 +26,16 @@ readonly class VideoTranscodesProperty implements ProvidesInertiaProperty
 
     protected function getCollection(): ResourceCollection
     {
-        if (! $this->video || Gate::denies('viewAny', Transcode::class)) {
-            return TranscodeResource::collection([]);
+        if (! $this->video || Gate::denies('viewAny', Media::class)) {
+            return MediaResource::collection([]);
         }
 
         return $this->video
-            ->transcodes()
+            ->media()
             ->latest()
             ->limit($this->limit ?? 10)
             ->get()
-            ->toResourceCollection(TranscodeResource::class);
+            ->each(fn (Media $item) => $item->append(['custom_properties', 'generated_conversions']))
+            ->toResourceCollection(MediaResource::class);
     }
 }

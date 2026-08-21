@@ -37,9 +37,9 @@ const emit = defineEmits<{
       <UTabs
         v-if="tabs?.length"
         :items="tabs"
-        color="primary"
-        class="w-full"
-        :ui="tabsUi"
+        variant="link"
+        class="w-full gap-4"
+        :ui="{ trigger: 'grow' }"
       >
         <template
           v-for="tab in tabs"

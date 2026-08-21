@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Web\Videos\Controllers\VideoController;
-use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,62 +11,82 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
-beforeEach(fn () => Storage::fake('transcodes'));
+beforeEach(fn () => Storage::fake('media'));
 
-it('defers the transcodes prop with the video transcodes', function () {
+function createVideoMedia(Video $video, array $attributes = []): void
+{
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+        ...$attributes,
+    ]);
+}
+
+it('defers the media prop with the video media for admins', function () {
     $user = User::factory()->create();
     $user->assignRole('super-admin');
     $video = Video::factory()->create();
-    $transcode = Transcode::factory()->for($video, 'transcodable')->create();
+    createVideoMedia($video, ['name' => 'my-clip']);
 
     $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
 
     $response->assertInertia(fn (Assert $page) => $page
-        ->missing('transcodes')
+        ->missing('media')
         ->loadDeferredProps(fn (Assert $reload) => $reload
-            ->has('transcodes', 1)
-            ->where('transcodes.0.id', $transcode->getRouteKey())
+            ->has('media', 1)
+            ->where('media.0.name', 'my-clip')
         ));
 });
 
-it('limits the transcodes prop to the ten most recent transcodes', function () {
+it('limits the media prop to the ten most recent media items', function () {
     $user = User::factory()->create();
     $user->assignRole('super-admin');
     $video = Video::factory()->create();
-    Transcode::factory()->count(12)->for($video, 'transcodable')->create();
+
+    for ($i = 0; $i < 12; $i++) {
+        createVideoMedia($video);
+    }
 
     $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
 
     $response->assertInertia(fn (Assert $page) => $page
         ->loadDeferredProps(fn (Assert $reload) => $reload
-            ->has('transcodes', 10)
+            ->has('media', 10)
         ));
 });
 
-it('does not include transcodes belonging to other videos', function () {
+it('does not include media belonging to other videos', function () {
     $user = User::factory()->create();
     $user->assignRole('super-admin');
     $video = Video::factory()->create();
     $other = Video::factory()->create();
-    Transcode::factory()->for($other, 'transcodable')->create();
+    createVideoMedia($other);
 
     $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
 
     $response->assertInertia(fn (Assert $page) => $page
         ->loadDeferredProps(fn (Assert $reload) => $reload
-            ->has('transcodes', 0)
+            ->has('media', 0)
         ));
 });
 
-it('returns no transcodes for users without permission to view any transcode', function () {
+it('returns no media for users without permission to view any media', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
-    Transcode::factory()->for($video, 'transcodable')->create();
+    createVideoMedia($video);
 
     $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
 
     $response->assertInertia(fn (Assert $page) => $page
         ->loadDeferredProps(fn (Assert $reload) => $reload
-            ->has('transcodes', 0)
+            ->has('media', 0)
         ));
 });

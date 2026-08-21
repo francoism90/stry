@@ -8,7 +8,7 @@ import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useEcho } from '@/composables/echo'
 import { useVideo } from '@/composables/video'
-import type { Group, Playlist, Transcode, Video } from '@/types'
+import type { Group, Media, Playlist, Transcode, Video } from '@/types'
 import { Deferred, Head, router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
@@ -18,6 +18,7 @@ const props = defineProps<{
   playlist?: Playlist | undefined
   progress?: number | undefined
   groups?: Group[] | undefined
+  media?: Media[] | undefined
   transcodes?: Transcode[] | undefined
   queue?: Video[] | undefined
 }>()
@@ -60,6 +61,9 @@ privateChannel(`videos.${props.video.id}`)
   .listen('.transcode.created', () => router.reload({ only: ['transcodes'] }))
   .listen('.transcode.updated', () => router.reload({ only: ['transcodes'] }))
   .listen('.transcode.deleted', () => router.reload({ only: ['transcodes'] }))
+  .listen('.media.created', () => router.reload({ only: ['media'] }))
+  .listen('.media.updated', () => router.reload({ only: ['media'] }))
+  .listen('.media.deleted', () => router.reload({ only: ['media'] }))
 </script>
 
 <template>
@@ -88,6 +92,7 @@ privateChannel(`videos.${props.video.id}`)
           v-model:open="isEditModalOpen"
           :video="video"
           :progress="progress"
+          :media="media"
           :transcodes="transcodes"
         />
 

@@ -44,7 +44,7 @@ class TagController implements HasMiddleware
         ];
     }
 
-    public function index(ScoutBuilderProperties $properties): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Tag::class);
 
@@ -71,11 +71,11 @@ class TagController implements HasMiddleware
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(TagType::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
-            $properties,
+            new ScoutBuilderProperties('tags'),
         ]);
     }
 
-    public function show(Tag $tag, ScoutBuilderProperties $properties): Response
+    public function show(Tag $tag): Response
     {
         Gate::authorize('view', $tag);
 
@@ -108,7 +108,7 @@ class TagController implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            $properties,
+            new ScoutBuilderProperties('videos'),
         ]);
     }
 

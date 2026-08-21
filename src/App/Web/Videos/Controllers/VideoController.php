@@ -7,6 +7,7 @@ namespace App\Web\Videos\Controllers;
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoGroupsProperty;
+use App\Web\Videos\Responses\VideoMediaProperty;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
@@ -44,7 +45,7 @@ class VideoController implements HasMiddleware
         ];
     }
 
-    public function index(ScoutBuilderProperties $properties): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Video::class);
 
@@ -77,7 +78,7 @@ class VideoController implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            $properties,
+            new ScoutBuilderProperties('videos'),
         ]);
     }
 
@@ -96,6 +97,7 @@ class VideoController implements HasMiddleware
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
+            'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
         ]);

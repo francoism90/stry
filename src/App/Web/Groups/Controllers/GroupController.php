@@ -46,7 +46,7 @@ class GroupController implements HasMiddleware
         ];
     }
 
-    public function index(ScoutBuilderProperties $properties): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Group::class);
 
@@ -73,11 +73,11 @@ class GroupController implements HasMiddleware
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(GroupType::class),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
-            $properties,
+            new ScoutBuilderProperties('groups'),
         ]);
     }
 
-    public function show(Group $group, Request $request, ScoutBuilderProperties $properties): Response
+    public function show(Group $group, Request $request): Response
     {
         Gate::authorize('view', $group);
 
@@ -109,7 +109,7 @@ class GroupController implements HasMiddleware
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
-            $properties,
+            new ScoutBuilderProperties('videos'),
         ]);
     }
 
