@@ -18,9 +18,17 @@ readonly class ScoutBuilderProperties implements ProvidesInertiaProperties
         $request = $context->request;
         $key = "search.{$this->scope}";
 
-        // Remember the search term for the global search bar, scoped per resource
-        if (($query = trim((string) $request->query('query', ''))) !== '') {
-            $request->session()->cache()->put($key, $query, now()->addHour());
+        // Remember the search term for the global search bar, scoped per resource.
+        // Only act when "query" was actually submitted, so a plain navigation
+        // (no "query" param at all) leaves the remembered term untouched.
+        if ($request->has('query')) {
+            $query = trim((string) $request->query('query'));
+
+            if (filled($query)) {
+                $request->session()->cache()->put($key, $query, now()->addHour());
+            } else {
+                $request->session()->cache()->forget($key);
+            }
         }
 
         return [

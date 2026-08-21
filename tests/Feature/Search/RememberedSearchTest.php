@@ -42,6 +42,21 @@ it('does not overwrite the remembered search term with an empty query', function
     GroupController::class,
 ]);
 
+it('forgets the remembered search term when an empty query is explicitly submitted', function (string $controller) {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->get(action([$controller, 'index'], ['query' => 'remembered term']));
+    $this->actingAs($user)->get(action([$controller, 'index'], ['query' => '']));
+
+    $response = $this->actingAs($user)->get(action([$controller, 'index']));
+
+    $response->assertInertia(fn (Assert $page) => $page->where('search', null));
+})->with([
+    VideoController::class,
+    TagController::class,
+    GroupController::class,
+]);
+
 it('keeps remembered search terms isolated per resource', function () {
     $user = User::factory()->create();
 
