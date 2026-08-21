@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Web\Users\Controllers;
 
+use App\Api\Users\Requests\UserStoreRequest;
 use App\Api\Users\Requests\UserUpdateRequest;
 use App\Api\Users\Resources\UserResource;
+use Domain\Users\Actions\CreateNewUser;
 use Domain\Users\Actions\UpdateUserProfileInformation;
 use Domain\Users\Enums\UserScope;
 use Domain\Users\Enums\UserSorter;
@@ -64,6 +66,23 @@ class UserController implements HasMiddleware
             'sorters' => fn () => Options::forEnum(UserSorter::class),
             new ScoutBuilderProperties('users'),
         ]);
+    }
+
+    public function store(UserStoreRequest $request, CreateNewUser $action): RedirectResponse
+    {
+        Gate::authorize('create', User::class);
+
+        // Create the user
+        $user = $action->create($request->safe()->all());
+
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $user->name,
+            'description' => __('The user has been created.'),
+            'type' => 'success',
+        ]);
+
+        return redirect()->route('users.index');
     }
 
     public function update(User $user, UserUpdateRequest $request, UpdateUserProfileInformation $action): RedirectResponse

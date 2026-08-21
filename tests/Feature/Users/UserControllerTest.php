@@ -30,6 +30,37 @@ it('forbids regular users from viewing the user index', function () {
     $response->assertForbidden();
 });
 
+// store
+
+it('allows super-admins to create a new user', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->post(action([UserController::class, 'store']), [
+        'name' => 'New User',
+        'email' => 'new-user@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $response->assertRedirect();
+    expect(User::query()->where('email', 'new-user@example.com')->exists())->toBeTrue();
+});
+
+it('forbids regular users from creating a new user', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->post(action([UserController::class, 'store']), [
+        'name' => 'New User',
+        'email' => 'new-user@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $response->assertForbidden();
+    expect(User::query()->where('email', 'new-user@example.com')->exists())->toBeFalse();
+});
+
 // update
 
 it('allows admins to update another user', function () {
