@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import AppFooter from '@/components/Ui/AppFooter.vue'
-import AppHeader from '@/components/Ui/AppHeader.vue'
 import VideoEditModal from '@/components/Videos/VideoEditModal.vue'
 import VideoGroupModal from '@/components/Videos/VideoGroupModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
@@ -8,8 +6,10 @@ import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useEcho } from '@/composables/echo'
 import { useVideo } from '@/composables/video'
+import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
+import AppLayout from '@/layouts/AppLayout.vue'
 import type { Group, Media, Playlist, Transcode, Video } from '@/types'
-import { Deferred, Head, router } from '@inertiajs/vue3'
+import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
@@ -22,6 +22,15 @@ const props = defineProps<{
   transcodes?: Transcode[] | undefined
   queue?: Video[] | undefined
 }>()
+
+defineOptions({
+  layout: [AppLayout, ResourceLayout],
+})
+
+setLayoutProps({
+  id: 'play',
+  fluid: true,
+})
 
 const isAddModalOpen = ref(false)
 const isEditModalOpen = ref(false)
@@ -69,70 +78,58 @@ privateChannel(`videos.${props.video.id}`)
 <template>
   <Head :title="video.title" />
 
-  <UDashboardPanel id="play">
-    <template #header>
-      <AppHeader />
-    </template>
+  <UPage class="mt-6">
+    <VideoPlayer
+      :video="video"
+      :playlist="playlist"
+      :progress="progress"
+    />
 
-    <template #body>
-      <UPage class="mt-6">
-        <VideoPlayer
-          :video="video"
-          :playlist="playlist"
-          :progress="progress"
+    <VideoGroupModal
+      v-model:open="isAddModalOpen"
+      :video="video"
+      :groups="groups"
+    />
+
+    <VideoEditModal
+      v-model:open="isEditModalOpen"
+      :video="video"
+      :progress="progress"
+      :media="media"
+      :transcodes="transcodes"
+    />
+
+    <UPageHeader
+      :title="video.title"
+      :links="links"
+      :ui="{
+        title: 'text-xl wrap-anywhere capitalize sm:text-2xl',
+      }"
+    >
+      <template #description>
+        <p
+          v-if="video.description?.length"
+          v-html="video.description"
+          class="mb-2"
         />
 
-        <VideoGroupModal
-          v-model:open="isAddModalOpen"
-          :video="video"
-          :groups="groups"
+        <VideoTags :items="video.tags" />
+      </template>
+    </UPageHeader>
+
+    <Deferred data="queue">
+      <template #fallback>
+        <div class="sr-only">Loading queue...</div>
+      </template>
+
+      <UPageBody class="space-y-8">
+        <UPageFeature
+          title="Up next"
+          class="mt-6"
         />
 
-        <VideoEditModal
-          v-model:open="isEditModalOpen"
-          :video="video"
-          :progress="progress"
-          :media="media"
-          :transcodes="transcodes"
-        />
-
-        <UPageHeader
-          :title="video.title"
-          :links="links"
-          :ui="{
-            title: 'text-xl wrap-anywhere capitalize sm:text-2xl',
-          }"
-        >
-          <template #description>
-            <p
-              v-if="video.description?.length"
-              v-html="video.description"
-              class="mb-2"
-            />
-
-            <VideoTags :items="video.tags" />
-          </template>
-        </UPageHeader>
-
-        <Deferred data="queue">
-          <template #fallback>
-            <div class="sr-only">Loading queue...</div>
-          </template>
-
-          <UPageBody>
-            <UPageFeature
-              title="Up next"
-              class="mt-6"
-            />
-
-            <VideoList :items="queue" />
-          </UPageBody>
-        </Deferred>
-      </UPage>
-    </template>
-
-    <template #footer>
-      <AppFooter />
-    </template>
-  </UDashboardPanel>
+        <VideoList :items="queue" />
+      </UPageBody>
+    </Deferred>
+  </UPage>
 </template>

@@ -3,7 +3,7 @@ import { index } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import GroupEditModal from '@/components/Groups/GroupEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import { useEcho } from '@/composables/echo'
-import ContentLayout from '@/layouts/App/ContentLayout.vue'
+import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Group, OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
@@ -21,7 +21,7 @@ const props = defineProps<{
 }>()
 
 defineOptions({
-  layout: [AppLayout, ContentLayout],
+  layout: [AppLayout, ResourceLayout],
 })
 
 const isEditModalOpen = ref(false)
@@ -47,6 +47,7 @@ setLayoutProps({
   filter: props.filter,
   sort: props.sort,
   query: props.query,
+  fluid: true,
 })
 
 const { privateChannel } = useEcho()

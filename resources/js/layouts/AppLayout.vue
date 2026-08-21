@@ -42,7 +42,7 @@ useFlash()
           overlay: 'lg:block',
         },
         pageHeader: {
-          root: 'mx-auto w-full max-w-(--ui-container) border-0 px-4 py-4 sm:px-6',
+          root: 'border-0',
         },
         dropdownMenu: {
           content: 'z-50 min-w-32',

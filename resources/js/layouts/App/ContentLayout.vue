@@ -34,6 +34,7 @@ withDefaults(
           :title="title"
           :description="description"
           :links="links"
+          class="mx-auto w-full max-w-(--ui-container) px-4 py-4 sm:px-6"
         />
 
         <FilterToolbar
