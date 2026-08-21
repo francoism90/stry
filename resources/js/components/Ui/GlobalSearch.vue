@@ -2,7 +2,7 @@
 import { index as videoIndex } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { useSearch } from '@/composables/search'
 import { useForm, usePage } from '@inertiajs/vue3'
-import { computed, useTemplateRef } from 'vue'
+import { computed, useTemplateRef, watch } from 'vue'
 
 const searchTargets = {
   'Videos/VideoIndex': { placeholder: 'Search videos' },
@@ -23,6 +23,12 @@ const target = computed(() => searchTargets[page.component as keyof typeof searc
 
 const form = useForm({
   query: search.value ?? '',
+})
+
+// Layouts persist across visits, so re-sync the query whenever the
+// page-provided search changes instead of only on first mount.
+watch(search, (value) => {
+  form.query = value ?? ''
 })
 
 const onSearch = () => {
