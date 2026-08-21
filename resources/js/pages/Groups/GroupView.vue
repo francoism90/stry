@@ -24,17 +24,8 @@ defineOptions({
   layout: [AppLayout, ContentLayout],
 })
 
-setLayoutProps({
-  id: 'collections.show',
-  title: props.group.title,
-  scopes: props.scopes,
-  sorters: props.sorters,
-  filter: props.filter,
-  sort: props.sort,
-  query: props.query,
-})
-
 const isEditModalOpen = ref(false)
+const itemBody = ref()
 
 const links = computed<ButtonProps[]>(() => [
   {
@@ -46,25 +37,29 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
+setLayoutProps({
+  id: 'collections.show',
+  title: props.group.title,
+  description: `${Intl.NumberFormat().format(props.group.videos ?? 0)} videos`,
+  links: links.value,
+  scopes: props.scopes,
+  sorters: props.sorters,
+  filter: props.filter,
+  sort: props.sort,
+  query: props.query,
+})
+
 const { privateChannel } = useEcho()
 
 privateChannel(`groups.${props.group.id}`)
   .listen('.group.updated', () => router.reload({ only: ['group'] }))
   .listen('.group.trashed', () => router.visit(index.url()))
-
-const itemBody = ref()
 </script>
 
 <template>
   <Head :title="group.title" />
 
   <UPage>
-    <UPageHeader
-      :title="group.title"
-      :description="`${Intl.NumberFormat().format(group.videos ?? 0)} videos`"
-      :links="links"
-    />
-
     <GroupEditModal
       v-model:open="isEditModalOpen"
       :group="group"

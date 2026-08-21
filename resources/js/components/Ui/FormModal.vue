@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ModalProps } from '@nuxt/ui'
+import type { ModalProps, TabsItem } from '@nuxt/ui'
 
 const open = defineModel<boolean>('open')
 
@@ -9,6 +9,7 @@ withDefaults(
     description?: string
     submitLabel?: string
     processing?: boolean
+    tabs?: TabsItem[]
     ui?: ModalProps['ui']
   }>(),
   {
@@ -33,7 +34,21 @@ const emit = defineEmits<{
     </template>
 
     <template #body>
-      <slot name="body" />
+      <UTabs
+        v-if="tabs?.length"
+        :items="tabs"
+        :ui="{ trigger: 'grow' }"
+      >
+        <template
+          v-for="tab in tabs"
+          :key="tab.value"
+          #[tab.slot]
+        >
+          <slot :name="tab.slot" />
+        </template>
+      </UTabs>
+
+      <slot v-else name="body" />
     </template>
 
     <template #footer="{ close }">

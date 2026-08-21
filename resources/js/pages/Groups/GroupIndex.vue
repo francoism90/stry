@@ -21,7 +21,6 @@ defineOptions({
 
 setLayoutProps({
   id: 'collections.index',
-  title: 'Collections',
   scopes: props.scopes,
   sorters: props.sorters,
   filter: props.filter,

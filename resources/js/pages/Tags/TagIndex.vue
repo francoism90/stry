@@ -21,7 +21,6 @@ defineOptions({
 
 setLayoutProps({
   id: 'tags.index',
-  title: 'Tags',
   scopes: props.scopes,
   sorters: props.sorters,
   filter: props.filter,

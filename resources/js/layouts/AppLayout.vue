@@ -34,7 +34,7 @@ useFlash()
           center: 'flex',
         },
         dashboardToolbar: {
-          root: 'mx-auto flex w-full max-w-(--ui-container) flex-col items-stretch gap-3 border-0 py-4 md:flex-row md:items-center',
+          root: 'mx-auto flex w-full max-w-(--ui-container) flex-wrap items-center gap-3 border-0 py-4',
         },
         dashboardSidebar: {
           root: 'max-w-xs bg-(--ui-sidebar)',

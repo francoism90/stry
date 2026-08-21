@@ -1,19 +1,31 @@
 <script setup lang="ts">
+import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import FormModal from '@/components/Ui/FormModal.vue'
+import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
+import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
-import type { TagMenuItem, Video } from '@/types'
+import { index as transcodesIndex } from '@/routes/videos/transcodes'
+import type { TagMenuItem, Transcode, Video } from '@/types'
 import { capitalize } from '@/utils/case'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
+import type { TabsItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video
   progress?: number | null
+  transcodes?: Transcode[] | undefined
 }>()
+
+const tabs: TabsItem[] = [
+  { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
+  { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
+  { label: 'Transcodes', icon: 'i-lucide-cpu', slot: 'transcodes' },
+]
 
 const open = defineModel<boolean>('open')
 
@@ -69,6 +81,9 @@ const onSubmit = (close: () => void) =>
     preserveState: true,
     onSuccess: () => close(),
   })
+
+const createTranscode = (): void =>
+  void router.post(VideoDispatchTranscodeController.url(props.video.id), {}, { preserveScroll: true })
 </script>
 
 <template>
@@ -76,10 +91,11 @@ const onSubmit = (close: () => void) =>
     v-model:open="open"
     :title="`Edit ${video.title}`"
     :processing="form.processing"
+    :tabs="tabs"
     :ui="{ content: 'sm:max-w-2xl' }"
     @submit="onSubmit"
   >
-    <template #body>
+    <template #general>
       <div class="flex flex-col gap-4">
         <UForm
           :state="form"
@@ -147,82 +163,6 @@ const onSubmit = (close: () => void) =>
                 placeholder="1"
                 autocapitalize="characters"
               />
-            </UFormField>
-          </div>
-
-          <USeparator />
-
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <UFormField
-              label="Snapshot"
-              :error="form.errors.snapshot"
-            >
-              <UInput
-                v-model="form.snapshot"
-                :model-modifiers="{ nullable: true, number: true }"
-                :ui="{ trailing: 'pe-1' }"
-                type="number"
-                placeholder="3.00"
-                aria-label="Set by progress"
-                step="0.01"
-                min="0"
-                :max="video.duration || undefined"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-image-down"
-                    aria-label="From progress"
-                    @click.prevent="setSnapshotFromProgress"
-                  />
-                </template>
-              </UInput>
-            </UFormField>
-
-            <UFormField
-              label="Published"
-              :error="form.errors.published_at"
-            >
-              <UInputDate
-                v-model="publishedAt"
-                granularity="second"
-                :ui="{ trailing: 'pe-1' }"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-calendar-clock"
-                    aria-label="Set to now"
-                    @click.prevent="setPublishedAtNow"
-                  />
-                </template>
-              </UInputDate>
-            </UFormField>
-
-            <UFormField
-              label="Released"
-              :error="form.errors.released_at"
-            >
-              <UInputDate
-                v-model="releasedAt"
-                granularity="second"
-                :ui="{ trailing: 'pe-1' }"
-              >
-                <template #trailing>
-                  <UButton
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    icon="i-lucide-calendar-clock"
-                    aria-label="Set to now"
-                    @click.prevent="setReleasedAtNow"
-                  />
-                </template>
-              </UInputDate>
             </UFormField>
           </div>
 
@@ -309,6 +249,181 @@ const onSubmit = (close: () => void) =>
             />
           </VideoDeleteModal>
         </div>
+      </div>
+    </template>
+
+    <template #media>
+      <div class="flex flex-col gap-4">
+        <div
+          v-if="video.thumb"
+          class="overflow-hidden rounded-lg"
+        >
+          <img
+            :src="video.thumb"
+            :srcset="video.thumb_srcset ?? undefined"
+            :alt="video.title"
+            class="aspect-video w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+
+        <UForm
+          :state="form"
+          class="flex flex-col gap-3"
+        >
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <UFormField
+              label="Snapshot"
+              :error="form.errors.snapshot"
+            >
+              <UInput
+                v-model="form.snapshot"
+                :model-modifiers="{ nullable: true, number: true }"
+                :ui="{ trailing: 'pe-1' }"
+                type="number"
+                placeholder="3.00"
+                aria-label="Set by progress"
+                step="0.01"
+                min="0"
+                :max="video.duration || undefined"
+              >
+                <template #trailing>
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    icon="i-lucide-image-down"
+                    aria-label="From progress"
+                    @click.prevent="setSnapshotFromProgress"
+                  />
+                </template>
+              </UInput>
+            </UFormField>
+
+            <UFormField
+              label="Published"
+              :error="form.errors.published_at"
+            >
+              <UInputDate
+                v-model="publishedAt"
+                granularity="second"
+                :ui="{ trailing: 'pe-1' }"
+              >
+                <template #trailing>
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    icon="i-lucide-calendar-clock"
+                    aria-label="Set to now"
+                    @click.prevent="setPublishedAtNow"
+                  />
+                </template>
+              </UInputDate>
+            </UFormField>
+
+            <UFormField
+              label="Released"
+              :error="form.errors.released_at"
+            >
+              <UInputDate
+                v-model="releasedAt"
+                granularity="second"
+                :ui="{ trailing: 'pe-1' }"
+              >
+                <template #trailing>
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    icon="i-lucide-calendar-clock"
+                    aria-label="Set to now"
+                    @click.prevent="setReleasedAtNow"
+                  />
+                </template>
+              </UInputDate>
+            </UFormField>
+          </div>
+        </UForm>
+      </div>
+    </template>
+
+    <template #transcodes>
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <TranscodeImportModal
+              v-if="transcodes?.length"
+              :video="video"
+            />
+
+            <UButton
+              icon="i-lucide-plus"
+              label="Create transcode"
+              color="neutral"
+              variant="outline"
+              size="sm"
+              @click="createTranscode"
+            />
+          </div>
+
+          <UButton
+            label="View all"
+            trailing-icon="i-lucide-arrow-right"
+            color="neutral"
+            variant="link"
+            size="sm"
+            :to="transcodesIndex.url(video.id)"
+          />
+        </div>
+
+        <div
+          v-if="transcodes === undefined"
+          class="flex flex-col gap-2"
+        >
+          <USkeleton
+            v-for="i in 3"
+            :key="i"
+            class="h-14 w-full rounded-md"
+          />
+        </div>
+
+        <UEmpty
+          v-else-if="!transcodes.length"
+          icon="i-lucide-cpu"
+          title="No transcodes"
+          description="Transcode this video to AV1 to possibly reduce file size while maintaining quality."
+        />
+
+        <UPageList
+          v-else
+          divide
+        >
+          <UPageCard
+            v-for="item in transcodes"
+            :key="item.id"
+            variant="naked"
+            class="py-3 first:pt-0 last:pb-0"
+          >
+            <div class="flex items-center justify-between">
+              <UUser
+                :name="item.id"
+                :description="`${item.state.label} · ${item.file_size}`"
+                :avatar="{
+                  alt: item.id,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'rounded-sm size-10 me-1',
+                }"
+              />
+
+              <div class="z-10 flex items-center gap-2">
+                <TranscodeDeleteModal :item="item" />
+              </div>
+            </div>
+          </UPageCard>
+        </UPageList>
       </div>
     </template>
   </FormModal>

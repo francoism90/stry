@@ -4,11 +4,14 @@ import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
 import SearchTypeSwitcher from '@/components/Ui/SearchTypeSwitcher.vue'
 import type { OptionItem, QueryFilter, QueryValue } from '@/types'
+import type { ButtonProps } from '@nuxt/ui'
 
 withDefaults(
   defineProps<{
     id?: string
     title?: string
+    description?: string
+    links?: ButtonProps[]
     scopes?: OptionItem[]
     sorters?: OptionItem[]
     filter?: QueryFilter
@@ -25,7 +28,7 @@ withDefaults(
   <UDashboardPanel :id="id">
     <template #header>
       <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
-        <AppHeader />
+        <AppHeader :title="title" />
 
         <SearchTypeSwitcher
           :id="id"

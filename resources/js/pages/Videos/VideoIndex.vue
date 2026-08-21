@@ -21,7 +21,6 @@ defineOptions({
 
 setLayoutProps({
   id: 'videos.index',
-  title: 'Videos',
   scopes: props.scopes,
   sorters: props.sorters,
   filter: props.filter,
