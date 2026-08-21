@@ -11,7 +11,7 @@ withDefaults(
     viewAllLink?: boolean
   }>(),
   {
-    viewAllLink: true,
+    viewAllLink: false,
   },
 )
 </script>

@@ -13,7 +13,7 @@ const props = withDefaults(
     viewAllLink?: boolean
   }>(),
   {
-    viewAllLink: true,
+    viewAllLink: false,
   },
 )
 
