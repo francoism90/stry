@@ -1,28 +1,31 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import MediaList from '@/components/Media/MediaList.vue'
-import FormModal from '@/components/Ui/FormModal.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
+import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
-import type { Media, TagMenuItem, Transcode, Video } from '@/types'
+import type { Media, Playlist, TagMenuItem, Transcode, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
 import type { TabsItem } from '@nuxt/ui'
 import { computed } from 'vue'
+import PlaylistList from '../Playlists/PlaylistList.vue'
 
 const props = defineProps<{
   video: Video
   progress?: number | null
   media?: Media[] | undefined
+  playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
 }>()
 
 const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
+  { label: 'Playlists', icon: 'i-lucide-list', slot: 'playlists' },
   { label: 'Transcodes', icon: 'i-lucide-cpu', slot: 'transcodes' },
 ]
 
@@ -309,7 +312,7 @@ const onSubmit = (close: () => void) =>
             class="aspect-video w-full object-cover"
             loading="lazy"
             decoding="async"
-          >
+          />
         </div>
 
         <UForm
@@ -352,6 +355,13 @@ const onSubmit = (close: () => void) =>
           :items="media"
         />
       </div>
+    </template>
+
+    <template #playlists>
+      <PlaylistList
+        :video="video"
+        :items="playlists"
+      />
     </template>
 
     <template #transcodes>

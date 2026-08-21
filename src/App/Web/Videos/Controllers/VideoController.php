@@ -9,6 +9,7 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Videos\Responses\VideoGroupsProperty;
 use App\Web\Videos\Responses\VideoMediaProperty;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
+use App\Web\Videos\Responses\VideoPlaylistsProperty;
 use App\Web\Videos\Responses\VideoProgressProperty;
 use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
@@ -97,6 +98,7 @@ class VideoController implements HasMiddleware
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
+            'playlists' => Inertia::defer(fn () => new VideoPlaylistsProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
         ]);

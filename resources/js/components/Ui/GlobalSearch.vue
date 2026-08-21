@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { index as videoIndex } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { useSearch } from '@/composables/search'
-import { router, useForm, usePage } from '@inertiajs/vue3'
+import { useForm, usePage } from '@inertiajs/vue3'
 import { computed, useTemplateRef } from 'vue'
 
 const searchTargets = {
@@ -22,7 +22,7 @@ const input = useTemplateRef('input')
 const target = computed(() => searchTargets[page.component as keyof typeof searchTargets] ?? null)
 
 const form = useForm({
-  search: search.value ?? '',
+  query: search.value ?? '',
 })
 
 const onSearch = () => {
@@ -30,8 +30,7 @@ const onSearch = () => {
     return
   }
 
-  router.visit('route' in target.value ? target.value.route : '', {
-    data: { query: form.search },
+  form.get('route' in target.value ? target.value.route : '', {
     preserveState: true,
   })
 }
@@ -50,7 +49,7 @@ defineShortcuts({
   >
     <UInput
       ref="input"
-      v-model="form.search"
+      v-model="form.query"
       :model-modifiers="{ string: true, trim: true }"
       icon="i-lucide-search"
       :placeholder="target.placeholder"

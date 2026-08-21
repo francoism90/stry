@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
-import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
-import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
-import { index } from '@/routes/videos/transcodes'
-import type { Transcode, Video } from '@/types'
-import { router } from '@inertiajs/vue3'
+import { index } from '@/routes/videos/playlists'
+import type { Playlist, Video } from '@/types'
+import PlaylistCreateModal from './PlaylistCreateModal.vue'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     video?: Video
-    items?: Transcode[] | undefined
+    items?: Playlist[] | undefined
     viewAllLink?: boolean
   }>(),
   {
     viewAllLink: true,
   },
 )
-
-const createTranscode = (): void =>
-  void router.post(VideoDispatchTranscodeController.url(props.video!.id), {}, { preserveScroll: true })
 </script>
 
 <template>
@@ -28,19 +22,7 @@ const createTranscode = (): void =>
       class="flex items-center justify-between gap-2"
     >
       <div class="flex items-center gap-2">
-        <TranscodeImportModal
-          v-if="items?.length"
-          :video="video"
-        />
-
-        <UButton
-          icon="i-lucide-plus"
-          label="Create transcode"
-          color="neutral"
-          variant="outline"
-          size="sm"
-          @click="createTranscode"
-        />
+        <PlaylistCreateModal :video="video" />
       </div>
 
       <UButton
@@ -78,7 +60,7 @@ const createTranscode = (): void =>
         <div class="flex items-center justify-between">
           <UUser
             :name="video ? item.id : (item.resource?.label ?? item.id)"
-            :description="`${item.state.label} · ${item.file_size}`"
+            :description="`${item.state.label} · ${item.type}`"
             :avatar="{
               alt: item.id,
               loading: 'lazy',
@@ -88,7 +70,7 @@ const createTranscode = (): void =>
           />
 
           <div class="z-10 flex items-center gap-2">
-            <TranscodeDeleteModal :item="item" />
+            <PlaylistDeleteModal :item="item" />
           </div>
         </div>
       </UPageCard>
