@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Web\Users\Controllers;
 
+use App\Api\Users\Requests\UserUpdateRequest;
 use App\Api\Users\Resources\UserResource;
+use Domain\Users\Actions\UpdateUserProfileInformation;
 use Domain\Users\Enums\UserScope;
 use Domain\Users\Enums\UserSorter;
 use Domain\Users\Filters\UserScopeFilter;
@@ -62,6 +64,23 @@ class UserController implements HasMiddleware
             'sorters' => fn () => Options::forEnum(UserSorter::class),
             new ScoutBuilderProperties('users'),
         ]);
+    }
+
+    public function update(User $user, UserUpdateRequest $request, UpdateUserProfileInformation $action): RedirectResponse
+    {
+        Gate::authorize('update', $user);
+
+        // Update the user's profile information
+        $action->update($user, $request->safe()->only(['name', 'email']));
+
+        // Notify the user
+        Inertia::flash([
+            'title' => (string) $user->name,
+            'description' => __('The user has been updated.'),
+            'type' => 'success',
+        ]);
+
+        return back();
     }
 
     public function destroy(User $user, Request $request): RedirectResponse

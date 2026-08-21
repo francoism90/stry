@@ -13,6 +13,7 @@ use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupScope;
 use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Filters\GroupScopeFilter;
 use Domain\Groups\Models\Group;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\Scopes\GroupProfileScope;
@@ -58,7 +59,7 @@ class GroupController implements HasMiddleware
             ->tap(new GroupProfileScope)
             ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
             ->allowedFilters(
-                AllowedFilter::exact('scope', 'type'),
+                AllowedFilter::custom('scope', new GroupScopeFilter),
             )
             ->allowedSorts(
                 AllowedSort::field('name'),

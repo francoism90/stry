@@ -41,7 +41,7 @@ Route::resource('playlists', PlaylistController::class)->only(['update', 'destro
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
 
 // Users
-Route::resource('users', UserController::class)->only(['index', 'destroy']);
+Route::resource('users', UserController::class)->only(['index', 'update', 'destroy']);
 
 // Videos
 Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);

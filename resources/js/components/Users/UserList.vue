@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import UserDeleteModal from '@/components/Users/UserDeleteModal.vue'
+import UserEditModal from '@/components/Users/UserEditModal.vue'
 import type { User } from '@/types'
 
 defineProps<{
@@ -73,6 +74,11 @@ defineProps<{
               :color="item.state.color"
               variant="subtle"
               size="sm"
+            />
+
+            <UserEditModal
+              v-if="!item.deleted_at"
+              :item="item"
             />
 
             <UserDeleteModal
