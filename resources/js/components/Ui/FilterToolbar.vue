@@ -1,25 +1,14 @@
 <script setup lang="ts">
-import { useQuery } from '@/composables/query'
-import type { OptionItem, QueryFilter, QueryValue } from '@/types'
+import { QueryInjectionKey } from '@/composables/query'
+import type { OptionItem } from '@/types'
+import { inject } from 'vue'
 
-const props = defineProps<{
+defineProps<{
   scopes?: OptionItem[]
   sorters?: OptionItem[]
-  filter?: QueryFilter
-  sort?: QueryValue
-  query?: QueryValue
 }>()
 
-const firstValue = (items: OptionItem[] | undefined) => {
-  if (!items || items.length === 0) return null
-  return items[0].value
-}
-
-const { form, onSubmit } = useQuery({
-  filter: () => props.filter ?? { scope: firstValue(props.scopes) },
-  sort: () => props.sort ?? firstValue(props.sorters),
-  query: () => props.query ?? null,
-})
+const { form, onSubmit } = inject(QueryInjectionKey)!
 </script>
 
 <template>

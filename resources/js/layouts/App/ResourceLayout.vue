@@ -2,10 +2,11 @@
 import AppFooter from '@/components/Ui/AppFooter.vue'
 import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
+import { provideQuery } from '@/composables/query'
 import type { OptionItem, QueryFilter, QueryValue } from '@/types'
 import type { ButtonProps } from '@nuxt/ui'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     id?: string
     title?: string
@@ -23,6 +24,8 @@ withDefaults(
     fluid: false,
   },
 )
+
+provideQuery(props)
 </script>
 
 <template>
@@ -43,9 +46,6 @@ withDefaults(
           v-if="scopes || sorters"
           :scopes="scopes"
           :sorters="sorters"
-          :filter="filter"
-          :sort="sort"
-          :query="query"
         />
       </div>
     </template>

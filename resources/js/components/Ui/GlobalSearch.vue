@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { index as videoIndex } from '@/actions/App/Web/Videos/Controllers/VideoController'
-import { useSearch } from '@/composables/search'
-import { useForm, usePage } from '@inertiajs/vue3'
-import { computed, useTemplateRef, watch } from 'vue'
+import { QueryInjectionKey } from '@/composables/query'
+import { router, usePage } from '@inertiajs/vue3'
+import { computed, inject, useTemplateRef } from 'vue'
 
 const searchTargets = {
   'Videos/VideoIndex': { placeholder: 'Search videos' },
@@ -15,20 +15,17 @@ const searchTargets = {
   'Users/UserIndex': { placeholder: 'Search users' },
 } as const
 
-const { search } = useSearch()
 const page = usePage()
 const input = useTemplateRef('input')
+const query = inject(QueryInjectionKey)!
 
 const target = computed(() => searchTargets[page.component as keyof typeof searchTargets] ?? null)
 
-const form = useForm({
-  query: search.value ?? '',
-})
-
-// Layouts persist across visits, so re-sync the query whenever the
-// page-provided search changes instead of only on first mount.
-watch(search, (value) => {
-  form.query = value ?? ''
+const searchText = computed({
+  get: () => (query.form.query ?? '').toString(),
+  set: (value: string) => {
+    query.form.query = value
+  },
 })
 
 const onSearch = () => {
@@ -36,9 +33,14 @@ const onSearch = () => {
     return
   }
 
-  form.get('route' in target.value ? target.value.route : '', {
-    preserveState: true,
-  })
+  // Leaving to a different resource (e.g. a group's videos) drops the
+  // current filter/sort scope instead of carrying it into the new context.
+  if ('route' in target.value) {
+    router.get(target.value.route, { query: query.form.query }, { preserveState: true })
+    return
+  }
+
+  query.onSubmit()
 }
 
 defineShortcuts({
@@ -55,7 +57,7 @@ defineShortcuts({
   >
     <UInput
       ref="input"
-      v-model="form.query"
+      v-model="searchText"
       :model-modifiers="{ string: true, trim: true }"
       icon="i-lucide-search"
       :placeholder="target.placeholder"
