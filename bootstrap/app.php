@@ -96,7 +96,9 @@ $app = Application::configure(basePath: $basePath)
         $middleware->redirectGuestsTo(fn () => route('login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->shouldRenderJsonWhen(
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
+        );
     })
     ->withEvents(discover: [
         base_path('src/Domain/*/Listeners'),
