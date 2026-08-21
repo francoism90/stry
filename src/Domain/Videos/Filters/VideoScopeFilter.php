@@ -24,6 +24,7 @@ class VideoScopeFilter implements Filter
             VideoScope::Shorts => $this->applyShorts($query),
             VideoScope::Unseen => $this->applyUnseen($query),
             VideoScope::Untagged => $this->applyUntagged($query),
+            VideoScope::Captioned => $this->applyCaptioned($query),
             default => null,
         };
     }
@@ -36,6 +37,11 @@ class VideoScopeFilter implements Filter
     private function applyUntagged(Builder $query): void
     {
         $query->where('tagged_count', 0);
+    }
+
+    private function applyCaptioned(Builder $query): void
+    {
+        $query->where('captioned', true);
     }
 
     private function applyUnseen(Builder $query): void

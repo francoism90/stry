@@ -28,9 +28,28 @@ export async function loadShaka(): Promise<typeof shaka> {
     instance.ui.Controls.registerElement('seek_forward', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new seekForwardMod.SeekForward(parent, controls),
     })
+
+    guardWindowKeyboardShortcuts()
   }
 
   return instance
+}
+
+/**
+ * Shaka's `enableKeyboardPlaybackControlsInWindow` option listens for keydown on `window` and
+ * handles shortcuts like fullscreen ('f') and mute ('m') regardless of which element is focused.
+ * Stop those events reaching Shaka's own window listener while the user is typing elsewhere,
+ * registering before the UI overlay so this runs first among window keydown listeners.
+ */
+function guardWindowKeyboardShortcuts(): void {
+  window.addEventListener('keydown', (event) => {
+    const target = event.target as HTMLElement | null
+    const isEditable = target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable
+
+    if (isEditable) {
+      event.stopImmediatePropagation()
+    }
+  })
 }
 
 export function getShaka(): typeof shaka | undefined {

@@ -12,6 +12,7 @@ enum VideoScope: string implements Enumerable
     case Shorts = 'shorts';
     case Unseen = 'unseen';
     case Untagged = 'untagged';
+    case Captioned = 'captions';
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum VideoScope: string implements Enumerable
             'shorts' => __('Shorts'),
             'unseen' => __('Unseen'),
             'untagged' => __('Untagged'),
+            'captions' => __('Captioned'),
         ];
     }
 }
