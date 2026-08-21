@@ -7,11 +7,14 @@ namespace App\Web\Transcodes\Controllers;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Enums\TranscodeScope;
+use Domain\Transcodes\Filters\TranscodeScopeFilter;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
 use Foundation\Http\Properties\ScoutBuilderProperties;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -30,28 +33,28 @@ class TranscodeController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Transcode::class);
 
-        // Requested scope
-        $scope = TranscodeScope::tryFrom((string) $request->input('filter.scope'));
+        // Relevant sort options
+        $defaultSort = AllowedSort::latest('newest', 'created_at');
 
-        // Fetch all transcodes
-        $transcodes = Transcode::query()
-            ->with('transcodable')
-            ->when($scope, fn (TranscodeQueryBuilder $query, TranscodeScope $scope) => match ($scope) {
-                TranscodeScope::Pending => $query->pending(),
-                TranscodeScope::Processing => $query->processing(),
-                TranscodeScope::Completed => $query->completed(),
-                TranscodeScope::Failed => $query->failed(),
-                TranscodeScope::All => null,
-            })
-            ->latest()
-            ->simplePaginate(perPage: 16);
+        // Scout builder
+        $scout = ScoutBuilder::for(Transcode::class)
+            ->query(fn (TranscodeQueryBuilder $query) => $query->with('transcodable'))
+            ->allowedFilters(
+                AllowedFilter::custom('scope', new TranscodeScopeFilter),
+            )
+            ->allowedSorts(
+                $defaultSort,
+                AllowedSort::oldest('oldest', 'created_at'),
+            )
+            ->defaultSort($defaultSort)
+            ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Transcodes/TranscodeIndex', [
-            'items' => Inertia::scroll(fn () => TranscodeResource::collection($transcodes)),
+            'items' => Inertia::scroll(fn () => TranscodeResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(TranscodeScope::class),
             new ScoutBuilderProperties('transcodes'),
         ]);

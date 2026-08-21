@@ -9,6 +9,7 @@ use App\Web\Playlists\Controllers\PlaylistController;
 use App\Web\Profiles\Controllers\ProfileController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
+use App\Web\Users\Controllers\UserController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoMediaController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
@@ -38,6 +39,9 @@ Route::resource('playlists', PlaylistController::class)->only(['update', 'destro
 
 // Transcodes
 Route::resource('transcodes', TranscodeController::class)->only(['index', 'destroy']);
+
+// Users
+Route::resource('users', UserController::class)->only(['index', 'destroy']);
 
 // Videos
 Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);

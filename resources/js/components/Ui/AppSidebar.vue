@@ -33,6 +33,11 @@ const items = computed<NavigationMenuItem[][]>(() => [
     ? [
         [
           {
+            label: 'Users',
+            icon: 'i-lucide-users',
+            to: '/users',
+          },
+          {
             label: 'Transcodes',
             icon: 'i-lucide-film',
             to: '/transcodes',

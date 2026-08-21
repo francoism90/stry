@@ -53,7 +53,9 @@ export type User = Model & {
   permissions?: string[] | null
   settings?: UserSettings
   videos_count?: number
+  state?: ModelState
   email_verified_at?: string | null
+  deleted_at?: string | null
 }
 
 export type UserCollection = Omit<Paginator, 'data'> & {

@@ -11,6 +11,8 @@ const searchTargets = {
   'Tags/TagView': { placeholder: 'Search videos' },
   'Groups/GroupIndex': { placeholder: 'Search collections' },
   'Groups/GroupView': { placeholder: 'Search videos' },
+  'Transcodes/TranscodeIndex': { placeholder: 'Search transcodes' },
+  'Users/UserIndex': { placeholder: 'Search users' },
 } as const
 
 const { search } = useSearch()
