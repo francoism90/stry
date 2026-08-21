@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import PlaylistCreateModal from '@/components/Playlists/PlaylistCreateModal.vue'
+import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
 import { index } from '@/routes/videos/playlists'
 import type { Playlist, Video } from '@/types'
-import PlaylistCreateModal from './PlaylistCreateModal.vue'
 
 withDefaults(
   defineProps<{
