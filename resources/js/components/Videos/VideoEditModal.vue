@@ -69,10 +69,10 @@ const capitalizeName = (): void => {
 const setSnapshotFromProgress = (): void => {
   router.reload({
     only: ['progress'],
-    data: { progress: props.progress },
+    onSuccess: () => {
+      form.snapshot = props.progress || null
+    },
   })
-
-  form.snapshot = props.progress || null
 }
 
 const setPublishedAtNow = (): void => {

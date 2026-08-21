@@ -229,13 +229,13 @@ export function useShaka(
     const el = event.target as HTMLMediaElement | null
 
     if (model && el) {
-      const currentTime = el.currentTime ?? 0
+      const currentTime = el.currentTime
       const time = Number.isFinite(currentTime) ? Math.round(currentTime * 100) / 100 : 0
 
       // Prevent excessive updates by only marking as viewed if the time has changed significantly
-      if (time > 0 && Math.abs((ticker.value ?? 0) - time) > 2) {
+      if (time > 0 && Math.abs((ticker.value ?? 0) - time) > 1.5) {
         // Update the ticker value to the current time
-        ticker.value = time ?? 0
+        ticker.value = time
 
         try {
           await markViewed(model, time)
