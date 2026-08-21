@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { index as videoIndex } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { useSearch } from '@/composables/search'
 import { router, useForm, usePage } from '@inertiajs/vue3'
 import { watchDebounced } from '@vueuse/core'
@@ -6,7 +7,7 @@ import { computed, useTemplateRef } from 'vue'
 
 const searchTargets = {
   'Videos/VideoIndex': { placeholder: 'Search videos' },
-  'Videos/VideoView': { placeholder: 'Search videos' },
+  'Videos/VideoView': { placeholder: 'Search videos', route: videoIndex['/'].url() },
   'Tags/TagIndex': { placeholder: 'Search tags' },
   'Tags/TagView': { placeholder: 'Search videos' },
   'Groups/GroupIndex': { placeholder: 'Search collections' },
@@ -32,12 +33,12 @@ watchDebounced(
       return
     }
 
-    router.visit('', {
+    router.visit('route' in target.value ? target.value.route : '', {
       data: { query: value },
       preserveState: true,
     })
   },
-  { debounce: 350, maxWait: 1000 },
+  { debounce: 500, maxWait: 1000 },
 )
 
 defineShortcuts({
