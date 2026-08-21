@@ -2,10 +2,10 @@
 title: Docker Compose
 sidebar_position: 6
 tags:
-  - docker
-  - compose
-  - containers
-  - alternative
+    - docker
+    - compose
+    - containers
+    - alternative
 ---
 
 # Docker Compose Setup
@@ -92,18 +92,18 @@ For HTTPS/subdomains, terminate TLS with your own reverse proxy in front of `:80
 
 Service names below match the keys in `containers/docker/docker-compose.yml` — containers are named `stry-{service}` by Compose (e.g. `stry-app`).
 
-| Service     | Purpose                                | Port      |
-| ----------- | -------------------------------------- | --------- |
-| `app`       | Main application server (Octane)       | 8000      |
-| `ssr`       | Server-side rendering (Node.js)        | 13714     |
-| `queue`     | Background job processor (Horizon)     | —         |
-| `reverb`    | WebSocket server                       | 6001      |
-| `schedule`  | Task scheduler                         | —         |
-| `pgsql`     | Database                               | 5432      |
-| `redis`     | Cache & sessions                       | 6379      |
-| `typesense` | Full-text search                       | 8108      |
-| `rustfs`    | S3-compatible storage                  | 9000-9001 |
-| `mailpit`   | Development email                      | 8025      |
+| Service     | Purpose                            | Port      |
+| ----------- | ---------------------------------- | --------- |
+| `app`       | Main application server (Octane)   | 8000      |
+| `ssr`       | Server-side rendering (Node.js)    | 13714     |
+| `queue`     | Background job processor (Horizon) | —         |
+| `reverb`    | WebSocket server                   | 6001      |
+| `schedule`  | Task scheduler                     | —         |
+| `pgsql`     | Database                           | 5432      |
+| `redis`     | Cache & sessions                   | 6379      |
+| `typesense` | Full-text search                   | 8108      |
+| `rustfs`    | S3-compatible storage              | 9000-9001 |
+| `mailpit`   | Development email                  | 8025      |
 
 ---
 
@@ -131,14 +131,14 @@ Mount the application directory in `docker-compose.yml` for live code reloading:
 
 ```yaml
 services:
-  app:
-    volumes:
-      - ./:/app:rw
-      - /app/vendor # Prevent vendor from mounting
-      - /app/node_modules # Prevent node_modules from mounting
-    environment:
-      APP_ENV: local
-      APP_DEBUG: 'true'
+    app:
+        volumes:
+            - ./:/app:rw
+            - /app/vendor # Prevent vendor from mounting
+            - /app/node_modules # Prevent node_modules from mounting
+        environment:
+            APP_ENV: local
+            APP_DEBUG: 'true'
 ```
 
 Then run Vite from the container:
@@ -155,8 +155,8 @@ Uncomment the `devices` block for the `queue` service in `containers/docker/dock
 
 ```yaml
 queue:
-  devices:
-    - /dev/dri:/dev/dri
+    devices:
+        - /dev/dri:/dev/dri
 ```
 
 > [!NOTE]

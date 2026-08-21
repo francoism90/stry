@@ -62,7 +62,7 @@ const save = () => formRef.value?.submit()
     v-model:open="open"
     title="Settings"
     :ui="{
-      content: 'sm:max-w-3xl max-sm:h-full max-sm:max-w-full max-sm:rounded-none h-[min(85vh,640px)]',
+      content: 'h-[min(85vh,640px)] max-sm:h-full max-sm:max-w-full max-sm:rounded-none sm:max-w-3xl',
       body: 'flex-1 overflow-hidden p-0 sm:p-0',
       footer: 'justify-end',
     }"

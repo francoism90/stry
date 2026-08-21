@@ -29,7 +29,10 @@ const emit = defineEmits<{
     :description="description"
     :ui="{ footer: 'justify-end', ...ui }"
   >
-    <template v-if="$slots.default" #default>
+    <template
+      v-if="$slots.default"
+      #default
+    >
       <slot />
     </template>
 
@@ -50,7 +53,10 @@ const emit = defineEmits<{
         </template>
       </UTabs>
 
-      <slot v-else name="body" />
+      <slot
+        v-else
+        name="body"
+      />
     </template>
 
     <template #footer="{ close }">

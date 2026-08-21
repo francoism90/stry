@@ -41,7 +41,10 @@ const onSubmit = (close: () => void) =>
     :processing="form.processing"
     @submit="onSubmit"
   >
-    <template v-if="trigger" #default>
+    <template
+      v-if="trigger"
+      #default
+    >
       <slot>
         <UButton
           label="Create tag"

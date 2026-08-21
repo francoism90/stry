@@ -1,5 +1,5 @@
 // @ts-check
-const { themes: prismThemes } = require('prism-react-renderer');
+const { themes: prismThemes } = require('prism-react-renderer')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -93,6 +93,6 @@ const config = {
         darkTheme: prismThemes.dracula,
       },
     }),
-};
+}
 
-module.exports = config;
+module.exports = config

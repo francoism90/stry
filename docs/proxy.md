@@ -2,20 +2,20 @@
 title: Proxy
 sidebar_position: 7
 tags:
-  - proxy
-  - caddy
+    - proxy
+    - caddy
 ---
 
 # Reverse Proxy
 
 **stry** doesn't bundle a dedicated proxy container. Instead, the app's own FrankenPHP/Caddy instance (started by `octane:frankenphp`) reverse proxies sibling services directly, driven by `config/octane.php`'s `caddy.env.CADDY_EXTRA_CONFIG` (rendered by `Support\Octane\CaddySites`). One upstream — the app's `:8000` — is enough for every subdomain you use; the app's own Caddy routes by `Host` header:
 
-| Env var | Routes to | Purpose |
-| --- | --- | --- |
-| `APP_URL`'s host | the app itself | Main application |
-| `AWS_URL`'s host | `systemd-{app}-rustfs:9000` | S3-compatible API |
-| `VITE_REVERB_HOST` / `REVERB_HOST` | `systemd-{app}-reverb:6001` | Laravel Reverb (WebSocket) |
-| `MAILPIT_UI_HOST` (optional) | `systemd-{app}-mailpit:8025` | Mailpit UI |
+| Env var                            | Routes to                    | Purpose                    |
+| ---------------------------------- | ---------------------------- | -------------------------- |
+| `APP_URL`'s host                   | the app itself               | Main application           |
+| `AWS_URL`'s host                   | `systemd-{app}-rustfs:9000`  | S3-compatible API          |
+| `VITE_REVERB_HOST` / `REVERB_HOST` | `systemd-{app}-reverb:6001`  | Laravel Reverb (WebSocket) |
+| `MAILPIT_UI_HOST` (optional)       | `systemd-{app}-mailpit:8025` | Mailpit UI                 |
 
 Leave `MAILPIT_UI_HOST` unset to keep that block out of the config entirely — see `CaddySites::render()`, which skips any entry with an empty host.
 
