@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TagCard from '@/components/Tags/TagCard.vue'
+import TagList from '@/components/Tags/TagList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, TagCollection } from '@/types'
@@ -39,17 +39,10 @@ const itemBody = ref()
       data="items"
       :items-element="() => itemBody?.$el"
     >
-      <UBlogPosts
+      <TagList
         ref="itemBody"
-        class="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-3 lg:gap-y-8 xl:grid-cols-4"
-      >
-        <TagCard
-          v-for="(item, index) in items?.data ?? []"
-          :key="item.id"
-          :item="item"
-          :index="index"
-        />
-      </UBlogPosts>
+        :items="items?.data"
+      />
     </InfiniteScroll>
   </UPage>
 </template>
