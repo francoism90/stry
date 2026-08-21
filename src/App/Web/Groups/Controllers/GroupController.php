@@ -10,6 +10,7 @@ use App\Api\Groups\Resources\GroupResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
+use Domain\Groups\Enums\GroupScope;
 use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
@@ -71,7 +72,7 @@ class GroupController implements HasMiddleware
 
         return Inertia::render('Groups/GroupIndex', [
             'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(GroupType::class),
+            'scopes' => fn () => Options::forEnum(GroupScope::class),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
             new ScoutBuilderProperties('groups'),
         ]);
