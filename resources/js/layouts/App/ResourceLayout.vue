@@ -23,6 +23,8 @@ const props = withDefaults(
   {
     id: 'resource',
     fluid: false,
+    sort: null,
+    query: null,
   },
 )
 

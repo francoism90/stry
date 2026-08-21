@@ -21,6 +21,8 @@ const props = withDefaults(
   }>(),
   {
     id: 'resources.index',
+    sort: null,
+    query: null,
   },
 )
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Http\Properties;
 
+use Illuminate\Http\Request;
 use Inertia\ProvidesInertiaProperties;
 use Inertia\RenderContext;
 
@@ -18,25 +19,49 @@ readonly class ScoutBuilderProperties implements ProvidesInertiaProperties
         $request = $context->request;
         $key = "search.{$this->scope}";
 
-        // Remember the search term for the global search bar, scoped per resource.
-        // Only act when "query" was actually submitted, so a plain navigation
-        // (no "query" param at all) leaves the remembered term untouched.
-        if ($request->has('query')) {
-            $query = trim((string) $request->query('query'));
-
-            if (filled($query)) {
-                $request->session()->cache()->put($key, $query, now()->addHour());
-            } else {
-                $request->session()->cache()->forget($key);
-            }
-        }
+        $this->rememberQuery($request, $key);
 
         return [
-            'search' => $request->session()->cache()->get($key),
+            'search' => $this->rememberedSearch($request, $key),
             'query' => $request->input('query'),
             'filter' => $request->input('filter'),
             'sort' => $request->input('sort'),
             'page' => $request->input('page'),
         ];
+    }
+
+    // Session, not Cache::store('session'): under Octane, CacheManager keeps
+    // resolved stores cached for the worker's lifetime, not per-request.
+    private function rememberQuery(Request $request, string $key): void
+    {
+        // Only act when "query" was actually submitted, so a plain navigation
+        // (no "query" param at all) leaves the remembered term untouched.
+        if (! $request->has('query')) {
+            return;
+        }
+
+        $query = trim((string) $request->query('query'));
+
+        if (blank($query)) {
+            $request->session()->forget($key);
+
+            return;
+        }
+
+        $request->session()->put($key, [
+            'term' => $query,
+            'expires_at' => now()->addHour()->timestamp,
+        ]);
+    }
+
+    private function rememberedSearch(Request $request, string $key): ?string
+    {
+        $remembered = $request->session()->get($key);
+
+        if (! $remembered || $remembered['expires_at'] < now()->timestamp) {
+            return null;
+        }
+
+        return $remembered['term'];
     }
 }

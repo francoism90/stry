@@ -42,3 +42,13 @@ it('leaves the remembered query untouched on a plain navigation without a query 
 
     expect($properties['search'])->toBe('remembered term');
 });
+
+it('expires the remembered query after an hour', function () {
+    scoutBuilderProperties(['query' => 'remembered term']);
+
+    $this->travel(61)->minutes();
+
+    $properties = scoutBuilderProperties([]);
+
+    expect($properties['search'])->toBeNull();
+});
