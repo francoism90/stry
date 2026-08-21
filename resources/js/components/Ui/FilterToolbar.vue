@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '@/composables/query'
 import type { OptionItem, QueryFilter, QueryValue } from '@/types'
-import { watchDebounced } from '@vueuse/core'
 
 const props = defineProps<{
   scopes?: OptionItem[]
@@ -21,12 +20,6 @@ const { form, onSubmit } = useQuery({
   sort: () => props.sort ?? firstValue(props.sorters),
   query: () => props.query ?? null,
 })
-
-watchDebounced(
-  () => form.query,
-  () => onSubmit(),
-  { debounce: 350, maxWait: 1000 },
-)
 </script>
 
 <template>
