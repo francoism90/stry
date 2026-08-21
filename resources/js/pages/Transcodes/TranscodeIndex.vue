@@ -9,7 +9,9 @@ import { ref } from 'vue'
 const props = defineProps<{
   items: TranscodeCollection
   scopes?: OptionItem[]
+  sorters?: OptionItem[]
   filter?: QueryFilter
+  sort?: QueryValue
   query?: QueryValue
 }>()
 
@@ -20,7 +22,9 @@ defineOptions({
 setLayoutProps({
   id: 'transcodes.index',
   scopes: props.scopes,
+  sorters: props.sorters,
   filter: props.filter,
+  sort: props.sort,
   query: props.query,
 })
 

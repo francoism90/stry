@@ -21,15 +21,8 @@ defineProps<{
       />
     </div>
 
-    <UEmpty
-      v-else-if="!items.length"
-      icon="i-lucide-users"
-      title="No users"
-      description="Users will appear here once they register."
-    />
-
     <UPageList
-      v-else
+      v-else-if="items.length"
       divide
     >
       <UPageCard

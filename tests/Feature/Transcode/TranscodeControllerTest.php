@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use App\Web\Transcodes\Controllers\TranscodeController;
+use Domain\Transcodes\Enums\TranscodeSorter;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(fn () => Storage::fake('transcodes'));
 
@@ -18,6 +20,18 @@ it('allows admins to view the transcode index', function () {
     $response = $this->actingAs($user)->get(action([TranscodeController::class, 'index']));
 
     $response->assertSuccessful();
+});
+
+it('exposes the available sorters on the transcode index', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->get(action([TranscodeController::class, 'index']));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->has('sorters', count(TranscodeSorter::cases()))
+        ->where('sorters.0.value', TranscodeSorter::Newest->value)
+    );
 });
 
 it('redirects guests from viewing the transcode index', function () {

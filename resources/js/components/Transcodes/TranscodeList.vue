@@ -65,19 +65,8 @@ const createTranscode = (): void =>
       />
     </div>
 
-    <UEmpty
-      v-else-if="!items.length"
-      icon="i-lucide-cpu"
-      title="No transcodes"
-      :description="
-        video
-          ? 'Transcode this video to AV1 to possibly reduce file size while maintaining quality.'
-          : 'Transcodes will appear here once videos are being processed.'
-      "
-    />
-
     <UPageList
-      v-else
+      v-else-if="items.length"
       divide
     >
       <UPageCard

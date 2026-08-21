@@ -7,6 +7,7 @@ namespace App\Web\Transcodes\Controllers;
 use App\Api\Transcodes\Requests\TranscodeUpdateRequest;
 use App\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Enums\TranscodeScope;
+use Domain\Transcodes\Enums\TranscodeSorter;
 use Domain\Transcodes\Filters\TranscodeScopeFilter;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
@@ -49,6 +50,7 @@ class TranscodeController implements HasMiddleware
             ->allowedSorts(
                 $defaultSort,
                 AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('updated', 'updated_at')->defaultDescending(),
             )
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 16);
@@ -56,6 +58,7 @@ class TranscodeController implements HasMiddleware
         return Inertia::render('Transcodes/TranscodeIndex', [
             'items' => Inertia::scroll(fn () => TranscodeResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(TranscodeScope::class),
+            'sorters' => fn () => Options::forEnum(TranscodeSorter::class),
             new ScoutBuilderProperties('transcodes'),
         ]);
     }

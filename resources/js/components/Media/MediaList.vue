@@ -37,15 +37,8 @@ const { getStreamInfo } = useMedia()
       />
     </div>
 
-    <UEmpty
-      v-else-if="!items.length"
-      icon="i-lucide-image"
-      title="No media"
-      description="Media files associated with this video will appear here."
-    />
-
     <UPageList
-      v-else
+      v-else-if="items.length"
       divide
     >
       <UPageCard
