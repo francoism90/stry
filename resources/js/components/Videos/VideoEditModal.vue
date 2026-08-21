@@ -8,7 +8,7 @@ import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
 import type { Media, Playlist, TagMenuItem, Transcode, Video } from '@/types'
 import { capitalize } from '@/utils/case'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDateTime } from '@internationalized/date'
 import type { TabsItem } from '@nuxt/ui'
 import { computed } from 'vue'
@@ -67,6 +67,11 @@ const capitalizeName = (): void => {
 }
 
 const setSnapshotFromProgress = (): void => {
+  router.reload({
+    only: ['progress'],
+    data: { progress: props.progress },
+  })
+
   form.snapshot = props.progress || null
 }
 
