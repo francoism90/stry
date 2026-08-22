@@ -10,6 +10,9 @@ tags:
 
 A quick look at stry in action.
 
+> [!NOTE]
+> Screenshots may lag behind active development — stry is evolving, and the UI shown here can differ from what you see after pulling the latest changes.
+
 ## At a glance
 
 <div className="gallery-thumbs">

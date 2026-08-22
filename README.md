@@ -42,7 +42,7 @@
 For a visual tour of the app, check out the [screenshots gallery](https://francoism90.github.io/stry/screenshots).
 
 > [!NOTE]
-> A hosted demo is planned, but not yet available.
+> A hosted demo is planned, but not yet available. Screenshots may lag behind active development — expect the UI to evolve as features are added and improved.
 
 ---
 
