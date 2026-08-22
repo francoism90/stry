@@ -7,6 +7,7 @@ use App\Web\Groups\Controllers\GroupToggleController;
 use App\Web\Media\Controllers\MediaDownloadController;
 use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Web\Profiles\Controllers\SwitchProfileController;
+use App\Web\Shuffle\Controllers\ShuffleController;
 use App\Web\Tags\Controllers\TagOrderController;
 use App\Web\Users\Controllers\UserSettingsController;
 use App\Web\Videos\Controllers\VideoDispatchTranscodeController;
@@ -41,6 +42,9 @@ Route::prefix('/media')->name('media.')->group(function () {
 Route::prefix('/notifications')->name('notifications.')->group(function () {
     Route::post('/mark-all-read', MarkAllNotificationsReadController::class)->name('mark-all-read');
 });
+
+// Shuffle
+Route::get('/shuffle/{type}', ShuffleController::class)->name('shuffle');
 
 // Tags
 Route::prefix('/tags')->name('tags.')->group(function () {
