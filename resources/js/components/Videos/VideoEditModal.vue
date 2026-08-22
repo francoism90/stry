@@ -26,7 +26,7 @@ const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
   { label: 'Playlists', icon: 'i-lucide-list', slot: 'playlists' },
-  { label: 'Manage', icon: 'i-lucide-settings', slot: 'manage' },
+  { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
 
 const stateOptions: OptionItem[] = [
