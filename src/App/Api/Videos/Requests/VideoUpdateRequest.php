@@ -32,7 +32,7 @@ class VideoUpdateRequest extends FormRequest
             'summary' => ['sometimes', 'nullable', 'string', 'max:4096'],
             'expires_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
             'published_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
-            'released_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
+            'released_at' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
         ];
     }
 }

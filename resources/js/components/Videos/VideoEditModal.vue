@@ -9,7 +9,7 @@ import { useTags } from '@/composables/tags'
 import type { Media, Playlist, TagMenuItem, Transcode, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { router, useForm } from '@inertiajs/vue3'
-import type { CalendarDateTime } from '@internationalized/date'
+import type { CalendarDate, CalendarDateTime } from '@internationalized/date'
 import type { TabsItem } from '@nuxt/ui'
 import { computed } from 'vue'
 import PlaylistList from '../Playlists/PlaylistList.vue'
@@ -31,7 +31,7 @@ const tabs: TabsItem[] = [
 
 const open = defineModel<boolean>('open')
 
-const { toDateTime, fromDateTime, nowDateTime } = useLocale()
+const { toDateTime, fromDateTime, nowDateTime, toDate, fromDate, nowDate } = useLocale()
 const { items, filter } = useTags(props.video.tags || [])
 
 const form = useForm(update(props.video.id), {
@@ -56,9 +56,9 @@ const publishedAt = computed({
 })
 
 const releasedAt = computed({
-  get: () => toDateTime(form.released_at),
-  set: (value: CalendarDateTime | null) => {
-    form.released_at = fromDateTime(value)
+  get: () => toDate(form.released_at),
+  set: (value: CalendarDate | null) => {
+    form.released_at = fromDate(value)
   },
 })
 
@@ -80,7 +80,7 @@ const setPublishedAtNow = (): void => {
 }
 
 const setReleasedAtNow = (): void => {
-  releasedAt.value = nowDateTime()
+  releasedAt.value = nowDate()
 }
 
 const onSubmit = (close: () => void) =>
@@ -201,7 +201,6 @@ const onSubmit = (close: () => void) =>
             >
               <UInputDate
                 v-model="releasedAt"
-                granularity="second"
                 :ui="{ trailing: 'pe-1' }"
               >
                 <template #trailing>
@@ -209,8 +208,8 @@ const onSubmit = (close: () => void) =>
                     color="neutral"
                     variant="link"
                     size="sm"
-                    icon="i-lucide-calendar-clock"
-                    aria-label="Set to now"
+                    icon="i-lucide-calendar"
+                    aria-label="Set to today"
                     @click.prevent="setReleasedAtNow"
                   />
                 </template>

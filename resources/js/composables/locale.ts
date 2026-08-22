@@ -1,5 +1,5 @@
 import { usePage } from '@inertiajs/vue3'
-import { CalendarDateTime, parseDateTime } from '@internationalized/date'
+import { CalendarDate, CalendarDateTime, parseDate, parseDateTime } from '@internationalized/date'
 import { computed } from 'vue'
 
 export function useLocale() {
@@ -34,10 +34,35 @@ export function useLocale() {
     )
   }
 
+  const toDate = (value: string | null): CalendarDate | null => {
+    if (!value) return null
+
+    try {
+      return parseDate(value.slice(0, 10))
+    } catch {
+      return null
+    }
+  }
+
+  const fromDate = (value: CalendarDate | null): string | null => {
+    if (!value) return null
+
+    return value.toString()
+  }
+
+  const nowDate = (): CalendarDate => {
+    const d = new Date()
+
+    return new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate())
+  }
+
   return {
     locale,
     toDateTime,
     fromDateTime,
     nowDateTime,
+    toDate,
+    fromDate,
+    nowDate,
   }
 }

@@ -215,6 +215,13 @@ it('casts snapshot as decimal', function () {
     expect($video->snapshot)->toBe('12.50');
 });
 
+it('casts released_at as a date without time', function () {
+    $video = Video::factory()->create(['released_at' => '2026-08-22 14:30:00']);
+
+    expect($video->fresh()->released_at->toDateString())->toBe('2026-08-22')
+        ->and($video->fresh()->released_at->toTimeString())->toBe('00:00:00');
+});
+
 it('returns array-typed fields as lists in the searchable array', function () {
     $video = Video::factory()->create();
 

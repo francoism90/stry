@@ -8,6 +8,7 @@ use Database\Factories\VideoFactory;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
+use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
@@ -104,7 +105,7 @@ class Video extends Model implements HasMedia
             'adult' => 'boolean',
             'expires_at' => AsDateTime::class,
             'published_at' => AsDateTime::class,
-            'released_at' => AsDateTime::class,
+            'released_at' => AsDate::class,
             'created_at' => AsDateTime::class,
             'updated_at' => AsDateTime::class,
             'deleted_at' => AsDateTime::class,

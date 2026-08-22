@@ -48,7 +48,7 @@ class VideoResource extends JsonResource
             'snapshot' => $this->whenAppended('snapshot'),
             'state' => $this->state->toArray(),
             'published_at' => $this->published_at?->toDateTimeString(),
-            'released_at' => $this->released_at?->toDateTimeString(),
+            'released_at' => $this->released_at?->toDateString(),
             'expires_at' => $this->expires_at?->toDateTimeString(),
             'deleted_at' => $this->deleted_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
