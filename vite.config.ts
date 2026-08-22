@@ -20,7 +20,13 @@ export default defineConfig(({ mode }) => {
       strictPort: true,
       hmr: { host: env.VITE_HMR_HOST, clientPort: 443, protocol: 'wss' },
       watch: {
-        ignored: ['**/storage/framework/views/**'],
+        ignored: [
+          '**/storage/framework/views/**',
+          '**/storage/logs/**',
+          '**/vendor/**',
+          '**/node_modules/**',
+          '**/docs/**',
+        ],
       },
     },
     resolve: {

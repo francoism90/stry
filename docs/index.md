@@ -16,6 +16,8 @@ tags:
 
 **[Development Setup](development.md)** — developing locally? Start here.
 
+**[Screenshots](screenshots.md)** — see what stry looks like before you deploy it.
+
 ## Guides
 
 | Guide                                         | Description                                  |

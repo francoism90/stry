@@ -1,27 +1,32 @@
 <script setup lang="ts">
 import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
-import ProfileFilterBar from '@/components/Profiles/ProfileFilterBar.vue'
 import ProfileList from '@/components/Profiles/ProfileList.vue'
-import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
+import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import type { Profile, ProfileCollection } from '@/types'
+import type { OptionItem, Profile, ProfileCollection, QueryFilter, QueryValue } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
-import type { SelectMenuItem } from '@nuxt/ui'
 
-defineProps<{
+const props = defineProps<{
   profile: Profile | null
   items: ProfileCollection
-  sorters: SelectMenuItem[]
-  sort?: string | null
+  scopes?: OptionItem[]
+  sorters?: OptionItem[]
+  filter?: QueryFilter
+  sort?: QueryValue
+  query?: QueryValue
 }>()
 
 defineOptions({
-  layout: [AppLayout, ResourceLayout],
+  layout: [AppLayout, ContentLayout],
 })
 
 setLayoutProps({
-  id: 'profiles',
-  fluid: true,
+  id: 'profiles.index',
+  scopes: props.scopes,
+  sorters: props.sorters,
+  filter: props.filter,
+  sort: props.sort,
+  query: props.query,
 })
 
 const switchProfile = (item: Profile) =>
@@ -34,16 +39,6 @@ const switchProfile = (item: Profile) =>
   <Head title="Profiles" />
 
   <UPage>
-    <UDashboardToolbar>
-      <template #left>
-        <ProfileFilterBar
-          :results="Boolean(items?.data?.length)"
-          :sorters="sorters"
-          :sort="sort"
-        />
-      </template>
-    </UDashboardToolbar>
-
     <InfiniteScroll
       data="items"
       items-element="#infinite-items"

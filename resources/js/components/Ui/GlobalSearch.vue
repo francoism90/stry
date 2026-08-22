@@ -15,6 +15,7 @@ const searchTargets = {
   'Groups/GroupView': { placeholder: 'Search videos' },
   'Transcodes/TranscodeIndex': { placeholder: 'Search transcodes' },
   'Users/UserIndex': { placeholder: 'Search users' },
+  'Profiles/ProfileIndex': { placeholder: 'Search profiles' },
 } as const
 
 const page = usePage()

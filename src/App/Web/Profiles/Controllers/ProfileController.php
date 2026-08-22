@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Web\Profiles\Controllers;
 
-use App\Api\Profiles\Requests\ProfileIndexRequest;
 use App\Api\Profiles\Requests\ProfileStoreRequest;
 use App\Api\Profiles\Requests\ProfileUpdateRequest;
 use App\Api\Profiles\Resources\ProfileResource;
 use App\Web\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;
+use Domain\Profiles\Enums\ProfileScope;
 use Domain\Profiles\Enums\ProfileSorter;
+use Domain\Profiles\Filters\ProfileScopeFilter;
 use Domain\Profiles\Models\Profile;
+use Domain\Profiles\Scopes\ProfileUserScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -33,24 +39,32 @@ class ProfileController implements HasMiddleware
         ];
     }
 
-    public function index(ProfileIndexRequest $request): Response
+    public function index(): Response
     {
         Gate::authorize('viewAny', Profile::class);
 
-        // Apply filters
-        $sort = $request->safe()->input('sort');
+        // Scout builder
+        $defaultSort = AllowedSort::field('name');
 
-        // Query builder
-        $query = $request->user()
-            ->profiles()
-            ->ordered(order: $sort)
-            ->simplePaginate(perPage: 24);
+        $scout = ScoutBuilder::for(Profile::class)
+            ->tap(new ProfileUserScope)
+            ->allowedFilters(
+                AllowedFilter::custom('scope', new ProfileScopeFilter),
+            )
+            ->allowedSorts(
+                $defaultSort,
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+            )
+            ->defaultSort($defaultSort)
+            ->jsonSimplePaginate(defaultSize: 24);
 
         return Inertia::render('Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty,
-            'items' => Inertia::scroll(fn () => ProfileResource::collection($query)),
-            'sort' => fn () => $sort,
+            'items' => Inertia::scroll(fn () => ProfileResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(ProfileScope::class),
             'sorters' => fn () => Options::forEnum(ProfileSorter::class),
+            new ScoutBuilderProperties('profiles'),
         ]);
     }
 
