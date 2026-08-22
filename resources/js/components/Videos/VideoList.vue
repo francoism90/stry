@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="grid grid-cols-1 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-y-10">
+  <UBlogPosts class="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-y-10">
     <VideoCard
       v-for="(item, index) in items ?? []"
       :key="item.id"
