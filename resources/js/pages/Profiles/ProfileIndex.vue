@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
-import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
 import ProfileFilterBar from '@/components/Profiles/ProfileFilterBar.vue'
 import ProfileList from '@/components/Profiles/ProfileList.vue'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
@@ -42,10 +41,6 @@ const switchProfile = (item: Profile) =>
           :sorters="sorters"
           :sort="sort"
         />
-      </template>
-
-      <template #right>
-        <ProfileCreateModal />
       </template>
     </UDashboardToolbar>
 
