@@ -39,7 +39,7 @@ useFlash()
         dashboardSidebar: {
           root: 'sticky top-0 h-svh max-w-xs bg-(--ui-sidebar)',
           content: 'max-w-xs bg-(--ui-sidebar)',
-          overlay: 'lg:block',
+          overlay: 'xl:block',
         },
         pageHeader: {
           root: 'border-0',
