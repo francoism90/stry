@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Web\Groups\Controllers\GroupController;
+use App\Web\Profiles\Controllers\ProfileController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Videos\Controllers\VideoController;
 use Domain\Groups\Models\Group;
@@ -27,6 +28,7 @@ it('remembers the last search term for the global search bar', function (string 
     VideoController::class,
     TagController::class,
     GroupController::class,
+    ProfileController::class,
 ]);
 
 it('does not overwrite the remembered search term with an empty query', function (string $controller) {
@@ -43,6 +45,7 @@ it('does not overwrite the remembered search term with an empty query', function
     VideoController::class,
     TagController::class,
     GroupController::class,
+    ProfileController::class,
 ]);
 
 it('forgets the remembered search term when an empty query is explicitly submitted', function (string $controller) {
@@ -59,6 +62,7 @@ it('forgets the remembered search term when an empty query is explicitly submitt
     VideoController::class,
     TagController::class,
     GroupController::class,
+    ProfileController::class,
 ]);
 
 it('keeps remembered search terms isolated per resource', function () {

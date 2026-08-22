@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import GroupCreateModal from '@/components/Groups/GroupCreateModal.vue'
+import ProfileCreateModal from '@/components/Profiles/ProfileCreateModal.vue'
 import TagCreateModal from '@/components/Tags/TagCreateModal.vue'
 import UserCreateModal from '@/components/Users/UserCreateModal.vue'
 import VideoImportModal from '@/components/Videos/VideoImportModal.vue'
@@ -13,12 +14,18 @@ const isVideoModalOpen = ref(false)
 const isTagModalOpen = ref(false)
 const isCollectionModalOpen = ref(false)
 const isUserModalOpen = ref(false)
+const isProfileModalOpen = ref(false)
 
 const items = computed<DropdownMenuItem[]>(() => [
   {
     label: 'Collection',
     icon: 'i-lucide-folder',
     onClick: () => (isCollectionModalOpen.value = true),
+  },
+  {
+    label: 'Profile',
+    icon: 'i-lucide-user-round-plus',
+    onClick: () => (isProfileModalOpen.value = true),
   },
   ...(hasRole('super-admin')
     ? [
@@ -76,6 +83,11 @@ const items = computed<DropdownMenuItem[]>(() => [
 
   <UserCreateModal
     v-model:open="isUserModalOpen"
+    :trigger="false"
+  />
+
+  <ProfileCreateModal
+    v-model:open="isProfileModalOpen"
     :trigger="false"
   />
 </template>

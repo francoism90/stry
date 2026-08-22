@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ShuffleController from '@/actions/App/Web/Shuffle/Controllers/ShuffleController'
 import { QueryInjectionKey } from '@/composables/query'
 import { home } from '@/routes'
 import { router, usePage } from '@inertiajs/vue3'
@@ -14,6 +15,7 @@ const searchTargets = {
   'Groups/GroupView': { placeholder: 'Search videos' },
   'Transcodes/TranscodeIndex': { placeholder: 'Search transcodes' },
   'Users/UserIndex': { placeholder: 'Search users' },
+  'Profiles/ProfileIndex': { placeholder: 'Search profiles' },
 } as const
 
 const page = usePage()
@@ -21,6 +23,9 @@ const input = useTemplateRef('input')
 const query = inject(QueryInjectionKey)!
 
 const target = computed(() => searchTargets[page.component as keyof typeof searchTargets] ?? null)
+
+// "Feeling lucky": shuffle a random tag on the tags index, a random video everywhere else.
+const shuffleUrl = computed(() => ShuffleController.url(page.component === 'Tags/TagIndex' ? 'tags' : 'videos'))
 
 const searchText = computed({
   get: () => (query.form.query ?? '').toString(),
@@ -77,6 +82,7 @@ defineShortcuts({
     </UInput>
 
     <UButton
+      :to="shuffleUrl"
       size="sm"
       icon="i-lucide-dices"
       color="neutral"

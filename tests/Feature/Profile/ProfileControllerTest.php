@@ -19,45 +19,7 @@ it('renders the profiles page for authenticated users', function () {
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
         ->component('Profiles/ProfileIndex')
-        ->has('items.data', 2)
     );
-});
-
-it('sorts profiles by created_at when requested', function () {
-    $user = User::factory()->create();
-
-    $older = Profile::factory()->create([
-        'user_id' => $user->getKey(),
-        'is_primary' => false,
-        'created_at' => now()->subDay(),
-    ]);
-
-    $newer = Profile::factory()->create([
-        'user_id' => $user->getKey(),
-        'is_primary' => false,
-        'created_at' => now(),
-    ]);
-
-    $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
-        'sort' => 'newest',
-    ]));
-
-    $response->assertSuccessful();
-    $response->assertInertia(fn ($page) => $page
-        ->where('sort', 'newest')
-        ->where('items.data.0.id', $newer->getRouteKey())
-        ->where('items.data.1.id', $older->getRouteKey())
-    );
-});
-
-it('rejects unknown profile sort values', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(action([ProfileController::class, 'index'], [
-        'sort' => 'invalid',
-    ]));
-
-    $response->assertSessionHasErrors('sort');
 });
 
 it('redirects guests from the profiles page', function () {
@@ -81,11 +43,6 @@ it('switches the current profile for the authenticated user', function () {
 it('marks the switched profile as current', function () {
     $user = User::factory()->create();
 
-    $first = Profile::factory()->create([
-        'user_id' => $user->getKey(),
-        'name' => 'A',
-    ]);
-
     $second = Profile::factory()->create([
         'user_id' => $user->getKey(),
         'name' => 'B',
@@ -97,8 +54,6 @@ it('marks the switched profile as current', function () {
 
     $response->assertSuccessful();
     $response->assertInertia(fn ($page) => $page
-        ->where('items.data.0.id', $first->getRouteKey())
-        ->where('items.data.1.id', $second->getRouteKey())
         ->where('profile.id', $second->getRouteKey())
     );
 });

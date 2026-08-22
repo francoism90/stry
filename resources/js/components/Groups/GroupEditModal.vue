@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import GroupClearModal from '@/components/Groups/GroupClearModal.vue'
 import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import type { Group } from '@/types'
@@ -65,6 +66,24 @@ const onSubmit = (close: () => void) =>
             />
           </UFormField>
         </UForm>
+
+        <USeparator />
+
+        <div class="flex flex-col gap-2">
+          <p class="text-sm font-semibold text-error">Clear collection</p>
+          <p class="text-sm text-muted">Remove all videos from this collection.</p>
+
+          <GroupClearModal :item="group">
+            <UButton
+              label="Clear collection"
+              icon="i-lucide-eraser"
+              color="error"
+              variant="soft"
+              size="sm"
+              class="w-fit"
+            />
+          </GroupClearModal>
+        </div>
 
         <USeparator />
 

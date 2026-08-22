@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -33,6 +34,7 @@ class Profile extends Model implements HasMedia
     use HasUlids;
     use InteractsWithMedia;
     use InteractsWithUser;
+    use Searchable;
 
     /**
      * @var array<int, string>
@@ -215,5 +217,19 @@ class Profile extends Model implements HasMedia
         return Attribute::make(
             get: fn (): ?string => $this->thumbnailUrl(),
         )->shouldCache();
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string) $this->getScoutKey(),
+            'user_id' => (string) $this->user_id,
+            'name' => (string) $this->name,
+            'is_kids' => (bool) $this->is_kids,
+            'is_primary' => (bool) $this->is_primary,
+            'state' => (string) $this->state,
+            'created_at' => (int) $this->created_at->getTimestamp(),
+            'updated_at' => (int) $this->updated_at->getTimestamp(),
+        ];
     }
 }

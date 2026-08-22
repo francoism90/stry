@@ -12,9 +12,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
 [![Podman](https://img.shields.io/badge/Podman-5.x-892CA0?logo=podman)](https://podman.io)
-[![Demo](https://img.shields.io/badge/Demo-Screenshots-181717?logo=github)](https://github.com/francoism90/.github/tree/main/stry)
+[![Demo](https://img.shields.io/badge/Demo-Screenshots-181717?logo=github)](https://francoism90.github.io/stry/screenshots)
 
-[Demo](https://github.com/francoism90/.github/tree/main/stry) • [Documentation](#documentation) • [Installation](#usage)
+[Demo](https://francoism90.github.io/stry/screenshots) • [Documentation](#documentation) • [Installation](#usage)
 
 ---
 
@@ -39,10 +39,10 @@
 
 ## Demo
 
-For WIP screenshots, please check out: <https://github.com/francoism90/.github/tree/main/stry>
+For a visual tour of the app, check out the [screenshots gallery](https://francoism90.github.io/stry/screenshots).
 
 > [!NOTE]
-> A hosted demo is planned, but not yet available.
+> A hosted demo is planned, but not yet available. Screenshots may lag behind active development — expect the UI to evolve as features are added and improved.
 
 ---
 
@@ -101,6 +101,7 @@ Comprehensive guides are available on the [documentation site](https://francoism
 
 | Guide                                    | Description                                          |
 | ---------------------------------------- | ---------------------------------------------------- |
+| [Screenshots](https://francoism90.github.io/stry/screenshots) | Visual tour of the app                |
 | [Production Setup](docs/production.md)   | Deploy to production                                 |
 | [Development Guide](docs/development.md) | Local development setup                              |
 | [Configuration](docs/configuration.md)   | Configuration options                                |

@@ -27,10 +27,10 @@ const emit = defineEmits<{
     <p class="text-sm text-muted">Create a profile to personalize watch history and recommendations.</p>
   </div>
 
-  <div
+  <UPageList
     v-else
     v-bind="$attrs"
-    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+    divide
   >
     <ProfileCard
       v-for="item in props.items"
@@ -39,5 +39,5 @@ const emit = defineEmits<{
       :current="props.current"
       @switch-profile="emit('switchProfile', item)"
     />
-  </div>
+  </UPageList>
 </template>

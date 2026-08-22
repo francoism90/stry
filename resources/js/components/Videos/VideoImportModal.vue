@@ -35,7 +35,7 @@ const onSubmit = (close: () => void) => {
 <template>
   <FormModal
     v-model:open="open"
-    title="Import videos"
+    title="Import Videos"
     submit-label="Import all"
     :processing="processing"
     @submit="onSubmit"

@@ -15,63 +15,63 @@ const emit = defineEmits<{
 
 <template>
   <UPageCard
-    variant="subtle"
-    :ui="{ body: 'flex items-center gap-3', footer: 'flex items-center justify-between' }"
+    variant="naked"
+    class="py-3 first:pt-0 last:pb-0"
   >
-    <template #body>
-      <UAvatar
-        :src="item.avatar ?? undefined"
-        :alt="item.name"
-        size="lg"
-      />
+    <div class="flex items-center justify-between">
+      <UUser
+        :name="item.name"
+        :avatar="{
+          src: item.avatar ?? undefined,
+          alt: item.name,
+          size: 'lg',
+        }"
+        :ui="{ wrapper: 'flex flex-col gap-1.5' }"
+      >
+        <template #description>
+          <div class="flex items-center gap-1">
+            <UBadge
+              color="neutral"
+              variant="soft"
+              size="sm"
+            >
+              {{ item.state.label }}
+            </UBadge>
 
-      <div class="flex min-w-0 flex-col gap-1">
-        <p class="truncate font-semibold">{{ item.name }}</p>
+            <UBadge
+              v-if="item.is_primary"
+              color="primary"
+              variant="soft"
+              size="sm"
+            >
+              Primary
+            </UBadge>
 
-        <div class="flex items-center gap-2">
-          <UBadge
-            color="neutral"
-            variant="soft"
-            size="sm"
-          >
-            {{ item.state.label }}
-          </UBadge>
+            <UBadge
+              v-if="item.is_kids"
+              color="warning"
+              variant="soft"
+              size="sm"
+            >
+              Kids
+            </UBadge>
+          </div>
+        </template>
+      </UUser>
 
-          <UBadge
-            v-if="item.is_primary"
-            color="primary"
-            variant="soft"
-            size="sm"
-          >
-            Primary
-          </UBadge>
-
-          <UBadge
-            v-if="item.is_kids"
-            color="warning"
-            variant="soft"
-            size="sm"
-          >
-            Kids
-          </UBadge>
-        </div>
-      </div>
-    </template>
-
-    <template #footer>
-      <div class="flex items-center gap-2">
+      <div class="z-10 flex items-center gap-2">
         <ProfileEditModal :item="item" />
         <ProfileDeleteModal :item="item" />
-      </div>
 
-      <UButton
-        :label="item.id === current?.id ? 'Current' : 'Switch'"
-        color="neutral"
-        variant="soft"
-        size="sm"
-        :disabled="item.id === current?.id"
-        @click="emit('switchProfile', item)"
-      />
-    </template>
+        <UButton
+          :label="item.id === current?.id ? 'Current' : 'Switch'"
+          color="neutral"
+          variant="soft"
+          size="sm"
+          :disabled="item.id === current?.id"
+          @click="emit('switchProfile', item)"
+        />
+      </div>
+    </div>
   </UPageCard>
 </template>

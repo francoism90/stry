@@ -2,6 +2,7 @@
 
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
+use Domain\Profiles\Models\Profile;
 use Domain\Tags\Models\Tag;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
@@ -559,6 +560,57 @@ return [
 
                 'search-parameters' => [
                     'query_by' => 'name, content',
+                    'facet_by' => 'state',
+                ],
+            ],
+
+            Profile::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'user_id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'is_kids',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'is_primary',
+                            'type' => 'bool',
+                        ],
+                        [
+                            'name' => 'state',
+                            'type' => 'string',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int64',
+                            'sort' => true,
+                        ],
+                    ],
+
+                    'token_separators' => ['+', '-', '_', '@', '.', '|'],
+
+                ],
+
+                'search-parameters' => [
+                    'query_by' => 'name',
                     'facet_by' => 'state',
                 ],
             ],
