@@ -35,7 +35,6 @@ readonly class VideoMediaProperty implements ProvidesInertiaProperty
             ->latest()
             ->limit($this->limit ?? 10)
             ->get()
-            ->each(fn (Media $item) => $item->append(['custom_properties', 'generated_conversions']))
             ->toResourceCollection(MediaResource::class);
     }
 }

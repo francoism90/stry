@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Requests;
 
+use Domain\Videos\Enums\VideoLibraryScope;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class VideoUpdateRequest extends FormRequest
 {
@@ -33,6 +35,7 @@ class VideoUpdateRequest extends FormRequest
             'expires_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
             'published_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
             'released_at' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
+            'state' => ['sometimes', Rule::enum(VideoLibraryScope::class)->except(VideoLibraryScope::All)],
         ];
     }
 }

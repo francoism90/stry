@@ -20,6 +20,7 @@ use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Filters\VideoLibraryScopeFilter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoManageScope;
 use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
@@ -57,6 +58,7 @@ class VideoController implements HasMiddleware
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoProfileScope)
+            ->tap(new VideoManageScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
                 AllowedFilter::custom('scope', new VideoLibraryScopeFilter),
@@ -111,10 +113,17 @@ class VideoController implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
+        // Only super-admins may change a video's state
+        $attributes = $request->safe()->all();
+
+        if (! $request->user()->isSuperAdmin()) {
+            unset($attributes['state']);
+        }
+
         // Update video details
         app(UpdateVideoDetails::class)->handle(
             video: $video,
-            attributes: $request->safe()->all()
+            attributes: $attributes
         );
 
         // Notify the user

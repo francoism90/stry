@@ -81,6 +81,9 @@ const edit = (item: Video): void => {
       v-if="editingItem"
       v-model:open="isEditModalOpen"
       :video="editingItem"
+      :media="editingItem.media"
+      :playlists="editingItem.playlists"
+      :transcodes="editingItem.transcodes"
     />
   </div>
 </template>

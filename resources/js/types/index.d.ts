@@ -162,6 +162,9 @@ export type TagMenuItem = Tag & SelectMenuItem
 export type Video = Model & {
   user?: User
   tags?: Tag[]
+  media?: Media[]
+  playlists?: Playlist[]
+  transcodes?: Transcode[]
   name: string
   title: string
   titles?: string

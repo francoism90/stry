@@ -4,9 +4,10 @@ import MediaList from '@/components/Media/MediaList.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
+import { useAuth } from '@/composables/auth'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
-import type { Media, Playlist, TagMenuItem, Transcode, Video } from '@/types'
+import type { Media, OptionItem, Playlist, TagMenuItem, Transcode, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDate, CalendarDateTime } from '@internationalized/date'
@@ -26,11 +27,18 @@ const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
   { label: 'Playlists', icon: 'i-lucide-list', slot: 'playlists' },
-  { label: 'Transcodes', icon: 'i-lucide-cpu', slot: 'transcodes' },
+  { label: 'Manage', icon: 'i-lucide-settings', slot: 'manage' },
+]
+
+const stateOptions: OptionItem[] = [
+  { label: 'Verified', value: 'verified' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Failed', value: 'failed' },
 ]
 
 const open = defineModel<boolean>('open')
 
+const { hasRole } = useAuth()
 const { toDateTime, fromDateTime, nowDateTime, toDate, fromDate, nowDate } = useLocale()
 const { items, filter } = useTags(props.video.tags || [])
 
@@ -46,6 +54,7 @@ const form = useForm(update(props.video.id), {
   snapshot: props.video.snapshot || null,
   published_at: props.video.published_at || null,
   released_at: props.video.released_at || null,
+  state: props.video.state.name,
 })
 
 const publishedAt = computed({
@@ -87,6 +96,11 @@ const onSubmit = (close: () => void) =>
   form.submit({
     preserveState: true,
     onSuccess: () => close(),
+  })
+
+const setState = (): void =>
+  form.submit({
+    preserveScroll: true,
   })
 </script>
 
@@ -282,24 +296,6 @@ const onSubmit = (close: () => void) =>
             </UFormField>
           </div>
         </UForm>
-
-        <USeparator />
-
-        <div class="flex flex-col gap-2">
-          <p class="text-sm font-semibold text-error">Delete video</p>
-          <p class="text-sm text-muted">This may permanently remove this video and all associated data.</p>
-
-          <VideoDeleteModal :item="video">
-            <UButton
-              label="Delete video"
-              icon="i-lucide-trash"
-              color="error"
-              variant="soft"
-              size="sm"
-              class="w-fit"
-            />
-          </VideoDeleteModal>
-        </div>
       </div>
     </template>
 
@@ -368,11 +364,46 @@ const onSubmit = (close: () => void) =>
       />
     </template>
 
-    <template #transcodes>
-      <TranscodeList
-        :video="video"
-        :items="transcodes"
-      />
+    <template #manage>
+      <div class="flex flex-col gap-4">
+        <div
+          v-if="hasRole('super-admin')"
+          class="flex flex-col gap-2"
+        >
+          <p class="text-sm font-semibold">State</p>
+          <USelect
+            v-model="form.state"
+            :items="stateOptions"
+            class="w-48"
+            @update:model-value="setState"
+          />
+        </div>
+
+        <USeparator v-if="hasRole('super-admin')" />
+
+        <TranscodeList
+          :video="video"
+          :items="transcodes"
+        />
+
+        <USeparator />
+
+        <div class="flex flex-col gap-2">
+          <p class="text-sm font-semibold text-error">Delete video</p>
+          <p class="text-sm text-muted">This may permanently remove this video and all associated data.</p>
+
+          <VideoDeleteModal :item="video">
+            <UButton
+              label="Delete video"
+              icon="i-lucide-trash"
+              color="error"
+              variant="soft"
+              size="sm"
+              class="w-fit"
+            />
+          </VideoDeleteModal>
+        </div>
+      </div>
     </template>
   </FormModal>
 </template>

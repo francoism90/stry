@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Web\Videos\Controllers\VideoController;
 use Domain\Users\Models\User;
+use Domain\Videos\Models\Video;
+use Domain\Videos\States\Failed;
+use Domain\Videos\States\Verified;
 
 // index
 
@@ -28,4 +31,36 @@ it('forbids regular users from viewing the video library', function () {
     $response = $this->actingAs($user)->get(action([VideoController::class, 'index']));
 
     $response->assertForbidden();
+});
+
+// update
+
+it('allows super-admins to change a video state', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $video = Video::factory()->create(['name' => ['en' => 'Original'], 'state' => Verified::class]);
+
+    $response = $this->actingAs($user)->put(action([VideoController::class, 'update'], $video), [
+        'name' => 'Original',
+        'state' => 'failed',
+    ]);
+
+    $response->assertRedirect();
+    expect($video->fresh()->state->equals(Failed::class))->toBeTrue();
+});
+
+it('ignores the state field when a regular owner updates their own video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->for($user)->create(['name' => ['en' => 'Original'], 'state' => Verified::class]);
+
+    $response = $this->actingAs($user)->put(action([VideoController::class, 'update'], $video), [
+        'name' => 'Updated',
+        'state' => 'failed',
+    ]);
+
+    $response->assertRedirect();
+    expect($video->fresh())
+        ->name->toBe('Updated')
+        ->state->equals(Verified::class)->toBeTrue();
 });

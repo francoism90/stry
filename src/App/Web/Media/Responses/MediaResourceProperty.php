@@ -26,15 +26,8 @@ readonly class MediaResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        // Append necessary attributes for the edit form
-        $appends = [
-            'custom_properties',
-            'generated_conversions',
-        ];
-
         return $this->media
             ->loadMissing('model')
-            ->append($appends)
             ->toResource(MediaResource::class);
     }
 }
