@@ -15,9 +15,9 @@ use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Web\Videos\Responses\VideoTranscodesProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Enums\VideoScope;
+use Domain\Videos\Enums\VideoLibraryScope;
 use Domain\Videos\Enums\VideoSorter;
-use Domain\Videos\Filters\VideoScopeFilter;
+use Domain\Videos\Filters\VideoLibraryScopeFilter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoProfileScope;
@@ -59,7 +59,7 @@ class VideoController implements HasMiddleware
             ->tap(new VideoProfileScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('scope', new VideoScopeFilter),
+                AllowedFilter::custom('scope', new VideoLibraryScopeFilter),
                 AllowedFilter::custom('tagged', new Filters\FilterTagged),
             )
             ->allowedSorts(
@@ -78,7 +78,7 @@ class VideoController implements HasMiddleware
 
         return Inertia::render('Videos/VideoLibrary', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoScope::class),
+            'scopes' => fn () => Options::forEnum(VideoLibraryScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             new ScoutBuilderProperties('videos'),
         ]);
