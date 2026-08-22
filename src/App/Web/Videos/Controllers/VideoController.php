@@ -15,11 +15,12 @@ use App\Web\Videos\Responses\VideoQueueProperty;
 use App\Web\Videos\Responses\VideoResourceProperty;
 use App\Web\Videos\Responses\VideoTranscodesProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
-use Domain\Videos\Enums\VideoScope;
+use Domain\Videos\Enums\VideoLibraryScope;
 use Domain\Videos\Enums\VideoSorter;
-use Domain\Videos\Filters\VideoScopeFilter;
+use Domain\Videos\Filters\VideoLibraryScopeFilter;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoManageScope;
 use Domain\Videos\Scopes\VideoProfileScope;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
@@ -57,9 +58,10 @@ class VideoController implements HasMiddleware
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
             ->tap(new VideoProfileScope)
+            ->tap(new VideoManageScope)
             ->allowedFilters(
                 AllowedFilter::exact('captioned'),
-                AllowedFilter::custom('scope', new VideoScopeFilter),
+                AllowedFilter::custom('scope', new VideoLibraryScopeFilter),
                 AllowedFilter::custom('tagged', new Filters\FilterTagged),
             )
             ->allowedSorts(
@@ -74,9 +76,11 @@ class VideoController implements HasMiddleware
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        return Inertia::render('Videos/VideoIndex', [
+        $scout->getCollection()->each(fn (Video $video) => $video->append(['filesize', 'codec']));
+
+        return Inertia::render('Videos/VideoLibrary', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(VideoScope::class),
+            'scopes' => fn () => Options::forEnum(VideoLibraryScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             new ScoutBuilderProperties('videos'),
         ]);

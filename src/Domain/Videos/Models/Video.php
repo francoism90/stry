@@ -456,6 +456,13 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    protected function codec(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->getClips()->first()?->getVideoStream()['codec_name'] ?? null,
+        )->shouldCache();
+    }
+
     protected function duration(): Attribute
     {
         return Attribute::make(

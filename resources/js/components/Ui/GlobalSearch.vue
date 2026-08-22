@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { index as videoIndex } from '@/actions/App/Web/Videos/Controllers/VideoController'
 import { QueryInjectionKey } from '@/composables/query'
+import { home } from '@/routes'
 import { router, usePage } from '@inertiajs/vue3'
 import { computed, inject, useTemplateRef } from 'vue'
 
 const searchTargets = {
   'Videos/VideoIndex': { placeholder: 'Search videos' },
-  'Videos/VideoView': { placeholder: 'Search videos', route: videoIndex['/'].url() },
+  'Videos/VideoLibrary': { placeholder: 'Search videos' },
+  'Videos/VideoView': { placeholder: 'Search videos', route: home.url() },
   'Tags/TagIndex': { placeholder: 'Search tags' },
   'Tags/TagView': { placeholder: 'Search videos' },
   'Groups/GroupIndex': { placeholder: 'Search collections' },

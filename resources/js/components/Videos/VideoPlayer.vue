@@ -47,7 +47,7 @@ const actions = ref<ButtonProps[]>([
       v-if="!ready && !error"
       title="Preparing your video..."
       description="This will refresh automatically once your video is ready."
-      icon="i-lucide-hard-drive-download"
+      loading
       :actions="actions"
     />
 

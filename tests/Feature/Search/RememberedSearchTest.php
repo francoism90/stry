@@ -16,6 +16,7 @@ uses(RefreshDatabase::class);
 
 it('remembers the last search term for the global search bar', function (string $controller) {
     $user = User::factory()->create();
+    $user->assignRole('super-admin');
 
     $this->actingAs($user)->get(action([$controller, 'index'], ['query' => 'remembered term']));
 
@@ -30,6 +31,7 @@ it('remembers the last search term for the global search bar', function (string 
 
 it('does not overwrite the remembered search term with an empty query', function (string $controller) {
     $user = User::factory()->create();
+    $user->assignRole('super-admin');
 
     $this->actingAs($user)->get(action([$controller, 'index'], ['query' => 'remembered term']));
     $this->actingAs($user)->get(action([$controller, 'index']));
@@ -45,6 +47,7 @@ it('does not overwrite the remembered search term with an empty query', function
 
 it('forgets the remembered search term when an empty query is explicitly submitted', function (string $controller) {
     $user = User::factory()->create();
+    $user->assignRole('super-admin');
 
     $this->actingAs($user)->get(action([$controller, 'index'], ['query' => 'remembered term']));
     $this->actingAs($user)->get(action([$controller, 'index'], ['query' => '']));
@@ -60,6 +63,7 @@ it('forgets the remembered search term when an empty query is explicitly submitt
 
 it('keeps remembered search terms isolated per resource', function () {
     $user = User::factory()->create();
+    $user->assignRole('super-admin');
 
     $this->actingAs($user)->get(action([TagController::class, 'index'], ['query' => 'tag term']));
     $this->actingAs($user)->get(action([VideoController::class, 'index'], ['query' => 'video term']));
@@ -73,6 +77,7 @@ it('keeps remembered search terms isolated per resource', function () {
 
 it('keeps the remembered search term isolated between the videos index, a tag view, and a group view', function () {
     $user = User::factory()->create();
+    $user->assignRole('super-admin');
     $tag = Tag::factory()->create();
     $group = Group::factory()->for($user)->create();
 

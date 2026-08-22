@@ -162,6 +162,9 @@ export type TagMenuItem = Tag & SelectMenuItem
 export type Video = Model & {
   user?: User
   tags?: Tag[]
+  media?: Media[]
+  playlists?: Playlist[]
+  transcodes?: Transcode[]
   name: string
   title: string
   titles?: string
@@ -176,6 +179,7 @@ export type Video = Model & {
   duration: number | null
   timestamp: string | null
   filesize?: string
+  codec?: string
   snapshot?: number
   thumb: string | null
   thumb_srcset: string | null
@@ -184,6 +188,7 @@ export type Video = Model & {
   liked: boolean | null
   saved: boolean | null
   viewed: boolean | null
+  manage: boolean
   expires_at: string | null
   published_at: string | null
   released_at: string | null

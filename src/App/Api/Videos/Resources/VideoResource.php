@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Resources;
 
+use App\Api\Media\Resources\MediaResource;
+use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Tags\Resources\TagResource;
+use App\Api\Transcodes\Resources\TranscodeResource;
 use App\Api\Users\Resources\UserResource;
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
@@ -41,10 +44,17 @@ class VideoResource extends JsonResource
             'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
             'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
             'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
+            'manage' => $request->user()?->can('update', $this->resource) ?? false,
             'titles' => $this->whenAppended('titles'),
             'summary' => $this->whenAppended('summary'),
             'content' => $this->whenAppended('content'),
             'filesize' => $this->whenAppended('filesize'),
+            'codec' => $this->whenAppended('codec'),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'media' => MediaResource::collection($this->whenLoaded('media')),
+            'playlists' => PlaylistResource::collection($this->whenLoaded('playlists')),
+            'transcodes' => TranscodeResource::collection($this->whenLoaded('transcodes')),
             'snapshot' => $this->whenAppended('snapshot'),
             'state' => $this->state->toArray(),
             'published_at' => $this->published_at?->toDateTimeString(),
@@ -53,8 +63,6 @@ class VideoResource extends JsonResource
             'deleted_at' => $this->deleted_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

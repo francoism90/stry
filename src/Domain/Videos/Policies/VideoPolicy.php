@@ -16,7 +16,7 @@ class VideoPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->isSuperAdmin();
     }
 
     public function view(User $user, Video $video): bool
