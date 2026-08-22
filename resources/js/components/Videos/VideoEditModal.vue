@@ -25,7 +25,7 @@ const props = defineProps<{
 const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
-  { label: 'Playlists', icon: 'i-lucide-list', slot: 'playlists' },
+  { label: 'Conversions', icon: 'i-lucide-film', slot: 'conversions' },
   { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
 
@@ -355,11 +355,20 @@ const setState = (): void =>
       </div>
     </template>
 
-    <template #playlists>
-      <PlaylistList
-        :video="video"
-        :items="playlists"
-      />
+    <template #conversions>
+      <div class="flex flex-col gap-4">
+        <PlaylistList
+          :video="video"
+          :items="playlists"
+        />
+
+        <USeparator />
+
+        <TranscodeList
+          :video="video"
+          :items="transcodes"
+        />
+      </div>
     </template>
 
     <template #manage>
@@ -378,13 +387,6 @@ const setState = (): void =>
         </div>
 
         <USeparator v-if="video.manage" />
-
-        <TranscodeList
-          :video="video"
-          :items="transcodes"
-        />
-
-        <USeparator />
 
         <div class="flex flex-col gap-2">
           <p class="text-sm font-semibold text-error">Delete video</p>
