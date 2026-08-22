@@ -36,16 +36,19 @@ const items = computed<NavigationMenuItem[][]>(() => [
             label: 'Library',
             icon: 'i-lucide-library-big',
             to: '/videos',
+            exact: true,
           },
           {
             label: 'Users',
             icon: 'i-lucide-users',
             to: '/users',
+            exact: true,
           },
           {
             label: 'Transcodes',
             icon: 'i-lucide-film',
             to: '/transcodes',
+            exact: true,
           },
         ],
       ]
