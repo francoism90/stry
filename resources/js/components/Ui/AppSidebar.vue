@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAuth } from '@/composables/auth'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
-import AppLogo from './AppLogo.vue'
 
 defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
