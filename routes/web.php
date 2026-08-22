@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Web\Account\Controllers\NotificationsController;
 use App\Web\Groups\Controllers\GroupController;
+use App\Web\Home\Controllers\HomeController;
 use App\Web\Media\Controllers\MediaController;
 use App\Web\Playlists\Controllers\PlaylistController;
 use App\Web\Profiles\Controllers\ProfileController;
@@ -16,12 +17,12 @@ use App\Web\Videos\Controllers\VideoTranscodeController;
 use Illuminate\Support\Facades\Route;
 
 // Home
-Route::get('/', [VideoController::class, 'index'])->name('home');
+Route::get('/', HomeController::class)->name('home');
 
-// // Account
+// Account
 Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
 
-// // Profiles
+// Profiles
 Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);
 
 // Tags
