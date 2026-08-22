@@ -44,6 +44,7 @@ class VideoResource extends JsonResource
             'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
             'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
             'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
+            'manage' => $request->user()?->can('update', $this->resource) ?? false,
             'titles' => $this->whenAppended('titles'),
             'summary' => $this->whenAppended('summary'),
             'content' => $this->whenAppended('content'),

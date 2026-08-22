@@ -4,7 +4,6 @@ import MediaList from '@/components/Media/MediaList.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
-import { useAuth } from '@/composables/auth'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
 import type { Media, OptionItem, Playlist, TagMenuItem, Transcode, Video } from '@/types'
@@ -38,7 +37,6 @@ const stateOptions: OptionItem[] = [
 
 const open = defineModel<boolean>('open')
 
-const { hasRole } = useAuth()
 const { toDateTime, fromDateTime, nowDateTime, toDate, fromDate, nowDate } = useLocale()
 const { items, filter } = useTags(props.video.tags || [])
 
@@ -367,7 +365,7 @@ const setState = (): void =>
     <template #manage>
       <div class="flex flex-col gap-4">
         <div
-          v-if="hasRole('super-admin')"
+          v-if="video.manage"
           class="flex flex-col gap-2"
         >
           <p class="text-sm font-semibold">State</p>
@@ -379,7 +377,7 @@ const setState = (): void =>
           />
         </div>
 
-        <USeparator v-if="hasRole('super-admin')" />
+        <USeparator v-if="video.manage" />
 
         <TranscodeList
           :video="video"

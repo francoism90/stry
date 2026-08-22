@@ -46,11 +46,15 @@ const { toggleLike, toggleSave } = useVideo()
 const { privateChannel } = useEcho()
 
 const links = computed<ButtonProps[]>(() => [
-  {
-    label: 'Edit',
-    icon: 'i-lucide-edit',
-    onClick: () => void (isEditModalOpen.value = true),
-  },
+  ...(props.video.manage
+    ? [
+        {
+          label: 'Edit',
+          icon: 'i-lucide-edit',
+          onClick: () => void (isEditModalOpen.value = true),
+        },
+      ]
+    : []),
   {
     label: props.video.liked ? 'Unlike' : 'Like',
     icon: props.video.liked ? 'i-lucide-heart' : 'i-lucide-heart-plus',
@@ -99,6 +103,7 @@ privateChannel(`videos.${props.video.id}`)
     />
 
     <VideoEditModal
+      v-if="video.manage"
       v-model:open="isEditModalOpen"
       :video="video"
       :progress="progress"

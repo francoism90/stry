@@ -113,17 +113,10 @@ class VideoController implements HasMiddleware
     {
         Gate::authorize('update', $video);
 
-        // Only super-admins may change a video's state
-        $attributes = $request->safe()->all();
-
-        if (! $request->user()->isSuperAdmin()) {
-            unset($attributes['state']);
-        }
-
         // Update video details
         app(UpdateVideoDetails::class)->handle(
             video: $video,
-            attributes: $attributes
+            attributes: $request->safe()->all()
         );
 
         // Notify the user

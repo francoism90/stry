@@ -50,17 +50,30 @@ it('allows super-admins to change a video state', function () {
     expect($video->fresh()->state->equals(Failed::class))->toBeTrue();
 });
 
-it('ignores the state field when a regular owner updates their own video', function () {
+it('allows a regular owner to change their own video state', function () {
     $user = User::factory()->create();
     $video = Video::factory()->for($user)->create(['name' => ['en' => 'Original'], 'state' => Verified::class]);
+
+    $response = $this->actingAs($user)->put(action([VideoController::class, 'update'], $video), [
+        'name' => 'Original',
+        'state' => 'failed',
+    ]);
+
+    $response->assertRedirect();
+    expect($video->fresh()->state->equals(Failed::class))->toBeTrue();
+});
+
+it('forbids a non-owner from updating a video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create(['name' => ['en' => 'Original'], 'state' => Verified::class]);
 
     $response = $this->actingAs($user)->put(action([VideoController::class, 'update'], $video), [
         'name' => 'Updated',
         'state' => 'failed',
     ]);
 
-    $response->assertRedirect();
+    $response->assertForbidden();
     expect($video->fresh())
-        ->name->toBe('Updated')
+        ->name->toBe('Original')
         ->state->equals(Verified::class)->toBeTrue();
 });

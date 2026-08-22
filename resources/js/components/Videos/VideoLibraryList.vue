@@ -64,6 +64,7 @@ const edit = (item: Video): void => {
             />
 
             <UButton
+              v-if="item.manage"
               icon="i-lucide-pencil"
               color="neutral"
               variant="ghost"
