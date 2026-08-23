@@ -7,6 +7,7 @@ namespace Domain\Videos\Listeners;
 use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Pipes\ExtractVideoCaptions;
+use Domain\Videos\Pipes\ExtractVideoStoryboard;
 use Domain\Videos\Pipes\MarkVideoAsVerified;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
@@ -40,7 +41,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
     /**
      * @var int
      */
-    public $timeout = 300;
+    public $timeout = 600;
 
     /**
      * @var bool
@@ -58,6 +59,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
         Pipeline::send($event->video)
             ->through([
                 ExtractVideoCaptions::class,
+                ExtractVideoStoryboard::class,
                 MarkVideoAsVerified::class,
             ])
             ->thenReturn();
