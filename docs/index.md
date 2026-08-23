@@ -29,8 +29,9 @@ tags:
 | [Application Configuration](configuration.md) | Playlist, video, and encoding settings       |
 | [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands       |
 
-> [!TIP]
-> Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their docs for anything generic (secrets, customizing presets). The guides above only cover what's specific to **stry**.
+:::tip
+Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their docs for anything generic (secrets, customizing presets). The guides above only cover what's specific to **stry**.
+:::
 
 ## Key concepts
 

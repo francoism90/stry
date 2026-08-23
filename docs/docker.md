@@ -18,8 +18,9 @@ Docker Compose is an **alternative** to the recommended Podman/Quadlet setup. Us
 - You need cross-platform support (Linux, macOS, Windows)
 - Your infrastructure is already Docker-native
 
-> [!NOTE]
-> [Podman Quadlet](podman.md) is the recommended, tested setup. These Docker Compose files are maintained on a best-effort basis and may need adjustments.
+:::note
+[Podman Quadlet](podman.md) is the recommended, tested setup. These Docker Compose files are maintained on a best-effort basis and may need adjustments.
+:::
 
 ---
 
@@ -159,8 +160,9 @@ queue:
         - /dev/dri:/dev/dri
 ```
 
-> [!NOTE]
-> Requires VAAPI (Intel), mesa (AMD), or NVENC (Nvidia) drivers on the host — see the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html). GPU passthrough is more limited on Docker Desktop than on native Linux.
+:::note
+Requires VAAPI (Intel), mesa (AMD), or NVENC (Nvidia) drivers on the host — see the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html). GPU passthrough is more limited on Docker Desktop than on native Linux.
+:::
 
 ---
 

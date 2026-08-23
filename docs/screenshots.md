@@ -10,8 +10,9 @@ tags:
 
 A quick look at stry in action.
 
-> [!NOTE]
-> Screenshots may lag behind active development — stry is evolving, and the UI shown here can differ from what you see after pulling the latest changes.
+:::note
+Screenshots may lag behind active development — stry is evolving, and the UI shown here can differ from what you see after pulling the latest changes.
+:::
 
 ## At a glance
 
@@ -252,6 +253,3 @@ The video editor is a tabbed modal: **General** metadata, **Media** file details
 ![Edit video modal, Danger Zone tab, showing the verification state dropdown and delete video action](./screenshots/video-edit-danger-zone.webp)
 
 ![Edit video Danger Zone tab with numbered callouts for tabs, verification state, and delete video](./screenshots/video-edit-danger-zone-annotated.webp)
-
-> [!NOTE]
-> More screenshots coming soon (shuffle). Drop new files into `docs/screenshots/`, then process them the same way (crop/compress/thumbnail/annotate) and add a matching thumbnail + section above.

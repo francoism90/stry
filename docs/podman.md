@@ -70,8 +70,9 @@ lpod stry up
 
 See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full flow.
 
-> [!NOTE]
-> `php artisan podman:setup`/`podman:generate` need `foxws/laravel-podman`, a `require-dev` package — not installed on a `composer install --no-dev` host (e.g. production). `lpod` itself has no such dependency; it's the standalone tool installed in [Prerequisites](#prerequisites). On a host without PHP, either render elsewhere and copy the `podman/` output over, or use `lpod setup` to render inside a disposable container. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for both workflows, and [Production Setup](production.md) for **stry**'s own walkthrough.
+:::note
+`php artisan podman:setup`/`podman:generate` need `foxws/laravel-podman`, a `require-dev` package — not installed on a `composer install --no-dev` host (e.g. production). `lpod` itself has no such dependency; it's the standalone tool installed in [Prerequisites](#prerequisites). On a host without PHP, either render elsewhere and copy the `podman/` output over, or use `lpod setup` to render inside a disposable container. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for both workflows, and [Production Setup](production.md) for **stry**'s own walkthrough.
+:::
 
 The `frankenphp-octane` preset's app container runs a pre-built image (CI builds and pushes it to `ghcr.io/francoism90/stry`) rather than building locally — Podman just pulls it. Override the image with `PODMAN_IMAGE_REGISTRY` in `.env` if you push to your own registry.
 
@@ -99,8 +100,9 @@ AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
 ```
 
-> [!NOTE]
-> `/dev/dri` must exist on the host — on a machine without a GPU (or most cloud/CI boxes), `stry-horizon` will fail to start unless you remove these two lines first (see below).
+:::note
+`/dev/dri` must exist on the host — on a machine without a GPU (or most cloud/CI boxes), `stry-horizon` will fail to start unless you remove these two lines first (see below).
+:::
 
 See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html) for driver setup.
 
@@ -110,8 +112,9 @@ On SELinux hosts (e.g. Fedora), rootless Podman is blocked from accessing `/dev/
 sudo setsebool -P container_use_devices=true
 ```
 
-> [!NOTE]
-> This is a host-wide boolean, not scoped to one container — it applies to every rootless Podman container on the machine.
+:::note
+This is a host-wide boolean, not scoped to one container — it applies to every rootless Podman container on the machine.
+:::
 
 **To disable GPU passthrough** (e.g. to force software encoding, or the container otherwise shouldn't touch `/dev/dri`), remove both lines from `containers/stubs/frankenphp-octane/quadlets/horizon.quadlets` (and `development/quadlets/horizon.quadlets` if you use that preset), then re-render and reinstall:
 

@@ -36,7 +36,7 @@
         "laravel/scout": "^11.5",
         "laravel/tinker": "^3.0.2",
         "laravel/wayfinder": "^0.1.21",
-        "league/flysystem-aws-s3-v3": "^3.35.2",
+        "league/flysystem-aws-s3-v3": "^3.35.3",
         "pbmedia/laravel-ffmpeg": "^8.9.0",
         "pusher/pusher-php-server": "^7.3.0",
         "spatie/eloquent-sortable": "^5.0.1",
@@ -52,10 +52,10 @@
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.393.3",
+        "aws/aws-sdk-php": "^3.393.4",
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
-        "foxws/laravel-podman": "^1.7.1",
+        "foxws/laravel-podman": "^1.7.2",
         "larastan/larastan": "^3.10.0",
         "laravel/boost": "^2.5.5",
         "laravel/doctor": "^0.1.0",

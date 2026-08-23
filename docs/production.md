@@ -57,8 +57,9 @@ This still needs a `vendor/` folder with dev dependencies installed (i.e., you r
 
 Whichever option you pick, you should end up with a `podman/` folder containing the Quadlet files. See [Podman Quadlet](podman.md) for what each service does.
 
-> [!NOTE]
-> If you're comfortable with Quadlet, none of the above is strictly required. The raw templates live in `containers/stubs/{preset}/quadlets/*.quadlets` — copy them by hand, fill in the `{{placeholder}}` values yourself (application name, image, UID/GID, etc.), and install them with `lpod install`. This skips cloning the repo and running `podman:setup` entirely, at the cost of keeping everything (including secrets) in sync by hand on every upgrade.
+:::note
+If you're comfortable with Quadlet, none of the above is strictly required. The raw templates live in `containers/stubs/{preset}/quadlets/*.quadlets` — copy them by hand, fill in the `{{placeholder}}` values yourself (application name, image, UID/GID, etc.), and install them with `lpod install`. This skips cloning the repo and running `podman:setup` entirely, at the cost of keeping everything (including secrets) in sync by hand on every upgrade.
+:::
 
 ## Install and start the services
 
@@ -90,8 +91,9 @@ curl -I https://your-domain/
 journalctl --user -u 'stry*' -f
 ```
 
-> [!NOTE]
-> Once the services are installed, the cloned repo is no longer needed — the app runs entirely from the pre-built image, and the Quadlet units and secrets are already registered with Podman/systemd. You can safely remove `~/projects/stry` or move it off the server (e.g. keep it only on the machine you use to regenerate Quadlet files after upgrades).
+:::note
+Once the services are installed, the cloned repo is no longer needed — the app runs entirely from the pre-built image, and the Quadlet units and secrets are already registered with Podman/systemd. You can safely remove `~/projects/stry` or move it off the server (e.g. keep it only on the machine you use to regenerate Quadlet files after upgrades).
+:::
 
 ## Security checklist
 

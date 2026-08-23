@@ -18,8 +18,9 @@ lpod stry tinker                 # Laravel Tinker
 lpod stry artisan migrate        # or: lpod stry a migrate
 ```
 
-> [!TIP]
-> `lpod` is a standalone tool, installed once per host — see [Podman Quadlet](podman.md#prerequisites) for the install command.
+:::tip
+`lpod` is a standalone tool, installed once per host — see [Podman Quadlet](podman.md#prerequisites) for the install command.
+:::
 
 ## stry's Artisan commands
 

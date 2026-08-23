@@ -23,8 +23,9 @@ Leave `MAILPIT_UI_HOST` unset to keep that block out of the config entirely — 
 
 Terminate HTTPS in front of `:8000` with whatever you already run — a router/NAS reverse proxy (Synology, pfSense/OPNsense), Nginx Proxy Manager, Traefik, Cloudflare Tunnel, etc. Point every subdomain above at the same destination host:port; no per-service port needs to be exposed, since the app's Caddy tells them apart by `Host` header alone.
 
-> [!WARNING]
-> Whatever terminates TLS must forward the original `Host` header unmodified — that's what the app's Caddy instance matches on.
+:::warning
+Whatever terminates TLS must forward the original `Host` header unmodified — that's what the app's Caddy instance matches on.
+:::
 
 ## Adding another sibling service
 

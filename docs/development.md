@@ -43,8 +43,9 @@ lpod install development/pgsql.quadlets --replace
 # ...and so on for every service (see podman.md)
 ```
 
-> [!TIP]
-> Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,s3,devcontainer`) to skip passing `--preset` on every `podman:setup` run.
+:::tip
+Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,s3,devcontainer`) to skip passing `--preset` on every `podman:setup` run.
+:::
 
 Once it's up, the app is available directly at `http://localhost:8000` — no reverse proxy needed locally (see [Reverse Proxy](proxy.md) if you want to test the production-style subdomain routing).
 

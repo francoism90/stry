@@ -13,8 +13,9 @@ tags:
 
 **stry** is configured entirely through environment variables — in `.env` (development), or stored as the `stry-env` Podman secret via `lpod stry secrets` (production, see [Podman Quadlet](podman.md)).
 
-> [!TIP]
-> Prefer environment variables over editing `config/*.php` files directly — it keeps deployments cleaner and configuration portable.
+:::tip
+Prefer environment variables over editing `config/*.php` files directly — it keeps deployments cleaner and configuration portable.
+:::
 
 ---
 
@@ -145,8 +146,9 @@ STREAMER_SEGMENT_DURATION=4
 STREAMER_CONCURRENCY_WORKERS=40
 ```
 
-> [!NOTE]
-> Streamer resolutions aren't set via `.env` — they're detected automatically per video from the source stream's height (see `Foxws\Streamer\Support\VideoResolution`).
+:::note
+Streamer resolutions aren't set via `.env` — they're detected automatically per video from the source stream's height (see `Foxws\Streamer\Support\VideoResolution`).
+:::
 
 ### AV1 Encoding (ab-av1)
 
