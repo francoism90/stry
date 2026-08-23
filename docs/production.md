@@ -79,7 +79,11 @@ Then set up object storage — see [Object Storage (S3)](s3.md) — and run migr
 ```bash
 lpod stry artisan podman:s3-setup
 lpod stry artisan migrate --force
+lpod stry artisan db:seed --force
+lpod stry artisan scout:sync --import
 ```
+
+`db:seed` only runs `PermissionSeeder` (roles/permissions) — required once, and safe to re-run. `scout:sync --import` configures the Typesense collections and imports any existing records — safe to re-run too, but only needed again after adding new searchable models. Then create an admin account: `lpod stry artisan users:create --super-admin` (see [CLI Interaction](interaction.md#users)).
 
 `stry-horizon` passes `/dev/dri` through by default for hardware-accelerated video transcoding, so the server needs a GPU with `/dev/dri` present. See [Hardware acceleration](podman.md#tuning--hardware-acceleration) for driver setup, the SELinux `setsebool` step, and how to turn this off if there's no GPU.
 
@@ -100,7 +104,7 @@ Once the services are installed, the cloned repo is no longer needed — the app
 - Use strong, random secrets (`openssl rand -hex 32`) for everything stored via `lpod SERVICE secrets` — never reuse development credentials.
 - Terminate HTTPS at your own reverse proxy (router/NAS, Nginx Proxy Manager, Traefik, Cloudflare Tunnel, ...) in front of the app's `:8000` — see [Reverse Proxy](proxy.md) for the subdomain routing the app handles internally.
 - Restrict the firewall to ports 22, 80, and 443.
-- Never run seeders (`db:seed`) against production data.
+- Never run `AdminSeeder` or other demo/test seeders in production — only the plain `db:seed` (`PermissionSeeder`) from setup above is safe to re-run.
 - Keep Podman and base images up to date (`podman pull ...`, then `lpod install ... --replace`).
 - Schedule automated database backups:
 

@@ -10,6 +10,18 @@ tags:
 
 # Documentation
 
+## Why stry?
+
+Jellyfin and Plex are media servers first. **stry** is a streaming delivery platform first — it focuses on repackaging/transcoding and adaptive streaming (DASH-first, HLS-ready). That gives more control, at the cost of a more advanced setup.
+
+| Topic                | Jellyfin / Plex                                   | stry                                                |
+| -------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| Primary focus        | Personal media server                             | Streaming delivery platform                         |
+| Typical setup effort | Faster and simpler                                | More advanced and pipeline-oriented                 |
+| Playback model       | Direct library playback plus optional transcoding | Prepared renditions and adaptive streaming delivery |
+| Packaging            | Usually less packaging-centric                    | Repackaging/transcoding for streaming-first output  |
+| Best fit             | Home library convenience                          | Netflix/YouTube-style streaming workflows           |
+
 ## Getting started
 
 **[Production Deployment](production.md)** — deploying to a server? Start here.

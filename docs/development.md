@@ -58,7 +58,7 @@ lpod stry shell
 composer install
 php artisan storage:link
 php artisan migrate --seed
-php artisan scout:sync
+php artisan scout:sync --import
 pnpm install
 ```
 
@@ -67,6 +67,20 @@ Run the Vite dev server from the host:
 ```bash
 pnpm dev
 ```
+
+### Admin account
+
+For testing only, seed a super-admin user:
+
+```bash
+lpod stry a db:seed --class=AdminSeeder
+```
+
+:::warning
+Only seed admins for testing! Never use the seeder in production — see the [Security checklist](production.md#security-checklist).
+:::
+
+Alternatively, create one interactively without a seeder: `lpod stry artisan users:create --super-admin` (see [CLI Interaction](interaction.md#users)).
 
 ## VS Code Dev Containers
 
@@ -98,6 +112,15 @@ lpod stry artisan test --filter=testMethodName
 lpod stry bin pint
 lpod stry bin larastan
 ```
+
+## Admin services
+
+Accessible when logged in as **super-admin**:
+
+| Service       | URL                               | Description                     |
+| ------------- | --------------------------------- | ------------------------------- |
+| **Horizon**   | `http://localhost:8000/horizon`   | Queue monitoring and management |
+| **Telescope** | `http://localhost:8000/telescope` | Debugging assistant (dev only)  |
 
 ## Troubleshooting
 

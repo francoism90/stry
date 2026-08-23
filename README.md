@@ -24,11 +24,11 @@
 
 ### Key Features
 
-- 🎥 **DASH Streaming** - Built-in DASH playlist generation
-- 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand
+- 🎥 **DASH Streaming** - Built-in DASH playlist generation (HLS is also supported)
+- 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand using ab-av1
 - 🔐 **Stream Encryption** - Optional secure video content with encryption for both HLS and DASH
 - 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
-- 📲 **Installable PWA** - Install stry on mobile and desktop
+- 📲 **Installable PWA** - Install on mobile and desktop
 - 🖥️ **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
@@ -46,17 +46,9 @@ For a visual tour of the app, check out the [screenshots gallery](https://franco
 
 ---
 
-## Jellyfin / Plex vs stry
+## Why stry?
 
-Jellyfin and Plex are media servers first. **stry** is a streaming delivery platform first — it focuses on repackaging/transcoding and adaptive streaming (DASH-first, HLS-ready). That gives more control, at the cost of a more advanced setup.
-
-| Topic                | Jellyfin / Plex                                   | stry                                                |
-| -------------------- | ------------------------------------------------- | --------------------------------------------------- |
-| Primary focus        | Personal media server                             | Streaming delivery platform                         |
-| Typical setup effort | Faster and simpler                                | More advanced and pipeline-oriented                 |
-| Playback model       | Direct library playback plus optional transcoding | Prepared renditions and adaptive streaming delivery |
-| Packaging            | Usually less packaging-centric                    | Repackaging/transcoding for streaming-first output  |
-| Best fit             | Home library convenience                          | Netflix/YouTube-style streaming workflows           |
+**stry** is a streaming delivery platform, not a personal media server like Jellyfin/Plex — see the [full comparison](https://francoism90.github.io/stry/#why-stry) in the docs.
 
 ---
 
@@ -79,19 +71,7 @@ Jellyfin and Plex are media servers first. **stry** is a streaming delivery plat
 
 ## Prerequisites
 
-Basic knowledge of Laravel, Inertia.js, and containers helps. Familiarity with video streaming (DASH, HLS) and encoding (FFmpeg) is a plus, but not required.
-
-**System requirements:**
-
-- Linux (Debian, Fedora, Arch, CentOS, Ubuntu, etc.)
-- [Podman 5.3+](https://podman.io/) with Quadlet (systemd) support, or [Docker](https://www.docker.com/) (best-effort)
-- [`lpod`](https://github.com/foxws/lpod) — install separately, see [Podman Quadlet](docs/podman.md#prerequisites)
-- Basic tools: `git`, `bash`
-
-> [!NOTE]
-> Docker isn't officially supported, but a best-effort [Docker Compose setup](docs/docker.md) is available and works with minor adjustments.
-
-For hardware acceleration, install VAAPI drivers (Intel), mesa packages (AMD), or NVENC (Nvidia). See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html).
+Requires Linux with [Podman 5.3+](https://podman.io/)/Quadlet, or [Docker](https://www.docker.com/) (best-effort). Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://francoism90.github.io/stry/podman#prerequisites) or [Docker Compose](https://francoism90.github.io/stry/docker#prerequisites) for the full system requirements.
 
 ---
 
@@ -99,61 +79,32 @@ For hardware acceleration, install VAAPI drivers (Intel), mesa packages (AMD), o
 
 Comprehensive guides are available on the [documentation site](https://francoism90.github.io/stry/) (or browse [`docs/`](docs) directly):
 
-| Guide                                    | Description                                          |
-| ---------------------------------------- | ---------------------------------------------------- |
-| [Screenshots](https://francoism90.github.io/stry/screenshots) | Visual tour of the app                |
-| [Production Setup](docs/production.md)   | Deploy to production                                 |
-| [Development Guide](docs/development.md) | Local development setup                              |
-| [Configuration](docs/configuration.md)   | Configuration options                                |
-| [Podman Quadlet](docs/podman.md)         | Container orchestration (services, install, secrets) |
-| [Docker Compose](docs/docker.md)         | Alternative, best-effort containerization            |
-| [Reverse Proxy](docs/proxy.md)           | Sibling-service routing; bring your own HTTPS        |
-| [S3 Storage](docs/s3.md)                 | Object storage setup                                 |
-| [Interaction](docs/interaction.md)       | CLI usage and commands                               |
+| Guide                                                               | Description                                          |
+| ------------------------------------------------------------------- | ---------------------------------------------------- |
+| [Screenshots](https://francoism90.github.io/stry/screenshots)       | Visual tour of the app                               |
+| [Production Setup](https://francoism90.github.io/stry/production)   | Deploy to production                                 |
+| [Development Guide](https://francoism90.github.io/stry/development) | Local development setup                              |
+| [Configuration](https://francoism90.github.io/stry/configuration)   | Configuration options                                |
+| [Podman Quadlet](https://francoism90.github.io/stry/podman)         | Container orchestration (services, install, secrets) |
+| [Docker Compose](https://francoism90.github.io/stry/docker)         | Alternative, best-effort containerization            |
+| [Reverse Proxy](https://francoism90.github.io/stry/proxy)           | Sibling-service routing; bring your own HTTPS        |
+| [S3 Storage](https://francoism90.github.io/stry/s3)                 | Object storage setup                                 |
+| [Interaction](https://francoism90.github.io/stry/interaction)       | CLI usage and commands                               |
 
 > [!TIP]
-> Quick start: pick [Production](docs/production.md) or [Development](docs/development.md) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
+> Quick start: pick [Production](https://francoism90.github.io/stry/production) or [Development](https://francoism90.github.io/stry/development) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
 
 ---
 
 ## Usage
 
-### Starting the Instance
-
 ```bash
 systemctl --user start stry
 ```
 
-The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](docs/proxy.md) in front of it)
+The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](https://francoism90.github.io/stry/proxy) in front of it)
 
-### Seed Database
-
-```bash
-lpod stry a db:seed --force
-```
-
-### Creating an Admin User
-
-For testing only, seed a super-admin user:
-
-```bash
-lpod stry a db:seed --class=AdminSeeder
-```
-
-> [!WARNING]
-> Only seed admins for testing! Never use the seeder in production.
-
-> [!TIP]
-> See the [Interaction Guide](docs/interaction.md) for `lpod`, stry's Laravel Sail-style container CLI.
-
-### Admin Services
-
-The following services are only accessible when logged in as **super-admin**:
-
-| Service       | URL                               | Description                     |
-| ------------- | --------------------------------- | ------------------------------- |
-| **Horizon**   | <http://localhost:8000/horizon>   | Queue monitoring and management |
-| **Telescope** | <http://localhost:8000/telescope> | Debugging assistant (dev only)  |
+See the [Interaction Guide](https://francoism90.github.io/stry/interaction) for `lpod`, stry's Laravel Sail-style container CLI, and [Production Setup](https://francoism90.github.io/stry/production#install-and-start-the-services)/[Development Setup](https://francoism90.github.io/stry/development#admin-account) for seeding and creating admin users.
 
 ---
 
