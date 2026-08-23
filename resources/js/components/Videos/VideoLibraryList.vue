@@ -54,7 +54,7 @@ const edit = (item: Video): void => {
             }"
           />
 
-          <div class="z-10 flex items-center gap-1">
+          <div class="z-10 flex items-center gap-2">
             <UButton
               :to="show.url(item.id)"
               icon="i-lucide-eye"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
+import MediaEditModal from '@/components/Media/MediaEditModal.vue'
 import MediaViewModal from '@/components/Media/MediaViewModal.vue'
 import { useMedia } from '@/composables/media'
 import type { Media, Video } from '@/types'
@@ -49,6 +50,7 @@ const { getStreamInfo } = useMedia()
 
           <div class="z-10 flex items-center gap-2">
             <MediaViewModal :item="item" />
+            <MediaEditModal :item="item" />
             <MediaDeleteModal :item="item" />
           </div>
         </div>
