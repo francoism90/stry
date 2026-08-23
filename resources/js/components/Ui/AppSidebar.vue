@@ -15,27 +15,17 @@ defineProps<{
 
 const { user: auth, hasRole } = useAuth()
 const { groupIcon } = useGroups()
+const { privateChannel } = useEcho()
 
 const collections = computed<CollectionItem[]>(() => usePage().props.collections ?? [])
 
 const collectionItems = computed<NavigationMenuItem[]>(() =>
   collections.value.map((item: CollectionItem) => ({
-    label: item.name,
+    label: item.title,
     icon: groupIcon(item.type),
     to: show.url(item.id),
   })),
 )
-
-const { privateChannel } = useEcho()
-
-if (auth.value) {
-  const reloadCollections = () => router.reload({ only: ['collections'] })
-
-  privateChannel(`users.${auth.value.id}`)
-    .listen('.group.created', reloadCollections)
-    .listen('.group.updated', reloadCollections)
-    .listen('.group.trashed', reloadCollections)
-}
 
 const items = computed<NavigationMenuItem[][]>(() => [
   [
@@ -82,6 +72,15 @@ const items = computed<NavigationMenuItem[][]>(() => [
     : []),
   ...(collectionItems.value.length ? [collectionItems.value] : []),
 ])
+
+if (auth.value) {
+  const reloadCollections = () => router.reload({ only: ['collections'] })
+
+  privateChannel(`users.${auth.value.id}`)
+    .listen('.group.created', reloadCollections)
+    .listen('.group.updated', reloadCollections)
+    .listen('.group.trashed', reloadCollections)
+}
 </script>
 
 <template>
