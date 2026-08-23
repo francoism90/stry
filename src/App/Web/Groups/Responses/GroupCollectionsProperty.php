@@ -52,7 +52,7 @@ readonly class GroupCollectionsProperty implements ProvidesInertiaProperty
         $custom = Group::query()
             ->where('user_id', $userId)
             ->where('type', GroupType::Custom)
-            ->orderBy('name')
+            ->orderByDesc('updated_at')
             ->limit(self::CUSTOM_LIMIT)
             ->get();
 

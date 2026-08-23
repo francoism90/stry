@@ -532,6 +532,11 @@ return [
                             'sort' => true,
                         ],
                         [
+                            'name' => 'type_priority',
+                            'type' => 'int32',
+                            'sort' => true,
+                        ],
+                        [
                             'name' => 'state',
                             'type' => 'string',
                             'facet' => true,

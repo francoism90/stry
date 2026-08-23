@@ -19,6 +19,17 @@ enum GroupType: string implements Enumerable
         return self::labels()[$this->value];
     }
 
+    public function priority(): int
+    {
+        return match ($this) {
+            self::Liked => 0,
+            self::Saved => 1,
+            self::Viewed => 2,
+            self::Custom => 3,
+            self::Mixer => 4,
+        };
+    }
+
     /** @return array<string, string> */
     public static function labels(): array
     {

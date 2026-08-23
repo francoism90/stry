@@ -48,11 +48,27 @@ it('does not include collections belonging to other users', function () {
     $response->assertInertia(fn (Assert $page) => $page->has('collections', 0));
 });
 
-it('limits the collections prop to the twenty most recent custom groups by name', function () {
+it('limits the collections prop to the twenty most recently updated custom groups', function () {
     $user = User::factory()->create();
     Group::factory()->for($user)->count(25)->create(['type' => GroupType::Custom]);
 
     $response = $this->actingAs($user)->get(action([GroupController::class, 'index']));
 
     $response->assertInertia(fn (Assert $page) => $page->has('collections', 20));
+});
+
+it('orders custom groups by most recently updated first', function () {
+    $user = User::factory()->create();
+    $older = Group::factory()->for($user)->create(['type' => GroupType::Custom]);
+    $newer = Group::factory()->for($user)->create(['type' => GroupType::Custom]);
+
+    Group::query()->whereKey($older->getKey())->update(['updated_at' => now()->subDay()]);
+    Group::query()->whereKey($newer->getKey())->update(['updated_at' => now()]);
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'index']));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('collections.0.id', $newer->getRouteKey())
+        ->where('collections.1.id', $older->getRouteKey())
+    );
 });
