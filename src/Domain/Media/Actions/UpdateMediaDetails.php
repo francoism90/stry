@@ -13,10 +13,15 @@ class UpdateMediaDetails
 {
     public function handle(Media $media, array $attributes): mixed
     {
-        // Decode the custom properties JSON string before it hits the array cast,
-        // otherwise it gets re-encoded as a JSON-encoded string instead of an object.
-        if (is_string($attributes['custom_properties'] ?? null)) {
-            $attributes['custom_properties'] = json_decode($attributes['custom_properties'], true);
+        if (array_key_exists('custom_properties', $attributes)) {
+            // Decode the custom properties JSON string before it hits the array cast,
+            // otherwise it gets re-encoded as a JSON-encoded string instead of an object.
+            if (is_string($attributes['custom_properties'])) {
+                $attributes['custom_properties'] = json_decode($attributes['custom_properties'], true);
+            }
+
+            // The column is NOT NULL, so a cleared/null value must fall back to an empty array.
+            $attributes['custom_properties'] ??= [];
         }
 
         return DB::transaction(function () use ($media, $attributes) {

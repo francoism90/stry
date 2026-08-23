@@ -57,6 +57,21 @@ it('decodes the custom properties json string into an array', function () {
     ]);
 });
 
+it('falls back to an empty array when custom properties is cleared', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+    $media = createMedia(Video::factory()->create(), [
+        'custom_properties' => ['streams' => [['index' => 0, 'codec_name' => 'hevc']]],
+    ]);
+
+    $response = $this->actingAs($user)->put(action([MediaController::class, 'update'], $media), [
+        'custom_properties' => null,
+    ]);
+
+    $response->assertRedirect();
+    expect($media->refresh()->custom_properties)->toBe([]);
+});
+
 it('denies updates for non-admins', function () {
     $user = User::factory()->create();
     $media = createMedia(Video::factory()->create());
