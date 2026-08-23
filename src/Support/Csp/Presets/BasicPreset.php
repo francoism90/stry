@@ -25,6 +25,7 @@ class BasicPreset implements Preset
             ->add(Directive::UPGRADE_INSECURE_REQUESTS, Value::NO_VALUE)
             ->add(Directive::BASE, Keyword::SELF)
             ->add(Directive::CONNECT, Keyword::SELF)
+            ->add(Directive::CONNECT, Scheme::BLOB)
             ->add(Directive::DEFAULT, Keyword::SELF)
             ->add(Directive::FONT, Keyword::SELF)
             ->add(Directive::FORM_ACTION, Keyword::SELF)
