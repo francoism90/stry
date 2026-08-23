@@ -61,7 +61,7 @@ class GroupController implements HasMiddleware
             ->tap(new GroupTypeScope)
             ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
             ->allowedFilters(
-                AllowedFilter::custom('scope', new GroupScopeFilter),
+                AllowedFilter::custom('scope', new GroupScopeFilter)->default(GroupScope::All->value),
             )
             ->allowedSorts(
                 AllowedSort::field('name'),

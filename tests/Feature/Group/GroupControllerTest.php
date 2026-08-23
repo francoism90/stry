@@ -75,6 +75,14 @@ it('excludes mixer groups from the group index', function () {
     $response->assertDontSee('Hidden Mixer Group');
 });
 
+it('accepts the mixer scope filter on the group index', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'index'], ['filter' => ['scope' => 'mixer']]));
+
+    $response->assertSuccessful();
+});
+
 // show
 
 it('allows the owner to view their group', function () {
