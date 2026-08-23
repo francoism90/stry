@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Media\Controllers;
 
 use App\Api\Media\Requests\MediaUpdateRequest;
+use Domain\Media\Actions\UpdateMediaDetails;
 use Domain\Media\Models\Media;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -28,7 +29,10 @@ class MediaController implements HasMiddleware
         Gate::authorize('update', $media);
 
         // Update media details
-        $media->updateOrFail($request->safe()->all());
+        app(UpdateMediaDetails::class)->handle(
+            media: $media,
+            attributes: $request->safe()->all(),
+        );
 
         // Notify the user
         Inertia::flash([
