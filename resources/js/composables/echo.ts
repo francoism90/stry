@@ -2,7 +2,7 @@ import type { EchoConfig } from '@/types'
 import { usePage } from '@inertiajs/vue3'
 import { tryOnScopeDispose, whenever } from '@vueuse/core'
 import Echo from 'laravel-echo'
-import { computed, shallowRef, toRaw, watchEffect } from 'vue'
+import { computed, shallowRef, toRaw, watch } from 'vue'
 
 type NativeEchoInstance = InstanceType<typeof Echo>
 
@@ -16,31 +16,41 @@ interface QueueItem {
 export function useEcho() {
   const config = computed(() => usePage().props.echo as EchoConfig | null)
 
-  watchEffect((onCleanup) => {
-    if (typeof window === 'undefined') return
-    if (!config.value || !config.value.key) return
-
-    const wsConfig = toRaw(config.value)
-
-    echo.value = new Echo({
-      broadcaster: 'reverb',
-      key: wsConfig.key,
-      wsHost: wsConfig.host,
-      wsPort: wsConfig.port,
-      wssPort: wsConfig.port,
-      forceTLS: wsConfig.scheme === 'https',
-      enabledTransports: ['ws', 'wss'],
-      disableStats: true,
-      authEndpoint: '/broadcasting/auth',
-    })
-
-    onCleanup(() => {
-      if (echo.value) {
-        echo.value.disconnect()
-        echo.value = null
-      }
-    })
+  const configKey = computed(() => {
+    const wsConfig = config.value
+    if (!wsConfig || !wsConfig.key) return null
+    return `${wsConfig.key}:${wsConfig.host}:${wsConfig.port}:${wsConfig.scheme}`
   })
+
+  watch(
+    configKey,
+    (key, _previousKey, onCleanup) => {
+      if (typeof window === 'undefined') return
+      if (!key || !config.value) return
+
+      const wsConfig = toRaw(config.value)
+
+      echo.value = new Echo({
+        broadcaster: 'reverb',
+        key: wsConfig.key,
+        wsHost: wsConfig.host,
+        wsPort: wsConfig.port,
+        wssPort: wsConfig.port,
+        forceTLS: wsConfig.scheme === 'https',
+        enabledTransports: ['ws', 'wss'],
+        disableStats: true,
+        authEndpoint: '/broadcasting/auth',
+      })
+
+      onCleanup(() => {
+        if (echo.value) {
+          echo.value.disconnect()
+          echo.value = null
+        }
+      })
+    },
+    { immediate: true },
+  )
 
   const privateChannel = (channelName: string) => {
     if (typeof window === 'undefined') {
