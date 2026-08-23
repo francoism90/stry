@@ -10,6 +10,7 @@ enum GroupScope: string implements Enumerable
 {
     case All = 'all';
     case Custom = 'custom';
+    case Mixer = 'mixer';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum GroupScope: string implements Enumerable
         return [
             'all' => __('All'),
             'custom' => __('Custom'),
+            'mixer' => __('Mixer'),
         ];
     }
 }

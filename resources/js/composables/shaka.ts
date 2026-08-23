@@ -105,6 +105,39 @@ export function useShaka(
     }
   }
 
+  /**
+   * Registers the storyboard VTT as a native Shaka thumbnails track so the seek bar can
+   * show hover/scrub previews on its own. The VTT references its sprite by a bare filename,
+   * but the sprite and VTT are stored as separate signed URLs (different paths, different
+   * signatures), so relative URL resolution against the VTT's own URL would produce an
+   * incorrectly-signed URL. Rewriting the reference to the current signed image URL and
+   * loading the result from a blob avoids that mismatch.
+   */
+  const addStoryboardTrack = async (videoModel: Video | null): Promise<void> => {
+    if (!player.value || !videoModel?.storyboard_vtt || !videoModel.storyboard_image) {
+      return
+    }
+
+    try {
+      const response = await fetch(videoModel.storyboard_vtt)
+
+      // Signed URLs contain raw '&' query-string separators, but WebVTT cue text uses
+      // HTML-entity-style escaping, so a literal '&' must be written as '&amp;' or a parser
+      // may mangle everything from there onward (including the "#xywh=" it needs to detect).
+      const escapedImageUrl = videoModel.storyboard_image.replaceAll('&', '&amp;')
+      const contents = (await response.text()).replace(/^(\S+)#xywh=/gm, `${escapedImageUrl}#xywh=`)
+      const blobUrl = URL.createObjectURL(new Blob([contents], { type: 'text/vtt' }))
+
+      try {
+        await player.value.addThumbnailsTrack(blobUrl, 'text/vtt')
+      } finally {
+        URL.revokeObjectURL(blobUrl)
+      }
+    } catch (err) {
+      console.error('Error adding storyboard thumbnails track:', err)
+    }
+  }
+
   const load = async (playlist: Playlist | null, startTime?: number | null) => {
     // Ensure the player and playlist are available before proceeding
     if (!player.value || !playlist?.valid || !playlist.asset) {
@@ -152,6 +185,10 @@ export function useShaka(
       if (get('captions', true) && textTracks.length > 0) {
         player.value.selectTextTrack(textTracks[0])
       }
+
+      // Register the storyboard sprite as a thumbnails track so Shaka's seek bar
+      // can show hover/scrub previews natively
+      await addStoryboardTrack(toValue(video) as Video | null)
 
       scheduleAssetRefresh(playlist)
     } catch (err) {

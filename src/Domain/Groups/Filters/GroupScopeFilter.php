@@ -19,7 +19,8 @@ class GroupScopeFilter implements Filter
 
         match (GroupScope::tryFrom($value)) {
             GroupScope::Custom => $query->where('type', GroupType::Custom->value),
-            default => null,
+            GroupScope::Mixer => $query->where('type', GroupType::Mixer->value),
+            default => $query->whereNotIn('type', [GroupType::Mixer->value]),
         };
     }
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { show } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { useGroups } from '@/composables/groups'
 import type { Group } from '@/types'
 import { computed } from 'vue'
 
@@ -7,41 +8,12 @@ const props = defineProps<{
   item: Group
 }>()
 
-type GroupStyle = {
-  gradient: string
-  icon: string
-}
+const { groupIcon, groupGradient } = useGroups()
 
-const groupStyles: Record<string, GroupStyle> = {
-  custom: {
-    gradient: 'from-violet-500 to-purple-700',
-    icon: 'i-lucide-folder',
-  },
-  liked: {
-    gradient: 'from-rose-500 to-pink-700',
-    icon: 'i-lucide-heart',
-  },
-  mixer: {
-    gradient: 'from-indigo-500 to-blue-700',
-    icon: 'i-lucide-shuffle',
-  },
-  saved: {
-    gradient: 'from-sky-500 to-cyan-700',
-    icon: 'i-lucide-bookmark',
-  },
-  viewed: {
-    gradient: 'from-emerald-500 to-green-700',
-    icon: 'i-lucide-history',
-  },
-}
-
-const style = computed<GroupStyle>(
-  () =>
-    groupStyles[props.item.type ?? ''] ?? {
-      gradient: 'from-neutral-500 to-neutral-700',
-      icon: 'i-lucide-layers',
-    },
-)
+const style = computed(() => ({
+  gradient: groupGradient(props.item.type),
+  icon: groupIcon(props.item.type),
+}))
 </script>
 
 <template>

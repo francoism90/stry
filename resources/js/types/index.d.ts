@@ -183,6 +183,8 @@ export type Video = Model & {
   snapshot?: number
   thumb: string | null
   thumb_srcset: string | null
+  storyboard_image: string | null
+  storyboard_vtt: string | null
   adult: boolean
   captioned: boolean
   liked: boolean | null
@@ -249,6 +251,8 @@ export type Group = Model & {
 export type GroupCollection = Omit<Paginator, 'data'> & {
   data: Group[] | undefined
 }
+
+export type CollectionItem = Pick<Group, 'id' | 'name' | 'title' | 'type'>
 
 export type Notification = {
   id: string

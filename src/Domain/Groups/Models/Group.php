@@ -224,6 +224,7 @@ class Group extends Model implements HasMedia, Sortable
             'content' => (string) $this->content,
             'groupables' => (int) $this->groupables_count,
             'type' => (string) $this->type?->value ?? '',
+            'type_priority' => (int) $this->priority,
             'state' => (string) $this->state,
             'created_at' => (int) $this->created_at->getTimestamp(),
             'updated_at' => (int) $this->updated_at->getTimestamp(),
@@ -250,6 +251,13 @@ class Group extends Model implements HasMedia, Sortable
     {
         return Attribute::make(
             get: fn () => $this->name ?: $this->type->label(),
+        )->shouldCache();
+    }
+
+    protected function priority(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->type?->priority() ?? GroupType::Custom->priority(),
         )->shouldCache();
     }
 }

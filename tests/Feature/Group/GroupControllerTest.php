@@ -53,6 +53,36 @@ it('only returns groups that belong to the authenticated user on index', functio
     $response->assertDontSee('Foreign Group Beta');
 });
 
+it('excludes mixer groups from the group index', function () {
+    $user = User::factory()->create();
+
+    $custom = Group::factory()->create([
+        'user_id' => $user->getKey(),
+        'type' => GroupType::Custom,
+        'name' => 'Visible Custom Group',
+    ]);
+
+    Group::factory()->create([
+        'user_id' => $user->getKey(),
+        'type' => GroupType::Mixer,
+        'name' => 'Hidden Mixer Group',
+    ]);
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'index']));
+
+    $response->assertSuccessful();
+    $response->assertSee($custom->name);
+    $response->assertDontSee('Hidden Mixer Group');
+});
+
+it('accepts the mixer scope filter on the group index', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'index'], ['filter' => ['scope' => 'mixer']]));
+
+    $response->assertSuccessful();
+});
+
 // show
 
 it('allows the owner to view their group', function () {

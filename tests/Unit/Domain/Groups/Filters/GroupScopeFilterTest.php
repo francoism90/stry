@@ -18,20 +18,36 @@ it('adds a type filter for the custom scope', function (): void {
     ]);
 });
 
-it('does not add a filter for the all scope', function (): void {
+it('adds a type filter for the mixer scope', function (): void {
+    $builder = new Builder(new Group, '*');
+
+    (new GroupScopeFilter)($builder, 'mixer', 'scope');
+
+    expect($builder->wheres)->toContain([
+        'field' => 'type',
+        'operator' => '=',
+        'value' => 'mixer',
+    ]);
+});
+
+it('excludes mixer groups for the all scope', function (): void {
     $builder = new Builder(new Group, '*');
 
     (new GroupScopeFilter)($builder, 'all', 'scope');
 
-    expect($builder->wheres)->toBe([]);
+    expect($builder->whereNotIns)->toBe([
+        'type' => ['mixer'],
+    ]);
 });
 
-it('ignores unknown scope values', function (): void {
+it('excludes mixer groups for unknown scope values', function (): void {
     $builder = new Builder(new Group, '*');
 
     (new GroupScopeFilter)($builder, 'bogus', 'scope');
 
-    expect($builder->wheres)->toBe([]);
+    expect($builder->whereNotIns)->toBe([
+        'type' => ['mixer'],
+    ]);
 });
 
 it('ignores non-string values', function (): void {

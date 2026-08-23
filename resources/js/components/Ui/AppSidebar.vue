@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { show } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAuth } from '@/composables/auth'
+import { useEcho } from '@/composables/echo'
+import { useGroups } from '@/composables/groups'
+import type { CollectionItem } from '@/types'
+import { router, usePage } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
@@ -8,7 +13,19 @@ defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
 }>()
 
-const { hasRole } = useAuth()
+const { user: auth, hasRole } = useAuth()
+const { groupIcon } = useGroups()
+const { privateChannel } = useEcho()
+
+const collections = computed<CollectionItem[]>(() => usePage().props.collections ?? [])
+
+const collectionItems = computed<NavigationMenuItem[]>(() =>
+  collections.value.map((item: CollectionItem) => ({
+    label: item.title,
+    icon: groupIcon(item.type),
+    to: show.url(item.id),
+  })),
+)
 
 const items = computed<NavigationMenuItem[][]>(() => [
   [
@@ -53,7 +70,17 @@ const items = computed<NavigationMenuItem[][]>(() => [
         ],
       ]
     : []),
+  ...(collectionItems.value.length ? [collectionItems.value] : []),
 ])
+
+if (auth.value) {
+  const reloadCollections = () => router.reload({ only: ['collections'] })
+
+  privateChannel(`users.${auth.value.id}`)
+    .listen('.group.created', reloadCollections)
+    .listen('.group.updated', reloadCollections)
+    .listen('.group.trashed', reloadCollections)
+}
 </script>
 
 <template>
