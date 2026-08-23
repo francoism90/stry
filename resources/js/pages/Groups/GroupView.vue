@@ -69,6 +69,7 @@ privateChannel(`groups.${props.group.id}`)
     <InfiniteScroll
       data="items"
       :items-element="() => itemBody?.$el"
+      :buffer="200"
     >
       <VideoList
         ref="itemBody"

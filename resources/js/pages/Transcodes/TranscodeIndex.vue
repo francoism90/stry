@@ -38,6 +38,7 @@ const itemBody = ref()
     <InfiniteScroll
       data="items"
       :items-element="() => itemBody?.$el"
+      :buffer="200"
     >
       <TranscodeList
         ref="itemBody"
