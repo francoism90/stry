@@ -13,6 +13,7 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     Storage::fake('media');
+    Storage::fake('conversions');
     Storage::fake(Transcode::getDestinationDisk());
 });
 
@@ -61,7 +62,7 @@ it('skips generation when the video already has a storyboard', function () {
         'name' => 'storyboard',
         'file_name' => 'storyboard.jpg',
         'mime_type' => 'image/jpeg',
-        'disk' => 'media',
+        'disk' => 'conversions',
         'size' => 1,
         'manipulations' => [],
         'custom_properties' => [],

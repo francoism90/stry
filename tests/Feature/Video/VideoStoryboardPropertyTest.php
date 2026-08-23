@@ -11,7 +11,10 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
-beforeEach(fn () => Storage::fake('media'));
+beforeEach(function () {
+    Storage::fake('media');
+    Storage::fake('conversions');
+});
 
 function createVideoStoryboardMedia(Video $video, string $mimeType, string $fileName): void
 {
@@ -20,7 +23,7 @@ function createVideoStoryboardMedia(Video $video, string $mimeType, string $file
         'name' => 'storyboard',
         'file_name' => $fileName,
         'mime_type' => $mimeType,
-        'disk' => 'media',
+        'disk' => 'conversions',
         'size' => 1,
         'manipulations' => [],
         'custom_properties' => [],
