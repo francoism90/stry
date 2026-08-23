@@ -250,6 +250,8 @@ export type GroupCollection = Omit<Paginator, 'data'> & {
   data: Group[] | undefined
 }
 
+export type CollectionItem = Pick<Group, 'id' | 'name' | 'title' | 'type'>
+
 export type Notification = {
   id: string
   type: string

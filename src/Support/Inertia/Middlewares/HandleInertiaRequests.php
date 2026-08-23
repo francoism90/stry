@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
+use App\Web\Groups\Responses\GroupCollectionsProperty;
 use App\Web\Users\Responses\UserResourceProperty;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Http\Request;
@@ -28,6 +29,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,
                 appends: ['name', 'email', 'avatar', 'settings']
+            ),
+            'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty(
+                user: $request->user() ?? null,
             ),
             'echo' => fn (): array => [
                 'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
