@@ -120,7 +120,12 @@ export function useShaka(
 
     try {
       const response = await fetch(videoModel.storyboard_vtt)
-      const contents = (await response.text()).replace(/^(\S+)#xywh=/gm, `${videoModel.storyboard_image}#xywh=`)
+
+      // Signed URLs contain raw '&' query-string separators, but WebVTT cue text uses
+      // HTML-entity-style escaping, so a literal '&' must be written as '&amp;' or a parser
+      // may mangle everything from there onward (including the "#xywh=" it needs to detect).
+      const escapedImageUrl = videoModel.storyboard_image.replaceAll('&', '&amp;')
+      const contents = (await response.text()).replace(/^(\S+)#xywh=/gm, `${escapedImageUrl}#xywh=`)
       const blobUrl = URL.createObjectURL(new Blob([contents], { type: 'text/vtt' }))
 
       try {

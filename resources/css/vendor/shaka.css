@@ -16,3 +16,13 @@
 .shaka-seek-button {
   @apply hidden cursor-pointer items-center justify-center gap-0.5 border-0 bg-transparent px-1.5 py-1 text-inherit opacity-90 transition-opacity duration-150 lg:inline-flex;
 }
+
+/*
+ * Shaka's seek bar thumbnail preview crops a single tile out of a sprite sheet by rendering
+ * the <img> at its natural size and using a CSS transform to scale/position it within a small,
+ * overflow-hidden container. Tailwind's preflight (`img { max-width: 100% }`) caps that <img>
+ * at the container's width, squashing the whole sprite sheet to fit instead of cropping a tile.
+ */
+.shaka-player-ui-thumbnail-image {
+  @apply max-w-none;
+}
