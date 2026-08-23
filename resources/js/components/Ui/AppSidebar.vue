@@ -59,7 +59,7 @@ const items = computed<NavigationMenuItem[][]>(() => [
 <template>
   <UDashboardSidebar
     :mode="mode"
-    :default-size="18"
+    :default-size="16"
     :resizable="false"
   >
     <template #header>
