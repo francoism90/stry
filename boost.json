@@ -1,5 +1,8 @@
 {
-    "agents": ["copilot", "claude_code"],
+    "agents": [
+        "copilot",
+        "claude_code"
+    ],
     "cloud": false,
     "guidelines": true,
     "mcp": true,
@@ -22,6 +25,7 @@
         "wayfinder-development",
         "pest-testing",
         "inertia-vue-development",
+        "echo-vue-development",
         "echo-development",
         "tailwindcss-development",
         "medialibrary-development",
