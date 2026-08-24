@@ -8,7 +8,7 @@ import type { Group, OptionItem, QueryFilter, QueryValue, VideoCollection } from
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   group: Group
@@ -37,17 +37,19 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-setLayoutProps({
-  id: 'collections.show',
-  title: props.group.title,
-  description: `${Intl.NumberFormat().format(props.group.videos ?? 0)} videos`,
-  links: links.value,
-  scopes: props.scopes,
-  sorters: props.sorters,
-  filter: props.filter,
-  sort: props.sort,
-  query: props.query,
-  fluid: true,
+watchEffect(() => {
+  setLayoutProps({
+    id: 'collections.show',
+    title: props.group.title,
+    description: `${Intl.NumberFormat().format(props.group.videos ?? 0)} videos`,
+    links: links.value,
+    scopes: props.scopes,
+    sorters: props.sorters,
+    filter: props.filter,
+    sort: props.sort,
+    query: props.query,
+    fluid: true,
+  })
 })
 
 useEcho(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))

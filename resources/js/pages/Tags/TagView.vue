@@ -8,7 +8,7 @@ import type { OptionItem, QueryFilter, QueryValue, Tag, VideoCollection } from '
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   tag: Tag
@@ -35,17 +35,19 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-setLayoutProps({
-  id: 'tags.show',
-  title: props.tag.name,
-  description: `${Intl.NumberFormat().format(props.tag.videos ?? 0)} videos`,
-  links: links.value,
-  scopes: props.scopes,
-  sorters: props.sorters,
-  filter: props.filter,
-  sort: props.sort,
-  query: props.query,
-  fluid: true,
+watchEffect(() => {
+  setLayoutProps({
+    id: 'tags.show',
+    title: props.tag.name,
+    description: `${Intl.NumberFormat().format(props.tag.videos ?? 0)} videos`,
+    links: links.value,
+    scopes: props.scopes,
+    sorters: props.sorters,
+    filter: props.filter,
+    sort: props.sort,
+    query: props.query,
+    fluid: true,
+  })
 })
 
 useEcho(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
