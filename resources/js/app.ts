@@ -1,3 +1,4 @@
+import type { EchoConfig } from '@/types'
 import { createInertiaApp } from '@inertiajs/vue3'
 import ui from '@nuxt/ui/vue-plugin'
 
@@ -7,7 +8,6 @@ import '@/plugins/pusher'
 
 import AppLayout from '@/layouts/AppLayout.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
-import type { EchoConfig } from '@/types'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
