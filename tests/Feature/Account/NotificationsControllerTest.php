@@ -7,6 +7,7 @@ use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use Domain\Users\Models\User;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
+use Inertia\Testing\AssertableInertia as Assert;
 
 function createNotification(User $user, bool $read = false): DatabaseNotification
 {
@@ -34,6 +35,23 @@ it('redirects guests from the notifications index', function () {
     $response = $this->get(action([NotificationsController::class, 'index']));
 
     $response->assertRedirect();
+});
+
+it('shares the unread notifications count on every page', function () {
+    $user = User::factory()->create();
+    createNotification($user, false);
+    createNotification($user, false);
+    createNotification($user, true);
+
+    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index']));
+
+    $response->assertInertia(fn (Assert $page) => $page->where('unread', 2));
+});
+
+it('shares zero for the unread notifications count when logged out', function () {
+    $response = $this->get('/login');
+
+    $response->assertInertia(fn (Assert $page) => $page->where('unread', 0));
 });
 
 // update (toggle read)
