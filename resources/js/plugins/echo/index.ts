@@ -1,13 +1,16 @@
+import type { EchoConfig } from '@/types'
 import { configureEcho } from '@laravel/echo-vue'
 
-if (typeof window !== 'undefined') {
+export function bootEcho(config: EchoConfig | undefined): void {
+  if (typeof window === 'undefined' || !config || !config.key) return
+
   configureEcho({
     broadcaster: 'reverb',
-    key: import.meta.env.VITE_REVERB_APP_KEY,
-    wsHost: import.meta.env.VITE_REVERB_HOST,
-    wsPort: import.meta.env.VITE_REVERB_PORT,
-    wssPort: import.meta.env.VITE_REVERB_PORT,
-    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    key: config.key,
+    wsHost: config.host,
+    wsPort: config.port,
+    wssPort: config.port,
+    forceTLS: config.scheme === 'https',
     enabledTransports: ['ws', 'wss'],
   })
 }
