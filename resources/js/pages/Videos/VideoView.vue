@@ -4,12 +4,12 @@ import VideoGroupModal from '@/components/Videos/VideoGroupModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoPlayer from '@/components/Videos/VideoPlayer.vue'
 import VideoTags from '@/components/Videos/VideoTags.vue'
-import { useEcho } from '@/composables/echo'
 import { useVideo } from '@/composables/video'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Group, Media, Playlist, QueryFilter, QueryValue, Transcode, Video } from '@/types'
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
@@ -43,7 +43,6 @@ const isAddModalOpen = ref(false)
 const isEditModalOpen = ref(false)
 
 const { toggleLike, toggleSave } = useVideo()
-const { privateChannel } = useEcho()
 
 const links = computed<ButtonProps[]>(() => [
   ...(props.video.manage
@@ -72,18 +71,17 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-privateChannel(`videos.${props.video.id}`)
-  .listen('.videos.updated', () => router.reload({ only: ['video'] }))
-  .listen('.videos.trashed', () => router.visit('/'))
-  .listen('.playlist.created', () => router.reload({ only: ['playlist', 'playlists'] }))
-  .listen('.playlist.updated', () => router.reload({ only: ['playlist', 'playlists'] }))
-  .listen('.playlist.deleted', () => router.reload({ only: ['playlist', 'playlists'] }))
-  .listen('.transcode.created', () => router.reload({ only: ['transcodes'] }))
-  .listen('.transcode.updated', () => router.reload({ only: ['transcodes'] }))
-  .listen('.transcode.deleted', () => router.reload({ only: ['transcodes'] }))
-  .listen('.media.created', () => router.reload({ only: ['media'] }))
-  .listen('.media.updated', () => router.reload({ only: ['media'] }))
-  .listen('.media.deleted', () => router.reload({ only: ['media'] }))
+const videoChannel = `videos.${props.video.id}`
+
+useEcho(videoChannel, '.videos.updated', () => router.reload({ only: ['video'] }))
+useEcho(videoChannel, '.videos.trashed', () => router.visit('/'))
+useEcho(videoChannel, ['.playlist.created', '.playlist.updated', '.playlist.deleted'], () =>
+  router.reload({ only: ['playlist', 'playlists'] }),
+)
+useEcho(videoChannel, ['.transcode.created', '.transcode.updated', '.transcode.deleted'], () =>
+  router.reload({ only: ['transcodes'] }),
+)
+useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], () => router.reload({ only: ['media'] }))
 </script>
 
 <template>

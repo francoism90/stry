@@ -20,6 +20,15 @@ withDefaults(
 const emit = defineEmits<{
   submit: [close: () => void]
 }>()
+
+const onEnter = (event: KeyboardEvent, close: () => void): void => {
+  if (event.defaultPrevented || !(event.target instanceof HTMLInputElement)) {
+    return
+  }
+
+  event.preventDefault()
+  emit('submit', close)
+}
 </script>
 
 <template>
@@ -36,27 +45,32 @@ const emit = defineEmits<{
       <slot />
     </template>
 
-    <template #body>
-      <UTabs
-        v-if="tabs?.length"
-        :items="tabs"
-        variant="link"
-        class="w-full gap-4"
-        :ui="{ trigger: 'grow' }"
+    <template #body="{ close }">
+      <div
+        @submit.prevent="emit('submit', close)"
+        @keydown.enter="onEnter($event, close)"
       >
-        <template
-          v-for="tab in tabs"
-          :key="tab.value"
-          #[tab.slot]
+        <UTabs
+          v-if="tabs?.length"
+          :items="tabs"
+          variant="link"
+          class="w-full gap-4"
+          :ui="{ trigger: 'grow' }"
         >
-          <slot :name="tab.slot" />
-        </template>
-      </UTabs>
+          <template
+            v-for="tab in tabs"
+            :key="tab.value"
+            #[tab.slot]
+          >
+            <slot :name="tab.slot" />
+          </template>
+        </UTabs>
 
-      <slot
-        v-else
-        name="body"
-      />
+        <slot
+          v-else
+          name="body"
+        />
+      </div>
     </template>
 
     <template #footer="{ close }">

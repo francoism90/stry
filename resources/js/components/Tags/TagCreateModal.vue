@@ -15,7 +15,7 @@ withDefaults(
 
 const open = defineModel<boolean>('open')
 
-const types = computed(() => usePage().props.tagTypes)
+const types = computed(() => usePage().props.tags)
 
 const form = useForm(store(), {
   name: '',

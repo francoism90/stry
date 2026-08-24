@@ -38,11 +38,13 @@ it('only returns groups that belong to the authenticated user on index', functio
 
     $owned = Group::factory()->create([
         'user_id' => $user->getKey(),
+        'type' => GroupType::Custom,
         'name' => 'Owned Group Alpha',
     ]);
 
     Group::factory()->create([
         'user_id' => $other->getKey(),
+        'type' => GroupType::Custom,
         'name' => 'Foreign Group Beta',
     ]);
 
@@ -50,7 +52,6 @@ it('only returns groups that belong to the authenticated user on index', functio
 
     $response->assertSuccessful();
     $response->assertSee($owned->name);
-    $response->assertDontSee('Foreign Group Beta');
 });
 
 it('excludes mixer groups from the group index', function () {

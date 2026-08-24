@@ -2,13 +2,13 @@
 import { index } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import GroupEditModal from '@/components/Groups/GroupEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import { useEcho } from '@/composables/echo'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Group, OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   group: Group
@@ -37,24 +37,23 @@ const links = computed<ButtonProps[]>(() => [
   },
 ])
 
-setLayoutProps({
-  id: 'collections.show',
-  title: props.group.title,
-  description: `${Intl.NumberFormat().format(props.group.videos ?? 0)} videos`,
-  links: links.value,
-  scopes: props.scopes,
-  sorters: props.sorters,
-  filter: props.filter,
-  sort: props.sort,
-  query: props.query,
-  fluid: true,
+watchEffect(() => {
+  setLayoutProps({
+    id: 'collections.show',
+    title: props.group.title,
+    description: `${Intl.NumberFormat().format(props.group.videos ?? 0)} videos`,
+    links: links.value,
+    scopes: props.scopes,
+    sorters: props.sorters,
+    filter: props.filter,
+    sort: props.sort,
+    query: props.query,
+    fluid: true,
+  })
 })
 
-const { privateChannel } = useEcho()
-
-privateChannel(`groups.${props.group.id}`)
-  .listen('.group.updated', () => router.reload({ only: ['group'] }))
-  .listen('.group.trashed', () => router.visit(index.url()))
+useEcho(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
+useEcho(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
 </script>
 
 <template>

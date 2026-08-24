@@ -25,7 +25,7 @@ class HandleInertiaRequests extends Middleware
             'app' => fn (): string => Config::string('app.name', 'Laravel'),
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
-            'tagTypes' => fn (): Options => Options::forEnum(TagType::class),
+            'tags' => fn (): Options => Options::forEnum(TagType::class),
             'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,
                 appends: ['name', 'email', 'avatar', 'settings']
@@ -33,6 +33,7 @@ class HandleInertiaRequests extends Middleware
             'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty(
                 user: $request->user() ?? null,
             ),
+            'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
             'echo' => fn (): array => [
                 'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),

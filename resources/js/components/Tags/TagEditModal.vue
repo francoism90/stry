@@ -18,7 +18,7 @@ const props = withDefaults(
 
 const open = defineModel<boolean>('open')
 
-const types = computed(() => usePage().props.tagTypes)
+const types = computed(() => usePage().props.tags)
 const { items, filter } = useTags(props.item.related || [])
 
 const form = useForm(update(props.item.id), {
