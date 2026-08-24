@@ -2,11 +2,11 @@
 import { index } from '@/actions/App/Web/Tags/Controllers/TagController'
 import TagEditModal from '@/components/Tags/TagEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import { useEcho } from '@/composables/echo'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, Tag, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
@@ -48,11 +48,8 @@ setLayoutProps({
   fluid: true,
 })
 
-const { privateChannel } = useEcho()
-
-privateChannel(`tags.${props.tag.id}`)
-  .listen('.tag.updated', () => router.reload({ only: ['tag'] }))
-  .listen('.tag.deleted', () => router.visit(index.url()))
+useEcho(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
+useEcho(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
 </script>
 
 <template>

@@ -2,11 +2,11 @@
 import { index } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import GroupEditModal from '@/components/Groups/GroupEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
-import { useEcho } from '@/composables/echo'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Group, OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
 import { computed, ref } from 'vue'
 
@@ -50,11 +50,8 @@ setLayoutProps({
   fluid: true,
 })
 
-const { privateChannel } = useEcho()
-
-privateChannel(`groups.${props.group.id}`)
-  .listen('.group.updated', () => router.reload({ only: ['group'] }))
-  .listen('.group.trashed', () => router.visit(index.url()))
+useEcho(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
+useEcho(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
 </script>
 
 <template>

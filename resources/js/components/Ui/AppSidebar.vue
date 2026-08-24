@@ -2,10 +2,10 @@
 import { show } from '@/actions/App/Web/Groups/Controllers/GroupController'
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAuth } from '@/composables/auth'
-import { useEcho } from '@/composables/echo'
 import { useGroups } from '@/composables/groups'
 import type { CollectionItem } from '@/types'
 import { router, usePage } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
 
@@ -15,7 +15,6 @@ defineProps<{
 
 const { user: auth, hasRole } = useAuth()
 const { groupIcon } = useGroups()
-const { privateChannel } = useEcho()
 
 const collections = computed<CollectionItem[]>(() => usePage().props.collections ?? [])
 
@@ -76,10 +75,7 @@ const items = computed<NavigationMenuItem[][]>(() => [
 if (auth.value) {
   const reloadCollections = () => router.reload({ only: ['collections'] })
 
-  privateChannel(`users.${auth.value.id}`)
-    .listen('.group.created', reloadCollections)
-    .listen('.group.updated', reloadCollections)
-    .listen('.group.trashed', reloadCollections)
+  useEcho(`users.${auth.value.id}`, ['.group.created', '.group.updated', '.group.trashed'], reloadCollections)
 }
 </script>
 

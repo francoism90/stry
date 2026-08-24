@@ -17,6 +17,9 @@ importers:
       '@internationalized/date':
         specifier: ^3.12.3
         version: 3.12.3
+      '@laravel/echo-vue':
+        specifier: ^2.4.0
+        version: 2.4.0(pusher-js@8.6.0)(vue@3.5.41(typescript@6.0.3))
       '@nuxt/ui':
         specifier: ^4.11.0
         version: 4.11.0(9d0e925d42c83d9f60bcadbf68a01349)
@@ -439,6 +442,19 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@laravel/echo-vue@2.4.0':
+    resolution: {integrity: sha512-6QSz2cD4powFqll+5L0x+HRAi9pULlxg40NeF4hDCM29awtGw2ubHZ+8U6ydWk9QpzXAtP3pnwA7zKEeSj2dLw==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      pusher-js: '*'
+      socket.io-client: '*'
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      pusher-js:
+        optional: true
+      socket.io-client:
+        optional: true
 
   '@laravel/multiplex@0.4.3':
     resolution: {integrity: sha512-jJTZGgKl6sK0ETYmqiPqeAwmErvqjxgDRLfzqsmqiWiupc5dfjaoVVrrdXZwb6eGylSg99WwHLibCPJs8F0bGw==}
@@ -3526,6 +3542,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@laravel/echo-vue@2.4.0(pusher-js@8.6.0)(vue@3.5.41(typescript@6.0.3))':
+    dependencies:
+      vue: 3.5.41(typescript@6.0.3)
+    optionalDependencies:
+      pusher-js: 8.6.0
 
   '@laravel/multiplex@0.4.3':
     dependencies:

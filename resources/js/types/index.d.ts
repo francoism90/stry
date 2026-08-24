@@ -1,12 +1,5 @@
 import type { AvatarProps, BadgeProps, SelectItem, SelectMenuItem } from '@nuxt/ui'
 
-export type EchoConfig = {
-  readonly key: string
-  readonly host: string
-  readonly port: number
-  readonly scheme: string
-}
-
 export type FlashType = 'success' | 'error' | 'warning' | 'info' | 'primary'
 
 export type FlashData = {

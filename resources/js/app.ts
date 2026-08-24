@@ -1,6 +1,7 @@
 import { createInertiaApp } from '@inertiajs/vue3'
 import ui from '@nuxt/ui/vue-plugin'
 
+import '@/plugins/echo'
 import '@/plugins/iconify'
 import '@/plugins/pusher'
 
