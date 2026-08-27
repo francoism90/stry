@@ -62,10 +62,10 @@ php artisan scout:sync --import
 pnpm install
 ```
 
-Run the Vite dev server from the host:
+The `development` preset's `vite.quadlets` runs the Vite dev server in its own container, so it comes up alongside `stry` — no need to run `pnpm dev` from the host:
 
 ```bash
-pnpm dev
+lpod install development/vite.quadlets --replace
 ```
 
 ### Admin account
@@ -84,7 +84,7 @@ Alternatively, create one interactively without a seeder: `lpod stry artisan use
 
 ## VS Code Dev Containers
 
-The `devcontainer` preset builds a dedicated image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). With `stry` already running:
+The `devcontainer` preset uses the prebuilt `ghcr.io/foxws/laravel-podman-devcontainer` image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). With `stry` already running:
 
 ```bash
 code ~/projects/stry
