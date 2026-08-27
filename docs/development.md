@@ -84,7 +84,7 @@ Alternatively, create one interactively without a seeder: `lpod stry artisan use
 
 ## VS Code Dev Containers
 
-The `devcontainer` preset builds a dedicated image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). With `stry` already running:
+The `devcontainer` preset uses the prebuilt `ghcr.io/foxws/laravel-podman-devcontainer` image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). With `stry` already running:
 
 ```bash
 code ~/projects/stry
