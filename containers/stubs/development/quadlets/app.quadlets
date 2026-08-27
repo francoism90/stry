@@ -13,7 +13,7 @@ SetWorkingDirectory={{workingPath}}
 Description=Laravel App (Octane) container
 Requires={{application}}-pgsql.container {{application}}-valkey.container
 After={{application}}-pgsql.container {{application}}-valkey.container
-Wants={{application}}-mailpit.container {{application}}-horizon.container {{application}}-reverb.container {{application}}-schedule.container {{application}}-rustfs.container {{application}}-typesense.container
+Wants={{application}}-mailpit.container {{application}}-horizon.container {{application}}-reverb.container {{application}}-schedule.container {{application}}-rustfs.container {{application}}-typesense.container {{application}}-vite.container
 
 [Container]
 Image={{application}}.build

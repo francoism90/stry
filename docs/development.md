@@ -62,10 +62,10 @@ php artisan scout:sync --import
 pnpm install
 ```
 
-Run the Vite dev server from the host:
+The `development` preset's `vite.quadlets` runs the Vite dev server in its own container, so it comes up alongside `stry` — no need to run `pnpm dev` from the host:
 
 ```bash
-pnpm dev
+lpod install development/vite.quadlets --replace
 ```
 
 ### Admin account
