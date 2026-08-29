@@ -92,6 +92,13 @@ code ~/projects/stry
 
 `.devcontainer/devcontainer.json` connects to the `systemd-stry` network and gives you PHP IntelliSense, debugging, and an integrated terminal.
 
+```bash
+php artisan podman:generate devcontainer
+cp podman/devcontainer/runtimes/devcontainer.json .devcontainer/devcontainer.json
+```
+
+Re-run after changing the preset, then **Dev Containers: Rebuild Container**.
+
 ### Laravel IDE Helper
 
 ```bash
