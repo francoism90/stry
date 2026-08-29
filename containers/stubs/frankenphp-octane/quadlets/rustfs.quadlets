@@ -15,8 +15,8 @@ Environment=RUSTFS_OBS_LOG_STDOUT_ENABLED=true
 Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Secret={{application}}-rustfs-access-key,type=env,target=RUSTFS_ACCESS_KEY
 Secret={{application}}-rustfs-secret-key,type=env,target=RUSTFS_SECRET_KEY
-Volume={{application}}-rustfs-data:/data:rw,Z,U
-Volume={{application}}-rustfs-logs:/logs:rw,Z,U
+Volume={{application}}-rustfs-data.volume:/data:rw,Z,U
+Volume={{application}}-rustfs-logs.volume:/logs:rw,Z,U
 Network={{application}}.network
 
 [Service]
@@ -27,8 +27,10 @@ TimeoutStopSec=60
 ---
 # FileName={{application}}-rustfs-data
 [Volume]
+VolumeName={{application}}-rustfs-data
 Label={{application}}-rustfs-data
 ---
 # FileName={{application}}-rustfs-logs
 [Volume]
+VolumeName={{application}}-rustfs-logs
 Label={{application}}-rustfs-logs

@@ -22,7 +22,7 @@ Volume=/mnt/media/import:/import:rw,z
 # Tmpfs alternative (RAM instead of NVMe) - also needs PACKAGER_TEMPORARY_FILES_ROOT,
 # PACKAGER_TEMPORARY_MIN_FREE, and a Horizon maxProcesses cap; see docs/podman.md#storage-sizing-tmpfs
 # Tmpfs=/cache:rw,size=12g,mode=1777
-Volume={{application}}-cache:/cache:rw,z
+Volume={{application}}-cache.volume:/cache:rw,z
 Network={{application}}.network
 
 [Service]
