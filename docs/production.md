@@ -45,7 +45,14 @@ composer install
 php artisan podman:setup
 ```
 
-**Option B — no PHP on this server, but Podman is installed:** use `lpod-setup`, which renders the files inside a throwaway container instead. Copy `vendor/foxws/laravel-podman/bin/lpod-setup` next to `lpod` on your `PATH` first, then run it via `lpod setup`:
+**Option B — no PHP on this server, but Podman is installed:** use `lpod-setup`, which renders the files inside a throwaway container instead. Install it next to `lpod` on your `PATH` first:
+
+```bash
+curl -fsSL -o ~/.local/bin/lpod-setup https://github.com/foxws/lpod/releases/latest/download/lpod-setup
+chmod +x ~/.local/bin/lpod-setup
+```
+
+Then run it via `lpod setup`:
 
 ```bash
 lpod setup --install --secrets

@@ -52,10 +52,10 @@
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.394.1",
+        "aws/aws-sdk-php": "^3.394.3",
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
-        "foxws/laravel-podman": "^1.8.0",
+        "foxws/laravel-podman": "^1.9.0",
         "larastan/larastan": "^3.10.0",
         "laravel/boost": "^2.7.0",
         "laravel/doctor": "^0.1.0",

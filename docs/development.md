@@ -44,7 +44,7 @@ lpod install development/pgsql.quadlets --replace
 ```
 
 :::tip
-Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,s3,devcontainer`) to skip passing `--preset` on every `podman:setup` run.
+Set `PODMAN_DEFAULT_PRESETS` in `.env` (comma-separated, e.g. `PODMAN_DEFAULT_PRESETS=development,devcontainer,s3`) to skip passing `--preset` on every `podman:setup` run.
 :::
 
 Once it's up, the app is available directly at `http://localhost:8000` — no reverse proxy needed locally (see [Reverse Proxy](proxy.md) if you want to test the production-style subdomain routing).
@@ -91,6 +91,13 @@ code ~/projects/stry
 ```
 
 `.devcontainer/devcontainer.json` connects to the `systemd-stry` network and gives you PHP IntelliSense, debugging, and an integrated terminal.
+
+```bash
+php artisan podman:generate devcontainer
+cp podman/devcontainer/runtimes/devcontainer.json .devcontainer/devcontainer.json
+```
+
+Re-run after changing the preset, then **Dev Containers: Rebuild Container**.
 
 ### Laravel IDE Helper
 
