@@ -161,6 +161,11 @@ class Group extends Model implements HasMedia, Sortable
         return $this->type === GroupType::Mixer;
     }
 
+    public function isViewed(): bool
+    {
+        return $this->type === GroupType::Viewed;
+    }
+
     public function buildSortQuery(): Builder
     {
         return static::query()->where('user_id', $this->user_id);

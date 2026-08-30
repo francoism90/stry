@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import GroupClearController from '@/actions/App/Web/Groups/Controllers/GroupClearController'
-import type { Group } from '@/types'
+import type { CollectionItem } from '@/types'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
-  item: Group
+  item: CollectionItem
 }>()
 
-const handle = async () => router.post(GroupClearController.url(props.item.id))
+const handle = async () => {
+  if (!props.item.id) return
+
+  router.post(GroupClearController.url(props.item.id))
+}
 </script>
 
 <template>

@@ -34,6 +34,11 @@ class GroupPolicy
         return $group->isCustom() && $group->user()->is($user);
     }
 
+    public function clear(User $user, Group $group): bool
+    {
+        return ($group->isCustom() || $group->isViewed()) && $group->user()->is($user);
+    }
+
     public function delete(User $user, Group $group): bool
     {
         return $group->isCustom() && $group->user()->is($user);

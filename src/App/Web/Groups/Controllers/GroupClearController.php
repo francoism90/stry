@@ -23,7 +23,7 @@ class GroupClearController implements HasMiddleware
 
     public function __invoke(Group $group): RedirectResponse
     {
-        Gate::authorize('update', $group);
+        Gate::authorize('clear', $group);
 
         defer(fn () => $group->videos()->detach());
 

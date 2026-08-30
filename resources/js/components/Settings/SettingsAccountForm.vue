@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import GroupClearModal from '@/components/Groups/GroupClearModal.vue'
 import { useAuth } from '@/composables/auth'
 import { update } from '@/routes/user-profile-information'
-import { useForm } from '@inertiajs/vue3'
+import type { CollectionItem } from '@/types'
+import { useForm, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
 const { user, logOut } = useAuth()
 
@@ -9,6 +12,10 @@ const form = useForm(update(), {
   name: user.value?.name || '',
   email: user.value?.email || '',
 })
+
+const viewedHistory = computed<CollectionItem>(
+  () => (usePage().props.history as CollectionItem | null | undefined) ?? { id: '', name: 'viewed', title: 'Viewed', type: 'viewed' },
+)
 
 const onSubmit = () =>
   form.submit({
@@ -90,6 +97,26 @@ defineExpose({
           variant="soft"
           @click="logOut"
         />
+      </template>
+    </UPageCard>
+
+    <USeparator />
+
+    <UPageCard
+      title="Viewed history"
+      description="Clear your watched videos and resume progress."
+      variant="naked"
+      orientation="vertical"
+    >
+      <template #footer>
+        <GroupClearModal :item="viewedHistory">
+          <UButton
+            label="Clear history"
+            icon="i-lucide-eraser"
+            color="error"
+            variant="soft"
+          />
+        </GroupClearModal>
       </template>
     </UPageCard>
   </div>

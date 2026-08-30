@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Support\Inertia\Middlewares;
 
 use App\Web\Groups\Responses\GroupCollectionsProperty;
+use App\Web\Groups\Responses\ViewedHistoryProperty;
 use App\Web\Users\Responses\UserResourceProperty;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Http\Request;
@@ -31,6 +32,9 @@ class HandleInertiaRequests extends Middleware
                 appends: ['name', 'email', 'avatar', 'settings']
             ),
             'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty(
+                user: $request->user() ?? null,
+            ),
+            'history' => fn (): ViewedHistoryProperty => new ViewedHistoryProperty(
                 user: $request->user() ?? null,
             ),
             'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
