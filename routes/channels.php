@@ -10,6 +10,7 @@ use App\Api\Tags\Broadcasting\TagChannel;
 use App\Api\Transcodes\Broadcasting\TranscodeChannel;
 use App\Api\Users\Broadcasting\UserChannel;
 use App\Api\Videos\Broadcasting\VideoChannel;
+use App\Api\Videos\Broadcasting\VideoLibraryChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -27,6 +28,7 @@ Broadcast::channel('users.{user}', UserChannel::class);
 Broadcast::channel('profiles.{profile}', ProfileChannel::class);
 Broadcast::channel('tags.{tag}', TagChannel::class);
 Broadcast::channel('videos.{video}', VideoChannel::class);
+Broadcast::channel('library', VideoLibraryChannel::class);
 Broadcast::channel('groups.{group}', GroupChannel::class);
 Broadcast::channel('media.{media}', MediaChannel::class);
 Broadcast::channel('playlists.{playlist}', PlaylistChannel::class);

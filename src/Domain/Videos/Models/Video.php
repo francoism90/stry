@@ -18,6 +18,7 @@ use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -211,7 +212,7 @@ class Video extends Model implements HasMedia
      */
     public function broadcastOn(string $event): array
     {
-        return array_filter([$this, $this->user]);
+        return array_filter([$this, $this->user, new PrivateChannel('library')]);
     }
 
     public function broadcastChannel(): string

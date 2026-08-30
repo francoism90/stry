@@ -3,7 +3,8 @@ import VideoLibraryList from '@/components/Videos/VideoLibraryList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
-import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
+import { useEcho } from '@laravel/echo-vue'
 import { ref } from 'vue'
 
 const props = defineProps<{
@@ -29,6 +30,8 @@ setLayoutProps({
 })
 
 const itemBody = ref()
+
+useEcho('library', '.video.trashed', () => router.reload({ only: ['items'] }))
 </script>
 
 <template>
