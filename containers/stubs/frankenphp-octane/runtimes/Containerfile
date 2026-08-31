@@ -54,7 +54,7 @@ WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 ENV LANG=C.UTF-8
-ENV PNPM_HOME="/pnpm"
+ENV PNPM_HOME="/home/docker/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 ENV FRANKEN_CLI="frankenphp php-cli /app/artisan"
 ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
@@ -174,7 +174,7 @@ RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID}
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Install Node.js dependencies
-RUN --mount=type=cache,target=/pnpm/store,uid=${UID},gid=${GID} \
+RUN --mount=type=cache,target=/home/docker/.local/share/pnpm/store,uid=${UID},gid=${GID} \
     pnpm install --frozen-lockfile
 
 # Complete composer setup

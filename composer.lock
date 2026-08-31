@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e872b6ce473c4d1cfbaf4d1dfb24783",
+    "content-hash": "06801278b10d875a80f1f0251670709b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5764,16 +5764,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.3",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3"
+                "reference": "148cefffaf0233e4c08cc13db8a195a56dd6dfe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
-                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/148cefffaf0233e4c08cc13db8a195a56dd6dfe9",
+                "reference": "148cefffaf0233e4c08cc13db8a195a56dd6dfe9",
                 "shasum": ""
             },
             "require": {
@@ -5805,9 +5805,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.3"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.5"
             },
-            "time": "2026-07-08T07:01:06+00:00"
+            "time": "2026-08-31T16:05:28+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -8572,16 +8572,16 @@
         },
         {
             "name": "spomky-labs/cbor-php",
-            "version": "3.3.2",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/cbor-php.git",
-                "reference": "3b491dca4bd7e8ae2b14b892cf3c9740f1ba4339"
+                "reference": "693f6edb3398b202cb355620e70f3f2e5a1d53fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/3b491dca4bd7e8ae2b14b892cf3c9740f1ba4339",
-                "reference": "3b491dca4bd7e8ae2b14b892cf3c9740f1ba4339",
+                "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/693f6edb3398b202cb355620e70f3f2e5a1d53fb",
+                "reference": "693f6edb3398b202cb355620e70f3f2e5a1d53fb",
                 "shasum": ""
             },
             "require": {
@@ -8627,7 +8627,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Spomky-Labs/cbor-php/issues",
-                "source": "https://github.com/Spomky-Labs/cbor-php/tree/3.3.2"
+                "source": "https://github.com/Spomky-Labs/cbor-php/tree/3.3.3"
             },
             "funding": [
                 {
@@ -8639,7 +8639,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-08-30T13:54:28+00:00"
+            "time": "2026-08-31T16:18:47+00:00"
         },
         {
             "name": "spomky-labs/pki-framework",
@@ -14667,16 +14667,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "1.9.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "3397d9d59a6dd5658d0ff4975c8314216406aa1a"
+                "reference": "3066e950ff7a306c185222711f220e625964a939"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/3397d9d59a6dd5658d0ff4975c8314216406aa1a",
-                "reference": "3397d9d59a6dd5658d0ff4975c8314216406aa1a",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/3066e950ff7a306c185222711f220e625964a939",
+                "reference": "3066e950ff7a306c185222711f220e625964a939",
                 "shasum": ""
             },
             "require": {
@@ -14746,7 +14746,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/1.9.0"
+                "source": "https://github.com/foxws/laravel-podman/tree/2.1.1"
             },
             "funding": [
                 {
@@ -14754,7 +14754,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-29T13:26:42+00:00"
+            "time": "2026-08-31T16:55:44+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -16750,11 +16750,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.10",
+            "version": "2.2.11",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/36d1509c998b0602811824143526b4a9ee2774e7",
-                "reference": "36d1509c998b0602811824143526b4a9ee2774e7",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0eb899d48d9b784eee3f1b58a6c9dc79734cf811",
+                "reference": "0eb899d48d9b784eee3f1b58a6c9dc79734cf811",
                 "shasum": ""
             },
             "require": {
@@ -16810,7 +16810,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-30T12:46:16+00:00"
+            "time": "2026-08-31T10:33:10+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

@@ -84,18 +84,21 @@ Alternatively, create one interactively without a seeder: `lpod stry artisan use
 
 ## VS Code Dev Containers
 
-The `devcontainer` preset uses the prebuilt `ghcr.io/foxws/laravel-podman-devcontainer` image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). With `stry` already running:
+The `devcontainer` preset renders a [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) image for developing `stry` itself inside a container — separate from the `development`/`frankenphp-octane` presets above, which run the app as a service. With `stry` already running:
 
 ```bash
 code ~/projects/stry
 ```
 
-`.devcontainer/devcontainer.json` connects to the `systemd-stry` network and gives you PHP IntelliSense, debugging, and an integrated terminal.
+`.devcontainer/devcontainer.json` connects to the `systemd-stry` network and gives you PHP IntelliSense, debugging, and an integrated terminal. Generate it, then symlink whichever of the four configs you want (a symlink, not a copy, so re-running `podman:generate` keeps it current):
 
 ```bash
 php artisan podman:generate devcontainer
-cp podman/devcontainer/runtimes/devcontainer.json .devcontainer/devcontainer.json
+mkdir -p .devcontainer
+ln -sf ../podman/devcontainer/runtimes/devcontainer-ai.json .devcontainer/devcontainer.json
 ```
+
+`stry` defaults to the `-ai` variant, which bundles Claude Code and Codex CLIs on top of the base image — see [Devcontainer](https://github.com/foxws/laravel-podman/blob/main/docs/devcontainer.md) in the package docs for the other three configs (prebuilt vs. locally-built, with vs. without AI CLIs) and the `~/.claude.json` login-persistence gotcha (it must exist as a file on the host before first launch, or Podman creates an empty directory in its place).
 
 Re-run after changing the preset, then **Dev Containers: Rebuild Container**.
 
@@ -110,6 +113,8 @@ lpod stry artisan ide-helper:models --nowrite
 ## AI-assisted development
 
 [Laravel Boost](https://boost.laravel.com/) is wired up as an MCP server — in VS Code, open the Command Palette (`Ctrl+Shift+P`/`Cmd+Shift+P`) → "MCP: List Servers" → start `laravel-boost`.
+
+The `-ai` devcontainer variant (see [above](#vs-code-dev-containers)) also preinstalls `claude`/`codex` CLIs, with host `~/.claude`/`~/.codex` credentials bind-mounted so logins persist across rebuilds — pair either with Boost for Laravel-specific context (routes, DB schema, config, Tinker) rather than a generic filesystem view.
 
 ## Testing & code quality
 

@@ -54,7 +54,7 @@ WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 ENV LANG=C.UTF-8
-ENV PNPM_HOME="/pnpm"
+ENV PNPM_HOME="/home/docker/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 ENV FRANKEN_CLI="frankenphp php-cli /app/artisan"
 ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
