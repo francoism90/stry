@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\Settings;
 
+use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Enums\ProtectionScheme;
+use Domain\Shared\Enums\Language;
 use Spatie\LaravelSettings\Settings;
 
 class PlaylistSettings extends Settings
@@ -13,9 +16,9 @@ class PlaylistSettings extends Settings
 
     public string $disk_name = 'segments';
 
-    public string $language = 'en';
+    public Language $language = Language::English;
 
-    public string $text_language = 'en';
+    public Language $text_language = Language::English;
 
     public int $expires_after = 1209600;
 
@@ -29,9 +32,9 @@ class PlaylistSettings extends Settings
 
     public int $key_url_lifetime = 7200;
 
-    public ?string $encryption = null;
+    public ?EncryptionMethod $encryption = null;
 
-    public ?string $protection_scheme = null;
+    public ?ProtectionScheme $protection_scheme = null;
 
     public bool $key_rotation = false;
 

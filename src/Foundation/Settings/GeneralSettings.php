@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Settings;
 
+use Domain\Shared\Enums\Locale;
 use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
@@ -12,7 +13,7 @@ class GeneralSettings extends Settings
 
     public string $timezone = 'Europe/Amsterdam';
 
-    public string $default_locale = 'en';
+    public Locale $default_locale = Locale::EnUs;
 
     public bool $allow_registration = false;
 

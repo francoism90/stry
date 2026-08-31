@@ -108,10 +108,27 @@ export type PlayerSettings = {
 export type ApplicationSettings = {
   site_name: string
   timezone: string
-  default_locale: string
+  default_locale: 'en-US' | 'nl-NL'
   allow_registration: boolean
   max_profiles_per_user: number | null
   maintenance_message: string | null
+}
+
+export type PlaylistSettings = {
+  type: 'packager' | 'streamer'
+  disk_name: string
+  language: 'en'
+  text_language: 'en'
+  expires_after: number
+  manifest_cache_lifetime: number
+  manifest_url_lifetime: number
+  manifest_refresh_before: number
+  media_url_lifetime: number
+  key_url_lifetime: number
+  encryption: 'raw_key_encryption' | 'clearkey' | null
+  protection_scheme: 'cenc' | 'cbcs' | null
+  key_rotation: boolean
+  key_rotation_duration: number
 }
 
 export type MediaStream = {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Support\Inertia\Middlewares;
 
 use App\Web\Groups\Responses\GroupCollectionsProperty;
-use App\Web\Settings\Responses\ApplicationSettingsProperty;
 use App\Web\Users\Responses\UserResourceProperty;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Http\Request;
@@ -35,9 +34,6 @@ class HandleInertiaRequests extends Middleware
                 user: $request->user() ?? null,
             ),
             'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
-            'settings' => fn (): ApplicationSettingsProperty => new ApplicationSettingsProperty(
-                user: $request->user() ?? null,
-            ),
             'echo' => fn (): array => [
                 'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),

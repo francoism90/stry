@@ -102,7 +102,7 @@ class CreateNewVideoStream
             $encryptionKey = null;
 
             if (filled($settings->encryption)) {
-                $encryptionKey = $streamer->withAESEncryption('key', $settings->protection_scheme);
+                $encryptionKey = $streamer->withAESEncryption('key', $settings->protection_scheme?->value);
 
                 if ($settings->key_rotation) {
                     $streamer->withKeyRotationDuration($settings->key_rotation_duration);

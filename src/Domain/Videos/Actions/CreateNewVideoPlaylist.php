@@ -42,7 +42,7 @@ class CreateNewVideoPlaylist
             'id' => $caption->getKey(),
             'disk' => $caption->disk,
             'path' => $caption->getPath(),
-            'language' => $caption->getCustomProperty('language_code', $settings->text_language),
+            'language' => $caption->getCustomProperty('language_code', $settings->text_language->value),
         ]));
 
         return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
@@ -78,7 +78,7 @@ class CreateNewVideoPlaylist
             $encryptionKey = null;
 
             if (filled($settings->encryption)) {
-                $encryptionKey = $packager->withAESEncryption('key', $settings->protection_scheme);
+                $encryptionKey = $packager->withAESEncryption('key', $settings->protection_scheme?->value);
 
                 if ($settings->key_rotation) {
                     $packager->withKeyRotationDuration($settings->key_rotation_duration);
@@ -99,8 +99,8 @@ class CreateNewVideoPlaylist
                 ->withMpdOutput($playlist->file_name)
                 ->withAllowCodecSwitching()
                 ->withAllowApproximateSegmentTimeline()
-                ->withDefaultLanguage($settings->language)
-                ->withDefaultTextLanguage($settings->text_language);
+                ->withDefaultLanguage($settings->language->value)
+                ->withDefaultTextLanguage($settings->text_language->value);
 
             // Export the playlist to the configured disk and path
             try {

@@ -8,6 +8,7 @@ use App\Web\Media\Controllers\MediaDownloadController;
 use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Web\Profiles\Controllers\SwitchProfileController;
 use App\Web\Settings\Controllers\ApplicationSettingsController;
+use App\Web\Settings\Controllers\PlaylistSettingsController;
 use App\Web\Shuffle\Controllers\ShuffleController;
 use App\Web\Tags\Controllers\TagOrderController;
 use App\Web\Users\Controllers\UserSettingsController;
@@ -21,7 +22,9 @@ use Illuminate\Support\Facades\Route;
 // Settings
 Route::prefix('/settings')->name('settings.')->group(function () {
     Route::patch('/', UserSettingsController::class)->name('update');
-    Route::patch('/application', ApplicationSettingsController::class)->name('application.update');
+
+    Route::singleton('application', ApplicationSettingsController::class)->only(['show', 'update']);
+    Route::singleton('playlist', PlaylistSettingsController::class)->only(['show', 'update']);
 });
 
 // Profiles

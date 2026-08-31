@@ -1,28 +1,39 @@
 <script setup lang="ts">
-import ApplicationSettingsController from '@/actions/App/Web/Settings/Controllers/ApplicationSettingsController'
+import { show, update } from '@/actions/App/Web/Settings/Controllers/ApplicationSettingsController'
 import type { ApplicationSettings } from '@/types'
-import { useForm, usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { useForm, useHttp } from '@inertiajs/vue3'
+import { onMounted, ref } from 'vue'
 
-const settings = computed(() => usePage().props.settings)
+const loaded = ref(false)
+const http = useHttp<object, ApplicationSettings>({})
 
-const form = useForm<ApplicationSettings>(
-  ApplicationSettingsController(),
-  settings.value ?? {
-    site_name: 'My Site',
-    timezone: 'Europe/Amsterdam',
-    default_locale: 'en',
-    allow_registration: false,
-    max_profiles_per_user: null,
-    maintenance_message: null,
-  },
+const form = useForm<ApplicationSettings>(update(), {
+  site_name: '',
+  timezone: '',
+  default_locale: 'en-US',
+  allow_registration: false,
+  max_profiles_per_user: null,
+  maintenance_message: null,
+})
+
+onMounted(() =>
+  http.get(show.url(), {
+    onSuccess: (data) => {
+      form.defaults(data)
+      form.reset()
+      loaded.value = true
+    },
+  }),
 )
 
-const onSubmit = () =>
+const onSubmit = () => {
+  if (!loaded.value) return
+
   form.submit({
     preserveScroll: true,
     preserveState: true,
   })
+}
 
 defineExpose({
   submit: onSubmit,
@@ -38,7 +49,19 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 </script>
 
 <template>
+  <div
+    v-if="!loaded"
+    class="flex flex-col gap-3"
+  >
+    <USkeleton
+      v-for="i in 6"
+      :key="i"
+      class="h-10 w-full rounded-md"
+    />
+  </div>
+
   <UForm
+    v-else
     :state="form"
     loading-auto
     @submit="onSubmit"
@@ -97,7 +120,10 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           <USelect
             v-model="form.default_locale"
             class="w-56"
-            :items="[{ label: 'English', value: 'en' }]"
+            :items="[
+              { label: 'English (US)', value: 'en-US' },
+              { label: 'Dutch (Netherlands)', value: 'nl-NL' },
+            ]"
           />
         </UFormField>
 
