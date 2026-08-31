@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\Pending;
 use Domain\Playlists\States\Verified;
@@ -134,8 +135,10 @@ it('can get path', function () {
 });
 
 it('can get seconds until the manifest url should be refreshed', function () {
-    config()->set('playlists.manifest_url_lifetime', 600);
-    config()->set('playlists.manifest_refresh_before', 300);
+    PlaylistSettings::fake([
+        'manifest_url_lifetime' => 600,
+        'manifest_refresh_before' => 300,
+    ]);
 
     $playlist = Playlist::factory()->create();
 
@@ -143,8 +146,10 @@ it('can get seconds until the manifest url should be refreshed', function () {
 });
 
 it('clamps the manifest url refresh window at zero', function () {
-    config()->set('playlists.manifest_url_lifetime', 60);
-    config()->set('playlists.manifest_refresh_before', 300);
+    PlaylistSettings::fake([
+        'manifest_url_lifetime' => 60,
+        'manifest_refresh_before' => 300,
+    ]);
 
     $playlist = Playlist::factory()->create();
 

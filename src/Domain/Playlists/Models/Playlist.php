@@ -9,6 +9,7 @@ use Domain\Playlists\Collections\PlaylistCollection;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Observers\PlaylistObserver;
 use Domain\Playlists\QueryBuilders\PlaylistQueryBuilder;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
@@ -25,7 +26,6 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use League\Flysystem\WhitespacePathNormalizer;
@@ -177,7 +177,9 @@ class Playlist extends Model
 
     public function getUrlRefreshIn(): int
     {
-        return max(static::getManifestUrlLifetime() - static::getManifestRefreshBefore(), 0);
+        $settings = app(PlaylistSettings::class);
+
+        return max($settings->manifest_url_lifetime - $settings->manifest_refresh_before, 0);
     }
 
     public function markAsReady(): void
@@ -213,7 +215,7 @@ class Playlist extends Model
 
     public function getDisk(): string
     {
-        return $this->disk ?? static::getDestinationDisk();
+        return $this->disk ?? app(PlaylistSettings::class)->disk_name;
     }
 
     public function getFileName(): string
@@ -223,7 +225,7 @@ class Playlist extends Model
 
     public function getType(): PlaylistType
     {
-        return $this->type ?? self::getDefaultType();
+        return $this->type ?? app(PlaylistSettings::class)->type;
     }
 
     public function getPath(string $path = ''): string
@@ -245,7 +247,7 @@ class Playlist extends Model
 
     public function getUrlResolver(string $path): string
     {
-        $expiration = now()->addSeconds(static::getManifestUrlLifetime());
+        $expiration = now()->addSeconds(app(PlaylistSettings::class)->manifest_url_lifetime);
 
         return URL::temporarySignedRoute('api.play.manifest', $expiration, [
             'playlist' => $this,
@@ -255,94 +257,15 @@ class Playlist extends Model
 
     public function getMediaUrlResolver(string $path): string
     {
-        $expiration = now()->addSeconds(static::getMediaUrlLifetime());
+        $expiration = now()->addSeconds(app(PlaylistSettings::class)->media_url_lifetime);
 
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
     }
 
     public function getKeyUrlResolver(string $path): string
     {
-        $expiration = now()->addSeconds(static::getKeyUrlLifetime());
+        $expiration = now()->addSeconds(app(PlaylistSettings::class)->key_url_lifetime);
 
         return $this->getFilesystem()->temporaryUrl($this->getPath($path), $expiration);
-    }
-
-    public static function getDefaultType(): PlaylistType
-    {
-        $type = Config::string('playlists.type', 'packager');
-
-        return PlaylistType::from($type);
-    }
-
-    public static function getDestinationDisk(): string
-    {
-        return Config::string('playlists.disk_name', 'segments');
-    }
-
-    public static function getLanguage(): string
-    {
-        return Config::string('playlists.language', 'en');
-    }
-
-    public static function getTextLanguage(): string
-    {
-        return Config::string('playlists.text_language', 'en');
-    }
-
-    public static function getManifestUrlLifetime(): int
-    {
-        return Config::integer('playlists.manifest_url_lifetime', 14400);
-    }
-
-    public static function getManifestRefreshBefore(): int
-    {
-        return Config::integer('playlists.manifest_refresh_before', 300);
-    }
-
-    public static function getManifestCacheLifetime(): int
-    {
-        return Config::integer('playlists.manifest_cache_lifetime', 300);
-    }
-
-    public static function getMediaUrlLifetime(): int
-    {
-        return Config::integer('playlists.media_url_lifetime', 14400);
-    }
-
-    public static function getKeyUrlLifetime(): int
-    {
-        return Config::integer('playlists.key_url_lifetime', 300);
-    }
-
-    public static function getExpiresAfter(): ?Carbon
-    {
-        $expires = Config::integer('playlists.expires_after');
-
-        return $expires === 0 ? null : Carbon::now()->addSeconds($expires);
-    }
-
-    public static function getEncryptionMethod(): ?string
-    {
-        return Config::string('playlists.encryption');
-    }
-
-    public static function getProtectionScheme(): ?string
-    {
-        return Config::string('playlists.protection_scheme');
-    }
-
-    public static function getKeyRotationDuration(): ?int
-    {
-        return Config::integer('playlists.key_rotation_duration', 300);
-    }
-
-    public static function shouldUseEncryption(): bool
-    {
-        return filled(static::getEncryptionMethod());
-    }
-
-    public static function shouldUseKeyRotation(): bool
-    {
-        return Config::boolean('playlists.key_rotation', false);
     }
 }

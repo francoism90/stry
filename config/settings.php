@@ -1,6 +1,7 @@
 <?php
 
-use Foundation\Settings\PlaylistSettings;
+use Domain\Playlists\Settings\PlaylistSettings;
+use Foundation\Settings\GeneralSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
 use Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast;
@@ -15,6 +16,7 @@ return [
      * put them (manually) here.
      */
     'settings' => [
+        GeneralSettings::class,
         PlaylistSettings::class,
     ],
 

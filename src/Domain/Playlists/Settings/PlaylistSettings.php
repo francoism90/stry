@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Foundation\Settings;
+namespace Domain\Playlists\Settings;
 
 use Domain\Playlists\Enums\PlaylistType;
 use Spatie\LaravelSettings\Settings;
@@ -17,9 +17,9 @@ class PlaylistSettings extends Settings
 
     public string $text_language = 'en';
 
-    public int $expires_after = 604800;
+    public int $expires_after = 1209600;
 
-    public int $manifest_cache_lifetime = 60;
+    public int $manifest_cache_lifetime = 300;
 
     public int $manifest_url_lifetime = 14400;
 
@@ -29,13 +29,13 @@ class PlaylistSettings extends Settings
 
     public int $key_url_lifetime = 7200;
 
-    public ?array $protection_systems = null;
+    public ?string $encryption = null;
 
     public ?string $protection_scheme = null;
 
-    public ?bool $key_rotation = null;
+    public bool $key_rotation = false;
 
-    public ?int $key_rotation_duration = null;
+    public int $key_rotation_duration = 300;
 
     public static function group(): string
     {

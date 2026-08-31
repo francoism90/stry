@@ -12,6 +12,14 @@ class GeneralSettings extends Settings
 
     public string $timezone = 'Europe/Amsterdam';
 
+    public string $default_locale = 'en';
+
+    public bool $allow_registration = false;
+
+    public ?int $max_profiles_per_user = null;
+
+    public ?string $maintenance_message = null;
+
     public static function group(): string
     {
         return 'general';
