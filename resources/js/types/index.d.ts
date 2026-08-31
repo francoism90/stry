@@ -105,6 +105,15 @@ export type PlayerSettings = {
   caption_language: string
 }
 
+export type ApplicationSettings = {
+  site_name: string
+  timezone: string
+  default_locale: string
+  allow_registration: boolean
+  max_profiles_per_user: number | null
+  maintenance_message: string | null
+}
+
 export type MediaStream = {
   index: number
   width: number

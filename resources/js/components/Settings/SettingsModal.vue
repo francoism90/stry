@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import SettingsAccountForm from '@/components/Settings/SettingsAccountForm.vue'
+import SettingsApplicationForm from '@/components/Settings/SettingsApplicationForm.vue'
 import SettingsAppearanceForm from '@/components/Settings/SettingsAppearanceForm.vue'
 import SettingsGeneralForm from '@/components/Settings/SettingsGeneralForm.vue'
 import SettingsSecurityForm from '@/components/Settings/SettingsSecurityForm.vue'
+import { useAuth } from '@/composables/auth'
 import { computed, ref, type Component } from 'vue'
+
+const { hasRole } = useAuth()
 
 type SettingsFormInstance = {
   submit: () => void
@@ -11,10 +15,17 @@ type SettingsFormInstance = {
   recentlySuccessful: boolean
 }
 
+type SettingsSectionDefinition = {
+  value: string
+  label: string
+  icon: string
+  component: Component
+}
+
 const open = defineModel<boolean>('open', { default: false })
 const section = defineModel<string>('section', { default: 'account' })
 
-const definitions: { value: string; label: string; icon: string; component: Component }[] = [
+const definitions = computed<SettingsSectionDefinition[]>(() => [
   {
     value: 'account',
     label: 'Account',
@@ -39,17 +50,27 @@ const definitions: { value: string; label: string; icon: string; component: Comp
     icon: 'i-lucide-palette',
     component: SettingsAppearanceForm,
   },
-]
+  ...(hasRole('super-admin')
+    ? [
+        {
+          value: 'application',
+          label: 'Application',
+          icon: 'i-lucide-server',
+          component: SettingsApplicationForm,
+        },
+      ]
+    : []),
+])
 
 const sections = computed(() =>
-  definitions.map((item) => ({
+  definitions.value.map((item) => ({
     ...item,
     active: item.value === section.value,
     onSelect: () => (section.value = item.value),
   })),
 )
 
-const activeComponent = computed(() => definitions.find((item) => item.value === section.value)?.component)
+const activeComponent = computed(() => definitions.value.find((item) => item.value === section.value)?.component)
 
 const formRef = ref<SettingsFormInstance | null>(null)
 const saving = computed(() => formRef.value?.processing ?? false)

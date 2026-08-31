@@ -7,6 +7,7 @@ use App\Web\Groups\Controllers\GroupToggleController;
 use App\Web\Media\Controllers\MediaDownloadController;
 use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Web\Profiles\Controllers\SwitchProfileController;
+use App\Web\Settings\Controllers\ApplicationSettingsController;
 use App\Web\Shuffle\Controllers\ShuffleController;
 use App\Web\Tags\Controllers\TagOrderController;
 use App\Web\Users\Controllers\UserSettingsController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 // Settings
 Route::prefix('/settings')->name('settings.')->group(function () {
     Route::patch('/', UserSettingsController::class)->name('update');
+    Route::patch('/application', ApplicationSettingsController::class)->name('application.update');
 });
 
 // Profiles

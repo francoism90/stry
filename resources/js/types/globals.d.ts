@@ -1,4 +1,4 @@
-import type { CollectionItem, EchoConfig, FlashData, OptionItem, User } from '@/types'
+import type { ApplicationSettings, CollectionItem, EchoConfig, FlashData, OptionItem, User } from '@/types'
 import type { Page } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'
 import type Pusher from 'pusher-js'
@@ -24,6 +24,7 @@ declare module '@inertiajs/core' {
     readonly echo: EchoConfig | undefined
     readonly collections: CollectionItem[] | undefined
     readonly unread: number
+    readonly settings: ApplicationSettings | null | undefined
   }
 }
 
