@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\Shared\Enums\Locale;
 use Domain\Users\Actions\UpdateUserSettings;
 use Domain\Users\DataObjects\AppearanceSettings;
 use Domain\Users\DataObjects\GeneralSettings;
@@ -13,7 +14,7 @@ it('merges user settings and persists the changes', function (): void {
         'settings' => [
             'general' => [
                 'timezone' => 'UTC',
-                'locale' => 'en_US',
+                'locale' => 'en-US',
                 'language' => 'en',
                 'date_format' => 'Y-m-d',
                 'time_format' => 'H:i',
@@ -44,7 +45,7 @@ it('merges user settings and persists the changes', function (): void {
         ->toBeInstanceOf(GeneralSettings::class);
 
     expect($settings->general->timezone)->toBe('Europe/Amsterdam');
-    expect($settings->general->locale)->toBe('en_US');
+    expect($settings->general->locale)->toBe(Locale::EnUs);
 
     expect($settings->appearance)
         ->toBeInstanceOf(AppearanceSettings::class);

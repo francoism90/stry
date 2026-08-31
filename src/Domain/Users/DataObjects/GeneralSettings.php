@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Domain\Users\DataObjects;
 
+use Domain\Shared\Enums\Language;
+use Domain\Shared\Enums\Locale;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Spatie\LaravelData\Data;
 
 class GeneralSettings extends Data
 {
     public function __construct(
         public string $timezone = 'UTC',
-        public string $locale = 'en-US',
-        public string $language = 'en',
+        public Locale $locale = Locale::EnUs,
+        public Language $language = Language::English,
         public string $date_format = 'YYYY-MM-DD',
         public string $time_format = 'HH:mm',
     ) {}
@@ -22,8 +25,8 @@ class GeneralSettings extends Data
     {
         return [
             'timezone' => ['sometimes', 'timezone'],
-            'locale' => ['sometimes', 'string', Rule::in(['en-US', 'nl-NL'])],
-            'language' => ['sometimes', 'string', Rule::in(['en'])],
+            'locale' => ['sometimes', new Enum(Locale::class)],
+            'language' => ['sometimes', new Enum(Language::class)],
             'date_format' => ['sometimes', 'string', Rule::in(['YYYY-MM-DD', 'MM/DD/YYYY', 'DD/MM/YYYY', 'DD.MM.YYYY', 'MMM D, YYYY'])],
             'time_format' => ['sometimes', 'string', Rule::in(['HH:mm', 'h:mm A', 'HH:mm:ss', 'h:mm:ss A'])],
         ];

@@ -7,7 +7,7 @@ namespace Domain\Videos\Jobs;
 use Carbon\CarbonInterface;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
-use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Actions\CreateNewVideoPlaylist;
 use Domain\Videos\Actions\CreateNewVideoStream;
 use Domain\Videos\Models\Video;
@@ -69,10 +69,10 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
             ->onQueue('transcoding');
     }
 
-    public function handle(): void
+    public function handle(PlaylistSettings $settings): void
     {
         // Determine the playlist type to create
-        $type = $this->type ?? Playlist::getDefaultType();
+        $type = $this->type ?? $settings->type;
 
         // Create the appropriate playlist based on the type
         match ($type) {

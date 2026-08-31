@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import SettingsAccountForm from '@/components/Settings/SettingsAccountForm.vue'
-import SettingsAppearanceForm from '@/components/Settings/SettingsAppearanceForm.vue'
-import SettingsGeneralForm from '@/components/Settings/SettingsGeneralForm.vue'
-import SettingsSecurityForm from '@/components/Settings/SettingsSecurityForm.vue'
+import AdminApplicationForm from '@/components/Admin/AdminApplicationForm.vue'
+import AdminPlaylistForm from '@/components/Admin/AdminPlaylistForm.vue'
 import { computed, ref, type Component } from 'vue'
 
-type SettingsFormInstance = {
+type AdminFormInstance = {
   submit: () => void
   processing: boolean
   recentlySuccessful: boolean
 }
 
-type SettingsSectionDefinition = {
+type AdminSectionDefinition = {
   value: string
   label: string
   icon: string
@@ -19,32 +17,20 @@ type SettingsSectionDefinition = {
 }
 
 const open = defineModel<boolean>('open', { default: false })
-const section = defineModel<string>('section', { default: 'account' })
+const section = defineModel<string>('section', { default: 'application' })
 
-const definitions: SettingsSectionDefinition[] = [
+const definitions: AdminSectionDefinition[] = [
   {
-    value: 'account',
-    label: 'Account',
-    icon: 'i-lucide-user',
-    component: SettingsAccountForm,
+    value: 'application',
+    label: 'Application',
+    icon: 'i-lucide-server',
+    component: AdminApplicationForm,
   },
   {
-    value: 'security',
-    label: 'Security',
-    icon: 'i-lucide-shield',
-    component: SettingsSecurityForm,
-  },
-  {
-    value: 'general',
-    label: 'General',
-    icon: 'i-lucide-settings-2',
-    component: SettingsGeneralForm,
-  },
-  {
-    value: 'appearance',
-    label: 'Appearance',
-    icon: 'i-lucide-palette',
-    component: SettingsAppearanceForm,
+    value: 'playlist',
+    label: 'Playlist',
+    icon: 'i-lucide-clapperboard',
+    component: AdminPlaylistForm,
   },
 ]
 
@@ -58,7 +44,7 @@ const sections = computed(() =>
 
 const activeComponent = computed(() => definitions.find((item) => item.value === section.value)?.component)
 
-const formRef = ref<SettingsFormInstance | null>(null)
+const formRef = ref<AdminFormInstance | null>(null)
 const saving = computed(() => formRef.value?.processing ?? false)
 const saved = computed(() => formRef.value?.recentlySuccessful ?? false)
 const save = () => formRef.value?.submit()
@@ -67,7 +53,7 @@ const save = () => formRef.value?.submit()
 <template>
   <UModal
     v-model:open="open"
-    title="Settings"
+    title="Admin"
     :ui="{
       content: 'h-[min(85vh,640px)] max-sm:h-full max-sm:max-w-full max-sm:rounded-none sm:max-w-3xl',
       body: 'flex-1 overflow-hidden p-0 sm:p-0',

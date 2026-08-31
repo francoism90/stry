@@ -1,16 +1,20 @@
 <script setup lang="ts">
+import AdminModal from '@/components/Admin/AdminModal.vue'
 import SettingsModal from '@/components/Settings/SettingsModal.vue'
 import { useAuth } from '@/composables/auth'
 import { router } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-const { user } = useAuth()
+const { user, hasRole } = useAuth()
 
 const isSettingsOpen = ref(false)
 const settingsSection = ref('account')
 
-const items = ref<DropdownMenuItem[][]>([
+const isAdminOpen = ref(false)
+const adminSection = ref('application')
+
+const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
       label: 'Settings',
@@ -22,6 +26,15 @@ const items = ref<DropdownMenuItem[][]>([
       icon: 'i-lucide-users',
       to: '/profiles',
     },
+    ...(hasRole('super-admin')
+      ? [
+          {
+            label: 'Admin',
+            icon: 'i-lucide-shield-half',
+            onClick: () => (isAdminOpen.value = true),
+          },
+        ]
+      : []),
   ],
   [
     {
@@ -53,5 +66,11 @@ const items = ref<DropdownMenuItem[][]>([
   <SettingsModal
     v-model:open="isSettingsOpen"
     v-model:section="settingsSection"
+  />
+
+  <AdminModal
+    v-if="hasRole('super-admin')"
+    v-model:open="isAdminOpen"
+    v-model:section="adminSection"
   />
 </template>

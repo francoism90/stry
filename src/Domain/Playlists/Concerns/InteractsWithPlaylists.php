@@ -6,6 +6,7 @@ namespace Domain\Playlists\Concerns;
 
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,11 +33,13 @@ trait InteractsWithPlaylists
 
     public function createPlaylist(array $attributes = []): Playlist
     {
+        $settings = app(PlaylistSettings::class);
+
         return $this->playlists()->create([
             'file_name' => 'index.mpd',
-            'disk' => Playlist::getDestinationDisk(),
-            'type' => Playlist::getDefaultType(),
-            'expires_at' => Playlist::getExpiresAfter(),
+            'disk' => $settings->disk_name,
+            'type' => $settings->type,
+            'expires_at' => $settings->expires_after === 0 ? null : now()->addSeconds($settings->expires_after),
             ...$attributes,
         ]);
     }

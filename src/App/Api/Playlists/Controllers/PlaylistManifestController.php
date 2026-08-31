@@ -7,6 +7,7 @@ namespace App\Api\Playlists\Controllers;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Foxws\Shaka\Facades\Shaka;
 use Foxws\Streamer\Facades\Streamer;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class PlaylistManifestController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request, Playlist $playlist, string $path): Response
+    public function __invoke(Request $request, Playlist $playlist, string $path, PlaylistSettings $settings): Response
     {
         Gate::authorize('view', $playlist);
 
@@ -41,7 +42,7 @@ class PlaylistManifestController implements HasMiddleware
         };
 
         // Get the manifest cache lifetime
-        $manifestCacheLifetime = Playlist::getManifestCacheLifetime();
+        $manifestCacheLifetime = $settings->manifest_cache_lifetime;
 
         // Generate the manifest response
         $response = $manifestHandler

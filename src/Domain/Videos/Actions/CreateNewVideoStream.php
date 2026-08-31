@@ -6,9 +6,9 @@ namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
-use Domain\Playlists\DataObjects\PlaylistSettings;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
 use Foxws\Streamer\Support\VideoResolution;
@@ -19,13 +19,16 @@ use Throwable;
 
 class CreateNewVideoStream
 {
+    public function __construct(
+        protected PlaylistSettings $settings,
+    ) {}
+
     public function handle(Video $video): Collection
     {
         // Get the playlist type from the configuration
         $type = PlaylistType::Streamer;
 
-        // Get the playlist settings from the configuration
-        $settings = PlaylistSettings::from();
+        $settings = $this->settings;
 
         // Skip if there are no clips associated with the video
         if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
@@ -98,11 +101,11 @@ class CreateNewVideoStream
             // Enable AES encryption with key rotation if configured
             $encryptionKey = null;
 
-            if ($settings->encryption) {
-                $encryptionKey = $streamer->withAESEncryption('key', $settings->protectionScheme);
+            if (filled($settings->encryption)) {
+                $encryptionKey = $streamer->withAESEncryption('key', $settings->protection_scheme?->value);
 
-                if ($settings->keyRotation) {
-                    $streamer->withKeyRotationDuration($settings->keyRotationDuration);
+                if ($settings->key_rotation) {
+                    $streamer->withKeyRotationDuration($settings->key_rotation_duration);
                 }
             }
 
