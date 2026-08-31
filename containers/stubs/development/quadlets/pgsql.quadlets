@@ -10,7 +10,7 @@ Environment=POSTGRES_USER=user
 Environment=POSTGRES_PASSWORD=password
 Environment=PGPASSWORD=password
 ShmSize=256m
-Volume={{application}}-pgsql:/var/lib/postgresql:rw,Z,U
+Volume={{application}}-pgsql.volume:/var/lib/postgresql:rw,Z,U
 Network={{application}}.network
 PublishPort=5432:5432
 

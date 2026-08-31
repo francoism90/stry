@@ -131,7 +131,7 @@ A commented `Tmpfs=` line is already in the stub, next to the `Volume=` line it 
 
 ```ini
 # Tmpfs=/cache:rw,size=12g,mode=1777
-Volume={{application}}-cache:/cache:rw,z
+Volume={{application}}-cache.volume:/cache:rw,z
 ```
 
 Sizing it is a tradeoff against everything else running on the host (PostgreSQL, Valkey, Typesense, RustFS, the Octane app itself) - a `size=` larger than what's actually free gets you no protection at all (see [laravel-shaka's storage guards docs](https://github.com/foxws/laravel-shaka/blob/main/docs/CONFIGURATION.md#storage-space-guards) for why). These are starting points for an all-in-one single-host deployment, not a formula - measure your own jobs' real footprint (`du -sh` on a finished job's temp dir) and adjust:

@@ -9,7 +9,7 @@ AutoUpdate=registry
 Environment=TYPESENSE_DATA_DIR=/data
 Environment=TYPESENSE_LOG_LEVEL=error
 Environment=TYPESENSE_API_KEY=masterKey
-Volume={{application}}-typesense:/data:rw,Z,U
+Volume={{application}}-typesense.volume:/data:rw,Z,U
 Network={{application}}.network
 PublishPort=8108:8108
 

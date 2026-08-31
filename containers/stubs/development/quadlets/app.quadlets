@@ -23,9 +23,9 @@ ShmSize=128m
 Volume={{workingPath}}:/app:rw,z,U
 Volume=/mnt/media/videos:/media:rw,z,U
 Volume=/mnt/media/import:/import:rw,z,U
-Volume={{application}}-config:/config:rw,z,U
-Volume={{application}}-data:/data:rw,z,U
-Volume={{application}}-cache:/cache:rw,z,U
+Volume={{application}}-config.volume:/config:rw,z,U
+Volume={{application}}-data.volume:/data:rw,z,U
+Volume={{application}}-cache.volume:/cache:rw,z,U
 Network={{application}}.network
 PublishPort=8000:8000
 

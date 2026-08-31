@@ -15,8 +15,8 @@ Environment=RUSTFS_OBS_LOG_STDOUT_ENABLED=true
 Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Environment=RUSTFS_ACCESS_KEY=rustfsadmin
 Environment=RUSTFS_SECRET_KEY=rustfsadmin
-Volume={{application}}-rustfs-data:/data:rw,Z,U
-Volume={{application}}-rustfs-logs:/logs:rw,Z,U
+Volume={{application}}-rustfs-data.volume:/data:rw,Z,U
+Volume={{application}}-rustfs-logs.volume:/logs:rw,Z,U
 Network={{application}}.network
 PublishPort=9000:9000
 PublishPort=9001:9001

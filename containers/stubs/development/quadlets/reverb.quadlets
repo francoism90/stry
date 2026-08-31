@@ -11,7 +11,7 @@ Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
 UserNS=keep-id
 ShmSize=128m
 Volume={{workingPath}}:/app:rw,z
-Volume={{application}}-cache:/cache:rw,z
+Volume={{application}}-cache.volume:/cache:rw,z
 Network={{application}}.network
 PublishPort=6001:6001
 
