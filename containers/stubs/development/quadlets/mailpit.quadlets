@@ -10,7 +10,7 @@ Environment=MP_MAX_MESSAGES=5000
 Environment=MP_DATABASE=/data/mailpit.db
 Environment=MP_SMTP_AUTH_ACCEPT_ANY=1
 Environment=MP_SMTP_AUTH_ALLOW_INSECURE=1
-Volume={{application}}-mailpit:/data:rw,Z,U
+Volume={{application}}-mailpit.volume:/data:rw,Z,U
 Network={{application}}.network
 PublishPort=1025:1025
 PublishPort=1110:1110
