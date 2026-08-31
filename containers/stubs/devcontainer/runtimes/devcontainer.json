@@ -1,0 +1,24 @@
+{
+    "name": "stry-devcontainer",
+    "initializeCommand": "podman network create --ignore systemd-stry",
+    "image": "ghcr.io/foxws/laravel-podman-devcontainer:php-8.5",
+    "remoteUser": "docker",
+    "containerUser": "docker",
+    "runArgs": [
+        "--security-opt=label=disable",
+        "--network=systemd-stry",
+        "--userns=keep-id:uid=1001,gid=1001",
+        "--init"
+    ],
+    "containerEnv": {
+        "PUID": "1001",
+        "PGID": "1001"
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
+    "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true",
+        "source=${localEnv:HOME}/.claude,target=/home/docker/.claude,type=bind",
+        "source=${localEnv:HOME}/.claude.json,target=/home/docker/.claude.json,type=bind"
+    ]
+}
