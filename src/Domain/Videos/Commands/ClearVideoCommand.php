@@ -47,7 +47,7 @@ class ClearVideoCommand extends Command implements Isolatable
             ])->all(),
         );
 
-        if (confirm('Are you sure you want to force-delete these videos?')) {
+        if (confirm("Are you sure you want to force-delete these {$videos->count()} videos?")) {
             $videos->each(function (Video $video) {
                 if (! $video->trashed()) {
                     return;
