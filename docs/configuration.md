@@ -101,6 +101,10 @@ PLAYLIST_KEY_ROTATION_DURATION=300
 PLAYLIST_EXPIRES_AFTER=1209600
 ```
 
+:::note
+Both playlist engines package video/audio as CMAF (fragmented MP4) by default, so DASH and HLS manifests are generated from the same set of segments in a single pass — serving both formats doesn't mean double transcoding.
+:::
+
 ### Videos
 
 ```env

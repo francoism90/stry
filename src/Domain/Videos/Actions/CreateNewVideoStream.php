@@ -114,11 +114,15 @@ class CreateNewVideoStream
                 'encryption_key_id' => $encryptionKey?->keyId,
                 'encryption_key' => $encryptionKey?->key,
                 'type' => $type,
+                'dash_file_name' => 'index.mpd',
+                'hls_file_name' => 'master.m3u8',
             ]);
 
-            // Configure DASH playlist settings
+            // Configure DASH and HLS playlist settings. Shaka Streamer builds both
+            // manifests from the same CMAF-packaged streams in one pipeline run.
             $streamer
-                ->withMpdOutput($playlist->getFileName())
+                ->withMpdOutput($playlist->getDashFileName() ?? 'index.mpd')
+                ->withHlsMasterPlaylist($playlist->getHlsFileName() ?? 'master.m3u8')
                 ->withStreamingMode('vod')
                 ->withSegmentPerFile();
 

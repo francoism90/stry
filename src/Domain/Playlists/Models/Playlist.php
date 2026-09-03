@@ -50,6 +50,8 @@ class Playlist extends Model
         'playlistable_id',
         'disk',
         'file_name',
+        'dash_file_name',
+        'hls_file_name',
         'secret_disk',
         'encryption_key_id',
         'encryption_key',
@@ -172,7 +174,17 @@ class Playlist extends Model
 
     public function getUrl(): string
     {
-        return $this->getUrlResolver($this->file_name ?? 'index.mpd');
+        return $this->getDashUrl();
+    }
+
+    public function getDashUrl(): string
+    {
+        return $this->getUrlResolver($this->getDashFileName() ?? 'index.mpd');
+    }
+
+    public function getHlsUrl(): ?string
+    {
+        return filled($this->hls_file_name) ? $this->getUrlResolver($this->hls_file_name) : null;
     }
 
     public function getUrlRefreshIn(): int
@@ -218,9 +230,16 @@ class Playlist extends Model
         return $this->disk ?? app(PlaylistSettings::class)->disk_name;
     }
 
-    public function getFileName(): string
+    public function getDashFileName(): ?string
     {
-        return $this->file_name;
+        // Older playlists were only ever assigned a "file_name", so fall back to it
+        // for rows written before the dedicated dash/hls filename columns existed.
+        return $this->dash_file_name ?? $this->file_name;
+    }
+
+    public function getHlsFileName(): ?string
+    {
+        return $this->hls_file_name;
     }
 
     public function getType(): PlaylistType

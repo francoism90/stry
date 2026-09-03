@@ -34,10 +34,25 @@ class PlaylistManifestController implements HasMiddleware
         // Ensure the playlist is not expired
         abort_if($playlist->isExpired(), 410);
 
-        // Choose the appropriate manifest handler based on the playlist type
-        $manifestHandler = match ($playlist->getType()) {
-            PlaylistType::Streamer => Streamer::dynamicDASHManifest(),
-            PlaylistType::Packager => Shaka::dynamicDASHManifest(),
+        // Both playlist engines package DASH and HLS from the same CMAF streams
+        $isHlsRequest = str_ends_with($path, '.m3u8');
+
+        // Choose the appropriate manifest handler based on the requested format and playlist type
+        $manifestHandler = match (true) {
+            $isHlsRequest && $playlist->getType() === PlaylistType::Streamer => Streamer::dynamicHLSPlaylist()
+                ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))
+                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+                ->setPlaylistUrlResolver(fn (string $path) => $playlist->getUrlResolver($path)),
+            $isHlsRequest && $playlist->getType() === PlaylistType::Packager => Shaka::dynamicHLSPlaylist()
+                ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))
+                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+                ->setPlaylistUrlResolver(fn (string $path) => $playlist->getUrlResolver($path)),
+            $playlist->getType() === PlaylistType::Streamer => Streamer::dynamicDASHManifest()
+                ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path)),
+            $playlist->getType() === PlaylistType::Packager => Shaka::dynamicDASHManifest()
+                ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path)),
             default => throw PlaylistTypeException::invalidType($playlist->getType()),
         };
 
@@ -48,8 +63,6 @@ class PlaylistManifestController implements HasMiddleware
         $response = $manifestHandler
             ->fromDisk($playlist->getDisk())
             ->open($playlist->getPath($path))
-            ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
             ->toResponse($request);
 
         // Set appropriate cache headers

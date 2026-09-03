@@ -11,6 +11,7 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
+use Foxws\Shaka\Support\HlsPlaylistType;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -90,13 +91,19 @@ class CreateNewVideoPlaylist
                 'encryption_key_id' => $encryptionKey?->keyId,
                 'encryption_key' => $encryptionKey?->key,
                 'type' => $type,
+                'dash_file_name' => 'index.mpd',
+                'hls_file_name' => 'master.m3u8',
             ]);
 
             // Configure the packager with common settings. Segment/fragment/buffer
             // duration are left unset here so they fall back to the packager's own
-            // configured defaults (config/laravel-shaka.php).
+            // configured defaults (config/laravel-shaka.php). The DASH and HLS
+            // manifests are generated from the same CMAF streams in one export,
+            // so emitting both costs an extra manifest file, not extra transcoding.
             $packager
-                ->withMpdOutput($playlist->file_name)
+                ->withMpdOutput($playlist->getDashFileName() ?? 'index.mpd')
+                ->withHlsMasterPlaylist($playlist->getHlsFileName() ?? 'master.m3u8')
+                ->withHlsPlaylistType(HlsPlaylistType::Vod)
                 ->withAllowCodecSwitching()
                 ->withAllowApproximateSegmentTimeline()
                 ->withDefaultLanguage($settings->language->value)
