@@ -157,6 +157,9 @@ export type Media = Model & {
   collection_name: string
   disk: string
   conversions_disk: string
+  codec?: string
+  resolution?: string
+  bitrate?: string
   custom_properties?: MediaCustomProperties | null
   generated_conversions?: Record<string, unknown> | null
   responsive_images?: Record<string, unknown> | null
@@ -206,6 +209,7 @@ export type Video = Model & {
   timestamp: string | null
   filesize?: string
   codec?: string
+  resolution?: string
   bitrate?: string
   snapshot?: number
   thumb: string | null

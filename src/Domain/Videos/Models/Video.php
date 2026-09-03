@@ -517,18 +517,21 @@ class Video extends Model implements HasMedia
     protected function codec(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getClips()->first()?->getVideoStream()['codec_name'] ?? null,
+            get: fn (): ?string => $this->getClips()->first()?->codec,
+        )->shouldCache();
+    }
+
+    protected function resolution(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->getClips()->first()?->resolution,
         )->shouldCache();
     }
 
     protected function bitrate(): Attribute
     {
         return Attribute::make(
-            get: function (): ?string {
-                $bitRate = $this->getClips()->first()?->getVideoStream()['bit_rate'] ?? null;
-
-                return $bitRate !== null ? sprintf('%dkbps', (int) round((int) $bitRate / 1000)) : null;
-            },
+            get: fn (): ?string => $this->getClips()->first()?->bitrate,
         )->shouldCache();
     }
 

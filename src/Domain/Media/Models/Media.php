@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
@@ -74,11 +75,11 @@ class Media extends BaseMedia
     }
 
     /**
-     * @return array{codec_type?: string, width?: int, height?: int, bit_rate?: int}
+     * @return array{codec_type?: string, codec_name?: string, width?: int, height?: int, bit_rate?: int}
      */
     public function getVideoStream(): array
     {
-        return Arr::first($this->getStreams(), fn (array $stream) => ($stream['codec_type'] ?? null) === 'video') ?? [];
+        return $this->videoStream;
     }
 
     /**
@@ -117,6 +118,44 @@ class Media extends BaseMedia
     {
         return Attribute::make(
             get: fn (): string => route('actions.media.download', $this),
+        )->shouldCache();
+    }
+
+    protected function videoStream(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): array => Arr::first($this->getStreams(), fn (array $stream) => ($stream['codec_type'] ?? null) === 'video') ?? [],
+        )->shouldCache();
+    }
+
+    protected function codec(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => isset($this->videoStream['codec_name']) ? Str::upper($this->videoStream['codec_name']) : null,
+        )->shouldCache();
+    }
+
+    protected function resolution(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?string {
+                $stream = $this->videoStream;
+
+                return isset($stream['width'], $stream['height'])
+                    ? sprintf('%d×%d', $stream['width'], $stream['height'])
+                    : null;
+            },
+        )->shouldCache();
+    }
+
+    protected function bitrate(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?string {
+                $bitRate = $this->videoStream['bit_rate'] ?? null;
+
+                return $bitRate !== null ? sprintf('%dkbps', (int) round((int) $bitRate / 1000)) : null;
+            },
         )->shouldCache();
     }
 }

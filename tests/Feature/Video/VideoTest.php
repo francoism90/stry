@@ -303,6 +303,36 @@ it('has a null bitrate when there are no clips', function () {
     expect($video->bitrate)->toBeNull();
 });
 
+it('formats the resolution of the first clip', function () {
+    $video = Video::factory()->create();
+
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [
+            'streams' => [
+                ['codec_type' => 'video', 'width' => 1920, 'height' => 1080],
+                ['codec_type' => 'audio'],
+            ],
+        ],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    expect($video->resolution)->toBe('1920×1080');
+});
+
+it('has a null resolution when there are no clips', function () {
+    $video = Video::factory()->create();
+
+    expect($video->resolution)->toBeNull();
+});
+
 it('can store seasonal information', function () {
     $video = Video::factory()->create([
         'season' => 2,
