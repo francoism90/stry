@@ -90,6 +90,15 @@ export function isCriticalError(error: shaka.util.Error | Error): boolean {
   return error instanceof Error
 }
 
+/**
+ * Feature-detects native HLS playback support (Safari on macOS/iOS) via canPlayType,
+ * the same technique hls.js and other players use instead of user-agent sniffing —
+ * it tracks actual capability rather than a UA string that changes across versions.
+ */
+export function supportsNativeHls(mediaElement: HTMLMediaElement): boolean {
+  return mediaElement.canPlayType('application/vnd.apple.mpegurl') !== ''
+}
+
 export function configureOverlay(overlay: shaka.ui.Overlay): void {
   overlay.configure({
     doubleClickForFullscreen: false,

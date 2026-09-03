@@ -1,7 +1,7 @@
 import { usePlaylist } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
-import { configureOverlay, createError, isCriticalError, loadShaka } from '@/plugins/shaka'
+import { configureOverlay, createError, isCriticalError, loadShaka, supportsNativeHls } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
@@ -79,6 +79,10 @@ export function useShaka(
           retryParameters: {
             baseDelay: 100,
           },
+          // Safari's MSE-based HLS/DASH playback is unreliable for AirPlay and PiP, so let
+          // Shaka fall back to the browser's native HLS engine there when we hand it an HLS
+          // manifest. No effect on browsers without native HLS support (they keep using MSE).
+          preferNativeHls: true,
         },
         manifest: {
           retryParameters: {
@@ -138,9 +142,30 @@ export function useShaka(
     }
   }
 
+  /**
+   * Picks which manifest to hand to Shaka. On platforms with native HLS support (Safari on
+   * macOS/iOS), prefer the HLS master playlist — combined with `preferNativeHls` above, this
+   * lets Shaka use the browser's native HLS engine there instead of MSE. Everywhere else, DASH.
+   */
+  const resolveAssetUri = (playlistModel: Playlist): string | null => {
+    const mediaElement = media.value
+
+    if (mediaElement && playlistModel.asset_hls && supportsNativeHls(mediaElement)) {
+      return playlistModel.asset_hls
+    }
+
+    return playlistModel.asset
+  }
+
   const load = async (playlist: Playlist | null, startTime?: number | null) => {
     // Ensure the player and playlist are available before proceeding
-    if (!player.value || !playlist?.valid || !playlist.asset) {
+    if (!player.value || !playlist || !playlist.valid) {
+      return
+    }
+
+    const assetUri = resolveAssetUri(playlist)
+
+    if (!assetUri) {
       return
     }
 
@@ -177,7 +202,7 @@ export function useShaka(
       }
 
       // Load the manifest into the player
-      await player.value.load(playlist.asset, startTime)
+      await player.value.load(assetUri, startTime)
 
       // Select the first text track if captions are enabled
       const textTracks = player.value.getTextTracks()
@@ -198,7 +223,13 @@ export function useShaka(
 
   const replace = async (playlist: Playlist | null) => {
     // Ensure the player and playlist are available before proceeding
-    if (!player.value || !playlist?.valid || !playlist.asset) {
+    if (!player.value || !playlist || !playlist.valid) {
+      return
+    }
+
+    const assetUri = resolveAssetUri(playlist)
+
+    if (!assetUri) {
       return
     }
 
@@ -211,7 +242,7 @@ export function useShaka(
     ticker.value = startTime ?? null
 
     try {
-      await player.value.load(playlist.asset, startTime)
+      await player.value.load(assetUri, startTime)
 
       scheduleAssetRefresh(playlist)
     } catch (err) {
