@@ -52,6 +52,7 @@ class VideoResource extends JsonResource
             'content' => $this->whenAppended('content'),
             'filesize' => $this->whenAppended('filesize'),
             'codec' => $this->whenAppended('codec'),
+            'bitrate' => $this->whenAppended('bitrate'),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'user' => UserResource::make($this->whenLoaded('user')),
             'media' => MediaResource::collection($this->whenLoaded('media')),

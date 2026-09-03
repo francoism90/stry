@@ -206,6 +206,7 @@ export type Video = Model & {
   timestamp: string | null
   filesize?: string
   codec?: string
+  bitrate?: string
   snapshot?: number
   thumb: string | null
   thumb_srcset: string | null

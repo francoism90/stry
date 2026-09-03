@@ -273,6 +273,36 @@ it('sorts clips by resolution and then bit rate, descending', function () {
     ]);
 });
 
+it('formats the bitrate of the first clip in kbps', function () {
+    $video = Video::factory()->create();
+
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [
+            'streams' => [
+                ['codec_type' => 'video', 'bit_rate' => 6_002_000],
+                ['codec_type' => 'audio'],
+            ],
+        ],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    expect($video->bitrate)->toBe('6002kbps');
+});
+
+it('has a null bitrate when there are no clips', function () {
+    $video = Video::factory()->create();
+
+    expect($video->bitrate)->toBeNull();
+});
+
 it('can store seasonal information', function () {
     $video = Video::factory()->create([
         'season' => 2,

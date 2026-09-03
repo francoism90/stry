@@ -44,7 +44,7 @@ const edit = (item: Video): void => {
         <div class="flex items-center justify-between">
           <UUser
             :name="item.title"
-            :description="[item.created_at, item.filesize, item.codec?.toUpperCase()].filter(Boolean).join(' · ')"
+            :description="[item.filesize, item.codec?.toUpperCase(), item.bitrate].filter(Boolean).join(' · ')"
             :avatar="{
               src: item.thumb ?? undefined,
               alt: item.title,

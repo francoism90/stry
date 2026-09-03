@@ -521,6 +521,17 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    protected function bitrate(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?string {
+                $bitRate = $this->getClips()->first()?->getVideoStream()['bit_rate'] ?? null;
+
+                return $bitRate !== null ? sprintf('%dkbps', (int) round((int) $bitRate / 1000)) : null;
+            },
+        )->shouldCache();
+    }
+
     protected function duration(): Attribute
     {
         return Attribute::make(
