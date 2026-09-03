@@ -91,12 +91,14 @@ export function isCriticalError(error: shaka.util.Error | Error): boolean {
 }
 
 /**
- * Feature-detects native HLS playback support (Safari on macOS/iOS) via canPlayType,
- * the same technique hls.js and other players use instead of user-agent sniffing —
- * it tracks actual capability rather than a UA string that changes across versions.
+ * Feature-detects native HLS playback support (Safari on macOS/iOS, and any browser on iOS
+ * since Apple's platform policy forces them all onto the WebKit engine) via canPlayType.
+ * Chrome reports a false positive here — it recognizes 'application/vnd.apple.mpegurl'
+ * without actually having a native HLS demuxer to back it up — so this also checks
+ * navigator.vendor for Apple, which only WebKit-based browsers report.
  */
 export function supportsNativeHls(mediaElement: HTMLMediaElement): boolean {
-  return mediaElement.canPlayType('application/vnd.apple.mpegurl') !== ''
+  return navigator.vendor.includes('Apple') && mediaElement.canPlayType('application/vnd.apple.mpegurl') !== ''
 }
 
 export function configureOverlay(overlay: shaka.ui.Overlay): void {

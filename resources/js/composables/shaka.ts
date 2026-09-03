@@ -5,7 +5,7 @@ import { configureOverlay, createError, isCriticalError, loadShaka, supportsNati
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
-import { computed, ref, shallowRef, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
+import { computed, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
 
 export function useShaka(
   container?: MaybeRefOrGetter<HTMLElement | undefined>,
@@ -347,28 +347,56 @@ export function useShaka(
     }
   }
 
-  watchEffect(async () => {
-    const playlistModel = toValue(playlist) as Playlist | null
-    const videoContainer = toValue(container) as HTMLElement | undefined
-    const mediaElement = toValue(element) as HTMLMediaElement | undefined
-    const startsAt = toValue(progress) as number | null
+  // Watch only the external inputs explicitly instead of using watchEffect, which would also
+  // track `player`/`loaded`/`current`/`initializing` (read below before the first `await`).
+  // Those are mutated by destroy()/initialize()/load() themselves, so an auto-tracking effect
+  // re-triggers itself on its own writes, racing overlapping load() calls that abort each
+  // other with LOAD_INTERRUPTED errors.
+  let isSyncing = false
+  let queued = false
 
-    // Re-initialize the player if the media element has changed
-    if (initializing.value === false && mediaElement !== media.value) {
-      await destroy()
-      await initialize(videoContainer, mediaElement)
+  const sync = async (): Promise<void> => {
+    if (isSyncing) {
+      // A change arrived mid-sync (e.g. the media element mounts and the playlist prop
+      // resolves in close succession on first load) — re-check current values once done
+      // instead of dropping it, or nothing would ever pick the change back up.
+      queued = true
+      return
     }
 
-    if (playlistModel) {
-      if (loaded.value === false) {
-        // Load the initial manifest
-        await load(playlistModel, startsAt)
-      } else if (isPlaylistReplacement(playlistModel, current.value)) {
-        // Swap in a newly issued manifest (e.g. after the previous one expired) without a full re-initialize
-        await replace(playlistModel)
-      }
+    isSyncing = true
+
+    try {
+      do {
+        queued = false
+
+        const videoContainer = toValue(container) as HTMLElement | undefined
+        const mediaElement = toValue(element) as HTMLMediaElement | undefined
+        const playlistModel = toValue(playlist) as Playlist | null
+        const startsAt = toValue(progress) as number | null
+
+        // Re-initialize the player if the media element has changed
+        if (initializing.value === false && mediaElement !== media.value) {
+          await destroy()
+          await initialize(videoContainer, mediaElement)
+        }
+
+        if (playlistModel) {
+          if (loaded.value === false) {
+            // Load the initial manifest
+            await load(playlistModel, startsAt)
+          } else if (isPlaylistReplacement(playlistModel, current.value)) {
+            // Swap in a newly issued manifest (e.g. after the previous one expired) without a full re-initialize
+            await replace(playlistModel)
+          }
+        }
+      } while (queued)
+    } finally {
+      isSyncing = false
     }
-  })
+  }
+
+  watch(() => [toValue(container), toValue(element), toValue(playlist), toValue(progress)], sync, { immediate: true })
 
   tryOnScopeDispose(() => destroy())
 
