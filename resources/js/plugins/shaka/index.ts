@@ -1,3 +1,4 @@
+import type { Playlist } from '@/types'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
 import { registerLucideIcons } from './icons'
 
@@ -35,12 +36,8 @@ export async function loadShaka(): Promise<typeof shaka> {
   return instance
 }
 
-/**
- * Shaka's `enableKeyboardPlaybackControlsInWindow` option listens for keydown on `window` and
- * handles shortcuts like fullscreen ('f') and mute ('m') regardless of which element is focused.
- * Stop those events reaching Shaka's own window listener while the user is typing elsewhere,
- * registering before the UI overlay so this runs first among window keydown listeners.
- */
+// Registered before the UI overlay so this runs first: stops Shaka's window-level keydown
+// shortcuts (enableKeyboardPlaybackControlsInWindow) from firing while the user is typing elsewhere.
 function guardWindowKeyboardShortcuts(): void {
   window.addEventListener('keydown', (event) => {
     const target = event.target as HTMLElement | null
@@ -56,10 +53,7 @@ export function getShaka(): typeof shaka | undefined {
   return instance
 }
 
-/**
- * Builds a shaka.util.Error, defaulting to CRITICAL severity when none is given.
- * Throws if Shaka Player hasn't been loaded yet, since the error classes only exist on the loaded instance.
- */
+// Throws if Shaka hasn't been loaded yet, since the error classes only exist on the loaded instance.
 export function createError(
   code: keyof typeof shaka.util.Error.Code | null = null,
   category: keyof typeof shaka.util.Error.Category | null = null,
@@ -76,10 +70,7 @@ export function createError(
   )
 }
 
-/**
- * Determines whether an error should be surfaced to the user.
- * shaka.util.Error instances are critical only at CRITICAL severity; any other thrown Error is always treated as critical.
- */
+// shaka.util.Error is only critical at CRITICAL severity; any other thrown Error always is.
 export function isCriticalError(error: shaka.util.Error | Error): boolean {
   const ShakaError = instance?.util.Error
 
@@ -88,6 +79,22 @@ export function isCriticalError(error: shaka.util.Error | Error): boolean {
   }
 
   return error instanceof Error
+}
+
+// Chrome reports a false positive for canPlayType('application/vnd.apple.mpegurl') without
+// actually having a native HLS demuxer, so this also requires the Apple vendor string.
+export function supportsNativeHls(mediaElement: HTMLMediaElement): boolean {
+  return navigator.vendor.includes('Apple') && mediaElement.canPlayType('application/vnd.apple.mpegurl') !== ''
+}
+
+// Prefers the HLS master playlist on platforms with native HLS support (paired with
+// `preferNativeHls` in the player config), DASH everywhere else.
+export function resolveAssetUri(playlist: Playlist, mediaElement: HTMLMediaElement | null): string | null {
+  if (mediaElement && playlist.asset_hls && supportsNativeHls(mediaElement)) {
+    return playlist.asset_hls
+  }
+
+  return playlist.asset
 }
 
 export function configureOverlay(overlay: shaka.ui.Overlay): void {

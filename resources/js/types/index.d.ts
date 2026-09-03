@@ -230,6 +230,8 @@ export type VideoCollection = Omit<Paginator, 'data'> & {
 export type Playlist = Model & {
   resource?: ModelResource
   asset: string | null
+  asset_dash: string | null
+  asset_hls: string | null
   asset_refresh_in: number
   encryption_key_id: string | null
   encryption_key: string | null

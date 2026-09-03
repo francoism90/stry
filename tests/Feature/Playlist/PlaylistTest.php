@@ -156,6 +156,42 @@ it('clamps the manifest url refresh window at zero', function () {
     expect($playlist->getUrlRefreshIn())->toBe(0);
 });
 
+it('falls back to file_name for the dash file name when dash_file_name is not set', function () {
+    $playlist = Playlist::factory()->create([
+        'file_name' => 'legacy.mpd',
+        'dash_file_name' => null,
+    ]);
+
+    expect($playlist->getDashFileName())->toBe('legacy.mpd');
+});
+
+it('prefers dash_file_name over file_name when both are set', function () {
+    $playlist = Playlist::factory()->create([
+        'file_name' => 'legacy.mpd',
+        'dash_file_name' => 'index.mpd',
+    ]);
+
+    expect($playlist->getDashFileName())->toBe('index.mpd');
+});
+
+it('has no hls url when hls_file_name is not set', function () {
+    $playlist = Playlist::factory()->create([
+        'hls_file_name' => null,
+    ]);
+
+    expect($playlist->getHlsFileName())->toBeNull()
+        ->and($playlist->getHlsUrl())->toBeNull();
+});
+
+it('exposes a signed hls url when hls_file_name is set', function () {
+    $playlist = Playlist::factory()->verified()->create([
+        'hls_file_name' => 'master.m3u8',
+    ]);
+
+    expect($playlist->getHlsFileName())->toBe('master.m3u8')
+        ->and($playlist->getHlsUrl())->toContain('master.m3u8');
+});
+
 it('can get model from playlistable', function () {
     $video = Video::factory()->create();
 

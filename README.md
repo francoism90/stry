@@ -24,7 +24,7 @@
 
 ### Key Features
 
-- 🎥 **DASH Streaming** - Built-in DASH playlist generation (HLS is also supported)
+- 🎥 **DASH & HLS Streaming** - Both manifests are packaged from the same CMAF segments by default, no double encoding
 - 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand using ab-av1
 - 🔐 **Stream Encryption** - Optional secure video content with encryption for both HLS and DASH
 - 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
@@ -62,8 +62,8 @@ For a visual tour of the app, check out the [screenshots gallery](https://franco
 | **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)              |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
 | **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)                    |
-| **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH)                      |
-| **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH)                |
+| **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH + HLS, CMAF)          |
+| **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH + HLS, CMAF)    |
 | **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                    |
 | **PWA**               | [Laravel PWA](https://github.com/foxws/laravel-pwa) (installable on mobile/desktop) |
 
