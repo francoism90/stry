@@ -19,6 +19,7 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
       {
         preserveScroll: true,
         only: ['notifications'],
+        reset: ['notifications'],
       },
     )
   }
@@ -27,6 +28,7 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
     router.delete(`/notifications/${notification.id}`, {
       preserveScroll: true,
       only: ['notifications'],
+      reset: ['notifications'],
     })
   }
 
@@ -37,6 +39,7 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
       {
         preserveScroll: true,
         only: ['notifications'],
+        reset: ['notifications'],
       },
     )
   }

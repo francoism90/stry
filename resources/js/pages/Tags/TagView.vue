@@ -50,7 +50,7 @@ watchEffect(() => {
   })
 })
 
-useEcho(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag'] }))
+useEcho(`tags.${props.tag.id}`, '.tag.updated', () => router.reload({ only: ['tag', 'items'], reset: ['items'] }))
 useEcho(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
 </script>
 
