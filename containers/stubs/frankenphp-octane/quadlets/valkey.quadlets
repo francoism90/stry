@@ -5,7 +5,7 @@ Description=Valkey container
 [Container]
 Image=docker.io/valkey/valkey:latest
 AutoUpdate=registry
-Exec=valkey-server --save --loglevel warning
+Exec=valkey-server --save 60 1 --appendonly yes --loglevel warning
 Volume={{application}}-valkey.volume:/data:rw,Z,U
 Network={{application}}.network
 
