@@ -31,7 +31,12 @@ setLayoutProps({
 
 const itemBody = ref()
 
-useEcho('library', '.video.trashed', () => router.reload({ only: ['items'], reset: ['items', 'page'] }))
+useEcho('library', '.video.trashed', () =>
+  router.reload({
+    reset: ['items', 'page'],
+    only: ['items', 'page'],
+  }),
+)
 </script>
 
 <template>
