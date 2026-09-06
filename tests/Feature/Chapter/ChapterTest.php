@@ -65,18 +65,45 @@ it('is deleted when its video is force deleted', function () {
     expect(Chapter::query()->find($chapter->getKey()))->toBeNull();
 });
 
-it('exposes chapters on the video ordered by sort then start time', function () {
+it('exposes chapters on the video ordered by their auto-incrementing sort value', function () {
     $video = Video::factory()->create();
 
-    $second = Chapter::factory()->create(['video_id' => $video->getKey(), 'sort' => 0, 'start_time' => 90, 'end_time' => 120]);
-    $first = Chapter::factory()->create(['video_id' => $video->getKey(), 'sort' => 0, 'start_time' => 0, 'end_time' => 30]);
-    $third = Chapter::factory()->create(['video_id' => $video->getKey(), 'sort' => 1, 'start_time' => 30, 'end_time' => 60]);
+    $first = Chapter::factory()->create(['video_id' => $video->getKey()]);
+    $second = Chapter::factory()->create(['video_id' => $video->getKey()]);
+    $third = Chapter::factory()->create(['video_id' => $video->getKey()]);
 
     expect($video->chapters->pluck('id')->all())->toBe([
         $first->getKey(),
         $second->getKey(),
         $third->getKey(),
     ]);
+});
+
+it('can be reordered within its video via the sortable trait', function () {
+    $video = Video::factory()->create();
+
+    $first = Chapter::factory()->create(['video_id' => $video->getKey()]);
+    $second = Chapter::factory()->create(['video_id' => $video->getKey()]);
+
+    $second->moveOrderUp();
+
+    expect($video->chapters()->get()->pluck('id')->all())->toBe([
+        $second->getKey(),
+        $first->getKey(),
+    ]);
+});
+
+it('scopes the auto-incrementing sort value to its own video', function () {
+    $videoA = Video::factory()->create();
+    $videoB = Video::factory()->create();
+
+    $a1 = Chapter::factory()->create(['video_id' => $videoA->getKey()]);
+    $b1 = Chapter::factory()->create(['video_id' => $videoB->getKey()]);
+    $a2 = Chapter::factory()->create(['video_id' => $videoA->getKey()]);
+
+    expect($a1->sort)->toBe(1)
+        ->and($b1->sort)->toBe(1)
+        ->and($a2->sort)->toBe(2);
 });
 
 it('finds the skippable chapter that contains a given time', function () {

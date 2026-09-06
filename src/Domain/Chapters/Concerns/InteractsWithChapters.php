@@ -11,7 +11,10 @@ trait InteractsWithChapters
 {
     public function chapters(): HasMany
     {
-        return $this->hasMany(Chapter::class)->orderBy('sort')->orderBy('start_time');
+        return $this
+            ->hasMany(Chapter::class)
+            ->ordered()
+            ->orderBy('start_time');
     }
 
     public function getSkippableChapterAt(float $time): ?Chapter

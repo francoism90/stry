@@ -26,7 +26,6 @@ class ChapterFactory extends Factory
             'label' => fake()->words(2, true),
             'start_time' => $startTime,
             'end_time' => $startTime + fake()->randomFloat(2, 5, 60),
-            'sort' => 0,
         ];
     }
 
