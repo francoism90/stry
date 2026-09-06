@@ -13,24 +13,19 @@ const props = defineProps<{
 }>()
 
 const container = ref<HTMLDivElement | undefined>()
-const media = ref<HTMLMediaElement | undefined>()
+const element = ref<HTMLMediaElement | undefined>()
 
-const {
-  ready,
-  error,
-  media: playbackMedia,
-  currentTime,
-} = useShaka(
+const { ready, error, media, currentTime } = useShaka(
   container,
-  media,
+  element,
   () => props.video ?? null,
   () => props.playlist ?? null,
   () => props.progress ?? null,
 )
 
 const seek = (time: number): void => {
-  if (playbackMedia.value) {
-    playbackMedia.value.currentTime = time
+  if (media.value) {
+    media.value.currentTime = time
   }
 }
 
@@ -77,7 +72,7 @@ const actions = ref<ButtonProps[]>([
       class="relative aspect-video max-h-[35dvh] w-full [clip-path:inset(0_round_0.5rem)] md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
     >
       <video
-        ref="media"
+        ref="element"
         class="size-full bg-black"
         crossorigin="anonymous"
         preload="metadata"
