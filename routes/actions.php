@@ -8,6 +8,7 @@ use App\Web\Media\Controllers\MediaDownloadController;
 use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use App\Web\Profiles\Controllers\SwitchProfileController;
 use App\Web\Settings\Controllers\ApplicationSettingsController;
+use App\Web\Settings\Controllers\ChapterSettingsController;
 use App\Web\Settings\Controllers\PlaylistSettingsController;
 use App\Web\Shuffle\Controllers\ShuffleController;
 use App\Web\Tags\Controllers\TagOrderController;
@@ -25,6 +26,7 @@ Route::prefix('/settings')->name('settings.')->group(function () {
 
     Route::singleton('application', ApplicationSettingsController::class)->only(['show', 'update']);
     Route::singleton('playlist', PlaylistSettingsController::class)->only(['show', 'update']);
+    Route::singleton('chapters', ChapterSettingsController::class)->only(['show', 'update']);
 });
 
 // Profiles

@@ -114,6 +114,11 @@ export type ApplicationSettings = {
   maintenance_message: string | null
 }
 
+export type ChapterSettings = {
+  patterns: Record<string, string>
+  default_type: 'intro' | 'recap' | 'credits' | 'scene' | 'main_event'
+}
+
 export type PlaylistSettings = {
   type: 'packager' | 'streamer'
   disk_name: string

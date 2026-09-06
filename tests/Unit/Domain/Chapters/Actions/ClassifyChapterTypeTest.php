@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 use Domain\Chapters\Actions\ClassifyChapterType;
 use Domain\Chapters\Enums\ChapterType;
+use Domain\Chapters\Settings\ChapterSettings;
 
 it('classifies labels matching the intro pattern', function (string $label) {
-    expect((new ClassifyChapterType)->handle($label))->toBe(ChapterType::Intro);
+    expect(app(ClassifyChapterType::class)->handle($label))->toBe(ChapterType::Intro);
 })->with([
     'Intro',
     'Introduction',
@@ -16,7 +17,7 @@ it('classifies labels matching the intro pattern', function (string $label) {
 ]);
 
 it('classifies labels matching the recap pattern', function (string $label) {
-    expect((new ClassifyChapterType)->handle($label))->toBe(ChapterType::Recap);
+    expect(app(ClassifyChapterType::class)->handle($label))->toBe(ChapterType::Recap);
 })->with([
     'Recap',
     'Previously on...',
@@ -24,7 +25,7 @@ it('classifies labels matching the recap pattern', function (string $label) {
 ]);
 
 it('classifies labels matching the credits pattern', function (string $label) {
-    expect((new ClassifyChapterType)->handle($label))->toBe(ChapterType::Credits);
+    expect(app(ClassifyChapterType::class)->handle($label))->toBe(ChapterType::Credits);
 })->with([
     'Credits',
     'End Credits',
@@ -32,16 +33,26 @@ it('classifies labels matching the credits pattern', function (string $label) {
 ]);
 
 it('is case insensitive', function () {
-    expect((new ClassifyChapterType)->handle('INTRODUCTION'))->toBe(ChapterType::Intro);
+    expect(app(ClassifyChapterType::class)->handle('INTRODUCTION'))->toBe(ChapterType::Intro);
 });
 
 it('falls back to the configured default type when nothing matches', function () {
-    expect((new ClassifyChapterType)->handle('Scene Two'))->toBe(ChapterType::Scene);
+    expect(app(ClassifyChapterType::class)->handle('Scene Two'))->toBe(ChapterType::Scene);
 });
 
-it('classifies using overridden config patterns', function () {
-    config(['chapters.patterns' => ['credits' => '/foo/i']]);
+it('classifies using overridden settings patterns', function () {
+    ChapterSettings::fake([
+        'patterns' => ['credits' => '/foo/i'],
+    ]);
 
-    expect((new ClassifyChapterType)->handle('foo bar'))->toBe(ChapterType::Credits)
-        ->and((new ClassifyChapterType)->handle('Introduction'))->toBe(ChapterType::Scene);
+    expect(app(ClassifyChapterType::class)->handle('foo bar'))->toBe(ChapterType::Credits)
+        ->and(app(ClassifyChapterType::class)->handle('Introduction'))->toBe(ChapterType::Scene);
+});
+
+it('falls back to the configured default type setting', function () {
+    ChapterSettings::fake([
+        'default_type' => ChapterType::Credits,
+    ]);
+
+    expect(app(ClassifyChapterType::class)->handle('Scene Two'))->toBe(ChapterType::Credits);
 });
