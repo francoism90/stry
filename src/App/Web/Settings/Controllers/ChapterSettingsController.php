@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Settings\Controllers;
 
+use App\Web\Chapters\Responses\ChapterTypeOptionsProperty;
 use App\Web\Settings\Requests\ChapterSettingsRequest;
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Settings\ChapterSettings;
@@ -30,7 +31,10 @@ class ChapterSettingsController implements HasMiddleware
     {
         Gate::authorize('manage-application-settings');
 
-        return response()->json($settings->toArray());
+        return response()->json([
+            ...$settings->toArray(),
+            'type_options' => ChapterTypeOptionsProperty::options(),
+        ]);
     }
 
     public function update(ChapterSettingsRequest $request, ChapterSettings $settings): Response|RedirectResponse

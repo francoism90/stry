@@ -117,13 +117,14 @@ export type ApplicationSettings = {
 export type ChapterSettings = {
   patterns: Record<string, string>
   default_type: 'intro' | 'recap' | 'credits' | 'scene' | 'main_event'
+  type_options: OptionItem[]
 }
 
 export type PlaylistSettings = {
   type: 'packager' | 'streamer'
   disk_name: string
-  language: 'en'
-  text_language: 'en'
+  language: 'en' | 'nl'
+  text_language: 'en' | 'nl'
   expires_after: number
   manifest_cache_lifetime: number
   manifest_url_lifetime: number
@@ -134,6 +135,12 @@ export type PlaylistSettings = {
   protection_scheme: 'cenc' | 'cbcs' | null
   key_rotation: boolean
   key_rotation_duration: number
+}
+
+export type PlaylistSettingsResponse = PlaylistSettings & {
+  type_options: OptionItem[]
+  encryption_options: OptionItem[]
+  protection_scheme_options: OptionItem[]
 }
 
 export type MediaStream = {

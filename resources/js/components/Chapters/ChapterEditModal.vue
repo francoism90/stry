@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoChapterController'
 import FormModal from '@/components/Ui/FormModal.vue'
-import type { Chapter, Video } from '@/types'
+import type { Chapter, OptionItem, Video } from '@/types'
 import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   video: Video
   item: Chapter
+  types?: OptionItem[] | undefined
 }>()
 
 const open = defineModel<boolean>('open')
@@ -65,12 +66,7 @@ const onSubmit = (close: () => void) =>
           <USelect
             v-model="form.type"
             class="w-full"
-            :items="[
-              { label: 'Intro', value: 'intro' },
-              { label: 'Recap', value: 'recap' },
-              { label: 'Credits', value: 'credits' },
-              { label: 'Scene', value: 'scene' },
-            ]"
+            :items="types"
           />
         </UFormField>
 

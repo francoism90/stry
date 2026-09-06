@@ -7,7 +7,7 @@ import VideoTags from '@/components/Videos/VideoTags.vue'
 import { useVideo } from '@/composables/video'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import type { Group, Media, Playlist, QueryFilter, QueryValue, Transcode, Video } from '@/types'
+import type { Group, Media, OptionItem, Playlist, QueryFilter, QueryValue, Transcode, Video } from '@/types'
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
@@ -21,6 +21,8 @@ const props = defineProps<{
   media?: Media[] | undefined
   playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
+  chapterTypes?: OptionItem[] | undefined
+  playlistTypes?: OptionItem[] | undefined
   queue?: Video[] | undefined
   filter?: QueryFilter
   sort?: QueryValue
@@ -108,6 +110,8 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :media="media"
       :playlists="playlists"
       :transcodes="transcodes"
+      :chapter-types="chapterTypes"
+      :playlist-types="playlistTypes"
     />
 
     <UPageHeader

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { show, update } from '@/actions/App/Web/Settings/Controllers/ChapterSettingsController'
-import type { ChapterSettings } from '@/types'
+import type { ChapterSettings, OptionItem } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue'
 
 const loaded = ref(false)
+const types = ref<OptionItem[]>([])
 const http = useHttp<object, ChapterSettings>({})
 
 const form = useForm(update(), {
@@ -20,6 +21,7 @@ onMounted(() =>
         default_type: data.default_type,
       })
       form.reset()
+      types.value = data.type_options
       loaded.value = true
     },
   }),
@@ -86,13 +88,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           <USelect
             v-model="form.default_type"
             class="w-56"
-            :items="[
-              { label: 'Intro', value: 'intro' },
-              { label: 'Recap', value: 'recap' },
-              { label: 'Credits', value: 'credits' },
-              { label: 'Scene', value: 'scene' },
-              { label: 'Main Event', value: 'main_event' },
-            ]"
+            :items="types"
           />
         </UFormField>
 

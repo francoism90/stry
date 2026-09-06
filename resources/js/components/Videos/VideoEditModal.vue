@@ -21,6 +21,8 @@ const props = defineProps<{
   media?: Media[] | undefined
   playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
+  chapterTypes?: OptionItem[] | undefined
+  playlistTypes?: OptionItem[] | undefined
 }>()
 
 const tabs: TabsItem[] = [
@@ -361,6 +363,7 @@ const setState = (): void =>
       <ChapterList
         :video="video"
         :items="video.chapters"
+        :types="chapterTypes"
       />
     </template>
 
@@ -369,6 +372,7 @@ const setState = (): void =>
         <PlaylistList
           :video="video"
           :items="playlists"
+          :types="playlistTypes"
         />
 
         <USeparator />

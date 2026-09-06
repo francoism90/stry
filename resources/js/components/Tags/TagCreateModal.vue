@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { store } from '@/actions/App/Web/Tags/Controllers/TagController'
 import FormModal from '@/components/Ui/FormModal.vue'
-import { useForm, usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { useTags } from '@/composables/tags'
+import { useForm } from '@inertiajs/vue3'
 
 withDefaults(
   defineProps<{
@@ -15,7 +15,7 @@ withDefaults(
 
 const open = defineModel<boolean>('open')
 
-const types = computed(() => usePage().props.tags)
+const { types } = useTags()
 
 const form = useForm(store(), {
   name: '',

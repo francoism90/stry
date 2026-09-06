@@ -2,20 +2,24 @@
 import ChapterCreateModal from '@/components/Chapters/ChapterCreateModal.vue'
 import ChapterDeleteModal from '@/components/Chapters/ChapterDeleteModal.vue'
 import ChapterEditModal from '@/components/Chapters/ChapterEditModal.vue'
-import type { Chapter, Video } from '@/types'
+import type { Chapter, OptionItem, Video } from '@/types'
 import { formatDuration } from '@/utils/duration'
 import { capitalize } from '@/utils/case'
 
 defineProps<{
   video: Video
   items?: Chapter[] | undefined
+  types?: OptionItem[] | undefined
 }>()
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
     <div class="flex items-center gap-2">
-      <ChapterCreateModal :video="video" />
+      <ChapterCreateModal
+        :video="video"
+        :types="types"
+      />
     </div>
 
     <div
@@ -49,6 +53,7 @@ defineProps<{
             <ChapterEditModal
               :video="video"
               :item="item"
+              :types="types"
             />
             <ChapterDeleteModal
               :video="video"

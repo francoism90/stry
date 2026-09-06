@@ -3,8 +3,7 @@ import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import { useTags } from '@/composables/tags'
 import type { Tag, TagMenuItem } from '@/types'
-import { useForm, usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { useForm } from '@inertiajs/vue3'
 
 const props = withDefaults(
   defineProps<{
@@ -18,8 +17,7 @@ const props = withDefaults(
 
 const open = defineModel<boolean>('open')
 
-const types = computed(() => usePage().props.tags)
-const { items, filter } = useTags(props.item.related || [])
+const { items, types, filter } = useTags(props.item.related || [])
 
 const form = useForm(update(props.item.id), {
   name: props.item.name,

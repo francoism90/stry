@@ -6,6 +6,8 @@ namespace App\Web\Videos\Controllers;
 
 use App\Api\Videos\Requests\VideoUpdateRequest;
 use App\Api\Videos\Resources\VideoResource;
+use App\Web\Chapters\Responses\ChapterTypeOptionsProperty;
+use App\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
 use App\Web\Videos\Responses\VideoGroupsProperty;
 use App\Web\Videos\Responses\VideoMediaProperty;
 use App\Web\Videos\Responses\VideoPlaylistProperty;
@@ -100,6 +102,8 @@ class VideoController implements HasMiddleware
             'video' => fn () => new VideoResourceProperty(video: $video, appends: ['titles', 'summary', 'snapshot']),
             'playlist' => fn () => new VideoPlaylistProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
+            'chapterTypes' => new ChapterTypeOptionsProperty,
+            'playlistTypes' => new PlaylistTypeOptionsProperty,
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
             'playlists' => Inertia::defer(fn () => new VideoPlaylistsProperty($video)),

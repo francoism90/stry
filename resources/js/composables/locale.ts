@@ -4,6 +4,8 @@ import { computed } from 'vue'
 
 export function useLocale() {
   const locale = computed(() => usePage().props.locale)
+  const locales = computed(() => usePage().props.locales)
+  const languages = computed(() => usePage().props.languages)
 
   const toDateTime = (value: string | null): CalendarDateTime | null => {
     if (!value) return null
@@ -58,6 +60,8 @@ export function useLocale() {
 
   return {
     locale,
+    locales,
+    languages,
     toDateTime,
     fromDateTime,
     nowDateTime,

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { store } from '@/actions/App/Web/Videos/Controllers/VideoChapterController'
-import type { Video } from '@/types'
+import type { OptionItem, Video } from '@/types'
 import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   video: Video
+  types?: OptionItem[] | undefined
 }>()
 
 const form = useForm({
@@ -63,12 +64,7 @@ const handle = (close: () => void) =>
             v-model="form.type"
             class="w-full"
             placeholder="Auto"
-            :items="[
-              { label: 'Intro', value: 'intro' },
-              { label: 'Recap', value: 'recap' },
-              { label: 'Credits', value: 'credits' },
-              { label: 'Scene', value: 'scene' },
-            ]"
+            :items="types"
           />
         </UFormField>
 
