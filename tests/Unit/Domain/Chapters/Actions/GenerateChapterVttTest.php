@@ -49,7 +49,7 @@ it('renders one cue per chapter in order with formatted timestamps', function ()
         VTT);
 });
 
-it('adds an empty trailing cue covering unaccounted time after the last chapter', function () {
+it('adds a trailing cue labelled "Main Event" covering unaccounted time after the last chapter', function () {
     $video = Video::factory()->create();
     $video->media()->create([
         'collection_name' => 'clips',
@@ -89,6 +89,7 @@ it('adds an empty trailing cue covering unaccounted time after the last chapter'
 
         chapters-end
         00:02:30.000 --> 00:05:00.000
+        Main Event
         VTT);
 });
 

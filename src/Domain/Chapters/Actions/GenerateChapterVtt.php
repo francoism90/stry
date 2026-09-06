@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Chapters\Actions;
 
+use Domain\Chapters\Enums\ChapterFiller;
 use Domain\Chapters\Models\Chapter;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Collection;
@@ -27,10 +28,15 @@ class GenerateChapterVtt
 
         // Shaka's seek bar resolves the hover tooltip by matching whichever chapter is last in the
         // list for every timestamp past its own end time, all the way to the end of the video - it
-        // has no concept of "past the last defined chapter." An empty trailing cue caps that bleed
-        // at the real end of our chapters, instead of the last chapter's title covering the rest.
+        // has no concept of "past the last defined chapter." A trailing cue caps that bleed at the
+        // real end of our chapters, instead of the last chapter's title covering the rest.
         if ($lastChapter && $duration > (float) $lastChapter->end_time) {
-            $cues->push($this->cue('chapters-end', (float) $lastChapter->end_time, $duration, ''));
+            $cues->push($this->cue(
+                'chapters-end',
+                (float) $lastChapter->end_time,
+                $duration,
+                ChapterFiller::MainEvent->label(),
+            ));
         }
 
         return $cues->prepend('WEBVTT')->implode("\n\n");
