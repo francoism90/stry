@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Models;
 
 use Database\Factories\VideoFactory;
+use Domain\Chapters\Concerns\InteractsWithChapters;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
@@ -48,6 +49,7 @@ class Video extends Model implements HasMedia
     use HasTags;
     use HasTranslations;
     use HasUlids;
+    use InteractsWithChapters;
     use InteractsWithGroups;
     use InteractsWithMedia;
     use InteractsWithModelCache;
@@ -432,6 +434,15 @@ class Video extends Model implements HasMedia
         return rescue(fn () => TemporaryUrls::make($media)->getUrl());
     }
 
+    public function chaptersVttUrl(): ?string
+    {
+        if (! $this->relationLoaded('chapters') || $this->chapters->isEmpty()) {
+            return null;
+        }
+
+        return route('api.play.chapters', $this);
+    }
+
     public function durationInSeconds(): float
     {
         return (float) $this->getStreams()->max('duration') ?? 0.0;
@@ -490,6 +501,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->storyboardVttUrl(),
+        )->shouldCache();
+    }
+
+    protected function chaptersVtt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->chaptersVttUrl(),
         )->shouldCache();
     }
 

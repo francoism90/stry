@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import ChapterList from '@/components/Chapters/ChapterList.vue'
 import MediaList from '@/components/Media/MediaList.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
@@ -25,6 +26,7 @@ const props = defineProps<{
 const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
+  { label: 'Chapters', icon: 'i-lucide-list-video', slot: 'chapters' },
   { label: 'Conversions', icon: 'i-lucide-film', slot: 'conversions' },
   { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
@@ -353,6 +355,13 @@ const setState = (): void =>
           :items="media"
         />
       </div>
+    </template>
+
+    <template #chapters>
+      <ChapterList
+        :video="video"
+        :items="video.chapters"
+      />
     </template>
 
     <template #conversions>
