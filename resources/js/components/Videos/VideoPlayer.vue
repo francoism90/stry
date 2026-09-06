@@ -15,7 +15,7 @@ const props = defineProps<{
 const container = ref<HTMLDivElement | undefined>()
 const element = ref<HTMLMediaElement | undefined>()
 
-const { ready, error, media, currentTime } = useShaka(
+const { ready, error, media, currentTime, hasStartedPlayback } = useShaka(
   container,
   element,
   () => props.video ?? null,
@@ -83,6 +83,7 @@ const actions = ref<ButtonProps[]>([
       <VideoChapterSkipButton
         :chapters="video?.chapters"
         :current-time="currentTime"
+        :has-started-playback="hasStartedPlayback"
         :seek="seek"
       />
     </div>

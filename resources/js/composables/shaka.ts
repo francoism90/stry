@@ -28,6 +28,7 @@ export function useShaka(
   const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number | null>(null)
   const currentTime = ref<number>(0)
+  const hasStartedPlayback = ref<boolean>(false)
 
   const ready = computed(() => player.value !== undefined && !initializing.value && loaded.value)
   const media = computed(() => player.value?.getMediaElement() ?? null)
@@ -86,6 +87,7 @@ export function useShaka(
       manager.value.listen(mediaElement, 'ratechange', onPlaybackRateChange)
       manager.value.listen(mediaElement, 'timeupdate', onTimeUpdate)
       manager.value.listen(mediaElement, 'timeupdate', onTimeUpdateTick)
+      manager.value.listen(mediaElement, 'playing', onPlaying)
       manager.value.listen(player.value, 'error', onErrorEvent)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
@@ -245,6 +247,7 @@ export function useShaka(
     error.value = null
     ticker.value = null
     currentTime.value = 0
+    hasStartedPlayback.value = false
   }
 
   const onErrorEvent = (event: Event) => {
@@ -286,6 +289,13 @@ export function useShaka(
     if (el) {
       currentTime.value = el.currentTime
     }
+  }
+
+  // Fires once frames actually start rendering (including after the initial buffering delay), so
+  // UI gated on this - e.g. the chapter skip button - doesn't flash on top of a still-loading
+  // player. Only ever set true here; reset() clears it again on the next video.
+  const onPlaying = () => {
+    hasStartedPlayback.value = true
   }
 
   const onVolumeChange = (event: Event) => {
@@ -372,6 +382,7 @@ export function useShaka(
     ready,
     error,
     currentTime,
+    hasStartedPlayback,
     initialize,
     replace,
     destroy,

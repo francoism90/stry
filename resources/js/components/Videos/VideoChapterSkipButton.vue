@@ -5,14 +5,19 @@ import { computed } from 'vue'
 const props = defineProps<{
   chapters?: Chapter[] | undefined
   currentTime: number
+  hasStartedPlayback: boolean
   seek: (time: number) => void
 }>()
 
-const activeChapter = computed<Chapter | undefined>(() =>
-  props.chapters?.find(
+const activeChapter = computed<Chapter | undefined>(() => {
+  if (!props.hasStartedPlayback) {
+    return undefined
+  }
+
+  return props.chapters?.find(
     (chapter) => chapter.skippable && props.currentTime >= chapter.start_time && props.currentTime < chapter.end_time,
-  ),
-)
+  )
+})
 
 const skip = (): void => {
   if (activeChapter.value) {
