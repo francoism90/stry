@@ -179,6 +179,7 @@ class Video extends Model implements HasMedia
         $this
             ->addMediaCollection('storyboards')
             ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
             ->acceptsMimeTypes([
                 'application/octet-stream',
                 'application/x-webvtt',
