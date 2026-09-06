@@ -23,10 +23,10 @@ enum ChapterType: string implements Enumerable
     public static function labels(): array
     {
         return [
-            'intro' => 'Intro',
-            'recap' => 'Recap',
-            'credits' => 'Credits',
-            'scene' => 'Scene',
+            'intro' => __('Intro'),
+            'recap' => __('Recap'),
+            'credits' => __('Credits'),
+            'scene' => __('Scene'),
             'main_event' => __('Main Event'),
         ];
     }
