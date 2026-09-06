@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Chapters\Actions;
 
-use Domain\Chapters\Enums\ChapterFiller;
+use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Models\Chapter;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Collection;
@@ -35,7 +35,7 @@ class GenerateChapterVtt
                 'chapters-end',
                 (float) $lastChapter->end_time,
                 $duration,
-                ChapterFiller::MainEvent->label(),
+                ChapterType::MainEvent->label(),
             ));
         }
 

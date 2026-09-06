@@ -12,6 +12,7 @@ enum ChapterType: string implements Enumerable
     case Recap = 'recap';
     case Credits = 'credits';
     case Scene = 'scene';
+    case MainEvent = 'main_event';
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum ChapterType: string implements Enumerable
             'recap' => 'Recap',
             'credits' => 'Credits',
             'scene' => 'Scene',
+            'main_event' => __('Main Event'),
         ];
     }
 
@@ -33,7 +35,7 @@ enum ChapterType: string implements Enumerable
     {
         return match ($this) {
             self::Intro, self::Recap, self::Credits => true,
-            self::Scene => false,
+            self::Scene, self::MainEvent => false,
         };
     }
 }
