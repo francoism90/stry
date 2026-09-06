@@ -82,7 +82,7 @@ const onSubmit = (close: () => void) =>
           >
             <UInput
               v-model="form.start_time"
-              :model-modifiers="{ nullable: true, number: true }"
+              :model-modifiers="{ number: true }"
               type="number"
               step="0.01"
               min="0"
@@ -96,7 +96,7 @@ const onSubmit = (close: () => void) =>
           >
             <UInput
               v-model="form.end_time"
-              :model-modifiers="{ nullable: true, number: true }"
+              :model-modifiers="{ number: true }"
               type="number"
               step="0.01"
               min="0"

@@ -10,8 +10,8 @@ const props = defineProps<{
 const form = useForm({
   label: '',
   type: undefined as string | undefined,
-  start_time: null as number | null,
-  end_time: null as number | null,
+  start_time: '' as number | string,
+  end_time: '' as number | string,
 })
 
 const handle = (close: () => void) =>
@@ -80,7 +80,7 @@ const handle = (close: () => void) =>
           >
             <UInput
               v-model="form.start_time"
-              :model-modifiers="{ nullable: true, number: true }"
+              :model-modifiers="{ number: true }"
               type="number"
               step="0.01"
               min="0"
@@ -94,7 +94,7 @@ const handle = (close: () => void) =>
           >
             <UInput
               v-model="form.end_time"
-              :model-modifiers="{ nullable: true, number: true }"
+              :model-modifiers="{ number: true }"
               type="number"
               step="0.01"
               min="0"
