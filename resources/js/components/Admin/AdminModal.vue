@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AdminApplicationForm from '@/components/Admin/AdminApplicationForm.vue'
+import AdminChapterForm from '@/components/Admin/AdminChapterForm.vue'
 import AdminPlaylistForm from '@/components/Admin/AdminPlaylistForm.vue'
 import { computed, ref, type Component } from 'vue'
 
@@ -31,6 +32,12 @@ const definitions: AdminSectionDefinition[] = [
     label: 'Playlist',
     icon: 'i-lucide-clapperboard',
     component: AdminPlaylistForm,
+  },
+  {
+    value: 'chapters',
+    label: 'Chapters',
+    icon: 'i-lucide-list-video',
+    component: AdminChapterForm,
   },
 ]
 

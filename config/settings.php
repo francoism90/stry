@@ -1,5 +1,6 @@
 <?php
 
+use Domain\Chapters\Settings\ChapterSettings;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Foundation\Settings\GeneralSettings;
 use Spatie\LaravelData\Data;
@@ -18,6 +19,7 @@ return [
     'settings' => [
         GeneralSettings::class,
         PlaylistSettings::class,
+        ChapterSettings::class,
     ],
 
     /*

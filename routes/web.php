@@ -11,6 +11,7 @@ use App\Web\Profiles\Controllers\ProfileController;
 use App\Web\Tags\Controllers\TagController;
 use App\Web\Transcodes\Controllers\TranscodeController;
 use App\Web\Users\Controllers\UserController;
+use App\Web\Videos\Controllers\VideoChapterController;
 use App\Web\Videos\Controllers\VideoController;
 use App\Web\Videos\Controllers\VideoPlaylistController;
 use App\Web\Videos\Controllers\VideoTranscodeController;
@@ -47,3 +48,4 @@ Route::resource('users', UserController::class)->only(['index', 'store', 'update
 Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);
 Route::resource('videos.playlists', VideoPlaylistController::class)->scoped()->only(['store', 'update', 'destroy']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['update', 'destroy']);
+Route::resource('videos.chapters', VideoChapterController::class)->scoped()->only(['store', 'update', 'destroy']);

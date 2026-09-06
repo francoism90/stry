@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Web\Settings\Controllers;
 
+use App\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
 use App\Web\Settings\Requests\PlaylistSettingsRequest;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
@@ -17,6 +18,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Spatie\LaravelOptions\Options;
 
 class PlaylistSettingsController implements HasMiddleware
 {
@@ -33,7 +35,12 @@ class PlaylistSettingsController implements HasMiddleware
     {
         Gate::authorize('manage-application-settings');
 
-        return response()->json($settings->toArray());
+        return response()->json([
+            ...$settings->toArray(),
+            'type_options' => PlaylistTypeOptionsProperty::options(),
+            'encryption_options' => Options::forEnum(EncryptionMethod::class)->nullable('None'),
+            'protection_scheme_options' => Options::forEnum(ProtectionScheme::class)->nullable('None'),
+        ]);
     }
 
     public function update(PlaylistSettingsRequest $request, PlaylistSettings $settings): Response|RedirectResponse

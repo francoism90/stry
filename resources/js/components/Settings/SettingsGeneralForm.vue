@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
+import { useLocale } from '@/composables/locale'
 import { useSettings } from '@/composables/settings'
 import { useForm } from '@inertiajs/vue3'
 
 const { settings } = useSettings('general')
+const { locales, languages } = useLocale()
 
 const form = useForm(UserSettingsController(), {
   general: settings.value ?? {
@@ -79,7 +81,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           <USelect
             v-model="form.general.language"
             class="w-56"
-            :items="[{ label: 'English', value: 'en' }]"
+            :items="languages"
           />
         </UFormField>
 
@@ -95,10 +97,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           <USelect
             v-model="form.general.locale"
             class="w-56"
-            :items="[
-              { label: 'English (US)', value: 'en-US' },
-              { label: 'Dutch (Netherlands)', value: 'nl-NL' },
-            ]"
+            :items="locales"
           />
         </UFormField>
 

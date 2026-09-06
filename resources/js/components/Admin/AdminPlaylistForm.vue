@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { show, update } from '@/actions/App/Web/Settings/Controllers/PlaylistSettingsController'
-import type { PlaylistSettings } from '@/types'
+import { useLocale } from '@/composables/locale'
+import type { OptionItem, PlaylistSettings, PlaylistSettingsResponse } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'
 import { computed, onMounted, ref } from 'vue'
 
 const loaded = ref(false)
-const http = useHttp<object, PlaylistSettings>({})
+const http = useHttp<object, PlaylistSettingsResponse>({})
+const { languages } = useLocale()
+const types = ref<OptionItem[]>([])
+const encryptions = ref<OptionItem[]>([])
+const protectionSchemes = ref<OptionItem[]>([])
 
 const form = useForm<PlaylistSettings>(update(), {
   type: 'packager',
@@ -27,8 +32,13 @@ const form = useForm<PlaylistSettings>(update(), {
 onMounted(() =>
   http.get(show.url(), {
     onSuccess: (data) => {
-      form.defaults(data)
+      const { type_options, encryption_options, protection_scheme_options, ...settings } = data
+
+      form.defaults(settings)
       form.reset()
+      types.value = type_options
+      encryptions.value = encryption_options
+      protectionSchemes.value = protection_scheme_options
       loaded.value = true
     },
   }),
@@ -99,10 +109,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
           <USelect
             v-model="form.type"
             class="w-56"
-            :items="[
-              { label: 'Packager', value: 'packager' },
-              { label: 'Streamer', value: 'streamer' },
-            ]"
+            :items="types"
           />
         </UFormField>
 
@@ -133,7 +140,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
           <USelect
             v-model="form.language"
             class="w-56"
-            :items="[{ label: 'English', value: 'en' }]"
+            :items="languages"
           />
         </UFormField>
 
@@ -149,7 +156,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
           <USelect
             v-model="form.text_language"
             class="w-56"
-            :items="[{ label: 'English', value: 'en' }]"
+            :items="languages"
           />
         </UFormField>
       </template>
@@ -285,11 +292,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
           <USelect
             v-model="form.encryption"
             class="w-56"
-            :items="[
-              { label: 'None', value: null },
-              { label: 'Raw key encryption', value: 'raw_key_encryption' },
-              { label: 'Clear key', value: 'clearkey' },
-            ]"
+            :items="encryptions"
           />
         </UFormField>
 
@@ -306,11 +309,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
             v-model="form.protection_scheme"
             class="w-56"
             :disabled="protectionSchemeDisabled"
-            :items="[
-              { label: 'None', value: null },
-              { label: 'CENC', value: 'cenc' },
-              { label: 'CBCS', value: 'cbcs' },
-            ]"
+            :items="protectionSchemes"
           />
         </UFormField>
 

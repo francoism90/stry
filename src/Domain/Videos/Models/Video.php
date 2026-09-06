@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Models;
 
 use Database\Factories\VideoFactory;
+use Domain\Chapters\Concerns\InteractsWithChapters;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
@@ -48,6 +49,7 @@ class Video extends Model implements HasMedia
     use HasTags;
     use HasTranslations;
     use HasUlids;
+    use InteractsWithChapters;
     use InteractsWithGroups;
     use InteractsWithMedia;
     use InteractsWithModelCache;
@@ -177,10 +179,23 @@ class Video extends Model implements HasMedia
         $this
             ->addMediaCollection('storyboards')
             ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
             ->acceptsMimeTypes([
                 'application/octet-stream',
                 'application/x-webvtt',
                 'image/jpeg',
+                'text/plain',
+                'text/vtt',
+            ]);
+
+        $this
+            ->addMediaCollection('chapters')
+            ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
+            ->singleFile()
+            ->acceptsMimeTypes([
+                'application/octet-stream',
+                'application/x-webvtt',
                 'text/plain',
                 'text/vtt',
             ]);
@@ -341,6 +356,11 @@ class Video extends Model implements HasMedia
         return $this->getMedia('storyboards')->first(fn (BaseMedia $media) => $media->mime_type !== 'image/jpeg');
     }
 
+    public function getChaptersVtt(): ?BaseMedia
+    {
+        return $this->getMedia('chapters')->first();
+    }
+
     public function getStreams(): Collection
     {
         return $this
@@ -432,6 +452,17 @@ class Video extends Model implements HasMedia
         return rescue(fn () => TemporaryUrls::make($media)->getUrl());
     }
 
+    public function chaptersVttUrl(): ?string
+    {
+        $media = $this->getChaptersVtt();
+
+        if (! $media) {
+            return null;
+        }
+
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl());
+    }
+
     public function durationInSeconds(): float
     {
         return (float) $this->getStreams()->max('duration') ?? 0.0;
@@ -490,6 +521,13 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->storyboardVttUrl(),
+        )->shouldCache();
+    }
+
+    protected function chaptersVtt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->chaptersVttUrl(),
         )->shouldCache();
     }
 

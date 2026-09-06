@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import PlaylistCreateModal from '@/components/Playlists/PlaylistCreateModal.vue'
 import PlaylistDeleteModal from '@/components/Playlists/PlaylistDeleteModal.vue'
-import type { Playlist, Video } from '@/types'
+import type { OptionItem, Playlist, Video } from '@/types'
 
 defineProps<{
   video?: Video
   items?: Playlist[] | undefined
+  types?: OptionItem[] | undefined
 }>()
 </script>
 
@@ -15,7 +16,10 @@ defineProps<{
       v-if="video"
       class="flex items-center gap-2"
     >
-      <PlaylistCreateModal :video="video" />
+      <PlaylistCreateModal
+        :video="video"
+        :types="types"
+      />
     </div>
 
     <div

@@ -2,7 +2,7 @@ import { index } from '@/actions/App/Api/Tags/Controllers/TagController'
 import type { Tag, TagCollection } from '@/types'
 import { uniqueModels } from '@/utils/model'
 import { type RouteQueryOptions } from '@/wayfinder'
-import { useHttp } from '@inertiajs/vue3'
+import { useHttp, usePage } from '@inertiajs/vue3'
 import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 
 const isServer = import.meta.env.SSR
@@ -11,6 +11,7 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   const state = ref<TagCollection>()
   const ready = ref(false)
   const http = useHttp<object, TagCollection>({})
+  const types = computed(() => usePage().props.tags)
 
   const items = computed(() => uniqueModels([...toValue(tags || []), ...(state.value?.data || [])]))
 
@@ -43,6 +44,7 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   return {
     state: readonly(state),
     items,
+    types,
     filter,
   }
 }

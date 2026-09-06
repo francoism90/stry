@@ -27,6 +27,8 @@ export function useShaka(
   const current = shallowRef<Playlist | null>(null)
   const error = ref<shaka.util.Error | Error | null>(null)
   const ticker = ref<number | null>(null)
+  const currentTime = ref<number>(0)
+  const hasStartedPlayback = ref<boolean>(false)
 
   const ready = computed(() => player.value !== undefined && !initializing.value && loaded.value)
   const media = computed(() => player.value?.getMediaElement() ?? null)
@@ -84,6 +86,8 @@ export function useShaka(
       manager.value.listen(mediaElement, 'volumechange', onVolumeChange)
       manager.value.listen(mediaElement, 'ratechange', onPlaybackRateChange)
       manager.value.listen(mediaElement, 'timeupdate', onTimeUpdate)
+      manager.value.listen(mediaElement, 'timeupdate', onTimeUpdateTick)
+      manager.value.listen(mediaElement, 'playing', onPlaying)
       manager.value.listen(player.value, 'error', onErrorEvent)
     } catch (err) {
       onErrorEvent(new CustomEvent('error', { detail: err }))
@@ -115,6 +119,21 @@ export function useShaka(
       }
     } catch (err) {
       console.error('Error adding storyboard thumbnails track:', err)
+    }
+  }
+
+  // Adds the chapters sidecar VTT as a native text track (chapters menu, accessibility). Purely
+  // additive to playback: the skip button and chapter list read `video.chapters` directly rather
+  // than this track, since Shaka's chapters API only exposes {start, end, title}, not our `type`.
+  const addChaptersTrack = async (videoModel: Video | null): Promise<void> => {
+    if (!player.value || !videoModel?.chapters_vtt) {
+      return
+    }
+
+    try {
+      await player.value.addChaptersTrack(videoModel.chapters_vtt, 'en')
+    } catch (err) {
+      console.error('Error adding chapters track:', err)
     }
   }
 
@@ -167,6 +186,7 @@ export function useShaka(
       }
 
       await addStoryboardTrack(toValue(video) as Video | null)
+      await addChaptersTrack(toValue(video) as Video | null)
 
       scheduleAssetRefresh(playlist)
     } catch (err) {
@@ -226,6 +246,8 @@ export function useShaka(
     current.value = null
     error.value = null
     ticker.value = null
+    currentTime.value = 0
+    hasStartedPlayback.value = false
   }
 
   const onErrorEvent = (event: Event) => {
@@ -258,6 +280,23 @@ export function useShaka(
       }
     }
   }, 2500)
+
+  // Unthrottled, unlike onTimeUpdate above: the skip button needs to react within a fraction of a
+  // second of crossing a chapter boundary, not on markViewed()'s 2.5s cadence.
+  const onTimeUpdateTick = (event: Event) => {
+    const el = event.target as HTMLMediaElement | null
+
+    if (el) {
+      currentTime.value = el.currentTime
+    }
+  }
+
+  // Fires once frames actually start rendering (including after the initial buffering delay), so
+  // UI gated on this - e.g. the chapter skip button - doesn't flash on top of a still-loading
+  // player. Only ever set true here; reset() clears it again on the next video.
+  const onPlaying = () => {
+    hasStartedPlayback.value = true
+  }
 
   const onVolumeChange = (event: Event) => {
     const el = event.target as HTMLMediaElement | null
@@ -339,8 +378,11 @@ export function useShaka(
 
   return {
     player,
+    media,
     ready,
     error,
+    currentTime,
+    hasStartedPlayback,
     initialize,
     replace,
     destroy,

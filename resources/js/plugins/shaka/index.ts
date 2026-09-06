@@ -108,6 +108,9 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     keyboardLargeSeekDistance: 30,
     seekOnTaps: true,
     bigButtons: [],
+    seekBarColors: {
+      chapters: 'rgba(255, 255, 255, 0.7)',
+    },
     controlPanelElements: [
       'play_pause',
       'mute',
@@ -118,6 +121,7 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
       'time_and_duration',
       'spacer',
       'captions',
+      'chapter',
       'cast',
       'overflow_menu',
       'fullscreen',

@@ -4,6 +4,7 @@ import type { Playlist, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { ref } from 'vue'
+import VideoChapterSkipButton from '@/components/Videos/VideoChapterSkipButton.vue'
 
 const props = defineProps<{
   video?: Video | undefined
@@ -12,15 +13,21 @@ const props = defineProps<{
 }>()
 
 const container = ref<HTMLDivElement | undefined>()
-const media = ref<HTMLMediaElement | undefined>()
+const element = ref<HTMLMediaElement | undefined>()
 
-const { ready, error } = useShaka(
+const { ready, error, media, currentTime, hasStartedPlayback } = useShaka(
   container,
-  media,
+  element,
   () => props.video ?? null,
   () => props.playlist ?? null,
   () => props.progress ?? null,
 )
+
+const seek = (time: number): void => {
+  if (media.value) {
+    media.value.currentTime = time
+  }
+}
 
 const actions = ref<ButtonProps[]>([
   {
@@ -62,15 +69,22 @@ const actions = ref<ButtonProps[]>([
     <div
       ref="container"
       v-show="ready && !error"
-      class="aspect-video max-h-[35dvh] w-full [clip-path:inset(0_round_0.5rem)] md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
+      class="relative aspect-video max-h-[35dvh] w-full [clip-path:inset(0_round_0.5rem)] md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
     >
       <video
-        ref="media"
+        ref="element"
         class="size-full bg-black"
         crossorigin="anonymous"
         preload="metadata"
         playsinline
         autoplay
+      />
+
+      <VideoChapterSkipButton
+        :chapters="video?.chapters"
+        :current-time="currentTime"
+        :has-started-playback="hasStartedPlayback"
+        :seek="seek"
       />
     </div>
   </figure>

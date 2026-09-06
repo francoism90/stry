@@ -18,6 +18,8 @@ declare module '@inertiajs/core' {
     readonly app: string
     readonly nonce: string
     readonly locale: string
+    readonly locales: OptionItem[] | undefined
+    readonly languages: OptionItem[] | undefined
     readonly tags: OptionItem[] | undefined
     readonly search: string | null | undefined
     readonly auth: User | undefined

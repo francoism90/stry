@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Videos\Resources;
 
+use App\Api\Chapters\Resources\ChapterResource;
 use App\Api\Media\Resources\MediaResource;
 use App\Api\Playlists\Resources\PlaylistResource;
 use App\Api\Tags\Resources\TagResource;
@@ -41,6 +42,7 @@ class VideoResource extends JsonResource
             'thumb_srcset' => $this->thumb_srcset,
             'storyboard_image' => $this->storyboard_image,
             'storyboard_vtt' => $this->storyboard_vtt,
+            'chapters_vtt' => $this->chapters_vtt,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
             'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
@@ -59,6 +61,7 @@ class VideoResource extends JsonResource
             'media' => MediaResource::collection($this->whenLoaded('media')),
             'playlists' => PlaylistResource::collection($this->whenLoaded('playlists')),
             'transcodes' => TranscodeResource::collection($this->whenLoaded('transcodes')),
+            'chapters' => ChapterResource::collection($this->whenLoaded('chapters')),
             'snapshot' => $this->whenAppended('snapshot'),
             'state' => $this->state->toArray(),
             'published_at' => $this->published_at?->toDateTimeString(),

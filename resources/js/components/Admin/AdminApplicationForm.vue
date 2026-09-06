@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { show, update } from '@/actions/App/Web/Settings/Controllers/ApplicationSettingsController'
+import { useLocale } from '@/composables/locale'
 import type { ApplicationSettings } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue'
 
 const loaded = ref(false)
 const http = useHttp<object, ApplicationSettings>({})
+const { locales } = useLocale()
 
 const form = useForm<ApplicationSettings>(update(), {
   site_name: '',
@@ -120,10 +122,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           <USelect
             v-model="form.default_locale"
             class="w-56"
-            :items="[
-              { label: 'English (US)', value: 'en-US' },
-              { label: 'Dutch (Netherlands)', value: 'nl-NL' },
-            ]"
+            :items="locales"
           />
         </UFormField>
 

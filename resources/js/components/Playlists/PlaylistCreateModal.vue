@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { store } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
-import type { Video } from '@/types'
+import type { OptionItem, Video } from '@/types'
 import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   video: Video
+  types?: OptionItem[] | undefined
 }>()
 
 const form = useForm({
@@ -42,10 +43,7 @@ const handle = (close: () => void) =>
         <USelect
           v-model="form.type"
           class="w-full"
-          :items="[
-            { label: 'Packager', value: 'packager' },
-            { label: 'Streamer', value: 'streamer' },
-          ]"
+          :items="types"
         />
       </UFormField>
     </template>

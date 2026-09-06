@@ -114,11 +114,17 @@ export type ApplicationSettings = {
   maintenance_message: string | null
 }
 
+export type ChapterSettings = {
+  patterns: Record<string, string>
+  default_type: 'intro' | 'recap' | 'credits' | 'scene' | 'main_event'
+  type_options: OptionItem[]
+}
+
 export type PlaylistSettings = {
   type: 'packager' | 'streamer'
   disk_name: string
-  language: 'en'
-  text_language: 'en'
+  language: 'en' | 'nl'
+  text_language: 'en' | 'nl'
   expires_after: number
   manifest_cache_lifetime: number
   manifest_url_lifetime: number
@@ -129,6 +135,12 @@ export type PlaylistSettings = {
   protection_scheme: 'cenc' | 'cbcs' | null
   key_rotation: boolean
   key_rotation_duration: number
+}
+
+export type PlaylistSettingsResponse = PlaylistSettings & {
+  type_options: OptionItem[]
+  encryption_options: OptionItem[]
+  protection_scheme_options: OptionItem[]
 }
 
 export type MediaStream = {
@@ -194,6 +206,7 @@ export type Video = Model & {
   media?: Media[]
   playlists?: Playlist[]
   transcodes?: Transcode[]
+  chapters?: Chapter[]
   name: string
   title: string
   titles?: string
@@ -216,6 +229,7 @@ export type Video = Model & {
   thumb_srcset: string | null
   storyboard_image: string | null
   storyboard_vtt: string | null
+  chapters_vtt: string | null
   adult: boolean
   captioned: boolean
   liked: boolean | null
@@ -230,6 +244,15 @@ export type Video = Model & {
 
 export type VideoCollection = Omit<Paginator, 'data'> & {
   data: Video[] | undefined
+}
+
+export type Chapter = Model & {
+  type: string
+  label: string
+  start_time: number
+  end_time: number
+  sort: number
+  skippable: boolean
 }
 
 export type Playlist = Model & {

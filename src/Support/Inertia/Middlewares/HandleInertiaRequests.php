@@ -6,6 +6,8 @@ namespace Support\Inertia\Middlewares;
 
 use App\Web\Groups\Responses\GroupCollectionsProperty;
 use App\Web\Users\Responses\UserResourceProperty;
+use Domain\Shared\Enums\Language;
+use Domain\Shared\Enums\Locale;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -25,6 +27,8 @@ class HandleInertiaRequests extends Middleware
             'app' => fn (): string => Config::string('app.name', 'Laravel'),
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
+            'locales' => fn (): Options => Options::forEnum(Locale::class),
+            'languages' => fn (): Options => Options::forEnum(Language::class),
             'tags' => fn (): Options => Options::forEnum(TagType::class),
             'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import ChapterList from '@/components/Chapters/ChapterList.vue'
 import MediaList from '@/components/Media/MediaList.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
@@ -20,11 +21,14 @@ const props = defineProps<{
   media?: Media[] | undefined
   playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
+  chapterTypes?: OptionItem[] | undefined
+  playlistTypes?: OptionItem[] | undefined
 }>()
 
 const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
+  { label: 'Chapters', icon: 'i-lucide-list-video', slot: 'chapters' },
   { label: 'Conversions', icon: 'i-lucide-film', slot: 'conversions' },
   { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
@@ -355,11 +359,20 @@ const setState = (): void =>
       </div>
     </template>
 
+    <template #chapters>
+      <ChapterList
+        :video="video"
+        :items="video.chapters"
+        :types="chapterTypes"
+      />
+    </template>
+
     <template #conversions>
       <div class="flex flex-col gap-4">
         <PlaylistList
           :video="video"
           :items="playlists"
+          :types="playlistTypes"
         />
 
         <USeparator />

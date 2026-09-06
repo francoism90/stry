@@ -26,3 +26,17 @@
 .shaka-player-ui-thumbnail-image {
   @apply max-w-none;
 }
+
+/* Chapter thumbnails fall back to a sampled sprite tile, which is often just a solid color for a
+ * short/dark chapter - keep the chapters menu to text only, and tighten it up to match. */
+.shaka-chapter-thumbnail {
+  @apply hidden;
+}
+
+.shaka-chapter {
+  @apply ml-0;
+}
+
+.shaka-settings-menu button.shaka-chapter-item {
+  @apply min-h-0 py-1.5;
+}
