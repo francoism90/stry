@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Api\Authentication\Controllers\HomeController;
 use App\Api\Playlists\Controllers\PlaylistManifestController;
 use App\Api\Tags\Controllers\TagController;
-use App\Api\Videos\Controllers\VideoChaptersController;
 use App\Api\Videos\Controllers\VideoSessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +25,4 @@ Route::name('api.')->prefix('v1')->group(function () {
     Route::post('/record/{video}', VideoSessionController::class)
         ->withoutMiddleware('throttle:api')
         ->name('play.session');
-
-    // VOD - Chapters
-    Route::get('/videos/{video}/chapters.vtt', VideoChaptersController::class)
-        ->withoutMiddleware('throttle:api')
-        ->name('play.chapters');
 });

@@ -187,6 +187,18 @@ class Video extends Model implements HasMedia
                 'text/plain',
                 'text/vtt',
             ]);
+
+        $this
+            ->addMediaCollection('chapters')
+            ->useDisk('conversions')
+            ->storeConversionsOnDisk('conversions')
+            ->singleFile()
+            ->acceptsMimeTypes([
+                'application/octet-stream',
+                'application/x-webvtt',
+                'text/plain',
+                'text/vtt',
+            ]);
     }
 
     public function registerMediaConversions(?BaseMedia $media = null): void
@@ -344,6 +356,11 @@ class Video extends Model implements HasMedia
         return $this->getMedia('storyboards')->first(fn (BaseMedia $media) => $media->mime_type !== 'image/jpeg');
     }
 
+    public function getChaptersVtt(): ?BaseMedia
+    {
+        return $this->getMedia('chapters')->first();
+    }
+
     public function getStreams(): Collection
     {
         return $this
@@ -437,11 +454,13 @@ class Video extends Model implements HasMedia
 
     public function chaptersVttUrl(): ?string
     {
-        if (! $this->relationLoaded('chapters') || $this->chapters->isEmpty()) {
+        $media = $this->getChaptersVtt();
+
+        if (! $media) {
             return null;
         }
 
-        return route('api.play.chapters', $this);
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl());
     }
 
     public function durationInSeconds(): float

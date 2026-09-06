@@ -48,3 +48,80 @@ it('renders one cue per chapter in order with formatted timestamps', function ()
         Recap
         VTT);
 });
+
+it('adds an empty trailing cue covering unaccounted time after the last chapter', function () {
+    $video = Video::factory()->create();
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [
+            'streams' => [
+                ['codec_type' => 'video', 'duration' => 300],
+            ],
+        ],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    $recap = Chapter::factory()->make([
+        'ulid' => 'recap-ulid',
+        'type' => ChapterType::Recap,
+        'label' => 'Recap',
+        'start_time' => 90,
+        'end_time' => 150,
+    ]);
+
+    $video->setRelation('chapters', collect([$recap]));
+
+    $vtt = (new GenerateChapterVtt)->handle($video);
+
+    expect($vtt)->toBe(<<<'VTT'
+        WEBVTT
+
+        recap-ulid
+        00:01:30.000 --> 00:02:30.000
+        Recap
+
+        chapters-end
+        00:02:30.000 --> 00:05:00.000
+        VTT);
+});
+
+it('does not add a trailing cue when the last chapter already reaches the end of the video', function () {
+    $video = Video::factory()->create();
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [
+            'streams' => [
+                ['codec_type' => 'video', 'duration' => 150],
+            ],
+        ],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    $recap = Chapter::factory()->make([
+        'ulid' => 'recap-ulid',
+        'type' => ChapterType::Recap,
+        'label' => 'Recap',
+        'start_time' => 90,
+        'end_time' => 150,
+    ]);
+
+    $video->setRelation('chapters', collect([$recap]));
+
+    $vtt = (new GenerateChapterVtt)->handle($video);
+
+    expect($vtt)->not->toContain('chapters-end');
+});

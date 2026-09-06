@@ -9,6 +9,7 @@ use App\Api\Chapters\Requests\ChapterUpdateRequest;
 use Domain\Chapters\Actions\CreateChapter;
 use Domain\Chapters\Actions\UpdateChapter;
 use Domain\Chapters\Models\Chapter;
+use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -33,6 +34,8 @@ class VideoChapterController implements HasMiddleware
 
         $chapter = $createChapter->handle($video, $request->safe()->all());
 
+        VideoHasBeenUpdatedEvent::dispatch($video);
+
         Inertia::flash([
             'title' => $chapter->label,
             'description' => __('The chapter has been created.'),
@@ -48,6 +51,8 @@ class VideoChapterController implements HasMiddleware
 
         $updateChapter->handle($chapter, $request->safe()->all());
 
+        VideoHasBeenUpdatedEvent::dispatch($video);
+
         Inertia::flash([
             'title' => $chapter->label,
             'description' => __('The chapter has been updated.'),
@@ -62,6 +67,8 @@ class VideoChapterController implements HasMiddleware
         Gate::authorize('delete', $chapter);
 
         $chapter->deleteOrFail();
+
+        VideoHasBeenUpdatedEvent::dispatch($video);
 
         Inertia::flash([
             'title' => $chapter->label,
