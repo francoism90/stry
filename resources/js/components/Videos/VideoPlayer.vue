@@ -4,8 +4,7 @@ import type { Playlist, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 import type { ButtonProps } from '@nuxt/ui'
 import { ref } from 'vue'
-import VideoChapterSkipButton from './VideoChapterSkipButton.vue'
-import VideoChapterTimeline from './VideoChapterTimeline.vue'
+import VideoChapterSkipButton from '@/components/Videos/VideoChapterSkipButton.vue'
 
 const props = defineProps<{
   video?: Video | undefined
@@ -89,13 +88,6 @@ const actions = ref<ButtonProps[]>([
       <VideoChapterSkipButton
         :chapters="video?.chapters"
         :current-time="currentTime"
-        :seek="seek"
-      />
-
-      <VideoChapterTimeline
-        :container="container"
-        :chapters="video?.chapters"
-        :duration="video?.duration"
         :seek="seek"
       />
     </div>
