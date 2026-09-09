@@ -116,7 +116,7 @@ export type ApplicationSettings = {
 
 export type ChapterSettings = {
   patterns: Record<string, string>
-  default_type: 'intro' | 'recap' | 'credits' | 'scene' | 'main_event'
+  default_type: 'intro' | 'recap' | 'credits' | 'sponsor' | 'filler' | 'interaction_reminder' | 'scene' | 'main_event'
   type_options: OptionItem[]
 }
 
