@@ -381,9 +381,7 @@ php artisan channel:list
 
 ```bash
 php artisan queue:work    # Required for ShouldBroadcast events
-
 php artisan reverb:start  # Required for Reverb driver
-
 ```
 
 ## Common Pitfalls

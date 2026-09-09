@@ -14,6 +14,8 @@ it('classifies labels matching the intro pattern', function (string $label) {
     'Leader',
     'Opening',
     'introduction (extended)',
+    'OP',
+    'Teaser',
 ]);
 
 it('classifies labels matching the recap pattern', function (string $label) {
@@ -22,6 +24,8 @@ it('classifies labels matching the recap pattern', function (string $label) {
     'Recap',
     'Previously on...',
     'Catch-up',
+    'Preview',
+    'Story so far',
 ]);
 
 it('classifies labels matching the credits pattern', function (string $label) {
@@ -30,6 +34,32 @@ it('classifies labels matching the credits pattern', function (string $label) {
     'Credits',
     'End Credits',
     'Outro',
+    'ED',
+    'Closing',
+]);
+
+it('classifies labels matching the sponsor pattern', function (string $label) {
+    expect(app(ClassifyChapterType::class)->handle($label))->toBe(ChapterType::Sponsor);
+})->with([
+    'Sponsor',
+    'Sponsored segment',
+    'Advertisement',
+    'Promo',
+]);
+
+it('classifies labels matching the filler pattern', function (string $label) {
+    expect(app(ClassifyChapterType::class)->handle($label))->toBe(ChapterType::Filler);
+})->with([
+    'Filler',
+    'Filler tangent',
+]);
+
+it('classifies labels matching the interaction reminder pattern', function (string $label) {
+    expect(app(ClassifyChapterType::class)->handle($label))->toBe(ChapterType::InteractionReminder);
+})->with([
+    'Like and subscribe',
+    'Subscribe reminder',
+    'Interaction reminder',
 ]);
 
 it('is case insensitive', function () {

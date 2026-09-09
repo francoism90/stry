@@ -11,6 +11,9 @@ enum ChapterType: string implements Enumerable
     case Intro = 'intro';
     case Recap = 'recap';
     case Credits = 'credits';
+    case Sponsor = 'sponsor';
+    case Filler = 'filler';
+    case InteractionReminder = 'interaction_reminder';
     case Scene = 'scene';
     case MainEvent = 'main_event';
 
@@ -26,6 +29,9 @@ enum ChapterType: string implements Enumerable
             'intro' => __('Intro'),
             'recap' => __('Recap'),
             'credits' => __('Credits'),
+            'sponsor' => __('Sponsor'),
+            'filler' => __('Filler'),
+            'interaction_reminder' => __('Interaction Reminder'),
             'scene' => __('Scene'),
             'main_event' => __('Main Event'),
         ];
@@ -34,7 +40,7 @@ enum ChapterType: string implements Enumerable
     public function isSkippable(): bool
     {
         return match ($this) {
-            self::Intro, self::Recap, self::Credits => true,
+            self::Intro, self::Recap, self::Credits, self::Sponsor, self::Filler, self::InteractionReminder => true,
             self::Scene, self::MainEvent => false,
         };
     }
