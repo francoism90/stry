@@ -116,7 +116,7 @@ This project is open-sourced software licensed under the [MIT license](LICENSE).
 
 ### AI Statement
 
-This project is developed with AI assistance, primarily using GitHub Copilot and Claude Sonnet.
+This project is developed with AI assistance, primarily using GitHub Copilot and Claude.
 
 AI is used for suggestions and acceleration, but all final implementation decisions and adjustments are made by the developers.
 
