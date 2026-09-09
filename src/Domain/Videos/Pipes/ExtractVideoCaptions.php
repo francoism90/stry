@@ -8,13 +8,16 @@ use Closure;
 use Domain\Media\Actions\ExtractMediaCaptions;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ProcessingSettings;
 
 class ExtractVideoCaptions
 {
+    public function __construct(private readonly ProcessingSettings $settings) {}
+
     public function handle(Video $video, Closure $next): mixed
     {
-        // If the video already has captions or has no clips, skip processing
-        if ($video->hasMedia('captions') || ! $video->hasMedia('clips')) {
+        // If auto-extraction is disabled, the video already has captions, or it has no clips, skip processing
+        if (! $this->settings->extract_captions || $video->hasMedia('captions') || ! $video->hasMedia('clips')) {
             return $next($video);
         }
 
