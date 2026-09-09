@@ -41,6 +41,8 @@
 
 For a visual tour of the app, check out the [screenshots gallery](https://francoism90.github.io/stry/screenshots).
 
+[![Home page showing the video library grid, search bar, filters, and sidebar navigation](docs/screenshots/home.webp)](https://francoism90.github.io/stry/screenshots#home)
+
 > [!NOTE]
 > A hosted demo is planned, but not yet available. Screenshots may lag behind active development — expect the UI to evolve as features are added and improved.
 
