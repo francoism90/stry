@@ -27,7 +27,8 @@ const { form, onSubmit } = inject(QueryInjectionKey)!
         :ui="{
           container: 'sr-only',
           wrapper: 'me-0',
-          item: 'border-0 bg-neutral-800/75 px-2.5 py-1.5 has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
+          fieldset: 'flex-nowrap overflow-x-auto',
+          item: 'shrink-0 border-0 bg-neutral-800/75 px-2.5 py-1.5 has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
           label: 'text-inherit',
         }"
       />
