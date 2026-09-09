@@ -85,6 +85,7 @@ Comprehensive guides are available on the [documentation site](https://francoism
 | ------------------------------------------------------------------- | ---------------------------------------------------- |
 | [Screenshots](https://francoism90.github.io/stry/screenshots)       | Visual tour of the app                               |
 | [Production Setup](https://francoism90.github.io/stry/production)   | Deploy to production                                 |
+| [Upgrading](https://francoism90.github.io/stry/upgrading)           | Update an existing production install                |
 | [Development Guide](https://francoism90.github.io/stry/development) | Local development setup                              |
 | [Configuration](https://francoism90.github.io/stry/configuration)   | Configuration options                                |
 | [Podman Quadlet](https://francoism90.github.io/stry/podman)         | Container orchestration (services, install, secrets) |

@@ -4,6 +4,7 @@ const sidebars = {
     'index',
     'screenshots',
     'production',
+    'upgrading',
     'development',
     'configuration',
     'podman',

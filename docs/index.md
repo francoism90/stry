@@ -40,6 +40,7 @@ Jellyfin and Plex are media servers first. **stry** is a streaming delivery plat
 | [Object Storage (S3)](s3.md)                  | S3-compatible storage for media and segments |
 | [Application Configuration](configuration.md) | Playlist, video, and encoding settings       |
 | [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands       |
+| [Upgrading](upgrading.md)                     | Updating an existing production install      |
 
 :::tip
 Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their docs for anything generic (secrets, customizing presets). The guides above only cover what's specific to **stry**.

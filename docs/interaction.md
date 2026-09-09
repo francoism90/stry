@@ -68,6 +68,12 @@ Run any of these via `lpod stry artisan ...` (or the `a` shorthand):
 | `scout:delete-index Model` | Delete a specific index (useful for corrupted indexes) |
 | `scout:import Model`       | Import a specific model into its search index          |
 
+### Settings
+
+| Command                | Description                                                                                                                            |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `settings:clear-cache` | Clear cached admin settings (run after a settings migration, see [Application Configuration](configuration.md#admin-managed-settings)) |
+
 ## Direct Podman access
 
 ```bash

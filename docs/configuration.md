@@ -27,6 +27,39 @@ Prefer environment variables over editing `config/*.php` files directly — it k
 
 ---
 
+## Admin-managed settings
+
+A few settings live in the database instead of `.env` — edited at runtime from **Admin → Application / Playlist / Chapters** in the UI (requires an `admin` or `super-admin` account). They're stored via [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a save takes effect immediately for every request — no restart or redeploy needed.
+
+| Settings class     | Admin tab   | Covers                                                                        |
+| ------------------ | ----------- | ----------------------------------------------------------------------------- |
+| `GeneralSettings`  | Application | Site name, timezone, default locale, registration, profiles per user          |
+| `PlaylistSettings` | Playlist    | Playlist type, disk, language, encryption, key rotation, cache lifetimes      |
+| `ChapterSettings`  | Chapters    | Label-matching regex patterns and default type used to auto-classify chapters |
+
+### Shipping new defaults
+
+Changing a settings class's PHP property defaults (e.g. `ChapterSettings::$patterns`) only affects brand-new installs — an existing database already has a row per property from the original settings migration and won't pick up code changes on its own. To update a value for installs that already ran that migration, add a new file under `database/settings/` using `SettingsMigrator::update()` instead of editing the old one:
+
+```php
+$blueprint->update('patterns', fn ($patterns): array => array_merge((array) $patterns, [
+    'sponsor' => '/\bsponsor(ed|s)?\b/i',
+]));
+```
+
+Settings migrations run through Laravel's normal migration runner — `lpod stry artisan migrate --force` on production, same as any schema migration (see [Production Setup](production.md#install-and-start-the-services)).
+
+### Cache
+
+```env
+SETTINGS_CACHE_ENABLED=true   # cache settings after load/save
+SETTINGS_CACHE_MEMO=true      # also memoize per-request
+```
+
+Enabled by default. A normal save from the Admin UI refreshes the cache automatically, but a settings migration writes straight to the database and bypasses that refresh — run `settings:clear-cache` (see [CLI Interaction](interaction.md#strys-artisan-commands)) after deploying one.
+
+---
+
 ## Essential configuration
 
 Core settings, required for every deployment.

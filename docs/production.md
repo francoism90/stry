@@ -112,7 +112,7 @@ Once the services are installed, the cloned repo is no longer needed — the app
 - Terminate HTTPS at your own reverse proxy (router/NAS, Nginx Proxy Manager, Traefik, Cloudflare Tunnel, ...) in front of the app's `:8000` — see [Reverse Proxy](proxy.md) for the subdomain routing the app handles internally.
 - Restrict the firewall to ports 22, 80, and 443.
 - Never run `AdminSeeder` or other demo/test seeders in production — only the plain `db:seed` (`PermissionSeeder`) from setup above is safe to re-run.
-- Keep Podman and base images up to date (`podman pull ...`, then `lpod install ... --replace`).
+- Keep Podman and base images up to date — see [Upgrading](upgrading.md).
 - Schedule automated database backups:
 
     ```bash
@@ -124,4 +124,5 @@ Once the services are installed, the cloned repo is no longer needed — the app
 
 - [Application Configuration](configuration.md) for app-specific settings
 - [CLI Interaction](interaction.md) for day-to-day commands
+- [Upgrading](upgrading.md) for updating an existing install
 - `https://your-domain/horizon` to monitor queues (super-admin only)
