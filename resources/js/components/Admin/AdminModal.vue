@@ -2,6 +2,7 @@
 import AdminApplicationForm from '@/components/Admin/AdminApplicationForm.vue'
 import AdminChapterForm from '@/components/Admin/AdminChapterForm.vue'
 import AdminPlaylistForm from '@/components/Admin/AdminPlaylistForm.vue'
+import AdminProcessingForm from '@/components/Admin/AdminProcessingForm.vue'
 import { computed, ref, type Component } from 'vue'
 
 type AdminFormInstance = {
@@ -38,6 +39,12 @@ const definitions: AdminSectionDefinition[] = [
     label: 'Chapters',
     icon: 'i-lucide-list-video',
     component: AdminChapterForm,
+  },
+  {
+    value: 'processing',
+    label: 'Processing',
+    icon: 'i-lucide-cpu',
+    component: AdminProcessingForm,
   },
 ]
 

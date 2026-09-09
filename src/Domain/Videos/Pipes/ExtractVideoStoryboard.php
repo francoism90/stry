@@ -8,13 +8,16 @@ use Closure;
 use Domain\Media\Actions\GenerateMediaStoryboard;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ProcessingSettings;
 
 class ExtractVideoStoryboard
 {
+    public function __construct(private readonly ProcessingSettings $settings) {}
+
     public function handle(Video $video, Closure $next): mixed
     {
-        // If the video already has a storyboard or has no clips, skip processing
-        if ($video->hasMedia('storyboards') || ! $video->hasMedia('clips')) {
+        // If auto-extraction is disabled, the video already has a storyboard, or it has no clips, skip processing
+        if (! $this->settings->extract_storyboard || $video->hasMedia('storyboards') || ! $video->hasMedia('clips')) {
             return $next($video);
         }
 

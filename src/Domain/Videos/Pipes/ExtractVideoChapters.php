@@ -8,13 +8,16 @@ use Closure;
 use Domain\Chapters\Actions\CreateChapter;
 use Domain\Media\Actions\ExtractMediaChapters;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ProcessingSettings;
 
 class ExtractVideoChapters
 {
+    public function __construct(private readonly ProcessingSettings $settings) {}
+
     public function handle(Video $video, Closure $next): mixed
     {
-        // If the video already has chapters or has no clips, skip processing
-        if ($video->chapters->isNotEmpty() || ! $video->hasMedia('clips')) {
+        // If auto-extraction is disabled, the video already has chapters, or it has no clips, skip processing
+        if (! $this->settings->extract_chapters || $video->chapters->isNotEmpty() || ! $video->hasMedia('clips')) {
             return $next($video);
         }
 

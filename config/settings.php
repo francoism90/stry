@@ -2,6 +2,7 @@
 
 use Domain\Chapters\Settings\ChapterSettings;
 use Domain\Playlists\Settings\PlaylistSettings;
+use Domain\Videos\Settings\ProcessingSettings;
 use Foundation\Settings\GeneralSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
@@ -20,6 +21,7 @@ return [
         GeneralSettings::class,
         PlaylistSettings::class,
         ChapterSettings::class,
+        ProcessingSettings::class,
     ],
 
     /*

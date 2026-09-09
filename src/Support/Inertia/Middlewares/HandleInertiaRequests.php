@@ -23,13 +23,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::shareOnce($request), [
-            'app' => fn (): string => Config::string('app.name', 'Laravel'),
+        return array_merge(parent::share($request), [
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
-            'locales' => fn (): Options => Options::forEnum(Locale::class),
-            'languages' => fn (): Options => Options::forEnum(Language::class),
-            'tags' => fn (): Options => Options::forEnum(TagType::class),
             'auth' => fn (): ?UserResourceProperty => new UserResourceProperty(
                 user: $request->user() ?? null,
                 appends: ['name', 'email', 'avatar', 'settings']
@@ -38,6 +34,21 @@ class HandleInertiaRequests extends Middleware
                 user: $request->user() ?? null,
             ),
             'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
+        ]);
+    }
+
+    /**
+     * @see https://inertiajs.com/docs/v3/data-props/shared-data#sharing-once-props
+     *
+     * @return array<string, mixed>
+     */
+    public function shareOnce(Request $request): array
+    {
+        return array_merge(parent::shareOnce($request), [
+            'app' => fn (): string => Config::string('app.name', 'Laravel'),
+            'locales' => fn (): Options => Options::forEnum(Locale::class),
+            'languages' => fn (): Options => Options::forEnum(Language::class),
+            'tags' => fn (): Options => Options::forEnum(TagType::class),
             'echo' => fn (): array => [
                 'key' => Config::string('reverb.apps.apps.0.options.wsKey', ''),
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),

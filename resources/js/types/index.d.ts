@@ -143,6 +143,12 @@ export type PlaylistSettingsResponse = PlaylistSettings & {
   protection_scheme_options: OptionItem[]
 }
 
+export type ProcessingSettings = {
+  extract_captions: boolean
+  extract_chapters: boolean
+  extract_storyboard: boolean
+}
+
 export type MediaStream = {
   index: number
   width: number

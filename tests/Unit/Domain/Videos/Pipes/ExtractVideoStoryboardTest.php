@@ -6,6 +6,7 @@ use Domain\Media\Actions\GenerateMediaStoryboard;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Pipes\ExtractVideoStoryboard;
+use Domain\Videos\Settings\ProcessingSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 
@@ -85,6 +86,25 @@ it('skips generation when the video already has a storyboard', function () {
 
 it('skips generation when the video has no clips', function () {
     $video = Video::factory()->create();
+
+    app()->instance(GenerateMediaStoryboard::class, new class
+    {
+        public function handle(): array
+        {
+            throw new RuntimeException('GenerateMediaStoryboard should not be called.');
+        }
+    });
+
+    app(ExtractVideoStoryboard::class)->handle($video, fn (Video $video) => $video);
+
+    expect($video->fresh()->hasMedia('storyboards'))->toBeFalse();
+});
+
+it('skips generation when auto-extraction is disabled', function () {
+    $video = Video::factory()->create();
+    createVideoClip($video);
+
+    app(ProcessingSettings::class)->fill(['extract_storyboard' => false])->save();
 
     app()->instance(GenerateMediaStoryboard::class, new class
     {
