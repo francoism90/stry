@@ -41,13 +41,6 @@ Run any of these via `lpod stry artisan ...` (or the `a` shorthand):
 | `videos:import` | Import videos for a user                   |
 | `videos:clear`  | Remove soft-deleted videos from filesystem |
 
-### Tags
-
-| Command       | Description                      |
-| ------------- | -------------------------------- |
-| `tags:create` | Create a new tag                 |
-| `tags:sort`   | Sort tags alphabetically by type |
-
 ### Playlists & media
 
 | Command                                               | Description                                     |

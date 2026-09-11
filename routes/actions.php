@@ -12,7 +12,6 @@ use App\Web\Settings\Controllers\ChapterSettingsController;
 use App\Web\Settings\Controllers\PlaylistSettingsController;
 use App\Web\Settings\Controllers\ProcessingSettingsController;
 use App\Web\Shuffle\Controllers\ShuffleController;
-use App\Web\Tags\Controllers\TagOrderController;
 use App\Web\Users\Controllers\UserSettingsController;
 use App\Web\Videos\Controllers\VideoDispatchTranscodeController;
 use App\Web\Videos\Controllers\VideoImportController;
@@ -53,11 +52,6 @@ Route::prefix('/notifications')->name('notifications.')->group(function () {
 
 // Shuffle
 Route::get('/shuffle/{type}', ShuffleController::class)->name('shuffle');
-
-// Tags
-Route::prefix('/tags')->name('tags.')->group(function () {
-    Route::post('/reorder', TagOrderController::class)->name('reorder');
-});
 
 // Videos
 Route::prefix('/videos')->name('videos.')->group(function () {

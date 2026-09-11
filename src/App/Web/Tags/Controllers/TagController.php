@@ -9,6 +9,7 @@ use App\Api\Tags\Requests\TagUpdateRequest;
 use App\Api\Tags\Resources\TagResource;
 use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagResourceProperty;
+use Domain\Tags\Actions\CreateTag;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
@@ -111,12 +112,16 @@ class TagController implements HasMiddleware
         ]);
     }
 
-    public function store(TagStoreRequest $request): RedirectResponse
+    public function store(TagStoreRequest $request, CreateTag $action): RedirectResponse
     {
         Gate::authorize('create', Tag::class);
 
         // Create the tag
-        $tag = Tag::create($request->safe()->all());
+        $tag = $action->handle(
+            name: $request->safe()->input('name'),
+            type: TagType::from($request->safe()->input('type')),
+            description: $request->safe()->input('description'),
+        );
 
         // Notify the user
         Inertia::flash([
