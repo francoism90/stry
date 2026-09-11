@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateTagDetails
 {
+    public function __construct(protected SetTagsOrder $sorter) {}
+
     public function handle(Tag $tag, array $attributes = []): mixed
     {
         return DB::transaction(function () use ($tag, $attributes) {
@@ -24,6 +26,9 @@ class UpdateTagDetails
 
                 $tag->syncRelated($tagIds);
             }
+
+            // Keep tags in their natural display order
+            $this->sorter->handle();
         });
     }
 }
