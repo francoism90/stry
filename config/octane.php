@@ -1,5 +1,6 @@
 <?php
 
+use Foxws\Podman\Support\PodmanCaddySites;
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
@@ -22,7 +23,6 @@ use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
-use Support\Octane\CaddySites;
 
 return [
 
@@ -243,10 +243,10 @@ return [
         'env' => [
             // Port must match the "--port" passed to "octane:frankenphp"
             // in APP_COMMAND (see the frankenphp-octane Containerfile).
-            'CADDY_EXTRA_CONFIG' => CaddySites::render([
-                CaddySites::hostFromUrl((string) env('AWS_URL')) => CaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
-                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => CaddySites::hostPort(env('REVERB_HOST'), env('REVERB_PORT', 6001)),
-                (string) env('MAILPIT_UI_HOST') => CaddySites::hostPort(env('MAIL_HOST'), 8025),
+            'CADDY_EXTRA_CONFIG' => PodmanCaddySites::render([
+                PodmanCaddySites::hostFromUrl((string) env('AWS_URL')) => PodmanCaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
+                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => PodmanCaddySites::hostPort(env('REVERB_HOST'), env('REVERB_PORT', 6001)),
+                (string) env('MAILPIT_UI_HOST') => PodmanCaddySites::hostPort(env('MAIL_HOST'), 8025),
             ], (int) env('OCTANE_PORT', 8000)),
         ],
     ],
