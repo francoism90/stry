@@ -55,6 +55,7 @@ $app = Application::configure(basePath: $basePath)
     ->withMiddleware(function (Middleware $middleware): void {
         // Trust Proxies configuration
         $middleware->trustProxies(
+            at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
                 Request::HEADER_X_FORWARDED_HOST |
                 Request::HEADER_X_FORWARDED_PORT |
