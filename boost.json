@@ -12,7 +12,8 @@
         "spatie/laravel-permission",
         "spatie/laravel-responsecache",
         "spatie/guidelines-skills",
-        "spatie/laravel-translatable"
+        "spatie/laravel-translatable",
+        "foxws/laravel-essentials"
     ],
     "sail": false,
     "skills": [
@@ -29,6 +30,7 @@
         "echo-vue-development",
         "echo-development",
         "tailwindcss-development",
+        "laravel-essentials-development",
         "medialibrary-development",
         "laravel-permission-development",
         "responsecache-development",

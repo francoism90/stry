@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="csp-nonce" content="{{ Vite::cspNonce() }}" />
     <link rel="preconnect" href="{{ config('filesystems.disks.s3.url') }}" crossorigin="anonymous" />
     @pwaHead
     @fonts
