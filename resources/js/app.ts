@@ -20,7 +20,16 @@ createInertiaApp({
 
     return AppLayout
   },
-  progress: false,
+  progress: {
+    color: '#d8b4fe',
+  },
+  // Lets Inertia's own dynamically-injected elements (e.g. the dev-mode error
+  // dialog's <style>) carry the page's CSP nonce instead of being blocked —
+  // see https://inertiajs.com/docs/v3/installation/client-side-setup#content-security-policy.
+  // Read from a meta tag (set from the same `Vite::cspNonce()` shared as the
+  // `nonce` Inertia prop) since this option is evaluated before any page
+  // props exist.
+  nonce: document.querySelector('meta[name="csp-nonce"]')?.getAttribute('content') ?? undefined,
   withApp(app, { page }) {
     app.use(ui)
     bootEcho(page.props.echo as EchoConfig | undefined)
