@@ -235,12 +235,19 @@ return [
     | and internal "host:port" upstream -- nothing else needs to change.
     |
     | This must read raw env() rather than config(), since config files
-    | cannot safely depend on each other's load order.
+    | cannot safely depend on each other's load order -- that also means
+    | this reads PODMAN_ENABLED directly rather than config('podman.enabled'),
+    | even though it's the same flag documented in config/podman.php.
+    |
+    | Guarded so foxws/laravel-podman (which provides PodmanCaddySites) can
+    | stay a require-dev package: PODMAN_ENABLED opts out even when it's
+    | installed, and class_exists() keeps a stray "true" from being fatal
+    | when it isn't -- e.g. the "composer install --no-dev" production build.
     |
     */
 
     'caddy' => [
-        'env' => [
+        'env' => ! env('PODMAN_ENABLED', true) || ! class_exists(PodmanCaddySites::class) ? [] : [
             // Port must match the "--port" passed to "octane:frankenphp"
             // in APP_COMMAND (see the frankenphp-octane Containerfile).
             'CADDY_EXTRA_CONFIG' => PodmanCaddySites::render([
