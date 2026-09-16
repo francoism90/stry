@@ -133,9 +133,9 @@ COPY podman/development/runtimes/php-development.ini /usr/local/etc/php/conf.d/x
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && mkdir -p ${PNPM_HOME}/store \
-    && chown -R docker:docker ${PNPM_HOME} \
     && corepack enable && corepack prepare pnpm@latest --activate \
-    && pnpm config set store-dir ${PNPM_HOME}/store
+    && pnpm config set store-dir ${PNPM_HOME}/store \
+    && chown -R docker:docker ${PNPM_HOME} /config /data
 
 # Playwright's OS-level browser deps; browsers are installed per-project via `npx playwright install`
 RUN npx -y playwright install-deps \

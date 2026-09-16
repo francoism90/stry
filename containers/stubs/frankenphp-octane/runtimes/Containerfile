@@ -137,9 +137,9 @@ COPY podman/frankenphp-octane/runtimes/php-production.ini /usr/local/etc/php/con
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
     && mkdir -p ${PNPM_HOME}/store \
-    && chown -R docker:docker ${PNPM_HOME} \
     && corepack enable && corepack prepare pnpm@latest --activate \
-    && pnpm config set store-dir ${PNPM_HOME}/store
+    && pnpm config set store-dir ${PNPM_HOME}/store \
+    && chown -R docker:docker ${PNPM_HOME} /config /data
 
 # Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
