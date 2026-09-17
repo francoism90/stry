@@ -55,7 +55,7 @@ class TagController implements HasMiddleware
         $scout = ScoutBuilder::for(Tag::class)
             ->query(fn (TagQueryBuilder $query) => $query->withCount('videos')->with('related'))
             ->allowedFilters(
-                AllowedFilter::exact('scope', 'type'),
+                AllowedFilter::exact('scope', 'type')->default(TagType::Serie->value),
             )
             ->allowedSorts(
                 $defaultSort,
