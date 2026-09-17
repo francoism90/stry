@@ -16,7 +16,12 @@ const config = {
 
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
@@ -50,6 +55,7 @@ const config = {
       ({
         hashed: true,
         indexBlog: false,
+        docsDir: '../docs',
         docsRouteBasePath: '/',
       }),
     ],
