@@ -11,8 +11,10 @@ use App\Api\Videos\Resources\VideoResource;
 use App\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\CreateTag;
 use Domain\Tags\Actions\UpdateTagDetails;
+use Domain\Tags\Enums\TagScope;
 use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
+use Domain\Tags\Filters\TagScopeFilter;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Videos\Enums\VideoScope;
@@ -55,7 +57,7 @@ class TagController implements HasMiddleware
         $scout = ScoutBuilder::for(Tag::class)
             ->query(fn (TagQueryBuilder $query) => $query->withCount('videos')->with('related'))
             ->allowedFilters(
-                AllowedFilter::exact('scope', 'type')->default(TagType::Serie->value),
+                AllowedFilter::custom('scope', new TagScopeFilter),
             )
             ->allowedSorts(
                 $defaultSort,
@@ -70,7 +72,7 @@ class TagController implements HasMiddleware
 
         return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
-            'scopes' => fn () => Options::forEnum(TagType::class),
+            'scopes' => fn () => Options::forEnum(TagScope::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
             new ScoutBuilderProperties('tags'),
         ]);

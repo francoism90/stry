@@ -55,10 +55,10 @@
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.395.4",
+        "aws/aws-sdk-php": "^3.395.6",
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.12.1",
+        "larastan/larastan": "^3.12.2",
         "laravel/boost": "^2.9.1",
         "laravel/doctor": "^0.1.0",
         "laravel/envoy": "^2.12.2",

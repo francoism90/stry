@@ -15,14 +15,12 @@ _ide_helper.php
 .pnpm-store
 *.log
 *.tsbuildinfo
-/.ai
 /.codex
 /.phpstorm
 /.cursor
 /.fleet
 /.idea
 /.nova
-/.phpunit.cache
 /.vscode
 /.zed
 /.devcontainer
