@@ -1,14 +1,15 @@
-import { useEventListener } from '@vueuse/core'
+import { defaultWindow, useEventListener } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
 // Infinite-scroll content can nest its own scrolling ancestor, so listening on
 // window alone would miss it. Scroll events don't bubble, but they do reach a
 // capturing listener on window, letting us read whichever element actually scrolled.
+// `defaultWindow` is undefined during SSR, which turns the listener into a no-op.
 export function useHeaderCollapse(offset = 100) {
   const scrollOffset = ref(0)
 
   useEventListener(
-    window,
+    defaultWindow,
     'scroll',
     (event) => {
       const target = event.target as Document | HTMLElement
