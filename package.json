@@ -15,7 +15,7 @@
         "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
-        "@iconify/vue": "^5.0.1",
+        "@iconify/vue": "^5.0.2",
         "@inertiajs/vue3": "^3.7.1",
         "@internationalized/date": "^3.12.4",
         "@laravel/echo-vue": "^2.5.0",
