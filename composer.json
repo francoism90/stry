@@ -19,7 +19,7 @@
         "foxws/laravel-ab-av1": "^1.0.1",
         "foxws/laravel-essentials": "^0.0.3",
         "foxws/laravel-modelcache": "^1.4.2",
-        "foxws/laravel-podman": "^2.1.8",
+        "foxws/laravel-podman": "^2.1.9",
         "foxws/laravel-pwa": "^2.5.2",
         "foxws/laravel-scout-builder": "^1.0.1",
         "foxws/laravel-scout-relations": "^1.0.1",
