@@ -23,7 +23,7 @@ return [
 
         'enabled' => (bool) env('INERTIA_SSR_ENABLED', true),
 
-        'url' => env('INERTIA_SSR_URL', 'http://systemd-stry-ssr:13714'),
+        'url' => env('INERTIA_SSR_URL', 'http://systemd-stry-inertia-ssr:13714'),
 
         'ensure_bundle_exists' => (bool) env('INERTIA_SSR_ENSURE_BUNDLE_EXISTS', true),
 
