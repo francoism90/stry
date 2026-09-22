@@ -75,8 +75,7 @@ RUN arch="$(dpkg --print-architecture)" \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates gosu \
-    python3 \
+    gnupg curl ca-certificates gosu python3 \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 \
     mesa-va-drivers mesa-vulkan-drivers \

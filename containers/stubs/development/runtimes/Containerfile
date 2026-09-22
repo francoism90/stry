@@ -71,8 +71,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates \
-    python3 \
+    gnupg curl ca-certificates python3 \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
     mesa-va-drivers mesa-vulkan-drivers \
