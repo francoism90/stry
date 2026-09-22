@@ -75,8 +75,7 @@ RUN arch="$(dpkg --print-architecture)" \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates libcap2-bin unzip gosu \
-    python3 python3-venv python3-pip \
+    gnupg curl ca-certificates gosu python3 \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 \
     mesa-va-drivers mesa-vulkan-drivers \
@@ -128,8 +127,14 @@ RUN if [ -n "$PHP_EXTENSIONS" ]; then \
     install-php-extensions $PHP_EXTENSIONS; \
 fi
 
-# Strip file capabilities from frankenphp
-RUN setcap -r /usr/local/bin/frankenphp
+# Strip file capabilities from frankenphp. libcap2-bin is only needed to run
+# setcap, so install and purge it within this single layer.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libcap2-bin \
+    && setcap -r /usr/local/bin/frankenphp \
+    && apt-get purge -y --auto-remove libcap2-bin \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Custom PHP configuration
 COPY podman/frankenphp-octane/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
@@ -147,10 +152,17 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
 
-# Build Shaka Streamer and set up Python environment
-RUN python3 -m venv /opt/shaka-streamer-env \
+# Build Shaka Streamer and set up Python environment. python3-venv/python3-pip
+# are only needed to build the venv, so install and purge them within this
+# single layer instead of keeping them installed for the whole image.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3-venv python3-pip \
+    && python3 -m venv /opt/shaka-streamer-env \
     && /opt/shaka-streamer-env/bin/pip install --no-cache-dir shaka-streamer \
-    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer
+    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer \
+    && apt-get purge -y --auto-remove python3-venv python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Entrypoint
 COPY --chmod=755 podman/frankenphp-octane/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -173,10 +185,6 @@ RUN cp .env.example .env
 RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID} \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# Install Node.js dependencies
-RUN --mount=type=cache,target=/home/docker/.local/share/pnpm/store,uid=${UID},gid=${GID} \
-    pnpm install --frozen-lockfile
-
 # Complete composer setup
 RUN composer dump-autoload --optimize
 
@@ -186,8 +194,14 @@ RUN ${PHP_CLI} storage:link
 # Generate application key
 RUN ${PHP_CLI} key:generate
 
-# Build frontend assets
-RUN pnpm build && pnpm build:ssr && pnpm prune --prod
+# Install Node.js dependencies, build frontend assets, then prune
+# devDependencies -- all in one layer, since Docker layers are additive and
+# pruning in a later layer wouldn't remove devDependencies (vite, playwright,
+# typescript, eslint, ...) from the image.
+RUN --mount=type=cache,target=/home/docker/.local/share/pnpm/store,uid=${UID},gid=${GID} \
+    pnpm install --frozen-lockfile \
+    && pnpm build && pnpm build:ssr \
+    && pnpm prune --prod
 
 # Remove .env file if it exists
 RUN rm -f .env
