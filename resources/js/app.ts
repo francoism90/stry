@@ -5,6 +5,7 @@ import ui from '@nuxt/ui/vue-plugin'
 import { bootEcho } from '@/plugins/echo'
 import '@/plugins/iconify'
 import '@/plugins/pusher'
+import '@/plugins/vueuse'
 
 import AppLayout from '@/layouts/AppLayout.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
