@@ -71,7 +71,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates libcap2-bin unzip \
+    gnupg curl ca-certificates \
     python3 \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
@@ -124,8 +124,14 @@ RUN if [ -n "$PHP_EXTENSIONS" ]; then \
     install-php-extensions $PHP_EXTENSIONS; \
 fi
 
-# Strip file capabilities from frankenphp
-RUN setcap -r /usr/local/bin/frankenphp
+# Strip file capabilities from frankenphp. libcap2-bin is only needed to run
+# setcap, so install and purge it within this single layer.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libcap2-bin \
+    && setcap -r /usr/local/bin/frankenphp \
+    && apt-get purge -y --auto-remove libcap2-bin \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Custom PHP configuration
 COPY podman/development/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
