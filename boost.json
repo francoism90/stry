@@ -13,7 +13,8 @@
         "spatie/laravel-responsecache",
         "spatie/guidelines-skills",
         "spatie/laravel-translatable",
-        "foxws/laravel-essentials"
+        "foxws/laravel-essentials",
+        "foxws/laravel-podman"
     ],
     "sail": false,
     "skills": [
@@ -31,6 +32,9 @@
         "echo-development",
         "tailwindcss-development",
         "laravel-essentials-development",
+        "podman-lpod",
+        "podman-presets",
+        "podman-s3",
         "medialibrary-development",
         "laravel-permission-development",
         "responsecache-development",
