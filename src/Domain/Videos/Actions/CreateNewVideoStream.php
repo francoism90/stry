@@ -7,18 +7,19 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
+use Domain\Videos\Concerns\CreatesVideoPlaylists;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
 use Foxws\Streamer\Support\VideoResolution;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Throwable;
 
 class CreateNewVideoStream
 {
+    use CreatesVideoPlaylists;
+
     public function __construct(
         protected PlaylistSettings $settings,
     ) {}
@@ -30,8 +31,8 @@ class CreateNewVideoStream
 
         $settings = $this->settings;
 
-        // Skip if there are no clips associated with the video
-        if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
+        // Skip if the playlist already exists or there are no clips associated with the video
+        if (! $this->shouldCreatePlaylist($video, $type)) {
             return Collection::empty();
         }
 
@@ -39,12 +40,7 @@ class CreateNewVideoStream
         $clips = $video->getClips()->groupBy('disk');
 
         // Get the collection of captions for the video (if any)
-        $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionStream::from([
-            'id' => $caption->getKey(),
-            'disk' => $caption->disk,
-            'path' => $caption->getPath(),
-            'language' => $caption->getCustomProperty('language_code', 'en'),
-        ]));
+        $captions = $this->getCaptionStreams($video);
 
         return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
             // Get all the paths for the media in this collection
@@ -105,14 +101,7 @@ class CreateNewVideoStream
                 $encryptionKey = $streamer->withAESEncryption('key', $settings->protection_scheme?->value);
             }
 
-            /** @var Playlist $playlist */
-            $playlist = $video->createPlaylist([
-                'encryption_key_id' => $encryptionKey?->keyId,
-                'encryption_key' => $encryptionKey?->key,
-                'type' => $type,
-                'dash_file_name' => 'index.mpd',
-                'hls_file_name' => 'master.m3u8',
-            ]);
+            $playlist = $this->createPlaylist($video, $type, $encryptionKey);
 
             // Configure DASH and HLS playlist settings. Shaka Streamer builds both
             // manifests from the same CMAF-packaged streams in one pipeline run.
@@ -122,21 +111,8 @@ class CreateNewVideoStream
                 ->withStreamingMode('vod')
                 ->withSegmentPerFile();
 
-            try {
-                $streamer
-                    ->export()
-                    ->toDisk($playlist->getDisk())
-                    ->toPath($playlist->getPath())
-                    ->afterSaving(fn () => $playlist->markAsReady())
-                    ->save();
-            } catch (Throwable $exception) {
-                // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
-                $playlist->markAsFailed();
-
-                throw $exception;
-            } finally {
-                $streamer->cleanupTemporaryFiles();
-            }
+            // Export the playlist to the configured disk and path
+            $this->exportPlaylist($streamer, $playlist);
 
             return $playlist;
         });

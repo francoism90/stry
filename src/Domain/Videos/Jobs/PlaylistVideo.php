@@ -6,7 +6,6 @@ namespace Domain\Videos\Jobs;
 
 use Carbon\CarbonInterface;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Actions\CreateNewVideoPlaylist;
 use Domain\Videos\Actions\CreateNewVideoStream;
@@ -19,8 +18,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
-
-use function Illuminate\Support\enum_value;
 
 class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
@@ -69,16 +66,15 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
             ->onQueue('transcoding');
     }
 
-    public function handle(PlaylistSettings $settings): void
+    public function handle(): void
     {
         // Determine the playlist type to create
-        $type = $this->type ?? $settings->type;
+        $type = $this->resolveType();
 
         // Create the appropriate playlist based on the type
         match ($type) {
             PlaylistType::Packager => app(CreateNewVideoPlaylist::class)->handle($this->video),
             PlaylistType::Streamer => app(CreateNewVideoStream::class)->handle($this->video),
-            default => throw PlaylistTypeException::invalidType($type),
         };
     }
 
@@ -101,8 +97,13 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
 
     public function uniqueId(): string
     {
-        $type = enum_value($this->type, 'packager');
+        $type = $this->resolveType()->value;
 
         return hash('xxh128', "{$this->video->getKey()}:{$type}");
+    }
+
+    protected function resolveType(): PlaylistType
+    {
+        return $this->type ?? app(PlaylistSettings::class)->type;
     }
 }

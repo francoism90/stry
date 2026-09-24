@@ -7,18 +7,19 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
+use Domain\Videos\Concerns\CreatesVideoPlaylists;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
 use Foxws\Shaka\Support\HlsPlaylistType;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Throwable;
 
 class CreateNewVideoPlaylist
 {
+    use CreatesVideoPlaylists;
+
     public function __construct(
         protected PlaylistSettings $settings,
     ) {}
@@ -30,8 +31,8 @@ class CreateNewVideoPlaylist
 
         $settings = $this->settings;
 
-        // Skip if there are no clips associated with the video
-        if ($video->hasPlaylist($type) || ! $video->hasMedia('clips')) {
+        // Skip if the playlist already exists or there are no clips associated with the video
+        if (! $this->shouldCreatePlaylist($video, $type)) {
             return Collection::empty();
         }
 
@@ -39,12 +40,7 @@ class CreateNewVideoPlaylist
         $clips = $video->getClips()->groupBy('disk');
 
         // Get the collection of captions for the video (if any)
-        $captions = $video->getCaptions()->map(fn (Media $caption) => CaptionStream::from([
-            'id' => $caption->getKey(),
-            'disk' => $caption->disk,
-            'path' => $caption->getPath(),
-            'language' => $caption->getCustomProperty('language_code', $settings->text_language->value),
-        ]));
+        $captions = $this->getCaptionStreams($video);
 
         return $clips->map(function (MediaCollection $mediaCollection, string $disk) use ($video, $captions, $settings, $type) {
             // Get all the paths for the media in this collection
@@ -86,14 +82,7 @@ class CreateNewVideoPlaylist
                 }
             }
 
-            /** @var Playlist $playlist */
-            $playlist = $video->createPlaylist([
-                'encryption_key_id' => $encryptionKey?->keyId,
-                'encryption_key' => $encryptionKey?->key,
-                'type' => $type,
-                'dash_file_name' => 'index.mpd',
-                'hls_file_name' => 'master.m3u8',
-            ]);
+            $playlist = $this->createPlaylist($video, $type, $encryptionKey);
 
             // Configure the packager with common settings. Segment/fragment/buffer
             // duration are left unset here so they fall back to the packager's own
@@ -110,22 +99,7 @@ class CreateNewVideoPlaylist
                 ->withDefaultTextLanguage($settings->text_language->value);
 
             // Export the playlist to the configured disk and path
-            try {
-                $packager
-                    ->export()
-                    ->toDisk($playlist->getDisk())
-                    ->toPath($playlist->getPath())
-                    ->afterSaving(fn () => $playlist->markAsReady())
-                    ->save();
-            } catch (Throwable $exception) {
-                // If an error occurs during packaging, mark the playlist as failed and rethrow the exception
-                $playlist->markAsFailed();
-
-                throw $exception;
-            } finally {
-                // Clean up any temporary files created during packaging
-                $packager->cleanupTemporaryFiles();
-            }
+            $this->exportPlaylist($packager, $playlist);
 
             return $playlist;
         });
