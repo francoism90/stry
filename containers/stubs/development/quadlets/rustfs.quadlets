@@ -9,13 +9,13 @@ Environment=RUSTFS_VOLUMES=/data
 Environment=RUSTFS_ADDRESS=0.0.0.0:9000
 Environment=RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
 Environment=RUSTFS_CONSOLE_ENABLE=true
-Environment=RUSTFS_CORS_ALLOWED_ORIGINS={{appUrl}}
-Environment=RUSTFS_BUFFER_PROFILE=WebWorkload
-Environment=RUSTFS_OBS_LOG_STDOUT_ENABLED=true
-Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Environment=RUSTFS_ACCESS_KEY=rustfsadmin
 Environment=RUSTFS_SECRET_KEY=rustfsadmin
+Environment=RUSTFS_CORS_ALLOWED_ORIGINS={{appUrl}}
+Environment=RUSTFS_BUFFER_PROFILE=WebWorkload
+Environment=RUSTFS_DURABILITY_MODE=none
 Environment=RUSTFS_SCANNER_SPEED=slowest
+Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Volume={{application}}-rustfs-data.volume:/data:rw,Z,U
 Volume={{application}}-rustfs-logs.volume:/logs:rw,Z,U
 Network={{application}}.network
