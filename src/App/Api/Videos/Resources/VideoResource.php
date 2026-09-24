@@ -12,7 +12,9 @@ use App\Api\Transcodes\Resources\TranscodeResource;
 use App\Api\Users\Resources\UserResource;
 use Domain\Groups\Enums\GroupType;
 use Domain\Videos\Models\Video;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin Video
@@ -24,8 +26,15 @@ class VideoResource extends JsonResource
      */
     public $preserveKeys = true;
 
+    /**
+     * @var Collection<int, GroupType>|null
+     */
+    protected ?Collection $groupTypes = null;
+
     public function toArray($request): array
     {
+        $groupTypes = $this->resolveGroupTypes($request);
+
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->name,
@@ -45,9 +54,9 @@ class VideoResource extends JsonResource
             'chapters_vtt' => $this->chapters_vtt,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
-            'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
-            'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
-            'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
+            'liked' => $groupTypes?->contains(GroupType::Liked),
+            'saved' => $groupTypes?->contains(GroupType::Saved),
+            'viewed' => $groupTypes?->contains(GroupType::Viewed),
             'manage' => $request->user()?->can('update', $this->resource) ?? false,
             'titles' => $this->whenAppended('titles'),
             'summary' => $this->whenAppended('summary'),
@@ -71,5 +80,36 @@ class VideoResource extends JsonResource
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
+    }
+
+    /**
+     * @param  Collection<int, GroupType>  $groupTypes
+     */
+    public function withGroupTypes(Collection $groupTypes): static
+    {
+        $this->groupTypes = $groupTypes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupType>|null
+     */
+    protected function resolveGroupTypes(Request $request): ?Collection
+    {
+        $user = $request->user();
+
+        if (! $user) {
+            return null;
+        }
+
+        return $this->groupTypes ??= $user
+            ->groupTypesFor(Collection::make([$this->resource]))
+            ->get($this->resource->getKey(), Collection::make());
+    }
+
+    protected static function newCollection($resource): VideoResourceCollection
+    {
+        return new VideoResourceCollection($resource, static::class);
     }
 }
