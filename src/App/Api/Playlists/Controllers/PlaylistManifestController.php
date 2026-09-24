@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Api\Playlists\Controllers;
 
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Exceptions\PlaylistTypeException;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Foxws\Shaka\Facades\Shaka;
+use Foxws\Shaka\Http\DynamicDASHManifest as ShakaDASHManifest;
+use Foxws\Shaka\Http\DynamicHLSPlaylist as ShakaHLSPlaylist;
 use Foxws\Streamer\Facades\Streamer;
+use Foxws\Streamer\Http\DynamicDASHManifest as StreamerDASHManifest;
+use Foxws\Streamer\Http\DynamicHLSPlaylist as StreamerHLSPlaylist;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class PlaylistManifestController implements HasMiddleware
 {
@@ -35,26 +38,9 @@ class PlaylistManifestController implements HasMiddleware
         abort_if($playlist->isExpired(), 410);
 
         // Both playlist engines package DASH and HLS from the same CMAF streams
-        $isHlsRequest = str_ends_with($path, '.m3u8');
-
-        // Choose the appropriate manifest handler based on the requested format and playlist type
-        $manifestHandler = match (true) {
-            $isHlsRequest && $playlist->getType() === PlaylistType::Streamer => Streamer::dynamicHLSPlaylist()
-                ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))
-                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-                ->setPlaylistUrlResolver(fn (string $path) => $playlist->getUrlResolver($path)),
-            $isHlsRequest && $playlist->getType() === PlaylistType::Packager => Shaka::dynamicHLSPlaylist()
-                ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))
-                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-                ->setPlaylistUrlResolver(fn (string $path) => $playlist->getUrlResolver($path)),
-            $playlist->getType() === PlaylistType::Streamer => Streamer::dynamicDASHManifest()
-                ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path)),
-            $playlist->getType() === PlaylistType::Packager => Shaka::dynamicDASHManifest()
-                ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
-                ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path)),
-            default => throw PlaylistTypeException::invalidType($playlist->getType()),
-        };
+        $manifestHandler = str_ends_with($path, '.m3u8')
+            ? $this->hlsPlaylist($playlist)
+            : $this->dashManifest($playlist);
 
         // Get the manifest cache lifetime
         $manifestCacheLifetime = $settings->manifest_cache_lifetime;
@@ -69,5 +55,30 @@ class PlaylistManifestController implements HasMiddleware
         $response->headers->set('Cache-Control', "public, max-age={$manifestCacheLifetime}, stale-while-revalidate=30");
 
         return $response;
+    }
+
+    protected function hlsPlaylist(Playlist $playlist): ShakaHLSPlaylist|StreamerHLSPlaylist
+    {
+        $playlistHandler = match ($playlist->getType()) {
+            PlaylistType::Packager => Shaka::dynamicHLSPlaylist(),
+            PlaylistType::Streamer => Streamer::dynamicHLSPlaylist(),
+        };
+
+        return $playlistHandler
+            ->setKeyUrlResolver(fn (string $path) => $playlist->getKeyUrlResolver($path))
+            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+            ->setPlaylistUrlResolver(fn (string $path) => $playlist->getUrlResolver($path));
+    }
+
+    protected function dashManifest(Playlist $playlist): ShakaDASHManifest|StreamerDASHManifest
+    {
+        $manifestHandler = match ($playlist->getType()) {
+            PlaylistType::Packager => Shaka::dynamicDASHManifest(),
+            PlaylistType::Streamer => Streamer::dynamicDASHManifest(),
+        };
+
+        return $manifestHandler
+            ->setInitUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path))
+            ->setMediaUrlResolver(fn (string $path) => $playlist->getMediaUrlResolver($path));
     }
 }
