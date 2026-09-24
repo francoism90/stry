@@ -8,6 +8,7 @@ use ArrayAccess;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
+use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -15,6 +16,11 @@ use Illuminate\Support\Collection;
 
 trait InteractsWithGroups
 {
+    /**
+     * @var array<array-key, Collection<int, GroupType>>
+     */
+    protected array $groupTypesByUser = [];
+
     public static function bootInteractsWithGroups(): void
     {
         static::deleting(function (Model $model) {
@@ -49,6 +55,8 @@ trait InteractsWithGroups
             detaching: $detach,
         );
 
+        $this->groupTypesByUser = [];
+
         return $this;
     }
 
@@ -63,6 +71,8 @@ trait InteractsWithGroups
 
         $items->each(fn (Group $group) => $this->groups()->detach($group));
 
+        $this->groupTypesByUser = [];
+
         return $this;
     }
 
@@ -73,6 +83,31 @@ trait InteractsWithGroups
             : $this->attachToGroup($group, $options);
 
         return $group;
+    }
+
+    /**
+     * @param  Collection<int, GroupType>  $groupTypes
+     */
+    public function setGroupTypesFor(User $user, Collection $groupTypes): static
+    {
+        $this->groupTypesByUser[$user->getKey()] = $groupTypes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupType>
+     */
+    public function groupTypesOf(User $user): Collection
+    {
+        return $this->groupTypesByUser[$user->getKey()] ??= $user
+            ->groupTypesFor(Collection::make([$this]))
+            ->get($this->getKey(), Collection::make());
+    }
+
+    public function isInGroupOf(User $user, GroupType $type): bool
+    {
+        return $this->groupTypesOf($user)->contains($type);
     }
 
     public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection

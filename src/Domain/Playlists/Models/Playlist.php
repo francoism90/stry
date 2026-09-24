@@ -14,12 +14,12 @@ use Domain\Playlists\States\Failed;
 use Domain\Playlists\States\PlaylistState;
 use Domain\Playlists\States\Verified;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\BroadcastsModelEvents;
+use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -34,15 +34,15 @@ use Spatie\ModelStates\HasStates;
 #[ObservedBy(PlaylistObserver::class)]
 class Playlist extends Model
 {
-    use BroadcastsEvents;
+    use BroadcastsModelEvents;
     use HasFactory;
     use HasStates;
-    use HasUlids;
+    use HasUlidRouteKey;
     use InteractsWithUser;
     use Prunable;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -64,7 +64,7 @@ class Playlist extends Model
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'user_id',
@@ -105,16 +105,6 @@ class Playlist extends Model
         return new PlaylistCollection($models);
     }
 
-    public function uniqueIds(): array
-    {
-        return ['ulid'];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
-    }
-
     public function playlistable(): MorphTo
     {
         return $this->morphTo();
@@ -125,46 +115,12 @@ class Playlist extends Model
         return static::query()->prunable();
     }
 
-    public static function findFromUlid(Playlist|string $value): ?Playlist
-    {
-        if ($value instanceof Playlist) {
-            return $value;
-        }
-
-        return Playlist::query()->firstWhere('ulid', $value);
-    }
-
     /**
      * @return array<int, Channel>
      */
     public function broadcastOn(string $event): array
     {
         return array_filter([$this, $this->getModel()]);
-    }
-
-    public function broadcastChannel(): string
-    {
-        return 'playlists.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "playlist.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
     }
 
     public function getModel(): ?Model

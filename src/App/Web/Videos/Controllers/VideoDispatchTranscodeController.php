@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class VideoDispatchTranscodeController implements HasMiddleware
 {
@@ -32,11 +31,7 @@ class VideoDispatchTranscodeController implements HasMiddleware
             $video
         );
 
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => __('Queued for transcoding.'),
-            'type' => 'info',
-        ]);
+        toast(title: (string) $video->name, description: __('Queued for transcoding.'), type: 'info');
 
         return back();
     }

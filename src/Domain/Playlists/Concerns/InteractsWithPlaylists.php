@@ -37,6 +37,8 @@ trait InteractsWithPlaylists
 
         return $this->playlists()->create([
             'file_name' => 'index.mpd',
+            'dash_file_name' => 'index.mpd',
+            'hls_file_name' => 'master.m3u8',
             'disk' => $settings->disk_name,
             'type' => $settings->type,
             'expires_at' => $settings->expires_after === 0 ? null : now()->addSeconds($settings->expires_after),

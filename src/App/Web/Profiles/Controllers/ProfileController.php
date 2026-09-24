@@ -77,11 +77,7 @@ class ProfileController implements HasMiddleware
             attributes: $request->safe()->all(),
         );
 
-        Inertia::flash([
-            'title' => (string) $profile->name,
-            'description' => __('The profile has been created.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $profile->name, description: __('The profile has been created.'));
 
         return back();
     }
@@ -95,11 +91,7 @@ class ProfileController implements HasMiddleware
             attributes: $request->safe()->all(),
         );
 
-        Inertia::flash([
-            'title' => (string) $profile->name,
-            'description' => __('The profile has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $profile->name, description: __('The profile has been updated.'));
 
         return back();
     }
@@ -122,11 +114,7 @@ class ProfileController implements HasMiddleware
             $request->session()->forget('profiles.current');
         }
 
-        Inertia::flash([
-            'title' => $profileName,
-            'description' => __('The profile has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $profileName, description: __('The profile has been deleted.'), type: 'warning');
 
         return back();
     }

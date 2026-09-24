@@ -6,6 +6,8 @@ namespace Domain\Transcodes\Models;
 
 use Database\Factories\TranscodeFactory;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\BroadcastsModelEvents;
+use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Transcodes\Collections\TranscodeCollection;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Observers\TranscodeObserver;
@@ -15,9 +17,7 @@ use Domain\Transcodes\States\TranscodeState;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -32,10 +32,10 @@ use Spatie\ModelStates\HasStates;
 #[ObservedBy(TranscodeObserver::class)]
 class Transcode extends Model
 {
-    use BroadcastsEvents;
+    use BroadcastsModelEvents;
     use HasFactory;
     use HasStates;
-    use HasUlids;
+    use HasUlidRouteKey;
     use InteractsWithUser;
     use Prunable;
     use Searchable;
@@ -46,7 +46,7 @@ class Transcode extends Model
     }
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -64,7 +64,7 @@ class Transcode extends Model
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'user_id',
@@ -133,56 +133,12 @@ class Transcode extends Model
         return static::query()->prunable();
     }
 
-    public function uniqueIds(): array
-    {
-        return ['ulid'];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
-    }
-
-    public static function findFromUlid(Transcode|string $value): ?Transcode
-    {
-        if ($value instanceof Transcode) {
-            return $value;
-        }
-
-        return Transcode::query()->firstWhere('ulid', $value);
-    }
-
     /**
      * @return array<int, Channel>
      */
     public function broadcastOn(string $event): array
     {
         return array_filter([$this, $this->transcodable]);
-    }
-
-    public function broadcastChannel(): string
-    {
-        return 'transcodes.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "transcode.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
     }
 
     public function isPending(): bool
@@ -227,7 +183,7 @@ class Transcode extends Model
 
     public function getFilesystem(): FilesystemAdapter
     {
-        return Storage::disk(static::getDisk());
+        return Storage::disk($this->getDisk());
     }
 
     public function getFileSize(): int
@@ -280,6 +236,9 @@ class Transcode extends Model
         return Config::string('videos.transcode_disk', 'cache');
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function humanFileSize(): Attribute
     {
         return Attribute::make(

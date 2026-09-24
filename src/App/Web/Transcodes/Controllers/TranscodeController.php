@@ -71,11 +71,7 @@ class TranscodeController implements HasMiddleware
         $transcode->updateOrFail($request->safe()->all());
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $transcode->file_name,
-            'description' => __('The transcode has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $transcode->file_name, description: __('The transcode has been updated.'));
 
         return back();
     }
@@ -88,11 +84,7 @@ class TranscodeController implements HasMiddleware
         $transcode->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $transcode->file_name,
-            'description' => __('The transcode has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $transcode->file_name, description: __('The transcode has been deleted.'), type: 'warning');
 
         return back();
     }

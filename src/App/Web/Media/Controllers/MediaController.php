@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class MediaController implements HasMiddleware
 {
@@ -35,11 +34,7 @@ class MediaController implements HasMiddleware
         );
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $media->name,
-            'description' => __('The media has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $media->name, description: __('The media has been updated.'));
 
         return back();
     }
@@ -52,11 +47,7 @@ class MediaController implements HasMiddleware
         $media->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $media->name,
-            'description' => __('The media has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $media->name, description: __('The media has been deleted.'), type: 'warning');
 
         return back();
     }

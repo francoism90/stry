@@ -17,7 +17,6 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 use Spatie\LaravelOptions\Options;
 
 class PlaylistSettingsController implements HasMiddleware
@@ -78,11 +77,7 @@ class PlaylistSettingsController implements HasMiddleware
             return response()->noContent();
         }
 
-        Inertia::flash([
-            'title' => __('Settings saved'),
-            'description' => __('Playlist settings have been updated successfully.'),
-            'type' => 'success',
-        ]);
+        toast(title: __('Settings saved'), description: __('Playlist settings have been updated successfully.'));
 
         return back();
     }

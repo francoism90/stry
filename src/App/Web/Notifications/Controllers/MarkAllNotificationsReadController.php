@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class MarkAllNotificationsReadController implements HasMiddleware
 {
@@ -27,11 +26,7 @@ class MarkAllNotificationsReadController implements HasMiddleware
 
         $request->user()->unreadNotifications()->update(['read_at' => now()]);
 
-        Inertia::flash([
-            'title' => 'All caught up',
-            'description' => 'All notifications have been marked as read.',
-            'type' => 'success',
-        ]);
+        toast(title: 'All caught up', description: 'All notifications have been marked as read.');
 
         return back();
     }

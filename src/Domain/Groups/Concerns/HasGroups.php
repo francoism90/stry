@@ -82,6 +82,34 @@ trait HasGroups
         return $model->toggleGroup($this->groupFor($type), $options);
     }
 
+    /**
+     * Resolve the group types each of the given models belongs to using a single query.
+     *
+     * @template TModel of Model
+     *
+     * @param  Collection<int, TModel>  $models
+     * @return Collection<array-key, Collection<int, GroupType>>
+     */
+    public function groupTypesFor(Collection $models): Collection
+    {
+        if ($models->isEmpty()) {
+            return Collection::make();
+        }
+
+        return $this->groups()
+            ->join('groupables', 'groupables.group_id', '=', 'groups.id')
+            ->where('groupables.groupable_type', $models->first()->getMorphClass())
+            ->whereIn('groupables.groupable_id', $models->map(fn (Model $model) => $model->getKey()))
+            ->toBase()
+            ->get(['groups.type', 'groupables.groupable_id'])
+            ->groupBy('groupable_id')
+            ->map(fn (Collection $rows) => $rows
+                ->map(fn (object $row) => GroupType::from($row->type))
+                ->unique()
+                ->values()
+            );
+    }
+
     public function groupHasModel(Model $model, GroupType $type): bool
     {
         $group = $this->groups()->firstWhere('type', $type);

@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class TranscodeImportController implements HasMiddleware
 {
@@ -29,11 +28,7 @@ class TranscodeImportController implements HasMiddleware
 
         app(ImportTranscode::class)->handle($transcode);
 
-        Inertia::flash([
-            'title' => (string) $transcode->file_name,
-            'description' => __('Queued for import.'),
-            'type' => 'info',
-        ]);
+        toast(title: (string) $transcode->file_name, description: __('Queued for import.'), type: 'info');
 
         return back();
     }

@@ -9,6 +9,8 @@ use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Profiles\Concerns\HasProfiles;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\BroadcastsModelEvents;
+use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
@@ -16,9 +18,7 @@ use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,14 +35,14 @@ use Support\MediaLibrary\TemporaryUrls;
 
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
-    use BroadcastsEvents;
+    use BroadcastsModelEvents;
     use HasApiTokens;
     use HasFactory;
     use HasGroups;
     use HasProfiles;
     use HasRoles;
     use HasStates;
-    use HasUlids;
+    use HasUlidRouteKey;
     use InteractsWithMedia;
     use InteractsWithVideos;
     use Notifiable;
@@ -50,7 +50,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use SoftDeletes;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -62,7 +62,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -100,16 +100,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return new UserCollection($models);
     }
 
-    public function uniqueIds(): array
-    {
-        return ['ulid'];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
-    }
-
     public function guardName(): array
     {
         return ['api', 'web'];
@@ -143,46 +133,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->sharpen(10);
     }
 
-    public static function findFromUlid(User|string $value): ?User
-    {
-        if ($value instanceof User) {
-            return $value;
-        }
-
-        return User::query()->firstWhere('ulid', $value);
-    }
-
     /**
      * @return array<int, Channel>
      */
     public function broadcastOn(string $event): array
     {
         return [$this];
-    }
-
-    public function broadcastChannel(): string
-    {
-        return 'users.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "user.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
     }
 
     public function receivesBroadcastNotificationsOn(): string
@@ -232,6 +188,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return UserSettings::fromModel($this)->include('*');
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function avatar(): Attribute
     {
         return Attribute::make(
@@ -239,6 +198,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Collection, never>
+     */
     protected function assignedRoles(): Attribute
     {
         return Attribute::make(
@@ -246,6 +208,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Collection, never>
+     */
     protected function assignedPermissions(): Attribute
     {
         return Attribute::make(
@@ -253,6 +218,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<array, never>
+     */
     protected function userSettings(): Attribute
     {
         return Attribute::make(

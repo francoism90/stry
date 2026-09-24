@@ -76,11 +76,7 @@ class UserController implements HasMiddleware
         $user = $action->create($request->safe()->all());
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $user->name,
-            'description' => __('The user has been created.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $user->name, description: __('The user has been created.'));
 
         return redirect()->route('users.index');
     }
@@ -93,11 +89,7 @@ class UserController implements HasMiddleware
         $action->update($user, $request->safe()->only(['name', 'email']));
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $user->name,
-            'description' => __('The user has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $user->name, description: __('The user has been updated.'));
 
         return back();
     }
@@ -112,11 +104,7 @@ class UserController implements HasMiddleware
         $user->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $user->name,
-            'description' => __('The user has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $user->name, description: __('The user has been deleted.'), type: 'warning');
 
         return back();
     }

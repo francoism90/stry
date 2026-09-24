@@ -12,11 +12,11 @@ use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
 use Domain\Profiles\Support\CurrentProfileContext;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\BroadcastsModelEvents;
+use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -28,16 +28,16 @@ use Support\MediaLibrary\TemporaryUrls;
 
 class Profile extends Model implements HasMedia
 {
-    use BroadcastsEvents;
+    use BroadcastsModelEvents;
     use HasFactory;
     use HasStates;
-    use HasUlids;
+    use HasUlidRouteKey;
     use InteractsWithMedia;
     use InteractsWithUser;
     use Searchable;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -50,7 +50,7 @@ class Profile extends Model implements HasMedia
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'user_id',
@@ -83,16 +83,6 @@ class Profile extends Model implements HasMedia
         return new ProfileCollection($models);
     }
 
-    public function uniqueIds(): array
-    {
-        return ['ulid'];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
-    }
-
     public function registerMediaCollections(): void
     {
         $this
@@ -119,15 +109,6 @@ class Profile extends Model implements HasMedia
             ->addMediaConversion('thumb')
             ->fit(Fit::Stretch, 1280, 720)
             ->sharpen(10);
-    }
-
-    public static function findFromUlid(Profile|string $value): ?Profile
-    {
-        if ($value instanceof Profile) {
-            return $value;
-        }
-
-        return Profile::query()->firstWhere('ulid', $value);
     }
 
     public static function current(): ?Profile
@@ -164,31 +145,6 @@ class Profile extends Model implements HasMedia
         return array_filter([$this, $this->user]);
     }
 
-    public function broadcastChannel(): string
-    {
-        return 'profiles.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "profile.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
-    }
-
     public function isKids(): bool
     {
         return $this->is_kids;
@@ -212,6 +168,9 @@ class Profile extends Model implements HasMedia
         return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function avatar(): Attribute
     {
         return Attribute::make(

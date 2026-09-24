@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Web\Account\Responses;
 
 use Illuminate\Http\JsonResponse;
-use Inertia\Inertia;
 use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,11 +16,7 @@ class ProfileInformationUpdatedResponse implements ProfileInformationUpdatedResp
             return response()->json();
         }
 
-        Inertia::flash([
-            'title' => __('Profile updated'),
-            'description' => __('Your profile information has been saved.'),
-            'type' => 'success',
-        ]);
+        toast(title: __('Profile updated'), description: __('Your profile information has been saved.'));
 
         return back();
     }

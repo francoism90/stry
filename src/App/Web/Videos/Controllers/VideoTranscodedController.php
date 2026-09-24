@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 use function Illuminate\Support\defer;
 
@@ -39,11 +38,7 @@ class VideoTranscodedController implements HasMiddleware
             $items->each(fn (Transcode $transcode) => app(ImportTranscode::class)->handle($transcode));
         });
 
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => __('Queued for import.'),
-            'type' => 'info',
-        ]);
+        toast(title: (string) $video->name, description: __('Queued for import.'), type: 'info');
 
         return back();
     }

@@ -84,7 +84,7 @@ class GetSimilarVideos
         $query = $this->extractMeaningfulTokens($video);
 
         // e.g. foo bar 1, foo bar, foo
-        for ($i = $query->count(); $i > 0; $i--) {
+        for ($i = $query->count(); $i > 0 && $candidates->count() < $limit; $i--) {
             // Generate phrase by decreasing word count
             $phrase = (string) $query->take($i)->implode(' ');
 
@@ -108,10 +108,10 @@ class GetSimilarVideos
                 ->get();
 
             // Merge results into candidates
-            $candidates = $candidates->merge($results);
+            $candidates = $candidates->merge($results)->unique('id');
         }
 
-        return $candidates->unique('id')->take($limit);
+        return $candidates->take($limit);
     }
 
     /**
@@ -147,6 +147,7 @@ class GetSimilarVideos
     {
         return Video::query()
             ->whereKeyNot($video)
+            ->with('tags')
             ->verified()
             ->inRandomOrder()
             ->take($limit)
@@ -161,13 +162,12 @@ class GetSimilarVideos
         // List of common words to exclude
         $commonWords = Config::array('videos.common_words');
 
-        $tokens = Str::of((string) $video->name)
+        return Str::of((string) $video->name)
             ->matchAll('/[\p{L}\p{N}]+/u')
             ->map(fn (string $word): string => Str::lower($word))
             ->reject(fn (string $word): bool => in_array($word, $commonWords, true))
+            ->unique()
             ->take($limit)
             ->values();
-
-        return $tokens->unique()->values();
     }
 }

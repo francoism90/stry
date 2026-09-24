@@ -13,7 +13,6 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class ApplicationSettingsController implements HasMiddleware
 {
@@ -52,11 +51,7 @@ class ApplicationSettingsController implements HasMiddleware
             return response()->noContent();
         }
 
-        Inertia::flash([
-            'title' => __('Settings saved'),
-            'description' => __('Application settings have been updated successfully.'),
-            'type' => 'success',
-        ]);
+        toast(title: __('Settings saved'), description: __('Application settings have been updated successfully.'));
 
         return back();
     }

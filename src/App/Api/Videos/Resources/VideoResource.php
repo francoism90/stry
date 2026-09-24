@@ -26,6 +26,8 @@ class VideoResource extends JsonResource
 
     public function toArray($request): array
     {
+        $user = $request->user();
+
         return [
             'id' => $this->getRouteKey(),
             'name' => $this->name,
@@ -45,9 +47,9 @@ class VideoResource extends JsonResource
             'chapters_vtt' => $this->chapters_vtt,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
-            'liked' => $request->user()?->isInGroup($this->resource, GroupType::Liked),
-            'saved' => $request->user()?->isInGroup($this->resource, GroupType::Saved),
-            'viewed' => $request->user()?->isInGroup($this->resource, GroupType::Viewed),
+            'liked' => $user ? $this->isInGroupOf($user, GroupType::Liked) : null,
+            'saved' => $user ? $this->isInGroupOf($user, GroupType::Saved) : null,
+            'viewed' => $user ? $this->isInGroupOf($user, GroupType::Viewed) : null,
             'manage' => $request->user()?->can('update', $this->resource) ?? false,
             'titles' => $this->whenAppended('titles'),
             'summary' => $this->whenAppended('summary'),
@@ -71,5 +73,10 @@ class VideoResource extends JsonResource
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
+    }
+
+    protected static function newCollection($resource): VideoResourceCollection
+    {
+        return new VideoResourceCollection($resource, static::class);
     }
 }

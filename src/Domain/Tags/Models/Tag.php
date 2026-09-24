@@ -9,6 +9,8 @@ use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Relates\Concerns\InteractsWithRelated;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\BroadcastsModelEvents;
+use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
@@ -17,9 +19,7 @@ use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
@@ -31,10 +31,10 @@ use Spatie\Tags\Tag as BaseTag;
 
 class Tag extends BaseTag implements HasMedia
 {
-    use BroadcastsEvents;
+    use BroadcastsModelEvents;
     use HasFactory;
     use HasSearchableRelations;
-    use HasUlids;
+    use HasUlidRouteKey;
     use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithRelated;
@@ -42,7 +42,7 @@ class Tag extends BaseTag implements HasMedia
     use Searchable;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -84,16 +84,6 @@ class Tag extends BaseTag implements HasMedia
     public function newCollection(array $models = []): TagCollection
     {
         return new TagCollection($models);
-    }
-
-    public function uniqueIds(): array
-    {
-        return ['ulid'];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
     }
 
     public function registerMediaCollections(): void
@@ -145,46 +135,12 @@ class Tag extends BaseTag implements HasMedia
             ->values();
     }
 
-    public static function findFromUlid(Tag|string $value): ?Tag
-    {
-        if ($value instanceof Tag) {
-            return $value;
-        }
-
-        return Tag::query()->firstWhere('ulid', $value);
-    }
-
     /**
      * @return array<int, Channel>
      */
     public function broadcastOn(string $event): array
     {
         return [$this];
-    }
-
-    public function broadcastChannel(): string
-    {
-        return 'tags.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "tag.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
     }
 
     public function toSearchableArray(): array
@@ -224,6 +180,9 @@ class Tag extends BaseTag implements HasMedia
             ->withCount('videos');
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function summary(): Attribute
     {
         return Attribute::make(
@@ -231,6 +190,9 @@ class Tag extends BaseTag implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function category(): Attribute
     {
         return Attribute::make(

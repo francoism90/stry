@@ -15,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class VideoChapterController implements HasMiddleware
 {
@@ -36,11 +35,7 @@ class VideoChapterController implements HasMiddleware
 
         VideoHasBeenUpdatedEvent::dispatch($video);
 
-        Inertia::flash([
-            'title' => $chapter->label,
-            'description' => __('The chapter has been created.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $chapter->label, description: __('The chapter has been created.'));
 
         return back();
     }
@@ -53,11 +48,7 @@ class VideoChapterController implements HasMiddleware
 
         VideoHasBeenUpdatedEvent::dispatch($video);
 
-        Inertia::flash([
-            'title' => $chapter->label,
-            'description' => __('The chapter has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $chapter->label, description: __('The chapter has been updated.'));
 
         return back();
     }
@@ -70,11 +61,7 @@ class VideoChapterController implements HasMiddleware
 
         VideoHasBeenUpdatedEvent::dispatch($video);
 
-        Inertia::flash([
-            'title' => $chapter->label,
-            'description' => __('The chapter has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $chapter->label, description: __('The chapter has been deleted.'), type: 'warning');
 
         return back();
     }

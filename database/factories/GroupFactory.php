@@ -11,6 +11,9 @@ use Domain\Groups\States\Verified;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Group>
+ */
 class GroupFactory extends Factory
 {
     protected $model = Group::class;

@@ -62,3 +62,28 @@ it('can attach and detach videos to like group', function () {
 
     expect($user->isInGroup($video, GroupType::Liked))->toBeFalse();
 });
+
+it('refreshes cached group types after toggling a video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+
+    expect($video->isInGroupOf($user, GroupType::Liked))->toBeFalse();
+
+    $user->toggleInGroup($video, GroupType::Liked);
+
+    expect($video->isInGroupOf($user, GroupType::Liked))->toBeTrue();
+
+    $user->toggleInGroup($video, GroupType::Liked);
+
+    expect($video->isInGroupOf($user, GroupType::Liked))->toBeFalse();
+});
+
+it('keeps cached group types separate per user', function () {
+    [$user, $otherUser] = User::factory()->count(2)->create()->all();
+    $video = Video::factory()->create();
+
+    $user->markInGroup($video, GroupType::Saved);
+
+    expect($video->isInGroupOf($user, GroupType::Saved))->toBeTrue()
+        ->and($video->isInGroupOf($otherUser, GroupType::Saved))->toBeFalse();
+});

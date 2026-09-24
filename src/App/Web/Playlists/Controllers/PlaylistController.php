@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class PlaylistController implements HasMiddleware
 {
@@ -31,11 +30,7 @@ class PlaylistController implements HasMiddleware
         $playlist->updateOrFail($request->safe()->all());
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $playlist->getRouteKey(),
-            'description' => __('The playlist has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $playlist->getRouteKey(), description: __('The playlist has been updated.'));
 
         return back();
     }
@@ -48,11 +43,7 @@ class PlaylistController implements HasMiddleware
         $playlist->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $playlist->getRouteKey(),
-            'description' => __('The playlist has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $playlist->getRouteKey(), description: __('The playlist has been deleted.'), type: 'warning');
 
         return back();
     }
