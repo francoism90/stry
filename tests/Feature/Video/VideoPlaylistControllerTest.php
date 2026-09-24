@@ -6,6 +6,9 @@ use App\Web\Videos\Controllers\VideoPlaylistController;
 use Domain\Playlists\Models\Playlist;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Illuminate\Support\Facades\Storage;
+
+beforeEach(fn () => Storage::fake('segments'));
 
 it('deletes a playlist that has no stored type', function () {
     $user = User::factory()->create();
