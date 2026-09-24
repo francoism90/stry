@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { index } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { index } from '@/actions/Modules/Web/Tags/Controllers/TagController'
 import TagEditModal from '@/components/Tags/TagEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'

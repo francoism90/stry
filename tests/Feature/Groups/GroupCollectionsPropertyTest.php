@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Web\Groups\Controllers\GroupController;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Modules\Web\Groups\Controllers\GroupController;
 
 uses(RefreshDatabase::class);
 

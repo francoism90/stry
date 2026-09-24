@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Web\Videos\Controllers\VideoController;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
+use Modules\Web\Videos\Controllers\VideoController;
 
 // index
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Web\Transcodes\Controllers\TranscodeController;
 use Domain\Transcodes\Enums\TranscodeSorter;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
+use Modules\Web\Transcodes\Controllers\TranscodeController;
 
 beforeEach(fn () => Storage::fake('transcodes'));
 

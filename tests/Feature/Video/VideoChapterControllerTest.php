@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Web\Videos\Controllers\VideoChapterController;
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Models\Chapter;
 use Domain\Users\Models\User;
@@ -10,6 +9,7 @@ use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Modules\Web\Videos\Controllers\VideoChapterController;
 
 uses(RefreshDatabase::class);
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Web\Shuffle\Controllers\ShuffleController;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Modules\Web\Shuffle\Controllers\ShuffleController;
 
 it('redirects guests to login', function () {
     $response = $this->get(action(ShuffleController::class, 'videos'));

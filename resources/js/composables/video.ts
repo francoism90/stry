@@ -1,6 +1,6 @@
-import VideoSessionController from '@/actions/App/Api/Videos/Controllers/VideoSessionController'
-import VideoLikeController from '@/actions/App/Web/Videos/Controllers/VideoLikeController'
-import VideoSaveController from '@/actions/App/Web/Videos/Controllers/VideoSaveController'
+import VideoSessionController from '@/actions/Modules/Api/Videos/Controllers/VideoSessionController'
+import VideoLikeController from '@/actions/Modules/Web/Videos/Controllers/VideoLikeController'
+import VideoSaveController from '@/actions/Modules/Web/Videos/Controllers/VideoSaveController'
 import type { Video } from '@/types'
 import { router, useHttp } from '@inertiajs/vue3'
 

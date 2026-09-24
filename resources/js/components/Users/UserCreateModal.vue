@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Users/Controllers/UserController'
+import { store } from '@/actions/Modules/Web/Users/Controllers/UserController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import { useForm } from '@inertiajs/vue3'
 

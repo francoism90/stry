@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-use App\Web\Groups\Controllers\GroupClearController;
-use App\Web\Groups\Controllers\GroupToggleController;
-use App\Web\Media\Controllers\MediaDownloadController;
-use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
-use App\Web\Profiles\Controllers\SwitchProfileController;
-use App\Web\Settings\Controllers\ApplicationSettingsController;
-use App\Web\Settings\Controllers\ChapterSettingsController;
-use App\Web\Settings\Controllers\PlaylistSettingsController;
-use App\Web\Settings\Controllers\ProcessingSettingsController;
-use App\Web\Shuffle\Controllers\ShuffleController;
-use App\Web\Users\Controllers\UserSettingsController;
-use App\Web\Videos\Controllers\VideoDispatchTranscodeController;
-use App\Web\Videos\Controllers\VideoImportController;
-use App\Web\Videos\Controllers\VideoLikeController;
-use App\Web\Videos\Controllers\VideoSaveController;
-use App\Web\Videos\Controllers\VideoTranscodedController;
 use Illuminate\Support\Facades\Route;
+use Modules\Web\Groups\Controllers\GroupClearController;
+use Modules\Web\Groups\Controllers\GroupToggleController;
+use Modules\Web\Media\Controllers\MediaDownloadController;
+use Modules\Web\Notifications\Controllers\MarkAllNotificationsReadController;
+use Modules\Web\Profiles\Controllers\SwitchProfileController;
+use Modules\Web\Settings\Controllers\ApplicationSettingsController;
+use Modules\Web\Settings\Controllers\ChapterSettingsController;
+use Modules\Web\Settings\Controllers\PlaylistSettingsController;
+use Modules\Web\Settings\Controllers\ProcessingSettingsController;
+use Modules\Web\Shuffle\Controllers\ShuffleController;
+use Modules\Web\Users\Controllers\UserSettingsController;
+use Modules\Web\Videos\Controllers\VideoDispatchTranscodeController;
+use Modules\Web\Videos\Controllers\VideoImportController;
+use Modules\Web\Videos\Controllers\VideoLikeController;
+use Modules\Web\Videos\Controllers\VideoSaveController;
+use Modules\Web\Videos\Controllers\VideoTranscodedController;
 
 // Settings
 Route::prefix('/settings')->name('settings.')->group(function () {

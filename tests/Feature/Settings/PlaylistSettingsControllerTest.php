@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Web\Settings\Controllers\PlaylistSettingsController;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
 use Domain\Users\Models\User;
 use Foxws\Shaka\Support\ProtectionScheme;
+use Modules\Web\Settings\Controllers\PlaylistSettingsController;
 
 it('allows a super-admin to fetch playlist settings', function () {
     $user = User::factory()->create();

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Web\Groups\Controllers\GroupController;
-use App\Web\Profiles\Controllers\ProfileController;
-use App\Web\Tags\Controllers\TagController;
-use App\Web\Videos\Controllers\VideoController;
 use Domain\Groups\Models\Group;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Modules\Web\Groups\Controllers\GroupController;
+use Modules\Web\Profiles\Controllers\ProfileController;
+use Modules\Web\Tags\Controllers\TagController;
+use Modules\Web\Videos\Controllers\VideoController;
 
 uses(RefreshDatabase::class);
 

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Web\Videos\Controllers\VideoTranscodedController;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Users\Models\User;
 use Domain\Videos\Jobs\ImportVideo;
@@ -10,6 +9,7 @@ use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Modules\Web\Videos\Controllers\VideoTranscodedController;
 
 uses(RefreshDatabase::class);
 

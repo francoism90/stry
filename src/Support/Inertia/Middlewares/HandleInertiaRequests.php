@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Support\Inertia\Middlewares;
 
-use App\Web\Groups\Responses\GroupCollectionsProperty;
-use App\Web\Users\Responses\UserResourceProperty;
 use Domain\Shared\Enums\Language;
 use Domain\Shared\Enums\Locale;
 use Domain\Tags\Enums\TagType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Middleware;
+use Modules\Web\Groups\Responses\GroupCollectionsProperty;
+use Modules\Web\Users\Responses\UserResourceProperty;
 use Spatie\LaravelOptions\Options;
 
 class HandleInertiaRequests extends Middleware

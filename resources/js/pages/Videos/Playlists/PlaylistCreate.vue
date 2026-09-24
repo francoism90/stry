@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Videos/Controllers/VideoPlaylistController'
+import { store } from '@/actions/Modules/Web/Videos/Controllers/VideoPlaylistController'
 import type { Video } from '@/types'
 import { Head, useForm } from '@inertiajs/vue3'
 import type { SelectMenuItem } from '@nuxt/ui'

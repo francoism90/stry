@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Web\Users\Controllers\UserSettingsController;
 use Domain\Users\Models\User;
+use Modules\Web\Users\Controllers\UserSettingsController;
 
 it('flashes a success notification after updating settings', function () {
     $user = User::factory()->create();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Media/Controllers/MediaController'
+import { update } from '@/actions/Modules/Web/Media/Controllers/MediaController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import type { Media } from '@/types'
 import { useForm } from '@inertiajs/vue3'

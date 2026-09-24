@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { show } from '@/actions/Modules/Web/Groups/Controllers/GroupController'
 import { useGroups } from '@/composables/groups'
 import type { Group } from '@/types'
 import { computed } from 'vue'

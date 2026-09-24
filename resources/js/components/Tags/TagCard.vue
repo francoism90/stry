@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { show } from '@/actions/Modules/Web/Tags/Controllers/TagController'
 import TagEditModal from '@/components/Tags/TagEditModal.vue'
 import { useAppearance } from '@/composables/appearance'
 import type { Tag } from '@/types'

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Api\Videos\Broadcasting\VideoLibraryChannel;
 use Domain\Users\Models\User;
+use Modules\Api\Videos\Broadcasting\VideoLibraryChannel;
 
 it('allows super-admins to join the shared videos channel', function () {
     $user = User::factory()->create();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show, update } from '@/actions/App/Web/Settings/Controllers/ApplicationSettingsController'
+import { show, update } from '@/actions/Modules/Web/Settings/Controllers/ApplicationSettingsController'
 import { useLocale } from '@/composables/locale'
 import type { ApplicationSettings } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'

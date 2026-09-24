@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Profiles/Controllers/ProfileController'
+import { update } from '@/actions/Modules/Web/Profiles/Controllers/ProfileController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import type { Profile } from '@/types'
 import { useForm } from '@inertiajs/vue3'

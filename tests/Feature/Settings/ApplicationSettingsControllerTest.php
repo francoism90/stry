@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Web\Settings\Controllers\ApplicationSettingsController;
 use Domain\Shared\Enums\Locale;
 use Domain\Users\Models\User;
 use Foundation\Settings\GeneralSettings;
+use Modules\Web\Settings\Controllers\ApplicationSettingsController;
 
 it('allows a super-admin to fetch application settings', function () {
     $user = User::factory()->create();

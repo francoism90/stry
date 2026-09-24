@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show, update } from '@/actions/App/Web/Settings/Controllers/PlaylistSettingsController'
+import { show, update } from '@/actions/Modules/Web/Settings/Controllers/PlaylistSettingsController'
 import { useLocale } from '@/composables/locale'
 import type { OptionItem, PlaylistSettings, PlaylistSettingsResponse } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'

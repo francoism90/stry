@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Web\Profiles\Controllers\ProfileController;
-use App\Web\Profiles\Controllers\SwitchProfileController;
 use Domain\Profiles\Models\Profile;
 use Domain\Users\Models\User;
+use Modules\Web\Profiles\Controllers\ProfileController;
+use Modules\Web\Profiles\Controllers\SwitchProfileController;
 
 it('renders the profiles page for authenticated users', function () {
     $user = User::factory()->create();

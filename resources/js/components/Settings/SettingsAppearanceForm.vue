@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserSettingsController from '@/actions/App/Web/Users/Controllers/UserSettingsController'
+import UserSettingsController from '@/actions/Modules/Web/Users/Controllers/UserSettingsController'
 import { useSettings } from '@/composables/settings'
 import { useForm } from '@inertiajs/vue3'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Web/Videos/Controllers/VideoChapterController'
+import { store } from '@/actions/Modules/Web/Videos/Controllers/VideoChapterController'
 import type { OptionItem, Video } from '@/types'
 import { useForm } from '@inertiajs/vue3'
 

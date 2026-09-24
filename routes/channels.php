@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Api\Groups\Broadcasting\GroupChannel;
-use App\Api\Media\Broadcasting\MediaChannel;
-use App\Api\Playlists\Broadcasting\PlaylistChannel;
-use App\Api\Profiles\Broadcasting\ProfileChannel;
-use App\Api\Tags\Broadcasting\TagChannel;
-use App\Api\Transcodes\Broadcasting\TranscodeChannel;
-use App\Api\Users\Broadcasting\UserChannel;
-use App\Api\Videos\Broadcasting\VideoChannel;
-use App\Api\Videos\Broadcasting\VideoLibraryChannel;
 use Illuminate\Support\Facades\Broadcast;
+use Modules\Api\Groups\Broadcasting\GroupChannel;
+use Modules\Api\Media\Broadcasting\MediaChannel;
+use Modules\Api\Playlists\Broadcasting\PlaylistChannel;
+use Modules\Api\Profiles\Broadcasting\ProfileChannel;
+use Modules\Api\Tags\Broadcasting\TagChannel;
+use Modules\Api\Transcodes\Broadcasting\TranscodeChannel;
+use Modules\Api\Users\Broadcasting\UserChannel;
+use Modules\Api\Videos\Broadcasting\VideoChannel;
+use Modules\Api\Videos\Broadcasting\VideoLibraryChannel;
 
 /*
 |--------------------------------------------------------------------------
