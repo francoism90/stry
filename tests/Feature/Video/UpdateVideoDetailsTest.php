@@ -25,24 +25,46 @@ it('queues media regeneration when snapshot changes', function () {
     Artisan::spy();
 
     $video = Video::factory()->create(['snapshot' => 10.0]);
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
 
     app(UpdateVideoDetails::class)->handle($video, [
         'snapshot' => 20.0,
     ]);
 
-    Artisan::shouldHaveQueued('media-library:regenerate');
+    Artisan::shouldHaveReceived('queue')->with('media-library:regenerate', Mockery::any());
 });
 
 it('does not queue media regeneration when snapshot does not change', function () {
-    Artisan::spy();
-
     $video = Video::factory()->create(['snapshot' => 10.0]);
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    Artisan::shouldReceive('queue')->never();
 
     app(UpdateVideoDetails::class)->handle($video, [
         'name' => ['en' => 'New Name'],
     ]);
-
-    Artisan::shouldNotHaveQueued('media-library:regenerate');
 });
 
 it('clears the tag response cache when tags are synced', function () {
