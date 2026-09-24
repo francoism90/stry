@@ -1,6 +1,6 @@
 ---
 name: laravel-shaka-development
-description: Package video and audio into DASH and HLS with foxws/laravel-shaka (Shaka Packager), including AES encryption, key rotation, exporting to local or S3 disks, and serving manifests with signed URLs through DynamicHLSPlaylist and DynamicDASHManifest. Use when working with the Shaka facade, Foxws\Shaka classes, config/laravel-shaka.php, or packaging already-encoded media into streaming playlists.
+description: Package video and audio into DASH and HLS with foxws/laravel-shaka (Shaka Packager), including AES encryption, exporting to local or S3 disks, and serving manifests with signed URLs through DynamicHLSPlaylist and DynamicDASHManifest. Use when working with the Shaka facade, Foxws\Shaka classes, config/laravel-shaka.php, or packaging already-encoded media into streaming playlists.
 ---
 
 # Packaging with laravel-shaka
@@ -48,13 +48,14 @@ try {
 use Foxws\Shaka\Support\ProtectionScheme;
 
 $key = $packager->withAESEncryption('key', ProtectionScheme::Cbcs->value);
-$packager->withKeyRotationDuration(600); // optional
 
 // Store $key->keyId and $key->key (hex) to serve the key later.
 ```
 
-- The key file (`key`, or `key_0`, `key_1`, … with rotation) is written to `cache_files_root` and uploaded next to the segments. Serve it only through an authorized route or a short-lived signed URL.
-- Protection schemes: `cenc` (Widevine/PlayReady), `cbcs` (FairPlay/Safari, widest modern support), `cbc1`, `cens`. Key rotation needs `cenc` or `cbcs`, not the SAMPLE-AES default (`null`).
+- One key file, named after the first argument, is written to `cache_files_root` and uploaded next to the segments. HLS playlists reference it by that name. Serve it only through an authorized route or a short-lived signed URL.
+- `withAESEncryption()` takes the scheme as a string. `null` uses Shaka Packager's default, `cenc`. Use `cbcs` when one set of segments serves both HLS and DASH, including Safari. Avoid `cbc1` and `cens`; few players support them.
+- DASH has no key URI. The player needs the key itself, such as Shaka Player's `drm.clearKeys`.
+- Key rotation with raw keys is testing-grade in Shaka Packager: it derives later keys from the first, and the package only writes and returns the first key. Don't rely on it without testing full playback.
 
 ## Serving manifests with signed URLs
 
