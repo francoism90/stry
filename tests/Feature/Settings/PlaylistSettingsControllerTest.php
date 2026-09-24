@@ -83,9 +83,9 @@ it('offers every protection scheme', function () {
 
     expect(collect($response->json('protection_scheme_options'))->pluck('label', 'value')->all())->toBe([
         '' => 'None',
-        'cenc' => 'CENC',
-        'cbc1' => 'CBC1',
-        'cens' => 'CENS',
-        'cbcs' => 'CBCS',
+        'cenc' => 'Cenc',
+        'cbc1' => 'Cbc1',
+        'cens' => 'Cens',
+        'cbcs' => 'Cbcs',
     ]);
 });
