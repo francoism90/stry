@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Playlists\States\Failed;
@@ -201,4 +202,15 @@ it('can get model from playlistable', function () {
 
     expect($playlist->getModel())->toBeInstanceOf(Video::class)
         ->and($playlist->getModel()->getKey())->toBe($video->getKey());
+});
+
+it('creates playlists with default dash and hls manifest names', function () {
+    $video = Video::factory()->create();
+
+    $playlist = $video->createPlaylist(['type' => PlaylistType::Streamer]);
+
+    expect($playlist)
+        ->dash_file_name->toBe('index.mpd')
+        ->hls_file_name->toBe('master.m3u8')
+        ->type->toBe(PlaylistType::Streamer);
 });

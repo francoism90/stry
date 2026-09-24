@@ -7,8 +7,6 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Settings\PlaylistSettings;
-use Domain\Videos\Concerns\CreatesVideoPlaylists;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\Facades\Shaka;
 use Foxws\Shaka\Support\HlsPlaylistType;
@@ -16,14 +14,8 @@ use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
-class CreateNewVideoPlaylist
+class CreateNewVideoPlaylist extends VideoPlaylistAction
 {
-    use CreatesVideoPlaylists;
-
-    public function __construct(
-        protected PlaylistSettings $settings,
-    ) {}
-
     public function handle(Video $video): Collection
     {
         // Get the playlist type from the configuration
@@ -82,7 +74,11 @@ class CreateNewVideoPlaylist
                 }
             }
 
-            $playlist = $this->createPlaylist($video, $type, $encryptionKey);
+            $playlist = $video->createPlaylist([
+                'type' => $type,
+                'encryption_key_id' => $encryptionKey?->keyId,
+                'encryption_key' => $encryptionKey?->key,
+            ]);
 
             // Configure the packager with common settings. Segment/fragment/buffer
             // duration are left unset here so they fall back to the packager's own

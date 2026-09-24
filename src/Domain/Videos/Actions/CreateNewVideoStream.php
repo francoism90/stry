@@ -7,8 +7,6 @@ namespace Domain\Videos\Actions;
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Settings\PlaylistSettings;
-use Domain\Videos\Concerns\CreatesVideoPlaylists;
 use Domain\Videos\Models\Video;
 use Foxws\Streamer\Facades\Streamer;
 use Foxws\Streamer\Support\VideoResolution;
@@ -16,14 +14,8 @@ use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
-class CreateNewVideoStream
+class CreateNewVideoStream extends VideoPlaylistAction
 {
-    use CreatesVideoPlaylists;
-
-    public function __construct(
-        protected PlaylistSettings $settings,
-    ) {}
-
     public function handle(Video $video): Collection
     {
         // Get the playlist type from the configuration
@@ -101,7 +93,11 @@ class CreateNewVideoStream
                 $encryptionKey = $streamer->withAESEncryption('key', $settings->protection_scheme?->value);
             }
 
-            $playlist = $this->createPlaylist($video, $type, $encryptionKey);
+            $playlist = $video->createPlaylist([
+                'type' => $type,
+                'encryption_key_id' => $encryptionKey?->keyId,
+                'encryption_key' => $encryptionKey?->key,
+            ]);
 
             // Configure DASH and HLS playlist settings. Shaka Streamer builds both
             // manifests from the same CMAF-packaged streams in one pipeline run.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Concerns;
+namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
 use Domain\Playlists\DataObjects\CaptionStream;
@@ -11,17 +11,21 @@ use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Models\Video;
 use Foxws\Shaka\MediaOpener as ShakaMediaOpener;
-use Foxws\Shaka\Support\EncryptionKey as ShakaEncryptionKey;
 use Foxws\Streamer\MediaOpener as StreamerMediaOpener;
-use Foxws\Streamer\Support\EncryptionKey as StreamerEncryptionKey;
 use Illuminate\Support\Collection;
 use Throwable;
 
-/**
- * @property PlaylistSettings $settings
- */
-trait CreatesVideoPlaylists
+abstract class VideoPlaylistAction
 {
+    public function __construct(
+        protected PlaylistSettings $settings,
+    ) {}
+
+    /**
+     * @return Collection<string, Playlist>
+     */
+    abstract public function handle(Video $video): Collection;
+
     protected function shouldCreatePlaylist(Video $video, PlaylistType $type): bool
     {
         return ! $video->hasPlaylist($type) && $video->hasMedia('clips');
@@ -38,21 +42,6 @@ trait CreatesVideoPlaylists
             'path' => $caption->getPath(),
             'language' => $caption->getCustomProperty('language_code', $this->settings->text_language->value),
         ]));
-    }
-
-    protected function createPlaylist(
-        Video $video,
-        PlaylistType $type,
-        ShakaEncryptionKey|StreamerEncryptionKey|null $encryptionKey = null,
-    ): Playlist {
-        /** @var Playlist */
-        return $video->createPlaylist([
-            'encryption_key_id' => $encryptionKey?->keyId,
-            'encryption_key' => $encryptionKey?->key,
-            'type' => $type,
-            'dash_file_name' => 'index.mpd',
-            'hls_file_name' => 'master.m3u8',
-        ]);
     }
 
     /**
