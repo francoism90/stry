@@ -14,7 +14,9 @@
         "spatie/guidelines-skills",
         "spatie/laravel-translatable",
         "foxws/laravel-essentials",
-        "foxws/laravel-podman"
+        "foxws/laravel-podman",
+        "foxws/laravel-shaka",
+        "foxws/laravel-streamer"
     ],
     "sail": false,
     "skills": [
@@ -35,6 +37,8 @@
         "podman-lpod",
         "podman-presets",
         "podman-s3",
+        "laravel-shaka-development",
+        "laravel-streamer-development",
         "medialibrary-development",
         "laravel-permission-development",
         "responsecache-development",

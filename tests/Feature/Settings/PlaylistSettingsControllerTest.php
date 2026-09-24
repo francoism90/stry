@@ -5,10 +5,10 @@ declare(strict_types=1);
 use App\Web\Settings\Controllers\PlaylistSettingsController;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
 use Domain\Users\Models\User;
+use Foxws\Shaka\Support\ProtectionScheme;
 
 it('allows a super-admin to fetch playlist settings', function () {
     $user = User::factory()->create();
@@ -73,4 +73,19 @@ it('rejects an invalid encryption value', function () {
     ]);
 
     $response->assertInvalid(['encryption']);
+});
+
+it('offers every protection scheme', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->get(action([PlaylistSettingsController::class, 'show']));
+
+    expect(collect($response->json('protection_scheme_options'))->pluck('label', 'value')->all())->toBe([
+        '' => 'None',
+        'cenc' => 'Cenc',
+        'cbc1' => 'Cbc1',
+        'cens' => 'Cens',
+        'cbcs' => 'Cbcs',
+    ]);
 });

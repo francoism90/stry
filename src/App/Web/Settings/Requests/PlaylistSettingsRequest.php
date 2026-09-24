@@ -6,8 +6,8 @@ namespace App\Web\Settings\Requests;
 
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
 use Domain\Shared\Enums\Language;
+use Foxws\Shaka\Support\ProtectionScheme;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;

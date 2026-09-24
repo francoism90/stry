@@ -15,11 +15,11 @@
         "format": "prettier --write --experimental-cli ."
     },
     "dependencies": {
-        "@iconify/vue": "^5.0.2",
+        "@iconify/vue": "^5.0.3",
         "@inertiajs/vue3": "^3.7.1",
         "@internationalized/date": "^3.12.4",
         "@laravel/echo-vue": "^2.5.0",
-        "@nuxt/ui": "^4.11.1",
+        "@nuxt/ui": "^4.11.2",
         "@vueuse/core": "^15.0.0",
         "laravel-echo": "^2.5.0",
         "pusher-js": "^8.6.0",
@@ -28,7 +28,7 @@
         "vue": "^3.5.43"
     },
     "devDependencies": {
-        "@iconify-json/lucide": "^1.2.135",
+        "@iconify-json/lucide": "^1.2.136",
         "@inertiajs/vite": "^3.7.1",
         "@laravel/vite-plugin-wayfinder": "^0.1.10",
         "@tailwindcss/vite": "^4.3.3",
@@ -43,14 +43,14 @@
         "chokidar": "^5.0.0",
         "concurrently": "^10.0.5",
         "eslint": "^10.11.0",
-        "eslint-plugin-oxlint": "~1.83.0",
+        "eslint-plugin-oxlint": "~1.85.0",
         "eslint-plugin-vue": "^10.11.0",
         "jiti": "^2.7.0",
         "laravel-vite-plugin": "^3.2.0",
         "npm-run-all2": "^9.0.3",
-        "oxlint": "~1.83.0",
+        "oxlint": "~1.85.0",
         "playwright": "^1.63.0",
-        "prettier": "3.9.8",
+        "prettier": "3.9.9",
         "prettier-plugin-blade": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.8.1",
         "typescript": "^6.0.3",
@@ -59,6 +59,6 @@
         "vue-tsc": "^3.3.11"
     },
     "optionalDependencies": {
-        "@laravel/multiplex": "^0.4.3"
+        "@laravel/multiplex": "^0.4.4"
     }
 }

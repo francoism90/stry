@@ -6,8 +6,8 @@ namespace Domain\Playlists\Settings;
 
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
 use Domain\Shared\Enums\Language;
+use Foxws\Shaka\Support\ProtectionScheme;
 use Spatie\LaravelSettings\Settings;
 
 class PlaylistSettings extends Settings

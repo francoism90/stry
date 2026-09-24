@@ -98,15 +98,11 @@ class CreateNewVideoStream
                 'language' => $caption->language,
             ]));
 
-            // Enable AES encryption with key rotation if configured
+            // Enable AES encryption if configured. Key rotation is skipped: Shaka Streamer doesn't support it.
             $encryptionKey = null;
 
             if (filled($settings->encryption)) {
                 $encryptionKey = $streamer->withAESEncryption('key', $settings->protection_scheme?->value);
-
-                if ($settings->key_rotation) {
-                    $streamer->withKeyRotationDuration($settings->key_rotation_duration);
-                }
             }
 
             /** @var Playlist $playlist */
