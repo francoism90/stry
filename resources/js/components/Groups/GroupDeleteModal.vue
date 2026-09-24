@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { destroy } from '@/actions/Modules/Web/Groups/Controllers/GroupController'
 import type { Group } from '@/types'
 import { router } from '@inertiajs/vue3'
 

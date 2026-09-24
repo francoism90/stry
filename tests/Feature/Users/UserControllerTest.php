@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Web\Users\Controllers\UserController;
 use Domain\Users\Models\User;
+use Modules\Web\Users\Controllers\UserController;
 
 // index
 

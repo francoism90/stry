@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Domain\Groups\Commands\ClearGroupCommand;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Transcodes\Commands\ClearTranscodeCommand;
@@ -25,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use Modules\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
@@ -115,6 +115,6 @@ $app = Application::configure(basePath: $basePath)
     ])
     ->create();
 
-$app->useAppPath($basePath.'/src/App');
+$app->useAppPath($basePath.'/src/Modules');
 
 return $app;

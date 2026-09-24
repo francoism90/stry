@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Api\Videos\Resources\VideoResource;
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Modules\Api\Videos\Resources\VideoResource;
 
 function requestFor(?User $user): Request
 {

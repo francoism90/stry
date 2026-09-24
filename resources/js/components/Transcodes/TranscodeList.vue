@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoDispatchTranscodeController from '@/actions/App/Web/Videos/Controllers/VideoDispatchTranscodeController'
+import VideoDispatchTranscodeController from '@/actions/Modules/Web/Videos/Controllers/VideoDispatchTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
 import type { Transcode, Video } from '@/types'

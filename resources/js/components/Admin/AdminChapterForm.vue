@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show, update } from '@/actions/App/Web/Settings/Controllers/ChapterSettingsController'
+import { show, update } from '@/actions/Modules/Web/Settings/Controllers/ChapterSettingsController'
 import type { ChapterSettings, OptionItem } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue'

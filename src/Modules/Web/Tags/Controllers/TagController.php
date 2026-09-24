@@ -1,0 +1,162 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Web\Tags\Controllers;
+
+use Modules\Api\Tags\Requests\TagStoreRequest;
+use Modules\Api\Tags\Requests\TagUpdateRequest;
+use Modules\Api\Tags\Resources\TagResource;
+use Modules\Api\Videos\Resources\VideoResource;
+use Modules\Web\Tags\Responses\TagResourceProperty;
+use Domain\Tags\Actions\CreateTag;
+use Domain\Tags\Actions\UpdateTagDetails;
+use Domain\Tags\Enums\TagScope;
+use Domain\Tags\Enums\TagSorter;
+use Domain\Tags\Enums\TagType;
+use Domain\Tags\Filters\TagScopeFilter;
+use Domain\Tags\Models\Tag;
+use Domain\Tags\QueryBuilders\TagQueryBuilder;
+use Domain\Videos\Enums\VideoScope;
+use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Filters\VideoScopeFilter;
+use Domain\Videos\Models\Video;
+use Domain\Videos\Scopes\VideoProfileScope;
+use Foundation\Http\Properties\ScoutBuilderProperties;
+use Foxws\ScoutBuilder\AllowedFilter;
+use Foxws\ScoutBuilder\AllowedSort;
+use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
+use Spatie\LaravelOptions\Options;
+use Support\Scout\Sorts\RecommendedSorter;
+use Support\Scout\Sorts\VideosSorter;
+
+class TagController implements HasMiddleware
+{
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth'),
+            new Middleware('verified'),
+            new Middleware('precognitive'),
+        ];
+    }
+
+    public function index(): Response
+    {
+        Gate::authorize('viewAny', Tag::class);
+
+        // Scout builder
+        $defaultSort = AllowedSort::custom('videos', new VideosSorter);
+
+        $scout = ScoutBuilder::for(Tag::class)
+            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos')->with('related'))
+            ->allowedFilters(
+                AllowedFilter::custom('scope', new TagScopeFilter),
+            )
+            ->allowedSorts(
+                $defaultSort,
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+            )
+            ->defaultSort($defaultSort)
+            ->jsonSimplePaginate(defaultSize: 20);
+
+        $scout->getCollection()->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
+
+        return Inertia::render('Tags/TagIndex', [
+            'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(TagScope::class),
+            'sorters' => fn () => Options::forEnum(TagSorter::class),
+            new ScoutBuilderProperties('tags'),
+        ]);
+    }
+
+    public function show(Tag $tag): Response
+    {
+        Gate::authorize('view', $tag);
+
+        // Relevant sort options
+        $recommendedSort = AllowedSort::custom('recommended', new RecommendedSorter);
+
+        // Scout builder
+        $scout = ScoutBuilder::for(Video::class)
+            ->tap(new VideoProfileScope)
+            ->whereIn('tagged', [$tag->getKey()])
+            ->allowedFilters(
+                AllowedFilter::exact('captioned'),
+                AllowedFilter::custom('scope', new VideoScopeFilter),
+            )
+            ->allowedSorts(
+                $recommendedSort,
+                AllowedSort::latest('newest', 'created_at'),
+                AllowedSort::oldest('oldest', 'created_at'),
+                AllowedSort::field('ordered', 'name'),
+                AllowedSort::field('shortest', 'duration'),
+                AllowedSort::field('longest', 'duration')->defaultDescending(),
+                AllowedSort::field('filesize')->defaultDescending(),
+            )
+            ->defaultSort($recommendedSort)
+            ->jsonSimplePaginate(defaultSize: 16);
+
+        return Inertia::render('Tags/TagView', [
+            'tag' => fn () => new TagResourceProperty($tag),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
+            'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            new ScoutBuilderProperties('tags.videos'),
+        ]);
+    }
+
+    public function store(TagStoreRequest $request): RedirectResponse
+    {
+        Gate::authorize('create', Tag::class);
+
+        // Create the tag
+        $tag = app(CreateTag::class)->handle(
+            name: $request->safe()->input('name'),
+            type: TagType::from($request->safe()->input('type')),
+            description: $request->safe()->input('description'),
+        );
+
+        // Notify the user
+        toast(title: (string) $tag->name, description: __('The tag has been created.'));
+
+        return redirect()->route('tags.show', $tag);
+    }
+
+    public function update(Tag $tag, TagUpdateRequest $request): RedirectResponse
+    {
+        Gate::authorize('update', $tag);
+
+        // Update tag details
+        app(UpdateTagDetails::class)->handle(
+            tag: $tag,
+            attributes: $request->safe()->all()
+        );
+
+        // Notify the user
+        toast(title: (string) $tag->name, description: __('The tag has been updated.'));
+
+        return back();
+    }
+
+    public function destroy(Tag $tag): RedirectResponse
+    {
+        Gate::authorize('delete', $tag);
+
+        // Delete the tag
+        $tag->deleteOrFail();
+
+        // Notify the user
+        toast(title: (string) $tag->name, description: __('The tag has been deleted.'), type: 'warning');
+
+        return back();
+    }
+}

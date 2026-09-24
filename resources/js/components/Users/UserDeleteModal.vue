@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Web/Users/Controllers/UserController'
+import { destroy } from '@/actions/Modules/Web/Users/Controllers/UserController'
 import type { User } from '@/types'
 import { router } from '@inertiajs/vue3'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Videos/Controllers/VideoChapterController'
+import { update } from '@/actions/Modules/Web/Videos/Controllers/VideoChapterController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import type { Chapter, OptionItem, Video } from '@/types'
 import { useForm } from '@inertiajs/vue3'

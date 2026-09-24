@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoImportController from '@/actions/App/Web/Videos/Controllers/VideoImportController'
+import VideoImportController from '@/actions/Modules/Web/Videos/Controllers/VideoImportController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'

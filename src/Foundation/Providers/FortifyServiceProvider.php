@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
-use App\Web\Account\Responses\PasswordUpdateResponse;
-use App\Web\Account\Responses\ProfileInformationUpdatedResponse;
 use Domain\Users\Actions\CreateNewUser;
 use Domain\Users\Actions\ResetUserPassword;
 use Domain\Users\Actions\UpdateUserPassword;
@@ -19,6 +17,8 @@ use Inertia\Inertia;
 use Laravel\Fortify\Contracts\PasswordUpdateResponse as PasswordUpdateResponseContract;
 use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
 use Laravel\Fortify\Fortify;
+use Modules\Web\Account\Responses\PasswordUpdateResponse;
+use Modules\Web\Account\Responses\ProfileInformationUpdatedResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {

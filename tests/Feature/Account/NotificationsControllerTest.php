@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Web\Account\Controllers\NotificationsController;
-use App\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use Domain\Users\Models\User;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
+use Modules\Web\Account\Controllers\NotificationsController;
+use Modules\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 
 function createNotification(User $user, bool $read = false): DatabaseNotification
 {

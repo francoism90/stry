@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show, update } from '@/actions/App/Web/Settings/Controllers/ProcessingSettingsController'
+import { show, update } from '@/actions/Modules/Web/Settings/Controllers/ProcessingSettingsController'
 import type { ProcessingSettings } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue'

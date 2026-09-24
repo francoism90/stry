@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Web\Videos\Controllers\VideoPlaylistController;
 use Domain\Playlists\Models\Playlist;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Support\Facades\Storage;
+use Modules\Web\Videos\Controllers\VideoPlaylistController;
 
 beforeEach(fn () => Storage::fake('segments'));
 

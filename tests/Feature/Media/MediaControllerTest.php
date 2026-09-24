@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Web\Media\Controllers\MediaController;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Modules\Web\Media\Controllers\MediaController;
 
 uses(RefreshDatabase::class);
 

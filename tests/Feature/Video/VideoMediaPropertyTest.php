@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Web\Videos\Controllers\VideoController;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
+use Modules\Web\Videos\Controllers\VideoController;
 
 uses(RefreshDatabase::class);
 

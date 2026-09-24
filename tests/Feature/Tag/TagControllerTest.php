@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Web\Tags\Controllers\TagController;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Web\Tags\Controllers\TagController;
 
 uses(RefreshDatabase::class);
 

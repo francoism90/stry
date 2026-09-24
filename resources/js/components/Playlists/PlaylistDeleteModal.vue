@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Web/Playlists/Controllers/PlaylistController'
+import { destroy } from '@/actions/Modules/Web/Playlists/Controllers/PlaylistController'
 import type { Playlist } from '@/types'
 import { router } from '@inertiajs/vue3'
 

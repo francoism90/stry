@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Api\Playlists\Resources;
+
+use Modules\Api\Shared\Resources\ModelResource;
+use Domain\Playlists\Models\Playlist;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+ * @mixin Playlist
+ */
+class PlaylistResource extends JsonResource
+{
+    /**
+     * @var bool
+     */
+    public $preserveKeys = true;
+
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->getRouteKey(),
+            'resource' => ModelResource::make($this->whenLoaded('playlistable')),
+            'encryption_key_id' => $this->encryption_key_id,
+            'encryption_key' => $this->encryption_key,
+            'asset' => $this->getUrl(),
+            'asset_dash' => $this->getDashUrl(),
+            'asset_hls' => $this->getHlsUrl(),
+            'asset_refresh_in' => $this->getUrlRefreshIn(),
+            'failed' => $this->isFailed(),
+            'expired' => $this->isExpired(),
+            'valid' => $this->isValid(),
+            'type' => $this->type,
+            'state' => $this->state->toArray(),
+            'expires_at' => $this->expires_at?->toDateTimeString(),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
+        ];
+    }
+}

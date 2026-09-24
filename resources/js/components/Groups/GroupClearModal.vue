@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GroupClearController from '@/actions/App/Web/Groups/Controllers/GroupClearController'
+import GroupClearController from '@/actions/Modules/Web/Groups/Controllers/GroupClearController'
 import type { Group } from '@/types'
 import { router } from '@inertiajs/vue3'
 

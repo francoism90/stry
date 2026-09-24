@@ -79,8 +79,8 @@
             "src/Foundation/Helpers.php"
         ],
         "psr-4": {
-            "App\\": "src/App/",
             "Domain\\": "src/Domain/",
+            "Modules\\": "src/Modules/",
             "Foundation\\": "src/Foundation/",
             "Support\\": "src/Support/",
             "Database\\Factories\\": "database/factories/",

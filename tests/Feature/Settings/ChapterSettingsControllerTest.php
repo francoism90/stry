@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Web\Settings\Controllers\ChapterSettingsController;
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Settings\ChapterSettings;
 use Domain\Users\Models\User;
+use Modules\Web\Settings\Controllers\ChapterSettingsController;
 
 it('allows a super-admin to fetch chapter settings', function () {
     $user = User::factory()->create();

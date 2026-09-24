@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Videos/Controllers/VideoController'
+import { update } from '@/actions/Modules/Web/Videos/Controllers/VideoController'
 import ChapterList from '@/components/Chapters/ChapterList.vue'
 import MediaList from '@/components/Media/MediaList.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SwitchProfileController from '@/actions/App/Web/Profiles/Controllers/SwitchProfileController'
+import SwitchProfileController from '@/actions/Modules/Web/Profiles/Controllers/SwitchProfileController'
 import ProfileList from '@/components/Profiles/ProfileList.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { show } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { show } from '@/actions/Modules/Web/Groups/Controllers/GroupController'
 import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAuth } from '@/composables/auth'
 import { useGroups } from '@/composables/groups'

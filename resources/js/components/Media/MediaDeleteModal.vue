@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Web/Media/Controllers/MediaController'
+import { destroy } from '@/actions/Modules/Web/Media/Controllers/MediaController'
 import type { Media } from '@/types'
 import { router } from '@inertiajs/vue3'
 

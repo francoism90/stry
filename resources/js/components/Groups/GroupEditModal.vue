@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { update } from '@/actions/Modules/Web/Groups/Controllers/GroupController'
 import GroupClearModal from '@/components/Groups/GroupClearModal.vue'
 import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
 import FormModal from '@/components/Ui/FormModal.vue'

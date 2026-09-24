@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Web\Home\Controllers\HomeController;
 use Domain\Users\Models\User;
+use Modules\Web\Home\Controllers\HomeController;
 
 it('allows authenticated users to view the home page', function () {
     $user = User::factory()->create();

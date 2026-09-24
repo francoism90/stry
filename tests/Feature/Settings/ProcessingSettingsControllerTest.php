@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Web\Settings\Controllers\ProcessingSettingsController;
 use Domain\Users\Models\User;
 use Domain\Videos\Settings\ProcessingSettings;
+use Modules\Web\Settings\Controllers\ProcessingSettingsController;
 
 it('allows a super-admin to fetch processing settings', function () {
     $user = User::factory()->create();

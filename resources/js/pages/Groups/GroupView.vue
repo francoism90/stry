@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { index } from '@/actions/App/Web/Groups/Controllers/GroupController'
+import { index } from '@/actions/Modules/Web/Groups/Controllers/GroupController'
 import GroupEditModal from '@/components/Groups/GroupEditModal.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Users/Controllers/UserController'
+import { update } from '@/actions/Modules/Web/Users/Controllers/UserController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import type { User } from '@/types'
 import { useForm } from '@inertiajs/vue3'

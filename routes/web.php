@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-use App\Web\Account\Controllers\NotificationsController;
-use App\Web\Groups\Controllers\GroupController;
-use App\Web\Home\Controllers\HomeController;
-use App\Web\Media\Controllers\MediaController;
-use App\Web\Playlists\Controllers\PlaylistController;
-use App\Web\Profiles\Controllers\ProfileController;
-use App\Web\Tags\Controllers\TagController;
-use App\Web\Transcodes\Controllers\TranscodeController;
-use App\Web\Users\Controllers\UserController;
-use App\Web\Videos\Controllers\VideoChapterController;
-use App\Web\Videos\Controllers\VideoController;
-use App\Web\Videos\Controllers\VideoPlaylistController;
-use App\Web\Videos\Controllers\VideoTranscodeController;
 use Illuminate\Support\Facades\Route;
+use Modules\Web\Account\Controllers\NotificationsController;
+use Modules\Web\Groups\Controllers\GroupController;
+use Modules\Web\Home\Controllers\HomeController;
+use Modules\Web\Media\Controllers\MediaController;
+use Modules\Web\Playlists\Controllers\PlaylistController;
+use Modules\Web\Profiles\Controllers\ProfileController;
+use Modules\Web\Tags\Controllers\TagController;
+use Modules\Web\Transcodes\Controllers\TranscodeController;
+use Modules\Web\Users\Controllers\UserController;
+use Modules\Web\Videos\Controllers\VideoChapterController;
+use Modules\Web\Videos\Controllers\VideoController;
+use Modules\Web\Videos\Controllers\VideoPlaylistController;
+use Modules\Web\Videos\Controllers\VideoTranscodeController;
 
 // Home
 Route::get('/', HomeController::class)->name('home');

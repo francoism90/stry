@@ -1,4 +1,4 @@
-import { index } from '@/actions/App/Api/Tags/Controllers/TagController'
+import { index } from '@/actions/Modules/Api/Tags/Controllers/TagController'
 import type { Tag, TagCollection } from '@/types'
 import { uniqueModels } from '@/utils/model'
 import { type RouteQueryOptions } from '@/wayfinder'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ShuffleController from '@/actions/App/Web/Shuffle/Controllers/ShuffleController'
+import ShuffleController from '@/actions/Modules/Web/Shuffle/Controllers/ShuffleController'
 import { QueryInjectionKey } from '@/composables/query'
 import { home } from '@/routes'
 import { router, usePage } from '@inertiajs/vue3'

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Domain\Profiles\Models\Profile;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Web\Profiles\Middlewares\ResolveCurrentProfile;
 
 uses(RefreshDatabase::class);
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Web/Tags/Controllers/TagController'
+import { update } from '@/actions/Modules/Web/Tags/Controllers/TagController'
 import FormModal from '@/components/Ui/FormModal.vue'
 import { useTags } from '@/composables/tags'
 import type { Tag, TagMenuItem } from '@/types'

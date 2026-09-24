@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VideoTranscodedController from '@/actions/App/Web/Videos/Controllers/VideoTranscodedController'
+import VideoTranscodedController from '@/actions/Modules/Web/Videos/Controllers/VideoTranscodedController'
 import type { Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
