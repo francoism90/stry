@@ -114,23 +114,19 @@ class TagController implements HasMiddleware
         ]);
     }
 
-    public function store(TagStoreRequest $request, CreateTag $action): RedirectResponse
+    public function store(TagStoreRequest $request): RedirectResponse
     {
         Gate::authorize('create', Tag::class);
 
         // Create the tag
-        $tag = $action->handle(
+        $tag = app(CreateTag::class)->handle(
             name: $request->safe()->input('name'),
             type: TagType::from($request->safe()->input('type')),
             description: $request->safe()->input('description'),
         );
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $tag->name,
-            'description' => __('The tag has been created.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $tag->name, description: __('The tag has been created.'));
 
         return redirect()->route('tags.show', $tag);
     }
@@ -146,11 +142,7 @@ class TagController implements HasMiddleware
         );
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $tag->name,
-            'description' => __('The tag has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $tag->name, description: __('The tag has been updated.'));
 
         return back();
     }
@@ -163,11 +155,7 @@ class TagController implements HasMiddleware
         $tag->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $tag->name,
-            'description' => __('The tag has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $tag->name, description: __('The tag has been deleted.'), type: 'warning');
 
         return back();
     }

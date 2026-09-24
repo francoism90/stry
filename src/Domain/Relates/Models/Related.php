@@ -18,7 +18,7 @@ class Related extends Model
     protected $table = 'related';
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'relatable_type',

@@ -12,6 +12,9 @@ use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Playlist>
+ */
 class PlaylistFactory extends Factory
 {
     protected $model = Playlist::class;

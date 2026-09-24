@@ -9,6 +9,9 @@ use Domain\Profiles\States\Enabled;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Profile>
+ */
 class ProfileFactory extends Factory
 {
     protected $model = Profile::class;

@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class GroupToggleController implements HasMiddleware
 {
@@ -35,11 +34,7 @@ class GroupToggleController implements HasMiddleware
             ? __('Added to :group.', ['group' => $group->title])
             : __('Removed from :group.', ['group' => $group->title]);
 
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => $result,
-            'type' => 'success',
-        ]);
+        toast(title: (string) $video->name, description: $result);
 
         return back();
     }

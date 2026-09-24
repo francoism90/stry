@@ -14,7 +14,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class VideoPlaylistController implements HasMiddleware
 {
@@ -35,11 +34,7 @@ class VideoPlaylistController implements HasMiddleware
 
         PlaylistVideo::dispatch($video, $type);
 
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => __('Queued for playlist generation.'),
-            'type' => 'info',
-        ]);
+        toast(title: (string) $video->name, description: __('Queued for playlist generation.'), type: 'info');
 
         return back();
     }
@@ -52,11 +47,7 @@ class VideoPlaylistController implements HasMiddleware
         $playlist->updateOrFail($request->safe()->all());
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $playlist->type->label(),
-            'description' => __('The playlist has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $playlist->getType()->label(), description: __('The playlist has been updated.'));
 
         return back();
     }
@@ -69,11 +60,7 @@ class VideoPlaylistController implements HasMiddleware
         $playlist->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $playlist->type->label(),
-            'description' => __('The playlist has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $playlist->getType()->label(), description: __('The playlist has been deleted.'), type: 'warning');
 
         return back();
     }

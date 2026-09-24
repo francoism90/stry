@@ -124,11 +124,7 @@ class VideoController implements HasMiddleware
         );
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => __('The video has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $video->name, description: __('The video has been updated.'));
 
         return back();
     }
@@ -141,11 +137,7 @@ class VideoController implements HasMiddleware
         $video->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => __('The video has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $video->name, description: __('The video has been deleted.'), type: 'warning');
 
         return back();
     }

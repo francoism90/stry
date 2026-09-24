@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @implements CastsAttributes<Carbon|null, mixed>
+ */
 class AsDateTime implements CastsAttributes
 {
     public function get(Model $model, string $key, mixed $value, array $attributes): ?Carbon

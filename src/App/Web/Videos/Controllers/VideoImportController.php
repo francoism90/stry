@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class VideoImportController implements HasMiddleware
 {
@@ -32,11 +31,7 @@ class VideoImportController implements HasMiddleware
             disk: Video::getImportDisk()
         );
 
-        Inertia::flash([
-            'title' => __('Video import initiated'),
-            'description' => __('Files are being processed in the background.'),
-            'type' => 'info',
-        ]);
+        toast(title: __('Video import initiated'), description: __('Files are being processed in the background.'), type: 'info');
 
         return back();
     }

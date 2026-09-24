@@ -19,7 +19,7 @@ class Media extends BaseMedia
     use BroadcastsEvents;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'model_id',
@@ -114,6 +114,9 @@ class Media extends BaseMedia
         return true;
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function assetUri(): Attribute
     {
         return Attribute::make(
@@ -121,6 +124,9 @@ class Media extends BaseMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<array, never>
+     */
     protected function videoStream(): Attribute
     {
         return Attribute::make(
@@ -128,6 +134,9 @@ class Media extends BaseMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function codec(): Attribute
     {
         return Attribute::make(
@@ -135,6 +144,9 @@ class Media extends BaseMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function resolution(): Attribute
     {
         return Attribute::make(
@@ -148,6 +160,9 @@ class Media extends BaseMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function bitrate(): Attribute
     {
         return Attribute::make(

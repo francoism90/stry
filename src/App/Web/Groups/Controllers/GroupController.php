@@ -128,11 +128,7 @@ class GroupController implements HasMiddleware
         );
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $group->name,
-            'description' => __('The group has been created.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $group->name, description: __('The group has been created.'));
 
         return redirect()->route('collections.show', $group);
     }
@@ -148,11 +144,7 @@ class GroupController implements HasMiddleware
         );
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $group->name,
-            'description' => __('The group has been updated.'),
-            'type' => 'success',
-        ]);
+        toast(title: (string) $group->name, description: __('The group has been updated.'));
 
         return back();
     }
@@ -165,11 +157,7 @@ class GroupController implements HasMiddleware
         $group->deleteOrFail();
 
         // Notify the user
-        Inertia::flash([
-            'title' => (string) $group->name,
-            'description' => __('The group has been deleted.'),
-            'type' => 'warning',
-        ]);
+        toast(title: (string) $group->name, description: __('The group has been deleted.'), type: 'warning');
 
         return back();
     }

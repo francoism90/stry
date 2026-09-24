@@ -30,7 +30,7 @@ class Chapter extends Model implements Sortable
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'video_id',

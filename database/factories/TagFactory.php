@@ -8,6 +8,9 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Tag>
+ */
 class TagFactory extends Factory
 {
     protected $model = Tag::class;

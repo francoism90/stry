@@ -11,6 +11,8 @@ use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
+use Domain\Shared\Concerns\BroadcastsModelEvents;
+use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
@@ -20,9 +22,7 @@ use Domain\Videos\States\VideoState;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,12 +43,12 @@ use Support\MediaLibrary\TemporaryUrls;
 
 class Video extends Model implements HasMedia
 {
-    use BroadcastsEvents;
+    use BroadcastsModelEvents;
     use HasFactory;
     use HasStates;
     use HasTags;
     use HasTranslations;
-    use HasUlids;
+    use HasUlidRouteKey;
     use InteractsWithChapters;
     use InteractsWithGroups;
     use InteractsWithMedia;
@@ -60,7 +60,7 @@ class Video extends Model implements HasMedia
     use SoftDeletes;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -80,7 +80,7 @@ class Video extends Model implements HasMedia
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'user_id',
@@ -129,16 +129,6 @@ class Video extends Model implements HasMedia
     protected static function newFactory(): VideoFactory
     {
         return VideoFactory::new();
-    }
-
-    public function uniqueIds(): array
-    {
-        return ['ulid'];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'ulid';
     }
 
     public function registerMediaCollections(): void
@@ -213,46 +203,12 @@ class Video extends Model implements HasMedia
             ->extractVideoFrameAtSecond((float) $this->snapshot ?: round($this->duration / 2));
     }
 
-    public static function findFromUlid(Video|string $value): ?Video
-    {
-        if ($value instanceof Video) {
-            return $value;
-        }
-
-        return Video::query()->firstWhere('ulid', $value);
-    }
-
     /**
      * @return array<int, Channel>
      */
     public function broadcastOn(string $event): array
     {
         return array_filter([$this, $this->user, new PrivateChannel('library')]);
-    }
-
-    public function broadcastChannel(): string
-    {
-        return 'videos.'.$this->getRouteKey();
-    }
-
-    public function broadcastAs(string $event): string
-    {
-        return "video.{$event}";
-    }
-
-    public function broadcastWith(string $event): array
-    {
-        return ['id' => $this->getRouteKey()];
-    }
-
-    public function broadcastAfterCommit(): bool
-    {
-        return true;
-    }
-
-    public function broadcastQueue(): string
-    {
-        return 'broadcasts';
     }
 
     public function isExpired(): bool
@@ -410,13 +366,7 @@ class Video extends Model implements HasMedia
 
     public function thumbnailUrl(): ?string
     {
-        $media = $this->getThumbMedia();
-
-        if (! $media) {
-            return null;
-        }
-
-        return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
+        return $this->temporaryMediaUrl($this->getThumbMedia(), 'thumb');
     }
 
     public function thumbnailSrcset(): ?string
@@ -432,42 +382,36 @@ class Video extends Model implements HasMedia
 
     public function storyboardImageUrl(): ?string
     {
-        $media = $this->getStoryboardImage();
-
-        if (! $media) {
-            return null;
-        }
-
-        return rescue(fn () => TemporaryUrls::make($media)->getUrl());
+        return $this->temporaryMediaUrl($this->getStoryboardImage());
     }
 
     public function storyboardVttUrl(): ?string
     {
-        $media = $this->getStoryboardVtt();
-
-        if (! $media) {
-            return null;
-        }
-
-        return rescue(fn () => TemporaryUrls::make($media)->getUrl());
+        return $this->temporaryMediaUrl($this->getStoryboardVtt());
     }
 
     public function chaptersVttUrl(): ?string
     {
-        $media = $this->getChaptersVtt();
+        return $this->temporaryMediaUrl($this->getChaptersVtt());
+    }
 
+    protected function temporaryMediaUrl(?BaseMedia $media, string $conversion = ''): ?string
+    {
         if (! $media) {
             return null;
         }
 
-        return rescue(fn () => TemporaryUrls::make($media)->getUrl());
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl($conversion));
     }
 
     public function durationInSeconds(): float
     {
-        return (float) $this->getStreams()->max('duration') ?? 0.0;
+        return (float) $this->getStreams()->max('duration');
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function identifier(): Attribute
     {
         return Attribute::make(
@@ -475,6 +419,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function label(): Attribute
     {
         return Attribute::make(
@@ -482,6 +429,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function title(): Attribute
     {
         return Attribute::make(
@@ -489,6 +439,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function description(): Attribute
     {
         return Attribute::make(
@@ -496,6 +449,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function thumb(): Attribute
     {
         return Attribute::make(
@@ -503,6 +459,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function thumbSrcset(): Attribute
     {
         return Attribute::make(
@@ -510,6 +469,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function storyboardImage(): Attribute
     {
         return Attribute::make(
@@ -517,6 +479,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function storyboardVtt(): Attribute
     {
         return Attribute::make(
@@ -524,6 +489,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function chaptersVtt(): Attribute
     {
         return Attribute::make(
@@ -531,6 +499,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<array, never>
+     */
     protected function clips(): Attribute
     {
         return Attribute::make(
@@ -538,6 +509,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<int, never>
+     */
     protected function totalSize(): Attribute
     {
         return Attribute::make(
@@ -545,6 +519,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function filesize(): Attribute
     {
         return Attribute::make(
@@ -552,6 +529,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function codec(): Attribute
     {
         return Attribute::make(
@@ -559,6 +539,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function resolution(): Attribute
     {
         return Attribute::make(
@@ -566,6 +549,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     protected function bitrate(): Attribute
     {
         return Attribute::make(
@@ -573,6 +559,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<float, never>
+     */
     protected function duration(): Attribute
     {
         return Attribute::make(
@@ -580,13 +569,19 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function timestamp(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => duration($this->durationInSeconds()),
+            get: fn (): string => duration($this->duration),
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function released(): Attribute
     {
         return Attribute::make(
@@ -594,6 +589,9 @@ class Video extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<bool, never>
+     */
     protected function captioned(): Attribute
     {
         return Attribute::make(

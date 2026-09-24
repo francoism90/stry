@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class VideoLikeController implements HasMiddleware
 {
@@ -30,13 +29,12 @@ class VideoLikeController implements HasMiddleware
         // Toggle the video in the user's liked group.
         $group = $request->user()->toggleInGroup($video, GroupType::Liked);
 
-        Inertia::flash([
-            'title' => (string) $video->name,
-            'description' => $group->hasGroupable($video)
+        toast(
+            title: (string) $video->name,
+            description: $group->hasGroupable($video)
                 ? __('Added to :group.', ['group' => $group->title])
                 : __('Removed from :group.', ['group' => $group->title]),
-            'type' => 'success',
-        ]);
+        );
 
         return back();
     }

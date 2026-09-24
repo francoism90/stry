@@ -32,7 +32,7 @@ class Groupable extends MorphPivot
     public $incrementing = true;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'group_id',

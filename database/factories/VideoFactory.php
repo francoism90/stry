@@ -10,6 +10,9 @@ use Domain\Videos\States\Pending;
 use Domain\Videos\States\Verified;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Video>
+ */
 class VideoFactory extends Factory
 {
     protected $model = Video::class;

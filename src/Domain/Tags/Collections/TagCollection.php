@@ -7,6 +7,9 @@ namespace Domain\Tags\Collections;
 use Domain\Tags\Models\Tag;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends Collection<int, Tag>
+ */
 class TagCollection extends Collection
 {
     public function relates(): mixed
