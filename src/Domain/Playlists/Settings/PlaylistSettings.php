@@ -44,15 +44,4 @@ class PlaylistSettings extends Settings
     {
         return 'playlist';
     }
-
-    /**
-     * The protection schemes both playlist types can use. Shaka Streamer only
-     * supports cenc and cbcs, and few players support cbc1 or cens.
-     *
-     * @return array<int, ProtectionScheme>
-     */
-    public static function protectionSchemes(): array
-    {
-        return [ProtectionScheme::Cenc, ProtectionScheme::Cbcs];
-    }
 }

@@ -40,7 +40,6 @@ class PlaylistSettingsController implements HasMiddleware
             'type_options' => PlaylistTypeOptionsProperty::options(),
             'encryption_options' => Options::forEnum(EncryptionMethod::class)->nullable('None'),
             'protection_scheme_options' => Options::forEnum(ProtectionScheme::class, fn (ProtectionScheme $scheme): string => strtoupper($scheme->value))
-                ->only(...PlaylistSettings::protectionSchemes())
                 ->nullable('None'),
         ]);
     }

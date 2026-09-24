@@ -300,7 +300,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
 
         <UFormField
           label="Protection scheme"
-          description="Only used with Clear Key: CENC for cross-browser DASH, CBCS for Apple FairPlay / unified HLS."
+          description="Only used with Clear Key: CENC for cross-browser DASH, CBCS for Apple FairPlay / unified HLS. Few players support CBC1 or CENS, and the Streamer type rejects them."
           name="protection_scheme"
           :error="form.errors.protection_scheme"
           :class="fieldClass"

@@ -75,7 +75,7 @@ it('rejects an invalid encryption value', function () {
     $response->assertInvalid(['encryption']);
 });
 
-it('only offers protection schemes both playlist types support', function () {
+it('offers every protection scheme', function () {
     $user = User::factory()->create();
     $user->assignRole('super-admin');
 
@@ -84,17 +84,8 @@ it('only offers protection schemes both playlist types support', function () {
     expect(collect($response->json('protection_scheme_options'))->pluck('label', 'value')->all())->toBe([
         '' => 'None',
         'cenc' => 'CENC',
+        'cbc1' => 'CBC1',
+        'cens' => 'CENS',
         'cbcs' => 'CBCS',
     ]);
-});
-
-it('rejects a protection scheme Shaka Streamer does not support', function () {
-    $user = User::factory()->create();
-    $user->assignRole('super-admin');
-
-    $response = $this->actingAs($user)->patch(action([PlaylistSettingsController::class, 'update']), [
-        'protection_scheme' => 'cbc1',
-    ]);
-
-    $response->assertInvalid(['protection_scheme']);
 });
