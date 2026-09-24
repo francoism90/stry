@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f95bab31c2136ce0539b6947eed4e522",
+    "content-hash": "ce2c483f30d0aee1ac9a5be4edfbe8ec",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1272,6 +1272,81 @@
                 }
             ],
             "time": "2026-04-26T14:10:28+00:00"
+        },
+        {
+            "name": "foxws/laravel-ddd",
+            "version": "0.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/foxws/laravel-ddd.git",
+                "reference": "00d0d80b2d807f00d3d2913219a348e8a95ee851"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/foxws/laravel-ddd/zipball/00d0d80b2d807f00d3d2913219a348e8a95ee851",
+                "reference": "00d0d80b2d807f00d3d2913219a348e8a95ee851",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^13.0",
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.9",
+                "laravel/pao": "^1.0",
+                "laravel/pint": "^1.29",
+                "orchestra/testbench": "^11.0",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-laravel": "^5.0",
+                "pestphp/pest-plugin-type-coverage": "^5.0.2",
+                "phpstan/extension-installer": "^1.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Foxws\\Ddd\\DddServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers.php"
+                ],
+                "psr-4": {
+                    "Foxws\\Ddd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "foxws",
+                    "email": "francoism90@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Domain Driven Design scaffolding for Laravel projects",
+            "homepage": "https://github.com/foxws/laravel-ddd",
+            "keywords": [
+                "ddd",
+                "foxws",
+                "laravel",
+                "laravel-ddd"
+            ],
+            "support": {
+                "issues": "https://github.com/foxws/laravel-ddd/issues",
+                "source": "https://github.com/foxws/laravel-ddd/tree/0.0.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/foxws",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-09-16T18:57:42+00:00"
         },
         {
             "name": "foxws/laravel-essentials",
