@@ -85,7 +85,9 @@ trait HasGroups
     /**
      * Resolve the group types each of the given models belongs to using a single query.
      *
-     * @param  Collection<int, Model>  $models
+     * @template TModel of Model
+     *
+     * @param  Collection<int, TModel>  $models
      * @return Collection<array-key, Collection<int, GroupType>>
      */
     public function groupTypesFor(Collection $models): Collection
