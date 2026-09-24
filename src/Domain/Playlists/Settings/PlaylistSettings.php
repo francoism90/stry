@@ -6,8 +6,8 @@ namespace Domain\Playlists\Settings;
 
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
 use Domain\Shared\Enums\Language;
+use Foxws\Shaka\Support\ProtectionScheme;
 use Spatie\LaravelSettings\Settings;
 
 class PlaylistSettings extends Settings
@@ -43,5 +43,16 @@ class PlaylistSettings extends Settings
     public static function group(): string
     {
         return 'playlist';
+    }
+
+    /**
+     * The protection schemes both playlist types can use. Shaka Streamer only
+     * supports cenc and cbcs, and few players support cbc1 or cens.
+     *
+     * @return array<int, ProtectionScheme>
+     */
+    public static function protectionSchemes(): array
+    {
+        return [ProtectionScheme::Cenc, ProtectionScheme::Cbcs];
     }
 }

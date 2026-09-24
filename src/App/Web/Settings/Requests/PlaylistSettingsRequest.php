@@ -6,8 +6,9 @@ namespace App\Web\Settings\Requests;
 
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
+use Foxws\Shaka\Support\ProtectionScheme;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
@@ -36,7 +37,7 @@ class PlaylistSettingsRequest extends FormRequest
             'media_url_lifetime' => ['sometimes', 'integer', 'min:1'],
             'key_url_lifetime' => ['sometimes', 'integer', 'min:1'],
             'encryption' => ['sometimes', 'nullable', new Enum(EncryptionMethod::class)],
-            'protection_scheme' => ['sometimes', 'nullable', new Enum(ProtectionScheme::class)],
+            'protection_scheme' => ['sometimes', 'nullable', (new Enum(ProtectionScheme::class))->only(PlaylistSettings::protectionSchemes())],
             'key_rotation' => ['sometimes', 'boolean'],
             'key_rotation_duration' => ['sometimes', 'integer', 'min:1'],
         ];

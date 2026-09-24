@@ -8,9 +8,9 @@ use App\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
 use App\Web\Settings\Requests\PlaylistSettingsRequest;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
+use Foxws\Shaka\Support\ProtectionScheme;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -39,7 +39,9 @@ class PlaylistSettingsController implements HasMiddleware
             ...$settings->toArray(),
             'type_options' => PlaylistTypeOptionsProperty::options(),
             'encryption_options' => Options::forEnum(EncryptionMethod::class)->nullable('None'),
-            'protection_scheme_options' => Options::forEnum(ProtectionScheme::class)->nullable('None'),
+            'protection_scheme_options' => Options::forEnum(ProtectionScheme::class, fn (ProtectionScheme $scheme): string => strtoupper($scheme->value))
+                ->only(...PlaylistSettings::protectionSchemes())
+                ->nullable('None'),
         ]);
     }
 

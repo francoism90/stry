@@ -5,10 +5,10 @@ declare(strict_types=1);
 use App\Web\Settings\Controllers\PlaylistSettingsController;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
-use Domain\Playlists\Enums\ProtectionScheme;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
 use Domain\Users\Models\User;
+use Foxws\Shaka\Support\ProtectionScheme;
 
 it('allows a super-admin to fetch playlist settings', function () {
     $user = User::factory()->create();
@@ -73,4 +73,28 @@ it('rejects an invalid encryption value', function () {
     ]);
 
     $response->assertInvalid(['encryption']);
+});
+
+it('only offers protection schemes both playlist types support', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->get(action([PlaylistSettingsController::class, 'show']));
+
+    expect(collect($response->json('protection_scheme_options'))->pluck('label', 'value')->all())->toBe([
+        '' => 'None',
+        'cenc' => 'CENC',
+        'cbcs' => 'CBCS',
+    ]);
+});
+
+it('rejects a protection scheme Shaka Streamer does not support', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->patch(action([PlaylistSettingsController::class, 'update']), [
+        'protection_scheme' => 'cbc1',
+    ]);
+
+    $response->assertInvalid(['protection_scheme']);
 });
