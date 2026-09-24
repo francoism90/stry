@@ -35,7 +35,7 @@ use Support\Scout\Commands\SyncScoutCommand;
 
 $basePath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
 
-$app = Application::configure(basePath: $basePath)
+return Application::configure(basePath: $basePath)
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
@@ -114,7 +114,3 @@ $app = Application::configure(basePath: $basePath)
         SyncScoutCommand::class,
     ])
     ->create();
-
-$app->useAppPath($basePath.'/src/Modules');
-
-return $app;
