@@ -26,6 +26,9 @@ class UpdateVideoDetails
                 $tagIds = Tag::query()->options(data_get($attributes, 'tags.*.id', []))->get();
 
                 $video->syncTags($tagIds);
+
+                // Syncing the pivot fires no tag model events, while cached tag responses include video counts
+                DB::afterCommit(fn () => Tag::clearResponseCache());
             }
 
             // Regenerate media conversions if snapshot changed or thumb conversion is missing
