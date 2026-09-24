@@ -5,8 +5,6 @@ declare(strict_types=1);
 use App\Web\Profiles\Middlewares\ResolveCurrentProfile;
 use Domain\Groups\Commands\ClearGroupCommand;
 use Domain\Playlists\Commands\ClearPlaylistCommand;
-use Domain\Tags\Commands\CreateTagCommand;
-use Domain\Tags\Commands\SortTagsCommand;
 use Domain\Transcodes\Commands\ClearTranscodeCommand;
 use Domain\Transcodes\Commands\CreateTranscodeCommand;
 use Domain\Transcodes\Commands\ImportTranscodeCommand;
@@ -109,8 +107,6 @@ $app = Application::configure(basePath: $basePath)
         ClearPlaylistCommand::class,
         ClearTranscodeCommand::class,
         ImportTranscodeCommand::class,
-        CreateTagCommand::class,
-        SortTagsCommand::class,
         CreateTranscodeCommand::class,
         CreateUserCommand::class,
         ClearVideoCommand::class,
