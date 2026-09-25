@@ -7,6 +7,11 @@ namespace Domain\Media\QueryBuilders;
 use Domain\Media\Models\Media;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModel of Media
+ *
+ * @extends Builder<TModel>
+ */
 class MediaQueryBuilder extends Builder
 {
     public function findByUuidOrFail(string $uuid): Media

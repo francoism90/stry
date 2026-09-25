@@ -15,6 +15,8 @@ use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +28,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\ModelStates\HasStates;
 use Support\MediaLibrary\TemporaryUrls;
 
+#[CollectedBy(ProfileCollection::class)]
+#[UseEloquentBuilder(ProfileQueryBuilder::class)]
 class Profile extends Model implements HasMedia
 {
     use BroadcastsModelEvents;
@@ -71,16 +75,6 @@ class Profile extends Model implements HasMedia
     protected static function newFactory(): ProfileFactory
     {
         return ProfileFactory::new();
-    }
-
-    public function newEloquentBuilder($query): ProfileQueryBuilder
-    {
-        return new ProfileQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): ProfileCollection
-    {
-        return new ProfileCollection($models);
     }
 
     public function registerMediaCollections(): void

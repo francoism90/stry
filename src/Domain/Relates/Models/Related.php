@@ -6,10 +6,14 @@ namespace Domain\Relates\Models;
 
 use Domain\Relates\Collections\RelatedCollection;
 use Domain\Relates\QueryBuilders\RelatedQueryBuilder;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+#[CollectedBy(RelatedCollection::class)]
+#[UseEloquentBuilder(RelatedQueryBuilder::class)]
 class Related extends Model
 {
     /**
@@ -37,16 +41,6 @@ class Related extends Model
             'boost' => 'decimal:2',
             'options' => AsArrayObject::class,
         ];
-    }
-
-    public function newEloquentBuilder($query): RelatedQueryBuilder
-    {
-        return new RelatedQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): RelatedCollection
-    {
-        return new RelatedCollection($models);
     }
 
     public function relatable(): MorphTo

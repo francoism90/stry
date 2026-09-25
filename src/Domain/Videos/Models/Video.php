@@ -22,6 +22,8 @@ use Domain\Videos\States\VideoState;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +43,8 @@ use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
 use Support\MediaLibrary\TemporaryUrls;
 
+#[CollectedBy(VideoCollection::class)]
+#[UseEloquentBuilder(VideoQueryBuilder::class)]
 class Video extends Model implements HasMedia
 {
     use BroadcastsModelEvents;
@@ -87,7 +91,7 @@ class Video extends Model implements HasMedia
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $translatable = [
         'name',
@@ -114,16 +118,6 @@ class Video extends Model implements HasMedia
             'deleted_at' => AsDateTime::class,
             'state' => VideoState::class,
         ];
-    }
-
-    public function newEloquentBuilder($query): VideoQueryBuilder
-    {
-        return new VideoQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): VideoCollection
-    {
-        return new VideoCollection($models);
     }
 
     protected static function newFactory(): VideoFactory

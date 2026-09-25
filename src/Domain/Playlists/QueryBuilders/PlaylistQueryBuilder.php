@@ -6,10 +6,16 @@ namespace Domain\Playlists\QueryBuilders;
 
 use ArrayAccess;
 use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
+/**
+ * @template TModel of Playlist
+ *
+ * @extends Builder<TModel>
+ */
 class PlaylistQueryBuilder extends Builder
 {
     public function type(PlaylistType|ArrayAccess|array|null $type = null): self

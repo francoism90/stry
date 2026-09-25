@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Domain\Groups\QueryBuilders;
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Models\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @template TModel of Group
+ *
+ * @extends Builder<TModel>
+ */
 class GroupQueryBuilder extends Builder
 {
     public function custom(): self

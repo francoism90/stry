@@ -7,6 +7,7 @@ namespace Domain\Media\Models;
 use Domain\Media\Collections\MediaCollection;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
@@ -14,6 +15,7 @@ use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
+#[UseEloquentBuilder(MediaQueryBuilder::class)]
 class Media extends BaseMedia
 {
     use BroadcastsEvents;
@@ -49,11 +51,9 @@ class Media extends BaseMedia
         ];
     }
 
-    public function newEloquentBuilder($query): MediaQueryBuilder
-    {
-        return new MediaQueryBuilder($query);
-    }
-
+    /**
+     * Kept as a method: Spatie's Media already overrides newCollection(), so a #[CollectedBy] attribute would be ignored.
+     */
     public function newCollection(array $models = []): MediaCollection
     {
         return new MediaCollection($models);

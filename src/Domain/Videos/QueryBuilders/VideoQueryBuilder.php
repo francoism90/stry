@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Domain\Videos\QueryBuilders;
 
 use Domain\Profiles\Models\Profile;
+use Domain\Videos\Models\Video;
 use Domain\Videos\States;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModel of Video
+ *
+ * @extends Builder<TModel>
+ */
 class VideoQueryBuilder extends Builder
 {
     public function failed(): self

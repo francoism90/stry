@@ -16,6 +16,8 @@ use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -33,6 +35,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\ModelStates\HasStates;
 use Spatie\Translatable\HasTranslations;
 
+#[CollectedBy(GroupCollection::class)]
+#[UseEloquentBuilder(GroupQueryBuilder::class)]
 class Group extends Model implements HasMedia, Sortable
 {
     use BroadcastsModelEvents;
@@ -79,7 +83,7 @@ class Group extends Model implements HasMedia, Sortable
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     public array $translatable = [
         'content',
@@ -95,16 +99,6 @@ class Group extends Model implements HasMedia, Sortable
             'published_at' => AsDateTime::class,
             'deleted_at' => AsDateTime::class,
         ];
-    }
-
-    public function newEloquentBuilder($query): GroupQueryBuilder
-    {
-        return new GroupQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): GroupCollection
-    {
-        return new GroupCollection($models);
     }
 
     protected static function newFactory(): GroupFactory

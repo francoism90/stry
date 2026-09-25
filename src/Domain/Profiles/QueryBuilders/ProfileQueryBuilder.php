@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Domain\Profiles\QueryBuilders;
 
 use Domain\Profiles\Enums\ProfileSorter;
+use Domain\Profiles\Models\Profile;
 use Domain\Profiles\States;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModel of Profile
+ *
+ * @extends Builder<TModel>
+ */
 class ProfileQueryBuilder extends Builder
 {
     public function enabled(): self

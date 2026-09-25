@@ -16,7 +16,9 @@ use Domain\Transcodes\States;
 use Domain\Transcodes\States\TranscodeState;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,8 @@ use Laravel\Scout\Searchable;
 use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(TranscodeObserver::class)]
+#[CollectedBy(TranscodeCollection::class)]
+#[UseEloquentBuilder(TranscodeQueryBuilder::class)]
 class Transcode extends Model
 {
     use BroadcastsModelEvents;
@@ -82,16 +86,6 @@ class Transcode extends Model
             'updated_at' => AsDateTime::class,
             'state' => TranscodeState::class,
         ];
-    }
-
-    public function newEloquentBuilder($query): TranscodeQueryBuilder
-    {
-        return new TranscodeQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): TranscodeCollection
-    {
-        return new TranscodeCollection($models);
     }
 
     public function transcodable(): MorphTo
