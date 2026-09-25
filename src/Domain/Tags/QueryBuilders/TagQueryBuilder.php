@@ -10,6 +10,11 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModel of Tag
+ *
+ * @extends Builder<TModel>
+ */
 class TagQueryBuilder extends Builder
 {
     public function options(Tag|ArrayAccess|array|string $values): self

@@ -18,6 +18,8 @@ use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -33,6 +35,8 @@ use Spatie\ModelStates\HasStates;
 use Spatie\Permission\Traits\HasRoles;
 use Support\MediaLibrary\TemporaryUrls;
 
+#[CollectedBy(UserCollection::class)]
+#[UseEloquentBuilder(UserQueryBuilder::class)]
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use BroadcastsModelEvents;
@@ -88,16 +92,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
-    }
-
-    public function newEloquentBuilder($query): UserQueryBuilder
-    {
-        return new UserQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): UserCollection
-    {
-        return new UserCollection($models);
     }
 
     public function guardName(): array

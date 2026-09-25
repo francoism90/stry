@@ -18,7 +18,9 @@ use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +34,8 @@ use League\Flysystem\WhitespacePathNormalizer;
 use Spatie\ModelStates\HasStates;
 
 #[ObservedBy(PlaylistObserver::class)]
+#[CollectedBy(PlaylistCollection::class)]
+#[UseEloquentBuilder(PlaylistQueryBuilder::class)]
 class Playlist extends Model
 {
     use BroadcastsModelEvents;
@@ -93,16 +97,6 @@ class Playlist extends Model
     protected static function newFactory(): PlaylistFactory
     {
         return PlaylistFactory::new();
-    }
-
-    public function newEloquentBuilder($query): PlaylistQueryBuilder
-    {
-        return new PlaylistQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): PlaylistCollection
-    {
-        return new PlaylistCollection($models);
     }
 
     public function playlistable(): MorphTo

@@ -19,6 +19,8 @@ use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
 use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -29,6 +31,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\Tag as BaseTag;
 
+#[CollectedBy(TagCollection::class)]
+#[UseEloquentBuilder(TagQueryBuilder::class)]
 class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsModelEvents;
@@ -53,7 +57,7 @@ class Tag extends BaseTag implements HasMedia
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     public array $translatable = [
         'name',
@@ -74,16 +78,6 @@ class Tag extends BaseTag implements HasMedia
             'created_at' => AsDateTime::class,
             'updated_at' => AsDateTime::class,
         ];
-    }
-
-    public function newEloquentBuilder($query): TagQueryBuilder
-    {
-        return new TagQueryBuilder($query);
-    }
-
-    public function newCollection(array $models = []): TagCollection
-    {
-        return new TagCollection($models);
     }
 
     public function registerMediaCollections(): void

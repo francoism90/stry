@@ -6,10 +6,16 @@ namespace Domain\Transcodes\QueryBuilders;
 
 use ArrayAccess;
 use Domain\Transcodes\Enums\TranscodeEncoder;
+use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\States;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
+/**
+ * @template TModel of Transcode
+ *
+ * @extends Builder<TModel>
+ */
 class TranscodeQueryBuilder extends Builder
 {
     public function encoder(ArrayAccess|array|TranscodeEncoder $encoder): self
