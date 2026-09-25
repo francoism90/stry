@@ -6,6 +6,12 @@ tags:
     - guides
     - documentation
     - index
+metadata:
+    kind: personal
+    type: App
+    status: active
+    eyebrow: 'Streaming · Laravel · Inertia'
+    desc: A streaming platform built with Laravel and Inertia.js.
 ---
 
 # Documentation
