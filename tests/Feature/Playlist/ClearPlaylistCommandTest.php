@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use Domain\Playlists\Models\Playlist;
+use Illuminate\Support\Facades\Storage;
+
+beforeEach(fn () => Storage::fake('segments'));
 
 it('deletes prunable playlists on confirmation', function () {
     Playlist::factory()->failed()->create();
