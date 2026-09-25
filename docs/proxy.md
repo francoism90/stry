@@ -8,42 +8,44 @@ tags:
 
 # Reverse Proxy
 
-**stry** doesn't bundle a dedicated proxy container. Instead, the app's own FrankenPHP/Caddy instance (started by `octane:frankenphp`) reverse proxies sibling services directly, driven by `config/octane.php`'s `caddy.env.CADDY_EXTRA_CONFIG` (rendered by `Support\Octane\CaddySites`). One upstream — the app's `:8000` — is enough for every subdomain you use; the app's own Caddy routes by `Host` header:
+**stry** doesn't come with a separate proxy container. The app already runs FrankenPHP, which includes the Caddy web server, and that Caddy instance forwards requests to the other services itself.
 
-| Env var                            | Routes to                    | Purpose                    |
+It works by hostname. You send every subdomain to the app on port `8000`, and Caddy looks at the `Host` header to decide where each request goes:
+
+| Environment variable               | Sent to                      | Used for                   |
 | ---------------------------------- | ---------------------------- | -------------------------- |
-| `APP_URL`'s host                   | the app itself               | Main application           |
-| `AWS_URL`'s host                   | `systemd-{app}-rustfs:9000`  | S3-compatible API          |
+| The host in `APP_URL`              | the app itself               | The main application       |
+| The host in `AWS_URL`              | `systemd-{app}-rustfs:9000`  | S3-compatible storage API  |
 | `VITE_REVERB_HOST` / `REVERB_HOST` | `systemd-{app}-reverb:6001`  | Laravel Reverb (WebSocket) |
-| `MAILPIT_UI_HOST` (optional)       | `systemd-{app}-mailpit:8025` | Mailpit UI                 |
+| `MAILPIT_UI_HOST` (optional)       | `systemd-{app}-mailpit:8025` | Mailpit web UI             |
 
-Leave `MAILPIT_UI_HOST` unset to keep that block out of the config entirely — see `CaddySites::render()`, which skips any entry with an empty host.
+This mapping is set in `config/octane.php` (`caddy.env.CADDY_EXTRA_CONFIG`) and turned into Caddy config by `Support\Octane\CaddySites`. If you leave `MAILPIT_UI_HOST` empty, Mailpit isn't exposed at all: `CaddySites::render()` skips any entry without a hostname.
 
 ## Bring your own TLS termination
 
-Terminate HTTPS in front of `:8000` with whatever you already run — a router/NAS reverse proxy (Synology, pfSense/OPNsense), Nginx Proxy Manager, Traefik, Cloudflare Tunnel, etc. Point every subdomain above at the same destination host:port; no per-service port needs to be exposed, since the app's Caddy tells them apart by `Host` header alone.
+Handle HTTPS in front of port `8000` with whatever you already use: the reverse proxy on your router or NAS (Synology, pfSense, OPNsense), Nginx Proxy Manager, Traefik, Cloudflare Tunnel and so on. Point every subdomain above at the same host and port. You don't need to open a port per service, because the app's Caddy tells them apart by the `Host` header.
 
 :::warning
-Whatever terminates TLS must forward the original `Host` header unmodified — that's what the app's Caddy instance matches on.
+Your TLS proxy must pass the original `Host` header through unchanged. The app's Caddy uses it to route each request.
 :::
 
-## Adding another sibling service
+## Adding another service
 
-Extend the map passed to `CaddySites::render()` in `config/octane.php` with the service's public hostname and its internal `host:port`. Nothing else — no Quadlet, no host port, no reverse-proxy entry — needs to change anywhere else.
+Add the service's public hostname and its internal `host:port` to the map passed to `CaddySites::render()` in `config/octane.php`. That's all: you don't need a new Quadlet unit, host port or proxy entry.
 
 ## Using a different port
 
-The `:8000` above is the container-internal port FrankenPHP listens on (`--port=8000` in `APP_COMMAND`) — `config/octane.php`'s `OCTANE_PORT` must match it, since that's what `CaddySites` uses to build the `Host`-matched blocks.
+Port `8000` is the port FrankenPHP listens on inside the container (`--port=8000` in `APP_COMMAND`). `OCTANE_PORT` in `config/octane.php` must match it, because `CaddySites` uses it to build the hostname rules.
 
-You don't need to change either of those just to publish on a different host port. In `app.quadlets`, `PublishPort=8001:8000` keeps FrankenPHP on `:8000` internally and only remaps the host side to `:8001` — then point your reverse proxy (and firewall) at `:8001` instead.
+To use a different port on the host, you don't need to change either of those. In `app.quadlets`, `PublishPort=8001:8000` keeps FrankenPHP on port `8000` inside the container and makes it available on port `8001` on the host. Then point your reverse proxy and firewall at port `8001`.
 
-Only set `OCTANE_PORT` (and change `APP_COMMAND`'s `--port`) if you need FrankenPHP itself to listen on a different port inside the container.
+Only change `OCTANE_PORT` (and the `--port` in `APP_COMMAND`) if FrankenPHP itself needs to listen on a different port inside the container.
 
 ## Local development
 
-Local development doesn't need any of this — the app is reachable directly at `http://localhost:8000`, see [Development Setup](development.md).
+You don't need any of this locally. The app is available at `http://localhost:8000`. See [Development Setup](development.md).
 
 ## Troubleshooting
 
-- **404 / connection refused for a sibling service** — confirm its env var (`AWS_URL`, `VITE_REVERB_HOST`, `MAILPIT_UI_HOST`) resolves to the exact hostname your upstream reverse proxy is forwarding, and that the sibling container is running and reachable on the app's internal network.
-- **Works for the app but not `ws.*`/`s3.*`/etc.** — check that your upstream reverse proxy forwards the `Host` header as-is rather than rewriting it to the app's own hostname.
+- **A service returns 404 or refuses the connection**: check that its variable (`AWS_URL`, `VITE_REVERB_HOST`, `MAILPIT_UI_HOST`) contains exactly the hostname your reverse proxy forwards. Also check that the service's container is running and reachable on the app's internal network.
+- **The app works, but `ws.*`, `s3.*` and similar subdomains don't**: check that your reverse proxy passes the `Host` header through unchanged, instead of replacing it with the app's own hostname.
