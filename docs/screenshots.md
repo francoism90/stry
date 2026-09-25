@@ -8,10 +8,10 @@ tags:
 
 # Screenshots
 
-A quick look at stry in action.
+A quick look at what stry looks like.
 
 :::note
-Screenshots may lag behind active development — stry is evolving, and the UI shown here can differ from what you see after pulling the latest changes.
+stry is still changing, so the screenshots may be out of date. The current version can look different.
 :::
 
 ## At a glance
@@ -70,9 +70,9 @@ Screenshots may lag behind active development — stry is evolving, and the UI s
 
 </div>
 
-## Home — Video Library {#home}
+## Home: Video Library {#home}
 
-The landing page: a searchable, filterable grid of your videos, with quick access to Tags, Collections, Library, Users, and Transcodes from the sidebar.
+The start page shows your videos in a grid that you can search and filter. The sidebar links to Tags, Collections, Library, Users and Transcodes.
 
 <div className="gallery-tags">
 <span>Library</span>
@@ -85,13 +85,11 @@ The landing page: a searchable, filterable grid of your videos, with quick acces
 
 ![Home page showing the video library grid, search bar, filters, and sidebar navigation](./screenshots/home.webp)
 
-**What's where:**
-
 ![Home page with numbered callouts for the sidebar, search, account menu, filters, sort, and video grid](./screenshots/home-annotated.webp)
 
-## Library — List View {#library}
+## Library: List View {#library}
 
-Every video as a compact row instead of a grid, filterable by verification state (All / Verified / Pending / Failed), with quick view, edit, and delete actions per row.
+Shows every video as a compact row instead of a grid. You can filter by verification state (All, Verified, Pending, Failed), and each row has buttons to view, edit or delete the video.
 
 <div className="gallery-tags">
 <span>Library</span>
@@ -106,7 +104,7 @@ Every video as a compact row instead of a grid, filterable by verification state
 
 ## Collections {#collections}
 
-Built-in **Saved**, **Liked**, and **Viewed** collections, alongside any custom collections you create.
+The built-in **Saved**, **Liked** and **Viewed** collections, plus any collections you create yourself.
 
 <div className="gallery-tags">
 <span>Collections</span>
@@ -121,7 +119,7 @@ Built-in **Saved**, **Liked**, and **Viewed** collections, alongside any custom 
 
 ## Tags {#tags}
 
-Browse tags by category — Series, Studio, Genre, Person, Language — with a live video count per tag.
+Browse tags by category (Series, Studio, Genre, Person, Language). Each tag shows how many videos it has.
 
 <div className="gallery-tags">
 <span>Tags</span>
@@ -133,9 +131,9 @@ Browse tags by category — Series, Studio, Genre, Person, Language — with a l
 
 ![Tags page with numbered callouts for the sidebar, search, categories, sort, and tag grid](./screenshots/tags-annotated.webp)
 
-## Users — Administration {#users}
+## Users: Administration {#users}
 
-Manage accounts with verification-status filters (All / Verified / Unverified / Deleted) and quick edit/delete actions per user.
+Manage user accounts. You can filter by status (All, Verified, Unverified, Deleted), and edit or delete each user.
 
 <div className="gallery-tags">
 <span>Users</span>
@@ -149,7 +147,7 @@ Manage accounts with verification-status filters (All / Verified / Unverified / 
 
 ## Create Menu {#create-menu}
 
-A single shortcut, available from anywhere, to create a Collection, Profile, Video, Tag, or User.
+One button, available on every page, to create a collection, profile, video, tag or user.
 
 <div className="gallery-tags">
 <span>Create menu</span>
@@ -162,7 +160,7 @@ A single shortcut, available from anywhere, to create a Collection, Profile, Vid
 
 ## Profiles {#profiles}
 
-Multiple viewer profiles per account — including a restricted **Kids** profile — with one-click switching and a clear **Current** indicator.
+Each account can have several viewer profiles, including a restricted **Kids** profile. You switch profiles with one click, and the active one is marked **Current**.
 
 <div className="gallery-tags">
 <span>Profiles</span>
@@ -176,7 +174,7 @@ Multiple viewer profiles per account — including a restricted **Kids** profile
 
 ## Account Settings {#account-settings}
 
-Update your name and email, or log out, from the Account tab — Security, General, and Appearance settings live alongside it.
+Change your name and email, or log out, on the Account tab. The Security, General and Appearance tabs are next to it.
 
 <div className="gallery-tags">
 <span>Settings</span>
@@ -191,7 +189,7 @@ Update your name and email, or log out, from the Account tab — Security, Gener
 
 ## Video Player {#video-player}
 
-A custom player with scrub bar, playback controls, and Edit/Like/Save/Add actions, plus an "Up next" queue below.
+The video player, with a progress bar, playback controls and Edit, Like, Save and Add buttons. Below it is an "Up next" list.
 
 <div className="gallery-tags">
 <span>Video player</span>
@@ -205,7 +203,7 @@ A custom player with scrub bar, playback controls, and Edit/Like/Save/Add action
 
 ## Edit Video {#edit-video}
 
-The video editor is a tabbed modal: **General** metadata, **Media** file details, **Conversions** (playlists and transcodes), and a **Danger Zone** for verification state and deletion.
+Videos are edited in a window with four tabs: **General** for the details, **Media** for file information, **Conversions** for playlists and transcodes, and **Danger Zone** for the verification state and deleting the video.
 
 ### General
 
