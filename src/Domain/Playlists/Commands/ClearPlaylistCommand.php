@@ -19,7 +19,8 @@ class ClearPlaylistCommand extends Command implements Isolatable
      * @var string
      */
     protected $signature = 'playlists:clear
-        {--all : Clear all playlists, including those that are not expired or failed}';
+        {--all : Clear all playlists, including those that are not expired or failed}
+        {--force : Skip the confirmation prompt}';
 
     /**
      * @var string
@@ -49,7 +50,7 @@ class ClearPlaylistCommand extends Command implements Isolatable
             ])->all(),
         );
 
-        if (confirm('Are you sure you want to delete these playlists?')) {
+        if ($this->option('force') || confirm('Are you sure you want to delete these playlists?')) {
             $playlists->each(function (Playlist $playlist) {
                 info("deleting playlist ({$playlist->getKey()})");
 

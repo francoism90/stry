@@ -18,7 +18,8 @@ class ClearVideoCommand extends Command implements Isolatable
     /**
      * @var string
      */
-    protected $signature = 'videos:clear';
+    protected $signature = 'videos:clear
+        {--force : Skip the confirmation prompt}';
 
     /**
      * @var string
@@ -47,7 +48,7 @@ class ClearVideoCommand extends Command implements Isolatable
             ])->all(),
         );
 
-        if (confirm("Are you sure you want to force-delete these {$videos->count()} videos?")) {
+        if ($this->option('force') || confirm("Are you sure you want to force-delete these {$videos->count()} videos?")) {
             $videos->each(function (Video $video) {
                 if (! $video->trashed()) {
                     return;

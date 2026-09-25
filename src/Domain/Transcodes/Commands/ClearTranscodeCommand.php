@@ -19,7 +19,8 @@ class ClearTranscodeCommand extends Command implements Isolatable
      * @var string
      */
     protected $signature = 'transcodes:clear
-        {--all : Clear all expired transcodes, including imported ones}';
+        {--all : Clear all expired transcodes, including imported ones}
+        {--force : Skip the confirmation prompt}';
 
     /**
      * @var string
@@ -55,7 +56,7 @@ class ClearTranscodeCommand extends Command implements Isolatable
             ])->all(),
         );
 
-        if (confirm('Are you sure you want to delete these transcodes?')) {
+        if ($this->option('force') || confirm('Are you sure you want to delete these transcodes?')) {
             $transcodes->each(function (Transcode $transcode) {
                 info("deleting transcode ({$transcode->getKey()})");
 

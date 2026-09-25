@@ -70,3 +70,18 @@ it('does nothing when confirmation is declined', function () {
 
     expect($group->fresh()->videos()->count())->toBe(1);
 });
+
+it('detaches without confirmation when using --force', function () {
+    $user = User::factory()->create();
+    $group = Group::factory()->for($user)->viewed()->create();
+    $video = Video::factory()->create();
+    $group->videos()->attach($video);
+
+    $options = User::query()->limit(10)->pluck('email', 'id')->all();
+
+    $this->artisan('groups:clear', ['--force' => true])
+        ->expectsSearch('Select user to clear group for', $user->id, '', $options)
+        ->assertSuccessful();
+
+    expect($group->fresh()->videos()->count())->toBe(0);
+});

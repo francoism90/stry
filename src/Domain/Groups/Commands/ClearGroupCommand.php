@@ -22,7 +22,8 @@ class ClearGroupCommand extends Command implements Isolatable
      * @var string
      */
     protected $signature = 'groups:clear
-        {--group=viewed : The group type to clear (liked, saved, viewed)}';
+        {--group=viewed : The group type to clear (liked, saved, viewed)}
+        {--force : Skip the confirmation prompt}';
 
     /**
      * @var string
@@ -72,7 +73,7 @@ class ClearGroupCommand extends Command implements Isolatable
             ]],
         );
 
-        if (confirm("Are you sure you want to detach all {$count} video(s) from the {$type->label()} group?")) {
+        if ($this->option('force') || confirm("Are you sure you want to detach all {$count} video(s) from the {$type->label()} group?")) {
             $group->videos()->detach();
 
             info('Done.');

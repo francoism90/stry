@@ -67,3 +67,12 @@ it('does not include recent failed transcodes in --all option', function () {
         ->expectsOutputToContain('No transcodes found to delete.')
         ->assertSuccessful();
 });
+
+it('deletes without confirmation when using --force', function () {
+    Transcode::factory()->failed()->create();
+
+    $this->artisan('transcodes:clear --force')
+        ->assertSuccessful();
+
+    expect(Transcode::query()->count())->toBe(0);
+});
