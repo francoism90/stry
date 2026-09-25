@@ -13,7 +13,6 @@ use Domain\Videos\Commands\ImportVideoCommand;
 use Foundation\Http\Middlewares\AddCspHeaders;
 use Foundation\Http\Middlewares\AddHorizonCspNonce;
 use Foundation\Http\Middlewares\AddTelescopeCspNonce;
-use Foundation\Http\Middlewares\EnsureRequestHasPrivateSubnet;
 use Foundation\Http\Middlewares\SetCacheHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -69,7 +68,6 @@ return Application::configure(basePath: $basePath)
             'cache.bypass' => DoNotCacheResponse::class,
             'csp.horizon' => AddHorizonCspNonce::class,
             'csp.telescope' => AddTelescopeCspNonce::class,
-            'private' => EnsureRequestHasPrivateSubnet::class,
             'precognitive' => HandlePrecognitiveRequests::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
