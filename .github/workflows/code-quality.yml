@@ -71,4 +71,4 @@ jobs:
               run: pnpm run check
 
             - name: Run TypeScript type check
-              run: pnpm run type-check
+              run: pnpm run types:check

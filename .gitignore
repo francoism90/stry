@@ -6,8 +6,6 @@ _ide_helper.php
 .env
 .env.backup
 .env.production
-.eslintcache
-.php-cs-fixer.cache
 .phpactor.json
 .phpstorm.meta.php
 .phpunit.cache

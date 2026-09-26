@@ -120,7 +120,7 @@
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
             "pnpm run check",
-            "pnpm run type-check",
+            "pnpm run types:check",
             "@test"
         ],
         "test": [
