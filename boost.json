@@ -1,6 +1,5 @@
 {
     "agents": [
-        "copilot",
         "claude_code"
     ],
     "cloud": false,
@@ -16,7 +15,8 @@
         "foxws/laravel-essentials",
         "foxws/laravel-podman",
         "foxws/laravel-shaka",
-        "foxws/laravel-streamer"
+        "foxws/laravel-streamer",
+        "foxws/laravel-ddd"
     ],
     "sail": false,
     "skills": [
@@ -33,6 +33,7 @@
         "echo-vue-development",
         "echo-development",
         "tailwindcss-development",
+        "laravel-ddd-development",
         "laravel-essentials-development",
         "podman-lpod",
         "podman-presets",
