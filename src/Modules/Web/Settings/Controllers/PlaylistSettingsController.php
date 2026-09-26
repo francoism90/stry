@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Settings\Controllers;
 
-use Modules\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
-use Modules\Web\Settings\Requests\PlaylistSettingsRequest;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Settings\PlaylistSettings;
@@ -17,6 +15,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
+use Modules\Web\Settings\Requests\PlaylistSettingsRequest;
 use Spatie\LaravelOptions\Options;
 
 class PlaylistSettingsController implements HasMiddleware

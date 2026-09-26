@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Groups\Controllers;
 
-use Modules\Api\Groups\Requests\GroupStoreRequest;
-use Modules\Api\Groups\Requests\GroupUpdateRequest;
-use Modules\Api\Groups\Resources\GroupResource;
-use Modules\Api\Videos\Resources\VideoResource;
-use Modules\Web\Groups\Responses\GroupResourceProperty;
 use Domain\Groups\Actions\UpdateGroupDetails;
 use Domain\Groups\Enums\GroupScope;
 use Domain\Groups\Enums\GroupSorter;
@@ -35,6 +30,11 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Groups\Requests\GroupStoreRequest;
+use Modules\Api\Groups\Requests\GroupUpdateRequest;
+use Modules\Api\Groups\Resources\GroupResource;
+use Modules\Api\Videos\Resources\VideoResource;
+use Modules\Web\Groups\Responses\GroupResourceProperty;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Sorts\RecommendedSorter;
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Web\Users\Responses;
 
-use Modules\Api\Users\Resources\UserResource;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Users\Resources\UserResource;
 
 readonly class UserResourceProperty implements ProvidesInertiaProperty
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Responses;
 
-use Modules\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Actions\GetSimilarVideos;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Videos\Resources\VideoResource;
 
 readonly class VideoQueueProperty implements ProvidesInertiaProperty
 {

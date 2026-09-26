@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Api\Videos\Controllers;
 
-use Modules\Api\Videos\Requests\VideoViewRequest;
 use Domain\Videos\Events\VideoHasBeenViewedEvent;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Api\Videos\Requests\VideoViewRequest;
 
 class VideoSessionController implements HasMiddleware
 {

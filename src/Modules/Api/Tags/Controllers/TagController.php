@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Api\Tags\Controllers;
 
-use Modules\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Foxws\ScoutBuilder\AllowedFilter;
@@ -14,6 +13,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Api\Tags\Resources\TagResource;
 use Spatie\ResponseCache\Attributes\FlexibleCache;
 use Support\Scout\Sorts\VideosSorter;
 

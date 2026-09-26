@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Api\Transcodes\Resources;
 
-use Modules\Api\Shared\Resources\ModelResource;
 use Domain\Transcodes\Models\Transcode;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Api\Shared\Resources\ModelResource;
 
 /**
  * @mixin Transcode

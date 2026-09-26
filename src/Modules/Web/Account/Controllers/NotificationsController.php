@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Account\Controllers;
 
-use Modules\Api\Notifications\Resources\NotificationResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -12,6 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Notifications\Resources\NotificationResource;
 
 class NotificationsController implements HasMiddleware
 {

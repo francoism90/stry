@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Controllers;
 
-use Modules\Api\Playlists\Requests\PlaylistStoreRequest;
-use Modules\Api\Playlists\Requests\PlaylistUpdateRequest;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Videos\Jobs\PlaylistVideo;
@@ -14,6 +12,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Api\Playlists\Requests\PlaylistStoreRequest;
+use Modules\Api\Playlists\Requests\PlaylistUpdateRequest;
 
 class VideoPlaylistController implements HasMiddleware
 {

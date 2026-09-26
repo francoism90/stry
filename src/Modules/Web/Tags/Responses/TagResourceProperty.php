@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Web\Tags\Responses;
 
-use Modules\Api\Tags\Resources\TagResource;
 use Domain\Tags\Models\Tag;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Tags\Resources\TagResource;
 
 readonly class TagResourceProperty implements ProvidesInertiaProperty
 {

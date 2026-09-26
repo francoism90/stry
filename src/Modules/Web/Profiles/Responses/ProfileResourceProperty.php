@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Web\Profiles\Responses;
 
-use Modules\Api\Profiles\Resources\ProfileResource;
 use Domain\Profiles\Models\Profile;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Profiles\Resources\ProfileResource;
 
 readonly class ProfileResourceProperty implements ProvidesInertiaProperty
 {

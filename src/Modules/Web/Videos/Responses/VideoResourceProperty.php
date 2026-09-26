@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Responses;
 
-use Modules\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Models\Video;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Videos\Resources\VideoResource;
 
 readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {

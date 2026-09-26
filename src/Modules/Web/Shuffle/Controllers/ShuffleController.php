@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Web\Shuffle\Controllers;
 
-use Modules\Web\Shuffle\Enums\ShuffleType;
 use Domain\Tags\Actions\GetRandomTag;
 use Domain\Videos\Actions\GetRandomVideo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Modules\Web\Shuffle\Enums\ShuffleType;
 
 class ShuffleController implements HasMiddleware
 {

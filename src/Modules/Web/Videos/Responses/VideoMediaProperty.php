@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Responses;
 
-use Modules\Api\Media\Resources\MediaResource;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Gate;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Media\Resources\MediaResource;
 
 readonly class VideoMediaProperty implements ProvidesInertiaProperty
 {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Transcodes\Controllers;
 
-use Modules\Api\Transcodes\Requests\TranscodeUpdateRequest;
-use Modules\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Enums\TranscodeScope;
 use Domain\Transcodes\Enums\TranscodeSorter;
 use Domain\Transcodes\Filters\TranscodeScopeFilter;
@@ -21,6 +19,8 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Transcodes\Requests\TranscodeUpdateRequest;
+use Modules\Api\Transcodes\Resources\TranscodeResource;
 use Spatie\LaravelOptions\Options;
 
 class TranscodeController implements HasMiddleware

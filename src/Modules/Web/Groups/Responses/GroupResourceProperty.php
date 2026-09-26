@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Web\Groups\Responses;
 
-use Modules\Api\Groups\Resources\GroupResource;
 use Domain\Groups\Models\Group;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Groups\Resources\GroupResource;
 
 readonly class GroupResourceProperty implements ProvidesInertiaProperty
 {

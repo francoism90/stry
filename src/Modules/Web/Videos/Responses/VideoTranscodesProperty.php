@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Responses;
 
-use Modules\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Gate;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Transcodes\Resources\TranscodeResource;
 
 readonly class VideoTranscodesProperty implements ProvidesInertiaProperty
 {

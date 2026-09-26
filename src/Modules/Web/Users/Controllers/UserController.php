@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Users\Controllers;
 
-use Modules\Api\Users\Requests\UserStoreRequest;
-use Modules\Api\Users\Requests\UserUpdateRequest;
-use Modules\Api\Users\Resources\UserResource;
 use Domain\Users\Actions\CreateNewUser;
 use Domain\Users\Actions\UpdateUserProfileInformation;
 use Domain\Users\Enums\UserScope;
@@ -25,6 +22,9 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Users\Requests\UserStoreRequest;
+use Modules\Api\Users\Requests\UserUpdateRequest;
+use Modules\Api\Users\Resources\UserResource;
 use Spatie\LaravelOptions\Options;
 
 class UserController implements HasMiddleware

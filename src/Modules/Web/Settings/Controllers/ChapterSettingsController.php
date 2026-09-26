@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Settings\Controllers;
 
-use Modules\Web\Chapters\Responses\ChapterTypeOptionsProperty;
-use Modules\Web\Settings\Requests\ChapterSettingsRequest;
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Settings\ChapterSettings;
 use Illuminate\Http\JsonResponse;
@@ -14,6 +12,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Web\Chapters\Responses\ChapterTypeOptionsProperty;
+use Modules\Web\Settings\Requests\ChapterSettingsRequest;
 
 class ChapterSettingsController implements HasMiddleware
 {

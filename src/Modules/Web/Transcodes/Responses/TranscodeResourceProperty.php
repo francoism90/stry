@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Web\Transcodes\Responses;
 
-use Modules\Api\Transcodes\Resources\TranscodeResource;
 use Domain\Transcodes\Models\Transcode;
 use Inertia\PropertyContext;
 use Inertia\ProvidesInertiaProperty;
+use Modules\Api\Transcodes\Resources\TranscodeResource;
 
 readonly class TranscodeResourceProperty implements ProvidesInertiaProperty
 {

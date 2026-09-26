@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Settings\Controllers;
 
-use Modules\Web\Settings\Requests\ProcessingSettingsRequest;
 use Domain\Videos\Settings\ProcessingSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Web\Settings\Requests\ProcessingSettingsRequest;
 
 class ProcessingSettingsController implements HasMiddleware
 {

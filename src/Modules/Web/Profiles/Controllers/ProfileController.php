@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Profiles\Controllers;
 
-use Modules\Api\Profiles\Requests\ProfileStoreRequest;
-use Modules\Api\Profiles\Requests\ProfileUpdateRequest;
-use Modules\Api\Profiles\Resources\ProfileResource;
-use Modules\Web\Profiles\Responses\ProfileResourceProperty;
 use Domain\Profiles\Actions\CreateNewProfile;
 use Domain\Profiles\Actions\UpdateProfileDetails;
 use Domain\Profiles\Enums\ProfileScope;
@@ -26,6 +22,10 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Profiles\Requests\ProfileStoreRequest;
+use Modules\Api\Profiles\Requests\ProfileUpdateRequest;
+use Modules\Api\Profiles\Resources\ProfileResource;
+use Modules\Web\Profiles\Responses\ProfileResourceProperty;
 use Spatie\LaravelOptions\Options;
 
 class ProfileController implements HasMiddleware

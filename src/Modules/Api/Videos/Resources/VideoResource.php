@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Api\Videos\Resources;
 
+use Domain\Groups\Enums\GroupType;
+use Domain\Videos\Models\Video;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Api\Chapters\Resources\ChapterResource;
 use Modules\Api\Media\Resources\MediaResource;
 use Modules\Api\Playlists\Resources\PlaylistResource;
 use Modules\Api\Tags\Resources\TagResource;
 use Modules\Api\Transcodes\Resources\TranscodeResource;
 use Modules\Api\Users\Resources\UserResource;
-use Domain\Groups\Enums\GroupType;
-use Domain\Videos\Models\Video;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin Video

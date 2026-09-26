@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Api\Playlists\Resources;
 
-use Modules\Api\Shared\Resources\ModelResource;
 use Domain\Playlists\Models\Playlist;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Api\Shared\Resources\ModelResource;
 
 /**
  * @mixin Playlist

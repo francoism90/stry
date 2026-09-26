@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Home\Controllers;
 
-use Modules\Api\Videos\Resources\VideoResource;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Filters\VideoScopeFilter;
@@ -18,6 +17,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Videos\Resources\VideoResource;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;

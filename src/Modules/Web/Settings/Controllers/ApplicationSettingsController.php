@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Settings\Controllers;
 
-use Modules\Web\Settings\Requests\ApplicationSettingsRequest;
 use Domain\Shared\Enums\Locale;
 use Foundation\Settings\GeneralSettings;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Web\Settings\Requests\ApplicationSettingsRequest;
 
 class ApplicationSettingsController implements HasMiddleware
 {
