@@ -45,30 +45,30 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-interaction --no-progress
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v6.0.10
-              with:
-                  version: latest
-
-            - name: Install Node.js
-              uses: actions/setup-node@v7
+            - name: Setup Vite+
+              uses: voidzero-dev/setup-vp@v1.21.1
               with:
                   node-version: 24
-                  cache: 'pnpm'
+                  cache: true
 
             - name: Build application
               run: |
                   cp .env.ci .env
                   php artisan key:generate
                   php artisan wayfinder:generate
-                  pnpm install --no-frozen-lockfile
-                  pnpm build
+                  vp build
 
             - name: Run Laravel Pint
-              run: vendor/bin/pint --dirty
+              run: composer lint:check
+
+            - name: Run PHPStan
+              run: composer types:check
 
             - name: Check formatting and linting
-              run: pnpm run check
+              run: vp check
 
             - name: Run TypeScript type check
-              run: pnpm run types:check
+              run: vp run types:check
+
+            - name: Run frontend unit tests
+              run: vp test

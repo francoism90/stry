@@ -84,16 +84,11 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-interaction --no-progress
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v6.0.10
-              with:
-                  version: latest
-
-            - name: Install Node.js
-              uses: actions/setup-node@v7
+            - name: Setup Vite+
+              uses: voidzero-dev/setup-vp@v1.21.1
               with:
                   node-version: 24
-                  cache: 'pnpm'
+                  cache: true
 
             - name: Wait for Typesense
               run: |
@@ -111,8 +106,7 @@ jobs:
                   cp .env.ci .env
                   php artisan key:generate
                   php artisan wayfinder:generate
-                  pnpm install --no-frozen-lockfile
-                  pnpm build
+                  vp build
 
             - name: Execute tests
               run: php artisan test
