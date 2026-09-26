@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Tags\Controllers;
 
-use Modules\Api\Tags\Requests\TagStoreRequest;
-use Modules\Api\Tags\Requests\TagUpdateRequest;
-use Modules\Api\Tags\Resources\TagResource;
-use Modules\Api\Videos\Resources\VideoResource;
-use Modules\Web\Tags\Responses\TagResourceProperty;
 use Domain\Tags\Actions\CreateTag;
 use Domain\Tags\Actions\UpdateTagDetails;
 use Domain\Tags\Enums\TagScope;
@@ -32,6 +27,11 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Tags\Requests\TagStoreRequest;
+use Modules\Api\Tags\Requests\TagUpdateRequest;
+use Modules\Api\Tags\Resources\TagResource;
+use Modules\Api\Videos\Resources\VideoResource;
+use Modules\Web\Tags\Responses\TagResourceProperty;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Sorts\RecommendedSorter;
 use Support\Scout\Sorts\VideosSorter;
@@ -106,7 +106,7 @@ class TagController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Tags/TagView', [
-            'tag' => fn () => new TagResourceProperty($tag),
+            'tag' => fn () => new TagResourceProperty($tag, appends: ['description', 'relates']),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
