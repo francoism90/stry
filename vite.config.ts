@@ -14,93 +14,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    lint: {
-      plugins: ['eslint', 'typescript', 'unicorn', 'oxc', 'vue', 'vitest'],
-      jsPlugins: [
-        {
-          name: 'vite-plus',
-          specifier: 'vite-plus/oxlint-plugin',
-        },
-      ],
-      ignorePatterns: ['website/**'],
-      rules: {
-        'vite-plus/prefer-vite-plus-imports': 'error',
-      },
-      overrides: [
-        {
-          files: ['resources/js/**/__tests__/**'],
-          rules: {
-            'typescript/unbound-method': 'off',
-          },
-        },
-      ],
-      options: {
-        denyWarnings: true,
-        typeAware: true,
-      },
-    },
-    fmt: {
-      semi: false,
-      singleQuote: true,
-      singleAttributePerLine: true,
-      printWidth: 120,
-      sortPackageJson: false,
-      sortTailwindcss: {
-        stylesheet: './resources/css/app.css',
-        functions: ['cva', 'clsx', 'ui', ':ui'],
-        attributes: ['class', 'className', 'ui', ':ui'],
-      },
-      overrides: [
-        {
-          files: ['**/compose.{yml,yaml}', '**/docker-compose.{yml,yaml}'],
-          options: { tabWidth: 4 },
-        },
-      ],
-      ignorePatterns: [
-        '.agents',
-        '.ai',
-        '.claude',
-        '.github',
-        '.mcp.json',
-        '/AGENTS.md',
-        '/CLAUDE.md',
-        'boost.json',
-        'skills-lock.json',
-        '/public',
-      ],
-    },
-    test: {
-      include: ['resources/js/**/*.{test,spec}.ts'],
-    },
-    server: {
-      host: '0.0.0.0',
-      port: 5173,
-      strictPort: true,
-      hmr: { host: env.VITE_HMR_HOST, clientPort: 443, protocol: 'wss' },
-      watch: {
-        ignored: [
-          '**/.agents/**',
-          '**/.junie/**',
-          '**/.cursor/**',
-          '**/.claude/**',
-          '**/vendor/**',
-          '**/storage/framework/views/**',
-          '**/storage/logs/**',
-        ],
-      },
-    },
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
-        '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
-        '!': fileURLToPath(new URL('./vendor', import.meta.url)),
-      },
-    },
-    ssr: {
-      // @nuxt/ui relies on Vite-only virtual modules (e.g. `#imports`) that
-      // only resolve while bundling, so it must never be externalized for SSR.
-      noExternal: ['@nuxt/ui'],
-    },
     plugins: lazyPlugins(() => [
       laravel({
         input: ['resources/css/app.css', 'resources/js/app.ts'],
@@ -116,6 +29,7 @@ export default defineConfig(({ mode }) => {
           cluster: true,
         },
       }),
+      tailwindcss(),
       vue({
         template: {
           transformAssetUrls: {
@@ -124,7 +38,6 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      tailwindcss(),
       stripCss(
         // Remove Roboto @font-face from shaka-player's controls.css — violates CSP font-src 'self'
         /@font-face\{[^}]*font-family:Roboto[^}]*fonts\.gstatic\.com[^}]*\}/g,
@@ -158,6 +71,93 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ]),
+    server: {
+      host: '0.0.0.0',
+      port: 5173,
+      strictPort: true,
+      hmr: { host: env.VITE_HMR_HOST, clientPort: 443, protocol: 'wss' },
+      watch: {
+        ignored: [
+          '**/.agents/**',
+          '**/.junie/**',
+          '**/.cursor/**',
+          '**/.claude/**',
+          '**/vendor/**',
+          '**/storage/framework/views/**',
+          '**/storage/logs/**',
+        ],
+      },
+    },
+    lint: {
+      plugins: ['eslint', 'typescript', 'unicorn', 'oxc', 'vue', 'vitest'],
+      jsPlugins: [
+        {
+          name: 'vite-plus',
+          specifier: 'vite-plus/oxlint-plugin',
+        },
+      ],
+      ignorePatterns: ['website/**'],
+      rules: {
+        'vite-plus/prefer-vite-plus-imports': 'error',
+      },
+      overrides: [
+        {
+          files: ['resources/js/**/__tests__/**'],
+          rules: {
+            'typescript/unbound-method': 'off',
+          },
+        },
+      ],
+      options: {
+        denyWarnings: true,
+        typeAware: true,
+      },
+    },
+    fmt: {
+      semi: false,
+      singleQuote: true,
+      singleAttributePerLine: true,
+      printWidth: 120,
+      sortPackageJson: false,
+      sortTailwindcss: {
+        stylesheet: 'resources/css/app.css',
+        functions: ['cva', 'clsx', 'ui', ':ui'],
+        attributes: ['class', 'className', 'ui', ':ui'],
+      },
+      overrides: [
+        {
+          files: ['**/compose.{yml,yaml}', '**/docker-compose.{yml,yaml}'],
+          options: { tabWidth: 4 },
+        },
+      ],
+      ignorePatterns: [
+        '.agents',
+        '.ai',
+        '.claude',
+        '.github',
+        '.mcp.json',
+        '/AGENTS.md',
+        '/CLAUDE.md',
+        'boost.json',
+        'skills-lock.json',
+        '/public',
+      ],
+    },
+    test: {
+      include: ['resources/js/**/*.{test,spec}.ts'],
+    },
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
+        '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
+        '!': fileURLToPath(new URL('./vendor', import.meta.url)),
+      },
+    },
+    ssr: {
+      // @nuxt/ui relies on Vite-only virtual modules (e.g. `#imports`) that
+      // only resolve while bundling, so it must never be externalized for SSR.
+      noExternal: ['@nuxt/ui'],
+    },
     build: {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
