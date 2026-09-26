@@ -90,7 +90,7 @@ it('redirects to the video library after deleting a video', function () {
 
     $response->assertRedirectToRoute('videos.index');
     $response->assertInertiaFlash('type', 'warning');
-    $this->assertModelMissing($video);
+    $this->assertSoftDeleted($video);
 });
 
 it('forbids a non-owner from deleting a video', function () {
