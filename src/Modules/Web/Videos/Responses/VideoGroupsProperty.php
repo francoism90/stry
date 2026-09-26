@@ -22,7 +22,7 @@ readonly class VideoGroupsProperty implements ProvidesInertiaProperty
         return once(fn () => $this->getGroups());
     }
 
-    /** @return Collection<int, array{id: mixed, name: string, inGroup: bool}> */
+    /** @return Collection<int, array{id: mixed, name: string, has: bool}> */
     protected function getGroups(): Collection
     {
         if (! $this->video || ! $this->user) {
