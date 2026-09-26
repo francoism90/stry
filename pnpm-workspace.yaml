@@ -1,13 +1,8 @@
 allowBuilds:
-  '@parcel/watcher': true
   '@tailwindcss/oxide': true
   esbuild: true
-  sharp: true
   vue-demi: true
 minimumReleaseAgeExclude:
-  - '@inertiajs/core@3.6.0'
-  - '@inertiajs/vite@3.6.0'
-  - '@inertiajs/vue3@3.6.0'
   - '@voidzero-dev/vite-plus-core@1.0.0-rc.1'
   - '@voidzero-dev/vite-plus-darwin-arm64@1.0.0-rc.1'
   - '@voidzero-dev/vite-plus-darwin-x64@1.0.0-rc.1'
@@ -28,3 +23,5 @@ peerDependencyRules:
     - vite
   allowedVersions:
     vite: '*'
+publicHoistPattern:
+  - '@inertiajs/core'

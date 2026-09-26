@@ -108,17 +108,33 @@
             "Composer\\Config::disableProcessTimeout",
             "@php artisan dev"
         ],
+        "lint": [
+            "pint --parallel"
+        ],
+        "lint:check": [
+            "pint --parallel --test"
+        ],
+        "types:check": [
+            "phpstan analyse --memory-limit=1G"
+        ],
+        "ci:check": [
+            "Composer\\Config::disableProcessTimeout",
+            "pnpm run check",
+            "pnpm run type-check",
+            "@test"
+        ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
+            "@lint:check @no_additional_args",
             "@php artisan test"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan boost:update --discover --ansi",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta"
