@@ -72,3 +72,5 @@ jobs:
 
             - name: Run frontend unit tests
               run: vp test
+              env:
+                  LARAVEL_BYPASS_ENV_CHECK: 1
