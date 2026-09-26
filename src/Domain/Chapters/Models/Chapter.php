@@ -66,6 +66,9 @@ class Chapter extends Model implements Sortable
         return 'ulid';
     }
 
+    /**
+     * @return BelongsTo<Video, $this>
+     */
     public function video(): BelongsTo
     {
         return $this->belongsTo(Video::class);

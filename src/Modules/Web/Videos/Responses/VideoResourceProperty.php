@@ -27,9 +27,10 @@ readonly class VideoResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this->video
-            ->loadMissing('media', 'tags', 'user', 'chapters')
-            ->append($this->appends ?? [])
-            ->toResource(VideoResource::class);
+        return VideoResource::make(
+            $this->video
+                ->loadMissing('media', 'tags', 'user', 'chapters')
+                ->append($this->appends ?? []),
+        );
     }
 }

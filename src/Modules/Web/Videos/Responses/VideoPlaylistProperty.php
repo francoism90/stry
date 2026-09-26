@@ -26,8 +26,6 @@ readonly class VideoPlaylistProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this->video
-            ->getPlaylist()
-            ->toResource(PlaylistResource::class);
+        return PlaylistResource::make($this->video->getPlaylist());
     }
 }

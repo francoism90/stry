@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateVideoDetails
 {
-    public function handle(Video $video, array $attributes): mixed
+    public function handle(Video $video, array $attributes): void
     {
-        return DB::transaction(function () use ($video, $attributes) {
+        DB::transaction(function () use ($video, $attributes) {
             // Update the video attributes
             $video->updateOrFail(
                 Arr::only($attributes, $video->getFillable()),

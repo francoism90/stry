@@ -12,9 +12,9 @@ class UpdateTagDetails
 {
     public function __construct(protected SetTagsOrder $sorter) {}
 
-    public function handle(Tag $tag, array $attributes = []): mixed
+    public function handle(Tag $tag, array $attributes = []): void
     {
-        return DB::transaction(function () use ($tag, $attributes) {
+        DB::transaction(function () use ($tag, $attributes) {
             // Update the tag attributes
             $tag->updateOrFail(
                 Arr::only($attributes, $tag->getFillable()),

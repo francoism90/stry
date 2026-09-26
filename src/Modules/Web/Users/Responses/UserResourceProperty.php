@@ -32,8 +32,6 @@ readonly class UserResourceProperty implements ProvidesInertiaProperty
             $this->user->loadMissing('roles', 'permissions');
         }
 
-        return $this->user
-            ->append($this->appends ?? [])
-            ->toResource(UserResource::class);
+        return UserResource::make($this->user->append($this->appends ?? []));
     }
 }

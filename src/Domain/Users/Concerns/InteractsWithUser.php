@@ -6,7 +6,6 @@ namespace Domain\Users\Concerns;
 
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,13 +13,16 @@ trait InteractsWithUser
 {
     public static function bootInteractsWithUser(): void
     {
-        static::creating(function (Model $model) {
+        static::creating(function (self $model) {
             if (blank($model->user_id)) {
                 $model->user_id = Auth::id();
             }
         });
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

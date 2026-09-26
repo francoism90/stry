@@ -10,7 +10,6 @@ use Domain\Groups\Enums\GroupSorter;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Filters\GroupScopeFilter;
 use Domain\Groups\Models\Group;
-use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\Scopes\GroupProfileScope;
 use Domain\Groups\Scopes\GroupTypeScope;
 use Domain\Videos\Enums\VideoScope;
@@ -23,6 +22,7 @@ use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -59,7 +59,9 @@ class GroupController implements HasMiddleware
         $scout = ScoutBuilder::for(Group::class)
             ->tap(new GroupProfileScope)
             ->tap(new GroupTypeScope)
-            ->query(fn (GroupQueryBuilder $query) => $query->withCount('groupables'))
+            ->query(function (Builder $query): void {
+                $query->withCount('groupables');
+            })
             ->allowedFilters(
                 AllowedFilter::custom('scope', new GroupScopeFilter)->default(GroupScope::All->value),
             )

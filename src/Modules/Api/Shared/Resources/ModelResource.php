@@ -25,8 +25,8 @@ class ModelResource extends JsonResource
             'slug' => $this->whenHas('slug'),
             'name' => $this->whenHas('name'),
             'label' => $this->whenHas('label'),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->getAttribute('created_at')->toDateTimeString(),
+            'updated_at' => $this->getAttribute('updated_at')->toDateTimeString(),
         ];
     }
 }

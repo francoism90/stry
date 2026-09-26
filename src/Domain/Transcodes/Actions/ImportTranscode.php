@@ -7,6 +7,7 @@ namespace Domain\Transcodes\Actions;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\DataObjects\VideoFile;
 use Domain\Videos\Jobs\ImportVideo;
+use Domain\Videos\Models\Video;
 
 class ImportTranscode
 {
@@ -22,8 +23,8 @@ class ImportTranscode
         ]);
 
         // Dispatch the appropriate import job based on the model type
-        match ($model->getMorphClass()) {
-            'video' => ImportVideo::dispatch($model, $file),
+        match (true) {
+            $model instanceof Video => ImportVideo::dispatch($model, $file),
             default => throw new \InvalidArgumentException('Unsupported transcodable type'),
         };
 

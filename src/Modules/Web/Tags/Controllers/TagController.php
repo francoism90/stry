@@ -11,7 +11,6 @@ use Domain\Tags\Enums\TagSorter;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Filters\TagScopeFilter;
 use Domain\Tags\Models\Tag;
-use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Filters\VideoScopeFilter;
@@ -21,6 +20,7 @@ use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -55,7 +55,9 @@ class TagController implements HasMiddleware
         $defaultSort = AllowedSort::custom('videos', new VideosSorter);
 
         $scout = ScoutBuilder::for(Tag::class)
-            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos')->with('related'))
+            ->query(function (Builder $query): void {
+                $query->withCount('videos')->with('related');
+            })
             ->allowedFilters(
                 AllowedFilter::custom('scope', new TagScopeFilter),
             )
@@ -68,7 +70,7 @@ class TagController implements HasMiddleware
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 20);
 
-        $scout->getCollection()->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
+        collect($scout->items())->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
 
         return Inertia::render('Tags/TagIndex', [
             'items' => Inertia::scroll(fn () => TagResource::collection($scout)),

@@ -15,6 +15,7 @@ use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -132,7 +133,7 @@ class Profile extends Model implements HasMedia
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {

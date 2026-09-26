@@ -13,6 +13,7 @@ use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
+use Domain\Tags\Collections\TagCollection;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
@@ -43,6 +44,9 @@ use Spatie\Tags\HasTags;
 use Spatie\Translatable\HasTranslations;
 use Support\MediaLibrary\TemporaryUrls;
 
+/**
+ * @property-read TagCollection $tags
+ */
 #[CollectedBy(VideoCollection::class)]
 #[UseEloquentBuilder(VideoQueryBuilder::class)]
 class Video extends Model implements HasMedia
@@ -55,7 +59,10 @@ class Video extends Model implements HasMedia
     use HasUlidRouteKey;
     use InteractsWithChapters;
     use InteractsWithGroups;
+
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
+
     use InteractsWithModelCache;
     use InteractsWithPlaylists;
     use InteractsWithTranscodes;
@@ -190,15 +197,15 @@ class Video extends Model implements HasMedia
         $this
             ->addMediaConversion('thumb')
             ->performOnCollections('clips')
+            ->withResponsiveImages()
+            ->extractVideoFrameAtSecond((float) $this->snapshot ?: round($this->duration / 2))
             ->fit(Fit::Stretch, 1280, 720)
             ->sharpen(10)
-            ->format('avif')
-            ->withResponsiveImages()
-            ->extractVideoFrameAtSecond((float) $this->snapshot ?: round($this->duration / 2));
+            ->format('avif');
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {
@@ -278,6 +285,9 @@ class Video extends Model implements HasMedia
         return Config::float('videos.completion_threshold', 0.95);
     }
 
+    /**
+     * @return MediaCollection<int, Media>
+     */
     public function getClips(): MediaCollection
     {
         return $this->getMedia('clips')->sortByDesc(function (Media $media) {
@@ -291,6 +301,9 @@ class Video extends Model implements HasMedia
         });
     }
 
+    /**
+     * @return MediaCollection<int, Media>
+     */
     public function getCaptions(): MediaCollection
     {
         return $this->getMedia('captions');

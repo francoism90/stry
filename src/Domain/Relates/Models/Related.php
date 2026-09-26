@@ -43,11 +43,17 @@ class Related extends Model
         ];
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function relatable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function model(): MorphTo
     {
         return $this->morphTo();

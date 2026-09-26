@@ -6,10 +6,11 @@ namespace Domain\Groups\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 
 class Groupable extends MorphPivot
@@ -56,11 +57,17 @@ class Groupable extends MorphPivot
             : $this->newQueryWithoutScopes()->whereKey($ids);
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function groupable(): MorphTo
     {
         return $this->MorphTo();
     }
 
+    /**
+     * @return BelongsTo<Group, $this>
+     */
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class, 'group_id');

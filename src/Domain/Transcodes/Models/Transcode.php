@@ -15,6 +15,7 @@ use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
 use Domain\Transcodes\States;
 use Domain\Transcodes\States\TranscodeState;
 use Domain\Users\Concerns\InteractsWithUser;
+use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -31,6 +32,9 @@ use Illuminate\Support\Number;
 use Laravel\Scout\Searchable;
 use Spatie\ModelStates\HasStates;
 
+/**
+ * @property-read Video|null $transcodable
+ */
 #[ObservedBy(TranscodeObserver::class)]
 #[CollectedBy(TranscodeCollection::class)]
 #[UseEloquentBuilder(TranscodeQueryBuilder::class)]
@@ -88,6 +92,9 @@ class Transcode extends Model
         ];
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function transcodable(): MorphTo
     {
         return $this->morphTo();
@@ -100,9 +107,9 @@ class Transcode extends Model
             'user_id' => (string) $this->user_id,
             'transcodable_type' => (string) $this->transcodable_type,
             'transcodable_id' => (string) $this->transcodable_id,
-            'name' => (string) ($this->transcodable?->label ?? $this->file_name ?? ''),
+            'name' => (string) ($this->transcodable->label ?? $this->file_name ?? ''),
             'file_name' => (string) $this->file_name,
-            'encoder' => (string) $this->encoder?->value,
+            'encoder' => $this->encoder->value,
             'file_size' => (int) $this->file_size,
             'state' => (string) $this->state,
             'started_at' => (int) $this->started_at?->getTimestamp(),
@@ -128,7 +135,7 @@ class Transcode extends Model
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {

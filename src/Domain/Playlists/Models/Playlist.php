@@ -77,7 +77,7 @@ class Playlist extends Model
     ];
 
     /**
-     * @var array<string, string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {
@@ -99,6 +99,9 @@ class Playlist extends Model
         return PlaylistFactory::new();
     }
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function playlistable(): MorphTo
     {
         return $this->morphTo();
@@ -110,7 +113,7 @@ class Playlist extends Model
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {

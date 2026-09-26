@@ -6,6 +6,7 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use Domain\Transcodes\Models\Transcode;
+use FFMpeg\Media\AbstractStreamableMedia;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
@@ -36,7 +37,9 @@ class GenerateMediaStoryboard
     {
         $ffmpeg = FFMpeg::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
 
-        $duration = (float) $ffmpeg->getFormat()->get('duration');
+        $source = $ffmpeg->getDriver()->get();
+
+        $duration = $source instanceof AbstractStreamableMedia ? (float) $source->getFormat()->get('duration') : 0.0;
 
         if ($duration <= 0.0) {
             return null;
@@ -59,23 +62,25 @@ class GenerateMediaStoryboard
         // Sample one frame every $interval seconds and tile them into a single sprite image.
         // "-frames:v 1" caps the output at one tile image, even if a trailing selected frame
         // would otherwise start a second (partial) one.
-        $ffmpeg
+        $exporter = $ffmpeg
             ->export()
-            ->addFilter([
-                '-vf',
-                sprintf(
-                    'select=not(mod(n\,%d)),scale=%d:%d,tile=%dx%d',
-                    $frameInterval,
-                    self::TILE_WIDTH,
-                    self::TILE_HEIGHT,
-                    self::COLUMNS,
-                    self::ROWS,
-                ),
-                '-frames:v',
-                '1',
-            ])
-            ->toDisk(Transcode::getDestinationDisk())
-            ->save($imagePath);
+            ->toDisk(Transcode::getDestinationDisk());
+
+        $exporter->addFilter([
+            '-vf',
+            sprintf(
+                'select=not(mod(n\,%d)),scale=%d:%d,tile=%dx%d',
+                $frameInterval,
+                self::TILE_WIDTH,
+                self::TILE_HEIGHT,
+                self::COLUMNS,
+                self::ROWS,
+            ),
+            '-frames:v',
+            '1',
+        ]);
+
+        $exporter->save($imagePath);
 
         $ffmpeg->cleanupTemporaryFiles();
 

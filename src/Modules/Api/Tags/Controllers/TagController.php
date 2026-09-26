@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Modules\Api\Tags\Controllers;
 
 use Domain\Tags\Models\Tag;
-use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -35,7 +35,9 @@ class TagController implements HasMiddleware
         $videosSort = AllowedSort::custom('videos', new VideosSorter);
 
         return ScoutBuilder::for(Tag::class)
-            ->query(fn (TagQueryBuilder $query) => $query->withCount('videos'))
+            ->query(function (Builder $query): void {
+                $query->withCount('videos');
+            })
             ->allowedFilters(
                 AllowedFilter::exact('type'),
             )

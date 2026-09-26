@@ -13,7 +13,10 @@ class SyncVideoProgress
 {
     public function handle(VideoHasBeenViewedEvent $event): void
     {
-        if (! ($video = $event->video) || ! ($user = $event->user)) {
+        $video = $event->video;
+        $user = $event->user;
+
+        if (! $user) {
             return;
         }
 
@@ -41,7 +44,7 @@ class SyncVideoProgress
         $value = (float) data_get($attributes ?? [], 'time', 0);
 
         // Round the progress to 2 decimal places for consistency
-        $time = round($value ?? 0, 2);
+        $time = round($value, 2);
 
         return Number::clamp($time, 0, $video->duration ?? 0);
     }

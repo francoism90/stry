@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Users\Actions;
 
 use Domain\Users\Models\User;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +23,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             ->validateWithBag('updateProfileInformation');
 
         DB::transaction(function () use ($user, $input) {
-            if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
+            if ($input['email'] !== $user->email) {
                 $this->updateVerifiedUser($user, $input);
 
                 return;

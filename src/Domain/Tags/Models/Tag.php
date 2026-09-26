@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
@@ -108,6 +109,9 @@ class Tag extends BaseTag implements HasMedia
             ->sharpen(10);
     }
 
+    /**
+     * @return MorphToMany<Video, $this>
+     */
     public function videos(): MorphToMany
     {
         return $this->morphedByMany(Video::class, 'taggable');
@@ -130,7 +134,7 @@ class Tag extends BaseTag implements HasMedia
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {
@@ -144,7 +148,7 @@ class Tag extends BaseTag implements HasMedia
             'name' => (string) $this->name,
             'description' => (string) $this->description,
             'category' => (string) $this->category,
-            'type' => (string) $this->type?->value ?? '',
+            'type' => (string) $this->type?->value,
             'adult' => (bool) $this->adult,
             'synonyms' => (array) $this->synonyms->toArray(),
             'translated' => (array) $this->translated->toArray(),
@@ -194,6 +198,9 @@ class Tag extends BaseTag implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Collection<int, mixed>, never>
+     */
     protected function synonyms(): Attribute
     {
         return Attribute::make(
@@ -201,6 +208,9 @@ class Tag extends BaseTag implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Collection<int, mixed>, never>
+     */
     protected function translated(): Attribute
     {
         return Attribute::make(

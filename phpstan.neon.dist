@@ -10,6 +10,13 @@ parameters:
         - database/
         - routes/
         - src/
-        - tests/
     checkOctaneCompatibility: true
     checkAuthCallsWhenInRequestScope: true
+    parseModelCastsMethod: true
+    stubFiles:
+        - phpstan.stub
+    ignoreErrors:
+        -
+            # Mirrors Laravel's own FilesystemServiceProvider binding; the manager only reads config and disks from the container.
+            identifier: larastan.octaneCompatibility
+            path: src/Foundation/Providers/AppServiceProvider.php

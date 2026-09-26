@@ -106,11 +106,17 @@ class Group extends Model implements HasMedia, Sortable
         return GroupFactory::new();
     }
 
+    /**
+     * @return HasMany<Groupable, $this>
+     */
     public function groupables(): HasMany
     {
         return $this->hasMany(Groupable::class, 'group_id');
     }
 
+    /**
+     * @return MorphToMany<Video, $this, Groupable>
+     */
     public function videos(): MorphToMany
     {
         return $this
@@ -158,7 +164,7 @@ class Group extends Model implements HasMedia, Sortable
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {
@@ -173,7 +179,7 @@ class Group extends Model implements HasMedia, Sortable
             'name' => (string) $this->name,
             'content' => (string) $this->content,
             'groupables' => (int) $this->groupables_count,
-            'type' => (string) $this->type?->value ?? '',
+            'type' => $this->type->value,
             'type_priority' => (int) $this->priority,
             'state' => (string) $this->state,
             'created_at' => (int) $this->created_at->getTimestamp(),
@@ -213,7 +219,7 @@ class Group extends Model implements HasMedia, Sortable
     protected function priority(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->type?->priority() ?? GroupType::Custom->priority(),
+            get: fn () => $this->type->priority(),
         )->shouldCache();
     }
 }

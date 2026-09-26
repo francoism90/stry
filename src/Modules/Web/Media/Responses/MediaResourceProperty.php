@@ -26,8 +26,6 @@ readonly class MediaResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this->media
-            ->loadMissing('model')
-            ->toResource(MediaResource::class);
+        return MediaResource::make($this->media->loadMissing('model'));
     }
 }

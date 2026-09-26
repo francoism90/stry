@@ -17,7 +17,7 @@ class RecommendedSorter implements Sort
         }
 
         // Get the search query from the builder.
-        $search = $query->query ?? '';
+        $search = (string) $query->query;
 
         // If the search query is blank or just a wildcard, apply random sorting to surface a variety of results.
         if (blank($search) || $search === '*') {
