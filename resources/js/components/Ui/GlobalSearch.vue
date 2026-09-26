@@ -3,6 +3,7 @@ import ShuffleController from '@/actions/Modules/Web/Shuffle/Controllers/Shuffle
 import { QueryInjectionKey } from '@/composables/query'
 import { home } from '@/routes'
 import { router, usePage } from '@inertiajs/vue3'
+import { useDebounceFn } from '@vueuse/core'
 import { computed, inject, useTemplateRef } from 'vue'
 
 const searchTargets = {
@@ -31,10 +32,11 @@ const searchText = computed({
   get: () => (query.form.query ?? '').toString(),
   set: (value: string) => {
     query.form.query = value
+    onSearch()
   },
 })
 
-const onSearch = () => {
+const onSearch = useDebounceFn((navigate: boolean = false) => {
   if (!target.value) {
     return
   }
@@ -42,12 +44,15 @@ const onSearch = () => {
   // Leaving to a different resource (e.g. a group's videos) drops the
   // current filter/sort scope instead of carrying it into the new context.
   if ('route' in target.value) {
-    router.get(target.value.route, { query: query.form.query }, { preserveState: true })
+    if (navigate) {
+      router.get(target.value.route, { query: query.form.query }, { preserveState: true })
+    }
+
     return
   }
 
   query.onSubmit()
-}
+}, 350)
 
 defineShortcuts({
   '/': () => {
@@ -69,7 +74,7 @@ defineShortcuts({
       :placeholder="target.placeholder"
       variant="soft"
       size="lg"
-      @keydown.enter="onSearch"
+      @keydown.enter="onSearch(true)"
       :ui="{
         root: 'w-full max-w-fit md:min-w-sm lg:min-w-lg',
         base: 'rounded-full',
