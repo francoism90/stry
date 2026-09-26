@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Media\Listeners;
 
 use Domain\Media\Actions\SetMediaStreams;
+use Domain\Media\Models\Media;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
@@ -46,6 +47,10 @@ class ProcessMedia implements ShouldQueueAfterCommit
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {
+        if (! $event->media instanceof Media) {
+            return;
+        }
+
         app(SetMediaStreams::class)->handle($event->media);
     }
 

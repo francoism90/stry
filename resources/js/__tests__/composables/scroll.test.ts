@@ -1,5 +1,5 @@
 import { useHeaderCollapse } from '@/composables/scroll'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 describe('useHeaderCollapse', () => {
   it('does not touch window during SSR', () => {

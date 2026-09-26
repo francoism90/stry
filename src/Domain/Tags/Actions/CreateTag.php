@@ -15,6 +15,7 @@ class CreateTag
     public function handle(string $name, TagType $type, ?string $description = null, ?string $locale = null): Tag
     {
         return DB::transaction(function () use ($name, $type, $description, $locale) {
+            /** @var Tag $tag */
             $tag = Tag::findOrCreate($name, $type->value, $locale ?? app()->getLocale());
 
             if (filled($description)) {

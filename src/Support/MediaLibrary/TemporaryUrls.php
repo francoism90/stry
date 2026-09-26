@@ -18,9 +18,9 @@ class TemporaryUrls
         protected readonly DateTimeInterface $expiration,
     ) {}
 
-    public static function make(Media $media, ?DateTimeInterface $expiration = null): static
+    public static function make(Media $media, ?DateTimeInterface $expiration = null): self
     {
-        return new static($media, $expiration ?? now()->addWeek());
+        return new self($media, $expiration ?? now()->addWeek());
     }
 
     public function getUrl(string $conversion = ''): string

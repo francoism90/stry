@@ -9,24 +9,20 @@ use Domain\Relates\Models\Related;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 trait InteractsWithRelated
 {
     public static function bootInteractsWithRelated(): void
     {
-        static::deleting(function (Model $model) {
-            if (in_array(SoftDeletes::class, class_uses_recursive($model))) {
-                if (! $model->forceDeleting) {
-                    return;
-                }
-            }
-
+        static::deleting(function (self $model) {
             $model->related()->cursor()->each(fn (Related $related) => $related->delete());
         });
     }
 
+    /**
+     * @return MorphMany<Related, $this>
+     */
     public function related(): MorphMany
     {
         return $this->morphMany(Related::class, 'relatable')->chaperone();
@@ -74,6 +70,7 @@ trait InteractsWithRelated
         return $this
             ->loadMissing('related')
             ->related
+            ->toBase()
             ->groupBy(fn (Related $related) => $this->getActualClassNameForMorph($related->model_type))
             ->flatMap(fn (Collection $typeGroup, string $type) => $type::whereIn('id', $typeGroup->pluck('model_id'))->get());
     }
@@ -102,6 +99,9 @@ trait InteractsWithRelated
         return sprintf('%s::%s', $type, (string) $id);
     }
 
+    /**
+     * @return Attribute<Collection<int, Model>, never>
+     */
     protected function relates(): Attribute
     {
         return Attribute::make(

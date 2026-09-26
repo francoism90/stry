@@ -63,6 +63,23 @@ it('can attach and detach videos to like group', function () {
     expect($user->isInGroup($video, GroupType::Liked))->toBeFalse();
 });
 
+it('only flags the custom groups that contain the given video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+    $otherVideo = Video::factory()->create();
+    $withVideo = $user->findOrCreateGroup(GroupType::Custom, 'With video');
+    $withOtherVideo = $user->findOrCreateGroup(GroupType::Custom, 'With other video');
+    $video->attachToGroup($withVideo);
+    $otherVideo->attachToGroup($withOtherVideo);
+
+    $groups = $user->customGroupsFor($video);
+
+    expect($groups->pluck('has', 'name')->all())->toBe([
+        'With other video' => false,
+        'With video' => true,
+    ]);
+});
+
 it('refreshes cached group types after toggling a video', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();

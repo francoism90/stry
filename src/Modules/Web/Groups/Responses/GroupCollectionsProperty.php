@@ -34,10 +34,10 @@ readonly class GroupCollectionsProperty implements ProvidesInertiaProperty
         return once(fn () => $this->getCollections());
     }
 
-    /** @return Collection<int, array{id: string, name: string, title: string, type: string}> */
+    /** @return Collection<int, array{id: string, name: string, title: string, type: value-of<GroupType>}> */
     protected function getCollections(): Collection
     {
-        $userId = Profile::current()?->user_id ?? $this->user?->id;
+        $userId = Profile::current()->user_id ?? $this->user?->id;
 
         if (blank($userId)) {
             return Collection::empty();
@@ -60,7 +60,7 @@ readonly class GroupCollectionsProperty implements ProvidesInertiaProperty
             ->merge($custom)
             ->values()
             ->map(fn (Group $group): array => [
-                'id' => $group->getRouteKey(),
+                'id' => (string) $group->getRouteKey(),
                 'name' => (string) $group->name,
                 'title' => (string) $group->title,
                 'type' => $group->type->value,

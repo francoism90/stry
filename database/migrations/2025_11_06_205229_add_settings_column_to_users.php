@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->jsonb('settings')->nullable()->before('state');
+            $table->jsonb('settings')->nullable();
         });
     }
 

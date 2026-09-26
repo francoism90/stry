@@ -7,7 +7,6 @@ namespace Domain\Playlists\Concerns;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\Settings\PlaylistSettings;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,17 +14,18 @@ trait InteractsWithPlaylists
 {
     public static function bootInteractsWithPlaylists(): void
     {
-        static::deleting(function (Model $model) {
-            if (in_array(SoftDeletes::class, class_uses_recursive($model))) {
-                if (! $model->forceDeleting) {
-                    return;
-                }
+        static::deleting(function (self $model) {
+            if (in_array(SoftDeletes::class, class_uses_recursive($model)) && ! $model->isForceDeleting()) {
+                return;
             }
 
             $model->playlists()->cursor()->each(fn (Playlist $playlist) => $playlist->delete());
         });
     }
 
+    /**
+     * @return MorphMany<Playlist, $this>
+     */
     public function playlists(): MorphMany
     {
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();

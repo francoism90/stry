@@ -47,7 +47,7 @@ class VideoScopeFilter implements Filter
     private function applyUnseen(Builder $query): void
     {
         // Get the current user's ID, either from the current profile or the authenticated user
-        $userId = Profile::current()?->user_id ?? Auth::id();
+        $userId = Profile::current()->user_id ?? Auth::id();
 
         if (blank($userId)) {
             return;

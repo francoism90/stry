@@ -10,11 +10,11 @@ use Domain\Users\Enums\UserScope;
 use Domain\Users\Enums\UserSorter;
 use Domain\Users\Filters\UserScopeFilter;
 use Domain\Users\Models\User;
-use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -47,7 +47,9 @@ class UserController implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(User::class)
-            ->query(fn (UserQueryBuilder $query) => $query->withCount('videos')->with('roles', 'permissions'))
+            ->query(function (Builder $query): void {
+                $query->withCount('videos')->with('roles', 'permissions');
+            })
             ->allowedFilters(
                 AllowedFilter::custom('scope', new UserScopeFilter),
             )
@@ -58,7 +60,7 @@ class UserController implements HasMiddleware
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        $scout->getCollection()->each(fn (User $user) => $user->append(['name', 'email', 'avatar']));
+        collect($scout->items())->each(fn (User $user) => $user->append(['name', 'email', 'avatar']));
 
         return Inertia::render('Users/UserIndex', [
             'items' => Inertia::scroll(fn () => UserResource::collection($scout)),

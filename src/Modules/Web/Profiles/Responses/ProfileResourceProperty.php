@@ -24,6 +24,6 @@ readonly class ProfileResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $profile->toResource(ProfileResource::class);
+        return ProfileResource::make($profile);
     }
 }

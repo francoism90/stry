@@ -1,10 +1,27 @@
 allowBuilds:
-  '@parcel/watcher': true
   '@tailwindcss/oxide': true
   esbuild: true
-  sharp: true
   vue-demi: true
 minimumReleaseAgeExclude:
-  - '@inertiajs/core@3.6.0'
-  - '@inertiajs/vite@3.6.0'
-  - '@inertiajs/vue3@3.6.0'
+  - '@voidzero-dev/vite-plus-core@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-darwin-arm64@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-darwin-x64@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-linux-arm64-gnu@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-linux-arm64-musl@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-linux-x64-gnu@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-linux-x64-musl@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-win32-arm64-msvc@1.0.0-rc.1'
+  - '@voidzero-dev/vite-plus-win32-x64-msvc@1.0.0-rc.1'
+  - vite-plus@1.0.0-rc.1
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.0.0-rc.1
+  vite-plus: 1.0.0-rc.1
+overrides:
+  vite@*: 'catalog:'
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: '*'
+publicHoistPattern:
+  - '@inertiajs/core'

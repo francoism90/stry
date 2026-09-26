@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait InteractsWithChapters
 {
+    /**
+     * @return HasMany<Chapter, $this>
+     */
     public function chapters(): HasMany
     {
         return $this

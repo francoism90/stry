@@ -16,16 +16,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "foxws/laravel-ab-av1": "^1.0.1",
+        "foxws/laravel-ab-av1": "^1.1.0",
         "foxws/laravel-ddd": "^0.0.5",
         "foxws/laravel-essentials": "^0.0.3",
         "foxws/laravel-modelcache": "^1.4.2",
         "foxws/laravel-podman": "^2.1.11",
         "foxws/laravel-pwa": "^2.5.2",
-        "foxws/laravel-scout-builder": "^1.0.1",
+        "foxws/laravel-scout-builder": "^1.0.2",
         "foxws/laravel-scout-relations": "^1.0.1",
-        "foxws/laravel-shaka": "^2.3.1",
-        "foxws/laravel-streamer": "^2.3.0",
+        "foxws/laravel-shaka": "^2.3.2",
+        "foxws/laravel-streamer": "^2.3.1",
         "guzzlehttp/guzzle": "^7.15.5",
         "http-interop/http-factory-guzzle": "^1.2.1",
         "inertiajs/inertia-laravel": "^3.3.4",
@@ -108,17 +108,33 @@
             "Composer\\Config::disableProcessTimeout",
             "@php artisan dev"
         ],
+        "lint": [
+            "pint --parallel"
+        ],
+        "lint:check": [
+            "pint --parallel --test"
+        ],
+        "types:check": [
+            "phpstan analyse --memory-limit=1G"
+        ],
+        "ci:check": [
+            "Composer\\Config::disableProcessTimeout",
+            "pnpm run check",
+            "pnpm run types:check",
+            "@test"
+        ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
+            "@lint:check @no_additional_args",
             "@php artisan test"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan boost:update --discover --ansi",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta"

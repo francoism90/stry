@@ -27,10 +27,11 @@ readonly class TagResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this->tag
-            ->loadMissing('related')
-            ->loadCount('videos')
-            ->append($this->appends ?? [])
-            ->toResource(TagResource::class);
+        return TagResource::make(
+            $this->tag
+                ->loadMissing('related')
+                ->loadCount('videos')
+                ->append($this->appends ?? []),
+        );
     }
 }

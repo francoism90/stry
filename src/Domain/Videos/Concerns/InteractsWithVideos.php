@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait InteractsWithVideos
 {
+    /**
+     * @return HasMany<Video, $this>
+     */
     public function videos(): HasMany
     {
         return $this->hasMany(Video::class)->chaperone();

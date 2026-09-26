@@ -27,7 +27,7 @@
 - [ ] My code follows the project's coding standards and DDD architecture
 - [ ] I have run Laravel Pint (`vendor/bin/pint`)
 - [ ] I have run Larastan (`vendor/bin/phpstan analyse`)
-- [ ] I have run ESLint/Prettier (`pnpm run lint && pnpm run format`)
+- [ ] I have run formatting and linting (`pnpm run check:fix`)
 - [ ] I have added/updated tests that prove my fix is effective or that my feature works
 - [ ] All new and existing tests pass (`php artisan test`)
 - [ ] I have updated the documentation (if applicable)

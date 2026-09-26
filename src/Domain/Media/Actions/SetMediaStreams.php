@@ -6,6 +6,7 @@ namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
 use FFMpeg\FFProbe\DataMapping\Stream;
+use FFMpeg\Media\AbstractStreamableMedia;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
@@ -23,9 +24,12 @@ class SetMediaStreams
             ->open($media->getPathRelativeToRoot())
             ->getStreams();
 
-        $format = FFMpeg::fromDisk($media->disk)
+        $source = FFMpeg::fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
-            ->getFormat();
+            ->getDriver()
+            ->get();
+
+        $format = $source instanceof AbstractStreamableMedia ? $source->getFormat()->all() : [];
 
         // Map the streams to only include relevant keys
         $keys = $this->getStreamKeys();
@@ -37,7 +41,7 @@ class SetMediaStreams
             ->values();
 
         // Fill missing key values in each stream from the format
-        Collection::make($format->all())
+        Collection::make($format)
             ->only($keys)
             ->each(function ($value, $key) use ($items) {
                 $items->transform(function ($item) use ($key, $value) {

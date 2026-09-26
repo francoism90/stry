@@ -22,7 +22,7 @@ class GetVideoProgress
         if (! $video->modelCacheHas($progressKey)) {
             $record = $user->groupFor(GroupType::Viewed)->getGroupable($video);
 
-            $time = (float) data_get($record?->pivot?->options ?? [], 'time', 0);
+            $time = (float) data_get($record->options ?? [], 'time', 0);
 
             return $this->normalizeProgress($video, $time);
         }
@@ -32,7 +32,7 @@ class GetVideoProgress
 
     protected function normalizeProgress(Video $video, ?float $time = null): float
     {
-        $duration = (float) $video->duration ?? 0;
+        $duration = (float) $video->duration;
 
         if ($duration <= 0) {
             return 0;

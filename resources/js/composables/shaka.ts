@@ -223,7 +223,7 @@ export function useShaka(
 
   const destroy = async () => {
     try {
-      await manager.value?.release()
+      manager.value?.release()
       await player.value?.unload()
       await ui.value?.destroy()
       await player.value?.destroy()

@@ -13,9 +13,9 @@ use Illuminate\Support\Str;
 
 class CreateVideoByImport
 {
-    public function handle(User $user, VideoFile $file): mixed
+    public function handle(User $user, VideoFile $file): void
     {
-        return DB::transaction(function () use ($user, $file) {
+        DB::transaction(function () use ($user, $file) {
             // Get the file name without extension
             $fileName = File::name($file->path);
 

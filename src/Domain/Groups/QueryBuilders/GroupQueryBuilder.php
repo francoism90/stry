@@ -43,9 +43,9 @@ class GroupQueryBuilder extends Builder
 
     public function forModel(Model $model): self
     {
-        return $this->withExists('groupables as modelable', fn (Builder $query) => $query
+        return $this->withExists(['groupables as modelable' => fn (Builder $query) => $query
             ->where('groupable_type', $model->getMorphClass())
-            ->where('groupable_id', $model->getKey())
-        );
+            ->where('groupable_id', $model->getKey()),
+        ]);
     }
 }

@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class UpdateMediaDetails
 {
-    public function handle(Media $media, array $attributes): mixed
+    public function handle(Media $media, array $attributes): void
     {
         if (array_key_exists('custom_properties', $attributes)) {
             // Decode the custom properties JSON string before it hits the array cast,
@@ -24,7 +24,7 @@ class UpdateMediaDetails
             $attributes['custom_properties'] ??= [];
         }
 
-        return DB::transaction(function () use ($media, $attributes) {
+        DB::transaction(function () use ($media, $attributes) {
             // Update the media attributes
             $media->updateOrFail(
                 Arr::only($attributes, $media->getFillable()),

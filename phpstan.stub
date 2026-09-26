@@ -1,0 +1,17 @@
+<?php
+
+namespace Laravel\Scout {
+    /**
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     */
+    class Builder
+    {
+        /**
+         * @param  int|null  $perPage
+         * @param  string  $pageName
+         * @param  int|null  $page
+         * @return \Illuminate\Pagination\Paginator<int, TModel>
+         */
+        public function simplePaginate($perPage = null, $pageName = 'page', $page = null) {}
+    }
+}

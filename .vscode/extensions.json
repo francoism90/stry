@@ -2,12 +2,10 @@
     "recommendations": [
         "bmewburn.vscode-intelephense-client",
         "bradlc.vscode-tailwindcss",
-        "dbaeumer.vscode-eslint",
         "devsense.composer-php-vscode",
-        "esbenp.prettier-vscode",
         "EditorConfig.EditorConfig",
-        "oxc.oxc-vscode",
         "laravel.vscode-laravel",
+        "VoidZero.vite-plus-extension-pack",
         "Vue.volar"
     ]
 }

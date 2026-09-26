@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
@@ -54,6 +55,9 @@ class Media extends BaseMedia
     /**
      * Kept as a method: Spatie's Media already overrides newCollection(), so a #[CollectedBy] attribute would be ignored.
      */
+    /**
+     * @param  array<int, self>  $models
+     */
     public function newCollection(array $models = []): MediaCollection
     {
         return new MediaCollection($models);
@@ -83,7 +87,7 @@ class Media extends BaseMedia
     }
 
     /**
-     * @return array<int, Channel>
+     * @return array<int, Channel|Model>
      */
     public function broadcastOn(string $event): array
     {

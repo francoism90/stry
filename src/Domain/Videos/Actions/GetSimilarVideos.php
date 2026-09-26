@@ -155,7 +155,7 @@ class GetSimilarVideos
     }
 
     /**
-     * @return Collection<int, string>
+     * @return Collection<int, lowercase-string>
      */
     protected function extractMeaningfulTokens(Video $video, int $limit = 14): Collection
     {

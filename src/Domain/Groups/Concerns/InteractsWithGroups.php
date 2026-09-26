@@ -10,8 +10,8 @@ use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 trait InteractsWithGroups
@@ -23,8 +23,8 @@ trait InteractsWithGroups
 
     public static function bootInteractsWithGroups(): void
     {
-        static::deleting(function (Model $model) {
-            if (method_exists($model, 'isForceDeleting') && ! $model->isForceDeleting()) {
+        static::deleting(function (self $model) {
+            if (in_array(SoftDeletes::class, class_uses_recursive($model)) && ! $model->isForceDeleting()) {
                 return;
             }
 
@@ -32,6 +32,9 @@ trait InteractsWithGroups
         });
     }
 
+    /**
+     * @return MorphToMany<Group, $this, Groupable>
+     */
     public function groups(): MorphToMany
     {
         return $this->morphToMany(Group::class, 'groupable')

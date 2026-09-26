@@ -6,6 +6,7 @@ namespace Domain\Groups\Concerns;
 
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,17 +16,18 @@ trait HasGroups
 {
     public static function bootHasGroups(): void
     {
-        static::deleting(function (Model $model) {
-            if (in_array(SoftDeletes::class, class_uses_recursive($model))) {
-                if (! $model->forceDeleting) {
-                    return;
-                }
+        static::deleting(function (self $model) {
+            if (in_array(SoftDeletes::class, class_uses_recursive($model)) && ! $model->isForceDeleting()) {
+                return;
             }
 
             $model->groups()->cursor()->each(fn (Group $group) => $group->delete());
         });
     }
 
+    /**
+     * @return HasMany<Group, $this>
+     */
     public function groups(): HasMany
     {
         return $this->hasMany(Group::class)->chaperone();
@@ -40,6 +42,9 @@ trait HasGroups
         return $this->groups()->firstOrCreate($criteria, $attributes ?? []);
     }
 
+    /**
+     * @return HasMany<Group, $this>
+     */
     public function customGroups(): HasMany
     {
         return $this->groups()
@@ -58,7 +63,7 @@ trait HasGroups
             ->map(fn (Group $group) => [
                 'id' => $group->getRouteKey(),
                 'name' => (string) $group->name,
-                'has' => (bool) $group->modelable,
+                'has' => (bool) $group->getAttribute('modelable'),
             ]);
     }
 
@@ -72,14 +77,14 @@ trait HasGroups
         return $this->findOrCreateGroup(type: $type);
     }
 
-    public function markInGroup(Model $model, GroupType $type, ?array $options = null): Model
+    public function markInGroup(Video $video, GroupType $type, ?array $options = null): Video
     {
-        return $model->attachToGroup($this->groupFor($type), $options);
+        return $video->attachToGroup($this->groupFor($type), $options);
     }
 
-    public function toggleInGroup(Model $model, GroupType $type, ?array $options = null): Model
+    public function toggleInGroup(Video $video, GroupType $type, ?array $options = null): Group
     {
-        return $model->toggleGroup($this->groupFor($type), $options);
+        return $video->toggleGroup($this->groupFor($type), $options);
     }
 
     /**

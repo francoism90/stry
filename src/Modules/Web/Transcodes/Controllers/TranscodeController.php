@@ -8,11 +8,11 @@ use Domain\Transcodes\Enums\TranscodeScope;
 use Domain\Transcodes\Enums\TranscodeSorter;
 use Domain\Transcodes\Filters\TranscodeScopeFilter;
 use Domain\Transcodes\Models\Transcode;
-use Domain\Transcodes\QueryBuilders\TranscodeQueryBuilder;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -43,7 +43,9 @@ class TranscodeController implements HasMiddleware
 
         // Scout builder
         $scout = ScoutBuilder::for(Transcode::class)
-            ->query(fn (TranscodeQueryBuilder $query) => $query->with('transcodable'))
+            ->query(function (Builder $query): void {
+                $query->with('transcodable');
+            })
             ->allowedFilters(
                 AllowedFilter::custom('scope', new TranscodeScopeFilter),
             )

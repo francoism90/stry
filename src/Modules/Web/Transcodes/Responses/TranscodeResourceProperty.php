@@ -26,9 +26,6 @@ readonly class TranscodeResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return $this
-            ->transcode
-            ->loadMissing('transcodable')
-            ->toResource(TranscodeResource::class);
+        return TranscodeResource::make($this->transcode->loadMissing('transcodable'));
     }
 }
