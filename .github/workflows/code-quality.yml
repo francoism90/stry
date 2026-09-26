@@ -67,11 +67,8 @@ jobs:
             - name: Run Laravel Pint
               run: vendor/bin/pint --dirty
 
-            - name: Run ESLint
-              run: pnpm run lint
+            - name: Check formatting and linting
+              run: pnpm run check
 
             - name: Run TypeScript type check
               run: pnpm run type-check
-
-            - name: Check Prettier formatting
-              run: pnpm run format

@@ -19,7 +19,7 @@ export function useSettings<N extends keyof UserSettings>(namespace: N) {
   }
 
   function update(data: Partial<S>): void {
-    http.transform(() => ({ [namespace]: data })).patch(UserSettingsController.url())
+    void http.transform(() => ({ [namespace]: data })).patch(UserSettingsController.url())
   }
 
   return { settings, get, only, update }

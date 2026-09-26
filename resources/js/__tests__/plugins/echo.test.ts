@@ -1,10 +1,10 @@
 import { bootEcho } from '@/plugins/echo'
 import type { EchoConfig } from '@/types'
 import { configureEcho } from '@laravel/echo-vue'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 vi.mock('@laravel/echo-vue', () => ({
-  configureEcho: vi.fn(),
+  configureEcho: vi.fn<(...args: unknown[]) => void>(),
 }))
 
 const config: EchoConfig = { key: 'app-key', host: 'reverb.test', port: 443, scheme: 'https' }

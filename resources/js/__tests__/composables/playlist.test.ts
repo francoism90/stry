@@ -1,10 +1,10 @@
 import { usePlaylist } from '@/composables/playlist'
 import type { Playlist } from '@/types'
 import { router } from '@inertiajs/vue3'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 vi.mock('@inertiajs/vue3', () => ({
-  router: { reload: vi.fn() },
+  router: { reload: vi.fn<(...args: unknown[]) => void>() },
 }))
 
 const playlist = (id: string, asset: string, assetRefreshIn = 0): Playlist =>

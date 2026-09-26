@@ -18,7 +18,7 @@ const cspNonce =
     ? undefined
     : (document.querySelector('meta[name="csp-nonce"]')?.getAttribute('content') ?? undefined)
 
-createInertiaApp({
+void createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),
   layout: (name) => {
     if (name.startsWith('Auth/')) {
