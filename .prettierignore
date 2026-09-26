@@ -1,22 +1,45 @@
+# Prettier also reads .gitignore and always skips .git, .hg, .svn and node_modules.
+
+# AI tooling
+.agents
+.ai
+.claude
+.junie
+.mcp.json
+.remember
+/AGENTS.md
+/CLAUDE.md
+boost.json
+skills-lock.json
+
+# CI
+.github
+
+# Lock files
+composer.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Data and dumps
 *.log
 *.log.*
 *.sql
 *.sql.gz
 *.sqlite
-**/.agents
-**/.claude
-**/.git
-**/.github
-**/.hg
-**/.junie
-**/.svn
-/AGENTS.md
 /data
-/node_modules
+
+# Generated code
+/resources/js/actions
+/resources/js/routes
+/resources/js/wayfinder
+auto-imports.d.ts
+components.d.ts
+env.d.ts
+
+# Build output and vendor code
+/bootstrap/ssr
 /public
 /storage
 /vendor
-composer.lock
-package-lock.json
-skills-lock.json
-pnpm-lock.yaml
+/website/.docusaurus
+/website/build

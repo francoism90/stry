@@ -119,7 +119,7 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :links="links"
       :ui="{
         title: 'text-xl wrap-anywhere capitalize sm:text-2xl',
-        links: 'flex-nowrap overflow-x-auto [&>button]:shrink-0 [&>button]:min-w-fit',
+        links: 'flex-nowrap overflow-x-auto [&>button]:min-w-fit [&>button]:shrink-0',
       }"
     >
       <template #description>
