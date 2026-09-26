@@ -157,6 +157,6 @@ class TagController implements HasMiddleware
         // Notify the user
         toast(title: (string) $tag->name, description: __('The tag has been deleted.'), type: 'warning');
 
-        return back();
+        return redirect()->route('tags.index');
     }
 }

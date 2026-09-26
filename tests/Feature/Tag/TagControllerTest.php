@@ -83,3 +83,29 @@ it('sorts tags after updating one', function () {
 
     expect($tag->refresh()->order_column)->toBeGreaterThan($other->refresh()->order_column);
 });
+
+it('redirects to the tag index after deleting a tag', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $tag = Tag::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->from(action([TagController::class, 'show'], $tag))
+        ->delete(action([TagController::class, 'destroy'], $tag));
+
+    $response->assertRedirectToRoute('tags.index');
+    $response->assertInertiaFlash('type', 'warning');
+    $this->assertModelMissing($tag);
+});
+
+it('denies a regular user from deleting a tag', function () {
+    $user = User::factory()->create();
+
+    $tag = Tag::factory()->create();
+
+    $response = $this->actingAs($user)->delete(action([TagController::class, 'destroy'], $tag));
+
+    $response->assertForbidden();
+    $this->assertModelExists($tag);
+});

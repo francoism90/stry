@@ -77,3 +77,28 @@ it('forbids a non-owner from updating a video', function () {
         ->name->toBe('Original')
         ->state->equals(Verified::class)->toBeTrue();
 });
+
+// destroy
+
+it('redirects to the video library after deleting a video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)
+        ->from(action([VideoController::class, 'show'], $video))
+        ->delete(action([VideoController::class, 'destroy'], $video));
+
+    $response->assertRedirectToRoute('videos.index');
+    $response->assertInertiaFlash('type', 'warning');
+    $this->assertModelMissing($video);
+});
+
+it('forbids a non-owner from deleting a video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+
+    $response = $this->actingAs($user)->delete(action([VideoController::class, 'destroy'], $video));
+
+    $response->assertForbidden();
+    $this->assertModelExists($video);
+});

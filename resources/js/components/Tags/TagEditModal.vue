@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { update } from '@/actions/Modules/Web/Tags/Controllers/TagController'
+import TagDeleteModal from '@/components/Tags/TagDeleteModal.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import { useTags } from '@/composables/tags'
 import type { Tag, TagMenuItem } from '@/types'
 import { useForm } from '@inertiajs/vue3'
+import type { TabsItem } from '@nuxt/ui'
 
 const props = withDefaults(
   defineProps<{
@@ -16,6 +18,11 @@ const props = withDefaults(
 )
 
 const open = defineModel<boolean>('open')
+
+const tabs: TabsItem[] = [
+  { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
+  { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
+]
 
 const { items, types, filter } = useTags(props.item.related || [])
 
@@ -38,6 +45,7 @@ const onSubmit = (close: () => void) =>
     v-model:open="open"
     :title="`Edit ${item.name}`"
     :processing="form.processing"
+    :tabs="tabs"
     @submit="onSubmit"
   >
     <template
@@ -54,7 +62,7 @@ const onSubmit = (close: () => void) =>
       </slot>
     </template>
 
-    <template #body>
+    <template #general>
       <UForm
         :state="form"
         class="flex flex-col gap-4"
@@ -124,6 +132,24 @@ const onSubmit = (close: () => void) =>
           />
         </UFormField>
       </UForm>
+    </template>
+
+    <template #manage>
+      <div class="flex flex-col gap-2">
+        <p class="text-sm font-semibold text-error">Delete tag</p>
+        <p class="text-sm text-muted">This may permanently remove this tag and all associated data.</p>
+
+        <TagDeleteModal :item="item">
+          <UButton
+            label="Delete tag"
+            icon="i-lucide-trash"
+            color="error"
+            variant="soft"
+            size="sm"
+            class="w-fit"
+          />
+        </TagDeleteModal>
+      </div>
     </template>
   </FormModal>
 </template>

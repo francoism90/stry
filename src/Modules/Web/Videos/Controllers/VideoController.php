@@ -4,18 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Controllers;
 
-use Modules\Api\Videos\Requests\VideoUpdateRequest;
-use Modules\Api\Videos\Resources\VideoResource;
-use Modules\Web\Chapters\Responses\ChapterTypeOptionsProperty;
-use Modules\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
-use Modules\Web\Videos\Responses\VideoGroupsProperty;
-use Modules\Web\Videos\Responses\VideoMediaProperty;
-use Modules\Web\Videos\Responses\VideoPlaylistProperty;
-use Modules\Web\Videos\Responses\VideoPlaylistsProperty;
-use Modules\Web\Videos\Responses\VideoProgressProperty;
-use Modules\Web\Videos\Responses\VideoQueueProperty;
-use Modules\Web\Videos\Responses\VideoResourceProperty;
-use Modules\Web\Videos\Responses\VideoTranscodesProperty;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoLibraryScope;
 use Domain\Videos\Enums\VideoSorter;
@@ -35,6 +23,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Api\Videos\Requests\VideoUpdateRequest;
+use Modules\Api\Videos\Resources\VideoResource;
+use Modules\Web\Chapters\Responses\ChapterTypeOptionsProperty;
+use Modules\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
+use Modules\Web\Videos\Responses\VideoGroupsProperty;
+use Modules\Web\Videos\Responses\VideoMediaProperty;
+use Modules\Web\Videos\Responses\VideoPlaylistProperty;
+use Modules\Web\Videos\Responses\VideoPlaylistsProperty;
+use Modules\Web\Videos\Responses\VideoProgressProperty;
+use Modules\Web\Videos\Responses\VideoQueueProperty;
+use Modules\Web\Videos\Responses\VideoResourceProperty;
+use Modules\Web\Videos\Responses\VideoTranscodesProperty;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters;
 use Support\Scout\Sorts\RecommendedSorter;
@@ -139,6 +139,6 @@ class VideoController implements HasMiddleware
         // Notify the user
         toast(title: (string) $video->name, description: __('The video has been deleted.'), type: 'warning');
 
-        return back();
+        return redirect()->route('videos.index');
     }
 }
