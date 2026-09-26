@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
 import { google } from 'laravel-vite-plugin/fonts'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig, loadEnv } from 'vite-plus'
+import { defineConfig, lazyPlugins, loadEnv } from 'vite-plus'
 import { stripCss } from './resources/js/plugins/build/strip-css'
 
 // https://vite.dev/config/
@@ -84,7 +84,7 @@ export default defineConfig(({ mode }) => {
             'vitest/expect-expect': 'error',
             'vitest/no-commented-out-tests': 'error',
             'vitest/no-conditional-expect': 'error',
-            'vitest/no-disabled-tests': 'warn',
+            'vitest/no-disabled-tests': 'error',
             'vitest/no-focused-tests': 'error',
             'vitest/no-identical-title': 'error',
             'vitest/no-import-node-test': 'error',
@@ -103,6 +103,7 @@ export default defineConfig(({ mode }) => {
         },
       ],
       options: {
+        denyWarnings: true,
         typeAware: true,
       },
       jsPlugins: [
@@ -174,9 +175,11 @@ export default defineConfig(({ mode }) => {
       hmr: { host: env.VITE_HMR_HOST, clientPort: 443, protocol: 'wss' },
       watch: {
         ignored: [
+          '**/.agents/**',
           '**/.junie/**',
           '**/.cursor/**',
           '**/.claude/**',
+          '**/vendor/**',
           '**/storage/framework/views/**',
           '**/storage/logs/**',
         ],
@@ -194,7 +197,7 @@ export default defineConfig(({ mode }) => {
       // only resolve while bundling, so it must never be externalized for SSR.
       noExternal: ['@nuxt/ui'],
     },
-    plugins: [
+    plugins: lazyPlugins(() => [
       laravel({
         input: ['resources/css/app.css', 'resources/js/app.ts'],
         refresh: true,
@@ -250,7 +253,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-    ],
+    ]),
     build: {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
