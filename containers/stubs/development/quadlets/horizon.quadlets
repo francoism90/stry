@@ -3,7 +3,7 @@
 Description=Laravel Horizon container
 Requires={{application}}-valkey.container
 After={{application}}.container {{application}}-valkey.container
-BindsTo={{application}}.container
+PartOf={{application}}.container
 
 [Container]
 Image={{application}}.build

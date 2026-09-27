@@ -2,7 +2,7 @@
 [Unit]
 Description=Laravel Schedule container
 After={{application}}.container
-BindsTo={{application}}.container
+PartOf={{application}}.container
 
 [Container]
 Image={{application}}.build

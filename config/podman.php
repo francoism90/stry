@@ -181,12 +181,12 @@ return [
     */
 
     'ondemand' => [
-        'enabled' => env('PODMAN_ONDEMAND_ENABLED', false),
+        'enabled' => env('PODMAN_ONDEMAND_ENABLED', true),
 
         'listen' => env('PODMAN_ONDEMAND_LISTEN', '8000'),
 
         'port' => env('PODMAN_ONDEMAND_PORT', 18000),
 
-        'idle_timeout' => env('PODMAN_ONDEMAND_IDLE_TIMEOUT', '15min'),
+        'idle_timeout' => env('PODMAN_ONDEMAND_IDLE_TIMEOUT', '10min'),
     ],
 ];
