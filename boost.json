@@ -38,6 +38,7 @@
         "podman-lpod",
         "podman-presets",
         "podman-s3",
+        "podman-upgrade",
         "laravel-shaka-development",
         "laravel-streamer-development",
         "medialibrary-development",
