@@ -6,7 +6,7 @@ namespace Domain\Transcodes\States;
 
 class Pending extends TranscodeState
 {
-    public static $name = 'pending';
+    public static string $name = 'pending';
 
     public function label(): string
     {

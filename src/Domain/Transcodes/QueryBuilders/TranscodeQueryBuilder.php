@@ -18,36 +18,46 @@ use Illuminate\Support\Arr;
  */
 class TranscodeQueryBuilder extends Builder
 {
+    /**
+     * @param  ArrayAccess<array-key, TranscodeEncoder|string>|array<array-key, TranscodeEncoder|string>|TranscodeEncoder  $encoder
+     * @return self<TModel>
+     */
     public function encoder(ArrayAccess|array|TranscodeEncoder $encoder): self
     {
         return $this->whereIn('encoder', Arr::wrap($encoder));
     }
 
+    /** @return self<TModel> */
     public function pending(): self
     {
         return $this->whereState('state', States\Pending::class);
     }
 
+    /** @return self<TModel> */
     public function processing(): self
     {
         return $this->whereState('state', States\Processing::class);
     }
 
+    /** @return self<TModel> */
     public function completed(): self
     {
         return $this->whereState('state', States\Completed::class);
     }
 
+    /** @return self<TModel> */
     public function failed(): self
     {
         return $this->whereState('state', States\Failed::class);
     }
 
+    /** @return self<TModel> */
     public function successful(): self
     {
         return $this->completed();
     }
 
+    /** @return self<TModel> */
     public function expired(): self
     {
         return $this
@@ -55,6 +65,7 @@ class TranscodeQueryBuilder extends Builder
             ->where('created_at', '<=', now()->subDays(7));
     }
 
+    /** @return self<TModel> */
     public function prunable(): self
     {
         return $this
@@ -63,6 +74,7 @@ class TranscodeQueryBuilder extends Builder
             ->oldest();
     }
 
+    /** @return self<TModel> */
     public function current(): self
     {
         return $this
@@ -70,6 +82,7 @@ class TranscodeQueryBuilder extends Builder
             ->ordered();
     }
 
+    /** @return self<TModel> */
     public function ordered(): self
     {
         return $this

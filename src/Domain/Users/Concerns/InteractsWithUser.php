@@ -28,6 +28,10 @@ trait InteractsWithUser
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
     public function scopeHasUser(Builder $query, User $user): Builder
     {
         return $query->where('user_id', $user->getKey());

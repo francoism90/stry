@@ -57,6 +57,9 @@ class Video extends ImageGenerator
         return class_exists('\\FFMpeg\\FFMpeg');
     }
 
+    /**
+     * @return Collection<int, string>
+     */
     public function supportedExtensions(): Collection
     {
         return Collection::make([
@@ -68,6 +71,9 @@ class Video extends ImageGenerator
         ]);
     }
 
+    /**
+     * @return Collection<int, string>
+     */
     public function supportedMimeTypes(): Collection
     {
         return Collection::make([

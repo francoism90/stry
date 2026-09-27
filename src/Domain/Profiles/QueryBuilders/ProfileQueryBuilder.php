@@ -16,16 +16,19 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class ProfileQueryBuilder extends Builder
 {
+    /** @return self<TModel> */
     public function enabled(): self
     {
         return $this->whereState('state', States\Enabled::class);
     }
 
+    /** @return self<TModel> */
     public function disabled(): self
     {
         return $this->whereState('state', States\Disabled::class);
     }
 
+    /** @return self<TModel> */
     public function ordered(ProfileSorter|string|null $order = null): self
     {
         $orderValue = $order ?? ProfileSorter::Name;
@@ -38,6 +41,7 @@ class ProfileQueryBuilder extends Builder
             ->when($orderer === ProfileSorter::Name, fn (self $query) => $query->orderBy('name'));
     }
 
+    /** @return self<TModel> */
     public function current(): self
     {
         return $this

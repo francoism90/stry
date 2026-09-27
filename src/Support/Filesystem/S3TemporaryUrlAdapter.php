@@ -11,6 +11,9 @@ class S3TemporaryUrlAdapter extends AwsS3V3Adapter
 {
     private ?S3Client $presignClient = null;
 
+    /**
+     * @param  array<string, mixed>  $options
+     */
     public function temporaryUrl($path, $expiration, array $options = []): string
     {
         if (! $this->hasPresignEndpointMismatch()) {
@@ -27,6 +30,10 @@ class S3TemporaryUrlAdapter extends AwsS3V3Adapter
         return (string) $client->createPresignedRequest($command, $expiration, $options)->getUri();
     }
 
+    /**
+     * @param  array<string, mixed>  $options
+     * @return array{url: string, headers: array<string, mixed>}
+     */
     public function temporaryUploadUrl($path, $expiration, array $options = []): array
     {
         if (! $this->hasPresignEndpointMismatch()) {

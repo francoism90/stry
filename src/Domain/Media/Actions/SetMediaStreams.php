@@ -59,6 +59,9 @@ class SetMediaStreams
             ->saveOrFail();
     }
 
+    /**
+     * @return list<string>
+     */
     protected function getStreamKeys(): array
     {
         return [

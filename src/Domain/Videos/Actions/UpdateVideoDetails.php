@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateVideoDetails
 {
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Video $video, array $attributes): void
     {
         DB::transaction(function () use ($video, $attributes) {

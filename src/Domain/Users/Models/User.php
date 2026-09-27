@@ -42,7 +42,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use BroadcastsModelEvents;
     use HasApiTokens;
+
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasGroups;
     use HasProfiles;
     use HasRoles;
@@ -95,6 +98,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return UserFactory::new();
     }
 
+    /**
+     * @return list<string>
+     */
     public function guardName(): array
     {
         return ['api', 'web'];
@@ -141,6 +147,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->broadcastChannel();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         return [
@@ -194,7 +203,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
-     * @return Attribute<Collection, never>
+     * @return Attribute<Collection<int, string>, never>
      */
     protected function assignedRoles(): Attribute
     {
@@ -204,7 +213,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
-     * @return Attribute<Collection, never>
+     * @return Attribute<Collection<int, string>, never>
      */
     protected function assignedPermissions(): Attribute
     {
@@ -214,7 +223,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
-     * @return Attribute<array, never>
+     * @return Attribute<array<string, mixed>, never>
      */
     protected function userSettings(): Attribute
     {

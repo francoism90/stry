@@ -8,12 +8,16 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Profiles\Models\Profile;
 use Domain\Videos\Enums\VideoScope;
+use Domain\Videos\Models\Video;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Builder;
 
 class VideoScopeFilter implements Filter
 {
+    /**
+     * @param  Builder<Video>  $query
+     */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         if (! is_string($value)) {
@@ -29,21 +33,33 @@ class VideoScopeFilter implements Filter
         };
     }
 
+    /**
+     * @param  Builder<Video>  $query
+     */
     private function applyShorts(Builder $query): void
     {
         $query->where('duration', '<=', 300);
     }
 
+    /**
+     * @param  Builder<Video>  $query
+     */
     private function applyUntagged(Builder $query): void
     {
         $query->where('tagged_count', 0);
     }
 
+    /**
+     * @param  Builder<Video>  $query
+     */
     private function applyCaptioned(Builder $query): void
     {
         $query->where('captioned', true);
     }
 
+    /**
+     * @param  Builder<Video>  $query
+     */
     private function applyUnseen(Builder $query): void
     {
         // Get the current user's ID, either from the current profile or the authenticated user

@@ -14,6 +14,9 @@ use Throwable;
 
 class ExtractMediaCaptions
 {
+    /**
+     * @return Collection<int, non-falsy-string>
+     */
     public function handle(Media $media): Collection
     {
         // Initialize FFMpeg

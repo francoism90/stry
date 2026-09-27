@@ -12,6 +12,9 @@ use League\Flysystem\Visibility;
 
 class FilesystemManager extends BaseFilesystemManager
 {
+    /**
+     * @param  array<string, mixed>  $config
+     */
     public function createS3Driver(array $config): S3TemporaryUrlAdapter
     {
         $s3Config = $this->formatS3Config($config);

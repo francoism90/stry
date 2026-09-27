@@ -6,7 +6,7 @@ namespace Domain\Transcodes\States;
 
 class Completed extends TranscodeState
 {
-    public static $name = 'completed';
+    public static string $name = 'completed';
 
     public function label(): string
     {

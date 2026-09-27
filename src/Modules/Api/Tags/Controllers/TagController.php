@@ -27,6 +27,9 @@ class TagController implements HasMiddleware
         ];
     }
 
+    /**
+     * @return Paginator<int, TagResource>
+     */
     #[FlexibleCache(lifetime: 60 * 60, grace: 5 * 60, tags: ['tags'])]
     public function index(): Paginator
     {

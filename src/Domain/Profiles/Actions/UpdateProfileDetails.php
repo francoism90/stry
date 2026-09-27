@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateProfileDetails
 {
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Profile $profile, array $attributes = []): void
     {
         DB::transaction(function () use ($profile, $attributes): void {

@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Domain\Videos\Filters;
 
 use Domain\Videos\Enums\VideoLibraryScope;
+use Domain\Videos\Models\Video;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
 class VideoLibraryScopeFilter implements Filter
 {
+    /**
+     * @param  Builder<Video>  $query
+     */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         if (! is_string($value)) {

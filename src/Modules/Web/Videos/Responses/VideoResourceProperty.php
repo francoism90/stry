@@ -11,6 +11,9 @@ use Modules\Api\Videos\Resources\VideoResource;
 
 readonly class VideoResourceProperty implements ProvidesInertiaProperty
 {
+    /**
+     * @param  list<string>|null  $appends
+     */
     public function __construct(
         protected ?Video $video = null,
         protected ?array $appends = null,

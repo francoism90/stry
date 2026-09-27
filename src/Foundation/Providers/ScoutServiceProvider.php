@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Builder;
 
@@ -17,7 +18,7 @@ class ScoutServiceProvider extends ServiceProvider
     protected function configureMacros(): void
     {
         Builder::macro('randomOrder', function (?int $seed = null) {
-            /** @var Builder $this */
+            /** @var Builder<Model> $this */
             return $this->orderBy("_rand({$seed})");
         });
     }

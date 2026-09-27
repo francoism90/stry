@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class CreateNewProfile
 {
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(User $user, array $attributes = []): Profile
     {
         return DB::transaction(function () use ($user, $attributes): Profile {

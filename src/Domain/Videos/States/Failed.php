@@ -6,7 +6,7 @@ namespace Domain\Videos\States;
 
 class Failed extends VideoState
 {
-    public static $name = 'failed';
+    public static string $name = 'failed';
 
     public function label(): string
     {

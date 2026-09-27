@@ -16,16 +16,19 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class VideoQueryBuilder extends Builder
 {
+    /** @return self<TModel> */
     public function failed(): self
     {
         return $this->whereState('state', States\Failed::class);
     }
 
+    /** @return self<TModel> */
     public function verified(): self
     {
         return $this->whereState('state', States\Verified::class);
     }
 
+    /** @return self<TModel> */
     public function published(): self
     {
         return $this
@@ -34,6 +37,7 @@ class VideoQueryBuilder extends Builder
             ->where('published_at', '<=', now());
     }
 
+    /** @return self<TModel> */
     public function recent(): self
     {
         return $this
@@ -42,6 +46,7 @@ class VideoQueryBuilder extends Builder
             ->latest();
     }
 
+    /** @return self<TModel> */
     public function forProfile(?Profile $profile = null): self
     {
         if ($profile?->isKids()) {

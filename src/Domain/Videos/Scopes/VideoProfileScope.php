@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Domain\Videos\Scopes;
 
 use Domain\Profiles\Models\Profile;
+use Domain\Videos\Models\Video;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Laravel\Scout\Builder;
 
 readonly class VideoProfileScope
 {
+    /**
+     * @param  Builder<Video>  $scout
+     */
     public function __invoke(Builder $scout): void
     {
         $scout->query(fn (VideoQueryBuilder $query) => $query

@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Storage;
 
 class FetchImportableVideos
 {
+    /**
+     * @return Collection<int, VideoFile>
+     */
     public function handle(string $disk): Collection
     {
         // Get a filesystem instance for the specified disk

@@ -9,6 +9,9 @@ use Illuminate\Support\Arr;
 
 class UpdateGroupDetails
 {
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Group $group, array $attributes = []): void
     {
         $group->updateOrFail(

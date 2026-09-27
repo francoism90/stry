@@ -25,6 +25,9 @@ trait InteractsWithCache
         ResponseCache::clear(static::responseCacheTags());
     }
 
+    /**
+     * @return list<string>
+     */
     public static function responseCacheTags(): array
     {
         $name = Str::snake(class_basename(static::class));

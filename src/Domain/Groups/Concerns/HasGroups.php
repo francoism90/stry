@@ -33,6 +33,9 @@ trait HasGroups
         return $this->hasMany(Group::class)->chaperone();
     }
 
+    /**
+     * @param  array<string, mixed>|null  $attributes
+     */
     public function findOrCreateGroup(GroupType $type, ?string $name = null, ?array $attributes = null): Group
     {
         $criteria = filled($name)
@@ -77,11 +80,17 @@ trait HasGroups
         return $this->findOrCreateGroup(type: $type);
     }
 
+    /**
+     * @param  array<string, mixed>|null  $options
+     */
     public function markInGroup(Video $video, GroupType $type, ?array $options = null): Video
     {
         return $video->attachToGroup($this->groupFor($type), $options);
     }
 
+    /**
+     * @param  array<string, mixed>|null  $options
+     */
     public function toggleInGroup(Video $video, GroupType $type, ?array $options = null): Group
     {
         return $video->toggleGroup($this->groupFor($type), $options);

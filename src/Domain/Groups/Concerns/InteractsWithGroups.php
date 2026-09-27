@@ -43,11 +43,18 @@ trait InteractsWithGroups
             ->withTimestamps();
     }
 
+    /**
+     * @param  array<string, mixed>|null  $options
+     */
     public function attachToGroup(Group $group, ?array $options = null): static
     {
         return $this->attachToGroups([$group], $options);
     }
 
+    /**
+     * @param  array<array-key, Group|int|string>|ArrayAccess<array-key, Group|int|string>|Collection<array-key, Group|int|string>  $groups
+     * @param  array<string, mixed>|null  $options
+     */
     public function attachToGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
     {
         $groups = static::convertToGroups($groups);
@@ -68,6 +75,9 @@ trait InteractsWithGroups
         return $this->detachFromGroups([$group]);
     }
 
+    /**
+     * @param  array<array-key, Group|int|string>|ArrayAccess<array-key, Group|int|string>|Collection<array-key, Group|int|string>  $groups
+     */
     public function detachFromGroups(array|ArrayAccess|Collection $groups = []): static
     {
         $items = static::convertToGroups($groups);
@@ -79,6 +89,9 @@ trait InteractsWithGroups
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>|null  $options
+     */
     public function toggleGroup(Group $group, ?array $options = null): Group
     {
         $group->hasGroupable($this)
@@ -113,6 +126,10 @@ trait InteractsWithGroups
         return $this->groupTypesOf($user)->contains($type);
     }
 
+    /**
+     * @param  array<array-key, Group|int|string>|ArrayAccess<array-key, Group|int|string>|Collection<array-key, Group|int|string>  $values
+     * @return Collection<int, Group>
+     */
     public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection
     {
         return Collection::make($values)
@@ -138,6 +155,10 @@ trait InteractsWithGroups
             ->exists();
     }
 
+    /**
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
     public function scopeWhereGroup(Builder $query, ?GroupType $type = null): Builder
     {
         return $query->whereHas('groups', fn ($query) => $query

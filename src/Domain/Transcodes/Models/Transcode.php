@@ -41,7 +41,10 @@ use Spatie\ModelStates\HasStates;
 class Transcode extends Model
 {
     use BroadcastsModelEvents;
+
+    /** @use HasFactory<TranscodeFactory> */
     use HasFactory;
+
     use HasStates;
     use HasUlidRouteKey;
     use InteractsWithUser;
@@ -100,6 +103,9 @@ class Transcode extends Model
         return $this->morphTo();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         return [
@@ -124,11 +130,18 @@ class Transcode extends Model
         return $models->loadMissing('transcodable');
     }
 
+    /**
+     * @param  TranscodeQueryBuilder<self>  $query
+     * @return TranscodeQueryBuilder<self>
+     */
     protected function makeAllSearchableUsing(TranscodeQueryBuilder $query): TranscodeQueryBuilder
     {
         return $query->with('transcodable');
     }
 
+    /**
+     * @return TranscodeQueryBuilder<static>
+     */
     public function prunable(): TranscodeQueryBuilder
     {
         return static::query()->prunable();

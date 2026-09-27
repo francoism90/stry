@@ -6,6 +6,7 @@ namespace Domain\Videos\Scopes;
 
 use Domain\Groups\Models\Group;
 use Domain\Videos\Enums\VideoSorter;
+use Domain\Videos\Models\Video;
 use Laravel\Scout\Builder;
 
 readonly class VideoGroupScope
@@ -15,6 +16,9 @@ readonly class VideoGroupScope
         public VideoSorter|string|null $sort = null,
     ) {}
 
+    /**
+     * @param  Builder<Video>  $scout
+     */
     public function __invoke(Builder $scout): void
     {
         // Initialize options array

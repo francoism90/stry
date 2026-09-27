@@ -6,7 +6,7 @@ namespace Domain\Playlists\States;
 
 class Verified extends PlaylistState
 {
-    public static $name = 'verified';
+    public static string $name = 'verified';
 
     public function label(): string
     {

@@ -9,6 +9,9 @@ use Domain\Users\Models\User;
 
 class UpdateUserSettings
 {
+    /**
+     * @param  array<string, mixed>  $settings
+     */
     public function handle(User $user, array $settings = []): void
     {
         $currentSettings = $user->getSettings()->toArray();

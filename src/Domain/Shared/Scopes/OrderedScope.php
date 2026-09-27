@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Shared\Scopes;
 
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 readonly class OrderedScope
@@ -14,6 +15,9 @@ readonly class OrderedScope
         public ?bool $disabled = null,
     ) {}
 
+    /**
+     * @param  Builder<Model>  $scout
+     */
     public function __invoke(Builder $scout): void
     {
         $order = $this->normalizeOrder($this->order ?? '');

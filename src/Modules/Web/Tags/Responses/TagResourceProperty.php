@@ -11,6 +11,9 @@ use Modules\Api\Tags\Resources\TagResource;
 
 readonly class TagResourceProperty implements ProvidesInertiaProperty
 {
+    /**
+     * @param  list<string>|null  $appends
+     */
     public function __construct(
         protected ?Tag $tag = null,
         protected ?array $appends = null,

@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Support\Scout\Sorts;
 
 use Foxws\ScoutBuilder\Sorts\Sort;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 class VideosSorter implements Sort
 {
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function __invoke(Builder $query, bool $descending, string $property): void
     {
         // If the query already has a sort order defined, we won't apply our custom sorting logic to avoid conflicts.

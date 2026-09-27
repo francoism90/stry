@@ -6,7 +6,7 @@ namespace Domain\Groups\States;
 
 class Pending extends GroupState
 {
-    public static $name = 'pending';
+    public static string $name = 'pending';
 
     public function label(): string
     {

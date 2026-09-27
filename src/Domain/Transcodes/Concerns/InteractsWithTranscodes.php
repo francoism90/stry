@@ -29,6 +29,9 @@ trait InteractsWithTranscodes
         return $this->morphMany(Transcode::class, 'transcodable')->chaperone();
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function createTranscode(array $attributes = []): Transcode
     {
         return $this->transcodes()->create([

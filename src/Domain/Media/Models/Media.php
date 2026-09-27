@@ -73,6 +73,9 @@ class Media extends BaseMedia
         return Number::fileSize(Media::query()->totalSize());
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getStreams(): array
     {
         return $this->getCustomProperty('streams', []);
@@ -108,6 +111,9 @@ class Media extends BaseMedia
         return "media.{$event}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function broadcastWith(string $event): array
     {
         return ['id' => $this->getRouteKey()];
@@ -129,7 +135,7 @@ class Media extends BaseMedia
     }
 
     /**
-     * @return Attribute<array, never>
+     * @return Attribute<array<string, mixed>, never>
      */
     protected function videoStream(): Attribute
     {

@@ -31,6 +31,9 @@ trait InteractsWithPlaylists
         return $this->morphMany(Playlist::class, 'playlistable')->chaperone();
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function createPlaylist(array $attributes = []): Playlist
     {
         $settings = app(PlaylistSettings::class);

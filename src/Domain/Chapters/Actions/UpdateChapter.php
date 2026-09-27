@@ -12,6 +12,9 @@ class UpdateChapter
         protected ClassifyChapterType $classifyChapterType,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Chapter $chapter, array $attributes): Chapter
     {
         if (blank($attributes['type'] ?? null) && filled($attributes['label'] ?? null)) {

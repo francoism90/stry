@@ -6,7 +6,7 @@ namespace Domain\Videos\States;
 
 class Pending extends VideoState
 {
-    public static $name = 'pending';
+    public static string $name = 'pending';
 
     public function label(): string
     {

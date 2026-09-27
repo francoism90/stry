@@ -16,31 +16,37 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GroupQueryBuilder extends Builder
 {
+    /** @return self<TModel> */
     public function custom(): self
     {
         return $this->where('type', GroupType::Custom);
     }
 
+    /** @return self<TModel> */
     public function mixer(): self
     {
         return $this->where('type', GroupType::Mixer);
     }
 
+    /** @return self<TModel> */
     public function liked(): self
     {
         return $this->where('type', GroupType::Liked);
     }
 
+    /** @return self<TModel> */
     public function saved(): self
     {
         return $this->where('type', GroupType::Saved);
     }
 
+    /** @return self<TModel> */
     public function viewed(): self
     {
         return $this->where('type', GroupType::Viewed);
     }
 
+    /** @return self<TModel> */
     public function forModel(Model $model): self
     {
         return $this->withExists(['groupables as modelable' => fn (Builder $query) => $query
