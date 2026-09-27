@@ -8,6 +8,7 @@ PartOf={{application}}.container
 [Container]
 Image={{application}}.build
 AutoUpdate=local
+HealthCmd=none
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon"
 UserNS=keep-id
 ShmSize=128m

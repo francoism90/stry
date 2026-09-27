@@ -1,3 +1,7 @@
+# FrankenPHP 1 with PHP 8.5. Pass --build-arg FRANKENPHP_VERSION=... for
+# another PHP version.
+ARG FRANKENPHP_VERSION=1-php8.5
+
 FROM docker.io/rust:latest AS builder
 
 WORKDIR /tmp
@@ -41,7 +45,7 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     cargo install ab-av1 --root /usr/local
 
-FROM docker.io/dunglas/frankenphp:latest AS development
+FROM docker.io/dunglas/frankenphp:${FRANKENPHP_VERSION} AS development
 
 ARG UID=1000
 ARG GID=1000
@@ -168,11 +172,6 @@ RUN apt-get update \
 
 # Entrypoint
 COPY --chmod=755 podman/development/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
-
-# Clean up unnecessary files and caches to reduce image size
-RUN apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER docker
 

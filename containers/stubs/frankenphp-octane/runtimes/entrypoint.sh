@@ -17,14 +17,17 @@ if [ "$(id -u)" = '0' ]; then
         usermod -o -u "${PUID}" docker
     fi
 
-    chown -R docker:docker /app/storage /app/bootstrap/cache
-
-    # Podman's Volume=...,U chowns these to the image's declared USER, which
-    # is root (see above) -- not to PUID/PGID, so it needs redoing here.
+    # The image's own directories follow the renumbered user, and Podman's
+    # Volume=...,U chowns volumes to the image's declared USER, which is root
+    # (see above) -- not to PUID/PGID, so both need redoing. Only when the
+    # top-level directory is still owned by someone else: containers start
+    # often (the scheduler runs every minute), and /cache can be large.
     # Skipped for /media and /import: those are host bind mounts that already
-    # line up via UserNS=keep-id, and could be too large to chown on every start.
-    for dir in /config /data /cache; do
-        [ -d "${dir}" ] && chown -R docker:docker "${dir}"
+    # line up via UserNS=keep-id.
+    for dir in /app/storage /app/bootstrap/cache /config /data /cache; do
+        if [ -d "${dir}" ] && [ "$(stat -c '%u:%g' "${dir}")" != "${PUID}:${PGID}" ]; then
+            chown -R docker:docker "${dir}"
+        fi
     done
 
     exec gosu docker "$0" "$@"
@@ -65,9 +68,12 @@ if ! grep -q '^APP_KEY=.' /app/.env && [ -z "${APP_KEY:-}" ]; then
     exit 1
 fi
 
-# Clear any stale caches
-log "INFO" "Clearing stale caches..."
-${FRANKEN_CLI} optimize:clear
+# Clear any stale caches. Short-lived containers such as the scheduler set
+# APP_OPTIMIZE=false: they exit before rebuilt caches would pay off.
+if [ "${APP_OPTIMIZE:-true}" = "true" ]; then
+    log "INFO" "Clearing stale caches..."
+    ${FRANKEN_CLI} optimize:clear
+fi
 
 # Create PWA manifest — only the web server serves manifest.json/sw.js to
 # browsers, so skip this for the horizon/reverb/schedule/ssr containers
@@ -78,8 +84,10 @@ if [[ "${APP_COMMAND}" == *octane:frankenphp* ]]; then
 fi
 
 # Ensure all caches are warmed up
-log "INFO" "Optimizing application..."
-${FRANKEN_CLI} optimize
+if [ "${APP_OPTIMIZE:-true}" = "true" ]; then
+    log "INFO" "Optimizing application..."
+    ${FRANKEN_CLI} optimize
+fi
 
 # Run the provided command
 log "INFO" "Starting command..."
