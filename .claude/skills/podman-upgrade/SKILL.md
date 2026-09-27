@@ -37,6 +37,7 @@ For each published preset, compare it with `vendor/foxws/laravel-podman/stubs/{p
     - Keep `ExposeHostPort=` lines.
   - `[Build]`: `Environment=UID={{appUid}}`/`Environment=GID={{appGid}}` → `BuildArg=UID={{appUid}}`/`BuildArg=GID={{appGid}}`. `Environment=` is `--env` and never reached the Containerfile's `ARG`s.
 - **All other quadlets:** `BindsTo={{application}}.container` → `PartOf={{application}}.container`. Never leave `BindsTo=` on the app: systemd counts it as needing the app, so an on-demand app would never stop.
+- **Queue worker or Horizon, in both presets:** no `BindsTo=`/`PartOf=`/`After=` on the app at all. Use `Requires=`/`After=` on the database and cache the app requires, so jobs keep running while the app is idle (a `PartOf=` worker gets killed after `TimeoutStopSec=`).
 - **`development` sidecars** (`queue`, `horizon`, `schedule`, `reverb`, `vite`): add `HealthCmd=none` under `[Container]`, as the `frankenphp-octane` ones already have.
 - **Database and cache quadlets:** use the tags from step 2.
 - **`runtimes/Containerfile`:** `FROM docker.io/dunglas/frankenphp:latest` → `ARG FRANKENPHP_VERSION=1-php8.5` + `FROM docker.io/dunglas/frankenphp:${FRANKENPHP_VERSION}`. Keep a different PHP version if the user had one. The final "Clean up unnecessary files" layer can go. Keep the build-time `key:generate` in `frankenphp-octane`, or restore it if it was removed: the frontend build can boot Laravel (Wayfinder runs `php artisan wayfinder:generate`), which needs a key.
