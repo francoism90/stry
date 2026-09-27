@@ -32,7 +32,7 @@ class S3TemporaryUrlAdapter extends AwsS3V3Adapter
 
     /**
      * @param  array<string, mixed>  $options
-     * @return array{url: string, headers: array<string, mixed>}
+     * @return array<string, mixed>
      */
     public function temporaryUploadUrl($path, $expiration, array $options = []): array
     {

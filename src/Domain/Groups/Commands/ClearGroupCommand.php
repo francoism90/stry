@@ -32,7 +32,9 @@ class ClearGroupCommand extends Command implements Isolatable
 
     public function handle(): void
     {
-        $type = GroupType::tryFrom((string) $this->option('group'));
+        $group = $this->option('group');
+
+        $type = is_string($group) ? GroupType::tryFrom($group) : null;
 
         if (! $type instanceof GroupType || in_array($type, [GroupType::Custom, GroupType::Mixer])) {
             warning('The --group option must be one of: liked, saved, viewed.');

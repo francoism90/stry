@@ -47,7 +47,7 @@ readonly class GroupCollectionsProperty implements ProvidesInertiaProperty
             ->where('user_id', $userId)
             ->whereIn('type', self::PINNED_TYPES)
             ->get()
-            ->sortBy(fn (Group $group): int => array_search($group->type, self::PINNED_TYPES, strict: true));
+            ->sortBy(fn (Group $group): int => array_search($group->type, self::PINNED_TYPES, strict: true) ?: 0);
 
         $custom = Group::query()
             ->where('user_id', $userId)

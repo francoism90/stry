@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Relates\Concerns;
 
-use ArrayAccess;
 use Domain\Relates\Models\Related;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -30,9 +29,9 @@ trait InteractsWithRelated
     }
 
     /**
-     * @param  array<array-key, mixed>|ArrayAccess<array-key, mixed>|Collection<array-key, mixed>  $related
+     * @param  iterable<array-key, mixed>  $related
      */
-    public function syncRelated(array|ArrayAccess|Collection $related = []): static
+    public function syncRelated(iterable $related = []): static
     {
         $items = $this
             ->convertToRelated($related)
@@ -92,10 +91,10 @@ trait InteractsWithRelated
     }
 
     /**
-     * @param  array<array-key, mixed>|ArrayAccess<array-key, mixed>|Collection<array-key, mixed>  $models
+     * @param  iterable<array-key, mixed>  $models
      * @return Collection<int, array{relatable_type: string, relatable_id: mixed, model_type: string, model_id: mixed}>
      */
-    public function convertToRelated(array|ArrayAccess|Collection $models = []): Collection
+    public function convertToRelated(iterable $models = []): Collection
     {
         return collect($models)
             ->map(function (mixed $model): ?array {

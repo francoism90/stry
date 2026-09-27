@@ -11,6 +11,8 @@ class PlaylistTypeException extends Exception
 {
     public static function invalidType(PlaylistType|string $type): self
     {
-        return new self("Playlist type `{$type}` is not supported");
+        $value = $type instanceof PlaylistType ? $type->value : $type;
+
+        return new self("Playlist type `{$value}` is not supported");
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Concerns;
 
-use ArrayAccess;
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Models\Groupable;
@@ -52,10 +51,10 @@ trait InteractsWithGroups
     }
 
     /**
-     * @param  array<array-key, Group|int|string>|ArrayAccess<array-key, Group|int|string>|Collection<array-key, Group|int|string>  $groups
+     * @param  iterable<array-key, Group|int|string>  $groups
      * @param  array<string, mixed>|null  $options
      */
-    public function attachToGroups(array|ArrayAccess|Collection $groups = [], ?array $options = null, bool $detach = false): static
+    public function attachToGroups(iterable $groups = [], ?array $options = null, bool $detach = false): static
     {
         $groups = static::convertToGroups($groups);
 
@@ -76,9 +75,9 @@ trait InteractsWithGroups
     }
 
     /**
-     * @param  array<array-key, Group|int|string>|ArrayAccess<array-key, Group|int|string>|Collection<array-key, Group|int|string>  $groups
+     * @param  iterable<array-key, Group|int|string>  $groups
      */
-    public function detachFromGroups(array|ArrayAccess|Collection $groups = []): static
+    public function detachFromGroups(iterable $groups = []): static
     {
         $items = static::convertToGroups($groups);
 
@@ -127,10 +126,10 @@ trait InteractsWithGroups
     }
 
     /**
-     * @param  array<array-key, Group|int|string>|ArrayAccess<array-key, Group|int|string>|Collection<array-key, Group|int|string>  $values
+     * @param  iterable<array-key, Group|int|string>  $values
      * @return Collection<int, Group>
      */
-    public static function convertToGroups(array|ArrayAccess|Collection $values = []): Collection
+    public static function convertToGroups(iterable $values = []): Collection
     {
         return Collection::make($values)
             ->map(fn (Group|int|string $value) => $value instanceof Group ? $value : Group::find($value))

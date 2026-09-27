@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Tags\QueryBuilders;
 
-use ArrayAccess;
 use Domain\Profiles\Models\Profile;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
@@ -18,10 +17,10 @@ use Illuminate\Database\Eloquent\Builder;
 class TagQueryBuilder extends Builder
 {
     /**
-     * @param  Tag|ArrayAccess<array-key, Tag|string>|array<array-key, Tag|string>|string  $values
+     * @param  Tag|iterable<array-key, Tag|string>|string  $values
      * @return self<TModel>
      */
-    public function options(Tag|ArrayAccess|array|string $values): self
+    public function options(Tag|iterable|string $values): self
     {
         return $this->whereIn('id', Tag::resolveTagIds($values));
     }
