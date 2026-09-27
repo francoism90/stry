@@ -1,0 +1,34 @@
+# FileName={{application}}-horizon
+[Unit]
+Description=Laravel Horizon container
+Requires={{application}}-pgsql.container {{application}}-valkey.container
+After={{application}}-pgsql.container {{application}}-valkey.container
+
+[Container]
+Image={{image}}
+AutoUpdate=registry
+HealthCmd=none
+Environment=PUID={{appUid}}
+Environment=PGID={{appGid}}
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon"
+UserNS=keep-id
+ShmSize=128m
+AddDevice=/dev/dri:/dev/dri
+GroupAdd=keep-groups
+Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
+Volume=/mnt/media/videos:/media:rw,z
+Volume=/mnt/media/import:/import:rw,z
+# Tmpfs alternative (RAM instead of NVMe) - also needs PACKAGER_TEMPORARY_FILES_ROOT,
+# PACKAGER_TEMPORARY_MIN_FREE, and a Horizon maxProcesses cap; see docs/podman.md#storage-sizing-tmpfs
+# Tmpfs=/cache:rw,size=12g,mode=1777
+Volume={{application}}-cache.volume:/cache:rw,z
+Network={{application}}.network
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60
+
+[Install]
+WantedBy=default.target
