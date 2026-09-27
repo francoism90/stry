@@ -187,6 +187,11 @@ RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID}
 # Complete composer setup
 RUN composer dump-autoload --optimize
 
+# Generate a throwaway application key: the frontend build boots Laravel
+# (Wayfinder runs "php artisan wayfinder:generate"), which needs one. The
+# build-time .env is removed below; the real key comes from the runtime .env.
+RUN ${PHP_CLI} key:generate
+
 # Create storage symlink
 RUN ${PHP_CLI} storage:link
 
