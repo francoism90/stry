@@ -170,9 +170,8 @@ return [
     | On-demand Services
     |--------------------------------------------------------------------------
     |
-    | When enabled, presets that ship an "ondemand/" folder are rendered so
-    | the app starts on its first request and stops again once it has been
-    | idle for "idle_timeout" (scale-to-zero). A systemd socket listens on
+    | When enabled, the app starts on its first request and stops again
+    | once it has been idle for "idle_timeout" (scale-to-zero). A systemd socket listens on
     | "listen" and hands connections to systemd-socket-proxyd, which starts
     | the app and forwards to it on "127.0.0.1:{port}". Point your reverse
     | proxy (the "proxy" preset, or an external one such as a NAS) at the
