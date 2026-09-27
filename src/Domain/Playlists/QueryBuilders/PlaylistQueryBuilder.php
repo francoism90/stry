@@ -18,26 +18,34 @@ use Illuminate\Support\Arr;
  */
 class PlaylistQueryBuilder extends Builder
 {
+    /**
+     * @param  PlaylistType|ArrayAccess<array-key, PlaylistType|string>|array<array-key, PlaylistType|string>|null  $type
+     * @return self<TModel>
+     */
     public function type(PlaylistType|ArrayAccess|array|null $type = null): self
     {
         return $this->when($type, fn ($query) => $query->whereIn('type', Arr::wrap($type)));
     }
 
+    /** @return self<TModel> */
     public function failed(): self
     {
         return $this->whereState('state', States\Failed::class);
     }
 
+    /** @return self<TModel> */
     public function pending(): self
     {
         return $this->whereState('state', States\Pending::class);
     }
 
+    /** @return self<TModel> */
     public function verified(): self
     {
         return $this->whereState('state', States\Verified::class);
     }
 
+    /** @return self<TModel> */
     public function expired(): self
     {
         return $this->where(fn ($query) => $query
@@ -46,6 +54,7 @@ class PlaylistQueryBuilder extends Builder
         );
     }
 
+    /** @return self<TModel> */
     public function ordered(): self
     {
         return $this
@@ -54,6 +63,7 @@ class PlaylistQueryBuilder extends Builder
             ->latest();
     }
 
+    /** @return self<TModel> */
     public function prunable(): self
     {
         return $this
@@ -62,6 +72,7 @@ class PlaylistQueryBuilder extends Builder
             ->oldest();
     }
 
+    /** @return self<TModel> */
     public function current(): self
     {
         return $this

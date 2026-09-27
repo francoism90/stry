@@ -40,7 +40,10 @@ use Spatie\Translatable\HasTranslations;
 class Group extends Model implements HasMedia, Sortable
 {
     use BroadcastsModelEvents;
+
+    /** @use HasFactory<GroupFactory> */
     use HasFactory;
+
     use HasStates;
     use HasTranslations;
     use HasUlidRouteKey;
@@ -151,11 +154,17 @@ class Group extends Model implements HasMedia, Sortable
         return $this->type === GroupType::Mixer;
     }
 
+    /**
+     * @return Builder<static>
+     */
     public function buildSortQuery(): Builder
     {
         return static::query()->where('user_id', $this->user_id);
     }
 
+    /**
+     * @return Builder<static>
+     */
     public function prunable(): Builder
     {
         return static::query()
@@ -171,6 +180,9 @@ class Group extends Model implements HasMedia, Sortable
         return array_filter([$this, $this->user]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         return [
@@ -193,6 +205,10 @@ class Group extends Model implements HasMedia, Sortable
         return $models->loadCount('groupables');
     }
 
+    /**
+     * @param  GroupQueryBuilder<self>  $query
+     * @return GroupQueryBuilder<self>
+     */
     protected function makeAllSearchableUsing(GroupQueryBuilder $query): GroupQueryBuilder
     {
         return $query->withCount('groupables');

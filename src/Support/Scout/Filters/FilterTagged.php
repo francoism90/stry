@@ -6,10 +6,14 @@ namespace Support\Scout\Filters;
 
 use Domain\Tags\Models\Tag;
 use Foxws\ScoutBuilder\Filters\Filter;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 class FilterTagged implements Filter
 {
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         if (blank($value) || ! is_string($value)) {

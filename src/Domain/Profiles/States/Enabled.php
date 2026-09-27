@@ -6,7 +6,7 @@ namespace Domain\Profiles\States;
 
 class Enabled extends ProfileState
 {
-    public static $name = 'enabled';
+    public static string $name = 'enabled';
 
     public function label(): string
     {

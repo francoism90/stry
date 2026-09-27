@@ -14,6 +14,9 @@ use Throwable;
 
 class CreateNewVideoTranscode
 {
+    /**
+     * @return Collection<int, Transcode>
+     */
     public function handle(Video $video): Collection
     {
         // Check if the video is currently transcoding or if it doesn't have any clips

@@ -12,6 +12,9 @@ use Modules\Api\Users\Resources\UserResource;
 
 readonly class UserResourceProperty implements ProvidesInertiaProperty
 {
+    /**
+     * @param  list<string>|null  $appends
+     */
     public function __construct(
         protected ?User $user = null,
         protected ?array $appends = null,

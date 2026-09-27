@@ -14,6 +14,9 @@ readonly class ScoutBuilderProperties implements ProvidesInertiaProperties
         private string $scope,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toInertiaProperties(RenderContext $context): array
     {
         $request = $context->request;

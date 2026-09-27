@@ -6,7 +6,7 @@ namespace Domain\Profiles\States;
 
 class Disabled extends ProfileState
 {
-    public static $name = 'disabled';
+    public static string $name = 'disabled';
 
     public function label(): string
     {

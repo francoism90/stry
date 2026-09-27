@@ -34,7 +34,10 @@ use Support\MediaLibrary\TemporaryUrls;
 class Profile extends Model implements HasMedia
 {
     use BroadcastsModelEvents;
+
+    /** @use HasFactory<ProfileFactory> */
     use HasFactory;
+
     use HasStates;
     use HasUlidRouteKey;
     use InteractsWithMedia;
@@ -173,6 +176,9 @@ class Profile extends Model implements HasMedia
         )->shouldCache();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         return [

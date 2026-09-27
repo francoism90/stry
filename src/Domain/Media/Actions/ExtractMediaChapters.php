@@ -11,6 +11,9 @@ use Throwable;
 
 class ExtractMediaChapters
 {
+    /**
+     * @return Collection<int, array{label: string, start_time: float, end_time: float}>
+     */
     public function handle(Media $media): Collection
     {
         // Initialize FFMpeg
@@ -31,11 +34,15 @@ class ExtractMediaChapters
             return Collection::make();
         }
 
-        $chapters = json_decode($output, true);
+        $chapters = data_get(json_decode($output, true), 'chapters');
 
-        return Collection::make(data_get($chapters, 'chapters', []))
+        if (! is_array($chapters)) {
+            return Collection::make();
+        }
+
+        return Collection::make($chapters)
             ->map(fn (array $chapter): array => [
-                'label' => data_get($chapter, 'tags.title'),
+                'label' => (string) data_get($chapter, 'tags.title'),
                 'start_time' => (float) data_get($chapter, 'start_time', 0),
                 'end_time' => (float) data_get($chapter, 'end_time', 0),
             ])

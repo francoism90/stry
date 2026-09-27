@@ -27,6 +27,9 @@ trait BroadcastsModelEvents
         return "{$this->broadcastName()}.{$event}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function broadcastWith(string $event): array
     {
         return ['id' => $this->getRouteKey()];

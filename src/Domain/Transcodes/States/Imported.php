@@ -6,7 +6,7 @@ namespace Domain\Transcodes\States;
 
 class Imported extends TranscodeState
 {
-    public static $name = 'imported';
+    public static string $name = 'imported';
 
     public function label(): string
     {

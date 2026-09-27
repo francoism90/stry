@@ -7,6 +7,7 @@ namespace Domain\Relates\Concerns;
 use ArrayAccess;
 use Domain\Relates\Models\Related;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
@@ -28,6 +29,9 @@ trait InteractsWithRelated
         return $this->morphMany(Related::class, 'relatable')->chaperone();
     }
 
+    /**
+     * @param  array<array-key, mixed>|ArrayAccess<array-key, mixed>|Collection<array-key, mixed>  $related
+     */
     public function syncRelated(array|ArrayAccess|Collection $related = []): static
     {
         $items = $this
@@ -65,6 +69,9 @@ trait InteractsWithRelated
         return Related::firstWhere($related)?->delete();
     }
 
+    /**
+     * @return Collection<int, Model>
+     */
     public function getRelates(): Collection
     {
         return $this
@@ -72,9 +79,22 @@ trait InteractsWithRelated
             ->related
             ->toBase()
             ->groupBy(fn (Related $related) => $this->getActualClassNameForMorph($related->model_type))
-            ->flatMap(fn (Collection $typeGroup, string $type) => $type::whereIn('id', $typeGroup->pluck('model_id'))->get());
+            ->flatMap(fn (Collection $typeGroup, string $type): EloquentCollection => $this->findRelatedModels($type, $typeGroup->pluck('model_id')));
     }
 
+    /**
+     * @param  Collection<int, mixed>  $ids
+     * @return EloquentCollection<int, Model>
+     */
+    protected function findRelatedModels(string $type, Collection $ids): EloquentCollection
+    {
+        return $type::whereIn('id', $ids)->get();
+    }
+
+    /**
+     * @param  array<array-key, mixed>|ArrayAccess<array-key, mixed>|Collection<array-key, mixed>  $models
+     * @return Collection<int, array{relatable_type: string, relatable_id: mixed, model_type: string, model_id: mixed}>
+     */
     public function convertToRelated(array|ArrayAccess|Collection $models = []): Collection
     {
         return collect($models)

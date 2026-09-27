@@ -18,6 +18,9 @@ class PlaylistResource extends JsonResource
      */
     public $preserveKeys = true;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray($request): array
     {
         return [

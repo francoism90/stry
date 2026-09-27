@@ -14,6 +14,9 @@ trait HasUlidRouteKey
 {
     use HasUlids;
 
+    /**
+     * @return list<string>
+     */
     public function uniqueIds(): array
     {
         return ['ulid'];

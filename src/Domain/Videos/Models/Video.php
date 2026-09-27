@@ -52,7 +52,10 @@ use Support\MediaLibrary\TemporaryUrls;
 class Video extends Model implements HasMedia
 {
     use BroadcastsModelEvents;
+
+    /** @use HasFactory<VideoFactory> */
     use HasFactory;
+
     use HasStates;
     use HasTags;
     use HasTranslations;
@@ -222,6 +225,9 @@ class Video extends Model implements HasMedia
         return $this->state->equals(Verified::class);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         return [
@@ -260,6 +266,10 @@ class Video extends Model implements HasMedia
         return $models->loadMissing('media', 'tags');
     }
 
+    /**
+     * @param  VideoQueryBuilder<self>  $query
+     * @return VideoQueryBuilder<self>
+     */
     protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
     {
         return $query->with(['media', 'tags']);
@@ -324,25 +334,37 @@ class Video extends Model implements HasMedia
         return $this->getMedia('chapters')->first();
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     public function getStreams(): Collection
     {
         return $this
             ->getClips()
-            ->flatMap(fn (Media $media) => $media->getCustomProperty('streams', []));
+            ->flatMap(fn (Media $media): array => $media->getStreams());
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     public function getVideoStreams(): Collection
     {
         return $this->getStreams()
-            ->filter(fn (array $stream) => $stream['codec_type'] === 'video');
+            ->whereStrict('codec_type', 'video');
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     public function getAudioStreams(): Collection
     {
         return $this->getStreams()
-            ->filter(fn (array $stream) => $stream['codec_type'] === 'audio');
+            ->whereStrict('codec_type', 'audio');
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     public function getCaptionStreams(): Collection
     {
         return $this->getStreams()
@@ -507,7 +529,7 @@ class Video extends Model implements HasMedia
     }
 
     /**
-     * @return Attribute<array, never>
+     * @return Attribute<array<int, string>, never>
      */
     protected function clips(): Attribute
     {

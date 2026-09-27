@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Domain\Transcodes\Filters;
 
 use Domain\Transcodes\Enums\TranscodeScope;
+use Domain\Transcodes\Models\Transcode;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
 class TranscodeScopeFilter implements Filter
 {
+    /**
+     * @param  Builder<Transcode>  $query
+     */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         if (! is_string($value)) {

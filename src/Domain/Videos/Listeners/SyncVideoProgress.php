@@ -38,6 +38,9 @@ class SyncVideoProgress
         $video->modelCache('progress', $time, now()->addWeek());
     }
 
+    /**
+     * @param  array<string, mixed>|null  $attributes
+     */
     protected function normalizeProgress(Video $video, ?array $attributes = null): float
     {
         // Extract the current progress time from attributes (if provided)

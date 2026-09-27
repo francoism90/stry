@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Scopes;
 
+use Domain\Videos\Models\Video;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Laravel\Scout\Builder;
 
 readonly class VideoManageScope
 {
+    /**
+     * @param  Builder<Video>  $scout
+     */
     public function __invoke(Builder $scout): void
     {
         // Scout's own query() overwrites rather than chains, so preserve

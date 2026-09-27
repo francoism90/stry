@@ -6,7 +6,7 @@ namespace Domain\Transcodes\States;
 
 class Failed extends TranscodeState
 {
-    public static $name = 'failed';
+    public static string $name = 'failed';
 
     public function label(): string
     {

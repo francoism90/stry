@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Users\States;
 
+use Domain\Users\Models\User;
 use Spatie\ModelStates\State;
 use Spatie\ModelStates\StateConfig;
 
+/**
+ * @extends State<User>
+ */
 abstract class UserState extends State
 {
     abstract public function label(): string;
@@ -15,6 +19,9 @@ abstract class UserState extends State
 
     abstract public function icon(): string;
 
+    /**
+     * @return array{name: string, label: string, icon: string, color: string}
+     */
     public function toArray(): array
     {
         return [

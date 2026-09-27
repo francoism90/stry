@@ -8,7 +8,7 @@ use FFMpeg\Format\Video\DefaultVideo;
 
 class WebVTT extends DefaultVideo
 {
-    public function __construct($audioCodec = 'copy', $videoCodec = 'copy')
+    public function __construct(string $audioCodec = 'copy', string $videoCodec = 'copy')
     {
         $this
             ->setAudioCodec($audioCodec)
@@ -16,17 +16,17 @@ class WebVTT extends DefaultVideo
     }
 
     /**
-     * {@inheritDoc}
+     * @return list<string>
      */
-    public function getAvailableAudioCodecs()
+    public function getAvailableAudioCodecs(): array
     {
         return ['copy'];
     }
 
     /**
-     * {@inheritDoc}
+     * @return list<string>
      */
-    public function getAvailableVideoCodecs()
+    public function getAvailableVideoCodecs(): array
     {
         return ['copy'];
     }
@@ -40,9 +40,9 @@ class WebVTT extends DefaultVideo
     }
 
     /**
-     * {@inheritDoc}
+     * @return list<string>
      */
-    public function getExtraParams()
+    public function getExtraParams(): array
     {
         return ['-f', 'webvtt'];
     }

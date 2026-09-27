@@ -6,7 +6,7 @@ namespace Domain\Playlists\States;
 
 class Pending extends PlaylistState
 {
-    public static $name = 'pending';
+    public static string $name = 'pending';
 
     public function label(): string
     {

@@ -10,6 +10,9 @@ use Illuminate\Support\Carbon;
 
 class SetCacheHeaders extends Middleware
 {
+    /**
+     * @param  string|array<string, mixed>  $options
+     */
     public function handle($request, Closure $next, $options = []): mixed
     {
         $response = $next($request);

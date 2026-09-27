@@ -17,7 +17,9 @@ use Spatie\EloquentSortable\SortableTrait;
 
 class Chapter extends Model implements Sortable
 {
+    /** @use HasFactory<ChapterFactory> */
     use HasFactory;
+
     use HasUlids;
     use SortableTrait;
 
@@ -56,6 +58,9 @@ class Chapter extends Model implements Sortable
         return ChapterFactory::new();
     }
 
+    /**
+     * @return list<string>
+     */
     public function uniqueIds(): array
     {
         return ['ulid'];
@@ -74,6 +79,9 @@ class Chapter extends Model implements Sortable
         return $this->belongsTo(Video::class);
     }
 
+    /**
+     * @return Builder<static>
+     */
     public function buildSortQuery(): Builder
     {
         return static::query()->where('video_id', $this->video_id);

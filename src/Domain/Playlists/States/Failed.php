@@ -6,7 +6,7 @@ namespace Domain\Playlists\States;
 
 class Failed extends PlaylistState
 {
-    public static $name = 'failed';
+    public static string $name = 'failed';
 
     public function label(): string
     {

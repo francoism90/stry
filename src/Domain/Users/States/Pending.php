@@ -6,7 +6,7 @@ namespace Domain\Users\States;
 
 class Pending extends UserState
 {
-    public static $name = 'pending';
+    public static string $name = 'pending';
 
     public function label(): string
     {

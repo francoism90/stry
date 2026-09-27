@@ -78,6 +78,9 @@ class Groupable extends MorphPivot
         return $this->groupable !== null;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         $groupableType = (string) $this->groupable_type;
@@ -95,11 +98,19 @@ class Groupable extends MorphPivot
         ];
     }
 
+    /**
+     * @param  Collection<int, self>  $models
+     * @return Collection<int, self>
+     */
     public function makeSearchableUsing(Collection $models): Collection
     {
         return $models->loadMissing('groupable');
     }
 
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
     protected function makeAllSearchableUsing(Builder $query): Builder
     {
         return $query->with('groupable');

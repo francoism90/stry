@@ -12,6 +12,9 @@ class UpdateTagDetails
 {
     public function __construct(protected SetTagsOrder $sorter) {}
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Tag $tag, array $attributes = []): void
     {
         DB::transaction(function () use ($tag, $attributes) {

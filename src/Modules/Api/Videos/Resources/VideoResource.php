@@ -24,6 +24,9 @@ class VideoResource extends JsonResource
      */
     public $preserveKeys = true;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray($request): array
     {
         $user = $request->user();

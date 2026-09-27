@@ -37,7 +37,10 @@ use Spatie\Tags\Tag as BaseTag;
 class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsModelEvents;
+
+    /** @use HasFactory<TagFactory> */
     use HasFactory;
+
     use HasSearchableRelations;
     use HasUlidRouteKey;
     use InteractsWithCache;
@@ -118,6 +121,7 @@ class Tag extends BaseTag implements HasMedia
     }
 
     /**
+     * @param  Tag|ArrayAccess<array-key, Tag|string>|array<array-key, Tag|string>|string  $values
      * @return Collection<int, string>
      */
     public static function resolveTagIds(Tag|ArrayAccess|array|string $values): Collection
@@ -141,6 +145,9 @@ class Tag extends BaseTag implements HasMedia
         return [$this];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toSearchableArray(): array
     {
         return [
@@ -159,6 +166,9 @@ class Tag extends BaseTag implements HasMedia
         ];
     }
 
+    /**
+     * @return list<string>
+     */
     public function searchableRelations(): array
     {
         return ['videos'];
@@ -171,6 +181,10 @@ class Tag extends BaseTag implements HasMedia
             ->loadCount('videos');
     }
 
+    /**
+     * @param  TagQueryBuilder<self>  $query
+     * @return TagQueryBuilder<self>
+     */
     protected function makeAllSearchableUsing(TagQueryBuilder $query): TagQueryBuilder
     {
         return $query

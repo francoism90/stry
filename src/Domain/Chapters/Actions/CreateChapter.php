@@ -13,6 +13,9 @@ class CreateChapter
         protected ClassifyChapterType $classifyChapterType,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Video $video, array $attributes): Chapter
     {
         if (blank($attributes['type'] ?? null) && filled($attributes['label'] ?? null)) {

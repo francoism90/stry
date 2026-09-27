@@ -6,7 +6,7 @@ namespace Domain\Transcodes\States;
 
 class Processing extends TranscodeState
 {
-    public static $name = 'processing';
+    public static string $name = 'processing';
 
     public function label(): string
     {

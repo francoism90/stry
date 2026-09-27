@@ -21,6 +21,9 @@ class SetTagsOrder
         Tag::setNewOrder($items->pluck('id')->all());
     }
 
+    /**
+     * @return Collection<int, Tag>
+     */
     protected function getCollection(TagType $type): Collection
     {
         return Tag::query()

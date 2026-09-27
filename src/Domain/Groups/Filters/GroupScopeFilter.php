@@ -6,11 +6,15 @@ namespace Domain\Groups\Filters;
 
 use Domain\Groups\Enums\GroupScope;
 use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Models\Group;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Laravel\Scout\Builder;
 
 class GroupScopeFilter implements Filter
 {
+    /**
+     * @param  Builder<Group>  $query
+     */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         if (! is_string($value)) {

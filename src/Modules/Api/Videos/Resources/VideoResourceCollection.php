@@ -9,6 +9,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class VideoResourceCollection extends AnonymousResourceCollection
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray($request): array
     {
         if ($user = $request->user()) {

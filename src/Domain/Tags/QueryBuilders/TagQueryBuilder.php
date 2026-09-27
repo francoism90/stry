@@ -17,11 +17,16 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class TagQueryBuilder extends Builder
 {
+    /**
+     * @param  Tag|ArrayAccess<array-key, Tag|string>|array<array-key, Tag|string>|string  $values
+     * @return self<TModel>
+     */
     public function options(Tag|ArrayAccess|array|string $values): self
     {
         return $this->whereIn('id', Tag::resolveTagIds($values));
     }
 
+    /** @return self<TModel> */
     public function type(TagType|string $value): self
     {
         $type = $value instanceof TagType ? $value : TagType::from($value);
@@ -29,6 +34,7 @@ class TagQueryBuilder extends Builder
         return $this->where('type', $type);
     }
 
+    /** @return self<TModel> */
     public function forProfile(?Profile $profile = null): self
     {
         if ($profile?->isKids()) {

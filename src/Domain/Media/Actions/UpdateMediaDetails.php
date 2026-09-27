@@ -11,6 +11,9 @@ use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class UpdateMediaDetails
 {
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function handle(Media $media, array $attributes): void
     {
         if (array_key_exists('custom_properties', $attributes)) {

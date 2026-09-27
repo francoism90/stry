@@ -39,7 +39,10 @@ use Spatie\ModelStates\HasStates;
 class Playlist extends Model
 {
     use BroadcastsModelEvents;
+
+    /** @use HasFactory<PlaylistFactory> */
     use HasFactory;
+
     use HasStates;
     use HasUlidRouteKey;
     use InteractsWithUser;
@@ -107,6 +110,9 @@ class Playlist extends Model
         return $this->morphTo();
     }
 
+    /**
+     * @return PlaylistQueryBuilder<static>
+     */
     public function prunable(): PlaylistQueryBuilder
     {
         return static::query()->prunable();

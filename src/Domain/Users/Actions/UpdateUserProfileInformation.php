@@ -13,6 +13,9 @@ use Modules\Api\Users\Requests\UserUpdateRequest;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
+    /**
+     * @param  array<string, string>  $input
+     */
     public function update(User $user, array $input): void
     {
         $request = new UserUpdateRequest;
@@ -36,6 +39,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         });
     }
 
+    /**
+     * @param  array<string, string>  $input
+     */
     protected function updateVerifiedUser(User $user, array $input): void
     {
         $user->forceFill([
