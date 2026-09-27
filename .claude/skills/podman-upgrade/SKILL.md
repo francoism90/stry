@@ -33,13 +33,13 @@ For each published preset, compare it with `vendor/foxws/laravel-podman/stubs/{p
   - `[Container]`:
     - Remove `PublishPort=8000:8000`, or any publish of the socket's port.
     - Add `PublishPort=127.0.0.1:{{ondemandPort}}:8000`.
-    - Replace any `Health*=` lines with the vendor block: `Notify=healthy`, `HealthCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up`, `HealthInterval=2s`, `HealthStartPeriod=120s`, `HealthTimeout=5s`, `HealthRetries=3`.
+    - Replace any `Health*=` lines with the vendor block: `Notify=healthy`, `HealthStartupCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up`, `HealthStartupInterval=1s`, `HealthStartupTimeout=5s`, `HealthCmd=` (same command), `HealthInterval=1m`, `HealthTimeout=5s`, `HealthRetries=3`.
     - Keep `ExposeHostPort=` lines.
   - `[Build]`: `Environment=UID={{appUid}}`/`Environment=GID={{appGid}}` → `BuildArg=UID={{appUid}}`/`BuildArg=GID={{appGid}}`. `Environment=` is `--env` and never reached the Containerfile's `ARG`s.
 - **All other quadlets:** `BindsTo={{application}}.container` → `PartOf={{application}}.container`. Never leave `BindsTo=` on the app: systemd counts it as needing the app, so an on-demand app would never stop.
 - **`development` sidecars** (`queue`, `horizon`, `schedule`, `reverb`, `vite`): add `HealthCmd=none` under `[Container]`, as the `frankenphp-octane` ones already have.
 - **Database and cache quadlets:** use the tags from step 2.
-- **`runtimes/Containerfile`:** `FROM docker.io/dunglas/frankenphp:latest` → `ARG FRANKENPHP_VERSION=1-php8.5` + `FROM docker.io/dunglas/frankenphp:${FRANKENPHP_VERSION}`. Keep a different PHP version if the user had one. The final "Clean up unnecessary files" layer and the build-time `key:generate` (`frankenphp-octane`) can go.
+- **`runtimes/Containerfile`:** `FROM docker.io/dunglas/frankenphp:latest` → `ARG FRANKENPHP_VERSION=1-php8.5` + `FROM docker.io/dunglas/frankenphp:${FRANKENPHP_VERSION}`. Keep a different PHP version if the user had one. The final "Clean up unnecessary files" layer can go. Keep the build-time `key:generate` in `frankenphp-octane`, or restore it if it was removed: the frontend build can boot Laravel (Wayfinder runs `php artisan wayfinder:generate`), which needs a key.
 - **`systemd/`:** copy any missing files from the vendor preset: `ondemand.socket`, `ondemand.service`, and `schedule.timer` for `frankenphp-octane`. If the user already has a `systemd/` folder, merge the files in without overwriting theirs.
 - **`frankenphp-octane` only:**
   - **Queue worker or Horizon (whichever they use):**
