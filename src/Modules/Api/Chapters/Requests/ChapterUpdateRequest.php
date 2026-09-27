@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Api\Chapters\Requests;
 
 use Domain\Chapters\Enums\ChapterType;
+use Domain\Chapters\Models\Chapter;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,6 +36,7 @@ class ChapterUpdateRequest extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             $chapter = $this->route('chapter');
+            $chapter = $chapter instanceof Chapter ? $chapter : null;
 
             $startTime = $this->input('start_time', $chapter?->start_time);
             $endTime = $this->input('end_time', $chapter?->end_time);

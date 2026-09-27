@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Playlists\QueryBuilders;
 
-use ArrayAccess;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Models\Playlist;
 use Domain\Playlists\States;
@@ -19,10 +18,10 @@ use Illuminate\Support\Arr;
 class PlaylistQueryBuilder extends Builder
 {
     /**
-     * @param  PlaylistType|ArrayAccess<array-key, PlaylistType|string>|array<array-key, PlaylistType|string>|null  $type
+     * @param  PlaylistType|array<array-key, PlaylistType|string>|null  $type
      * @return self<TModel>
      */
-    public function type(PlaylistType|ArrayAccess|array|null $type = null): self
+    public function type(PlaylistType|array|null $type = null): self
     {
         return $this->when($type, fn ($query) => $query->whereIn('type', Arr::wrap($type)));
     }

@@ -252,8 +252,8 @@ return [
             // in APP_COMMAND (see the frankenphp-octane Containerfile).
             'CADDY_EXTRA_CONFIG' => PodmanCaddySites::render([
                 PodmanCaddySites::hostFromUrl((string) env('AWS_URL')) => PodmanCaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
-                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => PodmanCaddySites::hostPort(env('REVERB_HOST'), env('REVERB_PORT', 6001)),
-                (string) env('MAILPIT_UI_HOST') => PodmanCaddySites::hostPort(env('MAIL_HOST'), 8025),
+                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => PodmanCaddySites::hostPort((string) env('REVERB_HOST'), (string) env('REVERB_PORT', 6001)),
+                (string) env('MAILPIT_UI_HOST') => PodmanCaddySites::hostPort((string) env('MAIL_HOST'), 8025),
             ], (int) env('OCTANE_PORT', 8000)),
         ],
     ],

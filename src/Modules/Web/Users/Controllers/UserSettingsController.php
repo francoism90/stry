@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Modules\Web\Users\Controllers;
 
 use Domain\Users\Actions\UpdateUserSettings;
+use Domain\Users\DataObjects\AppearanceSettings;
+use Domain\Users\DataObjects\GeneralSettings;
+use Domain\Users\DataObjects\PlayerSettings;
 use Domain\Users\DataObjects\UserSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,9 +33,9 @@ class UserSettingsController implements HasMiddleware
 
         // Filter out any null values to avoid overwriting existing settings with null.
         $update = array_filter([
-            'player' => $settings->player?->toArray(),
-            'general' => $settings->general?->toArray(),
-            'appearance' => $settings->appearance?->toArray(),
+            'player' => $settings->player instanceof PlayerSettings ? $settings->player->toArray() : null,
+            'general' => $settings->general instanceof GeneralSettings ? $settings->general->toArray() : null,
+            'appearance' => $settings->appearance instanceof AppearanceSettings ? $settings->appearance->toArray() : null,
         ]);
 
         // Update the user's settings with the provided values.

@@ -35,11 +35,13 @@ class ImportVideoCommand extends Command implements Isolatable
 
     public function handle(): void
     {
+        $disk = $this->option('disk');
+
         // Retrieve the collection of video files from the specified disk
         $files = spin(
             message: 'Retrieving files...',
             callback: fn () => app(FetchImportableVideos::class)->handle(
-                $this->option('disk') ?: Video::getImportDisk()
+                is_string($disk) && $disk !== '' ? $disk : Video::getImportDisk()
             ),
         );
 

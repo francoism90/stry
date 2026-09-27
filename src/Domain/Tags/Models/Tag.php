@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Models;
 
-use ArrayAccess;
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Relates\Concerns\InteractsWithRelated;
@@ -121,10 +120,10 @@ class Tag extends BaseTag implements HasMedia
     }
 
     /**
-     * @param  Tag|ArrayAccess<array-key, Tag|string>|array<array-key, Tag|string>|string  $values
+     * @param  Tag|iterable<array-key, Tag|string>|string  $values
      * @return Collection<int, string>
      */
-    public static function resolveTagIds(Tag|ArrayAccess|array|string $values): Collection
+    public static function resolveTagIds(Tag|iterable|string $values): Collection
     {
         if ($values instanceof Tag) {
             return Collection::make([$values->getKey()]);

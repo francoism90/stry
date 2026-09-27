@@ -14,8 +14,10 @@ trait InteractsWithUser
     public static function bootInteractsWithUser(): void
     {
         static::creating(function (self $model) {
-            if (blank($model->user_id)) {
-                $model->user_id = Auth::id();
+            $user = Auth::user();
+
+            if (blank($model->user_id) && $user instanceof User) {
+                $model->user()->associate($user);
             }
         });
     }

@@ -22,7 +22,7 @@ class FetchImportableVideos
 
         return Collection::make($filesystem->allFiles())
             ->take(Video::getImportBatchSize())
-            ->filter(fn (string $path) => rescue(fn () => str_starts_with($filesystem->mimeType($path), 'video/'), report: false))
+            ->filter(fn (string $path): bool => rescue(fn (): bool => str_starts_with($filesystem->mimeType($path) ?: '', 'video/'), false, report: false))
             ->map(fn (string $path) => VideoFile::from([
                 'disk' => $disk,
                 'path' => $path,

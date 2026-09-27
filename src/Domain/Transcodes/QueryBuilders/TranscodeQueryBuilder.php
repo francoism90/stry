@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Transcodes\QueryBuilders;
 
-use ArrayAccess;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Transcodes\States;
@@ -19,10 +18,10 @@ use Illuminate\Support\Arr;
 class TranscodeQueryBuilder extends Builder
 {
     /**
-     * @param  ArrayAccess<array-key, TranscodeEncoder|string>|array<array-key, TranscodeEncoder|string>|TranscodeEncoder  $encoder
+     * @param  array<array-key, TranscodeEncoder|string>|TranscodeEncoder  $encoder
      * @return self<TModel>
      */
-    public function encoder(ArrayAccess|array|TranscodeEncoder $encoder): self
+    public function encoder(array|TranscodeEncoder $encoder): self
     {
         return $this->whereIn('encoder', Arr::wrap($encoder));
     }
