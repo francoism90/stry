@@ -11,7 +11,7 @@ Environment=TYPESENSE_LOG_LEVEL=error
 Environment=TYPESENSE_API_KEY=masterKey
 Volume={{application}}-typesense.volume:/data:rw,Z,U
 Network={{application}}.network
-PublishPort=8108:8108
+PublishPort=127.0.0.1:8108:8108
 
 [Service]
 Restart=always
