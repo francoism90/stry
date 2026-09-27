@@ -2,11 +2,12 @@
 [Unit]
 Description=Vite dev server container
 After={{application}}.container
-BindsTo={{application}}.container
+PartOf={{application}}.container
 
 [Container]
 Image={{application}}.build
 AutoUpdate=local
+HealthCmd=none
 Environment=APP_COMMAND="pnpm run dev -- --host=0.0.0.0"
 UserNS=keep-id
 ShmSize=128m

@@ -3,7 +3,7 @@
 Description=PostgreSQL container
 
 [Container]
-Image=docker.io/library/postgres:latest
+Image=docker.io/library/postgres:18
 AutoUpdate=registry
 Environment=POSTGRES_DB=laravel
 Environment=POSTGRES_USER=user

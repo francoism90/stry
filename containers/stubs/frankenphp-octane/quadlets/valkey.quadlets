@@ -3,7 +3,7 @@
 Description=Valkey container
 
 [Container]
-Image=docker.io/valkey/valkey:latest
+Image=docker.io/valkey/valkey:9
 AutoUpdate=registry
 Exec=valkey-server --save 60 1 --maxmemory-policy noeviction --loglevel warning
 Volume={{application}}-valkey.volume:/data:rw,Z,U

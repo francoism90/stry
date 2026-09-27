@@ -3,7 +3,7 @@
 Description=PostgreSQL container
 
 [Container]
-Image=docker.io/library/postgres:latest
+Image=docker.io/library/postgres:18
 AutoUpdate=registry
 Secret={{application}}-pgsql-db,type=env,target=POSTGRES_DB
 Secret={{application}}-pgsql-user,type=env,target=POSTGRES_USER
