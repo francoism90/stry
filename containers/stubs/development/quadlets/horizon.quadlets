@@ -1,9 +1,10 @@
 # FileName={{application}}-horizon
 [Unit]
 Description=Laravel Horizon container
-Requires={{application}}-valkey.container
-After={{application}}.container {{application}}-valkey.container
-PartOf={{application}}.container
+# Started with the app (through its Wants=), but not stopped with it, so
+# long-running jobs like transcodes finish while the on-demand app is idle.
+Requires={{application}}-pgsql.container {{application}}-valkey.container
+After={{application}}-pgsql.container {{application}}-valkey.container
 
 [Container]
 Image={{application}}.build
