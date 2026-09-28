@@ -22,7 +22,7 @@
         "foxws/laravel-modelcache": "^1.4.2",
         "foxws/laravel-podman": "^4.0.3",
         "foxws/laravel-pwa": "^2.5.2",
-        "foxws/laravel-relatable": "dev-main",
+        "foxws/laravel-relatable": "^1.0",
         "foxws/laravel-scout-builder": "^1.0.2",
         "foxws/laravel-scout-relations": "^1.0.1",
         "foxws/laravel-shaka": "^2.3.2",
@@ -169,12 +169,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "name": "laravel-relatable",
-            "type": "vcs",
-            "url": "https://github.com/foxws/laravel-relatable"
-        }
-    ]
+    "prefer-stable": true
 }

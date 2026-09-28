@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdc135564e2f17aec89dea5a3e02dfc2",
+    "content-hash": "3b839b7a4051c9c263af1ee3eb31ad6e",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1678,16 +1678,16 @@
         },
         {
             "name": "foxws/laravel-relatable",
-            "version": "dev-main",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:foxws/laravel-relatable.git",
-                "reference": "41fd0660c56516fe806c194fd9ded1794083f1ba"
+                "url": "https://github.com/foxws/laravel-relatable.git",
+                "reference": "c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/41fd0660c56516fe806c194fd9ded1794083f1ba",
-                "reference": "41fd0660c56516fe806c194fd9ded1794083f1ba",
+                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d",
+                "reference": "c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d",
                 "shasum": ""
             },
             "require": {
@@ -1709,7 +1709,6 @@
                 "phpstan/phpstan-deprecation-rules": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1724,40 +1723,7 @@
                     "Foxws\\Relatable\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Foxws\\Relatable\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@composer run prepare"
-                ],
-                "prepare": [
-                    "@php vendor/bin/testbench package:discover --ansi"
-                ],
-                "lint": [
-                    "vendor/bin/pint --parallel"
-                ],
-                "lint:check": [
-                    "vendor/bin/pint --parallel --test"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse --memory-limit=1G"
-                ],
-                "test:types": [
-                    "vendor/bin/pest --type-coverage --min=100"
-                ],
-                "test:unit": [
-                    "vendor/bin/pest --parallel"
-                ],
-                "test": [
-                    "@analyse",
-                    "@lint:check",
-                    "@test:types",
-                    "@test:unit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1779,16 +1745,16 @@
                 "relations"
             ],
             "support": {
-                "source": "https://github.com/foxws/laravel-relatable/tree/main",
-                "issues": "https://github.com/foxws/laravel-relatable/issues"
+                "issues": "https://github.com/foxws/laravel-relatable/issues",
+                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.0"
             },
             "funding": [
                 {
-                    "type": "github",
-                    "url": "https://github.com/Foxws"
+                    "url": "https://github.com/Foxws",
+                    "type": "github"
                 }
             ],
-            "time": "2026-09-28T07:29:19+00:00"
+            "time": "2026-09-28T07:59:16+00:00"
         },
         {
             "name": "foxws/laravel-scout-builder",
@@ -18901,9 +18867,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "foxws/laravel-relatable": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
