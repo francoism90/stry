@@ -6,7 +6,6 @@ use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Models\Playlist;
 use Domain\Profiles\Models\Profile;
-use Domain\Relates\Models\Related;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
@@ -21,6 +20,7 @@ use Foxws\Essentials\Configurables\ModelShouldBeStrict;
 use Foxws\Essentials\Configurables\PreventStrayRequests;
 use Foxws\Essentials\Configurables\ProhibitDestructiveCommands;
 use Foxws\Essentials\Configurables\ResourceWithoutWrapping;
+use Foxws\Relatable\Models\Relatable;
 
 return [
 
@@ -65,7 +65,7 @@ return [
         'media' => Media::class,
         'playlist' => Playlist::class,
         'profile' => Profile::class,
-        'related' => Related::class,
+        'relatable' => Relatable::class,
         'tag' => Tag::class,
         'user' => User::class,
         'video' => Video::class,

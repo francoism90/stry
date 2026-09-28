@@ -6,7 +6,6 @@ namespace Domain\Tags\Models;
 
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Relates\Concerns\InteractsWithRelated;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
@@ -16,6 +15,7 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
+use Foxws\Relatable\Concerns\InteractsWithRelated;
 use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
@@ -176,7 +176,7 @@ class Tag extends BaseTag implements HasMedia
     public function makeSearchableUsing(TagCollection $models): TagCollection
     {
         return $models
-            ->loadMissing('related')
+            ->loadMissing('relatables.related')
             ->loadCount('videos');
     }
 
@@ -187,7 +187,7 @@ class Tag extends BaseTag implements HasMedia
     protected function makeAllSearchableUsing(TagQueryBuilder $query): TagQueryBuilder
     {
         return $query
-            ->with('related')
+            ->with('relatables.related')
             ->withCount('videos');
     }
 
