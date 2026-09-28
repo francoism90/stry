@@ -32,7 +32,7 @@ readonly class TagResourceProperty implements ProvidesInertiaProperty
 
         return TagResource::make(
             $this->tag
-                ->loadMissing('related')
+                ->loadMissing('relatables.related')
                 ->loadCount('videos')
                 ->append($this->appends ?? []),
         );

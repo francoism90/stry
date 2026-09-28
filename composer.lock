@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f2f089713930f1e62052aa64a75e5cd",
+    "content-hash": "3b839b7a4051c9c263af1ee3eb31ad6e",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1675,6 +1675,86 @@
                 }
             ],
             "time": "2026-09-16T19:03:02+00:00"
+        },
+        {
+            "name": "foxws/laravel-relatable",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/foxws/laravel-relatable.git",
+                "reference": "c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d",
+                "reference": "c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^12.0|^13.0",
+                "illuminate/database": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.9",
+                "laravel/pint": "^1.29",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0|^11.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "pestphp/pest-plugin-type-coverage": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Foxws\\Relatable\\RelatableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Foxws\\Relatable\\": "src/",
+                    "Foxws\\Relatable\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "francoism90",
+                    "email": "francoism90@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Relate Eloquent models to other models, with a base score and boost to control their priority.",
+            "homepage": "https://github.com/foxws/laravel-relatable",
+            "keywords": [
+                "eloquent",
+                "foxws",
+                "laravel",
+                "laravel-relatable",
+                "related",
+                "relations"
+            ],
+            "support": {
+                "issues": "https://github.com/foxws/laravel-relatable/issues",
+                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Foxws",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-09-28T07:59:16+00:00"
         },
         {
             "name": "foxws/laravel-scout-builder",
