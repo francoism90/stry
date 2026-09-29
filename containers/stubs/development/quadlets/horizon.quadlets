@@ -4,7 +4,7 @@ Description=Laravel Horizon container
 # Started with the app (through its Wants=), but not stopped with it, so
 # long-running jobs like transcodes finish while the on-demand app is idle.
 Requires={{application}}-pgsql.container {{application}}-valkey.container
-After={{application}}-pgsql.container {{application}}-valkey.container
+After={{application}}-pgsql.container {{application}}-valkey.container {{application}}-rustfs.container {{application}}-typesense.container
 Wants={{application}}-rustfs.container {{application}}-typesense.container {{application}}-reverb.container {{application}}-mailpit.container
 
 [Container]
