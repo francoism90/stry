@@ -25,7 +25,7 @@ class TranscodeFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'transcodable_type' => Video::class,
+            'transcodable_type' => (new Video)->getMorphClass(),
             'transcodable_id' => Video::factory(),
             'disk' => 'transcodes',
             'file_name' => null,
