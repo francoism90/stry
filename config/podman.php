@@ -1,6 +1,9 @@
 <?php
 
+use Foxws\Podman\Support\Idle\BroadcastIdleCheck;
+use Foxws\Podman\Support\Idle\DatabaseIdleCheck;
 use Foxws\Podman\Support\Idle\QueueIdleCheck;
+use Foxws\Podman\Support\Idle\ScoutIdleCheck;
 
 return [
     /*
@@ -201,17 +204,20 @@ return [
     | Idle Checks
     |--------------------------------------------------------------------------
     |
-    | While the app sleeps, the idle check stops a service once "podman:idle
-    | --service={service}" finds no work left. This maps each service to
-    | the checks that decide that. A service without checks counts as idle.
-    | To configure checks further, register them from a service provider
-    | with "app(PodmanIdle::class)->checks([...])" instead.
+    | While the app sleeps, the idle check stops its queue workers once
+    | "podman:idle" finds no work in progress. It runs every check below
+    | that the app uses, going by its config (QUEUE_CONNECTION,
+    | DB_CONNECTION, BROADCAST_CONNECTION, SCOUT_DRIVER, ...). Register
+    | your own with "app(PodmanIdle::class)->checks([...])" instead.
     |
     */
 
     'idle' => [
         'checks' => [
-            'horizon' => [QueueIdleCheck::class],
+            QueueIdleCheck::class,
+            DatabaseIdleCheck::class,
+            BroadcastIdleCheck::class,
+            ScoutIdleCheck::class,
         ],
     ],
 ];
