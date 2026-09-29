@@ -1,9 +1,0 @@
-[Unit]
-Description=Laravel queue workers and scheduler idle check timer
-
-[Timer]
-OnCalendar=*-*-* *:*:30
-AccuracySec=1s
-
-[Install]
-WantedBy=timers.target
