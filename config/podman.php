@@ -1,5 +1,9 @@
 <?php
 
+use Foxws\Podman\Support\Idle\Checks\DatabaseCheck;
+use Foxws\Podman\Support\Idle\Checks\QueueCheck;
+use Foxws\Podman\Support\Idle\Checks\ScoutCheck;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -33,6 +37,7 @@ return [
         'development',
         'devcontainer',
         'frankenphp-octane',
+        'ondemand',
         's3',
     ]),
 
@@ -177,6 +182,10 @@ return [
     | proxy (the "proxy" preset, or an external one such as a NAS) at the
     | "listen" address.
     |
+    | The database, cache and other services sleep too, once the app is
+    | idle and no jobs are left. A sleeping stack skips scheduled tasks, and
+    | the first request after idling waits for every service to start.
+    |
     */
 
     'ondemand' => [
@@ -187,5 +196,27 @@ return [
         'port' => env('PODMAN_ONDEMAND_PORT', 18000),
 
         'idle_timeout' => env('PODMAN_ONDEMAND_IDLE_TIMEOUT', '10min'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Idle Checks
+    |--------------------------------------------------------------------------
+    |
+    | While the app sleeps, the idle check stops its queue workers once
+    | "podman:idle" finds no work in progress. It runs every check below
+    | for something the app uses, going by its config (QUEUE_CONNECTION,
+    | DB_CONNECTION, SCOUT_DRIVER). Add or remove checks here.
+    | To configure a check, register the checks from a service provider
+    | with "app(PodmanIdle::class)->checks([...])", which replaces this list.
+    |
+    */
+
+    'idle' => [
+        'checks' => [
+            QueueCheck::class,
+            DatabaseCheck::class,
+            ScoutCheck::class,
+        ],
     ],
 ];

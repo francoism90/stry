@@ -3,6 +3,7 @@
 Description=Laravel Horizon container
 Requires={{application}}-pgsql.container {{application}}-valkey.container
 After={{application}}-pgsql.container {{application}}-valkey.container
+Wants={{application}}-rustfs.container {{application}}-typesense.container {{application}}-reverb.container {{application}}-mailpit.container
 
 [Container]
 Image={{image}}

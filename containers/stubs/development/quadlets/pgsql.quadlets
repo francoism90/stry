@@ -1,6 +1,7 @@
 # FileName={{application}}-pgsql
 [Unit]
 Description=PostgreSQL container
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/library/postgres:18
@@ -13,6 +14,14 @@ ShmSize=256m
 Volume={{application}}-pgsql.volume:/var/lib/postgresql:rw,Z,U
 Network={{application}}.network
 PublishPort=127.0.0.1:5432:5432
+Notify=healthy
+HealthStartupCmd=pg_isready -q -h 127.0.0.1
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=pg_isready -q -h 127.0.0.1
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
 
 [Service]
 Restart=always

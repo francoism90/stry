@@ -1,7 +1,7 @@
 # FileName={{application}}-typesense
 [Unit]
 Description=Typesense container
-PartOf={{application}}.container
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/typesense/typesense:30.2
@@ -11,6 +11,14 @@ Environment=TYPESENSE_LOG_LEVEL=error
 Secret={{application}}-typesense-api-key,type=env,target=TYPESENSE_API_KEY
 Volume={{application}}-typesense.volume:/data:rw,Z,U
 Network={{application}}.network
+Notify=healthy
+HealthStartupCmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8108 && printf "GET /health HTTP/1.0\r\n\r\n" >&3 && grep -q "\"ok\":true" <&3'
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8108 && printf "GET /health HTTP/1.0\r\n\r\n" >&3 && grep -q "\"ok\":true" <&3'
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
 
 [Service]
 Restart=always

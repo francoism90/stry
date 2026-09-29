@@ -1,7 +1,7 @@
 # FileName={{application}}-mailpit
 [Unit]
 Description=Mailpit container
-PartOf={{application}}.container
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/axllent/mailpit:latest
@@ -12,6 +12,14 @@ Environment=MP_SMTP_AUTH_ACCEPT_ANY=1
 Environment=MP_SMTP_AUTH_ALLOW_INSECURE=1
 Volume={{application}}-mailpit.volume:/data:rw,Z,U
 Network={{application}}.network
+Notify=healthy
+HealthStartupCmd=/mailpit readyz
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=/mailpit readyz
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
 
 [Service]
 Restart=always
