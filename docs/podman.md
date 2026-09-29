@@ -27,13 +27,13 @@ tags:
 
 Each preset is a set of templates in `containers/stubs/`. You can customize one preset without affecting the others (see [Customizing](https://github.com/foxws/laravel-podman/blob/main/docs/customizing.md)):
 
-| Preset              | Purpose                                                                                |
-| ------------------- | -------------------------------------------------------------------------------------- |
-| `production`        | The application and its services, see the table below                                  |
-| `ondemand`          | Starts the app on its first request, and lets it and its services sleep when idle     |
-| `development`       | The same services, running against your local code (see [Development](development.md)) |
-| `s3`                | RustFS bucket and CORS setup (see [S3](s3.md))                                         |
-| `devcontainer`      | VS Code Dev Containers image (see [Development](development.md))                       |
+| Preset         | Purpose                                                                                |
+| -------------- | -------------------------------------------------------------------------------------- |
+| `production`   | The application and its services, see the table below                                  |
+| `ondemand`     | Starts the app on its first request, and lets it and its services sleep when idle      |
+| `development`  | The same services, running against your local code (see [Development](development.md)) |
+| `s3`           | RustFS bucket and CORS setup (see [S3](s3.md))                                         |
+| `devcontainer` | VS Code Dev Containers image (see [Development](development.md))                       |
 
 `production` installs these services. Their names start with `stry` by default; you can change that prefix with `PODMAN_QUADLET_PREFIX`, which defaults to `APP_NAME`.
 
