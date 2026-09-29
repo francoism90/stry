@@ -16,7 +16,8 @@
         "foxws/laravel-podman",
         "foxws/laravel-shaka",
         "foxws/laravel-streamer",
-        "foxws/laravel-ddd"
+        "foxws/laravel-ddd",
+        "foxws/laravel-relatable"
     ],
     "sail": false,
     "skills": [
@@ -39,6 +40,7 @@
         "podman-presets",
         "podman-s3",
         "podman-upgrade",
+        "relatable-development",
         "laravel-shaka-development",
         "laravel-streamer-development",
         "medialibrary-development",
