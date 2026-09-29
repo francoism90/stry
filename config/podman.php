@@ -1,6 +1,5 @@
 <?php
 
-use Foxws\Podman\Support\Idle\Checks\BroadcastCheck;
 use Foxws\Podman\Support\Idle\Checks\DatabaseCheck;
 use Foxws\Podman\Support\Idle\Checks\QueueCheck;
 use Foxws\Podman\Support\Idle\Checks\ScoutCheck;
@@ -206,9 +205,9 @@ return [
     |
     | While the app sleeps, the idle check stops its queue workers once
     | "podman:idle" finds no work in progress. It runs every check below
-    | that the app uses, going by its config (QUEUE_CONNECTION,
-    | DB_CONNECTION, BROADCAST_CONNECTION, SCOUT_DRIVER, ...). Register
-    | your own with "app(PodmanIdle::class)->checks([...])" instead.
+    | for something the app uses, going by its config (QUEUE_CONNECTION,
+    | DB_CONNECTION, SCOUT_DRIVER). Register your own checks with
+    | "app(PodmanIdle::class)->checks([...])" instead.
     |
     */
 
@@ -216,7 +215,6 @@ return [
         'checks' => [
             QueueCheck::class,
             DatabaseCheck::class,
-            BroadcastCheck::class,
             ScoutCheck::class,
         ],
     ],

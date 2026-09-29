@@ -5,6 +5,7 @@ Description=Laravel Horizon container
 # long-running jobs like transcodes finish while the on-demand app is idle.
 Requires={{application}}-pgsql.container {{application}}-valkey.container
 After={{application}}-pgsql.container {{application}}-valkey.container
+Wants={{application}}-rustfs.container {{application}}-typesense.container
 
 [Container]
 Image={{application}}.build
