@@ -177,10 +177,9 @@ return [
     | proxy (the "proxy" preset, or an external one such as a NAS) at the
     | "listen" address.
     |
-    | With "services", the database, cache and other services sleep too,
-    | once the app is idle and no jobs are left. A sleeping stack skips
-    | scheduled tasks, and the first request after idling waits for every
-    | service to start. Disable it to keep them running all the time.
+    | The database, cache and other services sleep too, once the app is
+    | idle and no jobs are left. A sleeping stack skips scheduled tasks, and
+    | the first request after idling waits for every service to start.
     |
     */
 
@@ -192,7 +191,5 @@ return [
         'port' => env('PODMAN_ONDEMAND_PORT', 18000),
 
         'idle_timeout' => env('PODMAN_ONDEMAND_IDLE_TIMEOUT', '10min'),
-
-        'services' => env('PODMAN_ONDEMAND_SERVICES', true),
     ],
 ];

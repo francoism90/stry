@@ -1,7 +1,7 @@
 # FileName={{application}}-rustfs
 [Unit]
 Description=RustFS container
-StopWhenUnneeded={{ondemandServices}}
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/rustfs/rustfs:latest

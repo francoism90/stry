@@ -1,7 +1,7 @@
 # FileName={{application}}-pgsql
 [Unit]
 Description=PostgreSQL container
-StopWhenUnneeded={{ondemandServices}}
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/library/postgres:18

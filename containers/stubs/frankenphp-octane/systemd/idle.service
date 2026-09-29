@@ -3,5 +3,5 @@ Description=Laravel queue workers and scheduler idle check
 
 [Service]
 Type=oneshot
-ExecCondition=/bin/sh -c 'scope=--user; [ "$$(id -u)" -ne 0 ] || scope=; [ {{ondemandServices}} = yes ] && ! systemctl $$scope --quiet is-active {{application}}.service'
+ExecCondition=/bin/sh -c 'scope=--user; [ "$$(id -u)" -ne 0 ] || scope=; [ {{ondemand}} = yes ] && ! systemctl $$scope --quiet is-active {{application}}.service'
 ExecStart=/bin/sh -c 'scope=--user; [ "$$(id -u)" -ne 0 ] || scope=; busy=0; for worker in queue horizon; do systemctl $$scope --quiet is-active {{application}}-$$worker.service || continue; if podman exec systemd-{{application}}-$$worker php -d variables_order=EGPCS /app/artisan podman:idle; then systemctl $$scope stop {{application}}-$$worker.service; else busy=1; fi; done; [ $$busy -eq 1 ] || systemctl $$scope stop {{application}}-schedule.timer; exit 0'

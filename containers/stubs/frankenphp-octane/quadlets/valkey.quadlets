@@ -1,7 +1,7 @@
 # FileName={{application}}-valkey
 [Unit]
 Description=Valkey container
-StopWhenUnneeded={{ondemandServices}}
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/valkey/valkey:9
