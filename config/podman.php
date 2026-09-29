@@ -206,8 +206,9 @@ return [
     | While the app sleeps, the idle check stops its queue workers once
     | "podman:idle" finds no work in progress. It runs every check below
     | for something the app uses, going by its config (QUEUE_CONNECTION,
-    | DB_CONNECTION, SCOUT_DRIVER). Register your own checks with
-    | "app(PodmanIdle::class)->checks([...])" instead.
+    | DB_CONNECTION, SCOUT_DRIVER). Add or remove checks here.
+    | To configure a check, register the checks from a service provider
+    | with "app(PodmanIdle::class)->checks([...])", which replaces this list.
     |
     */
 
