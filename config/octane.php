@@ -249,7 +249,7 @@ return [
     'caddy' => [
         'env' => ! env('PODMAN_ENABLED', true) || ! class_exists(PodmanCaddySites::class) ? [] : [
             // Port must match the "--port" passed to "octane:frankenphp"
-            // in APP_COMMAND (see the frankenphp-octane Containerfile).
+            // in APP_COMMAND (see the production Containerfile).
             'CADDY_EXTRA_CONFIG' => PodmanCaddySites::render([
                 PodmanCaddySites::hostFromUrl((string) env('AWS_URL')) => PodmanCaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
                 (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => PodmanCaddySites::hostPort((string) env('REVERB_HOST'), (string) env('REVERB_PORT', 6001)),

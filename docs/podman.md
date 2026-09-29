@@ -29,12 +29,13 @@ Each preset is a set of templates in `containers/stubs/`. You can customize one 
 
 | Preset              | Purpose                                                                                |
 | ------------------- | -------------------------------------------------------------------------------------- |
-| `frankenphp-octane` | The application and its services, see the table below                                  |
+| `production`        | The application and its services, see the table below                                  |
+| `ondemand`          | Starts the app on its first request, and lets it and its services sleep when idle     |
 | `development`       | The same services, running against your local code (see [Development](development.md)) |
 | `s3`                | RustFS bucket and CORS setup (see [S3](s3.md))                                         |
 | `devcontainer`      | VS Code Dev Containers image (see [Development](development.md))                       |
 
-`frankenphp-octane` installs these services. Their names start with `stry` by default; you can change that prefix with `PODMAN_QUADLET_PREFIX`, which defaults to `APP_NAME`.
+`production` installs these services. Their names start with `stry` by default; you can change that prefix with `PODMAN_QUADLET_PREFIX`, which defaults to `APP_NAME`.
 
 | Unit               | Role                                       |
 | ------------------ | ------------------------------------------ |
@@ -57,8 +58,8 @@ Only `stry` opens a port on the host (8000). The other services are only reachab
 php artisan podman:setup   # generates every preset above into podman/{preset}/
 
 # Install every generated service (see the podman/{preset}/ folder for the full list):
-lpod install frankenphp-octane/app.quadlets --replace
-lpod install frankenphp-octane/pgsql.quadlets --replace
+lpod install production/app.quadlets --replace
+lpod install production/pgsql.quadlets --replace
 # ...
 
 # Then set the secrets for each service:
@@ -75,7 +76,7 @@ See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-st
 `php artisan podman:setup` and `podman:generate` need `foxws/laravel-podman`. That's a `require-dev` package, so it isn't installed when you run `composer install --no-dev`, as you would in production. `lpod` doesn't need it; it's the standalone tool from [Prerequisites](#prerequisites). On a host without PHP, either generate the files elsewhere and copy the `podman/` folder over, or run `lpod setup` to generate them inside a temporary container. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for both, and [Production Setup](production.md) for the full **stry** walkthrough.
 :::
 
-In the `frankenphp-octane` preset, the app container uses a pre-built image instead of building one locally. CI builds it and publishes it to `ghcr.io/francoism90/stry`, and Podman pulls it from there. To use your own registry, set `PODMAN_IMAGE_REGISTRY` in `.env`.
+In the `production` preset, the app container uses a pre-built image instead of building one locally. CI builds it and publishes it to `ghcr.io/francoism90/stry`, and Podman pulls it from there. To use your own registry, set `PODMAN_IMAGE_REGISTRY` in `.env`.
 
 ## Day to day
 
@@ -91,7 +92,7 @@ See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the [
 
 ## Tuning & hardware acceleration
 
-Resource limits such as `Memory=` and `ShmSize=` are set in `containers/stubs/frankenphp-octane/quadlets/*.quadlets`. After changing them, generate the files again (`php artisan podman:generate frankenphp-octane`) and reinstall the service (`lpod install ... --replace`).
+Resource limits such as `Memory=` and `ShmSize=` are set in `containers/stubs/production/quadlets/*.quadlets`. After changing them, generate the files again (`php artisan podman:generate production`) and reinstall the service (`lpod install ... --replace`).
 
 The app image includes VA-API drivers. By default, `horizon.quadlets` gives `stry-horizon` access to `/dev/dri` for hardware-accelerated transcoding:
 
@@ -117,11 +118,11 @@ sudo setsebool -P container_use_devices=true
 This setting applies to the whole host, not just one container. Every rootless Podman container on the machine gets access to devices.
 :::
 
-**To turn off GPU access**, for example to force software encoding, remove both lines from `containers/stubs/frankenphp-octane/quadlets/horizon.quadlets` (and from `development/quadlets/horizon.quadlets` if you use that preset). Then generate the files again and reinstall:
+**To turn off GPU access**, for example to force software encoding, remove both lines from `containers/stubs/production/quadlets/horizon.quadlets` (and from `development/quadlets/horizon.quadlets` if you use that preset). Then generate the files again and reinstall:
 
 ```bash
-php artisan podman:generate frankenphp-octane
-lpod install frankenphp-octane/horizon.quadlets --replace
+php artisan podman:generate production
+lpod install production/horizon.quadlets --replace
 ```
 
 ## Storage sizing (tmpfs)

@@ -53,7 +53,7 @@ The Podman side is handled by [foxws/laravel-podman](https://github.com/foxws/la
 ## Key concepts
 
 - **`stry-env` secret**: the app's `.env` file, stored as a Podman secret and mounted at `/app/.env` in every app container.
-- **Presets**: the templates in `containers/stubs/{preset}/`. `frankenphp-octane` runs the app and its services, `development` runs them against your local code, `s3` sets up buckets and CORS, and `devcontainer` builds a VS Code development container.
+- **Presets**: the templates in `containers/stubs/{preset}/`. `production` runs the app and its services, `development` runs them against your local code, `s3` sets up buckets and CORS, and `devcontainer` builds a VS Code development container.
 - **Quadlet**: the systemd integration that starts the containers in the right order on boot.
 
 ## Common tasks

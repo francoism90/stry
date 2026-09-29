@@ -69,10 +69,10 @@ jobs:
               run: |
                   cp .env.ci .env
                   php artisan key:generate
-                  php artisan podman:generate frankenphp-octane
+                  php artisan podman:generate production
 
             - name: Install dockerignore
-              run: cp containers/stubs/frankenphp-octane/runtimes/dockerignore .dockerignore
+              run: cp containers/stubs/production/runtimes/dockerignore .dockerignore
 
             - name: Set platform pair
               id: platform
@@ -100,7 +100,7 @@ jobs:
               with:
                   image: ${{ env.IMAGE_NAME }}
                   tags: ci-${{ steps.platform.outputs.pair }}-${{ github.sha }}
-                  containerfiles: podman/frankenphp-octane/runtimes/Containerfile
+                  containerfiles: podman/production/runtimes/Containerfile
                   context: .
                   platform: ${{ matrix.platform }}
                   layers: true

@@ -89,8 +89,8 @@ If you know Quadlet well, you can skip all of the above. Copy the templates from
 Skip this step if you used Option B: `lpod setup --install --secrets` already did it. For Option A or C:
 
 ```bash
-lpod install frankenphp-octane/app.quadlets --replace
-# ...install every service you need, see podman/frankenphp-octane/...
+lpod install production/app.quadlets --replace
+# ...install every service you need, see podman/production/...
 lpod stry secrets
 # ...and set secrets for every service that needs them...
 

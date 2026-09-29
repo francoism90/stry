@@ -21,13 +21,13 @@ How to upgrade a running production install to a new **stry** release. For a fir
 
 ```bash
 podman pull ghcr.io/francoism90/stry:latest
-lpod install frankenphp-octane/app.quadlets --replace
+lpod install production/app.quadlets --replace
 # ...repeat for every other service whose image changed, such as stry-horizon...
 ```
 
 `--replace` updates the Quadlet unit and restarts the service. It leaves existing secrets and volumes alone.
 
-Instead of pulling and reinstalling each service by hand, you can let Podman do it. Every service in the `frankenphp-octane` preset has `AutoUpdate=registry` set, so this updates all of them:
+Instead of pulling and reinstalling each service by hand, you can let Podman do it. Every service in the `production` preset has `AutoUpdate=registry` set, so this updates all of them:
 
 ```bash
 systemctl --user restart podman-auto-update
@@ -82,7 +82,7 @@ journalctl --user -u 'stry*' -f
 Not every migration can be undone. Settings migrations, for example, have no `down()` method at all (see [Application Configuration](configuration.md#shipping-new-defaults)). If an upgrade goes wrong:
 
 1. Restore the database backup you made before upgrading.
-2. Go back to the previous image: `podman pull ghcr.io/francoism90/stry:<previous-tag>`, then `lpod install frankenphp-octane/app.quadlets --replace`.
+2. Go back to the previous image: `podman pull ghcr.io/francoism90/stry:<previous-tag>`, then `lpod install production/app.quadlets --replace`.
 
 Don't rely on `migrate:rollback` to undo a release. Your database backup is the real way back.
 
