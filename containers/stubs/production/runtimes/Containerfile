@@ -141,7 +141,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Custom PHP configuration
-COPY podman/frankenphp-octane/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY podman/production/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Node.js Configuration
 RUN npm install -g npm@latest corepack@latest svgo@latest \
@@ -169,7 +169,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Entrypoint
-COPY --chmod=755 podman/frankenphp-octane/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chmod=755 podman/production/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Copy application source
 COPY --chown=docker:docker . /app

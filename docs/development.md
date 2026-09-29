@@ -32,11 +32,11 @@ php artisan key:generate
 Choose a preset for the app image (see [Podman Quadlet](podman.md) for the full list of services):
 
 - **`development`** mounts your working copy into the container, so your changes show up right away. Use this for everyday work.
-- **`frankenphp-octane`** uses the same image as production, with the code built in. Use this to test a production build locally.
+- **`production`** uses the same image as production, with the code built in. Use this to test a production build locally.
 
 ```bash
 php artisan podman:setup --preset=development
-# or: --preset=frankenphp-octane
+# or: --preset=production
 
 lpod install development/app.quadlets --replace
 lpod install development/pgsql.quadlets --replace
@@ -84,7 +84,7 @@ You can also create an admin interactively, without the seeder: `lpod stry artis
 
 ## VS Code Dev Containers
 
-The `devcontainer` preset builds an image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), so you can develop **stry** inside a container. This is separate from the `development` and `frankenphp-octane` presets above, which run the app as a service. With `stry` running, open the project:
+The `devcontainer` preset builds an image for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), so you can develop **stry** inside a container. This is separate from the `development` and `production` presets above, which run the app as a service. With `stry` running, open the project:
 
 ```bash
 code ~/projects/stry
