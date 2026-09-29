@@ -1,9 +1,9 @@
 <?php
 
-use Foxws\Podman\Support\Idle\Checks\BroadcastIdleCheck;
-use Foxws\Podman\Support\Idle\Checks\DatabaseIdleCheck;
-use Foxws\Podman\Support\Idle\Checks\QueueIdleCheck;
-use Foxws\Podman\Support\Idle\Checks\ScoutIdleCheck;
+use Foxws\Podman\Support\Idle\Checks\BroadcastCheck;
+use Foxws\Podman\Support\Idle\Checks\DatabaseCheck;
+use Foxws\Podman\Support\Idle\Checks\QueueCheck;
+use Foxws\Podman\Support\Idle\Checks\ScoutCheck;
 
 return [
     /*
@@ -214,10 +214,10 @@ return [
 
     'idle' => [
         'checks' => [
-            QueueIdleCheck::class,
-            DatabaseIdleCheck::class,
-            BroadcastIdleCheck::class,
-            ScoutIdleCheck::class,
+            QueueCheck::class,
+            DatabaseCheck::class,
+            BroadcastCheck::class,
+            ScoutCheck::class,
         ],
     ],
 ];
