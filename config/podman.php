@@ -1,9 +1,9 @@
 <?php
 
-use Foxws\Podman\Support\Idle\BroadcastIdleCheck;
-use Foxws\Podman\Support\Idle\DatabaseIdleCheck;
-use Foxws\Podman\Support\Idle\QueueIdleCheck;
-use Foxws\Podman\Support\Idle\ScoutIdleCheck;
+use Foxws\Podman\Support\Idle\Checks\BroadcastIdleCheck;
+use Foxws\Podman\Support\Idle\Checks\DatabaseIdleCheck;
+use Foxws\Podman\Support\Idle\Checks\QueueIdleCheck;
+use Foxws\Podman\Support\Idle\Checks\ScoutIdleCheck;
 
 return [
     /*
