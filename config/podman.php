@@ -177,6 +177,11 @@ return [
     | proxy (the "proxy" preset, or an external one such as a NAS) at the
     | "listen" address.
     |
+    | Enable "services" to let the database, cache and other services sleep
+    | too, once nothing that needs them is running anymore. It's meant for
+    | development machines: a sleeping stack skips scheduled tasks, and the
+    | first request after idling waits for every service to start.
+    |
     */
 
     'ondemand' => [
@@ -187,5 +192,7 @@ return [
         'port' => env('PODMAN_ONDEMAND_PORT', 18000),
 
         'idle_timeout' => env('PODMAN_ONDEMAND_IDLE_TIMEOUT', '10min'),
+
+        'services' => env('PODMAN_ONDEMAND_SERVICES', false),
     ],
 ];

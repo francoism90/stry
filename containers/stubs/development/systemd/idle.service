@@ -1,0 +1,7 @@
+[Unit]
+Description=Laravel queue workers idle check
+
+[Service]
+Type=oneshot
+ExecCondition=/bin/sh -c '! systemctl --user --quiet is-active {{application}}.service'
+ExecStart=/bin/sh -c 'for worker in queue horizon; do systemctl --user --quiet is-active {{application}}-$$worker.service || continue; podman exec systemd-{{application}}-$$worker php -d variables_order=EGPCS /app/artisan podman:idle && systemctl --user stop {{application}}-$$worker.service; done; exit 0'
