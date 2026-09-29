@@ -1,7 +1,7 @@
 # FileName={{application}}-mailpit
 [Unit]
 Description=Mailpit container
-PartOf={{application}}.container
+StopWhenUnneeded={{ondemand}}
 
 [Container]
 Image=docker.io/axllent/mailpit:latest
@@ -15,6 +15,14 @@ Network={{application}}.network
 PublishPort=1025:1025
 PublishPort=1110:1110
 PublishPort=8025:8025
+Notify=healthy
+HealthStartupCmd=/mailpit readyz
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=/mailpit readyz
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
 
 [Service]
 Restart=always
