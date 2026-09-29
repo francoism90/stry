@@ -55,7 +55,7 @@ Only `stry` opens a port on the host (8000). The other services are only reachab
 ## Install
 
 ```bash
-php artisan podman:setup   # generates every preset above into podman/{preset}/
+php artisan podman:setup   # generates production, ondemand and s3 into podman/{preset}/
 
 # Install every generated service (see the podman/{preset}/ folder for the full list):
 lpod install production/app.quadlets --replace
@@ -73,7 +73,7 @@ lpod stry up
 See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full steps.
 
 :::note
-`php artisan podman:setup` and `podman:generate` need `foxws/laravel-podman`. That's a `require-dev` package, so it isn't installed when you run `composer install --no-dev`, as you would in production. `lpod` doesn't need it; it's the standalone tool from [Prerequisites](#prerequisites). On a host without PHP, either generate the files elsewhere and copy the `podman/` folder over, or run `lpod setup` to generate them inside a temporary container. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for both, and [Production Setup](production.md) for the full **stry** walkthrough.
+`php artisan podman:setup` and `podman:generate` need `foxws/laravel-podman`, and so does `php artisan podman:idle`, which the idle check runs inside the containers. It's a regular dependency, so `composer install --no-dev` keeps it. `lpod` doesn't need it; it's the standalone tool from [Prerequisites](#prerequisites). On a host without PHP, either generate the files elsewhere and copy the `podman/` folder over, or run `lpod setup` to generate them inside a temporary container. See [Setting up without PHP on the host](https://github.com/foxws/laravel-podman/blob/main/docs/host-setup.md) for both, and [Production Setup](production.md) for the full **stry** walkthrough.
 :::
 
 In the `production` preset, the app container uses a pre-built image instead of building one locally. CI builds it and publishes it to `ghcr.io/francoism90/stry`, and Podman pulls it from there. To use your own registry, set `PODMAN_IMAGE_REGISTRY` in `.env`.
