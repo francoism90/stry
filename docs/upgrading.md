@@ -41,6 +41,16 @@ Auto-update only pulls images and restarts containers. It doesn't run Artisan co
 
 You only need this when the release notes mention changes to `containers/stubs/*`. If they do, repeat the option you used during setup (see [Generate the Podman files](production.md#generate-the-podman-files)), then reinstall the changed units with `lpod install ... --replace`.
 
+### Moving the idle check to lpod
+
+Did you install `stry-idle.timer` from the `ondemand` preset? The idle check is part of `lpod` now. Upgrade `lpod` by running its installer again, then switch over once:
+
+```bash
+curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash
+lpod remove stry-idle.timer
+lpod idle enable stry
+```
+
 :::note
 If you installed the Quadlet units by hand from the templates instead of running `podman:setup`, you need to compare and update them yourself on every upgrade (see the note in [Production Setup](production.md#generate-the-podman-files)).
 :::

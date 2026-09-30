@@ -61,6 +61,18 @@ lpod print my-app                    # show the generated systemd unit
 
 After changing a `.quadlets` file or its template, regenerate and reinstall with `--replace`, then restart the service.
 
+## On-demand idle check
+
+```bash
+lpod idle enable my-app              # stop workers and the scheduler timer once the sleeping app is idle
+lpod idle my-app                     # run the check once
+lpod idle disable my-app
+lpod self-update                     # upgrade lpod in place (v2.2.0 and later)
+journalctl --user -u lpod-idle@my-app
+```
+
+Extra workers to check and stop go in `LPOD_IDLE_WORKERS`, set in a drop-in on `lpod-idle@my-app.service`. Install or upgrade `lpod` with `curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash`; `lpod idle` needs v2.2.0 or later.
+
 ## Destructive commands
 
 `lpod remove NAME` and `lpod uninstall APPLICATION` delete the service's Podman volumes (databases, uploads, search indexes). There is no undo. Never run them without the user's explicit confirmation. Offer a backup first:
