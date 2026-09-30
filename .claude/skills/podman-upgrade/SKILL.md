@@ -42,6 +42,7 @@ For each published `development` or `production` preset, compare it with `vendor
 - **`app.quadlets` `Wants=`:** every installed service besides what the app `Requires=` must be listed, or it stops right after starting. Check which services the user installs (`lpod list`, or the `.quadlets` they published) and add those. In `production`, also add the worker they use (`queue` or `horizon`) and `{{application}}-schedule.timer`.
 - **Workers that keep running** (every `production` worker, and `development` workers without `PartOf=` the app): add a `Wants=` line with the services their jobs use (from the app's code: filesystems → `rustfs`, Scout → `typesense`/`meilisearch`, broadcasting → `reverb`, mail → `mailpit`).
 - **`systemd/`:** delete `ondemand.socket` and `ondemand.service`. The `ondemand` preset provides them now, along with the idle check. Keep `schedule.timer` in `production`.
+- **Idle check:** it moved to `lpod idle` (lpod v2.2.0 or later). If the user published `containers/stubs/ondemand` and added a worker to `systemd/idle.service`, note it for `LPOD_IDLE_WORKERS` (a drop-in on `lpod-idle@my-app.service`, see the package's ondemand docs).
 
 ### 5. Verify and hand over
 
@@ -55,7 +56,8 @@ Run `php artisan podman:setup` (or `podman:generate` for each preset, including 
 
 ```bash
 lpod install ondemand/my-app-ondemand.socket --replace
-lpod install ondemand/my-app-idle.timer --replace
+lpod remove my-app-idle.timer   # only if an earlier v5 release installed it
+lpod idle enable my-app
 lpod install development/app.quadlets --replace
 # every other service in use, e.g.:
 lpod install development/pgsql.quadlets --replace
@@ -144,6 +146,6 @@ lpod my-app-queue up               # or my-app-horizon
 ```
 
 Remind them of three things:
-- Socket and timer installs need the latest `lpod`. Reinstall it with the curl command in the `lpod` docs.
+- Socket installs and `lpod idle` need the latest `lpod`. Upgrade it by running its installer again: `curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash`.
 - On a server, `loginctl enable-linger` is needed once.
 - `lpod my-app up` no longer keeps an on-demand app running. A request (`lpod my-app open`) starts it.
