@@ -16,11 +16,10 @@ tags:
 
 - Linux with systemd, rootless or system-wide
 - [Podman 5.3+](https://podman.io/) with the `quadlet` CLI plugin (check that `podman quadlet --help` works)
-- [`lpod`](https://github.com/foxws/lpod). Install it once per host; it's a bash script with no dependencies:
+- [`lpod`](https://github.com/foxws/lpod) v2.2.0 or later. Install it once per host, and run the installer again to upgrade. It's a bash script with no dependencies:
 
     ```bash
-    curl -fsSL -o ~/.local/bin/lpod https://github.com/foxws/lpod/releases/latest/download/lpod
-    chmod +x ~/.local/bin/lpod
+    curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash
     ```
 
 ## Presets
@@ -68,7 +67,13 @@ lpod stry-pgsql secrets
 # ...
 
 lpod stry up
+
+# Let the app and its services sleep when idle (skip with PODMAN_ONDEMAND_ENABLED=false):
+lpod install ondemand/stry-ondemand.socket --replace
+lpod idle enable stry
 ```
+
+`lpod idle enable` runs the [idle check](https://github.com/foxws/laravel-podman/blob/main/docs/ondemand.md#the-idle-check) every minute. Once the app is asleep and has no work left, it stops Horizon and the scheduler timer, so the database and other services can sleep too.
 
 See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full steps.
 
