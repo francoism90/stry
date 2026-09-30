@@ -16,7 +16,7 @@ tags:
 
 - Linux with systemd, rootless or system-wide
 - [Podman 5.3+](https://podman.io/) with the `quadlet` CLI plugin (check that `podman quadlet --help` works)
-- [`lpod`](https://github.com/foxws/lpod) v2.2.0 or later. Install it once per host, and run the installer again to upgrade. It's a bash script with no dependencies:
+- [`lpod`](https://github.com/foxws/lpod) v2.2.0 or later. Install it once per host, and upgrade it later with `lpod self-update`. It's a bash script with no dependencies:
 
     ```bash
     curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash
