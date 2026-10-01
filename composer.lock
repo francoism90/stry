@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3ab945d2093d7a0137184d1ce37429e",
+    "content-hash": "55d01634c86407489f21d58c1cdb6a04",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.398.3",
+            "version": "3.398.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4a8bc490c38316ad7f6934bd89049da1971c462c"
+                "reference": "1dc5a7813aa23b65de0bfb6239b93387971f7143"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4a8bc490c38316ad7f6934bd89049da1971c462c",
-                "reference": "4a8bc490c38316ad7f6934bd89049da1971c462c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1dc5a7813aa23b65de0bfb6239b93387971f7143",
+                "reference": "1dc5a7813aa23b65de0bfb6239b93387971f7143",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.398.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.398.4"
             },
-            "time": "2026-09-29T18:22:38+00:00"
+            "time": "2026-09-30T18:20:49+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -884,16 +884,16 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "e96fe45e92a54233726014a7cc7340abf29bb14c"
+                "reference": "71d305eaa6480d3d3460c7d053d1da7749fa9cca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/e96fe45e92a54233726014a7cc7340abf29bb14c",
-                "reference": "e96fe45e92a54233726014a7cc7340abf29bb14c",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/71d305eaa6480d3d3460c7d053d1da7749fa9cca",
+                "reference": "71d305eaa6480d3d3460c7d053d1da7749fa9cca",
                 "shasum": ""
             },
             "require": {
@@ -939,7 +939,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/lexer/issues",
-                "source": "https://github.com/doctrine/lexer/tree/3.0.2"
+                "source": "https://github.com/doctrine/lexer/tree/3.0.3"
             },
             "funding": [
                 {
@@ -955,7 +955,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-14T20:44:06+00:00"
+            "time": "2026-10-01T06:59:29+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -1508,16 +1508,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "5.1.0",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "300df7d6114e0c1fb6c9a23005eec4275432d712"
+                "reference": "6c70eaab1fc8fa62ee1956584906a754ea053c9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/300df7d6114e0c1fb6c9a23005eec4275432d712",
-                "reference": "300df7d6114e0c1fb6c9a23005eec4275432d712",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/6c70eaab1fc8fa62ee1956584906a754ea053c9d",
+                "reference": "6c70eaab1fc8fa62ee1956584906a754ea053c9d",
                 "shasum": ""
             },
             "require": {
@@ -1584,7 +1584,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/5.1.0"
+                "source": "https://github.com/foxws/laravel-podman/tree/5.2.0"
             },
             "funding": [
                 {
@@ -1592,7 +1592,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-30T12:20:29+00:00"
+            "time": "2026-10-01T11:29:02+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
@@ -2706,16 +2706,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v3.4.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "faf52ea98a33952731716451f98f6b7ad319fafc"
+                "reference": "35a27ea62b8a53ec40269c4c675db5d9d0e02426"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/faf52ea98a33952731716451f98f6b7ad319fafc",
-                "reference": "faf52ea98a33952731716451f98f6b7ad319fafc",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/35a27ea62b8a53ec40269c4c675db5d9d0e02426",
+                "reference": "35a27ea62b8a53ec40269c4c675db5d9d0e02426",
                 "shasum": ""
             },
             "require": {
@@ -2772,9 +2772,9 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.4.0"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.5.1"
             },
-            "time": "2026-09-25T09:33:29+00:00"
+            "time": "2026-10-01T10:38:10+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -15387,16 +15387,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.10.0",
+            "version": "v2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "76c236d4eb7d51698f882d149bc367c1ebc0d078"
+                "reference": "3e7bab5c7c80b6d2764ef3db1e3eb801204da84e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/76c236d4eb7d51698f882d149bc367c1ebc0d078",
-                "reference": "76c236d4eb7d51698f882d149bc367c1ebc0d078",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/3e7bab5c7c80b6d2764ef3db1e3eb801204da84e",
+                "reference": "3e7bab5c7c80b6d2764ef3db1e3eb801204da84e",
                 "shasum": ""
             },
             "require": {
@@ -15449,7 +15449,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-09-23T09:33:31+00:00"
+            "time": "2026-10-01T02:02:28+00:00"
         },
         {
             "name": "laravel/doctor",
@@ -17092,16 +17092,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.3.5",
+            "version": "14.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "96af7aaa1e15561a67b2fa5b98906b063ebec9c2"
+                "reference": "9be27409ad7bedddd34ed3bc27561d47c6faea06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/96af7aaa1e15561a67b2fa5b98906b063ebec9c2",
-                "reference": "96af7aaa1e15561a67b2fa5b98906b063ebec9c2",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/9be27409ad7bedddd34ed3bc27561d47c6faea06",
+                "reference": "9be27409ad7bedddd34ed3bc27561d47c6faea06",
                 "shasum": ""
             },
             "require": {
@@ -17120,7 +17120,7 @@
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.3.4"
+                "phpunit/phpunit": "^13.3.6"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -17129,7 +17129,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "14.3.x-dev"
+                    "dev-main": "14.4.x-dev"
                 }
             },
             "autoload": {
@@ -17158,7 +17158,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.5"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.4.0"
             },
             "funding": [
                 {
@@ -17178,7 +17178,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-25T08:28:49+00:00"
+            "time": "2026-09-30T12:46:01+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

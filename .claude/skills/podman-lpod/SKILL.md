@@ -25,6 +25,7 @@ lpod my-app composer require foo/bar
 lpod my-app php -v
 lpod my-app tinker
 lpod my-app debug queue:work         # Artisan with Xdebug enabled
+lpod my-app xdebug on | off          # Xdebug for web requests (development image), restarts the app
 
 lpod my-app test                     # php artisan test
 lpod my-app pest --filter=UserTest
@@ -48,6 +49,10 @@ lpod my-app secrets                  # prompt for the unit's Secret= values
 lpod my-app open                     # open APP_URL in the browser
 ```
 
+## Troubleshooting the host
+
+Run `lpod doctor` when services don't start or the proxy doesn't answer. It checks Podman, systemd, linger, subordinate IDs, unprivileged ports, the idle templates, the proxy's certificate, `APP_URL` and failed services, and prints fixes. Fixes with `sudo` are for the user to run.
+
 ## Installing rendered services
 
 The Artisan commands only render files into `podman/` (don't commit it). `lpod` installs them:
@@ -67,11 +72,18 @@ After changing a `.quadlets` file or its template, regenerate and reinstall with
 lpod idle enable my-app              # stop workers and the scheduler timer once the sleeping app is idle
 lpod idle my-app                     # run the check once
 lpod idle disable my-app
-lpod self-update                     # upgrade lpod in place (v2.2.0 and later)
 journalctl --user -u lpod-idle@my-app
 ```
 
-Extra workers to check and stop go in `LPOD_IDLE_WORKERS`, set in a drop-in on `lpod-idle@my-app.service`. Install or upgrade `lpod` with `curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash`; `lpod idle` needs v2.2.0 or later.
+Needs `lpod` v2.2.0 or later. Extra workers to check and stop go in `LPOD_IDLE_WORKERS`, set in a drop-in on `lpod-idle@my-app.service`.
+
+## Installing and upgrading lpod
+
+```bash
+curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash
+lpod --version
+lpod self-update                     # v2.2.0 and later
+```
 
 ## Destructive commands
 
@@ -79,7 +91,7 @@ Extra workers to check and stop go in `LPOD_IDLE_WORKERS`, set in a drop-in on `
 
 ```bash
 podman volume export systemd-my-app-pgsql -o pgsql-backup.tar
-lpod my-app run pg_dump -U postgres -d laravel > backup.sql
+lpod my-app-pgsql run sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB"' > backup.sql
 ```
 
 Check the real volume name with `podman volume ls` before exporting.

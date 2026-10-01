@@ -46,6 +46,6 @@
         "vue-tsc": "^3.3.11"
     },
     "optionalDependencies": {
-        "@laravel/multiplex": "^0.4.4"
+        "@laravel/multiplex": "^0.4.5"
     }
 }
