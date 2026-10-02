@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@iconify/vue": "^5.0.3",
-        "@inertiajs/vue3": "^3.7.1",
+        "@inertiajs/vue3": "^3.8.0",
         "@internationalized/date": "^3.12.4",
         "@laravel/echo-vue": "^2.5.0",
         "@nuxt/ui": "^4.11.2",
@@ -27,8 +27,8 @@
         "vue": "^3.5.43"
     },
     "devDependencies": {
-        "@iconify-json/lucide": "^1.2.137",
-        "@inertiajs/vite": "^3.7.1",
+        "@iconify-json/lucide": "^1.2.138",
+        "@inertiajs/vite": "^3.8.0",
         "@laravel/vite-plugin-wayfinder": "^0.1.10",
         "@tailwindcss/vite": "^4.3.3",
         "@tsconfig/node24": "^24.0.5",

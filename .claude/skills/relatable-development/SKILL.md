@@ -31,9 +31,19 @@ Use this skill when a Laravel application relates models to other models with th
 $a->attachRelated($b);                                   // score/boost default to 1.0
 $a->attachRelated($b, score: 0.5, boost: 2.0);           // re-attaching updates the row
 $a->attachRelated($b, score: 1.0, mutual: true, mutualScore: 0.5); // also B → A
-$a->detachRelated($b, mutual: true);
+$a->detachRelated($b, mutual: true);                     // both A → B and B → A
 $a->syncRelated([$b, ['model' => $c, 'score' => 0.5]]);  // exact set; plain models keep their score
 ```
+
+#### Mutual relations
+
+Pass `mutual: true` when both models should list each other in `relates`; without it only A → B is written.
+
+- `attachRelated(..., mutual: true)` writes A → B and B → A in one transaction. B → A uses `mutualScore` / `mutualBoost`, falling back to `score` / `boost`. Both rows get the same `options`.
+- `detachRelated($b, mutual: true)` removes both rows; without `mutual` B → A stays.
+- `syncRelated($items, mutual: true)` has no `mutualScore` / `mutualBoost`: each B → A gets its item's score and boost. For a different score back, call `attachRelated()` per model instead.
+- Sync only removes a B → A along with the A → B it removes. A B → A that exists without A → B is kept, because it was created independently — detach it explicitly if it must go.
+- Only `$a`'s loaded relations are refreshed. If `$b` already has `relatables` or `relates` loaded, call `$b->refresh()` before reading them.
 
 ### 3. Read related models
 
