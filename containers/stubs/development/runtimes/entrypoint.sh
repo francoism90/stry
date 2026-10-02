@@ -65,9 +65,21 @@ if ! grep -q '^APP_KEY=.' /app/.env && [ -z "${APP_KEY:-}" ]; then
     exit 1
 fi
 
-# Clear any stale caches
-log "INFO" "Clearing stale caches..."
-${FRANKEN_CLI} optimize:clear
+# Drop config, route and event caches left behind by an `optimize`, so code
+# edits show up. The application cache holds data rather than build output,
+# so it is kept, and compiled views already recompile when a view changes.
+declare -A STALE_CACHES=(
+    [config.php]=config:clear
+    [routes-v7.php]=route:clear
+    [events.php]=event:clear
+)
+
+for file in "${!STALE_CACHES[@]}"; do
+    if [ -f "/app/bootstrap/cache/${file}" ]; then
+        log "INFO" "Clearing stale ${file}..."
+        ${FRANKEN_CLI} "${STALE_CACHES[$file]}"
+    fi
+done
 
 # Run the provided command
 log "INFO" "Starting command..."
