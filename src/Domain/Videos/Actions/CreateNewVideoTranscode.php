@@ -42,8 +42,12 @@ class CreateNewVideoTranscode
                 // Mark the transcode as processing
                 $transcode->markAsProcessing();
 
-                // Encode and export (like Laravel Streamer - export() starts the process)
+                // Encode and export (like Laravel Streamer - export() starts the process).
+                // Verify and fail fast, so a damaged or truncated upload fails
+                // instead of saving a broken transcode.
                 $encoder
+                    ->withVerify()
+                    ->withFailFast()
                     ->export()
                     ->toDisk($transcode->getDisk())
                     ->toPath($transcode->getOutputPath())
