@@ -120,8 +120,8 @@ class Transcode extends Model
             'state' => (string) $this->state,
             'started_at' => (int) $this->started_at?->getTimestamp(),
             'transcoded_at' => (int) $this->transcoded_at?->getTimestamp(),
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'created_at' => (int) $this->created_at?->getTimestamp(),
+            'updated_at' => (int) $this->updated_at?->getTimestamp(),
         ];
     }
 
@@ -192,7 +192,7 @@ class Transcode extends Model
 
     public function getOutputPath(): string
     {
-        return $this->getPath($this->file_name);
+        return $this->getPath($this->file_name ?? '');
     }
 
     public function getFilesystem(): FilesystemAdapter

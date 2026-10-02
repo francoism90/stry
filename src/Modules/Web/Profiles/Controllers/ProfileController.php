@@ -11,10 +11,12 @@ use Domain\Profiles\Enums\ProfileSorter;
 use Domain\Profiles\Filters\ProfileScopeFilter;
 use Domain\Profiles\Models\Profile;
 use Domain\Profiles\Scopes\ProfileUserScope;
+use Domain\Users\Models\User;
 use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -68,12 +70,12 @@ class ProfileController implements HasMiddleware
         ]);
     }
 
-    public function store(ProfileStoreRequest $request): RedirectResponse
+    public function store(ProfileStoreRequest $request, #[CurrentUser] User $user): RedirectResponse
     {
         Gate::authorize('create', Profile::class);
 
         $profile = app(CreateNewProfile::class)->handle(
-            user: $request->user(),
+            user: $user,
             attributes: $request->safe()->all(),
         );
 

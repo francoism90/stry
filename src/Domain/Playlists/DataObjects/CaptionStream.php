@@ -9,9 +9,9 @@ use Spatie\LaravelData\Dto;
 class CaptionStream extends Dto
 {
     public function __construct(
-        public ?int $id = null,
-        public ?string $disk = null,
-        public ?string $path = null,
+        public int $id,
+        public string $disk,
+        public string $path,
         public ?string $language = null,
     ) {}
 }

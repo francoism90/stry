@@ -12,6 +12,7 @@ use Domain\Groups\Filters\GroupScopeFilter;
 use Domain\Groups\Models\Group;
 use Domain\Groups\Scopes\GroupProfileScope;
 use Domain\Groups\Scopes\GroupTypeScope;
+use Domain\Users\Models\User;
 use Domain\Videos\Enums\VideoScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Filters\VideoScopeFilter;
@@ -22,6 +23,7 @@ use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -118,12 +120,12 @@ class GroupController implements HasMiddleware
         ]);
     }
 
-    public function store(GroupStoreRequest $request): RedirectResponse
+    public function store(GroupStoreRequest $request, #[CurrentUser] User $user): RedirectResponse
     {
         Gate::authorize('create', Group::class);
 
         // Create the group
-        $group = $request->user()->findOrCreateGroup(
+        $group = $user->findOrCreateGroup(
             name: $request->safe()->input('name'),
             type: GroupType::Custom,
             attributes: $request->safe()->only('content'),

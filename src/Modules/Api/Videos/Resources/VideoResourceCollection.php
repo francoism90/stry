@@ -17,7 +17,7 @@ class VideoResourceCollection extends AnonymousResourceCollection
     public function toArray($request): array|Arrayable|JsonSerializable
     {
         if ($user = $request->user()) {
-            VideoCollection::make($this->collection->pluck('resource'))->loadGroupTypesFor($user);
+            VideoCollection::make($this->collection?->pluck('resource'))->loadGroupTypesFor($user);
         }
 
         return parent::toArray($request);

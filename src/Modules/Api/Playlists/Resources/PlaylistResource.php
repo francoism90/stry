@@ -38,8 +38,8 @@ class PlaylistResource extends JsonResource
             'type' => $this->type,
             'state' => $this->state->toArray(),
             'expires_at' => $this->expires_at?->toDateTimeString(),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Controllers;
 
+use Domain\Users\Models\User;
 use Domain\Videos\Actions\ProcessVideoImport;
 use Domain\Videos\Models\Video;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -22,12 +23,12 @@ class VideoImportController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request): RedirectResponse
+    public function __invoke(#[CurrentUser] User $user): RedirectResponse
     {
         Gate::authorize('create', Video::class);
 
         app(ProcessVideoImport::class)->handle(
-            user: $request->user(),
+            user: $user,
             disk: Video::getImportDisk()
         );
 

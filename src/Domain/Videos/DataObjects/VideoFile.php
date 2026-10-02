@@ -9,8 +9,8 @@ use Spatie\LaravelData\Dto;
 class VideoFile extends Dto
 {
     public function __construct(
-        public ?string $disk = null,
-        public ?string $path = null,
+        public string $disk,
+        public string $path,
         public ?string $name = null,
         public ?int $size = null,
     ) {}
