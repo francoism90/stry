@@ -188,8 +188,8 @@ class Profile extends Model implements HasMedia
             'is_kids' => (bool) $this->is_kids,
             'is_primary' => (bool) $this->is_primary,
             'state' => (string) $this->state,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'created_at' => (int) $this->created_at?->getTimestamp(),
+            'updated_at' => (int) $this->updated_at?->getTimestamp(),
         ];
     }
 }

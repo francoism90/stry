@@ -9,6 +9,8 @@ use Domain\Users\DataObjects\AppearanceSettings;
 use Domain\Users\DataObjects\GeneralSettings;
 use Domain\Users\DataObjects\PlayerSettings;
 use Domain\Users\DataObjects\UserSettings;
+use Domain\Users\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,9 +29,9 @@ class UserSettingsController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request, UserSettings $settings): Response|RedirectResponse
+    public function __invoke(Request $request, UserSettings $settings, #[CurrentUser] User $user): Response|RedirectResponse
     {
-        Gate::authorize('update', $request->user());
+        Gate::authorize('update', $user);
 
         // Filter out any null values to avoid overwriting existing settings with null.
         $update = array_filter([
@@ -39,7 +41,7 @@ class UserSettingsController implements HasMiddleware
         ]);
 
         // Update the user's settings with the provided values.
-        (new UpdateUserSettings)->handle($request->user(), $update);
+        (new UpdateUserSettings)->handle($user, $update);
 
         if ($request->wantsJson()) {
             return response()->noContent();

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Modules\Web\Videos\Controllers;
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -22,12 +23,12 @@ class VideoSaveController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Video $video, Request $request): RedirectResponse
+    public function __invoke(Video $video, #[CurrentUser] User $user): RedirectResponse
     {
         Gate::authorize('view', $video);
 
         // Toggle the video in the user's saved group.
-        $group = $request->user()->toggleInGroup($video, GroupType::Saved);
+        $group = $user->toggleInGroup($video, GroupType::Saved);
 
         toast(
             title: (string) $video->name,

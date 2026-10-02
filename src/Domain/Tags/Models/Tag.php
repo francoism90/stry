@@ -160,8 +160,8 @@ class Tag extends BaseTag implements HasMedia
             'translated' => (array) $this->translated->toArray(),
             'order' => (int) $this->order_column,
             'videos' => (int) $this->videos_count,
-            'created_at' => (int) $this->created_at->getTimestamp(),
-            'updated_at' => (int) $this->updated_at->getTimestamp(),
+            'created_at' => (int) $this->created_at?->getTimestamp(),
+            'updated_at' => (int) $this->updated_at?->getTimestamp(),
         ];
     }
 

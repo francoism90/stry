@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Web\Account\Controllers;
 
+use Domain\Users\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -23,22 +24,22 @@ class NotificationsController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(#[CurrentUser] User $user): Response
     {
-        Gate::authorize('update', $request->user());
+        Gate::authorize('update', $user);
 
         return Inertia::render('Account/NotificationIndex', [
             'notifications' => Inertia::scroll(fn () => NotificationResource::collection(
-                $request->user()->notifications()->simplePaginate(perPage: 20)
+                $user->notifications()->simplePaginate(perPage: 20)
             )),
         ]);
     }
 
-    public function update(Request $request, string $notification): RedirectResponse
+    public function update(#[CurrentUser] User $user, string $notification): RedirectResponse
     {
-        Gate::authorize('update', $request->user());
+        Gate::authorize('update', $user);
 
-        $record = $request->user()->notifications()->findOrFail($notification);
+        $record = $user->notifications()->findOrFail($notification);
 
         if ($record->read_at) {
             $record->markAsUnread();
@@ -49,11 +50,11 @@ class NotificationsController implements HasMiddleware
         return back();
     }
 
-    public function destroy(Request $request, string $notification): RedirectResponse
+    public function destroy(#[CurrentUser] User $user, string $notification): RedirectResponse
     {
-        Gate::authorize('update', $request->user());
+        Gate::authorize('update', $user);
 
-        $request->user()->notifications()->findOrFail($notification)->delete();
+        $user->notifications()->findOrFail($notification)->delete();
 
         return back();
     }

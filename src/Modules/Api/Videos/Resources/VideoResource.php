@@ -73,8 +73,8 @@ class VideoResource extends JsonResource
             'released_at' => $this->released_at?->toDateString(),
             'expires_at' => $this->expires_at?->toDateTimeString(),
             'deleted_at' => $this->deleted_at?->toDateTimeString(),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 

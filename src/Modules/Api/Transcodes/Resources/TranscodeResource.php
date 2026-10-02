@@ -35,8 +35,8 @@ class TranscodeResource extends JsonResource
             'state' => $this->state->toArray(),
             'started_at' => $this->started_at?->toDateTimeString(),
             'transcoded_at' => $this->transcoded_at?->toDateTimeString(),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

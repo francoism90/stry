@@ -22,7 +22,7 @@ class ExtractVideoChapters
         }
 
         // Get the first media item from the video
-        $media = $video->getClips()->first();
+        $media = $video->getClips()->firstOrFail();
 
         // Extract chapters from the media and create them for the video
         app(ExtractMediaChapters::class)

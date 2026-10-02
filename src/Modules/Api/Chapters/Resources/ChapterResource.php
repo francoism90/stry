@@ -30,8 +30,8 @@ class ChapterResource extends JsonResource
             'end_time' => (float) $this->end_time,
             'sort' => $this->sort,
             'skippable' => $this->type->isSkippable(),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

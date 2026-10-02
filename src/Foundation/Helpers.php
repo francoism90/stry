@@ -13,7 +13,7 @@ if (! function_exists('duration')) {
             ->utc()
             ->toTimeString();
 
-        return preg_replace('/^0(?:0:0?)?/', '', $time);
+        return preg_replace('/^0(?:0:0?)?/', '', $time) ?? $time;
     }
 }
 

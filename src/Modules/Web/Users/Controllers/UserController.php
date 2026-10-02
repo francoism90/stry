@@ -100,7 +100,7 @@ class UserController implements HasMiddleware
     {
         Gate::authorize('delete', $user);
 
-        abort_if($request->user()?->is($user), 403, __('You cannot delete your own account.'));
+        abort_if($user->is($request->user()), 403, __('You cannot delete your own account.'));
 
         // Delete the user
         $user->deleteOrFail();

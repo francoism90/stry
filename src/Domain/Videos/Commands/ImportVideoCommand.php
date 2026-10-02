@@ -54,8 +54,8 @@ class ImportVideoCommand extends Command implements Isolatable
         table(
             headers: ['Filename', 'Filesize'],
             rows: Collection::make($files)->map(fn (VideoFile $file) => [
-                Str::limit($file->name, 50),
-                Number::fileSize($file->size),
+                Str::limit($file->name ?? '', 50),
+                Number::fileSize($file->size ?? 0),
             ])->all(),
         );
 

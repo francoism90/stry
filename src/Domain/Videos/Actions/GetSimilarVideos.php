@@ -52,9 +52,8 @@ class GetSimilarVideos
             return Collection::make();
         }
 
-        // Fetch all same-series episodes in order, then split into "after" and "before"
-        // the current video so the next episode surfaces first.
-        [$after, $before] = Video::query()
+        // Fetch all same-series episodes in order
+        $episodes = Video::query()
             ->whereKeyNot($video)
             ->whereJsonContainsLocales('name', array_unique([$locale, $fallback]), $name)
             ->with('tags')
@@ -62,14 +61,16 @@ class GetSimilarVideos
             ->orderBy('season')
             ->orderBy('episode')
             ->orderBy('part')
-            ->get()
-            ->partition(fn (Video $model): bool => [
-                $model->season ?? '', $model->episode ?? '', $model->part ?? '',
-            ] > [
-                $video->season ?? '', $video->episode ?? '', $video->part ?? '',
-            ]);
+            ->get();
 
-        return $after->merge($before)->take($limit);
+        // Episodes after the current video come first, so the next episode surfaces first
+        $isAfter = fn (Video $model): bool => [
+            $model->season ?? '', $model->episode ?? '', $model->part ?? '',
+        ] > [
+            $video->season ?? '', $video->episode ?? '', $video->part ?? '',
+        ];
+
+        return $episodes->filter($isAfter)->merge($episodes->reject($isAfter))->take($limit);
     }
 
     /**

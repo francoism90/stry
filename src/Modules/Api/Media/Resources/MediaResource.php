@@ -39,8 +39,8 @@ class MediaResource extends JsonResource
             'custom_properties' => $this->custom_properties,
             'generated_conversions' => $this->generated_conversions,
             'responsive_images' => $this->responsive_images,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

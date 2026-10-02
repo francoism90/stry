@@ -22,7 +22,7 @@ class ExtractVideoStoryboard
         }
 
         // Get the first media item from the video
-        $media = $video->getClips()->first();
+        $media = $video->getClips()->firstOrFail();
 
         // Generate the storyboard sprite and VTT cue file from the media
         $storyboard = app(GenerateMediaStoryboard::class)->handle($media);

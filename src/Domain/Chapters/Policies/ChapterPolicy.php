@@ -31,7 +31,7 @@ class ChapterPolicy
 
     public function update(User $user, Chapter $chapter): bool
     {
-        return $chapter->video->user()->is($user);
+        return $chapter->video?->user()->is($user) ?? false;
     }
 
     public function delete(User $user, Chapter $chapter): bool
