@@ -68,13 +68,6 @@ if ! grep -q '^APP_KEY=.' /app/.env && [ -z "${APP_KEY:-}" ]; then
     exit 1
 fi
 
-# Clear any stale caches. Short-lived containers such as the scheduler set
-# APP_OPTIMIZE=false: they exit before rebuilt caches would pay off.
-if [ "${APP_OPTIMIZE:-true}" = "true" ]; then
-    log "INFO" "Clearing stale caches..."
-    ${FRANKEN_CLI} optimize:clear
-fi
-
 # Create PWA manifest — only the web server serves manifest.json/sw.js to
 # browsers, so skip this for the horizon/reverb/schedule/ssr containers
 # sharing this same image and entrypoint.
@@ -83,7 +76,8 @@ if [[ "${APP_COMMAND}" == *octane:frankenphp* ]]; then
     ${FRANKEN_CLI} pwa:generate
 fi
 
-# Ensure all caches are warmed up
+# Ensure all caches are warmed up. Short-lived containers such as the
+# scheduler set APP_OPTIMIZE=false, since they exit before it pays off.
 if [ "${APP_OPTIMIZE:-true}" = "true" ]; then
     log "INFO" "Optimizing application..."
     ${FRANKEN_CLI} optimize
