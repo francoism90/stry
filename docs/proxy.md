@@ -16,10 +16,12 @@ It works by hostname. You send every subdomain to the app on port `8000`, and Ca
 | ---------------------------------- | ---------------------------- | -------------------------- |
 | The host in `APP_URL`              | the app itself               | The main application       |
 | The host in `AWS_URL`              | `systemd-{app}-rustfs:9000`  | S3-compatible storage API  |
-| `VITE_REVERB_HOST` / `REVERB_HOST` | `systemd-{app}-reverb:6001`  | Laravel Reverb (WebSocket) |
 | `MAILPIT_UI_HOST` (optional)       | `systemd-{app}-mailpit:8025` | Mailpit web UI             |
+| `RUSTFS_CONSOLE_HOST` (optional)   | `systemd-{app}-rustfs:9001`  | RustFS web console         |
+| `VITE_HMR_HOST` (optional)         | `systemd-{app}-vite:5173`    | Vite dev server (HMR)      |
+| `VITE_REVERB_HOST` / `REVERB_HOST` | `systemd-{app}-reverb:6001`  | Laravel Reverb (WebSocket) |
 
-This mapping is set in `config/octane.php` (`caddy.env.CADDY_EXTRA_CONFIG`) and turned into Caddy config by `Support\Octane\CaddySites`. If you leave `MAILPIT_UI_HOST` empty, Mailpit isn't exposed at all: `CaddySites::render()` skips any entry without a hostname.
+This mapping is set in `config/octane.php` (`caddy.env.CADDY_EXTRA_CONFIG`) and turned into Caddy config by `Support\Octane\CaddySites`. If you leave `MAILPIT_UI_HOST`, `RUSTFS_CONSOLE_HOST` or `VITE_HMR_HOST` empty, that service isn't exposed at all: `CaddySites::render()` skips any entry without a hostname.
 
 ## Bring your own TLS termination
 
@@ -47,5 +49,5 @@ You don't need any of this locally. The app is available at `http://localhost:80
 
 ## Troubleshooting
 
-- **A service returns 404 or refuses the connection**: check that its variable (`AWS_URL`, `VITE_REVERB_HOST`, `MAILPIT_UI_HOST`) contains exactly the hostname your reverse proxy forwards. Also check that the service's container is running and reachable on the app's internal network.
+- **A service returns 404 or refuses the connection**: check that its variable (`AWS_URL`, `MAILPIT_UI_HOST`, `RUSTFS_CONSOLE_HOST`, `VITE_HMR_HOST`, `VITE_REVERB_HOST`) contains exactly the hostname your reverse proxy forwards. Also check that the service's container is running and reachable on the app's internal network.
 - **The app works, but `ws.*`, `s3.*` and similar subdomains don't**: check that your reverse proxy passes the `Host` header through unchanged, instead of replacing it with the app's own hostname.
