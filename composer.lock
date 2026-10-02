@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55d01634c86407489f21d58c1cdb6a04",
+    "content-hash": "43cf12df23af5a7ed62ad043004423e7",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.398.4",
+            "version": "3.399.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1dc5a7813aa23b65de0bfb6239b93387971f7143"
+                "reference": "3010fb79822bf331de82e9413eaa2c898aeb02ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1dc5a7813aa23b65de0bfb6239b93387971f7143",
-                "reference": "1dc5a7813aa23b65de0bfb6239b93387971f7143",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3010fb79822bf331de82e9413eaa2c898aeb02ec",
+                "reference": "3010fb79822bf331de82e9413eaa2c898aeb02ec",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.398.4"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.399.0"
             },
-            "time": "2026-09-30T18:20:49+00:00"
+            "time": "2026-10-01T18:15:12+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1190,16 +1190,16 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "1.1.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "6a0f332a4180ad7f4e4879b7a5a1a3b46abec25b"
+                "reference": "1463f94d8756c4bc439a380902db2e9f2396aea2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/6a0f332a4180ad7f4e4879b7a5a1a3b46abec25b",
-                "reference": "6a0f332a4180ad7f4e4879b7a5a1a3b46abec25b",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/1463f94d8756c4bc439a380902db2e9f2396aea2",
+                "reference": "1463f94d8756c4bc439a380902db2e9f2396aea2",
                 "shasum": ""
             },
             "require": {
@@ -1263,7 +1263,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/1.1.0"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/2.0.1"
             },
             "funding": [
                 {
@@ -1271,7 +1271,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-26T22:10:53+00:00"
+            "time": "2026-10-02T11:54:32+00:00"
         },
         {
             "name": "foxws/laravel-ddd",
@@ -1424,16 +1424,16 @@
         },
         {
             "name": "foxws/laravel-modelcache",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-modelcache.git",
-                "reference": "3edf7ee104c370a3306987f4db89907e2803fba5"
+                "reference": "dab4925a38f73872b11605e558b1ec3d3013f1dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/3edf7ee104c370a3306987f4db89907e2803fba5",
-                "reference": "3edf7ee104c370a3306987f4db89907e2803fba5",
+                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/dab4925a38f73872b11605e558b1ec3d3013f1dd",
+                "reference": "dab4925a38f73872b11605e558b1ec3d3013f1dd",
                 "shasum": ""
             },
             "require": {
@@ -1496,7 +1496,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-modelcache/issues",
-                "source": "https://github.com/foxws/laravel-modelcache/tree/1.4.2"
+                "source": "https://github.com/foxws/laravel-modelcache/tree/1.4.3"
             },
             "funding": [
                 {
@@ -1504,20 +1504,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-16T19:27:52+00:00"
+            "time": "2026-10-02T11:45:27+00:00"
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "5.2.0",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "6c70eaab1fc8fa62ee1956584906a754ea053c9d"
+                "reference": "6c67375e8fcae24891fa4cb973c88d77517d5b10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/6c70eaab1fc8fa62ee1956584906a754ea053c9d",
-                "reference": "6c70eaab1fc8fa62ee1956584906a754ea053c9d",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/6c67375e8fcae24891fa4cb973c88d77517d5b10",
+                "reference": "6c67375e8fcae24891fa4cb973c88d77517d5b10",
                 "shasum": ""
             },
             "require": {
@@ -1584,7 +1584,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/5.2.0"
+                "source": "https://github.com/foxws/laravel-podman/tree/5.3.0"
             },
             "funding": [
                 {
@@ -1592,20 +1592,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-01T11:29:02+00:00"
+            "time": "2026-10-02T11:46:27+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "1eab9f3ed5ac20b98c7be3ee0210c98f53f85d90"
+                "reference": "5f959360940be0f3cffe577f1d982c034b1bb7fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/1eab9f3ed5ac20b98c7be3ee0210c98f53f85d90",
-                "reference": "1eab9f3ed5ac20b98c7be3ee0210c98f53f85d90",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/5f959360940be0f3cffe577f1d982c034b1bb7fb",
+                "reference": "5f959360940be0f3cffe577f1d982c034b1bb7fb",
                 "shasum": ""
             },
             "require": {
@@ -1666,7 +1666,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/2.5.2"
+                "source": "https://github.com/foxws/laravel-pwa/tree/2.5.3"
             },
             "funding": [
                 {
@@ -1674,20 +1674,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-16T19:03:02+00:00"
+            "time": "2026-10-02T11:39:40+00:00"
         },
         {
             "name": "foxws/laravel-relatable",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-relatable.git",
-                "reference": "c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d"
+                "reference": "1d191d776b05add18dc0f10b89686a51540c65b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d",
-                "reference": "c1f3588c2045bdb94ca028adfca9fa5e8cad7b5d",
+                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/1d191d776b05add18dc0f10b89686a51540c65b8",
+                "reference": "1d191d776b05add18dc0f10b89686a51540c65b8",
                 "shasum": ""
             },
             "require": {
@@ -1746,7 +1746,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-relatable/issues",
-                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.0"
+                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.1"
             },
             "funding": [
                 {
@@ -1754,20 +1754,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-28T07:59:16+00:00"
+            "time": "2026-10-02T11:39:10+00:00"
         },
         {
             "name": "foxws/laravel-scout-builder",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-builder.git",
-                "reference": "b9d1b5a4bcb991b174250fc43519c27437b92ede"
+                "reference": "a25fd09971bf00989b5f797463df9561c2b88aec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/b9d1b5a4bcb991b174250fc43519c27437b92ede",
-                "reference": "b9d1b5a4bcb991b174250fc43519c27437b92ede",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/a25fd09971bf00989b5f797463df9561c2b88aec",
+                "reference": "a25fd09971bf00989b5f797463df9561c2b88aec",
                 "shasum": ""
             },
             "require": {
@@ -1825,7 +1825,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-builder/issues",
-                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.0.2"
+                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.0.3"
             },
             "funding": [
                 {
@@ -1833,20 +1833,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-26T22:10:06+00:00"
+            "time": "2026-10-02T11:42:20+00:00"
         },
         {
             "name": "foxws/laravel-scout-relations",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-relations.git",
-                "reference": "0cc7d1cbf17b7e5cc43696741bb6aad584addc45"
+                "reference": "4cd59a4ad26308f04034cc89d883bd7683d01804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/0cc7d1cbf17b7e5cc43696741bb6aad584addc45",
-                "reference": "0cc7d1cbf17b7e5cc43696741bb6aad584addc45",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/4cd59a4ad26308f04034cc89d883bd7683d01804",
+                "reference": "4cd59a4ad26308f04034cc89d883bd7683d01804",
                 "shasum": ""
             },
             "require": {
@@ -1904,7 +1904,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-relations/issues",
-                "source": "https://github.com/foxws/laravel-scout-relations/tree/1.0.1"
+                "source": "https://github.com/foxws/laravel-scout-relations/tree/1.0.2"
             },
             "funding": [
                 {
@@ -1912,20 +1912,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-16T18:53:00+00:00"
+            "time": "2026-10-02T11:40:09+00:00"
         },
         {
             "name": "foxws/laravel-shaka",
-            "version": "2.3.2",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-shaka.git",
-                "reference": "31044ca750b864fff7388a1789bb8eef380c9ff1"
+                "reference": "a66d685db74b681d688ebc7616e5276f0b25e966"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/31044ca750b864fff7388a1789bb8eef380c9ff1",
-                "reference": "31044ca750b864fff7388a1789bb8eef380c9ff1",
+                "url": "https://api.github.com/repos/foxws/laravel-shaka/zipball/a66d685db74b681d688ebc7616e5276f0b25e966",
+                "reference": "a66d685db74b681d688ebc7616e5276f0b25e966",
                 "shasum": ""
             },
             "require": {
@@ -1995,7 +1995,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-shaka/issues",
-                "source": "https://github.com/foxws/laravel-shaka/tree/2.3.2"
+                "source": "https://github.com/foxws/laravel-shaka/tree/2.4.0"
             },
             "funding": [
                 {
@@ -2003,20 +2003,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-26T22:10:23+00:00"
+            "time": "2026-10-02T11:50:53+00:00"
         },
         {
             "name": "foxws/laravel-streamer",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-streamer.git",
-                "reference": "4e825571727df012e24b94e184d4f7fae3bb01a8"
+                "reference": "d27f6625bc7a7c9ed21ddc8a3cfc08ec12160328"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/4e825571727df012e24b94e184d4f7fae3bb01a8",
-                "reference": "4e825571727df012e24b94e184d4f7fae3bb01a8",
+                "url": "https://api.github.com/repos/foxws/laravel-streamer/zipball/d27f6625bc7a7c9ed21ddc8a3cfc08ec12160328",
+                "reference": "d27f6625bc7a7c9ed21ddc8a3cfc08ec12160328",
                 "shasum": ""
             },
             "require": {
@@ -2086,7 +2086,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-streamer/issues",
-                "source": "https://github.com/foxws/laravel-streamer/tree/2.3.1"
+                "source": "https://github.com/foxws/laravel-streamer/tree/2.4.0"
             },
             "funding": [
                 {
@@ -2094,7 +2094,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-26T22:10:34+00:00"
+            "time": "2026-10-02T11:52:32+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -4795,16 +4795,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.14.1",
+            "version": "3.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "34e9109535165bf1d7ff17a610492372ae73a896"
+                "reference": "94cfc34887f07ab5c0efa07914c8f527544e3224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/34e9109535165bf1d7ff17a610492372ae73a896",
-                "reference": "34e9109535165bf1d7ff17a610492372ae73a896",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/94cfc34887f07ab5c0efa07914c8f527544e3224",
+                "reference": "94cfc34887f07ab5c0efa07914c8f527544e3224",
                 "shasum": ""
             },
             "require": {
@@ -4824,7 +4824,7 @@
                 "doctrine/orm": "^2.15.2 || ^3.0",
                 "friendsofphp/php-cs-fixer": "^v3.87.1",
                 "kylekatarnls/multi-tester": "^2.5.3",
-                "phpmd/phpmd": "^2.15.0",
+                "phpmd/phpmd": "^3.0@dev",
                 "phpstan/extension-installer": "^1.4.3",
                 "phpstan/phpstan": "^2.1.22",
                 "phpunit/phpunit": "^10.5.53",
@@ -4896,7 +4896,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-27T12:07:26+00:00"
+            "time": "2026-10-02T07:26:52+00:00"
         },
         {
             "name": "nette/schema",
@@ -16347,20 +16347,20 @@
         },
         {
             "name": "pestphp/pest",
-            "version": "v5.2.1",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest.git",
-                "reference": "94f4f1ff4835dae2519f8b13f349d1042318e076"
+                "reference": "14a3efd918e11bb8f2b432d6ac8dd016431979fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest/zipball/94f4f1ff4835dae2519f8b13f349d1042318e076",
-                "reference": "94f4f1ff4835dae2519f8b13f349d1042318e076",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/14a3efd918e11bb8f2b432d6ac8dd016431979fd",
+                "reference": "14a3efd918e11bb8f2b432d6ac8dd016431979fd",
                 "shasum": ""
             },
             "require": {
-                "brianium/paratest": "^7.24.1",
+                "brianium/paratest": "^7.25.0",
                 "nunomaduro/collision": "^8.9.5",
                 "nunomaduro/termwind": "^2.4.0",
                 "pestphp/pest-plugin": "^5.0.0",
@@ -16368,19 +16368,19 @@
                 "pestphp/pest-plugin-mutate": "^5.0.2",
                 "pestphp/pest-plugin-profanity": "^5.0.0",
                 "php": "^8.4",
-                "phpunit/phpunit": "^13.3.4",
+                "phpunit/phpunit": "^13.3.6",
                 "symfony/process": "^8.1.7"
             },
             "conflict": {
                 "filp/whoops": "<2.18.3",
                 "laravel/boost": "<2.6.0",
-                "phpunit/phpunit": ">13.3.4",
+                "phpunit/phpunit": ">13.3.6",
                 "sebastian/exporter": "<7.0.0",
                 "webmozart/assert": "<1.11.0"
             },
             "require-dev": {
                 "pestphp/pest-dev-tools": "^5.0.0",
-                "pestphp/pest-plugin-browser": "^5.0.1",
+                "pestphp/pest-plugin-browser": "^5.1.0",
                 "pestphp/pest-plugin-phpstan": "^5.2.1",
                 "pestphp/pest-plugin-rector": "^5.0.4",
                 "pestphp/pest-plugin-type-coverage": "^5.0.2",
@@ -16451,7 +16451,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest/issues",
-                "source": "https://github.com/pestphp/pest/tree/v5.2.1"
+                "source": "https://github.com/pestphp/pest/tree/v5.3.0"
             },
             "funding": [
                 {
@@ -16463,7 +16463,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-17T11:41:10+00:00"
+            "time": "2026-10-01T16:58:48+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
@@ -16610,16 +16610,16 @@
         },
         {
             "name": "pestphp/pest-plugin-browser",
-            "version": "v5.0.1",
+            "version": "v5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest-plugin-browser.git",
-                "reference": "8f1c2103dea37f68a674e59869e42a80fbf8a679"
+                "reference": "3425026b6563ca936cbdfabb9ac979355fab74c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest-plugin-browser/zipball/8f1c2103dea37f68a674e59869e42a80fbf8a679",
-                "reference": "8f1c2103dea37f68a674e59869e42a80fbf8a679",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-browser/zipball/3425026b6563ca936cbdfabb9ac979355fab74c1",
+                "reference": "3425026b6563ca936cbdfabb9ac979355fab74c1",
                 "shasum": ""
             },
             "require": {
@@ -16627,18 +16627,18 @@
                 "amphp/http-server": "^3.4.6",
                 "amphp/websocket-client": "^2.0.2",
                 "ext-sockets": "*",
-                "pestphp/pest": "^5.0.4",
+                "pestphp/pest": "^5.2.1",
                 "pestphp/pest-plugin": "^5.0.0",
                 "php": "^8.4",
-                "symfony/process": "^8.1.0"
+                "symfony/process": "^8.1.7"
             },
             "conflict": {
                 "pestphp/pest": "<5.0.0"
             },
             "require-dev": {
-                "livewire/livewire": "^4.3.5",
+                "livewire/livewire": "^4.4.7",
                 "nunomaduro/collision": "^8.9.5",
-                "orchestra/testbench": "^11.1",
+                "orchestra/testbench": "^11.3",
                 "pestphp/pest-dev-tools": "^5.0.0",
                 "pestphp/pest-plugin-laravel": "^5.0.1",
                 "pestphp/pest-plugin-type-coverage": "^5.0.2"
@@ -16674,7 +16674,7 @@
                 "unit"
             ],
             "support": {
-                "source": "https://github.com/pestphp/pest-plugin-browser/tree/v5.0.1"
+                "source": "https://github.com/pestphp/pest-plugin-browser/tree/v5.1.2"
             },
             "funding": [
                 {
@@ -16690,7 +16690,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-08-10T14:48:55+00:00"
+            "time": "2026-10-02T10:52:14+00:00"
         },
         {
             "name": "pestphp/pest-plugin-laravel",
@@ -17475,16 +17475,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.3.4",
+            "version": "13.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d19d90cf860efb7e4d96cee8243e06a248578085"
+                "reference": "b7d0ee4ea89121cb963302b8708b1c09d9ebc7d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d19d90cf860efb7e4d96cee8243e06a248578085",
-                "reference": "d19d90cf860efb7e4d96cee8243e06a248578085",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b7d0ee4ea89121cb963302b8708b1c09d9ebc7d6",
+                "reference": "b7d0ee4ea89121cb963302b8708b1c09d9ebc7d6",
                 "shasum": ""
             },
             "require": {
@@ -17498,7 +17498,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.4.1",
-                "phpunit/php-code-coverage": "^14.3.3",
+                "phpunit/php-code-coverage": "^14.3.5",
                 "phpunit/php-file-iterator": "^7.0.2",
                 "phpunit/php-invoker": "^7.0.0",
                 "phpunit/php-text-template": "^6.0.0",
@@ -17555,7 +17555,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.3.4"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.3.6"
             },
             "funding": [
                 {
@@ -17563,7 +17563,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-09-15T07:37:05+00:00"
+            "time": "2026-09-29T12:12:05+00:00"
         },
         {
             "name": "revolt/event-loop",
@@ -17949,23 +17949,23 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "9.3.2",
+            "version": "9.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "6c9e487c9eb706a8d258102a1c0b0a3e53e86c2e"
+                "reference": "d4dd10267a11055066a2a78ae04583d8ddd4f595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6c9e487c9eb706a8d258102a1c0b0a3e53e86c2e",
-                "reference": "6c9e487c9eb706a8d258102a1c0b0a3e53e86c2e",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/d4dd10267a11055066a2a78ae04583d8ddd4f595",
+                "reference": "d4dd10267a11055066a2a78ae04583d8ddd4f595",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.1.11"
+                "phpunit/phpunit": "^13.3.6"
             },
             "suggest": {
                 "ext-posix": "*"
@@ -18001,7 +18001,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/environment/issues",
                 "security": "https://github.com/sebastianbergmann/environment/security/policy",
-                "source": "https://github.com/sebastianbergmann/environment/tree/9.3.2"
+                "source": "https://github.com/sebastianbergmann/environment/tree/9.3.3"
             },
             "funding": [
                 {
@@ -18021,7 +18021,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-25T13:41:38+00:00"
+            "time": "2026-10-01T12:37:56+00:00"
         },
         {
             "name": "sebastian/exporter",

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Domain\Profiles\Filters;
 
 use Domain\Profiles\Enums\ProfileScope;
-use Domain\Profiles\Models\Profile;
 use Foxws\ScoutBuilder\Filters\Filter;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 class ProfileScopeFilter implements Filter
 {
     /**
-     * @param  Builder<Profile>  $query
+     * @param  Builder<Model>  $query
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Domain\Users\Filters;
 
 use Domain\Users\Enums\UserScope;
-use Domain\Users\Models\User;
 use Foxws\ScoutBuilder\Filters\Filter;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 class UserScopeFilter implements Filter
 {
     /**
-     * @param  Builder<User>  $query
+     * @param  Builder<Model>  $query
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {

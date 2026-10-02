@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Domain\Tags\Filters;
 
 use Domain\Tags\Enums\TagScope;
-use Domain\Tags\Models\Tag;
 use Foxws\ScoutBuilder\Filters\Filter;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 class TagScopeFilter implements Filter
 {
     /**
-     * @param  Builder<Tag>  $query
+     * @param  Builder<Model>  $query
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
