@@ -78,7 +78,7 @@ class VideoController implements HasMiddleware
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
-        $scout->getCollection()->each(fn (Video $video) => $video->append(['filesize', 'codec', 'resolution', 'bitrate']));
+        collect($scout->items())->each(fn (Video $video) => $video->append(['filesize', 'codec', 'resolution', 'bitrate']));
 
         return Inertia::render('Videos/VideoLibrary', [
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),

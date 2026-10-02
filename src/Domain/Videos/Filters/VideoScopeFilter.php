@@ -8,15 +8,15 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Profiles\Models\Profile;
 use Domain\Videos\Enums\VideoScope;
-use Domain\Videos\Models\Video;
 use Foxws\ScoutBuilder\Filters\Filter;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Builder;
 
 class VideoScopeFilter implements Filter
 {
     /**
-     * @param  Builder<Video>  $query
+     * @param  Builder<Model>  $query
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
@@ -34,7 +34,7 @@ class VideoScopeFilter implements Filter
     }
 
     /**
-     * @param  Builder<Video>  $query
+     * @param  Builder<Model>  $query
      */
     private function applyShorts(Builder $query): void
     {
@@ -42,7 +42,7 @@ class VideoScopeFilter implements Filter
     }
 
     /**
-     * @param  Builder<Video>  $query
+     * @param  Builder<Model>  $query
      */
     private function applyUntagged(Builder $query): void
     {
@@ -50,7 +50,7 @@ class VideoScopeFilter implements Filter
     }
 
     /**
-     * @param  Builder<Video>  $query
+     * @param  Builder<Model>  $query
      */
     private function applyCaptioned(Builder $query): void
     {
@@ -58,7 +58,7 @@ class VideoScopeFilter implements Filter
     }
 
     /**
-     * @param  Builder<Video>  $query
+     * @param  Builder<Model>  $query
      */
     private function applyUnseen(Builder $query): void
     {
