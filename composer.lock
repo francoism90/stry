@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fe2dd151a9a49024e6a82456f957e0d",
+    "content-hash": "02f3d50946eda18e20d97f7a11e195ed",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1424,16 +1424,16 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "dev-main",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "git@github.com:foxws/laravel-media.git",
-                "reference": "6daa99d61fb79f4929a9f44acd78845f70e73e4c"
+                "reference": "36a2c42c4f25dc0b54b3858eef039148e586ee98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/6daa99d61fb79f4929a9f44acd78845f70e73e4c",
-                "reference": "6daa99d61fb79f4929a9f44acd78845f70e73e4c",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/36a2c42c4f25dc0b54b3858eef039148e586ee98",
+                "reference": "36a2c42c4f25dc0b54b3858eef039148e586ee98",
                 "shasum": ""
             },
             "require": {
@@ -1461,7 +1461,6 @@
             "suggest": {
                 "league/flysystem-aws-s3-v3": "Required for concurrent and multipart uploads to S3 disks (^3.35)."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1554,7 +1553,7 @@
                 "video"
             ],
             "support": {
-                "source": "https://github.com/foxws/laravel-media/tree/main",
+                "source": "https://github.com/foxws/laravel-media/tree/develop",
                 "issues": "https://github.com/foxws/laravel-media/issues"
             },
             "funding": [
@@ -1563,7 +1562,7 @@
                     "url": "https://github.com/foxws"
                 }
             ],
-            "time": "2026-10-04T16:13:01+00:00"
+            "time": "2026-10-04T17:06:59+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
