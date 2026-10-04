@@ -1,7 +1,7 @@
 <?php
 
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
-use Spatie\LaravelSettings\SettingsCache;
+use Spatie\LaravelSettings\Support\SettingsCacheFactory;
 
 return new class extends SettingsMigration
 {
@@ -12,7 +12,9 @@ return new class extends SettingsMigration
         }
 
         // Cached settings hold the type as a PlaylistType, which no longer fits the PlaybackMode property.
-        app(SettingsCache::class)->clear();
+        foreach (app(SettingsCacheFactory::class)->all() as $settingsCache) {
+            $settingsCache->clear();
+        }
     }
 
     protected function moveDirectPlayIntoType(): void
