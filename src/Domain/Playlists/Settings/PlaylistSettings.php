@@ -14,6 +14,8 @@ class PlaylistSettings extends Settings
 {
     public PlaylistType $type = PlaylistType::Packager;
 
+    public bool $direct_play = false;
+
     public string $disk_name = 'segments';
 
     public Language $language = Language::English;

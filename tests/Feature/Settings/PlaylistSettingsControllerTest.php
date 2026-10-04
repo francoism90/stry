@@ -39,6 +39,7 @@ it('allows a super-admin to update playlist settings', function () {
 
     $response = $this->actingAs($user)->patch(action([PlaylistSettingsController::class, 'update']), [
         'type' => 'streamer',
+        'direct_play' => true,
         'encryption' => 'clearkey',
         'protection_scheme' => 'cenc',
     ]);
@@ -49,6 +50,7 @@ it('allows a super-admin to update playlist settings', function () {
     $settings = app(PlaylistSettings::class);
 
     expect($settings->type)->toBe(PlaylistType::Streamer)
+        ->and($settings->direct_play)->toBeTrue()
         ->and($settings->encryption)->toBe(EncryptionMethod::ClearKey)
         ->and($settings->protection_scheme)->toBe(ProtectionScheme::Cenc)
         ->and($settings->disk_name)->toBe('segments');

@@ -26,6 +26,7 @@ class PlaylistSettingsRequest extends FormRequest
     {
         return [
             'type' => ['sometimes', new Enum(PlaylistType::class)],
+            'direct_play' => ['sometimes', 'boolean'],
             'disk_name' => ['sometimes', 'string', 'max:255'],
             'language' => ['sometimes', new Enum(Language::class)],
             'text_language' => ['sometimes', new Enum(Language::class)],
