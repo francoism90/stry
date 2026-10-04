@@ -19,6 +19,8 @@ return [
 
     'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'cache'),
 
+    'thumbnails_disk' => (string) env('VIDEO_THUMBNAILS_DISK', 'conversions'),
+
     /*
     |--------------------------------------------------------------------------
     | Playlist Configuration

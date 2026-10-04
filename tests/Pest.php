@@ -27,6 +27,9 @@ uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)
         Queue::fake();
         Storage::fake();
 
+        // Keep laravel-media's temporary files inside the test storage
+        config(['media.temporary_files.root' => storage_path('framework/testing/media')]);
+
         // Setup database
         $this->seed();
     })

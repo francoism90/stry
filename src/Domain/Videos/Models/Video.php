@@ -20,6 +20,7 @@ use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
+use Foxws\Media\FFMpeg\ThumbnailsResult;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -127,7 +128,13 @@ class Video extends Model implements HasMedia
             'updated_at' => AsDateTime::class,
             'deleted_at' => AsDateTime::class,
             'state' => VideoState::class,
+            'thumbnails' => 'array',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::forceDeleted(fn (self $video) => $video->deleteThumbnails());
     }
 
     protected static function newFactory(): VideoFactory
@@ -273,6 +280,27 @@ class Video extends Model implements HasMedia
     protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
     {
         return $query->with(['media', 'tags']);
+    }
+
+    public static function getThumbnailsDisk(): string
+    {
+        return Config::string('videos.thumbnails_disk', 'conversions');
+    }
+
+    public function getThumbnails(): ?ThumbnailsResult
+    {
+        return is_array($this->thumbnails) && $this->thumbnails !== []
+            ? ThumbnailsResult::fromArray($this->thumbnails)
+            : null;
+    }
+
+    public function deleteThumbnails(): void
+    {
+        $thumbnails = $this->getThumbnails();
+
+        if ($thumbnails !== null) {
+            $thumbnails->disk->filesystem()->delete($thumbnails->paths());
+        }
     }
 
     public static function getImportDisk(): string
@@ -421,7 +449,7 @@ class Video extends Model implements HasMedia
 
     public function chaptersVttUrl(): ?string
     {
-        return $this->temporaryMediaUrl($this->getChaptersVtt());
+        return $this->chapters->isNotEmpty() ? route('videos.chapters-vtt', $this) : null;
     }
 
     protected function temporaryMediaUrl(?BaseMedia $media, string $conversion = ''): ?string
