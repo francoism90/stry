@@ -18,7 +18,7 @@ use Modules\Web\Videos\Controllers\VideoController;
 
 beforeEach(function () {
     Storage::fake('media');
-    Storage::fake('segments');
+    Storage::fake('cache');
 
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 13)]);
 });
