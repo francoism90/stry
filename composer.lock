@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02f3d50946eda18e20d97f7a11e195ed",
+    "content-hash": "5fe2dd151a9a49024e6a82456f957e0d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1424,7 +1424,7 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "dev-develop",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "git@github.com:foxws/laravel-media.git",
@@ -1461,6 +1461,7 @@
             "suggest": {
                 "league/flysystem-aws-s3-v3": "Required for concurrent and multipart uploads to S3 disks (^3.35)."
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1553,7 +1554,7 @@
                 "video"
             ],
             "support": {
-                "source": "https://github.com/foxws/laravel-media/tree/develop",
+                "source": "https://github.com/foxws/laravel-media/tree/main",
                 "issues": "https://github.com/foxws/laravel-media/issues"
             },
             "funding": [
