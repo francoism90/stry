@@ -18,7 +18,6 @@ use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithDirectPlay;
-use Domain\Videos\Concerns\InteractsWithThumbnails;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
@@ -71,7 +70,6 @@ class Video extends Model implements HasMedia
 
     use InteractsWithModelCache;
     use InteractsWithPlaylists;
-    use InteractsWithThumbnails;
     use InteractsWithTranscodes;
     use InteractsWithUser;
     use Searchable;
@@ -131,7 +129,6 @@ class Video extends Model implements HasMedia
             'updated_at' => AsDateTime::class,
             'deleted_at' => AsDateTime::class,
             'state' => VideoState::class,
-            'thumbnails' => 'array',
         ];
     }
 

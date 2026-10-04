@@ -11,7 +11,7 @@ use Foxws\Media\Exceptions\InvalidMediaException;
 use Foxws\Media\MediaFactory;
 
 /**
- * Samples the best clip into thumbnail sprite sheets, which direct play offers as image tracks
+ * Samples the best clip into thumbnail sprite sheets, kept on the clip, which direct play offers as image tracks
  * for seek previews. Only keyframes are decoded, so it's fast even for long videos.
  */
 class ExtractVideoThumbnails
@@ -23,11 +23,11 @@ class ExtractVideoThumbnails
 
     public function handle(Video $video, Closure $next): mixed
     {
-        if (! $this->settings->extract_storyboard || $video->hasThumbnails() || ! $video->hasMedia('clips')) {
+        $clip = $video->getClips()->first();
+
+        if (! $this->settings->extract_storyboard || $clip === null || $clip->hasThumbnails()) {
             return $next($video);
         }
-
-        $clip = $video->getClips()->firstOrFail();
 
         try {
             $thumbnails = $this->media->fromDisk($clip->disk)
@@ -35,13 +35,13 @@ class ExtractVideoThumbnails
                 ->thumbnails()
                 ->count(300, minimumInterval: 5)
                 ->keyframesOnly()
-                ->toDisk(Video::getThumbnailsDisk())
-                ->save("{$video->getKey()}/thumbnails");
+                ->toDisk($clip::getThumbnailsDisk())
+                ->save("{$clip->uuid}/thumbnails");
         } catch (InvalidMediaException) {
             return $next($video);
         }
 
-        $video->saveThumbnails($thumbnails);
+        $clip->saveThumbnails($thumbnails);
 
         return $next($video);
     }

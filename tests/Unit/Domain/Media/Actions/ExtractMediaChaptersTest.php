@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\Media\Actions\ExtractMediaChapters;
-use Domain\Media\Models\Media as MediaModel;
 use Domain\Videos\Models\Video;
 use Foxws\Media\Facades\Media;
 use Foxws\Media\Testing\FakeProbe;
@@ -21,7 +20,6 @@ it('reads the titled chapters of a clip from its probe', function () {
         ['start_time' => '90.000000', 'end_time' => '120.000000', 'tags' => ['title' => 'Credits']],
     ]]]);
 
-    /** @var MediaModel $clip */
     $clip = Video::factory()->create()->media()->create([
         'collection_name' => 'clips',
         'name' => 'clip',

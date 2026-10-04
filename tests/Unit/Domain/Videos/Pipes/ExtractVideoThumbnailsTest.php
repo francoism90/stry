@@ -19,9 +19,9 @@ beforeEach(function () {
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 120)]);
 });
 
-function createThumbnailsClip(Video $video): void
+function createThumbnailsClip(Video $video): Domain\Media\Models\Media
 {
-    $video->media()->create([
+    return $video->media()->create([
         'collection_name' => 'clips',
         'name' => 'clip',
         'file_name' => 'clip.mp4',
@@ -35,32 +35,32 @@ function createThumbnailsClip(Video $video): void
     ]);
 }
 
-it('samples the best clip from its keyframes into sprite sheets on the thumbnails disk', function () {
+it('samples the best clip from its keyframes into sprite sheets kept on the clip', function () {
     $video = Video::factory()->create();
-    createThumbnailsClip($video);
+    $clip = createThumbnailsClip($video);
 
     app(ExtractVideoThumbnails::class)->handle($video, fn (Video $video) => $video);
 
-    $thumbnails = $video->fresh()->getThumbnails();
+    $thumbnails = $clip->fresh()->getThumbnails();
 
     expect($thumbnails)->not->toBeNull()
         ->and($thumbnails->disk->name())->toBe('conversions')
-        ->and($thumbnails->sprites)->toBe(["{$video->getKey()}/thumbnails_001.jpg"])
+        ->and($thumbnails->sprites)->toBe(["{$clip->uuid}/thumbnails_001.jpg"])
         ->and($thumbnails->interval)->toBe(5.0);
     Storage::disk('conversions')->assertExists($thumbnails->paths());
     Media::assertRan(Executable::FFMpeg, fn (array $arguments) => in_array('-skip_frame', $arguments, true));
 });
 
-it('skips videos that already have thumbnails, have no clips, or when extraction is off', function (bool $hasThumbnails, bool $hasClip, bool $enabled) {
+it('skips clips that already have thumbnails, videos without clips, or when extraction is off', function (bool $hasThumbnails, bool $hasClip, bool $enabled) {
     ProcessingSettings::fake(['extract_storyboard' => $enabled]);
     $video = Video::factory()->create();
 
-    if ($hasThumbnails) {
-        $video->forceFill(['thumbnails' => ['disk' => 'conversions', 'sprites' => ['a.jpg']]])->saveQuietly();
-    }
-
     if ($hasClip) {
-        createThumbnailsClip($video);
+        $clip = createThumbnailsClip($video);
+
+        if ($hasThumbnails) {
+            $clip->setCustomProperty('thumbnails', ['disk' => 'conversions', 'sprites' => ['a.jpg']])->save();
+        }
     }
 
     app(ExtractVideoThumbnails::class)->handle($video, fn (Video $video) => $video);
@@ -72,13 +72,13 @@ it('skips videos that already have thumbnails, have no clips, or when extraction
     'extraction off' => [false, true, false],
 ]);
 
-it('deletes the thumbnail files when the video is force deleted', function () {
+it('deletes the thumbnail files with the clip', function () {
     $video = Video::factory()->create();
-    createThumbnailsClip($video);
+    $clip = createThumbnailsClip($video);
     app(ExtractVideoThumbnails::class)->handle($video, fn (Video $video) => $video);
-    $paths = $video->fresh()->getThumbnails()->paths();
+    $paths = $clip->fresh()->getThumbnails()->paths();
 
-    $video->fresh()->forceDelete();
+    $clip->fresh()->delete();
 
     Storage::disk('conversions')->assertMissing($paths);
 });

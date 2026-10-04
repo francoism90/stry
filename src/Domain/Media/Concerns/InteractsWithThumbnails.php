@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Domain\Videos\Concerns;
+namespace Domain\Media\Concerns;
 
 use Foxws\Media\FFMpeg\ThumbnailsResult;
 use Illuminate\Support\Facades\Config;
 
 /**
- * Thumbnail sprite sheets sampled from the video, kept as a ThumbnailsResult in the thumbnails
- * column. Direct play offers them as image tracks for seek previews.
+ * Thumbnail sprite sheets sampled from this clip, kept in its "thumbnails" custom property.
+ * They follow the clip's own timeline, so every clip has its own, and direct play offers
+ * them as image tracks for seek previews.
  */
 trait InteractsWithThumbnails
 {
     public static function bootInteractsWithThumbnails(): void
     {
-        static::forceDeleted(fn (self $model) => $model->deleteThumbnails());
+        static::deleted(fn (self $model) => $model->deleteThumbnails());
     }
 
     public static function getThumbnailsDisk(): string
@@ -30,14 +31,15 @@ trait InteractsWithThumbnails
 
     public function getThumbnails(): ?ThumbnailsResult
     {
-        return is_array($this->thumbnails) && $this->thumbnails !== []
-            ? ThumbnailsResult::fromArray($this->thumbnails)
-            : null;
+        $thumbnails = $this->getCustomProperty('thumbnails');
+
+        /** @var array<string, mixed>|null $thumbnails */
+        return is_array($thumbnails) && $thumbnails !== [] ? ThumbnailsResult::fromArray($thumbnails) : null;
     }
 
     public function saveThumbnails(ThumbnailsResult $thumbnails): void
     {
-        $this->forceFill(['thumbnails' => $thumbnails->toArray()])->saveQuietly();
+        $this->setCustomProperty('thumbnails', $thumbnails->toArray())->saveQuietly();
     }
 
     public function deleteThumbnails(): void

@@ -42,7 +42,7 @@ class CreateVideoDirectStream
             disk: $caption->disk,
         ));
 
-        return $stream->withThumbnails($video->getThumbnails())->withMarkers(array_values($video->chapters
+        return $stream->withThumbnails($clip->getThumbnails())->withMarkers(array_values($video->chapters
             ->filter(fn (Chapter $chapter) => (float) $chapter->start_time >= 0 && (float) $chapter->end_time >= (float) $chapter->start_time)
             ->map(fn (Chapter $chapter) => new Marker(
                 start: (float) $chapter->start_time,
