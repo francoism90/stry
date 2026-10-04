@@ -38,3 +38,8 @@ Schedule::command(PruneCommand::class, [
     ->withoutOverlapping()
     ->dailyAt('02:30')
     ->runInBackground();
+
+Schedule::command('media:prune', ['--older-than' => 10080])
+    ->withoutOverlapping()
+    ->dailyAt('03:30')
+    ->runInBackground();
