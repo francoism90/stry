@@ -67,6 +67,12 @@ return [
     | for the same segment wait while it's packaged. Schedule "media:prune" to
     | delete old segments; they are packaged again when requested.
     |
+    | After a segment is requested, the next look_ahead segments are packaged
+    | ahead of their requests, and a playlist or manifest request packages the
+    | first ones: "queue" dispatches a PackageSegments job on the look-ahead
+    | connection and queue (Horizon's "media" supervisor), "defer" packages
+    | them after the response, and null turns it off.
+    |
     */
 
     'delivery' => [
@@ -77,6 +83,10 @@ return [
         'lock_timeout' => (int) env('MEDIA_DELIVERY_LOCK_TIMEOUT', 120),
         'cache_store' => env('MEDIA_DELIVERY_CACHE_STORE', 'redis'),
         'index_lifetime' => (int) env('MEDIA_DELIVERY_INDEX_LIFETIME', 604800),
+        'look_ahead' => (int) env('MEDIA_DELIVERY_LOOK_AHEAD', 2),
+        'look_ahead_via' => env('MEDIA_DELIVERY_LOOK_AHEAD_VIA', 'queue'),
+        'look_ahead_connection' => env('MEDIA_DELIVERY_LOOK_AHEAD_CONNECTION'),
+        'look_ahead_queue' => env('MEDIA_DELIVERY_LOOK_AHEAD_QUEUE', 'media'),
     ],
 
     /*

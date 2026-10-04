@@ -259,6 +259,23 @@ return [
             'timeout' => 14400,
             'nice' => 0,
         ],
+
+        'supervisor-5' => [
+            'connection' => 'redis',
+            'queue' => ['media'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'minProcesses' => (int) env('QUEUE_MEDIA_MIN_PROCESSES', 1),
+            'maxProcesses' => (int) env('QUEUE_MEDIA_MAX_PROCESSES', 6),
+            'balanceMaxShift' => 2,
+            'balanceCooldown' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 256,
+            'tries' => 1,
+            'timeout' => 300,
+            'nice' => 0,
+        ],
     ],
 
     'environments' => [
@@ -267,6 +284,7 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
+            'supervisor-5' => [],
         ],
 
         'staging' => [
@@ -274,6 +292,7 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
+            'supervisor-5' => [],
         ],
 
         'local' => [
@@ -281,6 +300,7 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
+            'supervisor-5' => [],
         ],
     ],
 ];

@@ -1428,16 +1428,17 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:foxws/laravel-media.git",
-                "reference": "36a2c42c4f25dc0b54b3858eef039148e586ee98"
+                "reference": "55a572caf591be10271506010df0d6fd148cc90e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/36a2c42c4f25dc0b54b3858eef039148e586ee98",
-                "reference": "36a2c42c4f25dc0b54b3858eef039148e586ee98",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/55a572caf591be10271506010df0d6fd148cc90e",
+                "reference": "55a572caf591be10271506010df0d6fd148cc90e",
                 "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
+                "illuminate/bus": "^13.0",
                 "illuminate/console": "^13.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/filesystem": "^13.0",
@@ -1563,7 +1564,7 @@
                     "url": "https://github.com/foxws"
                 }
             ],
-            "time": "2026-10-04T17:06:59+00:00"
+            "time": "2026-10-04T17:22:46+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
