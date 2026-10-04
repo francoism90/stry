@@ -81,7 +81,7 @@ return [
         'cache_path' => env('MEDIA_DELIVERY_CACHE_PATH', 'media-segments'),
         'url_lifetime' => (int) env('MEDIA_DELIVERY_URL_LIFETIME', 14400),
         'lock_timeout' => (int) env('MEDIA_DELIVERY_LOCK_TIMEOUT', 120),
-        'cache_store' => env('MEDIA_DELIVERY_CACHE_STORE', 'redis'),
+        'cache_store' => env('MEDIA_DELIVERY_CACHE_STORE'),
         'index_lifetime' => (int) env('MEDIA_DELIVERY_INDEX_LIFETIME', 604800),
         'look_ahead' => (int) env('MEDIA_DELIVERY_LOOK_AHEAD', 3),
         'look_ahead_via' => env('MEDIA_DELIVERY_LOOK_AHEAD_VIA', 'queue'),
