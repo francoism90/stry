@@ -57,7 +57,7 @@ log "INFO" "Loading runtime environment configuration from /app/.env..."
 
 # Ensure APP_KEY is provided in runtime configuration
 if ! grep -q '^APP_KEY=.' /app/.env && [ -z "${APP_KEY:-}" ]; then
-    GENERATED_KEY="$(${FRANKEN_CLI} key:generate --show || true)"
+    GENERATED_KEY="$(${PHP_CLI} key:generate --show || true)"
 
     if [ -n "${GENERATED_KEY}" ]; then
         log "ERROR" "APP_KEY is missing from runtime configuration. Paste this line into app.env: APP_KEY=${GENERATED_KEY}"
@@ -73,14 +73,14 @@ fi
 # sharing this same image and entrypoint.
 if [[ "${APP_COMMAND}" == *octane:frankenphp* ]]; then
     log "INFO" "Creating PWA manifest..."
-    ${FRANKEN_CLI} pwa:generate
+    ${PHP_CLI} pwa:generate
 fi
 
 # Ensure all caches are warmed up. Short-lived containers such as the
 # scheduler set APP_OPTIMIZE=false, since they exit before it pays off.
 if [ "${APP_OPTIMIZE:-true}" = "true" ]; then
     log "INFO" "Optimizing application..."
-    ${FRANKEN_CLI} optimize
+    ${PHP_CLI} optimize
 fi
 
 # Run the provided command

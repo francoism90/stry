@@ -54,7 +54,7 @@ log "INFO" "Loading runtime environment configuration from /app/.env..."
 
 # Ensure APP_KEY is provided in runtime configuration
 if ! grep -q '^APP_KEY=.' /app/.env && [ -z "${APP_KEY:-}" ]; then
-    GENERATED_KEY="$(${FRANKEN_CLI} key:generate --show || true)"
+    GENERATED_KEY="$(${PHP_CLI} key:generate --show || true)"
 
     if [ -n "${GENERATED_KEY}" ]; then
         log "ERROR" "APP_KEY is missing from runtime configuration. Paste this line into app.env: APP_KEY=${GENERATED_KEY}"
@@ -77,7 +77,7 @@ declare -A STALE_CACHES=(
 for file in "${!STALE_CACHES[@]}"; do
     if [ -f "/app/bootstrap/cache/${file}" ]; then
         log "INFO" "Clearing stale ${file}..."
-        ${FRANKEN_CLI} "${STALE_CACHES[$file]}"
+        ${PHP_CLI} "${STALE_CACHES[$file]}"
     fi
 done
 
