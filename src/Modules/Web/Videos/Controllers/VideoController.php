@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Controllers;
 
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoLibraryScope;
 use Domain\Videos\Enums\VideoSorter;
@@ -88,13 +89,13 @@ class VideoController implements HasMiddleware
         ]);
     }
 
-    public function show(Video $video): Response
+    public function show(Video $video, PlaylistSettings $settings): Response
     {
         Gate::authorize('view', $video);
 
-        // Dispatch the job to create a playlist if necessary
+        // Dispatch the job to create a playlist if necessary; direct play streams the clip instead
         PlaylistVideo::dispatchIf(
-            ! $video->hasPlaylist(),
+            ! $settings->direct_play && ! $video->hasPlaylist(),
             $video,
         );
 

@@ -21,6 +21,11 @@ Route::name('api.')->prefix('v1')->group(function () {
         ->where('path', '.*')
         ->name('play.manifest');
 
+    // VOD - Direct play
+    Route::withoutMiddleware('throttle:api')
+        ->middleware(['throttle:vod', 'cache.bypass'])
+        ->group(fn () => Route::mediaStream('direct/{video}', 'videos'));
+
     // VOD - Analytics
     Route::post('/record/{video}', VideoSessionController::class)
         ->withoutMiddleware('throttle:api')

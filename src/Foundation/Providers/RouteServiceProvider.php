@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Foundation\Providers;
 
+use Domain\Videos\Actions\CreateVideoDirectStream;
+use Domain\Videos\Models\Video;
+use Foxws\Media\Delivery\DirectStream;
+use Foxws\Media\Facades\MediaStream;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +22,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimits();
         $this->configureResourceParameters();
         $this->configureRoutePatterns();
+        $this->configureMediaStreams();
     }
 
     protected function configureRateLimits(): void
@@ -45,5 +51,14 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRoutePatterns(): void
     {
         Route::pattern('query', '.*');
+    }
+
+    protected function configureMediaStreams(): void
+    {
+        MediaStream::define('videos', function (Video $video, CreateVideoDirectStream $action): DirectStream {
+            Gate::authorize('view', $video);
+
+            return $action->handle($video);
+        })->signed();
     }
 }
