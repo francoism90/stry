@@ -17,6 +17,7 @@ use Domain\Tags\Collections\TagCollection;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
+use Domain\Videos\Concerns\InteractsWithDirectPlay;
 use Domain\Videos\Concerns\InteractsWithThumbnails;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
@@ -62,6 +63,7 @@ class Video extends Model implements HasMedia
     use HasTranslations;
     use HasUlidRouteKey;
     use InteractsWithChapters;
+    use InteractsWithDirectPlay;
     use InteractsWithGroups;
 
     /** @use InteractsWithMedia<Media> */

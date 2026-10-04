@@ -24,7 +24,7 @@ readonly class VideoPlaylistProperty implements ProvidesInertiaProperty
 
     protected function getPlaylist(): PlaylistResource|VideoDirectPlayResource|null
     {
-        if ($this->video && app(PlaylistSettings::class)->isDirectPlay() && $this->video->hasMedia('clips')) {
+        if ($this->video && app(PlaylistSettings::class)->isDirectPlay() && $this->video->canDirectPlay()) {
             return VideoDirectPlayResource::make($this->video);
         }
 
