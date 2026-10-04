@@ -51,6 +51,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Ladder
+    |--------------------------------------------------------------------------
+    |
+    | Where $opener->ladder() decodes, scales and encodes: "none" (the CPU),
+    | "vaapi" (Intel and AMD on Linux, through the render device), "nvenc"
+    | (NVIDIA) or "qsv" (Intel Quick Sync). A Ladder can override it.
+    |
+    */
+
+    'ladder' => [
+        'hardware' => env('MEDIA_LADDER_HARDWARE', 'none'),
+        'vaapi_device' => env('MEDIA_LADDER_VAAPI_DEVICE', '/dev/dri/renderD128'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Delivery
     |--------------------------------------------------------------------------
     |
