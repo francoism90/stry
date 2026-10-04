@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Users\Models\User;
 use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Pending;
+use Foxws\Media\Encryption\EncryptionKey;
 use Foxws\Media\Facades\Media;
 use Foxws\Media\Facades\MediaStream;
 use Foxws\Media\Testing\FakeProbe;
@@ -85,6 +87,24 @@ it('serves the dash manifest and hls playlist of the clip on a signed url', func
     $this->actingAs($user)->get(MediaStream::url('videos', ['video' => $video]))
         ->assertOk()
         ->assertHeader('Content-Type', 'application/vnd.apple.mpegurl');
+});
+
+it('encrypts the clip with a clearkey when encryption is on', function () {
+    PlaylistSettings::fake(['encryption' => EncryptionMethod::RawKeyEncryption]);
+
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+    createDirectPlayClip($video);
+    $key = EncryptionKey::derive(config('app.key'), "video:{$video->getKey()}");
+
+    $manifest = simplexml_load_string((string) $this->actingAs($user)->get(MediaStream::dashUrl('videos', ['video' => $video]))->assertOk()->getContent());
+    $licenseUrl = (string) $manifest->Period->AdaptationSet[0]->ContentProtection[1]->children('https://dashif.org/CPS')->Laurl;
+
+    expect((string) $manifest->Period->AdaptationSet[0]->ContentProtection[0]->attributes('urn:mpeg:cenc:2013')['default_KID'])->toBe($key->keyIdUuid());
+
+    $this->actingAs($user)->postJson($licenseUrl, ['kids' => [], 'type' => 'temporary'])
+        ->assertOk()
+        ->assertExactJson(['keys' => [$key->toJsonWebKey()], 'type' => 'temporary']);
 });
 
 it('refuses unsigned requests', function () {

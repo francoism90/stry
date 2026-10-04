@@ -10,11 +10,14 @@ use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Models\Video;
 use Foxws\Media\Delivery\DirectStream;
 use Foxws\Media\Delivery\Marker;
+use Foxws\Media\Encryption\EncryptionKey;
 use Foxws\Media\MediaFactory;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Streams the best clip of a video straight from its disk, with its captions as subtitle tracks
- * and its chapters as markers.
+ * and its chapters as markers. With encryption on, segments are encrypted per request with a key
+ * derived from the app key, so it doesn't have to be stored.
  */
 class CreateVideoDirectStream
 {
@@ -30,6 +33,10 @@ class CreateVideoDirectStream
         $stream = $this->media->fromDisk($clip->disk)
             ->open($clip->getPathRelativeToRoot())
             ->stream();
+
+        if (filled($this->settings->encryption)) {
+            $stream->withEncryption(EncryptionKey::derive(Config::string('app.key'), "video:{$video->getKey()}"));
+        }
 
         if ($video->getCaptions()->isEmpty()) {
             $stream->withEmbeddedSubtitles();
