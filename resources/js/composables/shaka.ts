@@ -104,6 +104,11 @@ export function useShaka(
       return
     }
 
+    // Direct play offers the thumbnails as image tracks in the manifest already.
+    if (player.value.getImageTracks().length > 0) {
+      return
+    }
+
     try {
       const response = await fetch(videoModel.storyboard_vtt)
 

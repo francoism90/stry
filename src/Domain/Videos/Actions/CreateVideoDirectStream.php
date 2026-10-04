@@ -31,6 +31,10 @@ class CreateVideoDirectStream
             ->open($clip->getPathRelativeToRoot())
             ->stream();
 
+        if ($video->getCaptions()->isEmpty()) {
+            $stream->withEmbeddedSubtitles();
+        }
+
         $video->getCaptions()->each(fn (Media $caption) => $stream->withSubtitles(
             path: $caption->getPathRelativeToRoot(),
             language: $caption->getCustomProperty('language_code', $this->settings->text_language->value),
@@ -38,7 +42,7 @@ class CreateVideoDirectStream
             disk: $caption->disk,
         ));
 
-        return $stream->withMarkers(array_values($video->chapters
+        return $stream->withThumbnails($video->getThumbnails())->withMarkers(array_values($video->chapters
             ->filter(fn (Chapter $chapter) => (float) $chapter->start_time >= 0 && (float) $chapter->end_time >= (float) $chapter->start_time)
             ->map(fn (Chapter $chapter) => new Marker(
                 start: (float) $chapter->start_time,
