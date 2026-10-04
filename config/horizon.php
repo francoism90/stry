@@ -261,7 +261,7 @@ return [
         ],
 
         'supervisor-5' => [
-            'connection' => 'redis',
+            'connection' => 'redis-media',
             'queue' => ['media'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',

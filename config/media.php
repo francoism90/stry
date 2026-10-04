@@ -83,9 +83,9 @@ return [
         'lock_timeout' => (int) env('MEDIA_DELIVERY_LOCK_TIMEOUT', 120),
         'cache_store' => env('MEDIA_DELIVERY_CACHE_STORE', 'redis'),
         'index_lifetime' => (int) env('MEDIA_DELIVERY_INDEX_LIFETIME', 604800),
-        'look_ahead' => (int) env('MEDIA_DELIVERY_LOOK_AHEAD', 2),
+        'look_ahead' => (int) env('MEDIA_DELIVERY_LOOK_AHEAD', 3),
         'look_ahead_via' => env('MEDIA_DELIVERY_LOOK_AHEAD_VIA', 'queue'),
-        'look_ahead_connection' => env('MEDIA_DELIVERY_LOOK_AHEAD_CONNECTION'),
+        'look_ahead_connection' => env('MEDIA_DELIVERY_LOOK_AHEAD_CONNECTION', 'redis-media'),
         'look_ahead_queue' => env('MEDIA_DELIVERY_LOOK_AHEAD_QUEUE', 'media'),
     ],
 
