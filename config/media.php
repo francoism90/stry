@@ -33,8 +33,6 @@ return [
     'executables' => [
         'ffmpeg' => env('MEDIA_FFMPEG_PATH', env('FFMPEG_PATH', '/usr/local/bin/ffmpeg')),
         'ffprobe' => env('MEDIA_FFPROBE_PATH', env('FFPROBE_PATH', '/usr/local/bin/ffprobe')),
-        'packager' => env('MEDIA_PACKAGER_PATH', 'packager'),
-        'ab-av1' => env('MEDIA_AB_AV1_PATH', 'ab-av1'),
     ],
 
     /*
@@ -42,13 +40,13 @@ return [
     | Packager
     |--------------------------------------------------------------------------
     |
-    | The driver that packages encoded media into DASH and HLS. Shaka Packager
-    | is built in; register others with PackagerManager::extend().
+    | The driver that packages encoded media into DASH and HLS. "native" needs
+    | only ffmpeg. Register others with PackagerManager::extend().
     |
     */
 
     'packager' => [
-        'default' => env('MEDIA_PACKAGER', 'shaka'),
+        'default' => env('MEDIA_PACKAGER', 'native'),
     ],
 
     /*
@@ -70,8 +68,9 @@ return [
     | After a segment is requested, the next look_ahead segments are packaged
     | ahead of their requests, and a playlist or manifest request packages the
     | first ones: "queue" dispatches a PackageSegments job on the look-ahead
-    | connection and queue (Horizon's "media" supervisor), "defer" packages
-    | them after the response, and null turns it off.
+    | connection and queue, "defer" packages them after the response, and null
+    | turns it off. Streams on a sync queue, or on disks without a configured
+    | name, are packaged after the response.
     |
     */
 

@@ -1428,12 +1428,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:foxws/laravel-media.git",
-                "reference": "48c22fbe16a117aaf9837d31f4f34b50bfb7ae01"
+                "reference": "5d7a86e148673492b9795f7ed0970911a3d33d33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/48c22fbe16a117aaf9837d31f4f34b50bfb7ae01",
-                "reference": "48c22fbe16a117aaf9837d31f4f34b50bfb7ae01",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/5d7a86e148673492b9795f7ed0970911a3d33d33",
+                "reference": "5d7a86e148673492b9795f7ed0970911a3d33d33",
                 "shasum": ""
             },
             "require": {
@@ -1538,10 +1538,9 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Probe, encode, package and stream media in Laravel with ffmpeg, ab-av1 and Shaka Packager.",
+            "description": "Probe, encode, package and stream media in Laravel with ffmpeg.",
             "homepage": "https://github.com/foxws/laravel-media",
             "keywords": [
-                "ab-av1",
                 "dash",
                 "ffmpeg",
                 "ffprobe",
@@ -1550,7 +1549,6 @@
                 "laravel",
                 "laravel-media",
                 "packager",
-                "shaka",
                 "streaming",
                 "video"
             ],
@@ -1564,7 +1562,7 @@
                     "url": "https://github.com/foxws"
                 }
             ],
-            "time": "2026-10-04T23:02:30+00:00"
+            "time": "2026-10-04T23:41:39+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
