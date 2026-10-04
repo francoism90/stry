@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43cf12df23af5a7ed62ad043004423e7",
+    "content-hash": "5fe2dd151a9a49024e6a82456f957e0d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1421,6 +1421,149 @@
                 }
             ],
             "time": "2026-09-16T18:39:11+00:00"
+        },
+        {
+            "name": "foxws/laravel-media",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:foxws/laravel-media.git",
+                "reference": "6daa99d61fb79f4929a9f44acd78845f70e73e4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/6daa99d61fb79f4929a9f44acd78845f70e73e4c",
+                "reference": "6daa99d61fb79f4929a9f44acd78845f70e73e4c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "illuminate/console": "^13.0",
+                "illuminate/contracts": "^13.0",
+                "illuminate/filesystem": "^13.0",
+                "illuminate/process": "^13.0",
+                "illuminate/support": "^13.0",
+                "php": "^8.4",
+                "psr/log": "^3.0",
+                "symfony/process": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.9",
+                "laravel/pao": "^1.0",
+                "laravel/pint": "^1.29",
+                "league/flysystem-aws-s3-v3": "^3.35",
+                "orchestra/testbench": "^11.0",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-laravel": "^5.0",
+                "pestphp/pest-plugin-type-coverage": "^5.0.2",
+                "phpstan/extension-installer": "^1.4"
+            },
+            "suggest": {
+                "league/flysystem-aws-s3-v3": "Required for concurrent and multipart uploads to S3 disks (^3.35)."
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Foxws\\Media\\MediaServiceProvider"
+                    ],
+                    "aliases": {
+                        "Media": "Foxws\\Media\\Facades\\Media"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Foxws\\Media\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Foxws\\Media\\Tests\\": "tests/",
+                    "Workbench\\App\\": "workbench/app/",
+                    "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+                    "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@clear",
+                    "@prepare"
+                ],
+                "prepare": [
+                    "@php vendor/bin/testbench package:discover --ansi"
+                ],
+                "build": [
+                    "@php vendor/bin/testbench workbench:build --ansi"
+                ],
+                "serve": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "@build",
+                    "@php vendor/bin/testbench serve --ansi"
+                ],
+                "lint": [
+                    "vendor/bin/pint --parallel"
+                ],
+                "lint:check": [
+                    "vendor/bin/pint --parallel --test"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse --memory-limit=1G"
+                ],
+                "test:types": [
+                    "vendor/bin/pest --type-coverage --min=100"
+                ],
+                "test:unit": [
+                    "vendor/bin/pest --parallel"
+                ],
+                "test": [
+                    "@analyse",
+                    "@lint:check",
+                    "@test:types",
+                    "@test:unit"
+                ],
+                "clear": [
+                    "@php vendor/bin/testbench package:purge-skeleton --ansi"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "foxws",
+                    "email": "francoism90@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Probe, encode, package and stream media in Laravel with ffmpeg, ab-av1 and Shaka Packager.",
+            "homepage": "https://github.com/foxws/laravel-media",
+            "keywords": [
+                "ab-av1",
+                "dash",
+                "ffmpeg",
+                "ffprobe",
+                "foxws",
+                "hls",
+                "laravel",
+                "laravel-media",
+                "packager",
+                "shaka",
+                "streaming",
+                "video"
+            ],
+            "support": {
+                "source": "https://github.com/foxws/laravel-media/tree/main",
+                "issues": "https://github.com/foxws/laravel-media/issues"
+            },
+            "funding": [
+                {
+                    "type": "github",
+                    "url": "https://github.com/foxws"
+                }
+            ],
+            "time": "2026-10-04T16:13:01+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
@@ -19043,7 +19186,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "foxws/laravel-media": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
