@@ -104,6 +104,6 @@ class PlaylistVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCo
 
     protected function resolveType(): PlaylistType
     {
-        return $this->type ?? app(PlaylistSettings::class)->type;
+        return $this->type ?? app(PlaylistSettings::class)->playlistType();
     }
 }

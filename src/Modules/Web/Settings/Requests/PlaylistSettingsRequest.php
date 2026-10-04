@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Web\Settings\Requests;
 
 use Domain\Playlists\Enums\EncryptionMethod;
-use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Shared\Enums\Language;
 use Foxws\Shaka\Support\ProtectionScheme;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -25,8 +25,7 @@ class PlaylistSettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['sometimes', new Enum(PlaylistType::class)],
-            'direct_play' => ['sometimes', 'boolean'],
+            'type' => ['sometimes', new Enum(PlaybackMode::class)],
             'disk_name' => ['sometimes', 'string', 'max:255'],
             'language' => ['sometimes', new Enum(Language::class)],
             'text_language' => ['sometimes', new Enum(Language::class)],

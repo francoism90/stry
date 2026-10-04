@@ -43,7 +43,7 @@ trait InteractsWithPlaylists
             'dash_file_name' => 'index.mpd',
             'hls_file_name' => 'master.m3u8',
             'disk' => $settings->disk_name,
-            'type' => $settings->type,
+            'type' => $settings->playlistType(),
             'expires_at' => $settings->expires_after === 0 ? null : now()->addSeconds($settings->expires_after),
             ...$attributes,
         ]);

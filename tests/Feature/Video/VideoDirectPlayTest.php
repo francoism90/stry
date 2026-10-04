@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Users\Models\User;
 use Domain\Videos\Jobs\PlaylistVideo;
@@ -41,7 +42,7 @@ function createDirectPlayClip(Video $video): void
 }
 
 it('plays the clip directly instead of packaging a playlist when direct play is on', function () {
-    PlaylistSettings::fake(['direct_play' => true]);
+    PlaylistSettings::fake(['type' => PlaybackMode::Direct]);
 
     $user = User::factory()->create();
     $video = Video::factory()->create();
@@ -58,8 +59,8 @@ it('plays the clip directly instead of packaging a playlist when direct play is 
     Bus::assertNotDispatched(PlaylistVideo::class);
 });
 
-it('keeps packaging playlists when direct play is off', function () {
-    PlaylistSettings::fake(['direct_play' => false]);
+it('keeps packaging playlists in the other playback modes', function () {
+    PlaylistSettings::fake(['type' => PlaybackMode::Packager]);
 
     $user = User::factory()->create();
     $video = Video::factory()->create();

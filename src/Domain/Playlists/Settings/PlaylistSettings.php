@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Playlists\Settings;
 
 use Domain\Playlists\Enums\EncryptionMethod;
+use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Shared\Enums\Language;
 use Foxws\Shaka\Support\ProtectionScheme;
@@ -12,9 +13,7 @@ use Spatie\LaravelSettings\Settings;
 
 class PlaylistSettings extends Settings
 {
-    public PlaylistType $type = PlaylistType::Packager;
-
-    public bool $direct_play = false;
+    public PlaybackMode $type = PlaybackMode::Packager;
 
     public string $disk_name = 'segments';
 
@@ -41,6 +40,20 @@ class PlaylistSettings extends Settings
     public bool $key_rotation = false;
 
     public int $key_rotation_duration = 300;
+
+    public function isDirectPlay(): bool
+    {
+        return $this->type === PlaybackMode::Direct;
+    }
+
+    /**
+     * The type of playlist to package when none is given; the packager with direct play, which
+     * packages nothing by itself.
+     */
+    public function playlistType(): PlaylistType
+    {
+        return $this->type->playlistType() ?? PlaylistType::Packager;
+    }
 
     public static function group(): string
     {

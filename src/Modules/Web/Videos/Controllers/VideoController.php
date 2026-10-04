@@ -95,7 +95,7 @@ class VideoController implements HasMiddleware
 
         // Dispatch the job to create a playlist if necessary; direct play streams the clip instead
         PlaylistVideo::dispatchIf(
-            ! $settings->direct_play && ! $video->hasPlaylist(),
+            ! $settings->isDirectPlay() && ! $video->hasPlaylist(),
             $video,
         );
 

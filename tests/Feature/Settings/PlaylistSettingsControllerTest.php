@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Playlists\Enums\EncryptionMethod;
+use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Playlists\Enums\PlaylistType;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
@@ -39,7 +40,6 @@ it('allows a super-admin to update playlist settings', function () {
 
     $response = $this->actingAs($user)->patch(action([PlaylistSettingsController::class, 'update']), [
         'type' => 'streamer',
-        'direct_play' => true,
         'encryption' => 'clearkey',
         'protection_scheme' => 'cenc',
     ]);
@@ -49,8 +49,7 @@ it('allows a super-admin to update playlist settings', function () {
 
     $settings = app(PlaylistSettings::class);
 
-    expect($settings->type)->toBe(PlaylistType::Streamer)
-        ->and($settings->direct_play)->toBeTrue()
+    expect($settings->type)->toBe(PlaybackMode::Streamer)
         ->and($settings->encryption)->toBe(EncryptionMethod::ClearKey)
         ->and($settings->protection_scheme)->toBe(ProtectionScheme::Cenc)
         ->and($settings->disk_name)->toBe('segments');
@@ -90,4 +89,13 @@ it('offers every protection scheme', function () {
         'cens' => 'Cens',
         'cbcs' => 'Cbcs',
     ]);
+});
+
+it('packages with the packager by default while direct play is on', function () {
+    PlaylistSettings::fake(['type' => PlaybackMode::Direct]);
+
+    $settings = app(PlaylistSettings::class);
+
+    expect($settings->isDirectPlay())->toBeTrue()
+        ->and($settings->playlistType())->toBe(PlaylistType::Packager);
 });

@@ -121,8 +121,7 @@ export type ChapterSettings = {
 }
 
 export type PlaylistSettings = {
-  type: 'packager' | 'streamer'
-  direct_play: boolean
+  type: 'packager' | 'streamer' | 'direct'
   disk_name: string
   language: 'en' | 'nl'
   text_language: 'en' | 'nl'

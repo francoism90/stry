@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Web\Settings\Controllers;
 
 use Domain\Playlists\Enums\EncryptionMethod;
-use Domain\Playlists\Enums\PlaylistType;
+use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Enums\Language;
 use Foxws\Shaka\Support\ProtectionScheme;
@@ -15,7 +15,6 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
-use Modules\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
 use Modules\Web\Settings\Requests\PlaylistSettingsRequest;
 use Spatie\LaravelOptions\Options;
 
@@ -36,7 +35,7 @@ class PlaylistSettingsController implements HasMiddleware
 
         return response()->json([
             ...$settings->toArray(),
-            'type_options' => PlaylistTypeOptionsProperty::options(),
+            'type_options' => Options::forEnum(PlaybackMode::class),
             'encryption_options' => Options::forEnum(EncryptionMethod::class)->nullable('None'),
             'protection_scheme_options' => Options::forEnum(ProtectionScheme::class)->nullable('None'),
         ]);
@@ -51,7 +50,7 @@ class PlaylistSettingsController implements HasMiddleware
         // Settings::fill() bypasses the mapper's cast pipeline and assigns properties directly,
         // so backed-enum-typed properties need to already be enum instances, not raw strings.
         if (isset($validated['type'])) {
-            $validated['type'] = PlaylistType::from($validated['type']);
+            $validated['type'] = PlaybackMode::from($validated['type']);
         }
 
         if (isset($validated['language'])) {

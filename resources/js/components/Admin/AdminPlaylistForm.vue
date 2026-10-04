@@ -14,7 +14,6 @@ const protectionSchemes = ref<OptionItem[]>([])
 
 const form = useForm<PlaylistSettings>(update(), {
   type: 'packager',
-  direct_play: false,
   disk_name: '',
   language: 'en',
   text_language: 'en',
@@ -102,7 +101,7 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
       <template #body>
         <UFormField
           label="Type"
-          description="Packager repurposes existing files without re-encoding (fastest). Streamer generates playlists on-the-fly with more options."
+          description="Packager repurposes existing files without re-encoding (fastest). Streamer generates playlists on-the-fly with more options. Direct play packages nothing: it streams the original clip, cutting segments when they're first requested."
           name="type"
           :error="form.errors.type"
           :class="fieldClass"
@@ -116,17 +115,6 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
 
         <USeparator />
 
-        <UFormField
-          label="Direct play"
-          description="Stream the original clip as HLS and DASH on request, without packaging a playlist first. Segments are cut when first requested and cached on the delivery disk."
-          name="direct_play"
-          :error="form.errors.direct_play"
-          :class="fieldClass"
-        >
-          <USwitch v-model="form.direct_play" />
-        </UFormField>
-
-        <USeparator />
 
         <UFormField
           label="Disk"

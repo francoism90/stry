@@ -203,7 +203,7 @@ class Playlist extends Model
 
     public function getType(): PlaylistType
     {
-        return $this->type ?? app(PlaylistSettings::class)->type;
+        return $this->type ?? app(PlaylistSettings::class)->playlistType();
     }
 
     public function getPath(string $path = ''): string
