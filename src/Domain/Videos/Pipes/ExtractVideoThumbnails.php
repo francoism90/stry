@@ -23,7 +23,7 @@ class ExtractVideoThumbnails
 
     public function handle(Video $video, Closure $next): mixed
     {
-        if (! $this->settings->extract_storyboard || filled($video->thumbnails) || ! $video->hasMedia('clips')) {
+        if (! $this->settings->extract_storyboard || $video->hasThumbnails() || ! $video->hasMedia('clips')) {
             return $next($video);
         }
 
@@ -41,7 +41,7 @@ class ExtractVideoThumbnails
             return $next($video);
         }
 
-        $video->forceFill(['thumbnails' => $thumbnails->toArray()])->saveQuietly();
+        $video->saveThumbnails($thumbnails);
 
         return $next($video);
     }

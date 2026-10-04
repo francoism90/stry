@@ -17,10 +17,10 @@ use Domain\Tags\Collections\TagCollection;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
+use Domain\Videos\Concerns\InteractsWithThumbnails;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
-use Foxws\Media\FFMpeg\ThumbnailsResult;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -69,6 +69,7 @@ class Video extends Model implements HasMedia
 
     use InteractsWithModelCache;
     use InteractsWithPlaylists;
+    use InteractsWithThumbnails;
     use InteractsWithTranscodes;
     use InteractsWithUser;
     use Searchable;
@@ -130,11 +131,6 @@ class Video extends Model implements HasMedia
             'state' => VideoState::class,
             'thumbnails' => 'array',
         ];
-    }
-
-    protected static function booted(): void
-    {
-        static::forceDeleted(fn (self $video) => $video->deleteThumbnails());
     }
 
     protected static function newFactory(): VideoFactory
@@ -280,27 +276,6 @@ class Video extends Model implements HasMedia
     protected function makeAllSearchableUsing(VideoQueryBuilder $query): VideoQueryBuilder
     {
         return $query->with(['media', 'tags']);
-    }
-
-    public static function getThumbnailsDisk(): string
-    {
-        return Config::string('videos.thumbnails_disk', 'conversions');
-    }
-
-    public function getThumbnails(): ?ThumbnailsResult
-    {
-        return is_array($this->thumbnails) && $this->thumbnails !== []
-            ? ThumbnailsResult::fromArray($this->thumbnails)
-            : null;
-    }
-
-    public function deleteThumbnails(): void
-    {
-        $thumbnails = $this->getThumbnails();
-
-        if ($thumbnails !== null) {
-            $thumbnails->disk->filesystem()->delete($thumbnails->paths());
-        }
     }
 
     public static function getImportDisk(): string
