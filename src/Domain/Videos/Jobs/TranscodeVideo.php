@@ -59,7 +59,7 @@ class TranscodeVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterC
     ) {
         $this
             ->onConnection('redis-long')
-            ->onQueue('transcoding');
+            ->onQueue('processing');
     }
 
     public function handle(): void

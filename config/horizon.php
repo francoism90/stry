@@ -91,8 +91,7 @@ return [
     'waits' => [
         'redis:default' => 90,
         'redis:broadcasts' => 30,
-        'redis:processing' => 300,
-        'redis:transcoding' => 600,
+        'redis-long:processing' => 600,
     ],
 
     /*
@@ -237,30 +236,13 @@ return [
             'balanceCooldown' => 3,
             'maxTime' => 0,
             'maxJobs' => 0,
-            'memory' => 512,
-            'tries' => 3,
-            'timeout' => 3600,
-            'nice' => 0,
-        ],
-
-        'supervisor-4' => [
-            'connection' => 'redis-long',
-            'queue' => ['transcoding'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'size',
-            'minProcesses' => (int) env('QUEUE_TRANSCODING_MIN_PROCESSES', 1),
-            'maxProcesses' => (int) env('QUEUE_TRANSCODING_MAX_PROCESSES', 10),
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'maxTime' => 0,
-            'maxJobs' => 0,
             'memory' => 1536,
-            'tries' => 1,
+            'tries' => 3,
             'timeout' => 14400,
             'nice' => 0,
         ],
 
-        'supervisor-5' => [
+        'supervisor-4' => [
             'connection' => 'redis-media',
             'queue' => ['media'],
             'balance' => 'auto',
@@ -284,7 +266,6 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
-            'supervisor-5' => [],
         ],
 
         'staging' => [
@@ -292,7 +273,6 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
-            'supervisor-5' => [],
         ],
 
         'local' => [
@@ -300,7 +280,6 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
-            'supervisor-5' => [],
         ],
     ],
 ];
