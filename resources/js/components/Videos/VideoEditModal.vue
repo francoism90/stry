@@ -12,7 +12,7 @@ import { capitalize } from '@/utils/case'
 import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDate, CalendarDateTime } from '@internationalized/date'
 import type { TabsItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import { computed, defineModel, defineProps } from 'vue'
 
 const props = defineProps<{
   video: Video
@@ -95,11 +95,6 @@ const onSubmit = (close: () => void) =>
   form.submit({
     preserveState: true,
     onSuccess: () => close(),
-  })
-
-const setState = (): void =>
-  form.submit({
-    preserveScroll: true,
   })
 </script>
 
@@ -382,7 +377,6 @@ const setState = (): void =>
             v-model="form.state"
             :items="stateOptions"
             class="w-48"
-            @update:model-value="setState"
           />
         </div>
 
