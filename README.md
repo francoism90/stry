@@ -63,9 +63,7 @@ For a visual tour of the app, check out the [screenshots gallery](https://franco
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
 | **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)              |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
-| **Video Processing**  | [Laravel FFmpeg](https://github.com/protonemedia/laravel-ffmpeg)                    |
-| **Video Streaming**   | [Laravel Shaka](https://github.com/foxws/laravel-shaka) (DASH + HLS, CMAF)          |
-| **Video Encoding**    | [Laravel Streamer](https://github.com/foxws/laravel-streamer) (DASH + HLS, CMAF)    |
+| **Video Streaming**   | [Laravel Media](https://github.com/foxws/laravel-media) (direct-play HLS + DASH, CMAF) |
 | **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                    |
 | **PWA**               | [Laravel PWA](https://github.com/foxws/laravel-pwa) (installable on mobile/desktop) |
 
