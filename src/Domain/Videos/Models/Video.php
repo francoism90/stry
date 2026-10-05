@@ -174,18 +174,6 @@ class Video extends Model implements HasMedia
             ]);
 
         $this
-            ->addMediaCollection('storyboards')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->acceptsMimeTypes([
-                'application/octet-stream',
-                'application/x-webvtt',
-                'image/jpeg',
-                'text/plain',
-                'text/vtt',
-            ]);
-
-        $this
             ->addMediaCollection('chapters')
             ->useDisk('conversions')
             ->storeConversionsOnDisk('conversions')
@@ -322,16 +310,6 @@ class Video extends Model implements HasMedia
         return $this->getMedia('captions');
     }
 
-    public function getStoryboardImage(): ?BaseMedia
-    {
-        return $this->getMedia('storyboards')->firstWhere('mime_type', 'image/jpeg');
-    }
-
-    public function getStoryboardVtt(): ?BaseMedia
-    {
-        return $this->getMedia('storyboards')->first(fn (BaseMedia $media) => $media->mime_type !== 'image/jpeg');
-    }
-
     public function getChaptersVtt(): ?BaseMedia
     {
         return $this->getMedia('chapters')->first();
@@ -410,16 +388,6 @@ class Video extends Model implements HasMedia
         }
 
         return rescue(fn () => TemporaryUrls::make($media)->getSrcset('thumb'));
-    }
-
-    public function storyboardImageUrl(): ?string
-    {
-        return $this->temporaryMediaUrl($this->getStoryboardImage());
-    }
-
-    public function storyboardVttUrl(): ?string
-    {
-        return $this->temporaryMediaUrl($this->getStoryboardVtt());
     }
 
     public function chaptersVttUrl(): ?string
@@ -504,26 +472,6 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->thumbnailSrcset(),
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?string, never>
-     */
-    protected function storyboardImage(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->storyboardImageUrl(),
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?string, never>
-     */
-    protected function storyboardVtt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->storyboardVttUrl(),
         )->shouldCache();
     }
 

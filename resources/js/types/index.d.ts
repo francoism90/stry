@@ -233,8 +233,6 @@ export type Video = Model & {
   snapshot?: number
   thumb: string | null
   thumb_srcset: string | null
-  storyboard_image: string | null
-  storyboard_vtt: string | null
   chapters_vtt: string | null
   adult: boolean
   captioned: boolean

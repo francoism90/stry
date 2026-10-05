@@ -103,8 +103,8 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
         <USeparator />
 
         <UFormField
-          label="Extract storyboard"
-          description="Automatically generate a storyboard preview sprite for a video."
+          label="Extract thumbnails"
+          description="Automatically generate seek preview thumbnails for a video."
           name="extract_storyboard"
           :error="form.errors.extract_storyboard"
           :class="fieldClass"
