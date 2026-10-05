@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Domain\Chapters\Enums\ChapterType;
+use Domain\Chapters\Models\Chapter;
 use Domain\Playlists\Enums\EncryptionMethod;
 use Domain\Playlists\Enums\PlaybackMode;
 use Domain\Playlists\Settings\PlaylistSettings;
@@ -87,6 +89,45 @@ it('serves the dash manifest and hls playlist of the clip on a signed url', func
     $this->actingAs($user)->get(MediaStream::url('videos', ['video' => $video]))
         ->assertOk()
         ->assertHeader('Content-Type', 'application/vnd.apple.mpegurl');
+});
+
+it('serves the chapters on the stream when direct play is on, with the gaps as the main event', function () {
+    PlaylistSettings::fake(['type' => PlaybackMode::Direct]);
+
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+    createDirectPlayClip($video);
+    Chapter::factory()->for($video)->create(['type' => ChapterType::Intro, 'label' => 'Intro', 'start_time' => 0, 'end_time' => 4]);
+    Chapter::factory()->for($video)->create(['type' => ChapterType::Credits, 'label' => 'Credits', 'start_time' => 8, 'end_time' => 10]);
+
+    $url = $video->refresh()->chaptersVttUrl();
+
+    expect($url)->toContain("/api/v1/direct/{$video->getRouteKey()}/chapters.vtt?");
+
+    $this->actingAs($user)->get($url)
+        ->assertOk()
+        ->assertHeader('Content-Type', 'text/vtt; charset=utf-8')
+        ->assertSee(["00:00:00.000 --> 00:00:04.000\nIntro", "00:00:04.000 --> 00:00:08.000\nMain Event", "00:00:08.000 --> 00:00:10.000\nCredits", "00:00:10.000 --> 00:00:13.000\nMain Event"], escape: false);
+});
+
+it('keeps the chapters route of the other playback modes', function () {
+    PlaylistSettings::fake(['type' => PlaybackMode::Packager]);
+
+    $video = Video::factory()->create();
+    createDirectPlayClip($video);
+    Chapter::factory()->for($video)->intro()->create();
+
+    expect($video->refresh()->chaptersVttUrl())->toBe(route('videos.chapters-vtt', $video));
+});
+
+it('offers trick play in the manifest', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+    createDirectPlayClip($video);
+
+    $this->actingAs($user)->get(MediaStream::url('videos', ['video' => $video]))
+        ->assertOk()
+        ->assertSee('#EXT-X-I-FRAME-STREAM-INF');
 });
 
 it('encrypts the clip with a clearkey when encryption is on', function () {

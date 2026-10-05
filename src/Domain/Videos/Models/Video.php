@@ -9,6 +9,7 @@ use Domain\Chapters\Concerns\InteractsWithChapters;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
 use Domain\Playlists\Concerns\InteractsWithPlaylists;
+use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
@@ -423,7 +424,13 @@ class Video extends Model implements HasMedia
 
     public function chaptersVttUrl(): ?string
     {
-        return $this->chapters->isNotEmpty() ? route('videos.chapters-vtt', $this) : null;
+        if ($this->chapters->isEmpty()) {
+            return null;
+        }
+
+        return app(PlaylistSettings::class)->isDirectPlay() && $this->canDirectPlay()
+            ? $this->getDirectPlayChaptersUrl()
+            : route('videos.chapters-vtt', $this);
     }
 
     protected function temporaryMediaUrl(?BaseMedia $media, string $conversion = ''): ?string

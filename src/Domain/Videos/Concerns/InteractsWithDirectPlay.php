@@ -36,6 +36,14 @@ trait InteractsWithDirectPlay
     }
 
     /**
+     * The signed URL of the chapters as WebVTT, for the player's seek bar.
+     */
+    public function getDirectPlayChaptersUrl(): string
+    {
+        return MediaStream::chaptersUrl('videos', ['video' => $this]);
+    }
+
+    /**
      * Seconds until the player should fetch new URLs, some time before the signatures expire.
      */
     public function getDirectPlayRefreshIn(): int
