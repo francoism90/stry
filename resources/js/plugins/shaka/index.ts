@@ -104,7 +104,6 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
       'time_and_duration',
       'spacer',
       'captions',
-      'chapter',
       'cast',
       'overflow_menu',
       'fullscreen',
