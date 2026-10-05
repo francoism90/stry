@@ -7,8 +7,8 @@ namespace Domain\Videos\Actions;
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Models\Chapter;
 use Domain\Media\Models\Media;
-use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\PlaybackSettings;
 use Foxws\Media\Delivery\DirectStream;
 use Foxws\Media\Delivery\Marker;
 use Foxws\Media\Encryption\EncryptionKey;
@@ -25,7 +25,7 @@ class CreateVideoDirectStream
 {
     public function __construct(
         protected MediaFactory $media,
-        protected PlaylistSettings $settings,
+        protected PlaybackSettings $settings,
     ) {}
 
     public function handle(Video $video): DirectStream
@@ -36,7 +36,7 @@ class CreateVideoDirectStream
             ->open($clip->getPathRelativeToRoot())
             ->stream();
 
-        if (filled($this->settings->encryption)) {
+        if ($this->settings->encryption) {
             $stream->withEncryption(EncryptionKey::derive(Config::string('app.key'), "video:{$video->getKey()}"));
         }
 

@@ -8,8 +8,6 @@ use Database\Factories\VideoFactory;
 use Domain\Chapters\Concerns\InteractsWithChapters;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
-use Domain\Playlists\Concerns\InteractsWithPlaylists;
-use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
@@ -70,7 +68,6 @@ class Video extends Model implements HasMedia
     use InteractsWithMedia;
 
     use InteractsWithModelCache;
-    use InteractsWithPlaylists;
     use InteractsWithTranscodes;
     use InteractsWithUser;
     use Searchable;
@@ -276,11 +273,6 @@ class Video extends Model implements HasMedia
         return Config::integer('videos.import_batch_size', 10);
     }
 
-    public static function shouldCreatePlaylist(): bool
-    {
-        return Config::boolean('videos.create_playlists', false);
-    }
-
     public static function getCompletionThreshold(): float
     {
         return Config::float('videos.completion_threshold', 0.95);
@@ -396,7 +388,7 @@ class Video extends Model implements HasMedia
             return null;
         }
 
-        return app(PlaylistSettings::class)->isDirectPlay() && $this->canDirectPlay()
+        return $this->canDirectPlay()
             ? $this->getDirectPlayChaptersUrl()
             : route('videos.chapters-vtt', $this);
     }

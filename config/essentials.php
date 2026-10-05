@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
 use Domain\Media\Models\Media;
-use Domain\Playlists\Models\Playlist;
 use Domain\Profiles\Models\Profile;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
@@ -63,7 +62,6 @@ return [
     'morph_map' => env('ESSENTIALS_MORPH_MAP', [
         'group' => Group::class,
         'media' => Media::class,
-        'playlist' => Playlist::class,
         'profile' => Profile::class,
         'relatable' => Relatable::class,
         'tag' => Tag::class,

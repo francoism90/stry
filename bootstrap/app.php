@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\Groups\Commands\ClearGroupCommand;
-use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Transcodes\Commands\ClearTranscodeCommand;
 use Domain\Transcodes\Commands\CreateTranscodeCommand;
 use Domain\Transcodes\Commands\ImportTranscodeCommand;
@@ -103,7 +102,6 @@ return Application::configure(basePath: $basePath)
     ])
     ->withCommands([
         ClearGroupCommand::class,
-        ClearPlaylistCommand::class,
         ClearTranscodeCommand::class,
         ImportTranscodeCommand::class,
         CreateTranscodeCommand::class,

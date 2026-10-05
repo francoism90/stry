@@ -1,7 +1,7 @@
 import { usePlaylist } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
-import { configureOverlay, createError, isCriticalError, loadShaka, resolveAssetUri } from '@/plugins/shaka'
+import { configureOverlay, isCriticalError, loadShaka, resolveAssetUri } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
@@ -112,7 +112,7 @@ export function useShaka(
   }
 
   const load = async (playlist: Playlist | null, startTime?: number | null) => {
-    if (!player.value || !playlist || !playlist.valid) {
+    if (!player.value || !playlist) {
       return
     }
 
@@ -127,30 +127,7 @@ export function useShaka(
     ticker.value = startTime ?? null
     error.value = null
 
-    if (playlist.failed) {
-      error.value = createError('MEDIA_SOURCE_OPERATION_FAILED', 'MANIFEST')
-      return
-    }
-
-    if (playlist.expired) {
-      error.value = createError('EXPIRED', 'MANIFEST')
-      return
-    }
-
-    const config = player.value.getConfiguration()
-    const keyId = playlist.encryption_key_id?.toLowerCase() ?? null
-    const keyContent = playlist.encryption_key?.toLowerCase() ?? null
-
     try {
-      if (keyId && keyContent) {
-        player.value.configure({
-          ...config,
-          drm: {
-            clearKeys: { [keyId]: keyContent },
-          } as shaka.extern.DrmConfiguration,
-        })
-      }
-
       await player.value.load(assetUri, startTime)
 
       const textTracks = player.value.getTextTracks()
@@ -168,7 +145,7 @@ export function useShaka(
   }
 
   const replace = async (playlist: Playlist | null) => {
-    if (!player.value || !playlist || !playlist.valid) {
+    if (!player.value || !playlist) {
       return
     }
 

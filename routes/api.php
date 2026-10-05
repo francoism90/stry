@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Modules\Api\Authentication\Controllers\HomeController;
-use Modules\Api\Playlists\Controllers\PlaylistManifestController;
 use Modules\Api\Tags\Controllers\TagController;
 use Modules\Api\Videos\Controllers\VideoSessionController;
 
@@ -14,12 +13,6 @@ Route::name('api.')->prefix('v1')->group(function () {
 
     // Tags
     Route::apiResource('tags', TagController::class)->only('index');
-
-    // VOD - Playlists
-    Route::get('/play/{playlist}/{path}', PlaylistManifestController::class)
-        ->withoutMiddleware('throttle:api')
-        ->where('path', '.*')
-        ->name('play.manifest');
 
     // VOD - Direct play
     Route::withoutMiddleware('throttle:api')

@@ -26,7 +26,6 @@ readonly class VideoManageScope
 
             $query->with([
                 'media',
-                'playlists' => fn ($query) => $query->latest()->limit(10),
                 'transcodes' => fn ($query) => $query->latest()->limit(10),
             ]);
         });

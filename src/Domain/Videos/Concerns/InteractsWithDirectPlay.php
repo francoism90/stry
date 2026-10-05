@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Concerns;
 
-use Domain\Playlists\Settings\PlaylistSettings;
+use Domain\Videos\Settings\PlaybackSettings;
 use Foxws\Media\Facades\MediaStream;
 use Illuminate\Support\Facades\Config;
 
@@ -50,6 +50,6 @@ trait InteractsWithDirectPlay
     {
         $lifetime = Config::integer('media.delivery.url_lifetime', 3600);
 
-        return max($lifetime - app(PlaylistSettings::class)->manifest_refresh_before, 0);
+        return max($lifetime - app(PlaybackSettings::class)->refresh_before, 0);
     }
 }

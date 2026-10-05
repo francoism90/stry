@@ -120,27 +120,10 @@ export type ChapterSettings = {
   type_options: OptionItem[]
 }
 
-export type PlaylistSettings = {
-  type: 'packager' | 'streamer' | 'direct'
-  disk_name: string
-  language: 'en' | 'nl'
+export type PlaybackSettings = {
   text_language: 'en' | 'nl'
-  expires_after: number
-  manifest_cache_lifetime: number
-  manifest_url_lifetime: number
-  manifest_refresh_before: number
-  media_url_lifetime: number
-  key_url_lifetime: number
-  encryption: 'raw_key_encryption' | 'clearkey' | null
-  protection_scheme: 'cenc' | 'cbcs' | null
-  key_rotation: boolean
-  key_rotation_duration: number
-}
-
-export type PlaylistSettingsResponse = PlaylistSettings & {
-  type_options: OptionItem[]
-  encryption_options: OptionItem[]
-  protection_scheme_options: OptionItem[]
+  encryption: boolean
+  refresh_before: number
 }
 
 export type ProcessingSettings = {
@@ -210,7 +193,6 @@ export type Video = Model & {
   user?: User
   tags?: Tag[]
   media?: Media[]
-  playlists?: Playlist[]
   transcodes?: Transcode[]
   chapters?: Chapter[]
   name: string
@@ -259,24 +241,12 @@ export type Chapter = Model & {
   skippable: boolean
 }
 
-export type Playlist = Model & {
-  resource?: ModelResource
-  asset: string | null
-  asset_dash: string | null
-  asset_hls: string | null
+export type Playlist = {
+  id: string
+  asset: string
+  asset_dash: string
+  asset_hls: string
   asset_refresh_in: number
-  encryption_key_id: string | null
-  encryption_key: string | null
-  expired: boolean
-  failed: boolean
-  valid: boolean
-  type: string | null
-  expires_at: string | null
-  state: ModelState
-}
-
-export type PlaylistCollection = Omit<Paginator, 'data'> & {
-  data: Playlist[] | undefined
 }
 
 export type Transcode = Model & {

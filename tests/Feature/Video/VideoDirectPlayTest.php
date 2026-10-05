@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Chapters\Models\Chapter;
-use Domain\Playlists\Enums\EncryptionMethod;
-use Domain\Playlists\Enums\PlaybackMode;
-use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Users\Models\User;
-use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\PlaybackSettings;
 use Domain\Videos\States\Pending;
 use Foxws\Media\Encryption\EncryptionKey;
 use Foxws\Media\Facades\Media;
 use Foxws\Media\Facades\MediaStream;
 use Foxws\Media\Testing\FakeProbe;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Modules\Web\Videos\Controllers\VideoController;
@@ -45,9 +41,7 @@ function createDirectPlayClip(Video $video): void
     Storage::disk('media')->put($clip->getPathRelativeToRoot(), 'video');
 }
 
-it('plays the clip directly instead of packaging a playlist when direct play is on', function () {
-    PlaylistSettings::fake(['type' => PlaybackMode::Direct]);
-
+it('plays the clip directly', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
     createDirectPlayClip($video);
@@ -55,26 +49,17 @@ it('plays the clip directly instead of packaging a playlist when direct play is 
     $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
 
     $response->assertInertia(fn (Assert $page) => $page
-        ->where('playlist.type', 'direct')
-        ->where('playlist.valid', true)
         ->where('playlist.asset', fn (string $url) => str_contains($url, "/api/v1/direct/{$video->getRouteKey()}/dash.mpd?"))
         ->where('playlist.asset_hls', fn (string $url) => str_contains($url, "/api/v1/direct/{$video->getRouteKey()}/cmaf.m3u8?")));
-
-    Bus::assertNotDispatched(PlaylistVideo::class);
 });
 
-it('keeps packaging playlists in the other playback modes', function () {
-    PlaylistSettings::fake(['type' => PlaybackMode::Packager]);
-
+it('has nothing to play before the video has a clip', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
-    createDirectPlayClip($video);
 
     $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
 
     $response->assertInertia(fn (Assert $page) => $page->where('playlist', null));
-
-    Bus::assertDispatched(PlaylistVideo::class);
 });
 
 it('serves the dash manifest and hls playlist of the clip on a signed url', function () {
@@ -91,9 +76,7 @@ it('serves the dash manifest and hls playlist of the clip on a signed url', func
         ->assertHeader('Content-Type', 'application/vnd.apple.mpegurl');
 });
 
-it('serves the chapters on the stream when direct play is on, with the gaps as the main event', function () {
-    PlaylistSettings::fake(['type' => PlaybackMode::Direct]);
-
+it('serves the chapters on the stream, with the gaps as the main event', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();
     createDirectPlayClip($video);
@@ -110,11 +93,8 @@ it('serves the chapters on the stream when direct play is on, with the gaps as t
         ->assertSee(["00:00:00.000 --> 00:00:04.000\nIntro", "00:00:04.000 --> 00:00:08.000\nMain Event", "00:00:08.000 --> 00:00:10.000\nCredits", "00:00:10.000 --> 00:00:13.000\nMain Event"], escape: false);
 });
 
-it('keeps the chapters route of the other playback modes', function () {
-    PlaylistSettings::fake(['type' => PlaybackMode::Packager]);
-
+it('keeps the chapters route for videos without a clip', function () {
     $video = Video::factory()->create();
-    createDirectPlayClip($video);
     Chapter::factory()->for($video)->intro()->create();
 
     expect($video->refresh()->chaptersVttUrl())->toBe(route('videos.chapters-vtt', $video));
@@ -131,7 +111,7 @@ it('offers trick play in the manifest', function () {
 });
 
 it('encrypts the clip with a clearkey when encryption is on', function () {
-    PlaylistSettings::fake(['encryption' => EncryptionMethod::RawKeyEncryption]);
+    PlaybackSettings::fake(['encryption' => true]);
 
     $user = User::factory()->create();
     $video = Video::factory()->create();

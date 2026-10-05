@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Modules\Api\Playlists\Requests;
+namespace Modules\Web\Settings\Requests;
 
-use Domain\Playlists\Enums\PlaylistType;
+use Domain\Shared\Enums\Language;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
-class PlaylistUpdateRequest extends FormRequest
+class PlaybackSettingsRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -22,8 +22,9 @@ class PlaylistUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['sometimes', Rule::enum(PlaylistType::class)],
-            'expires_at' => ['sometimes', 'nullable', 'date_format:Y-m-d H:i:s'],
+            'text_language' => ['sometimes', new Enum(Language::class)],
+            'encryption' => ['sometimes', 'boolean'],
+            'refresh_before' => ['sometimes', 'integer', 'min:0'],
         ];
     }
 }

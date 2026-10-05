@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
-use Domain\Playlists\Models\Playlist;
 use Domain\Transcodes\Models\Transcode;
 use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\PruneStaleTagsCommand;
@@ -32,7 +31,6 @@ Schedule::command(PruneExpired::class, ['--hours=24'])
 Schedule::command(PruneCommand::class, [
     '--model' => [
         Group::class,
-        Playlist::class,
         Transcode::class,
     ]])
     ->withoutOverlapping()

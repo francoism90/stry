@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Controllers;
 
-use Domain\Playlists\Settings\PlaylistSettings;
 use Domain\Videos\Actions\UpdateVideoDetails;
 use Domain\Videos\Enums\VideoLibraryScope;
 use Domain\Videos\Enums\VideoSorter;
 use Domain\Videos\Filters\VideoLibraryScopeFilter;
-use Domain\Videos\Jobs\PlaylistVideo;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Scopes\VideoManageScope;
 use Domain\Videos\Scopes\VideoProfileScope;
@@ -27,11 +25,9 @@ use Inertia\Response;
 use Modules\Api\Videos\Requests\VideoUpdateRequest;
 use Modules\Api\Videos\Resources\VideoResource;
 use Modules\Web\Chapters\Responses\ChapterTypeOptionsProperty;
-use Modules\Web\Playlists\Responses\PlaylistTypeOptionsProperty;
+use Modules\Web\Videos\Responses\VideoDirectPlayProperty;
 use Modules\Web\Videos\Responses\VideoGroupsProperty;
 use Modules\Web\Videos\Responses\VideoMediaProperty;
-use Modules\Web\Videos\Responses\VideoPlaylistProperty;
-use Modules\Web\Videos\Responses\VideoPlaylistsProperty;
 use Modules\Web\Videos\Responses\VideoProgressProperty;
 use Modules\Web\Videos\Responses\VideoQueueProperty;
 use Modules\Web\Videos\Responses\VideoResourceProperty;
@@ -89,25 +85,17 @@ class VideoController implements HasMiddleware
         ]);
     }
 
-    public function show(Video $video, PlaylistSettings $settings): Response
+    public function show(Video $video): Response
     {
         Gate::authorize('view', $video);
 
-        // Dispatch the job to create a playlist if necessary; direct play streams the clip instead
-        PlaylistVideo::dispatchIf(
-            ! $settings->isDirectPlay() && ! $video->hasPlaylist(),
-            $video,
-        );
-
         return Inertia::render('Videos/VideoView', [
             'video' => fn () => new VideoResourceProperty(video: $video, appends: ['titles', 'summary', 'snapshot']),
-            'playlist' => fn () => new VideoPlaylistProperty(video: $video),
+            'playlist' => fn () => new VideoDirectPlayProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
             'chapterTypes' => new ChapterTypeOptionsProperty,
-            'playlistTypes' => new PlaylistTypeOptionsProperty,
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
-            'playlists' => Inertia::defer(fn () => new VideoPlaylistsProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
             new ScoutBuilderProperties('videos'),

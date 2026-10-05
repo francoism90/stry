@@ -1,7 +1,7 @@
 <?php
 
 use Domain\Chapters\Settings\ChapterSettings;
-use Domain\Playlists\Settings\PlaylistSettings;
+use Domain\Videos\Settings\PlaybackSettings;
 use Domain\Videos\Settings\ProcessingSettings;
 use Foundation\Settings\GeneralSettings;
 use Spatie\LaravelData\Data;
@@ -19,7 +19,7 @@ return [
      */
     'settings' => [
         GeneralSettings::class,
-        PlaylistSettings::class,
+        PlaybackSettings::class,
         ChapterSettings::class,
         ProcessingSettings::class,
     ],

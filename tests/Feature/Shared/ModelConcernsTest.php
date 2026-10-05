@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
-use Domain\Playlists\Models\Playlist;
 use Domain\Profiles\Models\Profile;
 use Domain\Tags\Models\Tag;
 use Domain\Transcodes\Models\Transcode;
@@ -20,7 +19,6 @@ it('broadcasts model events on a pluralised channel with a singular event name',
         ->and($instance->broadcastAfterCommit())->toBeTrue();
 })->with([
     [Group::class, 'groups', 'group'],
-    [Playlist::class, 'playlists', 'playlist'],
     [Profile::class, 'profiles', 'profile'],
     [Tag::class, 'tags', 'tag'],
     [Transcode::class, 'transcodes', 'transcode'],

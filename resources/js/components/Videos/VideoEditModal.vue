@@ -7,22 +7,19 @@ import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
-import type { Media, OptionItem, Playlist, TagMenuItem, Transcode, Video } from '@/types'
+import type { Media, OptionItem, TagMenuItem, Transcode, Video } from '@/types'
 import { capitalize } from '@/utils/case'
 import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDate, CalendarDateTime } from '@internationalized/date'
 import type { TabsItem } from '@nuxt/ui'
 import { computed } from 'vue'
-import PlaylistList from '../Playlists/PlaylistList.vue'
 
 const props = defineProps<{
   video: Video
   progress?: number | null
   media?: Media[] | undefined
-  playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
   chapterTypes?: OptionItem[] | undefined
-  playlistTypes?: OptionItem[] | undefined
 }>()
 
 const tabs: TabsItem[] = [
@@ -368,20 +365,10 @@ const setState = (): void =>
     </template>
 
     <template #conversions>
-      <div class="flex flex-col gap-4">
-        <PlaylistList
-          :video="video"
-          :items="playlists"
-          :types="playlistTypes"
-        />
-
-        <USeparator />
-
-        <TranscodeList
-          :video="video"
-          :items="transcodes"
-        />
-      </div>
+      <TranscodeList
+        :video="video"
+        :items="transcodes"
+      />
     </template>
 
     <template #manage>
