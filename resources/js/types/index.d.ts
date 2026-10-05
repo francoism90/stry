@@ -124,6 +124,11 @@ export type PlaybackSettings = {
   text_language: 'en' | 'nl'
   encryption: boolean
   refresh_before: number
+  renditions: number[]
+}
+
+export type PlaybackSettingsResponse = PlaybackSettings & {
+  rendition_options: { value: number; label: string }[]
 }
 
 export type ProcessingSettings = {

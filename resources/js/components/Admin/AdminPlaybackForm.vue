@@ -1,25 +1,30 @@
 <script setup lang="ts">
 import { show, update } from '@/actions/Modules/Web/Settings/Controllers/PlaybackSettingsController'
 import { useLocale } from '@/composables/locale'
-import type { PlaybackSettings } from '@/types'
+import type { PlaybackSettings, PlaybackSettingsResponse } from '@/types'
 import { useForm, useHttp } from '@inertiajs/vue3'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const loaded = ref(false)
-const http = useHttp<object, PlaybackSettings>({})
+const http = useHttp<object, PlaybackSettingsResponse>({})
 const { languages } = useLocale()
+const renditionOptions = ref<PlaybackSettingsResponse['rendition_options']>([])
 
 const form = useForm<PlaybackSettings>(update(), {
   text_language: 'en',
   encryption: false,
   refresh_before: 0,
+  renditions: [],
 })
 
 onMounted(() =>
   http.get(show.url(), {
     onSuccess: (data) => {
-      form.defaults(data)
+      const { rendition_options, ...settings } = data
+
+      form.defaults(settings)
       form.reset()
+      renditionOptions.value = rendition_options
       loaded.value = true
     },
   }),
@@ -45,6 +50,16 @@ defineExpose({
 })
 
 const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
+
+// Checkbox groups take string values, while the heights are numbers
+const renditionItems = computed(() =>
+  renditionOptions.value.map(({ value, label }) => ({ value: String(value), label })),
+)
+
+const renditions = computed({
+  get: () => form.renditions.map(String),
+  set: (values: string[]) => (form.renditions = values.map(Number)),
+})
 </script>
 
 <template>
@@ -53,7 +68,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 3"
+      v-for="i in 4"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -115,6 +130,22 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             v-model="form.refresh_before"
             class="w-56"
             :min="0"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Renditions"
+          description="Smaller sizes to encode next to each clip, so players can switch to them on slow connections. The original is always played at its own size, and only sizes smaller than it are encoded."
+          name="renditions"
+          :error="form.errors.renditions"
+          :class="fieldClass"
+        >
+          <UCheckboxGroup
+            v-model="renditions"
+            :items="renditionItems"
+            class="w-56"
           />
         </UFormField>
       </template>

@@ -100,6 +100,20 @@ it('has no chapters to show for videos without a clip', function () {
     expect($video->refresh()->chaptersVttUrl())->toBeNull();
 });
 
+it('streams the renditions of the clip as variants below it', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+    createDirectPlayClip($video);
+    $clip = $video->getClips()->first();
+    $path = str_replace('{height}', '480', $clip->getRenditionPathPattern());
+    Storage::disk('media')->put($path, 'video');
+    $clip->saveRenditions([480], [$path]);
+
+    $playlist = (string) $this->actingAs($user)->get(MediaStream::url('videos', ['video' => $video->refresh()]))->assertOk()->getContent();
+
+    expect(substr_count($playlist, '#EXT-X-STREAM-INF'))->toBe(2);
+});
+
 it('offers trick play in the manifest', function () {
     $user = User::factory()->create();
     $video = Video::factory()->create();

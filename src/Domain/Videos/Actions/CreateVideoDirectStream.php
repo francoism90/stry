@@ -14,7 +14,8 @@ use Foxws\Media\MediaFactory;
 use Illuminate\Support\Facades\Config;
 
 /**
- * Streams the best clip of a video straight from its disk, with its captions as subtitle tracks,
+ * Streams the best clip of a video straight from its disk, with its smaller renditions as variants
+ * below it, its captions as subtitle tracks,
  * its chapters as markers and a chapter track, and I-frames for trick play. With encryption on,
  * segments are encrypted per request with a key derived from the app key, so it doesn't have to
  * be stored.
@@ -31,7 +32,7 @@ class CreateVideoDirectStream
         $clip = $video->getClips()->firstOrFail();
 
         $stream = $this->media->fromDisk($clip->disk)
-            ->open($clip->getPathRelativeToRoot())
+            ->open([$clip->getPathRelativeToRoot(), ...$clip->getRenditionPaths()])
             ->stream();
 
         if ($this->settings->encryption) {

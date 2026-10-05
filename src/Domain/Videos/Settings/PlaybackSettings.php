@@ -15,6 +15,13 @@ class PlaybackSettings extends Settings
 
     public int $refresh_before = 300;
 
+    /**
+     * Heights of the smaller renditions to encode next to each clip, e.g. [720, 480].
+     *
+     * @var list<int>
+     */
+    public array $renditions = [];
+
     public static function group(): string
     {
         return 'playback';

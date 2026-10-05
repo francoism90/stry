@@ -18,6 +18,13 @@ it('allows a super-admin to fetch playback settings', function () {
         'text_language' => Language::English->value,
         'encryption' => false,
         'refresh_before' => 300,
+        'renditions' => [],
+        'rendition_options' => [
+            ['value' => 1080, 'label' => '1080p'],
+            ['value' => 720, 'label' => '720p'],
+            ['value' => 480, 'label' => '480p'],
+            ['value' => 360, 'label' => '360p'],
+        ],
     ]);
 });
 
@@ -37,6 +44,7 @@ it('allows a super-admin to update playback settings', function () {
         'text_language' => 'nl',
         'encryption' => true,
         'refresh_before' => 120,
+        'renditions' => [480, '720'],
     ]);
 
     $response->assertRedirect();
@@ -46,7 +54,8 @@ it('allows a super-admin to update playback settings', function () {
 
     expect($settings->text_language)->toBe(Language::Dutch)
         ->and($settings->encryption)->toBeTrue()
-        ->and($settings->refresh_before)->toBe(120);
+        ->and($settings->refresh_before)->toBe(120)
+        ->and($settings->renditions)->toBe([720, 480]);
 });
 
 it('denies a regular user from updating playback settings', function () {
@@ -68,4 +77,15 @@ it('rejects an invalid text language', function () {
     ]);
 
     $response->assertInvalid(['text_language']);
+});
+
+it('rejects renditions of other sizes', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->patch(action([PlaybackSettingsController::class, 'update']), [
+        'renditions' => [540],
+    ]);
+
+    $response->assertInvalid(['renditions.0']);
 });
