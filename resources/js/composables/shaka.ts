@@ -96,37 +96,6 @@ export function useShaka(
     }
   }
 
-  // Registers the storyboard VTT as a thumbnails track, rewriting its sprite reference to the
-  // current signed image URL first (the VTT and sprite have separate signed URLs, so resolving
-  // the VTT's bare filename reference against its own URL would sign it incorrectly).
-  const addStoryboardTrack = async (videoModel: Video | null): Promise<void> => {
-    if (!player.value || !videoModel?.storyboard_vtt || !videoModel.storyboard_image) {
-      return
-    }
-
-    // Direct play offers the thumbnails as image tracks in the manifest already.
-    if (player.value.getImageTracks().length > 0) {
-      return
-    }
-
-    try {
-      const response = await fetch(videoModel.storyboard_vtt)
-
-      // WebVTT cue text needs HTML-entity escaping, or a literal '&' mangles parsing from there on.
-      const escapedImageUrl = videoModel.storyboard_image.replaceAll('&', '&amp;')
-      const contents = (await response.text()).replace(/^(\S+)#xywh=/gm, `${escapedImageUrl}#xywh=`)
-      const blobUrl = URL.createObjectURL(new Blob([contents], { type: 'text/vtt' }))
-
-      try {
-        await player.value.addThumbnailsTrack(blobUrl, 'text/vtt')
-      } finally {
-        URL.revokeObjectURL(blobUrl)
-      }
-    } catch (err) {
-      console.error('Error adding storyboard thumbnails track:', err)
-    }
-  }
-
   // Adds the chapters sidecar VTT as a native text track (chapters menu, accessibility). Purely
   // additive to playback: the skip button and chapter list read `video.chapters` directly rather
   // than this track, since Shaka's chapters API only exposes {start, end, title}, not our `type`.
@@ -190,7 +159,6 @@ export function useShaka(
         player.value.selectTextTrack(textTracks[0])
       }
 
-      await addStoryboardTrack(toValue(video) as Video | null)
       await addChaptersTrack(toValue(video) as Video | null)
 
       scheduleAssetRefresh(playlist)
