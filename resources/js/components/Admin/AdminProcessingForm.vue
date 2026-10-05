@@ -118,7 +118,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Create renditions"
-          description="Offer the sizes picked under Playback next to the original, encoded segment by segment while they're watched."
+          description="Offer smaller sizes of a video, encoded while it's watched."
           name="create_renditions"
           :error="form.errors.create_renditions"
           :class="fieldClass"
