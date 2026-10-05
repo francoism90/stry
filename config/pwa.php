@@ -47,8 +47,6 @@ return [
         '/livewire/',
         '/_inertia/',
         '/actions/',
-        '/segments/',
-        '/secrets/',
     ]),
 
     /*

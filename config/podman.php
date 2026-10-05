@@ -57,14 +57,10 @@ return [
     's3_buckets' => env('PODMAN_S3_BUCKETS', [
         'local',
         'conversions',
-        'segments',
-        'secrets',
     ]),
 
     's3_cors_buckets' => env('PODMAN_S3_CORS_BUCKETS', [
         'conversions',
-        'segments',
-        'secrets',
     ]),
 
     /*

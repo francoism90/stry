@@ -6,7 +6,6 @@ use Support\Filesystem\S3TemporaryUrlAdapter;
 it('resolves s3 disks as S3TemporaryUrlAdapter', function () {
     expect(Storage::disk('conversions'))->toBeInstanceOf(S3TemporaryUrlAdapter::class);
     expect(Storage::disk('s3'))->toBeInstanceOf(S3TemporaryUrlAdapter::class);
-    expect(Storage::disk('secrets'))->toBeInstanceOf(S3TemporaryUrlAdapter::class);
 });
 
 it('generates temporary urls signed with the public endpoint', function () {
