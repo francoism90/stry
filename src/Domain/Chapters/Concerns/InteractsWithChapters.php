@@ -35,7 +35,7 @@ trait InteractsWithChapters
      */
     public function getChapterMarkers(): array
     {
-        return $this->chapters
+        return array_values($this->chapters
             ->filter(fn (Chapter $chapter) => (float) $chapter->start_time >= 0 && (float) $chapter->end_time >= (float) $chapter->start_time)
             ->map(fn (Chapter $chapter) => new Marker(
                 start: (float) $chapter->start_time,
@@ -43,7 +43,6 @@ trait InteractsWithChapters
                 title: $chapter->label,
                 class: $chapter->type->value,
             ))
-            ->values()
-            ->all();
+            ->all());
     }
 }
