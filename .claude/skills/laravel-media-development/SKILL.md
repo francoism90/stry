@@ -242,6 +242,25 @@ The same `withEncryption()` stream also serves CMAF and DASH, encrypted with Com
 - **Players:** browsers support ClearKey through EME (Chrome, Edge and Firefox). Safari doesn't, so give it `hlsUrl()`. ClearKey hands the key to the browser, so it protects segments at rest and in transit, not from viewers.
 - `EncryptionKey::keyIdUuid()` formats the key ID as a UUID, and `toJsonWebKey()` as ClearKey's JSON Web Key.
 
+### Playable files
+
+Direct streams copy streams as they are, so browsers must decode the source codecs. Check and repair at import, in a queued job:
+
+<!-- Making a file playable -->
+```php
+$media = Media::fromDisk('videos')->open('movie.mkv');
+
+if (! $media->playability()->isPlayable()) {
+    $media->makePlayable('movie-playable.mkv')->toDisk('videos')->save();   // then replace the source with it
+}
+```
+
+- Playable codecs come from `media.playback.video_codecs` (`hevc,h264,av1,vp9`) and `.audio_codecs` (`aac,mp3,opus,flac`); H.264 must be 8-bit 4:2:0, the others 4:2:0 at 8 or 10 bits. Drop `hevc` when Firefox must play everything (its HEVC support is experimental, Nightly only).
+- `makePlayable()` copies what plays and re-encodes only the rest: video with `media.playback.video_codec` (`libx264` by default, `libx265`, `libsvtav1`), each unplayable audio stream as AAC (`-c:a:N`). Audio-only repairs copy the video and are fast. MKV outputs keep subtitles; MP4/MOV outputs drop them.
+- `needsVideoEncoding()` and `audioNeedingEncoding()` (audio stream positions) tell what's wrong.
+- `media.playback.hardware` (`MEDIA_PLAYBACK_HARDWARE`: null/`none` = CPU, `vaapi`, `nvenc`, `qsv`) encodes the repaired video on the GPU. Decoding stays on the CPU (`format=nv12,hwupload` for VAAPI/QSV), and the CRF maps to `-qp` (VAAPI, CQP), `-cq` (NVENC) or `-global_quality` (QSV). `HardwareAcceleration::uploadArguments()`, `upload()` and `quality()` give those arguments.
+- The source is never changed, so it can be kept untouched. When only the audio doesn't play, `makePlayable('movie-audio.m4a', audioOnly: true)` writes just the audio streams (playable ones copied, others as AAC); stream it next to the source with `open(['movie.mkv', 'movie-audio.m4a'])->stream()->tracksFrom([0], 1)`, video from variant 0 and audio tracks from variant 1. Audio only throws `InvalidMediaException` when the video doesn't play either.
+
 ## Scenes, clips and reels
 
 <!-- A reel from scenes -->
@@ -578,10 +597,15 @@ Media::fromDisk('renditions')->open($result->paths())->stream();
 
 new Ladder([new Rendition(1440, 9000), new Rendition(720, 3000)], VideoCodec::Hevc, preset: 'slow', audioBitrate: 160);
 Ladder::standard()->codec(VideoCodec::Av1)->hardware(HardwareAcceleration::Vaapi)->keyframeInterval(4);
+
+// smaller sizes only, streamed under the untouched source as the top variant
+$media = Media::fromDisk('videos')->open('movie.mp4');
+$media->ladder(new Ladder([new Rendition(720, 2800), new Rendition(480, 1400)])->alignToSource(), 'renditions/{height}p.mp4')->save();
+Media::fromDisk('videos')->open(['movie.mp4', 'renditions/720p.mp4', 'renditions/480p.mp4'])->stream();
 ```
 
 - **Sizes:** a `Rendition` is the short side and the bitrates (`new Rendition(720, 2800)`; the peak defaults to 7% above, the buffer to twice the target). Portrait video is scaled on its width, so 720p means 720 pixels wide. Renditions larger than the source are skipped, and a source smaller than every rendition gets the smallest one at its own size.
-- **Switching:** keyframes are forced every `keyframeInterval` seconds (`media.delivery.segment_duration` by default) with scene-cut keyframes off, so every rendition has keyframes at the same times and direct streams cut the same segments from each.
+- **Switching:** keyframes are forced every `keyframeInterval` seconds (`media.delivery.segment_duration` by default) with scene-cut keyframes off, so every rendition has keyframes at the same times and direct streams cut the same segments from each. `->alignToSource()` instead forces keyframes where the source's direct stream segments start (from its keyframe index, each segment `keyframeInterval` or longer) and caps other keyframes with `-g 65535`, so the source can be streamed unchanged next to its renditions; stream them with the same segment duration. `->keyframesAt([...seconds])` sets the times by hand.
 - **Codecs:** H.264 (default, `medium`), HEVC (tagged `hvc1`) or AV1 (SVT-AV1, preset 8, without a peak bitrate), always with AAC audio in MP4 with `+faststart`.
 - **Hardware:** `media.ladder.hardware` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc` or `qsv`), or `->hardware()` per ladder, decodes, scales (`scale_vaapi`, `scale_cuda`, `scale_qsv`) and encodes (`h264_vaapi`, `hevc_nvenc`, ...) on the GPU. VAAPI uses `media.ladder.vaapi_device` (`/dev/dri/renderD128`); the container needs access to it.
 - `ladder()` returns the ffmpeg builder, so `toDisk()`, `onProgress()`, `withContext()`, `timeout()` and save callbacks work as usual. The output pattern takes `{height}` and `{bitrate}`. HDR sources aren't tone mapped.
@@ -636,6 +660,7 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 | `delivery.cache_disk`, `.cache_path`, `.url_lifetime`, `.lock_timeout` | Where packaged segments are cached and how they're served (`media:prune` trims the cache) |
 | `delivery.look_ahead`, `.look_ahead_via`, `.look_ahead_connection`, `.look_ahead_queue` | Segments packaged ahead of the player, and where (`queue`, `defer` or `null`) |
 | `ladder.hardware`, `.vaapi_device` | GPU encoding for `ladder()` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc`, `qsv`) |
+| `playback.video_codecs`, `.audio_codecs`, `.video_codec`, `.crf`, `.preset`, `.audio_bitrate`, `.hardware` | What browsers play through a direct stream, and how `makePlayable()` re-encodes the rest |
 | `timeout` | Process timeout in seconds; keep it at or below the queue job's `$timeout` |
 | `log_channel` | Log channel, `false` to disable |
 | `ffmpeg_log_level` | ffmpeg's `-loglevel` (`error`); `warning` logs warnings of successful runs (`MEDIA_FFMPEG_LOG_LEVEL`) |
