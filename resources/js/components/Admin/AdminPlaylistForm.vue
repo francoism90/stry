@@ -115,7 +115,6 @@ const keyRotationDurationDisabled = computed(() => !form.encryption || !form.key
 
         <USeparator />
 
-
         <UFormField
           label="Disk"
           description="The filesystem disk playlists are stored on."
