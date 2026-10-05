@@ -5,46 +5,36 @@ declare(strict_types=1);
 namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
+use Foxws\Media\MediaFactory;
+use Foxws\Media\Probe\Chapter;
 use Illuminate\Support\Collection;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Throwable;
 
 class ExtractMediaChapters
 {
+    public function __construct(
+        protected MediaFactory $media,
+    ) {}
+
     /**
      * @return Collection<int, array{label: string, start_time: float, end_time: float}>
      */
     public function handle(Media $media): Collection
     {
-        // Initialize FFMpeg
-        $ffmpeg = FFMpeg::fromDisk($media->disk)->open(
-            $media->getPathRelativeToRoot(),
-        );
-
-        // Chapters aren't exposed by php-ffmpeg/laravel-ffmpeg, so we shell out
-        // to ffprobe directly via the underlying driver
         try {
-            $output = $ffmpeg->getFFProbe()->getFFProbeDriver()->command([
-                $ffmpeg->getPathfile(),
-                '-show_chapters',
-                '-print_format', 'json',
-                '-loglevel', 'error',
-            ]);
-        } catch (Throwable $e) {
-            return Collection::make();
-        }
-
-        $chapters = data_get(json_decode($output, true), 'chapters');
-
-        if (! is_array($chapters)) {
+            $chapters = $this->media->fromDisk($media->disk)
+                ->open($media->getPathRelativeToRoot())
+                ->probe()
+                ->chapters();
+        } catch (Throwable) {
             return Collection::make();
         }
 
         return Collection::make($chapters)
-            ->map(fn (array $chapter): array => [
-                'label' => (string) data_get($chapter, 'tags.title'),
-                'start_time' => (float) data_get($chapter, 'start_time', 0),
-                'end_time' => (float) data_get($chapter, 'end_time', 0),
+            ->map(fn (Chapter $chapter): array => [
+                'label' => (string) $chapter->title,
+                'start_time' => $chapter->start,
+                'end_time' => $chapter->end,
             ])
             ->filter(fn (array $chapter): bool => filled($chapter['label']) && $chapter['end_time'] > $chapter['start_time'])
             ->values();

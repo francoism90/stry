@@ -1,0 +1,36 @@
+<?php
+
+use Spatie\LaravelSettings\Migrations\SettingsMigration;
+use Spatie\LaravelSettings\Support\SettingsCacheFactory;
+
+return new class extends SettingsMigration
+{
+    public function up(): void
+    {
+        if ($this->migrator->exists('playlist.direct_play')) {
+            $this->moveDirectPlayIntoType();
+        }
+
+        // Cached settings hold the type as a PlaylistType, which no longer fits the PlaybackMode property.
+        foreach (app(SettingsCacheFactory::class)->all() as $settingsCache) {
+            $settingsCache->clear();
+        }
+    }
+
+    protected function moveDirectPlayIntoType(): void
+    {
+        $directPlay = false;
+
+        $this->migrator->update('playlist.direct_play', function (mixed $value) use (&$directPlay): mixed {
+            $directPlay = (bool) $value;
+
+            return $value;
+        });
+
+        if ($directPlay) {
+            $this->migrator->update('playlist.type', fn (): string => 'direct');
+        }
+
+        $this->migrator->delete('playlist.direct_play');
+    }
+};

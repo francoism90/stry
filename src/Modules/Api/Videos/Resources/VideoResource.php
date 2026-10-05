@@ -9,7 +9,6 @@ use Domain\Videos\Models\Video;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Api\Chapters\Resources\ChapterResource;
 use Modules\Api\Media\Resources\MediaResource;
-use Modules\Api\Playlists\Resources\PlaylistResource;
 use Modules\Api\Tags\Resources\TagResource;
 use Modules\Api\Transcodes\Resources\TranscodeResource;
 use Modules\Api\Users\Resources\UserResource;
@@ -45,8 +44,6 @@ class VideoResource extends JsonResource
             'captioned' => $this->captioned,
             'thumb' => $this->thumb,
             'thumb_srcset' => $this->thumb_srcset,
-            'storyboard_image' => $this->storyboard_image,
-            'storyboard_vtt' => $this->storyboard_vtt,
             'chapters_vtt' => $this->chapters_vtt,
             'duration' => $this->duration,
             'timestamp' => $this->timestamp,
@@ -64,7 +61,6 @@ class VideoResource extends JsonResource
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'user' => UserResource::make($this->whenLoaded('user')),
             'media' => MediaResource::collection($this->whenLoaded('media')),
-            'playlists' => PlaylistResource::collection($this->whenLoaded('playlists')),
             'transcodes' => TranscodeResource::collection($this->whenLoaded('transcodes')),
             'chapters' => ChapterResource::collection($this->whenLoaded('chapters')),
             'snapshot' => $this->whenAppended('snapshot'),

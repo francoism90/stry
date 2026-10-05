@@ -19,10 +19,8 @@ const props = defineProps<{
   progress?: number | undefined
   groups?: Group[] | undefined
   media?: Media[] | undefined
-  playlists?: Playlist[] | undefined
   transcodes?: Transcode[] | undefined
   chapterTypes?: OptionItem[] | undefined
-  playlistTypes?: OptionItem[] | undefined
   queue?: Video[] | undefined
   filter?: QueryFilter
   sort?: QueryValue
@@ -77,13 +75,12 @@ const videoChannel = `videos.${props.video.id}`
 
 useEcho(videoChannel, '.videos.updated', () => router.reload({ only: ['video', 'queue'] }))
 useEcho(videoChannel, '.videos.trashed', () => router.visit('/'))
-useEcho(videoChannel, ['.playlist.created', '.playlist.updated', '.playlist.deleted'], () =>
-  router.reload({ only: ['playlist', 'playlists'] }),
-)
 useEcho(videoChannel, ['.transcode.created', '.transcode.updated', '.transcode.deleted'], () =>
   router.reload({ only: ['transcodes'] }),
 )
-useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], () => router.reload({ only: ['media'] }))
+useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], () =>
+  router.reload({ only: ['media', 'playlist'] }),
+)
 </script>
 
 <template>
@@ -108,10 +105,8 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :video="video"
       :progress="progress"
       :media="media"
-      :playlists="playlists"
       :transcodes="transcodes"
       :chapter-types="chapterTypes"
-      :playlist-types="playlistTypes"
     />
 
     <UPageHeader

@@ -8,7 +8,6 @@ use Database\Factories\VideoFactory;
 use Domain\Chapters\Concerns\InteractsWithChapters;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
-use Domain\Playlists\Concerns\InteractsWithPlaylists;
 use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
@@ -17,6 +16,7 @@ use Domain\Tags\Collections\TagCollection;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
+use Domain\Videos\Concerns\InteractsWithDirectPlay;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
@@ -61,13 +61,13 @@ class Video extends Model implements HasMedia
     use HasTranslations;
     use HasUlidRouteKey;
     use InteractsWithChapters;
+    use InteractsWithDirectPlay;
     use InteractsWithGroups;
 
     /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
 
     use InteractsWithModelCache;
-    use InteractsWithPlaylists;
     use InteractsWithTranscodes;
     use InteractsWithUser;
     use Searchable;
@@ -169,30 +169,6 @@ class Video extends Model implements HasMedia
                 'text/srt',
                 'text/vtt',
             ]);
-
-        $this
-            ->addMediaCollection('storyboards')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->acceptsMimeTypes([
-                'application/octet-stream',
-                'application/x-webvtt',
-                'image/jpeg',
-                'text/plain',
-                'text/vtt',
-            ]);
-
-        $this
-            ->addMediaCollection('chapters')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->singleFile()
-            ->acceptsMimeTypes([
-                'application/octet-stream',
-                'application/x-webvtt',
-                'text/plain',
-                'text/vtt',
-            ]);
     }
 
     public function registerMediaConversions(?BaseMedia $media = null): void
@@ -285,11 +261,6 @@ class Video extends Model implements HasMedia
         return Config::integer('videos.import_batch_size', 10);
     }
 
-    public static function shouldCreatePlaylist(): bool
-    {
-        return Config::boolean('videos.create_playlists', false);
-    }
-
     public static function getCompletionThreshold(): float
     {
         return Config::float('videos.completion_threshold', 0.95);
@@ -317,21 +288,6 @@ class Video extends Model implements HasMedia
     public function getCaptions(): MediaCollection
     {
         return $this->getMedia('captions');
-    }
-
-    public function getStoryboardImage(): ?BaseMedia
-    {
-        return $this->getMedia('storyboards')->firstWhere('mime_type', 'image/jpeg');
-    }
-
-    public function getStoryboardVtt(): ?BaseMedia
-    {
-        return $this->getMedia('storyboards')->first(fn (BaseMedia $media) => $media->mime_type !== 'image/jpeg');
-    }
-
-    public function getChaptersVtt(): ?BaseMedia
-    {
-        return $this->getMedia('chapters')->first();
     }
 
     /**
@@ -409,19 +365,13 @@ class Video extends Model implements HasMedia
         return rescue(fn () => TemporaryUrls::make($media)->getSrcset('thumb'));
     }
 
-    public function storyboardImageUrl(): ?string
-    {
-        return $this->temporaryMediaUrl($this->getStoryboardImage());
-    }
-
-    public function storyboardVttUrl(): ?string
-    {
-        return $this->temporaryMediaUrl($this->getStoryboardVtt());
-    }
-
     public function chaptersVttUrl(): ?string
     {
-        return $this->temporaryMediaUrl($this->getChaptersVtt());
+        if ($this->chapters->isEmpty() || ! $this->canDirectPlay()) {
+            return null;
+        }
+
+        return $this->getDirectPlayChaptersUrl();
     }
 
     protected function temporaryMediaUrl(?BaseMedia $media, string $conversion = ''): ?string
@@ -495,26 +445,6 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): ?string => $this->thumbnailSrcset(),
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?string, never>
-     */
-    protected function storyboardImage(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->storyboardImageUrl(),
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?string, never>
-     */
-    protected function storyboardVtt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->storyboardVttUrl(),
         )->shouldCache();
     }
 

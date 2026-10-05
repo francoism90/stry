@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
-use Domain\Playlists\Models\Playlist;
 use Domain\Transcodes\Models\Transcode;
 use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\PruneStaleTagsCommand;
@@ -32,9 +31,13 @@ Schedule::command(PruneExpired::class, ['--hours=24'])
 Schedule::command(PruneCommand::class, [
     '--model' => [
         Group::class,
-        Playlist::class,
         Transcode::class,
     ]])
     ->withoutOverlapping()
     ->dailyAt('02:30')
+    ->runInBackground();
+
+Schedule::command('media:prune', ['--older-than' => 10080])
+    ->withoutOverlapping()
+    ->dailyAt('03:30')
     ->runInBackground();

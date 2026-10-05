@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Domain\Groups\Commands\ClearGroupCommand;
-use Domain\Playlists\Commands\ClearPlaylistCommand;
 use Domain\Transcodes\Commands\ClearTranscodeCommand;
 use Domain\Transcodes\Commands\CreateTranscodeCommand;
 use Domain\Transcodes\Commands\ImportTranscodeCommand;
 use Domain\Users\Commands\CreateUserCommand;
 use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
+use Domain\Videos\Commands\RegenerateVideoThumbnailsCommand;
 use Foundation\Http\Middlewares\AddCspHeaders;
 use Foundation\Http\Middlewares\AddHorizonCspNonce;
 use Foundation\Http\Middlewares\AddTelescopeCspNonce;
@@ -102,13 +102,13 @@ return Application::configure(basePath: $basePath)
     ])
     ->withCommands([
         ClearGroupCommand::class,
-        ClearPlaylistCommand::class,
         ClearTranscodeCommand::class,
         ImportTranscodeCommand::class,
         CreateTranscodeCommand::class,
         CreateUserCommand::class,
         ClearVideoCommand::class,
         ImportVideoCommand::class,
+        RegenerateVideoThumbnailsCommand::class,
         SyncScoutCommand::class,
     ])
     ->create();

@@ -14,6 +14,8 @@ class ProcessingSettings extends Settings
 
     public bool $extract_storyboard = true;
 
+    public bool $create_renditions = false;
+
     public static function group(): string
     {
         return 'processing';

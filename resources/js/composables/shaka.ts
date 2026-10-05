@@ -1,7 +1,7 @@
 import { usePlaylist } from '@/composables/playlist'
 import { useSettings } from '@/composables/settings'
 import { useVideo } from '@/composables/video'
-import { configureOverlay, createError, isCriticalError, loadShaka, resolveAssetUri } from '@/plugins/shaka'
+import { configureOverlay, isCriticalError, loadShaka, resolveAssetUri } from '@/plugins/shaka'
 import type { Playlist, Video } from '@/types'
 import { tryOnScopeDispose, useThrottleFn } from '@vueuse/core'
 import type shaka from 'shaka-player/dist/shaka-player.ui'
@@ -96,32 +96,6 @@ export function useShaka(
     }
   }
 
-  // Registers the storyboard VTT as a thumbnails track, rewriting its sprite reference to the
-  // current signed image URL first (the VTT and sprite have separate signed URLs, so resolving
-  // the VTT's bare filename reference against its own URL would sign it incorrectly).
-  const addStoryboardTrack = async (videoModel: Video | null): Promise<void> => {
-    if (!player.value || !videoModel?.storyboard_vtt || !videoModel.storyboard_image) {
-      return
-    }
-
-    try {
-      const response = await fetch(videoModel.storyboard_vtt)
-
-      // WebVTT cue text needs HTML-entity escaping, or a literal '&' mangles parsing from there on.
-      const escapedImageUrl = videoModel.storyboard_image.replaceAll('&', '&amp;')
-      const contents = (await response.text()).replace(/^(\S+)#xywh=/gm, `${escapedImageUrl}#xywh=`)
-      const blobUrl = URL.createObjectURL(new Blob([contents], { type: 'text/vtt' }))
-
-      try {
-        await player.value.addThumbnailsTrack(blobUrl, 'text/vtt')
-      } finally {
-        URL.revokeObjectURL(blobUrl)
-      }
-    } catch (err) {
-      console.error('Error adding storyboard thumbnails track:', err)
-    }
-  }
-
   // Adds the chapters sidecar VTT as a native text track (chapters menu, accessibility). Purely
   // additive to playback: the skip button and chapter list read `video.chapters` directly rather
   // than this track, since Shaka's chapters API only exposes {start, end, title}, not our `type`.
@@ -138,7 +112,7 @@ export function useShaka(
   }
 
   const load = async (playlist: Playlist | null, startTime?: number | null) => {
-    if (!player.value || !playlist || !playlist.valid) {
+    if (!player.value || !playlist) {
       return
     }
 
@@ -153,30 +127,7 @@ export function useShaka(
     ticker.value = startTime ?? null
     error.value = null
 
-    if (playlist.failed) {
-      error.value = createError('MEDIA_SOURCE_OPERATION_FAILED', 'MANIFEST')
-      return
-    }
-
-    if (playlist.expired) {
-      error.value = createError('EXPIRED', 'MANIFEST')
-      return
-    }
-
-    const config = player.value.getConfiguration()
-    const keyId = playlist.encryption_key_id?.toLowerCase() ?? null
-    const keyContent = playlist.encryption_key?.toLowerCase() ?? null
-
     try {
-      if (keyId && keyContent) {
-        player.value.configure({
-          ...config,
-          drm: {
-            clearKeys: { [keyId]: keyContent },
-          } as shaka.extern.DrmConfiguration,
-        })
-      }
-
       await player.value.load(assetUri, startTime)
 
       const textTracks = player.value.getTextTracks()
@@ -185,7 +136,6 @@ export function useShaka(
         player.value.selectTextTrack(textTracks[0])
       }
 
-      await addStoryboardTrack(toValue(video) as Video | null)
       await addChaptersTrack(toValue(video) as Video | null)
 
       scheduleAssetRefresh(playlist)
@@ -195,7 +145,7 @@ export function useShaka(
   }
 
   const replace = async (playlist: Playlist | null) => {
-    if (!player.value || !playlist || !playlist.valid) {
+    if (!player.value || !playlist) {
       return
     }
 

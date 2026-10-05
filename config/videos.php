@@ -19,16 +19,16 @@ return [
 
     'transcode_disk' => (string) env('VIDEO_TRANSCODE_DISK', 'cache'),
 
+    'thumbnails_disk' => (string) env('VIDEO_THUMBNAILS_DISK', 'conversions'),
+
     /*
     |--------------------------------------------------------------------------
-    | Playlist Configuration
+    | Playback Configuration
     |--------------------------------------------------------------------------
     |
-    | The following options control playlist creation and completion thresholds.
+    | The share of a video that has to be watched to count it as completed.
     |
     */
-
-    'create_playlists' => (bool) env('VIDEO_CREATE_PLAYLISTS', false),
 
     'completion_threshold' => (float) env('VIDEO_COMPLETION_THRESHOLD', 0.98),
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Chapters\Concerns;
 
 use Domain\Chapters\Models\Chapter;
+use Foxws\Media\Delivery\Marker;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait InteractsWithChapters
@@ -27,5 +28,21 @@ trait InteractsWithChapters
                 && $time >= $chapter->start_time
                 && $time < $chapter->end_time,
         );
+    }
+
+    /**
+     * @return list<Marker>
+     */
+    public function getChapterMarkers(): array
+    {
+        return array_values($this->chapters
+            ->filter(fn (Chapter $chapter) => (float) $chapter->start_time >= 0 && (float) $chapter->end_time >= (float) $chapter->start_time)
+            ->map(fn (Chapter $chapter) => new Marker(
+                start: (float) $chapter->start_time,
+                end: (float) $chapter->end_time,
+                title: $chapter->label,
+                class: $chapter->type->value,
+            ))
+            ->all());
     }
 }

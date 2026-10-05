@@ -5,43 +5,39 @@ declare(strict_types=1);
 namespace Domain\Media\Actions;
 
 use Domain\Media\Models\Media;
-use FFMpeg\FFProbe\DataMapping\Stream;
-use FFMpeg\Media\AbstractStreamableMedia;
+use Foxws\Media\MediaFactory;
+use Foxws\Media\Probe\Stream;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class SetMediaStreams
 {
+    public function __construct(
+        protected MediaFactory $media,
+    ) {}
+
     public function handle(Media $media): void
     {
         if (! Str::startsWith($media->mime_type, ['audio/', 'video/'])) {
             return;
         }
 
-        // Parse the media streams
-        $streams = FFMpeg::fromDisk($media->disk)
+        $probe = $this->media
+            ->fromDisk($media->disk)
             ->open($media->getPathRelativeToRoot())
-            ->getStreams();
-
-        $source = FFMpeg::fromDisk($media->disk)
-            ->open($media->getPathRelativeToRoot())
-            ->getDriver()
-            ->get();
-
-        $format = $source instanceof AbstractStreamableMedia ? $source->getFormat()->all() : [];
+            ->probe();
 
         // Map the streams to only include relevant keys
         $keys = $this->getStreamKeys();
 
         // Collect the stream items
-        $items = Collection::make($streams)
-            ->map(fn (Stream $stream) => collect($stream->all())->only($keys)->toArray())
+        $items = Collection::make($probe->streams)
+            ->map(fn (Stream $stream) => collect($stream->toArray())->only($keys)->toArray())
             ->filter()
             ->values();
 
         // Fill missing key values in each stream from the format
-        Collection::make($format)
+        Collection::make($probe->format()->raw)
             ->only($keys)
             ->each(function ($value, $key) use ($items) {
                 $items->transform(function ($item) use ($key, $value) {

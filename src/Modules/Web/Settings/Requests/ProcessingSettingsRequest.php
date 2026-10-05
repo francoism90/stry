@@ -23,6 +23,7 @@ class ProcessingSettingsRequest extends FormRequest
             'extract_captions' => ['sometimes', 'boolean'],
             'extract_chapters' => ['sometimes', 'boolean'],
             'extract_storyboard' => ['sometimes', 'boolean'],
+            'create_renditions' => ['sometimes', 'boolean'],
         ];
     }
 }

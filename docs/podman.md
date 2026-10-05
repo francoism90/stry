@@ -129,38 +129,3 @@ This setting applies to the whole host, not just one container. Every rootless P
 php artisan podman:generate production
 lpod install production/horizon.quadlets --replace
 ```
-
-## Storage sizing (tmpfs)
-
-By default, `horizon.quadlets` mounts `/cache` from the `{app}-cache` volume, which is stored on disk. `laravel-shaka` and `laravel-streamer` use it as temporary space while packaging a video, then upload the result to S3. Nothing in `/cache` needs to survive a restart, so you can use a `tmpfs` mount instead. That keeps this work in RAM: it's faster and doesn't wear out your SSD, but it uses memory that every other service on the machine also needs.
-
-The template already contains a commented-out `Tmpfs=` line, next to the `Volume=` line it replaces:
-
-```ini
-# Tmpfs=/cache:rw,size=12g,mode=1777
-Volume={{application}}-cache.volume:/cache:rw,z
-```
-
-Choosing the size means balancing it against everything else on the machine: PostgreSQL, Valkey, Typesense, RustFS and the app itself. If you set `size=` larger than the memory that's actually free, it doesn't protect you at all (see [laravel-shaka's storage guards docs](https://github.com/foxws/laravel-shaka/blob/main/docs/CONFIGURATION.md#storage-space-guards) for why).
-
-The values below are starting points for running everything on a single machine. Measure what your own jobs really use (run `du -sh` on the temporary folder of a finished job) and adjust:
-
-| RAM   | tmpfs `size=` | Min free  | maxProcesses\* |
-| ----- | ------------- | --------- | -------------- |
-| 8 GB  | -             | -         | -              |
-| 16 GB | `6g`          | `1 GiB`   | 3              |
-| 24 GB | `10g`         | `1.5 GiB` | 5              |
-| 32 GB | `14g`         | `2 GiB`   | 7              |
-
-With 8 GB of RAM, skip tmpfs and keep the disk volume. There's rarely enough memory left over next to PostgreSQL, Valkey, Typesense and RustFS.
-
-\* Assumes about 1.5 GB of temporary space per packaging job running at the same time (with `temporary_files_size_multiplier` applied). Recalculate this for the renditions you actually produce, and set it in the queue's supervisor config, so that the number of workers times the largest expected job stays well below the tmpfs size.
-
-To use it, uncomment `Tmpfs=`, remove the `Volume=` line below it, and set these values. `PACKAGER_TEMPORARY_MIN_FREE` is in bytes, not GiB:
-
-```env
-PACKAGER_TEMPORARY_FILES_ROOT=/cache/temp/packager
-PACKAGER_TEMPORARY_MIN_FREE=1610612736   # 1.5 GiB, for the 24 GB row above
-```
-
-Then generate the files again and reinstall, as above.

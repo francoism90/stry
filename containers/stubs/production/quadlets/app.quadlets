@@ -13,6 +13,8 @@ Environment=PUID={{appUid}}
 Environment=PGID={{appGid}}
 UserNS=keep-id
 ShmSize=128m
+AddDevice=/dev/dri:/dev/dri
+GroupAdd=keep-groups
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume=/mnt/media/videos:/media:rw,z,U
 Volume=/mnt/media/import:/import:rw,z,U

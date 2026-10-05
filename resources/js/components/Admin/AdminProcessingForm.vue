@@ -11,6 +11,7 @@ const form = useForm(update(), {
   extract_captions: true,
   extract_chapters: true,
   extract_storyboard: true,
+  create_renditions: false,
 })
 
 onMounted(() =>
@@ -20,6 +21,7 @@ onMounted(() =>
         extract_captions: data.extract_captions,
         extract_chapters: data.extract_chapters,
         extract_storyboard: data.extract_storyboard,
+        create_renditions: data.create_renditions,
       })
       form.reset()
       loaded.value = true
@@ -55,7 +57,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 3"
+      v-for="i in 4"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -103,13 +105,25 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
         <USeparator />
 
         <UFormField
-          label="Extract storyboard"
-          description="Automatically generate a storyboard preview sprite for a video."
+          label="Extract thumbnails"
+          description="Automatically generate seek preview thumbnails for a video."
           name="extract_storyboard"
           :error="form.errors.extract_storyboard"
           :class="fieldClass"
         >
           <USwitch v-model="form.extract_storyboard" />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Create renditions"
+          description="Offer smaller sizes of a video, encoded while it's watched."
+          name="create_renditions"
+          :error="form.errors.create_renditions"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.create_renditions" />
         </UFormField>
       </template>
     </UPageCard>

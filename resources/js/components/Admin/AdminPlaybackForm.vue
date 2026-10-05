@@ -1,0 +1,154 @@
+<script setup lang="ts">
+import { show, update } from '@/actions/Modules/Web/Settings/Controllers/PlaybackSettingsController'
+import { useLocale } from '@/composables/locale'
+import type { PlaybackSettings, PlaybackSettingsResponse } from '@/types'
+import { useForm, useHttp } from '@inertiajs/vue3'
+import { computed, onMounted, ref } from 'vue'
+
+const loaded = ref(false)
+const http = useHttp<object, PlaybackSettingsResponse>({})
+const { languages } = useLocale()
+const renditionOptions = ref<PlaybackSettingsResponse['rendition_options']>([])
+
+const form = useForm<PlaybackSettings>(update(), {
+  text_language: 'en',
+  encryption: false,
+  refresh_before: 0,
+  renditions: [],
+})
+
+onMounted(() =>
+  http.get(show.url(), {
+    onSuccess: (data) => {
+      const { rendition_options, ...settings } = data
+
+      form.defaults(settings)
+      form.reset()
+      renditionOptions.value = rendition_options
+      loaded.value = true
+    },
+  }),
+)
+
+const onSubmit = () => {
+  if (!loaded.value) return
+
+  form.submit({
+    preserveScroll: true,
+    preserveState: true,
+  })
+}
+
+defineExpose({
+  submit: onSubmit,
+  get processing() {
+    return form.processing
+  },
+  get recentlySuccessful() {
+    return form.recentlySuccessful
+  },
+})
+
+const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
+
+// Checkbox groups take string values, while the heights are numbers
+const renditionItems = computed(() =>
+  renditionOptions.value.map(({ value, label }) => ({ value: String(value), label })),
+)
+
+const renditions = computed({
+  get: () => form.renditions.map(String),
+  set: (values: string[]) => (form.renditions = values.map(Number)),
+})
+</script>
+
+<template>
+  <div
+    v-if="!loaded"
+    class="flex flex-col gap-3"
+  >
+    <USkeleton
+      v-for="i in 4"
+      :key="i"
+      class="h-10 w-full rounded-md"
+    />
+  </div>
+
+  <UForm
+    v-else
+    :state="form"
+    class="flex flex-col gap-4"
+    loading-auto
+    @submit="onSubmit"
+  >
+    <UPageCard
+      title="Playback"
+      description="How videos are streamed from their clips."
+      variant="naked"
+      orientation="vertical"
+      :ui="{
+        body: 'flex w-full flex-col gap-3',
+      }"
+    >
+      <template #body>
+        <UFormField
+          label="Text language"
+          description="Subtitle language for captions that don't have one."
+          name="text_language"
+          :error="form.errors.text_language"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.text_language"
+            class="w-56"
+            :items="languages"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Encryption"
+          description="Encrypt segments per request with Clear Key (DASH) or SAMPLE-AES-CTR (HLS)."
+          name="encryption"
+          :error="form.errors.encryption"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.encryption" />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Refresh before"
+          description="How many seconds before the signed stream URLs expire the player fetches new ones."
+          name="refresh_before"
+          :error="form.errors.refresh_before"
+          :class="fieldClass"
+        >
+          <UInputNumber
+            v-model="form.refresh_before"
+            class="w-56"
+            :min="0"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Renditions"
+          description="Smaller sizes offered next to the original when Processing creates renditions, so players can switch to them on slow connections. Only sizes smaller than the original are offered, and each segment is encoded the first time it's watched."
+          name="renditions"
+          :error="form.errors.renditions"
+          :class="fieldClass"
+        >
+          <UCheckboxGroup
+            v-model="renditions"
+            :items="renditionItems"
+            class="w-56"
+          />
+        </UFormField>
+      </template>
+    </UPageCard>
+  </UForm>
+</template>

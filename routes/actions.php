@@ -10,7 +10,7 @@ use Modules\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use Modules\Web\Profiles\Controllers\SwitchProfileController;
 use Modules\Web\Settings\Controllers\ApplicationSettingsController;
 use Modules\Web\Settings\Controllers\ChapterSettingsController;
-use Modules\Web\Settings\Controllers\PlaylistSettingsController;
+use Modules\Web\Settings\Controllers\PlaybackSettingsController;
 use Modules\Web\Settings\Controllers\ProcessingSettingsController;
 use Modules\Web\Shuffle\Controllers\ShuffleController;
 use Modules\Web\Users\Controllers\UserSettingsController;
@@ -24,7 +24,7 @@ use Modules\Web\Videos\Controllers\VideoTranscodedController;
 Route::prefix('/settings')->name('settings.')->group(function () {
     Route::patch('/', UserSettingsController::class)->name('update');
     Route::singleton('application', ApplicationSettingsController::class)->only(['show', 'update']);
-    Route::singleton('playlist', PlaylistSettingsController::class)->only(['show', 'update']);
+    Route::singleton('playback', PlaybackSettingsController::class)->only(['show', 'update']);
     Route::singleton('chapters', ChapterSettingsController::class)->only(['show', 'update']);
     Route::singleton('processing', ProcessingSettingsController::class)->only(['show', 'update']);
 });

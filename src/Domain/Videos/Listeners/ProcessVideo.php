@@ -8,8 +8,7 @@ use Domain\Videos\Events\VideoHasBeenAddedEvent;
 use Domain\Videos\Events\VideoHasBeenUpdatedEvent;
 use Domain\Videos\Pipes\ExtractVideoCaptions;
 use Domain\Videos\Pipes\ExtractVideoChapters;
-use Domain\Videos\Pipes\ExtractVideoStoryboard;
-use Domain\Videos\Pipes\GenerateVideoChapters;
+use Domain\Videos\Pipes\ExtractVideoThumbnails;
 use Domain\Videos\Pipes\MarkVideoAsVerified;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
@@ -62,8 +61,7 @@ class ProcessVideo implements ShouldQueueAfterCommit
             ->through([
                 ExtractVideoCaptions::class,
                 ExtractVideoChapters::class,
-                ExtractVideoStoryboard::class,
-                GenerateVideoChapters::class,
+                ExtractVideoThumbnails::class,
                 MarkVideoAsVerified::class,
             ])
             ->thenReturn();
