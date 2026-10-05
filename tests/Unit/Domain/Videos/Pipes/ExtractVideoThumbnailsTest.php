@@ -35,7 +35,7 @@ function createThumbnailsClip(Video $video): Domain\Media\Models\Media
     ]);
 }
 
-it('samples the best clip from its keyframes into sprite sheets kept on the clip', function () {
+it('samples every frame of a short clip into sprite sheets kept on the clip', function () {
     $video = Video::factory()->create();
     $clip = createThumbnailsClip($video);
 
@@ -46,9 +46,36 @@ it('samples the best clip from its keyframes into sprite sheets kept on the clip
     expect($thumbnails)->not->toBeNull()
         ->and($thumbnails->disk->name())->toBe('conversions')
         ->and($thumbnails->sprites)->toBe(["{$clip->uuid}/thumbnails_001.jpg"])
-        ->and($thumbnails->interval)->toBe(5.0);
+        ->and([$thumbnails->interval, $thumbnails->count])->toBe([1.0, 120]);
     Storage::disk('conversions')->assertExists($thumbnails->paths());
+    Media::assertNotRan(Executable::FFMpeg, fn (array $arguments) => in_array('-skip_frame', $arguments, true));
+});
+
+it('samples only the keyframes of a long clip', function () {
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 3000)]);
+    $video = Video::factory()->create();
+    $clip = createThumbnailsClip($video);
+
+    app(ExtractVideoThumbnails::class)->handle($video, fn (Video $video) => $video);
+
+    expect($clip->fresh()->getThumbnails()->interval)->toBe(10.0);
     Media::assertRan(Executable::FFMpeg, fn (array $arguments) => in_array('-skip_frame', $arguments, true));
+});
+
+it('replaces the thumbnails of a clip and deletes the sheets it no longer uses', function () {
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 300)]);
+    $video = Video::factory()->create();
+    $clip = createThumbnailsClip($video);
+    $stale = "{$clip->uuid}/thumbnails_004.jpg";
+    Storage::disk('conversions')->put($stale, 'old');
+    $clip->setCustomProperty('thumbnails', ['disk' => 'conversions', 'sprites' => ["{$clip->uuid}/thumbnails_001.jpg", $stale], 'vtt' => "{$clip->uuid}/thumbnails.vtt"])->save();
+
+    $thumbnails = app(ExtractVideoThumbnails::class)->extract($clip);
+
+    expect($thumbnails?->sprites)->toBe(["{$clip->uuid}/thumbnails_001.jpg"])
+        ->and($clip->fresh()->getThumbnails()?->sprites)->toBe($thumbnails?->sprites);
+    Storage::disk('conversions')->assertExists($thumbnails->paths());
+    Storage::disk('conversions')->assertMissing($stale);
 });
 
 it('skips clips that already have thumbnails, videos without clips, or when extraction is off', function (bool $hasThumbnails, bool $hasClip, bool $enabled) {

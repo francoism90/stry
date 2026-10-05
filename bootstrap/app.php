@@ -10,6 +10,7 @@ use Domain\Transcodes\Commands\ImportTranscodeCommand;
 use Domain\Users\Commands\CreateUserCommand;
 use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
+use Domain\Videos\Commands\RegenerateVideoThumbnailsCommand;
 use Foundation\Http\Middlewares\AddCspHeaders;
 use Foundation\Http\Middlewares\AddHorizonCspNonce;
 use Foundation\Http\Middlewares\AddTelescopeCspNonce;
@@ -109,6 +110,7 @@ return Application::configure(basePath: $basePath)
         CreateUserCommand::class,
         ClearVideoCommand::class,
         ImportVideoCommand::class,
+        RegenerateVideoThumbnailsCommand::class,
         SyncScoutCommand::class,
     ])
     ->create();
