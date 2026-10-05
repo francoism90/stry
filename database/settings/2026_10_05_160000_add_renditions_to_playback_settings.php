@@ -6,6 +6,8 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('playback.renditions', []);
+        if (! $this->migrator->exists('playback.renditions')) {
+            $this->migrator->add('playback.renditions', []);
+        }
     }
 };
