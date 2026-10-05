@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fe2dd151a9a49024e6a82456f957e0d",
+    "content-hash": "8ac8fec033d787db940bc40bde326885",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1424,16 +1424,16 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:foxws/laravel-media.git",
-                "reference": "453284155f76e8b0b7f689a7a5d4fdd5db003842"
+                "url": "https://github.com/foxws/laravel-media.git",
+                "reference": "cdf916008b40d36a1a91ed526d3b0775a78b347d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/453284155f76e8b0b7f689a7a5d4fdd5db003842",
-                "reference": "453284155f76e8b0b7f689a7a5d4fdd5db003842",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/cdf916008b40d36a1a91ed526d3b0775a78b347d",
+                "reference": "cdf916008b40d36a1a91ed526d3b0775a78b347d",
                 "shasum": ""
             },
             "require": {
@@ -1462,16 +1462,15 @@
             "suggest": {
                 "league/flysystem-aws-s3-v3": "Required for concurrent and multipart uploads to S3 disks (^3.35)."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Foxws\\Media\\MediaServiceProvider"
-                    ],
                     "aliases": {
                         "Media": "Foxws\\Media\\Facades\\Media"
-                    }
+                    },
+                    "providers": [
+                        "Foxws\\Media\\MediaServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -1479,55 +1478,7 @@
                     "Foxws\\Media\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Foxws\\Media\\Tests\\": "tests/",
-                    "Workbench\\App\\": "workbench/app/",
-                    "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-                    "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@clear",
-                    "@prepare"
-                ],
-                "prepare": [
-                    "@php vendor/bin/testbench package:discover --ansi"
-                ],
-                "build": [
-                    "@php vendor/bin/testbench workbench:build --ansi"
-                ],
-                "serve": [
-                    "Composer\\Config::disableProcessTimeout",
-                    "@build",
-                    "@php vendor/bin/testbench serve --ansi"
-                ],
-                "lint": [
-                    "vendor/bin/pint --parallel"
-                ],
-                "lint:check": [
-                    "vendor/bin/pint --parallel --test"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse --memory-limit=1G"
-                ],
-                "test:types": [
-                    "vendor/bin/pest --type-coverage --min=100"
-                ],
-                "test:unit": [
-                    "vendor/bin/pest --parallel"
-                ],
-                "test": [
-                    "@analyse",
-                    "@lint:check",
-                    "@test:types",
-                    "@test:unit"
-                ],
-                "clear": [
-                    "@php vendor/bin/testbench package:purge-skeleton --ansi"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1553,16 +1504,16 @@
                 "video"
             ],
             "support": {
-                "source": "https://github.com/foxws/laravel-media/tree/main",
-                "issues": "https://github.com/foxws/laravel-media/issues"
+                "issues": "https://github.com/foxws/laravel-media/issues",
+                "source": "https://github.com/foxws/laravel-media/tree/0.1.0"
             },
             "funding": [
                 {
-                    "type": "github",
-                    "url": "https://github.com/foxws"
+                    "url": "https://github.com/foxws",
+                    "type": "github"
                 }
             ],
-            "time": "2026-10-04T23:47:27+00:00"
+            "time": "2026-10-05T00:12:51+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
@@ -19185,9 +19136,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "foxws/laravel-media": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

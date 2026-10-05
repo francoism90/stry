@@ -19,7 +19,7 @@
         "foxws/laravel-ab-av1": "^2.0.1",
         "foxws/laravel-ddd": "^0.0.5",
         "foxws/laravel-essentials": "^0.0.3",
-        "foxws/laravel-media": "dev-main",
+        "foxws/laravel-media": "^0.1",
         "foxws/laravel-modelcache": "^1.4.3",
         "foxws/laravel-podman": "^5.3.0",
         "foxws/laravel-pwa": "^2.5.3",
@@ -170,12 +170,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "name": "laravel-media",
-            "type": "vcs",
-            "url": "https://github.com/foxws/laravel-media"
-        }
-    ]
+    "prefer-stable": true
 }

@@ -64,8 +64,6 @@ jobs:
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-interaction --no-progress
-              env:
-                  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
             - name: Render Podman quadlets
               run: |
