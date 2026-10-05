@@ -119,6 +119,21 @@ it('finds the skippable chapter that contains a given time', function () {
         ->and($video->getSkippableChapterAt(30)?->type)->toBeNull();
 });
 
+it('maps valid chapters to stream markers', function () {
+    $video = Video::factory()->create();
+
+    Chapter::factory()->intro()->create(['video_id' => $video->getKey(), 'label' => 'Intro', 'start_time' => 0, 'end_time' => 30]);
+    Chapter::factory()->create(['video_id' => $video->getKey(), 'type' => ChapterType::Scene, 'start_time' => 60, 'end_time' => 45]);
+
+    $markers = $video->load('chapters')->getChapterMarkers();
+
+    expect($markers)->toHaveCount(1)
+        ->and($markers[0]->start)->toBe(0.0)
+        ->and($markers[0]->end)->toBe(30.0)
+        ->and($markers[0]->title)->toBe('Intro')
+        ->and($markers[0]->class)->toBe(ChapterType::Intro->value);
+});
+
 it('treats the chapter start as inclusive and the end as exclusive', function () {
     $video = Video::factory()->create();
 

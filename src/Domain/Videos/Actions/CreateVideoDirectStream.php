@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Chapters\Enums\ChapterType;
-use Domain\Chapters\Models\Chapter;
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Settings\PlaybackSettings;
 use Foxws\Media\Delivery\DirectStream;
-use Foxws\Media\Delivery\Marker;
 use Foxws\Media\Encryption\EncryptionKey;
 use Foxws\Media\MediaFactory;
 use Illuminate\Support\Facades\Config;
@@ -54,14 +52,6 @@ class CreateVideoDirectStream
         return $stream->withThumbnails($clip->getThumbnails())
             ->withTrickPlay()
             ->chapterTrackFrom(null, ChapterType::MainEvent->label())
-            ->withMarkers(array_values($video->chapters
-                ->filter(fn (Chapter $chapter) => (float) $chapter->start_time >= 0 && (float) $chapter->end_time >= (float) $chapter->start_time)
-                ->map(fn (Chapter $chapter) => new Marker(
-                    start: (float) $chapter->start_time,
-                    end: (float) $chapter->end_time,
-                    title: $chapter->label,
-                    class: $chapter->type->value,
-                ))
-                ->all()));
+            ->withMarkers($video->getChapterMarkers());
     }
 }
