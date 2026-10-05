@@ -89,7 +89,6 @@ return [
             'after_commit' => false,
         ],
 
-        // Direct play look-ahead: workers block on Redis, so a job starts as soon as it's pushed.
         'redis-media' => [
             'driver' => 'redis',
             'connection' => env('REDIS_MEDIA_QUEUE_CONNECTION', 'default'),
