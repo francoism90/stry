@@ -14,11 +14,10 @@
         "spatie/laravel-translatable",
         "foxws/laravel-essentials",
         "foxws/laravel-podman",
-        "foxws/laravel-shaka",
-        "foxws/laravel-streamer",
         "foxws/laravel-ddd",
         "foxws/laravel-relatable",
-        "foxws/laravel-ab-av1"
+        "foxws/laravel-ab-av1",
+        "foxws/laravel-media"
     ],
     "sail": false,
     "skills": [
@@ -38,13 +37,12 @@
         "laravel-ab-av1-development",
         "laravel-ddd-development",
         "laravel-essentials-development",
+        "laravel-media-development",
         "podman-lpod",
         "podman-presets",
         "podman-s3",
         "podman-upgrade",
         "relatable-development",
-        "laravel-shaka-development",
-        "laravel-streamer-development",
         "medialibrary-development",
         "laravel-permission-development",
         "responsecache-development",

@@ -204,6 +204,23 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 Vue components must have a single root element.
 - IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
+=== foxws/laravel-media/core rules ===
+
+# Laravel Media
+
+This application uses `foxws/laravel-media` to probe, process and package audio and video with ffprobe and ffmpeg on any Laravel disk.
+
+- Use the `Foxws\Media\Facades\Media` facade (`Media::fromDisk($disk)->open($path)`). Don't add pbmedia/laravel-ffmpeg or php-ffmpeg, and don't shell out to ffmpeg or ffprobe directly.
+- Read stream, format and chapter details from `->probe()` instead of parsing ffprobe output yourself, and validate uploads with the `Foxws\Media\Rules\MediaFile` rule rather than trusting extensions or MIME types.
+- Use the filter classes in `Foxws\Media\Filters` with `addFilter()` (or `Custom::video()`/`Custom::audio()`) instead of raw `-vf`/`-af` arguments, and pass other ffmpeg options the package has no method for through `addArgs()`/`addInputArgs()` rather than building a separate command.
+- Temporary files are cleaned up after every queue job automatically; schedule `media:clean` hourly for leftovers of crashed workers, and use Laravel's `WithoutOverlapping` middleware for jobs that must not process the same media at once.
+- Serve direct HLS and DASH (with WebVTT subtitles through `withSubtitles()` and seek thumbnails through `withThumbnails()`, chapters, scenes and other markers through `withChapters()`, `withScenes()` and `withMarkers()`, with the chapters as WebVTT for seek bars at `MediaStream::chaptersUrl()`) (`withTrickPlay()` adds I-frame playlists and DASH trick mode), every audio stream as an audio track to pick by language (`withAudioStreams()` limits them) with `MediaStream::define()` and `Route::mediaStream()` instead of hand-written playlist and segment controllers (`withEncryption()` encrypts them per request: AES-128 for MPEG-TS, ClearKey CENC for CMAF and DASH), and schedule `media:prune` daily to trim the segment cache. Direct streams cache probes and keyframe indexes per file version, so only the first request for a file runs ffprobe. They also package the next segments ahead of their requests (`media.delivery.look_ahead`, on a queue or after the response), so run a queue worker for the look-ahead queue.
+- Encode adaptive renditions with `$opener->ladder(Ladder::standard())` in a queued job (one ffmpeg run, aligned keyframes, optional GPU encoding through `media.ladder.hardware`) instead of one encode per size, then stream or package the results.
+- Catch `ProcessFailedException` in jobs and use `isRetryable()` to decide between `release()` and `fail()`; give long encodes a `->timeout()` below the job's `$timeout`.
+- In tests, call `Media::fake()` (with `FakeProbe` data when needed) and `Storage::fake()` for the disks, then use `Media::assertSaved()`/`assertRan()`; never run the real executables.
+
+When streaming HLS or DASH straight from stored files, packaging into HLS or DASH, probing media, extracting frames, subtitles or thumbnail sprites, detecting scenes, building reels, encoding renditions, clipping or exporting results to disks, invoke `laravel-media-development` for detailed rules.
+
 === spatie/laravel-medialibrary/core rules ===
 
 ## Media Library

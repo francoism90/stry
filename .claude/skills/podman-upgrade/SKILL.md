@@ -1,6 +1,6 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman to v5 (from v4, or from v3 through v4). v5 lets services sleep with the on-demand app, renames the frankenphp-octane preset to production, moves the on-demand socket into an "ondemand" preset with an idle check (podman:idle), and must be installed without --dev. v4 made on-demand the default (systemd/ folder, BindsTo= to PartOf=, app health check, frankenphp-octane (now production) worker and scheduler changes). Covers updating published presets in containers/stubs without losing customizations, and reinstalling with lpod. Use when upgrading the package, or when published presets still use BindsTo=, lack StopWhenUnneeded={{ondemand}}, keep ondemand.socket in their systemd/ folder, or a frankenphp-octane preset still exists.
+description: Upgrade foxws/laravel-podman to v5 (from v4, or from v3 through v4). v5 lets services sleep with the on-demand app, renames the frankenphp-octane preset to production, moves the on-demand socket into an "ondemand" preset with an idle check (podman:idle), and must be installed without --dev when production runs in its containers. v4 made on-demand the default (systemd/ folder, BindsTo= to PartOf=, app health check, frankenphp-octane (now production) worker and scheduler changes). Covers updating published presets in containers/stubs without losing customizations, and reinstalling with lpod. Use when upgrading the package, or when published presets still use BindsTo=, lack StopWhenUnneeded={{ondemand}}, keep ondemand.socket in their systemd/ folder, or a frankenphp-octane preset still exists.
 ---
 
 # Upgrading laravel-podman
@@ -15,7 +15,7 @@ v5 lets the whole stack sleep. Once the app is idle and `podman:idle` finds no w
 
 ### 1. Update the package and config
 
-- Move the package out of `require-dev`: `composer remove foxws/laravel-podman --dev` and `composer require foxws/laravel-podman:^5.0`. Production images are built with `--no-dev`, and `podman:idle` has to exist inside them.
+- If production runs in the package's containers (the `production` preset or a custom one built with `--no-dev`), move the package out of `require-dev`: `composer remove foxws/laravel-podman --dev` and `composer require foxws/laravel-podman:^5.0`. `podman:idle` has to exist inside those images. If the app only uses it for development and deploys elsewhere, keep it in `require-dev`: `composer require foxws/laravel-podman:^5.0 --dev`.
 - If `config/podman.php` is published, add the `idle` block from `vendor/foxws/laravel-podman/config/podman.php`.
 - If `presets` or `PODMAN_DEFAULT_PRESETS` is set, add `ondemand` to it.
 
