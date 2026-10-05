@@ -56,7 +56,9 @@ return [
     |
     | Where $opener->ladder() decodes, scales and encodes: "none" (the CPU),
     | "vaapi" (Intel and AMD on Linux, through the render device), "nvenc"
-    | (NVIDIA) or "qsv" (Intel Quick Sync). A Ladder can override it.
+    | (NVIDIA) or "qsv" (Intel Quick Sync). A Ladder can override it. VAAPI and
+    | Quick Sync open vaapi_device: renderD128 is the first GPU, renderD129 the
+    | second. When a GPU can't be opened, the CPU encodes instead.
     |
     */
 
@@ -88,6 +90,9 @@ return [
     | turns it off. Streams on a sync queue, or on disks without a configured
     | name, are packaged after the response.
     |
+    | Renditions encoded on request use hardware ("none", "vaapi", "nvenc" or
+    | "qsv"), or the ladder's hardware when it's null.
+    |
     */
 
     'delivery' => [
@@ -102,6 +107,34 @@ return [
         'look_ahead_via' => env('MEDIA_DELIVERY_LOOK_AHEAD_VIA', 'queue'),
         'look_ahead_connection' => env('MEDIA_DELIVERY_LOOK_AHEAD_CONNECTION', 'redis-media'),
         'look_ahead_queue' => env('MEDIA_DELIVERY_LOOK_AHEAD_QUEUE', 'media'),
+        'hardware' => env('MEDIA_DELIVERY_HARDWARE'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Playback
+    |--------------------------------------------------------------------------
+    |
+    | The codecs browsers play through a direct stream, by their ffprobe name.
+    | H.264 also has to be 8-bit 4:2:0, and the others 4:2:0 at 8 or 10 bits.
+    | Remove "hevc" for Firefox, which only decodes it experimentally. Streams
+    | that don't play are re-encoded by $opener->makePlayable(): video with
+    | video_codec ("libx264", "libx265" or "libsvtav1") at the crf and preset
+    | (the codec's defaults when null), audio as AAC at audio_bitrate kbit/s.
+    | Set hardware to "vaapi", "nvenc" or "qsv" to encode that video on the
+    | GPU (decoding stays on the CPU); null, "none" or a GPU that can't be
+    | opened encodes on the CPU.
+    |
+    */
+
+    'playback' => [
+        'video_codecs' => explode(',', (string) env('MEDIA_PLAYBACK_VIDEO_CODECS', 'hevc,h264,av1,vp9')),
+        'audio_codecs' => explode(',', (string) env('MEDIA_PLAYBACK_AUDIO_CODECS', 'aac,mp3,opus,flac')),
+        'video_codec' => env('MEDIA_PLAYBACK_VIDEO_CODEC', 'libx264'),
+        'crf' => env('MEDIA_PLAYBACK_CRF'),
+        'preset' => env('MEDIA_PLAYBACK_PRESET'),
+        'audio_bitrate' => (int) env('MEDIA_PLAYBACK_AUDIO_BITRATE', 192),
+        'hardware' => env('MEDIA_PLAYBACK_HARDWARE'),
     ],
 
     /*
