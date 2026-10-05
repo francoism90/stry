@@ -56,16 +56,16 @@ For a visual tour of the app, check out the [screenshots gallery](https://franco
 
 ## Tech Stack
 
-| Category              | Technology                                                                          |
-| --------------------- | ----------------------------------------------------------------------------------- |
-| **Backend**           | [Laravel 13.x](https://laravel.com/)                                                |
-| **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)           |
-| **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                      |
-| **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)              |
-| **Search**            | [Typesense 30.x](https://typesense.org/)                                            |
+| Category              | Technology                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| **Backend**           | [Laravel 13.x](https://laravel.com/)                                                   |
+| **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)              |
+| **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                         |
+| **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)                 |
+| **Search**            | [Typesense 30.x](https://typesense.org/)                                               |
 | **Video Streaming**   | [Laravel Media](https://github.com/foxws/laravel-media) (direct-play HLS + DASH, CMAF) |
-| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                    |
-| **PWA**               | [Laravel PWA](https://github.com/foxws/laravel-pwa) (installable on mobile/desktop) |
+| **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                       |
+| **PWA**               | [Laravel PWA](https://github.com/foxws/laravel-pwa) (installable on mobile/desktop)    |
 
 ---
 
