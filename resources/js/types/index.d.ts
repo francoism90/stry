@@ -135,6 +135,7 @@ export type ProcessingSettings = {
   extract_captions: boolean
   extract_chapters: boolean
   extract_storyboard: boolean
+  create_renditions: boolean
 }
 
 export type MediaStream = {

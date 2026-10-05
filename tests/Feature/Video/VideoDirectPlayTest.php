@@ -7,6 +7,7 @@ use Domain\Chapters\Models\Chapter;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Settings\PlaybackSettings;
+use Domain\Videos\Settings\ProcessingSettings;
 use Domain\Videos\States\Pending;
 use Foxws\Media\Encryption\EncryptionKey;
 use Foxws\Media\Facades\Media;
@@ -100,19 +101,23 @@ it('has no chapters to show for videos without a clip', function () {
     expect($video->refresh()->chaptersVttUrl())->toBeNull();
 });
 
-it('streams the renditions of the clip as variants below it', function () {
+it('offers the picked renditions below the clip when processing creates them', function (bool $create, array $renditions, int $variants) {
+    ProcessingSettings::fake(['create_renditions' => $create]);
+    PlaybackSettings::fake(['renditions' => $renditions]);
+
     $user = User::factory()->create();
     $video = Video::factory()->create();
     createDirectPlayClip($video);
-    $clip = $video->getClips()->first();
-    $path = str_replace('{height}', '480', $clip->getRenditionPathPattern());
-    Storage::disk('media')->put($path, 'video');
-    $clip->saveRenditions([480], [$path]);
 
-    $playlist = (string) $this->actingAs($user)->get(MediaStream::url('videos', ['video' => $video->refresh()]))->assertOk()->getContent();
+    $playlist = (string) $this->actingAs($user)->get(MediaStream::url('videos', ['video' => $video]))->assertOk()->getContent();
 
-    expect(substr_count($playlist, '#EXT-X-STREAM-INF'))->toBe(2);
-});
+    expect(substr_count($playlist, '#EXT-X-STREAM-INF'))->toBe($variants);
+})->with([
+    'created' => [true, [720, 480], 3],
+    'none picked' => [true, [], 1],
+    'not created' => [false, [720, 480], 1],
+    'as large as the clip' => [true, [1080], 1],
+]);
 
 it('offers trick play in the manifest', function () {
     $user = User::factory()->create();

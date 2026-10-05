@@ -10,7 +10,6 @@ use Domain\Videos\Pipes\ExtractVideoCaptions;
 use Domain\Videos\Pipes\ExtractVideoChapters;
 use Domain\Videos\Pipes\ExtractVideoThumbnails;
 use Domain\Videos\Pipes\MarkVideoAsVerified;
-use Domain\Videos\Pipes\QueueVideoRenditions;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
@@ -63,7 +62,6 @@ class ProcessVideo implements ShouldQueueAfterCommit
                 ExtractVideoCaptions::class,
                 ExtractVideoChapters::class,
                 ExtractVideoThumbnails::class,
-                QueueVideoRenditions::class,
                 MarkVideoAsVerified::class,
             ])
             ->thenReturn();

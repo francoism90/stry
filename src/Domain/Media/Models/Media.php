@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Media\Models;
 
 use Domain\Media\Collections\MediaCollection;
-use Domain\Media\Concerns\InteractsWithRenditions;
 use Domain\Media\Concerns\InteractsWithThumbnails;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Illuminate\Broadcasting\Channel;
@@ -22,7 +21,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 class Media extends BaseMedia
 {
     use BroadcastsEvents;
-    use InteractsWithRenditions;
     use InteractsWithThumbnails;
 
     /**

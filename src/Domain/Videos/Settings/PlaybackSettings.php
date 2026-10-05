@@ -16,7 +16,8 @@ class PlaybackSettings extends Settings
     public int $refresh_before = 300;
 
     /**
-     * Heights of the smaller renditions to encode next to each clip, e.g. [720, 480].
+     * Heights of the smaller renditions direct play offers below the clip, e.g. [720, 480], when
+     * the processing settings create renditions.
      *
      * @var list<int>
      */
