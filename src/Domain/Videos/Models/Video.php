@@ -169,18 +169,6 @@ class Video extends Model implements HasMedia
                 'text/srt',
                 'text/vtt',
             ]);
-
-        $this
-            ->addMediaCollection('chapters')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
-            ->singleFile()
-            ->acceptsMimeTypes([
-                'application/octet-stream',
-                'application/x-webvtt',
-                'text/plain',
-                'text/vtt',
-            ]);
     }
 
     public function registerMediaConversions(?BaseMedia $media = null): void
@@ -302,11 +290,6 @@ class Video extends Model implements HasMedia
         return $this->getMedia('captions');
     }
 
-    public function getChaptersVtt(): ?BaseMedia
-    {
-        return $this->getMedia('chapters')->first();
-    }
-
     /**
      * @return Collection<int, array<string, mixed>>
      */
@@ -384,13 +367,11 @@ class Video extends Model implements HasMedia
 
     public function chaptersVttUrl(): ?string
     {
-        if ($this->chapters->isEmpty()) {
+        if ($this->chapters->isEmpty() || ! $this->canDirectPlay()) {
             return null;
         }
 
-        return $this->canDirectPlay()
-            ? $this->getDirectPlayChaptersUrl()
-            : route('videos.chapters-vtt', $this);
+        return $this->getDirectPlayChaptersUrl();
     }
 
     protected function temporaryMediaUrl(?BaseMedia $media, string $conversion = ''): ?string

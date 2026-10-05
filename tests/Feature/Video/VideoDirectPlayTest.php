@@ -93,11 +93,11 @@ it('serves the chapters on the stream, with the gaps as the main event', functio
         ->assertSee(["00:00:00.000 --> 00:00:04.000\nIntro", "00:00:04.000 --> 00:00:08.000\nMain Event", "00:00:08.000 --> 00:00:10.000\nCredits", "00:00:10.000 --> 00:00:13.000\nMain Event"], escape: false);
 });
 
-it('keeps the chapters route for videos without a clip', function () {
+it('has no chapters to show for videos without a clip', function () {
     $video = Video::factory()->create();
     Chapter::factory()->for($video)->intro()->create();
 
-    expect($video->refresh()->chaptersVttUrl())->toBe(route('videos.chapters-vtt', $video));
+    expect($video->refresh()->chaptersVttUrl())->toBeNull();
 });
 
 it('offers trick play in the manifest', function () {

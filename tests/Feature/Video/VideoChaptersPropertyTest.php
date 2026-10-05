@@ -41,18 +41,6 @@ it('exposes the video chapters when the video has chapters', function () {
         ->where('video.chapters.0.skippable', true));
 });
 
-it('exposes the chapters vtt route when the video has chapters', function () {
-    $user = User::factory()->create();
-    $user->assignRole('super-admin');
-    $video = Video::factory()->create();
-    Chapter::factory()->intro()->create(['video_id' => $video->getKey()]);
-
-    $response = $this->actingAs($user)->get(action([VideoController::class, 'show'], $video));
-
-    $response->assertInertia(fn (Assert $page) => $page
-        ->where('video.chapters_vtt', route('videos.chapters-vtt', $video)));
-});
-
 it('does not include chapters belonging to other videos', function () {
     $user = User::factory()->create();
     $user->assignRole('super-admin');

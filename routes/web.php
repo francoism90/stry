@@ -12,7 +12,6 @@ use Modules\Web\Tags\Controllers\TagController;
 use Modules\Web\Transcodes\Controllers\TranscodeController;
 use Modules\Web\Users\Controllers\UserController;
 use Modules\Web\Videos\Controllers\VideoChapterController;
-use Modules\Web\Videos\Controllers\VideoChaptersVttController;
 use Modules\Web\Videos\Controllers\VideoController;
 use Modules\Web\Videos\Controllers\VideoTranscodeController;
 
@@ -44,4 +43,3 @@ Route::resource('users', UserController::class)->only(['index', 'store', 'update
 Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['update', 'destroy']);
 Route::resource('videos.chapters', VideoChapterController::class)->scoped()->only(['store', 'update', 'destroy']);
-Route::get('videos/{video}/chapters.vtt', VideoChaptersVttController::class)->name('videos.chapters-vtt');
