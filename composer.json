@@ -19,7 +19,7 @@
         "foxws/laravel-ab-av1": "^3.0",
         "foxws/laravel-ddd": "^0.0.5",
         "foxws/laravel-essentials": "^0.0.3",
-        "foxws/laravel-media": "^0.3.1",
+        "foxws/laravel-media": "^0.3.2",
         "foxws/laravel-modelcache": "^1.4.3",
         "foxws/laravel-podman": "^5.3.2",
         "foxws/laravel-pwa": "^2.5.3",
