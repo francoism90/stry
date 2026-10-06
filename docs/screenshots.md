@@ -203,7 +203,7 @@ The video player, with a progress bar, playback controls and Edit, Like, Save an
 
 ## Edit Video {#edit-video}
 
-Videos are edited in a window with four tabs: **General** for the details, **Media** for file information, **Conversions** for playlists and transcodes, and **Danger Zone** for the verification state and deleting the video.
+Videos are edited in a window with five tabs: **General** for the details, **Media** for file information, **Chapters** for the chapter list, **Conversions** for AV1 transcodes, and **Danger Zone** for the verification state and deleting the video.
 
 ### General
 

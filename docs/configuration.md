@@ -23,13 +23,14 @@ Use environment variables instead of editing the `config/*.php` files. That keep
 
 ## Admin-managed settings
 
-A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playlist / Chapters**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
+A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
 
-| Settings class     | Admin tab   | What it covers                                                        |
-| ------------------ | ----------- | --------------------------------------------------------------------- |
-| `GeneralSettings`  | Application | Site name, timezone, default locale, registration, profiles per user  |
-| `PlaylistSettings` | Playlist    | Playlist type, disk, language, encryption, key rotation, cache times  |
-| `ChapterSettings`  | Chapters    | Patterns and the default type used to classify chapters automatically |
+| Settings class       | Admin tab   | What it covers                                                                   |
+| -------------------- | ----------- | -------------------------------------------------------------------------------- |
+| `GeneralSettings`    | Application | Site name, timezone, default locale, registration, profiles per user             |
+| `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, rendition heights             |
+| `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically            |
+| `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions |
 
 ### Shipping new defaults
 
@@ -99,36 +100,63 @@ MAIL_FROM_NAME="Stry"
 
 ## Advanced configuration
 
-Fine-tune encoding, streaming and playback.
+Fine-tune streaming, playback and encoding.
 
-### Playlists
+### Direct play
+
+**stry** plays videos directly from their stored file. There are no playlists to generate first: when a player asks for a video, [laravel-media](https://github.com/foxws/laravel-media) builds the DASH manifest and HLS playlist from the file and cuts CMAF (fragmented MP4) segments as they're requested. DASH and HLS share the same segments, so serving both formats doesn't mean packaging twice. A new video can be watched as soon as it's imported.
+
+Along with the video and its audio tracks, each stream carries the video's captions as subtitle tracks (or the subtitles embedded in the file, when it has no captions), seek preview thumbnails, I-frame playlists for trick play and its chapters as markers.
 
 ```env
-# How playlists are made: 'packager' (fastest, no re-encoding) or 'streamer' (slower, re-encodes)
-PLAYLIST_TYPE=packager
+# Length of each segment, in seconds. Shorter segments make seeking faster
+# (a seek waits for the segment that contains the target time), but mean
+# more HTTP requests.
+MEDIA_DELIVERY_SEGMENT_DURATION=6
 
-# Disk where playlists are stored
-PLAYLIST_DISK=segments
+# Disk and folder where packaged segments are cached
+MEDIA_DELIVERY_CACHE_DISK=cache
+MEDIA_DELIVERY_CACHE_PATH=media-segments
 
-# Encryption: 'raw_key_encryption' (AES-128 SAMPLE-AES), 'clearkey' (W3C Clear Key) or null
-PLAYLIST_ENCRYPTION=raw_key_encryption
+# Seconds the signed stream URLs stay valid (default: 4 hours)
+MEDIA_DELIVERY_URL_LIFETIME=14400
 
-# Protection scheme: 'cenc' (AES-CTR, for Widevine/PlayReady), 'cbcs' (AES-CBC, for FairPlay/Safari), 'cbc1' (legacy) or null (SAMPLE-AES)
-PLAYLIST_PROTECTION_SCHEME=cenc
-
-# Rotate the encryption key during playback
-PLAYLIST_KEY_ROTATION=false
-
-# Seconds between key rotations
-PLAYLIST_KEY_ROTATION_DURATION=300
-
-# Seconds before a playlist expires (default: 14 days)
-PLAYLIST_EXPIRES_AFTER=1209600
+# Number of segments to package ahead of the player
+MEDIA_DELIVERY_LOOK_AHEAD=3
 ```
 
+Segments are cached on the local `/cache` volume, so the app serves them without going through S3. The scheduler runs `media:prune` daily to delete segments older than a week; they're packaged again when they're requested.
+
+Stream URLs are signed and only work for users who can view the video. The player fetches new URLs before they expire, `refresh_before` seconds ahead of time (**Admin → Playback**).
+
 :::note
-Both playlist engines package video and audio as CMAF (fragmented MP4) by default. The DASH and HLS manifests then use the same segments, created in a single pass, so serving both formats doesn't mean transcoding twice.
+The segments after the one being watched are packaged ahead of time by jobs on the `media` queue. A Horizon supervisor works that queue, so make sure `stry-horizon` is running, or playback waits for every segment to be packaged on request.
 :::
+
+#### Encryption
+
+Turn on **Encryption** under **Admin → Playback** to encrypt the streams: AES-128 for HLS and ClearKey (CENC) for DASH. The segments are encrypted per request with a key derived from `APP_KEY` and the video, so no keys are stored. Changing `APP_KEY` changes every key.
+
+#### Renditions
+
+A stream always offers the original file. To also offer smaller renditions, for slower connections, turn on **Create renditions** under **Admin → Processing** and pick their heights, such as 720 and 480, under **Admin → Playback**. Renditions are encoded while they're watched, at the bitrates of laravel-media's standard ladder.
+
+```env
+# Encode renditions on the GPU: none, vaapi, nvenc or qsv
+MEDIA_DELIVERY_HARDWARE=vaapi
+```
+
+#### Codecs browsers can play
+
+Direct play only works when the browser can decode the file's codecs. These are the codecs that are played as they are:
+
+```env
+# Remove hevc if your users watch in Firefox, which only decodes it experimentally
+MEDIA_PLAYBACK_VIDEO_CODECS=hevc,h264,av1,vp9
+MEDIA_PLAYBACK_AUDIO_CODECS=aac,mp3,opus,flac
+```
+
+To play a video in another codec, or to make it smaller, transcode it to AV1 with ab-av1 (see below).
 
 ### Videos
 
@@ -139,53 +167,19 @@ VIDEO_IMPORT_DISK=import
 # Number of videos to process in each import batch
 VIDEO_IMPORT_BATCH_SIZE=20
 
-# Create playlists for imported videos automatically
-VIDEO_CREATE_PLAYLIST=false
-
 # How much of a video must be watched before it counts as finished (0.0-1.0)
 VIDEO_COMPLETION_THRESHOLD=0.95
 ```
 
-### Shaka Packager
+### AV1 transcoding (ab-av1)
 
-```env
-# Length of each DASH/HLS segment, in seconds. Shorter segments make seeking
-# faster (a seek waits for the segment that contains the target time),
-# but mean more HTTP requests.
-PACKAGER_SEGMENT_DURATION=4
-
-# Number of parallel uploads to S3. Default: 30
-PACKAGER_CONCURRENCY_WORKERS=40
-```
-
-### Shaka Streamer
-
-```env
-# Audio codecs to encode (comma-separated)
-STREAMER_AUDIO_CODECS=aac,opus
-
-# Video codecs to encode (comma-separated)
-STREAMER_VIDEO_CODECS=hw:h264,hw:vp9
-
-# Length of each segment, in seconds. Same trade-off as
-# PACKAGER_SEGMENT_DURATION above.
-STREAMER_SEGMENT_DURATION=4
-
-# Number of parallel uploads to S3. Default: 30
-STREAMER_CONCURRENCY_WORKERS=40
-```
-
-:::note
-You don't set Streamer resolutions in `.env`. They're chosen automatically for each video, based on the height of the source video (see `Foxws\Streamer\Support\VideoResolution`).
-:::
-
-### AV1 encoding (ab-av1)
+Transcodes re-encode a video to AV1 at a target quality with [ab-av1](https://github.com/alexheretic/ab-av1). Start one from the **Conversions** tab of a video, or with `transcodes:create`. Once it's imported (from the Transcodes page or with `transcodes:import`), the AV1 file is added to the video's clips, and direct play streams the best clip.
 
 ```env
 # Encoding preset (0-13 for svt-av1; lower is slower but gives smaller files)
 AB_AV1_PRESET=6
 
-# AV1 encoder. Leave it unset to use ab-av1's software default.
+# AV1 encoder. Leave it unset to use ab-av1's software default (libsvtav1).
 # Options: libsvtav1 (CPU), av1_qsv (Intel QuickSync), av1_vaapi (AMD/Intel VA-API)
 AB_AV1_ENCODER=av1_vaapi
 
@@ -194,36 +188,22 @@ AB_AV1_ENCODER=av1_vaapi
 # AMD/Intel VA-API: "hwaccel=vaapi hwaccel_output_format=vaapi"
 AB_AV1_FFMPEG_INPUT_OPTIONS="hwaccel=vaapi hwaccel_output_format=vaapi"
 
-# Minimum VMAF quality score (0-100)
-AB_AV1_MIN_VMAF=80
+# VMAF quality score to aim for (0-100, default: 94)
+AB_AV1_MIN_VMAF=94
+
+# Seconds one encode may run (default: 4 hours)
+AB_AV1_TIMEOUT=14400
 ```
 
 ## Config file reference
 
-| Config file                | What it configures     | Main settings                                                     |
-| -------------------------- | ---------------------- | ----------------------------------------------------------------- |
-| `config/playlists.php`     | Playlist generation    | Type, encryption, protection, key rotation, expiry                |
-| `config/videos.php`        | Importing and playback | Import disk, batch size, creating playlists, completion threshold |
-| `config/laravel-shaka.php` | Shaka Packager         | Segment length, parallel uploads, packager arguments              |
-| `config/streamer.php`      | Shaka Streamer         | Codecs, resolutions, segment length, parallel uploads             |
-| `config/ab-av1.php`        | AV1 encoder            | Preset, encoder, VMAF, FFmpeg options                             |
+| Config file          | What it configures     | Main settings                                                           |
+| -------------------- | ---------------------- | ----------------------------------------------------------------------- |
+| `config/media.php`   | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths      |
+| `config/videos.php`  | Importing and playback | Import, transcode and thumbnail disks, batch size, completion threshold |
+| `config/ab-av1.php`  | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                          |
 
-## Publishing package configuration
-
-To change a package's settings beyond what `.env` offers, publish its config file and edit it:
-
-```bash
-# Shaka Packager
-php artisan vendor:publish --tag="shaka-config"
-
-# Shaka Streamer
-php artisan vendor:publish --tag="streamer-config"
-
-# ab-av1 encoder
-php artisan vendor:publish --tag="ab-av1-config"
-```
-
-The files are copied to `config/`, where you can edit them.
+The `config/*.php` files are part of the repository, so you can read every option there. Run `php artisan media:info` to check which FFmpeg, FFprobe and ab-av1 binaries were found.
 
 ## See also
 
@@ -231,4 +211,4 @@ The files are copied to `config/`, where you can edit them.
 - [Development Setup](development.md): local configuration
 - [S3 Object Storage](s3.md): media storage
 - [Laravel configuration basics](https://laravel.com/docs/configuration)
-- The video pipeline packages: [laravel-shaka](https://github.com/foxws/laravel-shaka), [laravel-streamer](https://github.com/foxws/laravel-streamer) and [laravel-ab-av1](https://github.com/foxws/laravel-ab-av1)
+- The video pipeline packages: [laravel-media](https://github.com/foxws/laravel-media) and [laravel-ab-av1](https://github.com/foxws/laravel-ab-av1)

@@ -41,15 +41,20 @@ Run these with `lpod stry artisan ...`, or the shorter `lpod stry a ...`.
 | `videos:import` | Import videos for a user                          |
 | `videos:clear`  | Delete the files of videos that were soft-deleted |
 
-### Playlists and media
+### Streaming and media
 
-| Command                                               | Description                                    |
-| ----------------------------------------------------- | ---------------------------------------------- |
-| `playlists:clear`                                     | Delete generated DASH playlists from storage   |
-| `transcodes:clear`                                    | Permanently delete failed transcodes           |
-| `transcodes:clear --all`                              | Permanently delete all expired transcodes      |
-| `groups:clear`                                        | Remove all videos from groups of a given type  |
-| `media-library:regenerate --only-missing --queue-all` | Regenerate missing thumbnails and other images |
+| Command                                               | Description                                     |
+| ----------------------------------------------------- | ----------------------------------------------- |
+| `media:info`                                          | Show which FFmpeg, FFprobe and ab-av1 are found |
+| `media:prune`                                         | Delete cached direct play segments (runs daily) |
+| `media:clean`                                         | Delete temporary files left by crashed jobs     |
+| `videos:thumbnails`                                   | Regenerate the seek preview thumbnails          |
+| `transcodes:create`                                   | Start an AV1 transcode for a video              |
+| `transcodes:import`                                   | Add completed transcodes to their videos        |
+| `transcodes:clear`                                    | Permanently delete failed transcodes            |
+| `transcodes:clear --all`                              | Permanently delete all expired transcodes       |
+| `groups:clear`                                        | Remove all videos from groups of a given type   |
+| `media-library:regenerate --only-missing --queue-all` | Regenerate missing thumbnails and other images  |
 
 ### Search
 

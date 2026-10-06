@@ -111,7 +111,7 @@ GroupAdd=keep-groups
 `/dev/dri` must exist on the host. On a machine without a GPU, including most cloud and CI machines, `stry-horizon` won't start until you remove these two lines (see below).
 :::
 
-See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html) for setting up the drivers.
+See the [FFmpeg hardware acceleration docs](https://trac.ffmpeg.org/wiki/HWAccelIntro) for setting up the drivers.
 
 On hosts with SELinux, such as Fedora, rootless Podman can't access `/dev/dri` by default, even with `AddDevice=`. Allow it once with:
 

@@ -145,7 +145,7 @@ queue:
 ```
 
 :::note
-The host needs the right GPU drivers: VA-API (Intel), Mesa (AMD) or NVENC (Nvidia). See the [hardware encoding docs](https://shaka-project.github.io/shaka-streamer/hardware_encoding.html). GPU access is more limited on Docker Desktop than on Linux.
+The host needs the right GPU drivers: VA-API (Intel), Mesa (AMD) or NVENC (Nvidia). See the [FFmpeg hardware acceleration docs](https://trac.ffmpeg.org/wiki/HWAccelIntro). GPU access is more limited on Docker Desktop than on Linux.
 :::
 
 ## Troubleshooting

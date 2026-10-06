@@ -24,8 +24,8 @@
 
 ### Key Features
 
-- 🎥 **DASH & HLS Streaming** - Both manifests are packaged from the same CMAF segments by default, no double encoding
-- 🎚️ **Transcoding** - Generate multiple renditions and bitrates on demand using ab-av1
+- 🎥 **Direct Play** - Videos stream straight from their files as DASH & HLS, packaged on the fly from shared CMAF segments, no playlists to generate first
+- 🎚️ **Renditions & Transcoding** - Optional smaller renditions encoded while they're watched, and AV1 transcodes with ab-av1
 - 🔐 **Stream Encryption** - Optional secure video content with encryption for both HLS and DASH
 - 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
 - 📲 **Installable PWA** - Install on mobile and desktop
