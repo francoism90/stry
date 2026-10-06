@@ -7,7 +7,7 @@ import type { CollectionItem } from '@/types'
 import { router, usePage } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import { computed, defineProps } from 'vue'
 
 defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
@@ -38,11 +38,13 @@ const items = computed<NavigationMenuItem[][]>(() => [
       label: 'Tags',
       icon: 'i-lucide-tags',
       to: '/tags',
+      exact: true,
     },
     {
       label: 'Collections',
       icon: 'i-lucide-folders',
       to: '/collections',
+      exact: true,
     },
   ],
   ...(hasRole('super-admin')
