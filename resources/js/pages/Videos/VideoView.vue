@@ -11,7 +11,7 @@ import type { Group, Media, OptionItem, Playlist, QueryFilter, QueryValue, Trans
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { computed, ref } from 'vue'
+import { computed, defineOptions, defineProps, ref } from 'vue'
 
 const props = defineProps<{
   video: Video
@@ -20,7 +20,7 @@ const props = defineProps<{
   groups?: Group[] | undefined
   media?: Media[] | undefined
   transcodes?: Transcode[] | undefined
-  chapterTypes?: OptionItem[] | undefined
+  chapters?: OptionItem[] | undefined
   queue?: Video[] | undefined
   filter?: QueryFilter
   sort?: QueryValue
@@ -106,7 +106,7 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :progress="progress"
       :media="media"
       :transcodes="transcodes"
-      :chapter-types="chapterTypes"
+      :chapter-types="chapters"
     />
 
     <UPageHeader

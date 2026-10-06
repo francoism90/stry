@@ -93,7 +93,7 @@ class VideoController implements HasMiddleware
             'video' => fn () => new VideoResourceProperty(video: $video, appends: ['titles', 'summary', 'snapshot']),
             'playlist' => fn () => new VideoDirectPlayProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'chapterTypes' => new ChapterTypeOptionsProperty,
+            'chapters' => new ChapterTypeOptionsProperty,
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),

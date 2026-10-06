@@ -19,7 +19,7 @@ const props = defineProps<{
   progress?: number | null
   media?: Media[] | undefined
   transcodes?: Transcode[] | undefined
-  chapterTypes?: OptionItem[] | undefined
+  chapters?: OptionItem[] | undefined
 }>()
 
 const tabs: TabsItem[] = [
@@ -355,7 +355,7 @@ const onSubmit = (close: () => void) =>
       <ChapterList
         :video="video"
         :items="video.chapters"
-        :types="chapterTypes"
+        :types="chapters"
       />
     </template>
 
