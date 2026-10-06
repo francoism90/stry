@@ -80,7 +80,7 @@ it('forbids a non-owner from updating a video', function () {
 
 // destroy
 
-it('redirects to the video library after deleting a video', function () {
+it('redirects to home after deleting a video', function () {
     $user = User::factory()->create();
     $video = Video::factory()->for($user)->create();
 
@@ -88,7 +88,7 @@ it('redirects to the video library after deleting a video', function () {
         ->from(action([VideoController::class, 'show'], $video))
         ->delete(action([VideoController::class, 'destroy'], $video));
 
-    $response->assertRedirectToRoute('videos.index');
+    $response->assertRedirectToRoute('home');
     $response->assertInertiaFlash('type', 'warning');
     $this->assertSoftDeleted($video);
 });
