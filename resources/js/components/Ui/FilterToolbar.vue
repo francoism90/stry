@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { QueryInjectionKey } from '@/composables/query'
 import type { OptionItem } from '@/types'
-import { inject } from 'vue'
+import { defineProps, inject } from 'vue'
 
 defineProps<{
   scopes?: OptionItem[]
@@ -40,7 +40,7 @@ const { form, onSubmit } = inject(QueryInjectionKey)!
         v-model="form.sort"
         :items="sorters"
         placeholder="Sort by"
-        class="w-36"
+        class="w-36 text-sm"
         @update:model-value="onSubmit"
       />
     </template>
