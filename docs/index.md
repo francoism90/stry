@@ -20,13 +20,13 @@ metadata:
 
 Jellyfin and Plex are media servers first. **stry** is built for streaming first: it plays your videos directly from their files as DASH and HLS streams, packaged on the fly, with optional encryption, smaller renditions and AV1 transcoding. You get more control over how video is delivered, but setup takes more work.
 
-| Topic         | Jellyfin / Plex                                    | stry                                              |
-| ------------- | -------------------------------------------------- | ------------------------------------------------- |
-| Primary focus | Personal media server                              | Streaming platform                                |
-| Setup effort  | Quick and simple                                   | More involved                                     |
-| Playback      | Plays library files directly, transcodes if needed | Plays files directly as DASH and HLS streams      |
-| Packaging     | Mostly plays files as they are                     | Packages segments on the fly, nothing up front    |
-| Best for      | A convenient home library                          | Netflix- or YouTube-style streaming               |
+| Topic         | Jellyfin / Plex                                    | stry                                           |
+| ------------- | -------------------------------------------------- | ---------------------------------------------- |
+| Primary focus | Personal media server                              | Streaming platform                             |
+| Setup effort  | Quick and simple                                   | More involved                                  |
+| Playback      | Plays library files directly, transcodes if needed | Plays files directly as DASH and HLS streams   |
+| Packaging     | Mostly plays files as they are                     | Packages segments on the fly, nothing up front |
+| Best for      | A convenient home library                          | Netflix- or YouTube-style streaming            |
 
 ## Getting started
 

@@ -197,11 +197,11 @@ AB_AV1_TIMEOUT=14400
 
 ## Config file reference
 
-| Config file          | What it configures     | Main settings                                                           |
-| -------------------- | ---------------------- | ----------------------------------------------------------------------- |
-| `config/media.php`   | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths      |
-| `config/videos.php`  | Importing and playback | Import, transcode and thumbnail disks, batch size, completion threshold |
-| `config/ab-av1.php`  | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                          |
+| Config file         | What it configures     | Main settings                                                           |
+| ------------------- | ---------------------- | ----------------------------------------------------------------------- |
+| `config/media.php`  | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths      |
+| `config/videos.php` | Importing and playback | Import, transcode and thumbnail disks, batch size, completion threshold |
+| `config/ab-av1.php` | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                          |
 
 The `config/*.php` files are part of the repository, so you can read every option there. Run `php artisan media:info` to check which FFmpeg, FFprobe and ab-av1 binaries were found.
 
