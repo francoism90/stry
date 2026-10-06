@@ -44,12 +44,13 @@ const switchProfile = (item: Profile) =>
       items-element="#infinite-items"
       :buffer="200"
     >
-      <ProfileList
-        id="infinite-items"
-        :items="items?.data"
-        :current="profile"
-        @switch-profile="switchProfile"
-      />
+      <div id="infinite-items">
+        <ProfileList
+          :items="items?.data"
+          :current="profile"
+          @switch-profile="switchProfile"
+        />
+      </div>
     </InfiniteScroll>
   </UPage>
 </template>
