@@ -61,7 +61,7 @@ All return an `AbAv1Result` (`crf`, `vmaf`, `xpsnr`, `predictedSize` in bytes, `
 - Encodes are slow: often longer than the video itself without hardware encoding. Run them in a queued job, and give long encodes `->timeout($seconds)` below the job's `$timeout` (default: `ab-av1.timeout`).
 - ab-av1 failures throw `Foxws\Media\Exceptions\ProcessFailedException`; use `isRetryable()` to choose between `release()` and `fail()`. A missing binary throws `ExecutableNotFoundException`.
 - `Foxws\AbAv1\Exceptions\AbAv1Exception`: `sampleEncode()` without a CRF, a comparison with fewer than two files, or an encode that wrote no file. Out-of-range values throw `InvalidArgumentException`.
-- ab-av1's progress can't be read by laravel-media's runner, so there's no `onProgress()`.
+- `onProgress(fn (Progress $progress) => ...)` and laravel-media's `ProgressReported` event (with the context) report the whole-file encode of `save()`; return `false` to cancel. ab-av1 logs progress after 16, 32, 64 seconds and so on, so updates are few, followed by a finished one at 100%. The CRF search reports none.
 
 ## Configuration
 
@@ -95,3 +95,5 @@ Storage::disk('media')->assertExists('encoded/1.mp4');
 
 $fake->failNext(AbAv1Executable::AbAv1, 'Error: ffmpeg encode exit code 1'); // test failures
 ```
+
+`FakeAbAv1::respond(..., errorOutput: "[… INFO  ab_av1::command::encode] 50%, 24 fps, eta 1 minute\n")` streams progress lines to `onProgress()`.

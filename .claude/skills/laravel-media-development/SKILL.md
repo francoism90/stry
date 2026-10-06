@@ -647,8 +647,9 @@ Opener::macro('encoder', fn () => new EncoderBuilder($this));             // $op
 
 - `Runner::run($binary, $arguments, environment: ['SVT_LOG' => '1'])` runs it with progress, cancelling, events, logging and redacted keys, like ffmpeg.
 - `onOutput` and `onErrorOutput` receive standard output and error output as they stream in; throw `ProcessCancelledException` from either to stop the run. Pass `logWarnings: false` when the program reports progress or results on the error output, so successful runs aren't logged as warnings.
+- `Filters\Number::format($number, decimals: 4)` formats numbers for options and filter graphs without trailing zeros or locale separators.
 - `Opener` and `MediaFactory` take macros, and the `Media` facade forwards `MediaFactory` macros.
-- In tests, `$fake->respondUsing(EncoderExecutable::Encoder, fn (array $arguments) => '...')` fakes its output, and the usual assertions accept any `Binary`.
+- In tests, `$fake->respondUsing(EncoderExecutable::Encoder, fn (array $arguments) => '...')` fakes its output, and the usual assertions accept any `Binary`. Return `Process::result(output: ..., errorOutput: ..., exitCode: ...)` to stream error output to `onErrorOutput` or fail the run.
 
 ## Configuration
 
@@ -750,6 +751,6 @@ Media::assertNotRan(Executable::FFMpeg, fn (array $arguments) => in_array('-pass
 
 - Unknown paths probe as a one-minute 1080p H.264 video with AAC audio. Use `'*'` as the key to fake every probe, e.g. for uploads, which have random temporary names: `Media::fake(['*' => FakeProbe::video(duration: 5)])` makes `MediaFile::video()->minDuration(10)` fail. `FakeProbe::video()` also takes `width`, `height`, `codec`, `audio: false`, `subtitles`, `audioLanguages`, `transfer: 'smpte2084'` (HDR) and `frameRate`.
 - `$fake->failNext(Executable::FFMpeg, 'Invalid data found')` (on the fake `Media::fake()` returned; calling it again starts a new fake) makes the next run throw `ProcessFailedException`. Use it to test failure handling and retries.
-- `$fake->respondUsing($binary, fn (array $arguments) => $output)` fakes the output of an add-on's executable; without it, add-on executables run as successful with no output.
+- `$fake->respondUsing($binary, fn (array $arguments) => $output)` fakes the output of an add-on's executable, or its error output and exit code with `Process::result()`; without it, add-on executables run as successful with no output.
 - `onProgress()` callbacks receive 50% and 100%. Probes and scenes are matched against the end of the opened path.
 - Other assertions: `assertRanTimes()`, `assertNothingRan()`, `assertNotSaved()`. `Media::fake()` returns the fake, whose `commands(Executable::FFMpeg)` lists the recorded arguments.
