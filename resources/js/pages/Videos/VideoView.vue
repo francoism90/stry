@@ -106,7 +106,7 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :progress="progress"
       :media="media"
       :transcodes="transcodes"
-      :chapter-types="chapters"
+      :chapters="chapters"
     />
 
     <UPageHeader

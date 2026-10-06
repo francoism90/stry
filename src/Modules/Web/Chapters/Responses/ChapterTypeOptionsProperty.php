@@ -11,13 +11,8 @@ use Spatie\LaravelOptions\Options;
 
 readonly class ChapterTypeOptionsProperty implements ProvidesInertiaProperty
 {
-    public static function options(): Options
-    {
-        return Options::forEnum(ChapterType::class);
-    }
-
     public function toInertiaProperty(PropertyContext $context): mixed
     {
-        return once(fn (): Options => self::options());
+        return once(fn (): Options => Options::forEnum(ChapterType::class));
     }
 }
