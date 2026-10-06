@@ -646,6 +646,7 @@ Opener::macro('encoder', fn () => new EncoderBuilder($this));             // $op
 ```
 
 - `Runner::run($binary, $arguments, environment: ['SVT_LOG' => '1'])` runs it with progress, cancelling, events, logging and redacted keys, like ffmpeg.
+- `onOutput` and `onErrorOutput` receive standard output and error output as they stream in; throw `ProcessCancelledException` from either to stop the run. Pass `logWarnings: false` when the program reports progress or results on the error output, so successful runs aren't logged as warnings.
 - `Opener` and `MediaFactory` take macros, and the `Media` facade forwards `MediaFactory` macros.
 - In tests, `$fake->respondUsing(EncoderExecutable::Encoder, fn (array $arguments) => '...')` fakes its output, and the usual assertions accept any `Binary`.
 
@@ -696,7 +697,7 @@ public function handle(): void
 ```
 
 - `->timeout($seconds)` on the builder or `thumbnails()` overrides `media.timeout`. Keep it below the job's `$timeout`, so the package stops ffmpeg and throws a `Timeout` failure instead of the worker being killed.
-- Failures are logged as errors with the same context. Successful runs that still wrote to the error output are logged as warnings. Set `MEDIA_FFMPEG_LOG_LEVEL=warning` to see why output from damaged files looks wrong.
+- Failures are logged as errors with the same context. Successful runs that still wrote to the error output are logged as warnings (unless `Runner::run()` gets `logWarnings: false`). Set `MEDIA_FFMPEG_LOG_LEVEL=warning` to see why output from damaged files looks wrong.
 - **Events:** `Process\Events\ProcessStarted`, `ProcessCompleted` and `ProcessFailed` (with `$result` and `$reason`) are dispatched for every ffmpeg/ffprobe run, with the command redacted.
 - **Other exceptions** live in `Foxws\Media\Exceptions` too: `ExecutableNotFoundException`, `InvalidMediaException`, `InvalidFormatException`, `InvalidFilterException`, `ExportFailedException`, `InsufficientStorageException` and `TemporaryFileException`.
 
