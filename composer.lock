@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63528503bfe9c7ee9620590fef846276",
+    "content-hash": "0c52a3b268fd1808f28ba7f37cbf4963",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1190,7 +1190,7 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "dev-main",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
@@ -1218,7 +1218,6 @@
                 "pestphp/pest-plugin-type-coverage": "^5.0.2",
                 "phpstan/extension-installer": "^1.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1256,7 +1255,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/main"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/3.0.0"
             },
             "funding": [
                 {
@@ -18383,9 +18382,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "foxws/laravel-ab-av1": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
