@@ -2,11 +2,12 @@
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import VideoEditModal from '@/components/Videos/VideoEditModal.vue'
 import { show } from '@/routes/videos'
-import type { Video } from '@/types'
-import { ref } from 'vue'
+import type { OptionItem, Video } from '@/types'
+import { defineProps, ref } from 'vue'
 
 defineProps<{
   items?: Video[] | undefined
+  chapters?: OptionItem[] | undefined
 }>()
 
 const editingItem = ref<Video>()
@@ -82,6 +83,7 @@ const edit = (item: Video): void => {
       v-if="editingItem"
       v-model:open="isEditModalOpen"
       :video="editingItem"
+      :chapters="chapters"
       :media="editingItem.media"
       :transcodes="editingItem.transcodes"
     />

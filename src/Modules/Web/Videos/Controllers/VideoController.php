@@ -80,6 +80,7 @@ class VideoController implements HasMiddleware
         return Inertia::render('Videos/VideoLibrary', [
             'scopes' => fn () => Options::forEnum(VideoLibraryScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'chapters' => fn () => new ChapterTypeOptionsProperty,
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             new ScoutBuilderProperties('videos'),
         ]);

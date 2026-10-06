@@ -5,12 +5,13 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { ref } from 'vue'
+import { defineOptions, defineProps, ref } from 'vue'
 
 const props = defineProps<{
   items: VideoCollection
   scopes?: OptionItem[]
   sorters?: OptionItem[]
+  chapters?: OptionItem[]
   filter?: QueryFilter
   sort?: QueryValue
   query?: QueryValue
@@ -24,6 +25,7 @@ setLayoutProps({
   id: 'videos.index',
   scopes: props.scopes,
   sorters: props.sorters,
+  chapters: props.chapters,
   filter: props.filter,
   sort: props.sort,
   query: props.query,
@@ -51,6 +53,7 @@ useEcho('library', '.video.trashed', () =>
       <VideoLibraryList
         ref="itemBody"
         :items="items?.data"
+        :chapters="chapters"
       />
     </InfiniteScroll>
   </UPage>
