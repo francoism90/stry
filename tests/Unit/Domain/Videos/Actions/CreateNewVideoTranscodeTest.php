@@ -9,6 +9,7 @@ use Foxws\AbAv1\Testing\FakeAbAv1;
 use Foxws\Media\Exceptions\ProcessFailedException;
 use Foxws\Media\Facades\Media;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
@@ -49,6 +50,18 @@ it('encodes each clip to AV1 with verification and saves it as a completed trans
     $this->fake->assertRan(AbAv1Executable::AbAv1, fn (array $arguments) => $arguments[0] === 'auto-encode'
         && in_array('--verify', $arguments, true)
         && in_array('--fail-fast', $arguments, true));
+});
+
+it('logs the progress ab-av1 reports while it encodes', function () {
+    $video = Video::factory()->create();
+    createTranscodeClip($video);
+    FakeAbAv1::respond($this->fake, errorOutput: "[2026-10-06T12:00:16Z INFO  ab_av1::command::encode] 25%, 24.5 fps, eta 45 seconds\n");
+    Log::spy();
+
+    $transcode = app(CreateNewVideoTranscode::class)->handle($video)->first();
+
+    Log::shouldHaveReceived('info')->with('Transcoding video', ['transcode_id' => $transcode->getKey(), 'percentage' => 25.0, 'remaining' => 45.0, 'fps' => 24.5])->once();
+    Log::shouldHaveReceived('info')->with('Transcoding video', Mockery::on(fn (array $context) => $context['percentage'] === 100.0))->once();
 });
 
 it('marks the transcode as failed when ab-av1 fails', function () {

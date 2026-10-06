@@ -9,7 +9,9 @@ use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
 use Foxws\Media\Facades\Media as MediaFactory;
+use Foxws\Media\Process\Progress;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class CreateNewVideoTranscode
@@ -45,6 +47,7 @@ class CreateNewVideoTranscode
                     ->withVerify()
                     ->withFailFast()
                     ->withContext(['video_id' => $video->getKey(), 'transcode_id' => $transcode->getKey()])
+                    ->onProgress(fn (Progress $progress) => $this->logProgress($transcode, $progress))
                     ->toDisk($transcode->getDisk())
                     ->afterSaving(fn () => $transcode->markAsCompleted())
                     ->save($transcode->getOutputPath());
@@ -56,5 +59,18 @@ class CreateNewVideoTranscode
 
             return $transcode;
         });
+    }
+
+    /**
+     * ab-av1 reports progress after 16, 32, 64 seconds and so on, so this logs a few lines per encode.
+     */
+    protected function logProgress(Transcode $transcode, Progress $progress): void
+    {
+        Log::info('Transcoding video', [
+            'transcode_id' => $transcode->getKey(),
+            'percentage' => $progress->percentage(),
+            'remaining' => $progress->remaining(),
+            'fps' => $progress->fps,
+        ]);
     }
 }
