@@ -128,6 +128,6 @@ class VideoController implements HasMiddleware
         // Notify the user
         toast(title: (string) $video->name, description: __('The video has been deleted.'), type: 'warning');
 
-        return redirect()->route('videos.index');
+        return redirect()->route('home');
     }
 }
