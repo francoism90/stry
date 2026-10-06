@@ -16,10 +16,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "foxws/laravel-ab-av1": "^2.0.1",
+        "foxws/laravel-ab-av1": "dev-main",
         "foxws/laravel-ddd": "^0.0.5",
         "foxws/laravel-essentials": "^0.0.3",
-        "foxws/laravel-media": "^0.3",
+        "foxws/laravel-media": "^0.3.1",
         "foxws/laravel-modelcache": "^1.4.3",
         "foxws/laravel-podman": "^5.3.2",
         "foxws/laravel-pwa": "^2.5.3",

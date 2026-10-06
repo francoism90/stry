@@ -609,6 +609,7 @@ Media::fromDisk('videos')->open(['movie.mp4', 'renditions/720p.mp4', 'renditions
 - **Switching:** keyframes are forced every `keyframeInterval` seconds (`media.delivery.segment_duration` by default) with scene-cut keyframes off, so every rendition has keyframes at the same times and direct streams cut the same segments from each. `->alignToSource()` instead forces keyframes where the source's direct stream segments start (from its keyframe index, each segment `keyframeInterval` or longer) and caps other keyframes with `-g 65535`, so the source can be streamed unchanged next to its renditions; stream them with the same segment duration. `->keyframesAt([...seconds])` sets the times by hand.
 - **Codecs:** H.264 (default, `medium`), HEVC (tagged `hvc1`) or AV1 (SVT-AV1, preset 8, without a peak bitrate), always with AAC audio in MP4 with `+faststart`.
 - **Hardware:** `media.ladder.hardware` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc` or `qsv`), or `->hardware()` per ladder, decodes, scales (`scale_vaapi`, `scale_cuda`, `scale_qsv`) and encodes (`h264_vaapi`, `hevc_nvenc`, ...) on the GPU. VAAPI uses `media.ladder.vaapi_device` (`/dev/dri/renderD128`); the container needs access to it.
+- **GPU checks and fallback:** before a GPU is used (ladders, renditions on request, `makePlayable()`), `HardwareAcceleration::orCpu()` opens its device once (`-init_hw_device`, cached five minutes in `media.delivery.cache_store`) and falls back to `HardwareAcceleration::None` when it can't, logging ffmpeg's error. `media.ladder.vaapi_device` is used by VAAPI and Quick Sync (`qsv=hw,child_device=...`); `renderD129` is a second GPU. GPU scaling outputs 8-bit 4:2:0 (`format=nv12`, `format=yuv420p` for CUDA). Renditions on request use `media.delivery.hardware` (`MEDIA_DELIVERY_HARDWARE`), defaulting to `media.ladder.hardware`; `HardwareAcceleration::forDelivery()` reads it.
 - `ladder()` returns the ffmpeg builder, so `toDisk()`, `onProgress()`, `withContext()`, `timeout()` and save callbacks work as usual. The output pattern takes `{height}` and `{bitrate}`. HDR sources aren't tone mapped.
 
 ## Exporting
@@ -660,7 +661,8 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 | `delivery.segment_duration`, `.cache_store`, `.index_lifetime` | Segment length and keyframe index caching for streaming from stored files |
 | `delivery.cache_disk`, `.cache_path`, `.url_lifetime`, `.lock_timeout` | Where packaged segments are cached and how they're served (`media:prune` trims the cache) |
 | `delivery.look_ahead`, `.look_ahead_via`, `.look_ahead_connection`, `.look_ahead_queue` | Segments packaged ahead of the player, and where (`queue`, `defer` or `null`) |
-| `ladder.hardware`, `.vaapi_device` | GPU encoding for `ladder()` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc`, `qsv`) |
+| `ladder.hardware`, `.vaapi_device` | GPU encoding for `ladder()` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc`, `qsv`), falling back to the CPU when the device can't be opened |
+| `delivery.hardware` | GPU for renditions encoded on request (`MEDIA_DELIVERY_HARDWARE`), defaulting to `ladder.hardware` |
 | `playback.video_codecs`, `.audio_codecs`, `.video_codec`, `.crf`, `.preset`, `.audio_bitrate`, `.hardware` | What browsers play through a direct stream, and how `makePlayable()` re-encodes the rest |
 | `timeout` | Process timeout in seconds; keep it at or below the queue job's `$timeout` |
 | `log_channel` | Log channel, `false` to disable |
