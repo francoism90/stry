@@ -239,7 +239,7 @@ return [
             'memory' => 1536,
             'tries' => 3,
             'timeout' => 14400,
-            'nice' => 0,
+            'nice' => 10,
         ],
 
         'supervisor-4' => [
@@ -248,7 +248,7 @@ return [
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => (int) env('QUEUE_MEDIA_MIN_PROCESSES', 1),
-            'maxProcesses' => (int) env('QUEUE_MEDIA_MAX_PROCESSES', 6),
+            'maxProcesses' => (int) env('QUEUE_MEDIA_MAX_PROCESSES', 10),
             'balanceMaxShift' => 2,
             'balanceCooldown' => 1,
             'maxTime' => 0,
