@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34de971ac83d4777961aede4c974d624",
+    "content-hash": "63528503bfe9c7ee9620590fef846276",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1190,45 +1190,38 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "2.0.1",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "1463f94d8756c4bc439a380902db2e9f2396aea2"
+                "reference": "a00b30fd3c87d5d124eecd0863f6bbce5b55a98e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/1463f94d8756c4bc439a380902db2e9f2396aea2",
-                "reference": "1463f94d8756c4bc439a380902db2e9f2396aea2",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/a00b30fd3c87d5d124eecd0863f6bbce5b55a98e",
+                "reference": "a00b30fd3c87d5d124eecd0863f6bbce5b55a98e",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^12.0||^13.0",
-                "illuminate/filesystem": "^12.0||^13.0",
-                "illuminate/process": "^12.0||^13.0",
-                "illuminate/support": "^12.0||^13.0",
-                "php": "^8.4",
-                "psr/log": "^3.0",
-                "spatie/laravel-package-tools": "^1.16"
+                "foxws/laravel-media": "^0.3.1",
+                "illuminate/contracts": "^13.0",
+                "illuminate/filesystem": "^13.0",
+                "illuminate/support": "^13.0",
+                "php": "^8.4"
             },
             "require-dev": {
-                "larastan/larastan": "^3.0",
-                "laravel/pint": "^1.14",
-                "nunomaduro/collision": "^8.8",
-                "orchestra/testbench": "^10.0.0||^11.0",
-                "pestphp/pest": "^4.0",
-                "pestphp/pest-plugin-arch": "^4.0",
-                "pestphp/pest-plugin-laravel": "^4.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0"
+                "larastan/larastan": "^3.9",
+                "laravel/pint": "^1.29",
+                "orchestra/testbench": "^11.0",
+                "pestphp/pest": "^5.0",
+                "pestphp/pest-plugin-laravel": "^5.0",
+                "pestphp/pest-plugin-type-coverage": "^5.0.2",
+                "phpstan/extension-installer": "^1.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
-                    "aliases": {
-                        "AbAv1": "Foxws\\AbAv1\\Facades\\AbAv1"
-                    },
                     "providers": [
                         "Foxws\\AbAv1\\AbAv1ServiceProvider"
                     ]
@@ -1250,7 +1243,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "A Laravel package for encoding videos to AV1 format using ab-av1.",
+            "description": "Encode video to AV1 at a target quality with ab-av1, on top of foxws/laravel-media.",
             "homepage": "https://github.com/foxws/laravel-ab-av1",
             "keywords": [
                 "ab-av1",
@@ -1263,7 +1256,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/2.0.1"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/main"
             },
             "funding": [
                 {
@@ -1271,7 +1264,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-02T11:54:32+00:00"
+            "time": "2026-10-06T09:59:51+00:00"
         },
         {
             "name": "foxws/laravel-ddd",
@@ -1424,16 +1417,16 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "0.3.0",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-media.git",
-                "reference": "897e49f5b08b53d0ee5915c02681afb98a0151b3"
+                "reference": "0319eca463f61e27745fc62d2e1b85424ebcbae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/897e49f5b08b53d0ee5915c02681afb98a0151b3",
-                "reference": "897e49f5b08b53d0ee5915c02681afb98a0151b3",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/0319eca463f61e27745fc62d2e1b85424ebcbae7",
+                "reference": "0319eca463f61e27745fc62d2e1b85424ebcbae7",
                 "shasum": ""
             },
             "require": {
@@ -1505,7 +1498,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-media/issues",
-                "source": "https://github.com/foxws/laravel-media/tree/0.3.0"
+                "source": "https://github.com/foxws/laravel-media/tree/0.3.1"
             },
             "funding": [
                 {
@@ -1513,7 +1506,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-05T13:44:50+00:00"
+            "time": "2026-10-05T14:35:22+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
@@ -18390,7 +18383,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "foxws/laravel-ab-av1": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

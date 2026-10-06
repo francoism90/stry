@@ -8,7 +8,7 @@ use Domain\Media\Models\Media;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Models\Transcode;
 use Domain\Videos\Models\Video;
-use Foxws\AbAv1\Facades\AbAv1;
+use Foxws\Media\Facades\Media as MediaFactory;
 use Illuminate\Support\Collection;
 use Throwable;
 
@@ -28,39 +28,30 @@ class CreateNewVideoTranscode
         $clips = $video->getClips();
 
         return $clips->map(function (Media $media) use ($video) {
-            // Initialize ab-av1 encoder
-            $encoder = AbAv1::fromDisk($media->disk)->open($media->getPathRelativeToRoot());
-
             /** @var Transcode $transcode */
             $transcode = $video->createTranscode([
                 'file_name' => pathinfo($media->file_name, PATHINFO_FILENAME).'.mp4',
                 'encoder' => TranscodeEncoder::AV1,
             ]);
 
-            // Transcode the video
             try {
-                // Mark the transcode as processing
                 $transcode->markAsProcessing();
 
-                // Encode and export (like Laravel Streamer - export() starts the process).
                 // Verify and fail fast, so a damaged or truncated upload fails
                 // instead of saving a broken transcode.
-                $encoder
+                MediaFactory::fromDisk($media->disk)
+                    ->open($media->getPathRelativeToRoot())
+                    ->abAv1()
                     ->withVerify()
                     ->withFailFast()
-                    ->export()
+                    ->withContext(['video_id' => $video->getKey(), 'transcode_id' => $transcode->getKey()])
                     ->toDisk($transcode->getDisk())
-                    ->toPath($transcode->getOutputPath())
                     ->afterSaving(fn () => $transcode->markAsCompleted())
-                    ->save();
+                    ->save($transcode->getOutputPath());
             } catch (Throwable $exception) {
-                // Mark the transcode as failed
                 $transcode->markAsFailed($exception->getMessage());
 
                 throw $exception;
-            } finally {
-                // Clean up temporary files used during encoding
-                $encoder->cleanupTemporaryFiles();
             }
 
             return $transcode;

@@ -182,11 +182,11 @@ You don't set Streamer resolutions in `.env`. They're chosen automatically for e
 ### AV1 encoding (ab-av1)
 
 ```env
-# Encoding preset (0-12; higher is slower but gives better quality)
+# Encoding preset (0-13 for svt-av1; lower is slower but gives smaller files)
 AB_AV1_PRESET=6
 
 # AV1 encoder. Leave it unset to use ab-av1's software default.
-# Options: av1_svtenc (CPU), av1_qsv (Intel QuickSync), av1_vaapi (AMD/Intel VA-API)
+# Options: libsvtav1 (CPU), av1_qsv (Intel QuickSync), av1_vaapi (AMD/Intel VA-API)
 AB_AV1_ENCODER=av1_vaapi
 
 # FFmpeg input options for hardware acceleration
