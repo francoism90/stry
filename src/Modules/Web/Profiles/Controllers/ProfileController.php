@@ -63,9 +63,9 @@ class ProfileController implements HasMiddleware
 
         return Inertia::render('Profiles/ProfileIndex', [
             'profile' => fn () => new ProfileResourceProperty,
-            'items' => Inertia::scroll(fn () => ProfileResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(ProfileScope::class),
             'sorters' => fn () => Options::forEnum(ProfileSorter::class),
+            'items' => Inertia::scroll(fn () => ProfileResource::collection($scout)),
             new ScoutBuilderProperties('profiles'),
         ]);
     }

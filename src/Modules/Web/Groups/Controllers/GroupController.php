@@ -78,9 +78,9 @@ class GroupController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Groups/GroupIndex', [
-            'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(GroupScope::class),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
+            'items' => Inertia::scroll(fn () => GroupResource::collection($scout)),
             new ScoutBuilderProperties('groups'),
         ]);
     }
@@ -113,9 +113,9 @@ class GroupController implements HasMiddleware
 
         return Inertia::render('Groups/GroupView', [
             'group' => fn () => new GroupResourceProperty($group),
-            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             new ScoutBuilderProperties('groups.videos'),
         ]);
     }

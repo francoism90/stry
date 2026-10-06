@@ -28,10 +28,10 @@ class NotificationsController implements HasMiddleware
     {
         Gate::authorize('update', $user);
 
+        $query = $user->notifications()->simplePaginate(perPage: 20);
+
         return Inertia::render('Account/NotificationIndex', [
-            'notifications' => Inertia::scroll(fn () => NotificationResource::collection(
-                $user->notifications()->simplePaginate(perPage: 20)
-            )),
+            'notifications' => Inertia::scroll(fn () => NotificationResource::collection($query)),
         ]);
     }
 

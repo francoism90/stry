@@ -78,9 +78,9 @@ class VideoController implements HasMiddleware
         collect($scout->items())->each(fn (Video $video) => $video->append(['filesize', 'codec', 'resolution', 'bitrate']));
 
         return Inertia::render('Videos/VideoLibrary', [
-            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoLibraryScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             new ScoutBuilderProperties('videos'),
         ]);
     }
@@ -93,7 +93,7 @@ class VideoController implements HasMiddleware
             'video' => fn () => new VideoResourceProperty(video: $video, appends: ['titles', 'summary', 'snapshot']),
             'playlist' => fn () => new VideoDirectPlayProperty(video: $video),
             'progress' => fn () => new VideoProgressProperty(video: $video, user: Auth::user()),
-            'chapters' => new ChapterTypeOptionsProperty,
+            'chapters' => fn () => new ChapterTypeOptionsProperty,
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),

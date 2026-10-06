@@ -58,9 +58,9 @@ class HomeController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Videos/VideoIndex', [
-            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class)->except(VideoSorter::Filesize),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             new ScoutBuilderProperties('videos'),
         ]);
     }

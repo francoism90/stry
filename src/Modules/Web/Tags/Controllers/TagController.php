@@ -73,9 +73,9 @@ class TagController implements HasMiddleware
         collect($scout->items())->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
 
         return Inertia::render('Tags/TagIndex', [
-            'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(TagScope::class),
             'sorters' => fn () => Options::forEnum(TagSorter::class),
+            'items' => Inertia::scroll(fn () => TagResource::collection($scout)),
             new ScoutBuilderProperties('tags'),
         ]);
     }
@@ -109,9 +109,9 @@ class TagController implements HasMiddleware
 
         return Inertia::render('Tags/TagView', [
             'tag' => fn () => new TagResourceProperty($tag, appends: ['description', 'relates']),
-            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             new ScoutBuilderProperties('tags.videos'),
         ]);
     }
