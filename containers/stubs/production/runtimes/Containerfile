@@ -2,27 +2,23 @@
 # another PHP version.
 ARG FRANKENPHP_VERSION=1-php8.5
 
+# FFmpeg release branch of the BtbN static builds. Pass --build-arg
+# FFMPEG_VERSION=... for another one.
+ARG FFMPEG_VERSION=8.1
+
 FROM docker.io/rust:latest AS builder
+
+ARG FFMPEG_VERSION
 
 WORKDIR /tmp
 
-# Install build tools
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    ca-certificates curl build-essential cmake ninja-build musl-tools pkg-config libssl-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# FFmpeg Build Extraction
+# FFmpeg static build
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) ARCH="linux64" ;; \
       aarch64) ARCH="linuxarm64" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
-    && RELEASES=$(curl -fsSL "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest") \
-    && FFMPEG_URL=$(echo "${RELEASES}" | grep -o "https://[^\"]*${ARCH}-gpl\.tar\.xz" | head -1) \
-    && if [ -z "${FFMPEG_URL}" ]; then FFMPEG_URL=$(echo "${RELEASES}" | grep -oE "https://[^\"]*${ARCH}-gpl-[0-9.]+\.tar\.xz" | grep -v shared | head -1); fi \
-    && if [ -z "${FFMPEG_URL}" ]; then echo "Unable to resolve FFmpeg download URL for architecture ${ARCH}"; exit 1; fi \
+    && FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n${FFMPEG_VERSION}-latest-${ARCH}-gpl-${FFMPEG_VERSION}.tar.xz" \
     && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
@@ -56,18 +52,18 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
-# Main dependencies
+# Main dependencies. BtbN's arm64 builds of FFmpeg have no VA-API or QSV, so
+# the VA-API and Intel drivers are only installed on amd64.
 RUN arch="$(dpkg --print-architecture)" \
     && AMD64_DRIVERS="" \
     && if [ "$arch" = "amd64" ]; then \
-    AMD64_DRIVERS="libmfx-gen1.2 libvpl2 intel-media-va-driver-non-free"; \
+    AMD64_DRIVERS="libva2 libva-drm2 mesa-va-drivers libmfx-gen1.2 libvpl2 intel-media-va-driver-non-free"; \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
     gnupg curl ca-certificates gosu \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
-    libva2 libva-drm2 \
-    mesa-va-drivers mesa-vulkan-drivers \
+    libavif-bin jpegoptim optipng pngquant gifsicle webp \
+    mesa-vulkan-drivers \
     ${AMD64_DRIVERS} \
     && apt-get -y autoremove \
     && apt-get clean \
@@ -108,7 +104,7 @@ RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 # Install PHP extensions
 RUN install-php-extensions @composer \
     apcu bcmath exif ffi gd opcache \
-    igbinary imagick inotify intl pcntl \
+    imagick intl pcntl \
     pdo_pgsql redis sockets uv zip
 
 # Install additional PHP extensions if specified
