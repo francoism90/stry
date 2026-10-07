@@ -38,79 +38,81 @@ const { liked, saved, like, save } = useReelGroups(props.item)
 <template>
   <section
     ref="root"
-    class="relative flex h-dvh w-full snap-start snap-always items-center justify-center bg-black"
+    class="flex h-dvh w-full snap-start snap-always justify-center bg-black"
   >
-    <video
-      v-if="loaded && item.reel_url"
-      ref="element"
-      :src="item.reel_url"
-      :poster="item.thumb ?? undefined"
-      :preload="preload"
-      :muted="muted"
-      class="h-full w-full object-contain"
-      loop
-      playsinline
-      @click="emit('toggleMute')"
-    />
+    <div class="relative aspect-9/16 h-full max-w-full overflow-hidden">
+      <video
+        v-if="loaded && item.reel_url"
+        ref="element"
+        :src="item.reel_url"
+        :poster="item.thumb ?? undefined"
+        :preload="preload"
+        :muted="muted"
+        class="size-full object-cover"
+        loop
+        playsinline
+        @click="emit('toggleMute')"
+      />
 
-    <img
-      v-else-if="item.thumb"
-      :src="item.thumb"
-      :alt="item.title"
-      class="h-full w-full object-cover opacity-60"
-      loading="lazy"
-    />
+      <img
+        v-else-if="item.thumb"
+        :src="item.thumb"
+        :alt="item.title"
+        class="size-full object-cover opacity-60"
+        loading="lazy"
+      />
 
-    <div
-      class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-linear-to-t from-black/70 to-transparent p-4 pt-16"
-    >
-      <Link
-        :href="show.url(item.id)"
-        class="pointer-events-auto line-clamp-2 font-semibold text-white"
+      <div
+        class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-linear-to-t from-black/70 to-transparent p-4 pt-16"
       >
-        {{ item.title }}
-      </Link>
+        <Link
+          :href="show.url(item.id)"
+          class="pointer-events-auto line-clamp-2 font-semibold text-white"
+        >
+          {{ item.title }}
+        </Link>
 
-      <div class="pointer-events-auto flex flex-col items-center gap-2">
-        <UButton
-          :icon="muted ? 'i-lucide-volume-x' : 'i-lucide-volume-2'"
-          :aria-label="muted ? 'Unmute' : 'Mute'"
-          color="neutral"
-          variant="ghost"
-          size="xl"
-          class="text-white"
-          @click="emit('toggleMute')"
-        />
+        <div class="pointer-events-auto flex flex-col items-center gap-2">
+          <UButton
+            :icon="muted ? 'i-lucide-volume-x' : 'i-lucide-volume-2'"
+            :aria-label="muted ? 'Unmute' : 'Mute'"
+            color="neutral"
+            variant="ghost"
+            size="xl"
+            class="text-white"
+            @click="emit('toggleMute')"
+          />
 
-        <UButton
-          icon="i-lucide-heart"
-          :aria-label="liked ? 'Unlike' : 'Like'"
-          :color="liked ? 'error' : 'neutral'"
-          variant="ghost"
-          size="xl"
-          :class="liked ? undefined : 'text-white'"
-          @click="like"
-        />
+          <UButton
+            icon="i-lucide-heart"
+            :aria-label="liked ? 'Unlike' : 'Like'"
+            :color="liked ? 'error' : 'neutral'"
+            variant="ghost"
+            size="xl"
+            :class="liked ? undefined : 'text-white'"
+            @click="like"
+          />
 
-        <UButton
-          icon="i-lucide-bookmark"
-          :aria-label="saved ? 'Unsave' : 'Save'"
-          :color="saved ? 'primary' : 'neutral'"
-          variant="ghost"
-          size="xl"
-          :class="saved ? undefined : 'text-white'"
-          @click="save"
-        />
+          <UButton
+            icon="i-lucide-bookmark"
+            :aria-label="saved ? 'Unsave' : 'Save'"
+            :color="saved ? 'primary' : 'neutral'"
+            variant="ghost"
+            size="xl"
+            :class="saved ? undefined : 'text-white'"
+            @click="save"
+          />
 
-        <UButton
-          :to="show.url(item.id)"
-          icon="i-lucide-play"
-          aria-label="Watch full video"
-          color="neutral"
-          variant="ghost"
-          size="xl"
-          class="text-white"
-        />
+          <UButton
+            :to="show.url(item.id)"
+            icon="i-lucide-play"
+            aria-label="Watch full video"
+            color="neutral"
+            variant="ghost"
+            size="xl"
+            class="text-white"
+          />
+        </div>
       </div>
     </div>
   </section>

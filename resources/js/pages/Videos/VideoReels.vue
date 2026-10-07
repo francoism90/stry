@@ -36,7 +36,7 @@ const itemBody = ref<HTMLElement>()
         >
           <div
             ref="itemBody"
-            class="mx-auto w-full max-w-md"
+            class="w-full"
           >
             <VideoReelItem
               v-for="(item, index) in items?.data ?? []"
