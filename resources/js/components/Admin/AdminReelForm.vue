@@ -8,9 +8,8 @@ const loaded = ref(false)
 const http = useHttp<object, ReelSettings>({})
 
 const fits = [
-  { label: 'Blur', value: 'blur' },
-  { label: 'Letterbox', value: 'letterbox' },
   { label: 'Crop', value: 'crop' },
+  { label: 'Letterbox', value: 'letterbox' },
 ]
 
 const codecs = [
@@ -24,7 +23,8 @@ const form = useForm(update(), {
   width: 1080,
   height: 1920,
   fps: 30,
-  fit: 'blur' as ReelSettings['fit'],
+  fit: 'crop' as ReelSettings['fit'],
+  zoom: 50,
   codec: 'h264' as ReelSettings['codec'],
   hardware: false,
   quality: 26,
@@ -72,7 +72,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 11"
+      v-for="i in 12"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -139,7 +139,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Fit"
-          description="How videos of another shape fill the frame. Blur shows the whole picture on a blurred copy of itself, letterbox adds black bars, and crop fills the frame but cuts off the sides."
+          description="How videos of another shape, such as landscape ones, fill the frame. Crop zooms them in on a blurred copy of themselves; letterbox shows them whole with black bars."
           name="fit"
           :error="form.errors.fit"
           :class="fieldClass"
@@ -148,6 +148,25 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             v-model="form.fit"
             class="w-56"
             :items="fits"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Zoom"
+          description="How much of the frame a cropped landscape video fills. 100 fills it and cuts off the most of the sides, 0 shows the whole picture; the rest is the blurred background."
+          name="zoom"
+          :error="form.errors.zoom"
+          :class="fieldClass"
+        >
+          <UInputNumber
+            v-model="form.zoom"
+            class="w-32"
+            :min="0"
+            :max="100"
+            :step="5"
+            :disabled="form.fit !== 'crop'"
           />
         </UFormField>
 

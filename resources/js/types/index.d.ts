@@ -137,7 +137,8 @@ export type ReelSettings = {
   width: number
   height: number
   fps: number
-  fit: 'blur' | 'letterbox' | 'crop'
+  fit: 'crop' | 'letterbox'
+  zoom: number
   codec: 'h264' | 'hevc' | 'av1'
   hardware: boolean
   quality: number

@@ -35,7 +35,7 @@ function createReelClip(Video $video): Domain\Media\Models\Media
 }
 
 it('joins the cuts into a vertical reel kept on the video', function () {
-    ReelSettings::fake(['fit' => 'crop']);
+    ReelSettings::fake(['zoom' => 100]);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)])->scenes('clip.mp4', [20.0, 60.0, 100.0, 140.0]);
     $video = Video::factory()->create();
     createReelClip($video);
@@ -54,7 +54,7 @@ it('joins the cuts into a vertical reel kept on the video', function () {
 });
 
 it('uses the reel size and frame rate from the reel settings', function () {
-    ReelSettings::fake(['width' => 720, 'height' => 1280, 'fps' => 24, 'fit' => 'crop']);
+    ReelSettings::fake(['width' => 720, 'height' => 1280, 'fps' => 24, 'zoom' => 100]);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
     $video = Video::factory()->create();
     createReelClip($video);
@@ -67,9 +67,9 @@ it('uses the reel size and frame rate from the reel settings', function () {
     ));
 });
 
-it('fits the whole picture on a blurred copy of itself or between black bars', function (string $fit, string $filter) {
-    ReelSettings::fake(['fit' => $fit]);
-    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
+it('zooms a cropped video into the frame on a blurred copy of itself, or letterboxes it', function (array $settings, int $width, int $height, string $filter) {
+    ReelSettings::fake($settings);
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200, width: $width, height: $height)]);
     $video = Video::factory()->create();
     createReelClip($video);
 
@@ -77,8 +77,11 @@ it('fits the whole picture on a blurred copy of itself or between black bars', f
 
     Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => str_contains(implode(' ', $arguments), $filter));
 })->with([
-    'blur' => ['blur', '[joined]split[background][foreground];[background]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,setsar=1,boxblur=10:1,lutyuv=y=val*0.5,scale=1080:1920[blurred];[foreground]scale=1080:1920:force_original_aspect_ratio=decrease[fitted];[blurred][fitted]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=30'],
-    'letterbox' => ['letterbox', 'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=30'],
+    'landscape at the default zoom' => [[], 1920, 1080, '[joined]split[background][foreground];[background]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,setsar=1,boxblur=10:1,lutyuv=y=val*0.5,scale=1080:1920[blurred];[foreground]scale=1080:1264:force_original_aspect_ratio=increase,crop=1080:1264,setsar=1[fitted];[blurred][fitted]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=30'],
+    'landscape, whole' => [['zoom' => 0], 1920, 1080, '[foreground]scale=1080:608:force_original_aspect_ratio=increase,crop=1080:608,setsar=1[fitted]'],
+    'landscape, filling the frame' => [['zoom' => 100], 1920, 1080, '[joined]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30'],
+    'portrait fills the frame' => [[], 1080, 1920, '[joined]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30'],
+    'letterbox' => [['fit' => 'letterbox'], 1920, 1080, '[joined]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=30'],
 ]);
 
 it('encodes at the reel quality, as a crf on the cpu or a qp on the gpu', function (?string $hardware, string $option) {
