@@ -25,6 +25,9 @@ class ProcessingSettingsRequest extends FormRequest
             'extract_storyboard' => ['sometimes', 'boolean'],
             'create_renditions' => ['sometimes', 'boolean'],
             'create_reels' => ['sometimes', 'boolean'],
+            'reel_width' => ['sometimes', 'integer', 'between:240,3840', 'multiple_of:2'],
+            'reel_height' => ['sometimes', 'integer', 'between:240,3840', 'multiple_of:2'],
+            'reel_fps' => ['sometimes', 'integer', 'between:10,60'],
         ];
     }
 }

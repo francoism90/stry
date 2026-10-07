@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\Videos\Actions\CreateVideoReel;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ProcessingSettings;
 use Foxws\Media\Executables\Executable;
 use Foxws\Media\Facades\Media;
 use Foxws\Media\Testing\FakeProbe;
@@ -49,6 +50,20 @@ it('joins the cuts into a vertical reel kept on the video', function () {
         ->and($video->fresh()->getReel()?->is($reel))->toBeTrue()
         ->and($reel->getCustomProperty('clips'))->toBe([[20.5, 24.5], [60.5, 64.5], [100.5, 104.5], [140.5, 144.5]]);
     Storage::disk('conversions')->assertExists($reel->getPathRelativeToRoot());
+});
+
+it('uses the reel size and frame rate from the processing settings', function () {
+    ProcessingSettings::fake(['reel_width' => 720, 'reel_height' => 1280, 'reel_fps' => 24]);
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
+    $video = Video::factory()->create();
+    createReelClip($video);
+
+    app(CreateVideoReel::class)->handle($video);
+
+    Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => str_contains(
+        implode(' ', $arguments),
+        'scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,setsar=1,fps=24',
+    ));
 });
 
 it('replaces the previous reel', function () {

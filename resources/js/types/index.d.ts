@@ -137,6 +137,9 @@ export type ProcessingSettings = {
   extract_storyboard: boolean
   create_renditions: boolean
   create_reels: boolean
+  reel_width: number
+  reel_height: number
+  reel_fps: number
 }
 
 export type MediaStream = {
