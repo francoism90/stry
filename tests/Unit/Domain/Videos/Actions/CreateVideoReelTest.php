@@ -48,7 +48,7 @@ it('joins the cuts into a vertical reel kept on the video', function () {
     expect($reel)->not->toBeNull()
         ->and($video->fresh()->getReel()?->is($reel))->toBeTrue()
         ->and($reel->getCustomProperty('clips'))->toBe([[20.5, 24.5], [60.5, 64.5], [100.5, 104.5], [140.5, 144.5]]);
-    Storage::disk('media')->assertExists($reel->getPathRelativeToRoot());
+    Storage::disk('conversions')->assertExists($reel->getPathRelativeToRoot());
 });
 
 it('replaces the previous reel', function () {
@@ -61,7 +61,7 @@ it('replaces the previous reel', function () {
 
     expect($video->fresh()->getMedia('reels'))->toHaveCount(1)
         ->and($video->fresh()->getReel()?->is($second))->toBeTrue();
-    Storage::disk('media')->assertMissing($first->getPathRelativeToRoot());
+    Storage::disk('conversions')->assertMissing($first->getPathRelativeToRoot());
 });
 
 it('makes no reel of videos without clips or too short to cut', function (bool $hasClip, float $duration) {

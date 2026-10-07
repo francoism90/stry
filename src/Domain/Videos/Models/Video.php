@@ -174,7 +174,7 @@ class Video extends Model implements HasMedia
 
         $this
             ->addMediaCollection('reels')
-            ->useDisk('media')
+            ->useDisk(static::getReelsDisk())
             ->singleFile()
             ->acceptsMimeTypes(['video/mp4']);
     }
@@ -262,6 +262,11 @@ class Video extends Model implements HasMedia
     public static function getImportDisk(): string
     {
         return Config::string('videos.import_disk', 'import');
+    }
+
+    public static function getReelsDisk(): string
+    {
+        return Config::string('videos.reels_disk', 'conversions');
     }
 
     public static function getImportBatchSize(): int

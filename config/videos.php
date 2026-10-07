@@ -21,6 +21,8 @@ return [
 
     'thumbnails_disk' => (string) env('VIDEO_THUMBNAILS_DISK', 'conversions'),
 
+    'reels_disk' => (string) env('VIDEO_REELS_DISK', 'conversions'),
+
     /*
     |--------------------------------------------------------------------------
     | Playback Configuration

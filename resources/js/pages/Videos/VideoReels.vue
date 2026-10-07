@@ -24,7 +24,7 @@ const itemBody = ref<HTMLElement>()
 
   <UDashboardPanel
     id="reels"
-    :ui="{ body: 'p-0 sm:p-0' }"
+    :ui="{ body: 'snap-y snap-mandatory gap-0 overscroll-contain bg-black p-0 sm:gap-0 sm:p-0' }"
   >
     <template #body>
       <InfiniteScroll
@@ -32,7 +32,6 @@ const itemBody = ref<HTMLElement>()
         :items-element="() => itemBody"
         :buffer="800"
         only-next
-        class="h-full snap-y snap-mandatory overflow-y-auto bg-black"
       >
         <div
           ref="itemBody"

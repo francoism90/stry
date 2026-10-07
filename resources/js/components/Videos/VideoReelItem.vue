@@ -41,6 +41,8 @@ useIntersectionObserver(
 )
 
 const play = (video: HTMLVideoElement): void => {
+  // Browsers only autoplay muted video, and the attribute may not be set yet after hydration.
+  video.muted = props.muted
   video.play().catch(() => {
     // Unmuted playback was blocked; continue muted.
     emit('blocked')
