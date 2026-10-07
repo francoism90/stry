@@ -10,8 +10,8 @@
         "dash",
         "hls",
         "transcode",
-        "shaka",
-        "packager"
+        "ffmpeg",
+        "av1"
     ],
     "license": "MIT",
     "require": {
