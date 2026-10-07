@@ -124,11 +124,26 @@ export type PlaybackSettings = {
   text_language: 'en' | 'nl'
   encryption: boolean
   refresh_before: number
+  completion_threshold: number
   renditions: number[]
 }
 
 export type PlaybackSettingsResponse = PlaybackSettings & {
   rendition_options: { value: number; label: string }[]
+}
+
+export type ReelSettings = {
+  enabled: boolean
+  width: number
+  height: number
+  fps: number
+  codec: 'h264' | 'hevc' | 'av1'
+  hardware: boolean
+  quality: number
+  cuts: number
+  cut_duration: number
+  duration: number
+  scene_threshold: number
 }
 
 export type ProcessingSettings = {
@@ -245,6 +260,14 @@ export type Chapter = Model & {
   end_time: number
   sort: number
   skippable: boolean
+}
+
+export type VideoReel = Pick<Video, 'id' | 'title' | 'thumb' | 'liked' | 'saved'> & {
+  reel_url: string | null
+}
+
+export type VideoReelCollection = Omit<Paginator, 'data'> & {
+  data: VideoReel[] | undefined
 }
 
 export type Playlist = {

@@ -12,22 +12,22 @@ export function useVideo() {
     await http.post(VideoSessionController.url({ video: video.id }))
   }
 
-  const toggleLike = (video: Video): void => {
-    toggleGroup(VideoLikeController.url({ video: video.id }))
+  const toggleLike = (video: Pick<Video, 'id'>, only?: string[]): void => {
+    toggleGroup(VideoLikeController.url({ video: video.id }), only)
   }
 
-  const toggleSave = (video: Video): void => {
-    toggleGroup(VideoSaveController.url({ video: video.id }))
+  const toggleSave = (video: Pick<Video, 'id'>, only?: string[]): void => {
+    toggleGroup(VideoSaveController.url({ video: video.id }), only)
   }
 
-  const toggleGroup = (url: string): void =>
+  const toggleGroup = (url: string, only = ['video', 'group', 'items']): void =>
     router.post(
       url,
       {},
       {
         preserveState: true,
         preserveScroll: true,
-        only: ['video', 'group', 'items'],
+        only,
       },
     )
 

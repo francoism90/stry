@@ -13,6 +13,7 @@ use Modules\Web\Transcodes\Controllers\TranscodeController;
 use Modules\Web\Users\Controllers\UserController;
 use Modules\Web\Videos\Controllers\VideoChapterController;
 use Modules\Web\Videos\Controllers\VideoController;
+use Modules\Web\Videos\Controllers\VideoReelController;
 use Modules\Web\Videos\Controllers\VideoTranscodeController;
 
 // Home
@@ -40,6 +41,7 @@ Route::resource('transcodes', TranscodeController::class)->only(['index', 'destr
 Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
 
 // Videos
+Route::resource('reels', VideoReelController::class)->only(['index']);
 Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['update', 'destroy']);
 Route::resource('videos.chapters', VideoChapterController::class)->scoped()->only(['store', 'update', 'destroy']);

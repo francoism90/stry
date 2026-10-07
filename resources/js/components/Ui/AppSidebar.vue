@@ -35,6 +35,12 @@ const items = computed<NavigationMenuItem[][]>(() => [
       exact: true,
     },
     {
+      label: 'Reels',
+      icon: 'i-lucide-clapperboard',
+      to: '/reels',
+      exact: true,
+    },
+    {
       label: 'Tags',
       icon: 'i-lucide-tags',
       to: '/tags',

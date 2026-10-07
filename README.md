@@ -26,6 +26,7 @@
 
 - 🎥 **Direct Play** - Videos stream straight from their files as DASH & HLS, packaged on the fly from shared CMAF segments, no playlists to generate first
 - 🎚️ **Renditions & Transcoding** - Optional smaller renditions encoded while they're watched, and AV1 transcodes with ab-av1
+- 📱 **Reels** - Short vertical highlight reels cut from each video's best scenes, in a full-screen swipe feed
 - 🔐 **Stream Encryption** - Optional secure video content with encryption for both HLS and DASH
 - 👤 **Profiles & Content Controls** - Profile-based viewing with optional content hiding
 - 📲 **Installable PWA** - Install on mobile and desktop

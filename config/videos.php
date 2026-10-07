@@ -21,16 +21,7 @@ return [
 
     'thumbnails_disk' => (string) env('VIDEO_THUMBNAILS_DISK', 'conversions'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Playback Configuration
-    |--------------------------------------------------------------------------
-    |
-    | The share of a video that has to be watched to count it as completed.
-    |
-    */
-
-    'completion_threshold' => (float) env('VIDEO_COMPLETION_THRESHOLD', 0.98),
+    'reels_disk' => (string) env('VIDEO_REELS_DISK', 'conversions'),
 
     /*
     |--------------------------------------------------------------------------

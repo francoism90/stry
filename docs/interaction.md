@@ -49,6 +49,7 @@ Run these with `lpod stry artisan ...`, or the shorter `lpod stry a ...`.
 | `media:prune`                                         | Delete cached direct play segments (runs daily) |
 | `media:clean`                                         | Delete temporary files left by crashed jobs     |
 | `videos:thumbnails`                                   | Regenerate the seek preview thumbnails          |
+| `videos:reels`                                        | Queue reels to be regenerated                   |
 | `transcodes:create`                                   | Start an AV1 transcode for a video              |
 | `transcodes:import`                                   | Add completed transcodes to their videos        |
 | `transcodes:clear`                                    | Permanently delete failed transcodes            |

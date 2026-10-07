@@ -17,6 +17,7 @@ use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithDirectPlay;
+use Domain\Videos\Concerns\InteractsWithReels;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
@@ -68,6 +69,7 @@ class Video extends Model implements HasMedia
     use InteractsWithMedia;
 
     use InteractsWithModelCache;
+    use InteractsWithReels;
     use InteractsWithTranscodes;
     use InteractsWithUser;
     use Searchable;
@@ -169,6 +171,12 @@ class Video extends Model implements HasMedia
                 'text/srt',
                 'text/vtt',
             ]);
+
+        $this
+            ->addMediaCollection('reels')
+            ->useDisk(static::getReelsDisk())
+            ->singleFile()
+            ->acceptsMimeTypes(['video/av1', 'video/mp4']);
     }
 
     public function registerMediaConversions(?BaseMedia $media = null): void
@@ -256,14 +264,14 @@ class Video extends Model implements HasMedia
         return Config::string('videos.import_disk', 'import');
     }
 
+    public static function getReelsDisk(): string
+    {
+        return Config::string('videos.reels_disk', 'conversions');
+    }
+
     public static function getImportBatchSize(): int
     {
         return Config::integer('videos.import_batch_size', 10);
-    }
-
-    public static function getCompletionThreshold(): float
-    {
-        return Config::float('videos.completion_threshold', 0.95);
     }
 
     /**

@@ -7,6 +7,7 @@ namespace Support\Inertia\Middlewares;
 use Domain\Shared\Enums\Language;
 use Domain\Shared\Enums\Locale;
 use Domain\Tags\Enums\TagType;
+use Foundation\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Middleware;
@@ -45,7 +46,7 @@ class HandleInertiaRequests extends Middleware
     public function shareOnce(Request $request): array
     {
         return array_merge(parent::shareOnce($request), [
-            'app' => fn (): string => Config::string('app.name', 'Laravel'),
+            'app' => fn (): string => app(GeneralSettings::class)->site_name,
             'locales' => fn (): Options => Options::forEnum(Locale::class),
             'languages' => fn (): Options => Options::forEnum(Language::class),
             'tags' => fn (): Options => Options::forEnum(TagType::class),

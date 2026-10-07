@@ -23,14 +23,15 @@ Use environment variables instead of editing the `config/*.php` files. That keep
 
 ## Admin-managed settings
 
-A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
+A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing / Reels**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
 
-| Settings class       | Admin tab   | What it covers                                                                   |
-| -------------------- | ----------- | -------------------------------------------------------------------------------- |
-| `GeneralSettings`    | Application | Site name, timezone, default locale, registration, profiles per user             |
-| `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, rendition heights             |
-| `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically            |
-| `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions |
+| Settings class       | Admin tab   | What it covers                                                                             |
+| -------------------- | ----------- | ------------------------------------------------------------------------------------------ |
+| `GeneralSettings`    | Application | Site name, timezone, default locale, registration, profiles per user                       |
+| `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, completion threshold, renditions        |
+| `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically                      |
+| `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions           |
+| `ReelSettings`       | Reels       | Creating reels, their size, frame rate, codec, quality, length, cuts and scene sensitivity |
 
 ### Shipping new defaults
 
@@ -166,9 +167,22 @@ VIDEO_IMPORT_DISK=import
 
 # Number of videos to process in each import batch
 VIDEO_IMPORT_BATCH_SIZE=20
+```
 
-# How much of a video must be watched before it counts as finished (0.0-1.0)
-VIDEO_COMPLETION_THRESHOLD=0.95
+### Reels
+
+A reel is a short vertical highlight video, shown in the **Reels** feed. To make one, stry finds where the picture changes the most and joins short cuts of those scenes. It skips the first and last 5% of the video and chapters you can skip, such as intros, credits and sponsors. Videos up to one and a half times the reel duration are used whole. The result is cropped to fill the frame and encoded as H.264 by default, which plays everywhere. HEVC (H.265) is about a third smaller but doesn't play in most versions of Firefox, and AV1 is also available. Reels are encoded on the CPU. Turn on **Encode on GPU** to use the GPU in `MEDIA_LADDER_HARDWARE` instead: it's faster, but gives larger files at the same quality, and some GPUs, such as AMD with VAAPI, write corrupted HEVC.
+
+Turn on **Create reels** under **Admin → Reels** to make a reel for each video as it's processed. The same tab sets the size (1080 × 1920 by default), frame rate, quality (a CRF on the CPU, or the matching quality setting on a GPU; 26 by default), length, number of cuts, cut duration and scene sensitivity. Cuts may run past a scene change, and move closer together when they're too far apart to fill most of the reel. Changes only apply to new reels. Run `php artisan videos:reels --force` to regenerate the existing ones, or `videos:reels --missing` to make reels for videos that don't have one yet. Reels are encoded on the `processing` queue.
+
+```env
+# Disk that reels are stored on. It must make temporary URLs (S3, or a local
+# disk with serve enabled), because the feed plays reels from them.
+VIDEO_REELS_DISK=conversions
+
+# Encode reels on the GPU: none, vaapi, nvenc or qsv. Decoding and cropping stay
+# on the CPU, and reels fall back to the CPU when the GPU can't be opened.
+MEDIA_LADDER_HARDWARE=vaapi
 ```
 
 ### AV1 transcoding (ab-av1)
@@ -197,11 +211,11 @@ AB_AV1_TIMEOUT=14400
 
 ## Config file reference
 
-| Config file         | What it configures     | Main settings                                                           |
-| ------------------- | ---------------------- | ----------------------------------------------------------------------- |
-| `config/media.php`  | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths      |
-| `config/videos.php` | Importing and playback | Import, transcode and thumbnail disks, batch size, completion threshold |
-| `config/ab-av1.php` | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                          |
+| Config file         | What it configures     | Main settings                                                      |
+| ------------------- | ---------------------- | ------------------------------------------------------------------ |
+| `config/media.php`  | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths |
+| `config/videos.php` | Importing and playback | Import, transcode and thumbnail disks, batch size                  |
+| `config/ab-av1.php` | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                     |
 
 The `config/*.php` files are part of the repository, so you can read every option there. Run `php artisan media:info` to check which FFmpeg, FFprobe and ab-av1 binaries were found.
 

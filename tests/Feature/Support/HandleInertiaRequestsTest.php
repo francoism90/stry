@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Users\Models\User;
+use Foundation\Settings\GeneralSettings;
 
 it('shares validation errors with the next inertia response', function () {
     User::factory()->create(['email' => 'test@example.com']);
@@ -18,4 +19,13 @@ it('shares validation errors with the next inertia response', function () {
 
     $this->get(route('login'))
         ->assertInertia(fn ($page) => $page->has('errors.email'));
+});
+
+it('shares the site name from the application settings', function () {
+    $settings = app(GeneralSettings::class);
+    $settings->site_name = 'Stry Test';
+    $settings->save();
+
+    $this->get(route('login'))
+        ->assertInertia(fn ($page) => $page->where('app', 'Stry Test'));
 });

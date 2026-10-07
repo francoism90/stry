@@ -1,0 +1,203 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Domain\Videos\Actions;
+
+use Domain\Chapters\Models\Chapter;
+use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ReelSettings;
+use Foxws\Media\FFMpeg\Clip;
+use Foxws\Media\FFMpeg\Scene;
+use Foxws\Media\Opener;
+
+/**
+ * Picks the cuts of a reel, as set in the reel settings: short parts of the scenes that change the most, spread over the video and
+ * kept out of its opening and ending and of skippable chapters (intros, credits, sponsors and so on).
+ * Cuts move closer together when they're too far apart to fill the reel, videos without enough scene
+ * changes get evenly spaced cuts instead, and short videos are used whole.
+ */
+class SelectReelClips
+{
+    /**
+     * Videos up to this many times the reel duration are used whole instead of cut.
+     */
+    public const float WHOLE_VIDEO_FACTOR = 1.5;
+
+    /**
+     * Cuts are moved closer together until they fill this much of the reel duration.
+     */
+    public const float TARGET_FILL = 0.8;
+
+    /**
+     * Cuts start this far into their scene, past the transition.
+     */
+    protected const float SCENE_OFFSET = 0.5;
+
+    /**
+     * Cuts shorter than this are left out.
+     */
+    protected const float MINIMUM_CUT_DURATION = 1.5;
+
+    /**
+     * The part of the video at its start and end that's left out.
+     */
+    protected const float EDGE = 0.05;
+
+    public function __construct(
+        protected readonly ReelSettings $settings,
+    ) {}
+
+    /**
+     * @return list<Clip>
+     */
+    public function handle(Video $video, Opener $opener): array
+    {
+        $duration = $opener->probe()->duration();
+
+        if ($duration <= 0) {
+            return [];
+        }
+
+        if ($duration <= $this->settings->duration * self::WHOLE_VIDEO_FACTOR) {
+            return [Clip::make(0, $duration)];
+        }
+
+        $excluded = $this->excludedRanges($video, $duration);
+
+        $cuts = $this->fromScenes($opener->scenes($this->settings->scene_threshold), $duration, $excluded);
+
+        if (count($cuts) < 3) {
+            $cuts = $this->evenlySpaced($duration, $excluded);
+        }
+
+        usort($cuts, fn (Clip $a, Clip $b): int => $a->from <=> $b->from);
+
+        return $cuts;
+    }
+
+    /**
+     * @param  list<Scene>  $scenes
+     * @param  list<array{float, float}>  $excluded
+     * @return list<Clip>
+     */
+    protected function fromScenes(array $scenes, float $duration, array $excluded): array
+    {
+        $candidates = [];
+
+        foreach ($scenes as $scene) {
+            $cut = $this->cutOf($scene->start + self::SCENE_OFFSET, $duration, $excluded);
+
+            if ($cut !== null) {
+                $candidates[] = ['cut' => $cut, 'score' => $scene->score ?? 0.0];
+            }
+        }
+
+        usort($candidates, fn (array $a, array $b): int => [$b['score'], $a['cut']->from] <=> [$a['score'], $b['cut']->from]);
+
+        $ordered = array_column($candidates, 'cut');
+        $cuts = [];
+
+        foreach ([$duration / 10, $duration / 20, 0.0] as $spacing) {
+            $cuts = $this->pick($ordered, $spacing);
+
+            if (array_sum(array_map(fn (Clip $cut): float => $cut->duration(), $cuts)) >= $this->settings->duration * self::TARGET_FILL) {
+                break;
+            }
+        }
+
+        return $cuts;
+    }
+
+    /**
+     * @param  list<array{float, float}>  $excluded
+     * @return list<Clip>
+     */
+    protected function evenlySpaced(float $duration, array $excluded): array
+    {
+        $start = $duration * self::EDGE;
+        $step = ($duration * (1 - 2 * self::EDGE)) / $this->settings->cuts;
+
+        $candidates = [];
+
+        for ($index = 0; $index < $this->settings->cuts; $index++) {
+            $from = $start + $step * ($index + 0.5) - $this->settings->cut_duration / 2;
+
+            $candidates[] = $this->cutOf($from, $duration, $excluded);
+        }
+
+        return $this->pick(array_values(array_filter($candidates)), 0.0);
+    }
+
+    /**
+     * Take candidates in order, skipping those closer than $spacing to a cut already taken. Cuts are
+     * always at least the cut duration apart, so they never overlap.
+     *
+     * @param  list<Clip>  $candidates
+     * @return list<Clip>
+     */
+    protected function pick(array $candidates, float $spacing): array
+    {
+        $spacing = max($spacing, $this->settings->cut_duration);
+        $cuts = [];
+        $total = 0.0;
+
+        foreach ($candidates as $candidate) {
+            if (count($cuts) >= $this->settings->cuts || $total + $candidate->duration() > $this->settings->duration) {
+                break;
+            }
+
+            foreach ($cuts as $cut) {
+                if (abs($cut->from - $candidate->from) < $spacing) {
+                    continue 2;
+                }
+            }
+
+            $cuts[] = $candidate;
+            $total += $candidate->duration();
+        }
+
+        return $cuts;
+    }
+
+    /**
+     * A cut from the given time, the cut duration long or up to $end, or null when it would be too short
+     * or overlap an excluded range. Cuts may run past a scene change, so short scenes still fill a cut.
+     *
+     * @param  list<array{float, float}>  $excluded
+     */
+    protected function cutOf(float $from, float $end, array $excluded): ?Clip
+    {
+        $to = min($from + $this->settings->cut_duration, $end);
+
+        if ($to - $from < self::MINIMUM_CUT_DURATION) {
+            return null;
+        }
+
+        foreach ($excluded as [$start, $stop]) {
+            if ($from < $stop && $to > $start) {
+                return null;
+            }
+        }
+
+        return Clip::make($from, $to);
+    }
+
+    /**
+     * @return list<array{float, float}>
+     */
+    protected function excludedRanges(Video $video, float $duration): array
+    {
+        $chapters = $video->chapters
+            ->filter(fn (Chapter $chapter): bool => $chapter->type->isSkippable())
+            ->map(fn (Chapter $chapter): array => [(float) $chapter->start_time, (float) $chapter->end_time])
+            ->values()
+            ->all();
+
+        return [
+            [0.0, $duration * self::EDGE],
+            [$duration * (1 - self::EDGE), $duration],
+            ...$chapters,
+        ];
+    }
+}
