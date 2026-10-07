@@ -18,6 +18,7 @@ it('allows a super-admin to fetch playback settings', function () {
         'text_language' => Language::English->value,
         'encryption' => false,
         'refresh_before' => 300,
+        'completion_threshold' => 0.95,
         'renditions' => [],
         'rendition_options' => [
             ['value' => 1080, 'label' => '1080p'],
@@ -44,6 +45,7 @@ it('allows a super-admin to update playback settings', function () {
         'text_language' => 'nl',
         'encryption' => true,
         'refresh_before' => 120,
+        'completion_threshold' => 0.9,
         'renditions' => [480, '720'],
     ]);
 
@@ -55,6 +57,7 @@ it('allows a super-admin to update playback settings', function () {
     expect($settings->text_language)->toBe(Language::Dutch)
         ->and($settings->encryption)->toBeTrue()
         ->and($settings->refresh_before)->toBe(120)
+        ->and($settings->completion_threshold)->toBe(0.9)
         ->and($settings->renditions)->toBe([720, 480]);
 });
 
@@ -88,4 +91,15 @@ it('rejects renditions of other sizes', function () {
     ]);
 
     $response->assertInvalid(['renditions.0']);
+});
+
+it('rejects a completion threshold outside the allowed range', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->patch(action([PlaybackSettingsController::class, 'update']), [
+        'completion_threshold' => 1.5,
+    ]);
+
+    $response->assertInvalid(['completion_threshold']);
 });

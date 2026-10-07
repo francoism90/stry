@@ -14,6 +14,7 @@ const form = useForm<PlaybackSettings>(update(), {
   text_language: 'en',
   encryption: false,
   refresh_before: 0,
+  completion_threshold: 0.95,
   renditions: [],
 })
 
@@ -130,6 +131,24 @@ const renditions = computed({
             v-model="form.refresh_before"
             class="w-56"
             :min="0"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Completion threshold"
+          description="Share of a video that has to be watched to count it as finished, so it starts from the beginning next time."
+          name="completion_threshold"
+          :error="form.errors.completion_threshold"
+          :class="fieldClass"
+        >
+          <UInputNumber
+            v-model="form.completion_threshold"
+            class="w-56"
+            :min="0.5"
+            :max="1"
+            :step="0.01"
           />
         </UFormField>
 

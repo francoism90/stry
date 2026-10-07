@@ -28,6 +28,7 @@ class PlaybackSettingsRequest extends FormRequest
             'text_language' => ['sometimes', new Enum(Language::class)],
             'encryption' => ['sometimes', 'boolean'],
             'refresh_before' => ['sometimes', 'integer', 'min:0'],
+            'completion_threshold' => ['sometimes', 'numeric', 'between:0.5,1'],
             'renditions' => ['sometimes', 'array'],
             'renditions.*' => ['integer', 'distinct', Rule::in(array_map(fn (Rendition $rendition): int => $rendition->height, Ladder::standard()->renditions))],
         ];

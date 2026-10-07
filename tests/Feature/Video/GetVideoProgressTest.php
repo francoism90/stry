@@ -6,6 +6,7 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Actions\GetVideoProgress;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\PlaybackSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -47,6 +48,18 @@ it('falls back to the progress stored in the viewed group when nothing is cached
 it('returns no progress when the video was never viewed', function () {
     $user = User::factory()->create();
     $video = createVideoWithDuration(100);
+
+    $progress = app(GetVideoProgress::class)->handle($video, $user);
+
+    expect($progress)->toBe(0.0);
+});
+
+it('resets the progress once the completion threshold is reached', function () {
+    PlaybackSettings::fake(['completion_threshold' => 0.9]);
+
+    $user = User::factory()->create();
+    $video = createVideoWithDuration(100);
+    $user->markInGroup($video, GroupType::Viewed, ['time' => 91]);
 
     $progress = app(GetVideoProgress::class)->handle($video, $user);
 

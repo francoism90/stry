@@ -7,10 +7,15 @@ namespace Domain\Videos\Actions;
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\PlaybackSettings;
 use Illuminate\Support\Number;
 
 class GetVideoProgress
 {
+    public function __construct(
+        protected PlaybackSettings $settings,
+    ) {}
+
     public function handle(Video $video, ?User $user = null): int|float
     {
         if (! $user || $video->duration <= 0) {
@@ -41,8 +46,8 @@ class GetVideoProgress
         // Round the progress to 2 decimal places for consistency
         $time = Number::clamp(round($time ?? 0, 2), 0, $duration);
 
-        // If the progress is 95% or more of the video duration, consider it as fully watched (0 progress)
-        if (($time / $duration) >= Video::getCompletionThreshold()) {
+        // Past the completion threshold the video counts as fully watched (0 progress)
+        if (($time / $duration) >= $this->settings->completion_threshold) {
             return 0.0;
         }
 

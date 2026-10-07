@@ -25,12 +25,12 @@ Use environment variables instead of editing the `config/*.php` files. That keep
 
 A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing / Reels**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
 
-| Settings class       | Admin tab   | What it covers                                                                      |
-| -------------------- | ----------- | ----------------------------------------------------------------------------------- |
-| `GeneralSettings`    | Application | Site name, timezone, default locale, registration, profiles per user                |
-| `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, rendition heights                |
-| `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically               |
-| `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions    |
+| Settings class       | Admin tab   | What it covers                                                                             |
+| -------------------- | ----------- | ------------------------------------------------------------------------------------------ |
+| `GeneralSettings`    | Application | Site name, timezone, default locale, registration, profiles per user                       |
+| `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, completion threshold, renditions        |
+| `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically                      |
+| `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions           |
 | `ReelSettings`       | Reels       | Creating reels, their size, frame rate, codec, quality, length, cuts and scene sensitivity |
 
 ### Shipping new defaults
@@ -167,9 +167,6 @@ VIDEO_IMPORT_DISK=import
 
 # Number of videos to process in each import batch
 VIDEO_IMPORT_BATCH_SIZE=20
-
-# How much of a video must be watched before it counts as finished (0.0-1.0)
-VIDEO_COMPLETION_THRESHOLD=0.95
 ```
 
 ### Reels
@@ -214,11 +211,11 @@ AB_AV1_TIMEOUT=14400
 
 ## Config file reference
 
-| Config file         | What it configures     | Main settings                                                           |
-| ------------------- | ---------------------- | ----------------------------------------------------------------------- |
-| `config/media.php`  | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths      |
-| `config/videos.php` | Importing and playback | Import, transcode and thumbnail disks, batch size, completion threshold |
-| `config/ab-av1.php` | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                          |
+| Config file         | What it configures     | Main settings                                                      |
+| ------------------- | ---------------------- | ------------------------------------------------------------------ |
+| `config/media.php`  | Direct play and FFmpeg | Segments, segment cache, look-ahead, playable codecs, FFmpeg paths |
+| `config/videos.php` | Importing and playback | Import, transcode and thumbnail disks, batch size                  |
+| `config/ab-av1.php` | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                     |
 
 The `config/*.php` files are part of the repository, so you can read every option there. Run `php artisan media:info` to check which FFmpeg, FFprobe and ab-av1 binaries were found.
 

@@ -274,11 +274,6 @@ class Video extends Model implements HasMedia
         return Config::integer('videos.import_batch_size', 10);
     }
 
-    public static function getCompletionThreshold(): float
-    {
-        return Config::float('videos.completion_threshold', 0.95);
-    }
-
     /**
      * @return MediaCollection<int, Media>
      */

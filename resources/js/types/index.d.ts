@@ -124,6 +124,7 @@ export type PlaybackSettings = {
   text_language: 'en' | 'nl'
   encryption: boolean
   refresh_before: number
+  completion_threshold: number
   renditions: number[]
 }
 
