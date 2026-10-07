@@ -26,20 +26,6 @@ RUN arch="$(uname -m)" && case "$arch" in \
     && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
 
-  # Shaka Packager
-  RUN arch="$(uname -m)" && case "$arch" in \
-        x86_64) \
-          PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.9.3/packager-linux-x64" ; \
-          PACKAGER_SHA256="7a3cf35ad146fd7810b4ededab363c8a3e6121d1b2c8391f53863126186f9ee6" ;; \
-        aarch64) \
-          PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.9.3/packager-linux-arm64" ; \
-          PACKAGER_SHA256="d3a50cecc139b54435be1bbbfba5c0ea822d9e1e7edc3531f7821fba65ceebb0" ;; \
-        *) echo "Unsupported architecture: $arch"; exit 1 ;; \
-      esac \
-      && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
-      && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
-      && chmod +x /usr/local/bin/packager
-
 # ab-av1 (use BuildKit cache mounts)
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
@@ -74,7 +60,7 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 # Main dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates python3 \
+    gnupg curl ca-certificates \
     libavif-bin jpegoptim optipng pngquant gifsicle \
     libva2 libva-drm2 libmfx-gen1.2 libvpl2 \
     mesa-va-drivers mesa-vulkan-drivers \
@@ -151,23 +137,10 @@ RUN npx -y playwright install-deps \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
+# Copy FFmpeg and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
-
-# Build Shaka Streamer and set up Python environment. python3-venv/python3-pip
-# are only needed to build the venv, so install and purge them within this
-# single layer instead of keeping them installed for the whole image.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3-venv python3-pip \
-    && python3 -m venv /opt/shaka-streamer-env \
-    && /opt/shaka-streamer-env/bin/pip install --no-cache-dir shaka-streamer \
-    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer \
-    && apt-get purge -y --auto-remove python3-venv python3-pip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Entrypoint
 COPY --chmod=755 podman/development/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
