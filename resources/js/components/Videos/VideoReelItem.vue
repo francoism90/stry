@@ -40,7 +40,7 @@ const { liked, saved, like, save } = useReelGroups(props.item)
     ref="root"
     class="flex h-dvh w-full snap-start snap-always justify-center bg-black"
   >
-    <div class="relative aspect-9/16 h-full max-w-full overflow-hidden">
+    <div class="relative h-full w-full max-w-[calc(100dvh*9/16)] overflow-hidden">
       <video
         v-if="loaded && item.reel_url"
         ref="element"
@@ -48,7 +48,7 @@ const { liked, saved, like, save } = useReelGroups(props.item)
         :poster="item.thumb ?? undefined"
         :preload="preload"
         :muted="muted"
-        class="size-full object-contain"
+        class="size-full object-cover"
         loop
         playsinline
         @click="emit('toggleMute')"
@@ -58,7 +58,7 @@ const { liked, saved, like, save } = useReelGroups(props.item)
         v-else-if="item.thumb"
         :src="item.thumb"
         :alt="item.title"
-        class="size-full object-contain opacity-60"
+        class="size-full object-cover opacity-60"
         loading="lazy"
       />
 
