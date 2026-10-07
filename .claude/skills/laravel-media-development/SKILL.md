@@ -290,6 +290,7 @@ $media->ffmpeg()
 ```
 
 - **`clips()` re-encodes.** Each clip is a separate input seeked with `-ss`/`-t`, so cuts are frame-accurate. Without a size, clips from several files are fitted to the first file's size. If any file has no audio, the reel is silent.
+- **`clips()` reels work with `hardware()`:** the joined and filtered video is uploaded to the GPU and encoded there.
 - **`clips()` builds its own inputs and graph,** so it can't be combined with `map()`, `watermark()`, `addOutput()`, `clip()`, `frame()` or `addInputArgs()` (`InvalidFilterException`).
 - **`concat()` joins whole files without re-encoding,** using ffmpeg's concat demuxer and copying streams unless a format is set. The files must share codecs, dimensions and audio layout. Otherwise it throws `InvalidMediaException` and you should use `clips()`.
 - **`clip($from, $to)` on a single file** with `Format::copy()` starts at the keyframe before `$from`. Use a re-encoding format for exact cuts.
@@ -576,6 +577,20 @@ Format::mp3(256);                                              // audio only
 
 - Two-pass needs `bitrate()`. Unsupported codecs or a missing bitrate throw `InvalidFormatException` before ffmpeg runs. The first pass's log file never ends up on the target disk.
 - `withArguments([...])` appends raw output options. For anything else, use `new Format(container: ..., videoCodec: VideoCodec::..., audioCodec: AudioCodec::...)` with named arguments.
+
+<!-- Encoding on the GPU -->
+```php
+use Foxws\Media\Encoding\HardwareAcceleration;
+
+$media->ffmpeg()
+    ->hardware(HardwareAcceleration::Vaapi)       // or ->hardware() for media.ladder.hardware
+    ->addFilter(Scale::to(1280))                  // filters run on the CPU
+    ->inFormat(Format::h264(crf: 22))             // becomes h264_vaapi -rc_mode CQP -qp 22
+    ->save('encoded.mp4');
+```
+
+- **`hardware(?HardwareAcceleration)` on the ffmpeg builder** decodes and filters on the CPU, then uploads the frames at the end of the video chain (`uploadArguments()` before the inputs, `upload()` last in the `-vf` chain, after a watermark's overlay or a reel's joined filters) and encodes with `HardwareAcceleration::encoder()` and `quality()`. `Format::forHardware($hardware)` does the format part: the CRF becomes `quality()` unless a bitrate is set, the preset is dropped, and `-pix_fmt` is replaced (`yuv420p` for NVENC). Only H.264, HEVC and AV1 have hardware encoders.
+- **Fallback:** like `makePlayable()`, the builder calls `orCpu()` and encodes with the format as it is when the GPU can't be opened. `acceleration()` tells which one is used. Formats that don't encode video (`Format::copy()`, audio only, `jpeg()`; see `Format::encodesVideo()`) never check the GPU. Two passes with `hardware()` throw `InvalidFormatException`.
 
 ## Rendition ladders
 

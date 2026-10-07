@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 /**
  * Joins the selected cuts of the best clip into an H.264 reel of the size and frame rate in the reel
  * settings (vertical 1080×1920 by default), cropped to fill the frame, and keeps it in the video's "reels" collection, replacing the previous reel.
+ * The reel is encoded on the GPU in media.ladder.hardware, or on the CPU when that can't be opened.
  */
 class CreateVideoReel
 {
@@ -54,6 +55,7 @@ class CreateVideoReel
             ->clips($cuts)
             ->toneMap()
             ->addFilter(Scale::fill($this->settings->width, $this->settings->height), new Fps($this->settings->fps))
+            ->hardware()
             ->inFormat(Format::h264())
             ->withContext(['video_id' => $video->getKey()])
             ->timeout(self::TIMEOUT)

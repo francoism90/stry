@@ -66,6 +66,19 @@ it('uses the reel size and frame rate from the reel settings', function () {
     ));
 });
 
+it('encodes the reel on the configured gpu', function () {
+    config(['media.ladder.hardware' => 'vaapi']);
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
+    $video = Video::factory()->create();
+    createReelClip($video);
+
+    app(CreateVideoReel::class)->handle($video);
+
+    Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => in_array('-vaapi_device', $arguments, true)
+        && str_contains(implode(' ', $arguments), 'fps=30,format=nv12,hwupload[v]')
+        && in_array('h264_vaapi', $arguments, true));
+});
+
 it('replaces the previous reel', function () {
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
     $video = Video::factory()->create();

@@ -182,6 +182,10 @@ Turn on **Create reels** under **Admin → Reels** to make a reel for each video
 # Disk that reels are stored on. It must make temporary URLs (S3, or a local
 # disk with serve enabled), because the feed plays reels from them.
 VIDEO_REELS_DISK=conversions
+
+# Encode reels on the GPU: none, vaapi, nvenc or qsv. Decoding and cropping stay
+# on the CPU, and reels fall back to the CPU when the GPU can't be opened.
+MEDIA_LADDER_HARDWARE=vaapi
 ```
 
 ### AV1 transcoding (ab-av1)

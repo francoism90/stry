@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a22170a50940c07b604370d4b29be7ee",
+    "content-hash": "accbe791c1e8c1501b59852edf9fc5a6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1416,16 +1416,16 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "0.3.5",
+            "version": "0.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-media.git",
-                "reference": "e868d4983c5a555bfeb67b358e60aace98dbe0c1"
+                "reference": "ea1fec99988bd3c04d1a07c1e38a794f437d99c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/e868d4983c5a555bfeb67b358e60aace98dbe0c1",
-                "reference": "e868d4983c5a555bfeb67b358e60aace98dbe0c1",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/ea1fec99988bd3c04d1a07c1e38a794f437d99c4",
+                "reference": "ea1fec99988bd3c04d1a07c1e38a794f437d99c4",
                 "shasum": ""
             },
             "require": {
@@ -1497,7 +1497,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-media/issues",
-                "source": "https://github.com/foxws/laravel-media/tree/0.3.5"
+                "source": "https://github.com/foxws/laravel-media/tree/0.3.6"
             },
             "funding": [
                 {
@@ -1505,7 +1505,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-07T10:46:27+00:00"
+            "time": "2026-10-07T13:05:48+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
