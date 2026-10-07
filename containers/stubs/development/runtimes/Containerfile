@@ -58,13 +58,12 @@ RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/de
 RUN arch="$(dpkg --print-architecture)" \
     && AMD64_DRIVERS="" \
     && if [ "$arch" = "amd64" ]; then \
-    AMD64_DRIVERS="libva2 libva-drm2 mesa-va-drivers libmfx-gen1.2 libvpl2 intel-media-va-driver-non-free"; \
+    AMD64_DRIVERS="libva2 libva-drm2 mesa-va-drivers libmfx-gen1.2 intel-media-va-driver-non-free"; \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
     gnupg curl ca-certificates \
     libavif-bin jpegoptim optipng pngquant gifsicle webp \
-    mesa-vulkan-drivers \
     ${AMD64_DRIVERS} \
     && apt-get -y autoremove \
     && apt-get clean \
