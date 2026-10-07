@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import VideoReelItem from '@/components/Videos/VideoReelItem.vue'
 import { useReelFeed } from '@/composables/reels'
-import { home } from '@/routes'
 import AppLayout from '@/layouts/AppLayout.vue'
+import { home } from '@/routes'
 import type { VideoReelCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { defineOptions, defineProps, ref } from 'vue'
 
 defineProps<{
   items: VideoReelCollection
@@ -89,7 +89,7 @@ const itemBody = ref<HTMLElement>()
         icon="i-lucide-clapperboard"
         title="No reels yet"
         description="Reels appear here once they've been generated for your videos."
-        class="absolute inset-0 m-auto h-fit"
+        class="absolute inset-0 m-auto h-fit rounded-none border-x-0"
       />
     </template>
   </UDashboardPanel>
