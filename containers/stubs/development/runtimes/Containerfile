@@ -4,7 +4,7 @@ ARG FRANKENPHP_VERSION=1-php8.5
 
 # FFmpeg release branch of the BtbN static builds. Pass --build-arg
 # FFMPEG_VERSION=... for another one.
-ARG FFMPEG_VERSION=8.1
+ARG FFMPEG_VERSION=9.0
 
 FROM docker.io/rust:latest AS builder
 
