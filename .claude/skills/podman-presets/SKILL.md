@@ -24,7 +24,7 @@ lpod install production/app.quadlets --replace
 lpod my-app restart
 ```
 
-`podman:setup` renders all presets in the `presets` config. `podman:publish --force` overwrites templates you already published, so don't use it without asking.
+In the package's devcontainer, run the Artisan steps yourself and give the `lpod` steps to the user to run on the host (see the `podman-lpod` skill). `podman:setup` renders all presets in the `presets` config. `podman:publish --force` overwrites templates you already published, so don't use it without asking.
 
 ## Quadlet file format
 

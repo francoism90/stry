@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd523a7edcd6e0bbf680ed1c7df17fd1",
+    "content-hash": "a22170a50940c07b604370d4b29be7ee",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.399.1",
+            "version": "3.399.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "cd7cf43b7d42e49579bf3f09ab58d4724d64152c"
+                "reference": "a69c0b97b8464b059c8d2e147eab6daed5d5cd25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cd7cf43b7d42e49579bf3f09ab58d4724d64152c",
-                "reference": "cd7cf43b7d42e49579bf3f09ab58d4724d64152c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a69c0b97b8464b059c8d2e147eab6daed5d5cd25",
+                "reference": "a69c0b97b8464b059c8d2e147eab6daed5d5cd25",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.399.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.399.2"
             },
-            "time": "2026-10-02T18:16:16+00:00"
+            "time": "2026-10-06T22:19:35+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1457,12 +1457,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Foxws\\Media\\MediaServiceProvider"
-                    ],
                     "aliases": {
                         "Media": "Foxws\\Media\\Facades\\Media"
-                    }
+                    },
+                    "providers": [
+                        "Foxws\\Media\\MediaServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -1470,55 +1470,7 @@
                     "Foxws\\Media\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Foxws\\Media\\Tests\\": "tests/",
-                    "Workbench\\App\\": "workbench/app/",
-                    "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-                    "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@clear",
-                    "@prepare"
-                ],
-                "prepare": [
-                    "@php vendor/bin/testbench package:discover --ansi"
-                ],
-                "build": [
-                    "@php vendor/bin/testbench workbench:build --ansi"
-                ],
-                "serve": [
-                    "Composer\\Config::disableProcessTimeout",
-                    "@build",
-                    "@php vendor/bin/testbench serve --ansi"
-                ],
-                "lint": [
-                    "vendor/bin/pint --parallel"
-                ],
-                "lint:check": [
-                    "vendor/bin/pint --parallel --test"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse --memory-limit=1G"
-                ],
-                "test:types": [
-                    "@php -d memory_limit=1G vendor/bin/pest --type-coverage --min=100"
-                ],
-                "test:unit": [
-                    "vendor/bin/pest --parallel"
-                ],
-                "test": [
-                    "@analyse",
-                    "@lint:check",
-                    "@test:types",
-                    "@test:unit"
-                ],
-                "clear": [
-                    "@php vendor/bin/testbench package:purge-skeleton --ansi"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1544,13 +1496,13 @@
                 "video"
             ],
             "support": {
-                "source": "https://github.com/foxws/laravel-media/tree/0.3.5",
-                "issues": "https://github.com/foxws/laravel-media/issues"
+                "issues": "https://github.com/foxws/laravel-media/issues",
+                "source": "https://github.com/foxws/laravel-media/tree/0.3.5"
             },
             "funding": [
                 {
-                    "type": "github",
-                    "url": "https://github.com/foxws"
+                    "url": "https://github.com/foxws",
+                    "type": "github"
                 }
             ],
             "time": "2026-10-07T10:46:27+00:00"
@@ -1641,16 +1593,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "5.3.2",
+            "version": "5.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "1e7a63fa58bb2bfc523b979296896e8c3ed76694"
+                "reference": "90bde36a40167fe682b95816608a7f407a413d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/1e7a63fa58bb2bfc523b979296896e8c3ed76694",
-                "reference": "1e7a63fa58bb2bfc523b979296896e8c3ed76694",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/90bde36a40167fe682b95816608a7f407a413d84",
+                "reference": "90bde36a40167fe682b95816608a7f407a413d84",
                 "shasum": ""
             },
             "require": {
@@ -1717,7 +1669,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/5.3.2"
+                "source": "https://github.com/foxws/laravel-podman/tree/5.3.3"
             },
             "funding": [
                 {
@@ -1725,7 +1677,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-04T16:53:48+00:00"
+            "time": "2026-10-07T09:56:40+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
@@ -2817,16 +2769,16 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.40.0",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "fe0fce8814660317df0684f2c7be3b573def67d3"
+                "reference": "c456642584c102f6a6aafee9932299542da637b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/fe0fce8814660317df0684f2c7be3b573def67d3",
-                "reference": "fe0fce8814660317df0684f2c7be3b573def67d3",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/c456642584c102f6a6aafee9932299542da637b5",
+                "reference": "c456642584c102f6a6aafee9932299542da637b5",
                 "shasum": ""
             },
             "require": {
@@ -2839,6 +2791,7 @@
                 "pragmarx/google2fa": "^9.0"
             },
             "require-dev": {
+                "jasonmccreary/double": "^1.0",
                 "orchestra/testbench": "^9.15|^10.8|^11.0",
                 "phpstan/phpstan": "^2.2.6"
             },
@@ -2877,7 +2830,7 @@
                 "issues": "https://github.com/laravel/fortify/issues",
                 "source": "https://github.com/laravel/fortify"
             },
-            "time": "2026-09-10T11:52:08+00:00"
+            "time": "2026-09-28T14:56:25+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3192,16 +3145,16 @@
         },
         {
             "name": "laravel/octane",
-            "version": "v2.20.0",
+            "version": "v2.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/octane.git",
-                "reference": "df4c38dcddc5f51e36e7f1d788841130c4fb8f45"
+                "reference": "ce755128c9c2be39adcf8b50ec757c97b3b30eb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/octane/zipball/df4c38dcddc5f51e36e7f1d788841130c4fb8f45",
-                "reference": "df4c38dcddc5f51e36e7f1d788841130c4fb8f45",
+                "url": "https://api.github.com/repos/laravel/octane/zipball/ce755128c9c2be39adcf8b50ec757c97b3b30eb7",
+                "reference": "ce755128c9c2be39adcf8b50ec757c97b3b30eb7",
                 "shasum": ""
             },
             "require": {
@@ -3277,7 +3230,7 @@
                 "issues": "https://github.com/laravel/octane/issues",
                 "source": "https://github.com/laravel/octane"
             },
-            "time": "2026-08-23T17:25:20+00:00"
+            "time": "2026-10-05T14:39:46+00:00"
         },
         {
             "name": "laravel/passkeys",
@@ -3549,16 +3502,16 @@
         },
         {
             "name": "laravel/scout",
-            "version": "v11.8.0",
+            "version": "v11.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "ca47a917425f733666a0d426b1ff6aea866dd1b1"
+                "reference": "07a6255b0cf2420426a80fd0e58a96b44afbfd40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/ca47a917425f733666a0d426b1ff6aea866dd1b1",
-                "reference": "ca47a917425f733666a0d426b1ff6aea866dd1b1",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/07a6255b0cf2420426a80fd0e58a96b44afbfd40",
+                "reference": "07a6255b0cf2420426a80fd0e58a96b44afbfd40",
                 "shasum": ""
             },
             "require": {
@@ -3626,7 +3579,7 @@
                 "issues": "https://github.com/laravel/scout/issues",
                 "source": "https://github.com/laravel/scout"
             },
-            "time": "2026-09-22T14:45:06+00:00"
+            "time": "2026-10-06T14:26:28+00:00"
         },
         {
             "name": "laravel/sentinel",

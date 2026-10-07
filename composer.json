@@ -21,7 +21,7 @@
         "foxws/laravel-essentials": "^0.0.3",
         "foxws/laravel-media": "^0.3.5",
         "foxws/laravel-modelcache": "^1.4.3",
-        "foxws/laravel-podman": "^5.3.2",
+        "foxws/laravel-podman": "^5.3.3",
         "foxws/laravel-pwa": "^2.5.3",
         "foxws/laravel-relatable": "^1.0.1",
         "foxws/laravel-scout-builder": "^1.0.3",
@@ -29,14 +29,14 @@
         "guzzlehttp/guzzle": "^7.15.5",
         "http-interop/http-factory-guzzle": "^1.2.1",
         "inertiajs/inertia-laravel": "^3.5.1",
-        "laravel/fortify": "^1.40.0",
-        "laravel/framework": "^13.34.0",
+        "laravel/fortify": "^1.41.0",
+        "laravel/framework": "^13.35.0",
         "laravel/horizon": "^5.50.0",
-        "laravel/octane": "^2.20.0",
-        "laravel/prompts": "^0.3.24",
+        "laravel/octane": "^2.21.0",
+        "laravel/prompts": "^0.3.25",
         "laravel/reverb": "^1.12.0",
         "laravel/sanctum": "^4.3.3",
-        "laravel/scout": "^11.8.0",
+        "laravel/scout": "^11.9.0",
         "laravel/tinker": "^3.0.2",
         "laravel/wayfinder": "^0.1.21",
         "league/flysystem-aws-s3-v3": "^3.35.3",
@@ -55,7 +55,7 @@
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.399.1",
+        "aws/aws-sdk-php": "^3.399.2",
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.12.3",
@@ -167,10 +167,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [{
-        "name": "laravel-media",
-        "type": "vcs",
-        "url": "https://github.com/foxws/laravel-media"
-    }]
+    "prefer-stable": true
 }

@@ -69,4 +69,6 @@ Run it in the app container, where the storage endpoint is reachable:
 lpod my-app artisan podman:s3-setup
 ```
 
+In the package's devcontainer, which joins the app's network, run `php artisan podman:s3-setup` directly.
+
 With the bundled RustFS service, the endpoint is served on the `s3.` subdomain of `APP_URL` by the `proxy` preset.

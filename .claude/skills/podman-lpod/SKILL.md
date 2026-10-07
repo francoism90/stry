@@ -17,6 +17,15 @@ lpod SERVICE COMMAND [arguments]
 - Unknown commands are passed on to `podman`.
 - Run `lpod list` to see the installed services.
 
+## Inside a devcontainer
+
+Check first whether you're in the package's devcontainer: `/run/.containerenv` exists or `REMOTE_CONTAINERS=true` is set, and `command -v lpod` finds nothing. There is no Podman or systemd in there, on purpose. Don't install them, and don't try Podman in Podman or mounting the host's Podman socket.
+
+- Run PHP, Composer, Node and tests directly (`php artisan test`, `composer install`, `pnpm build`). The devcontainer has the same tools and joins the app's `systemd-{application}` network, so the database and cache hosts in `.env` work from it.
+- `php artisan podman:generate` and `podman:setup` work there too. The devcontainer sets `PODMAN_WORKING_PATH` to the host path, so the rendered `Volume=` lines point at the host's working copy, not `/app`.
+- `lpod`, `podman` (including `podman run` and `podman volume`) and `journalctl` act on the host's services. Don't run them, and don't work around that. List the exact commands for the user to run in a host terminal, from the project folder, and wait for their output.
+- An `lpod my-app ...` command in this skill or another one becomes the plain command in the devcontainer: `lpod my-app artisan migrate` is `php artisan migrate`. Lifecycle, install, `secrets`, `idle` and `xdebug` commands stay on the host.
+
 ## In the app container
 
 ```bash
