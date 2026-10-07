@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import VideoReelItem from '@/components/Videos/VideoReelItem.vue'
 import { useReelFeed } from '@/composables/reels'
+import { home } from '@/routes'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { VideoReelCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
@@ -27,6 +28,25 @@ const itemBody = ref<HTMLElement>()
     :ui="{ body: 'relative max-w-none gap-0 bg-black p-0 sm:gap-0 sm:p-0' }"
   >
     <template #body>
+      <div
+        class="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center gap-1 bg-linear-to-b from-black/60 to-transparent p-3 pb-12 lg:hidden"
+      >
+        <UDashboardSidebarToggle
+          color="neutral"
+          variant="ghost"
+          class="pointer-events-auto text-white"
+        />
+
+        <UButton
+          :to="home.url()"
+          icon="i-lucide-house"
+          aria-label="Home"
+          color="neutral"
+          variant="ghost"
+          class="pointer-events-auto text-white"
+        />
+      </div>
+
       <div class="h-dvh w-full snap-y snap-mandatory overflow-y-auto overscroll-contain">
         <InfiniteScroll
           data="items"
