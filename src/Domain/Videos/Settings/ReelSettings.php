@@ -19,7 +19,12 @@ class ReelSettings extends Settings
     /**
      * The video codec: h264, hevc or av1.
      */
-    public string $codec = 'hevc';
+    public string $codec = 'h264';
+
+    /**
+     * Encode on the GPU in media.ladder.hardware. Some GPUs, such as AMD with VAAPI, write broken HEVC.
+     */
+    public bool $hardware = true;
 
     public int $quality = 26;
 

@@ -8,8 +8,8 @@ const loaded = ref(false)
 const http = useHttp<object, ReelSettings>({})
 
 const codecs = [
-  { label: 'HEVC (H.265)', value: 'hevc' },
   { label: 'H.264', value: 'h264' },
+  { label: 'HEVC (H.265)', value: 'hevc' },
   { label: 'AV1', value: 'av1' },
 ]
 
@@ -18,7 +18,8 @@ const form = useForm(update(), {
   width: 1080,
   height: 1920,
   fps: 30,
-  codec: 'hevc' as ReelSettings['codec'],
+  codec: 'h264' as ReelSettings['codec'],
+  hardware: true,
   quality: 26,
   cuts: 8,
   cut_duration: 4,
@@ -64,7 +65,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 9"
+      v-for="i in 10"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -148,7 +149,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Codec"
-          description="HEVC is about a third smaller than H.264 and plays in Safari, Chrome and Edge, but not in most versions of Firefox. H.264 plays everywhere. AV1 is the smallest, but slow to encode on the CPU and needs a recent GPU to encode on it."
+          description="H.264 plays everywhere. HEVC is about a third smaller but doesn't play in most versions of Firefox. AV1 is the smallest, but slow to encode on the CPU and needs a recent GPU to encode on it."
           name="codec"
           :error="form.errors.codec"
           :class="fieldClass"
@@ -158,6 +159,18 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             class="w-56"
             :items="codecs"
           />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Encode on GPU"
+          description="Use the GPU set in MEDIA_LADDER_HARDWARE, or the CPU when it can't be opened. Turn this off if reels come out corrupted, as HEVC does on some AMD GPUs."
+          name="hardware"
+          :error="form.errors.hardware"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.hardware" />
         </UFormField>
 
         <USeparator />

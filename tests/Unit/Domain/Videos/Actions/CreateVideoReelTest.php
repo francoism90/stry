@@ -92,8 +92,8 @@ it('encodes with the reel codec', function (string $codec, string $encoder) {
 
     Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => str_contains(implode(' ', $arguments), "-c:v {$encoder}"));
 })->with([
-    'hevc' => ['hevc', 'libx265'],
     'h264' => ['h264', 'libx264'],
+    'hevc' => ['hevc', 'libx265'],
     'av1' => ['av1', 'libsvtav1'],
 ]);
 
@@ -107,7 +107,7 @@ it('encodes the reel on the configured gpu', function () {
 
     Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => in_array('-vaapi_device', $arguments, true)
         && str_contains(implode(' ', $arguments), 'fps=30,format=nv12,hwupload[v]')
-        && in_array('hevc_vaapi', $arguments, true));
+        && in_array('h264_vaapi', $arguments, true));
 });
 
 it('replaces the previous reel', function () {
@@ -138,3 +138,16 @@ it('makes no reel of videos without clips or without a duration', function (bool
     'no clips' => [false, 200],
     'no duration' => [true, 0],
 ]);
+
+it('encodes on the cpu when the reel settings turn the gpu off', function () {
+    config(['media.ladder.hardware' => 'vaapi']);
+    ReelSettings::fake(['codec' => 'hevc', 'hardware' => false]);
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
+    $video = Video::factory()->create();
+    createReelClip($video);
+
+    app(CreateVideoReel::class)->handle($video);
+
+    Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => in_array('libx265', $arguments, true)
+        && ! in_array('-vaapi_device', $arguments, true));
+});
