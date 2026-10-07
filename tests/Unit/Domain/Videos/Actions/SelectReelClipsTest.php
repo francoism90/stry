@@ -27,11 +27,11 @@ function selectReelCuts(Video $video, float $duration, array $changes): array
     return array_map(fn (Clip $cut): array => [$cut->from, $cut->to], $cuts);
 }
 
-it('cuts the start of scenes, spread over the video and in time order', function () {
+it('cuts the start of scenes, also past a short scene, spread over the video and in time order', function () {
     $cuts = selectReelCuts(Video::factory()->create(), 200, [20.0, 22.0, 60.0, 100.0, 140.0]);
 
     expect($cuts)->toBe([
-        [20.5, 22.0],
+        [20.5, 24.5],
         [60.5, 64.5],
         [100.5, 104.5],
         [140.5, 144.5],
@@ -84,4 +84,10 @@ it('uses videos up to one and a half times the reel duration whole', function ()
 
     expect(selectReelCuts(Video::factory()->create(), 30, [10.0, 20.0]))->toBe([[0.0, 30.0]])
         ->and(selectReelCuts(Video::factory()->create(), 31, [10.0, 20.0]))->not->toBe([[0.0, 31.0]]);
+});
+
+it('moves cuts closer together until they fill the reel', function () {
+    $cuts = selectReelCuts(Video::factory()->create(), 400, range(100.0, 190.0, 10.0));
+
+    expect(array_column($cuts, 0))->toBe([100.5, 110.5, 120.5, 130.5, 140.5, 150.5, 160.5, 170.5]);
 });

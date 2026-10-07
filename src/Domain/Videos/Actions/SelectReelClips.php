@@ -14,7 +14,8 @@ use Foxws\Media\Opener;
 /**
  * Picks the cuts of a reel, as set in the reel settings: short parts of the scenes that change the most, spread over the video and
  * kept out of its opening and ending and of skippable chapters (intros, credits, sponsors and so on).
- * Videos without enough scene changes get evenly spaced cuts instead, and short videos are used whole.
+ * Cuts move closer together when they're too far apart to fill the reel, videos without enough scene
+ * changes get evenly spaced cuts instead, and short videos are used whole.
  */
 class SelectReelClips
 {
@@ -22,6 +23,11 @@ class SelectReelClips
      * Videos up to this many times the reel duration are used whole instead of cut.
      */
     public const float WHOLE_VIDEO_FACTOR = 1.5;
+
+    /**
+     * Cuts are moved closer together until they fill this much of the reel duration.
+     */
+    public const float TARGET_FILL = 0.8;
 
     /**
      * Cuts start this far into their scene, past the transition.
@@ -80,7 +86,7 @@ class SelectReelClips
         $candidates = [];
 
         foreach ($scenes as $scene) {
-            $cut = $this->cutOf($scene->start + self::SCENE_OFFSET, $scene->end, $excluded);
+            $cut = $this->cutOf($scene->start + self::SCENE_OFFSET, $duration, $excluded);
 
             if ($cut !== null) {
                 $candidates[] = ['cut' => $cut, 'score' => $scene->score ?? 0.0];
@@ -89,7 +95,18 @@ class SelectReelClips
 
         usort($candidates, fn (array $a, array $b): int => [$b['score'], $a['cut']->from] <=> [$a['score'], $b['cut']->from]);
 
-        return $this->pick(array_column($candidates, 'cut'), $duration / 10);
+        $ordered = array_column($candidates, 'cut');
+        $cuts = [];
+
+        foreach ([$duration / 10, $duration / 20, 0.0] as $spacing) {
+            $cuts = $this->pick($ordered, $spacing);
+
+            if (array_sum(array_map(fn (Clip $cut): float => $cut->duration(), $cuts)) >= $this->settings->duration * self::TARGET_FILL) {
+                break;
+            }
+        }
+
+        return $cuts;
     }
 
     /**
@@ -113,11 +130,15 @@ class SelectReelClips
     }
 
     /**
+     * Take candidates in order, skipping those closer than $spacing to a cut already taken. Cuts are
+     * always at least the cut duration apart, so they never overlap.
+     *
      * @param  list<Clip>  $candidates
      * @return list<Clip>
      */
     protected function pick(array $candidates, float $spacing): array
     {
+        $spacing = max($spacing, $this->settings->cut_duration);
         $cuts = [];
         $total = 0.0;
 
@@ -140,8 +161,8 @@ class SelectReelClips
     }
 
     /**
-     * A cut from the given time, at most the cut duration long and ending before $end, or null when it would
-     * be too short or overlap an excluded range.
+     * A cut from the given time, the cut duration long or up to $end, or null when it would be too short
+     * or overlap an excluded range. Cuts may run past a scene change, so short scenes still fill a cut.
      *
      * @param  list<array{float, float}>  $excluded
      */
