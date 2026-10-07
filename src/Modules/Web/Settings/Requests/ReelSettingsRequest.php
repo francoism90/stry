@@ -25,6 +25,7 @@ class ReelSettingsRequest extends FormRequest
             'width' => ['sometimes', 'integer', 'between:240,3840', 'multiple_of:2'],
             'height' => ['sometimes', 'integer', 'between:240,3840', 'multiple_of:2'],
             'fps' => ['sometimes', 'integer', 'between:10,60'],
+            'fit' => ['sometimes', 'string', Rule::in(['blur', 'letterbox', 'crop'])],
             'codec' => ['sometimes', 'string', Rule::in(['h264', 'hevc', 'av1'])],
             'hardware' => ['sometimes', 'boolean'],
             'quality' => ['sometimes', 'integer', 'between:15,40'],

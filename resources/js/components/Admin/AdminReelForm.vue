@@ -7,6 +7,12 @@ import { onMounted, ref } from 'vue'
 const loaded = ref(false)
 const http = useHttp<object, ReelSettings>({})
 
+const fits = [
+  { label: 'Blur', value: 'blur' },
+  { label: 'Letterbox', value: 'letterbox' },
+  { label: 'Crop', value: 'crop' },
+]
+
 const codecs = [
   { label: 'H.264', value: 'h264' },
   { label: 'HEVC (H.265)', value: 'hevc' },
@@ -18,6 +24,7 @@ const form = useForm(update(), {
   width: 1080,
   height: 1920,
   fps: 30,
+  fit: 'blur' as ReelSettings['fit'],
   codec: 'h264' as ReelSettings['codec'],
   hardware: false,
   quality: 26,
@@ -65,7 +72,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 10"
+      v-for="i in 11"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -126,6 +133,22 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
               aria-label="Height"
             />
           </div>
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Fit"
+          description="How videos of another shape fill the frame. Blur shows the whole picture on a blurred copy of itself, letterbox adds black bars, and crop fills the frame but cuts off the sides."
+          name="fit"
+          :error="form.errors.fit"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.fit"
+            class="w-56"
+            :items="fits"
+          />
         </UFormField>
 
         <USeparator />

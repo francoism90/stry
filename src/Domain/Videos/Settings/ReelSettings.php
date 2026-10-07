@@ -17,6 +17,11 @@ class ReelSettings extends Settings
     public int $fps = 30;
 
     /**
+     * How the picture fits the frame: blur (whole, on a blurred copy of itself), letterbox or crop.
+     */
+    public string $fit = 'blur';
+
+    /**
      * The video codec: h264, hevc or av1.
      */
     public string $codec = 'h264';

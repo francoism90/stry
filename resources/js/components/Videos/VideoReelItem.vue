@@ -48,7 +48,7 @@ const { liked, saved, like, save } = useReelGroups(props.item)
         :poster="item.thumb ?? undefined"
         :preload="preload"
         :muted="muted"
-        class="size-full object-cover"
+        class="size-full object-contain"
         loop
         playsinline
         @click="emit('toggleMute')"
@@ -58,7 +58,7 @@ const { liked, saved, like, save } = useReelGroups(props.item)
         v-else-if="item.thumb"
         :src="item.thumb"
         :alt="item.title"
-        class="size-full object-cover opacity-60"
+        class="size-full object-contain opacity-60"
         loading="lazy"
       />
 
