@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Web\Videos\Controllers;
 
 use Domain\Profiles\Models\Profile;
+use Domain\Videos\Actions\GetReelShuffleSeed;
 use Domain\Videos\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -15,12 +16,6 @@ use Modules\Api\Videos\Resources\VideoReelResource;
 
 class VideoReelController implements HasMiddleware
 {
-    /**
-     * A prime above any video ID, so ordering by (id × seed) mod it shuffles the reels without
-     * database-specific functions.
-     */
-    protected const int SHUFFLE_MODULUS = 1000003;
-
     public static function middleware(): array
     {
         return [
@@ -31,31 +26,22 @@ class VideoReelController implements HasMiddleware
 
     public function index(Request $request): Response
     {
-        $seed = $this->seed($request);
+        // A new shuffle on every visit, kept while scrolling to the next pages
+        $seed = app(GetReelShuffleSeed::class)->handle(
+            session: $request->session(),
+            renew: $request->integer('page', 1) <= 1,
+        );
 
         $reels = Video::query()
             ->verified()
             ->forProfile(Profile::current())
             ->whereHas('media', fn ($query) => $query->where('collection_name', 'reels'))
             ->with(['media'])
-            ->orderByRaw('(id * ?) % ?', [$seed, self::SHUFFLE_MODULUS])
+            ->shuffled($seed)
             ->simplePaginate(8);
 
         return Inertia::render('Videos/VideoReels', [
             'items' => Inertia::scroll(fn () => VideoReelResource::collection($reels)),
         ]);
-    }
-
-    /**
-     * The shuffle seed, new on the first page so every visit starts a new order, and kept in the
-     * session so the next pages continue it.
-     */
-    protected function seed(Request $request): int
-    {
-        if ($request->integer('page', 1) <= 1 || ! $request->session()->has('reels.seed')) {
-            $request->session()->put('reels.seed', random_int(1, self::SHUFFLE_MODULUS - 1));
-        }
-
-        return (int) $request->session()->get('reels.seed');
     }
 }

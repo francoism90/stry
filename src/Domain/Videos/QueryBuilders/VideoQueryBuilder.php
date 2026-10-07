@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class VideoQueryBuilder extends Builder
 {
+    /**
+     * A prime above any video ID, so ordering by (id × seed) mod it shuffles videos without
+     * database-specific functions.
+     */
+    public const int SHUFFLE_MODULUS = 1000003;
+
     /** @return self<TModel> */
     public function failed(): self
     {
@@ -54,5 +60,15 @@ class VideoQueryBuilder extends Builder
         }
 
         return $this;
+    }
+
+    /**
+     * Order videos in a shuffled order that's the same for the same seed (1 to SHUFFLE_MODULUS - 1).
+     *
+     * @return self<TModel>
+     */
+    public function shuffled(int $seed): self
+    {
+        return $this->orderByRaw('(id * ?) % ?', [$seed, self::SHUFFLE_MODULUS]);
     }
 }
