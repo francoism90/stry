@@ -13,7 +13,7 @@ How to upgrade a running production install to a new **stry** release. For a fir
 
 ## Before you start
 
-- Check the [GitHub releases](https://github.com/francoism90/stry/releases) for breaking changes since your current version.
+- Check the [GitHub releases](https://github.com/francoism90/stry/releases) for breaking changes since your current version. Upgrading from 1.x to 2.0 needs extra steps: follow the [upgrade guide](https://github.com/francoism90/stry/blob/main/UPGRADE.md).
 - Back up the database. See the [backup example](production.md#security-checklist) in Production Setup.
 - Images are tagged `latest` (the newest stable release), `{major}.{minor}` and the full version number. Use a specific tag instead of `latest` if you want to decide when to upgrade.
 
