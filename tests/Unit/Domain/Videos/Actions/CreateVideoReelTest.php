@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Domain\Videos\Actions\CreateVideoReel;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Settings\ProcessingSettings;
+use Domain\Videos\Settings\ReelSettings;
 use Foxws\Media\Executables\Executable;
 use Foxws\Media\Facades\Media;
 use Foxws\Media\Testing\FakeProbe;
@@ -52,8 +52,8 @@ it('joins the cuts into a vertical reel kept on the video', function () {
     Storage::disk('conversions')->assertExists($reel->getPathRelativeToRoot());
 });
 
-it('uses the reel size and frame rate from the processing settings', function () {
-    ProcessingSettings::fake(['reel_width' => 720, 'reel_height' => 1280, 'reel_fps' => 24]);
+it('uses the reel size and frame rate from the reel settings', function () {
+    ReelSettings::fake(['width' => 720, 'height' => 1280, 'fps' => 24]);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
     $video = Video::factory()->create();
     createReelClip($video);

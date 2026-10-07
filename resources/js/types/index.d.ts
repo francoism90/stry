@@ -131,15 +131,22 @@ export type PlaybackSettingsResponse = PlaybackSettings & {
   rendition_options: { value: number; label: string }[]
 }
 
+export type ReelSettings = {
+  enabled: boolean
+  width: number
+  height: number
+  fps: number
+  cuts: number
+  cut_duration: number
+  duration: number
+  scene_threshold: number
+}
+
 export type ProcessingSettings = {
   extract_captions: boolean
   extract_chapters: boolean
   extract_storyboard: boolean
   create_renditions: boolean
-  create_reels: boolean
-  reel_width: number
-  reel_height: number
-  reel_fps: number
 }
 
 export type MediaStream = {

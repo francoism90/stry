@@ -12,10 +12,6 @@ const form = useForm(update(), {
   extract_chapters: true,
   extract_storyboard: true,
   create_renditions: false,
-  create_reels: false,
-  reel_width: 1080,
-  reel_height: 1920,
-  reel_fps: 30,
 })
 
 onMounted(() =>
@@ -26,10 +22,6 @@ onMounted(() =>
         extract_chapters: data.extract_chapters,
         extract_storyboard: data.extract_storyboard,
         create_renditions: data.create_renditions,
-        create_reels: data.create_reels,
-        reel_width: data.reel_width,
-        reel_height: data.reel_height,
-        reel_fps: data.reel_fps,
       })
       form.reset()
       loaded.value = true
@@ -65,7 +57,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 7"
+      v-for="i in 4"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -132,68 +124,6 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           :class="fieldClass"
         >
           <USwitch v-model="form.create_renditions" />
-        </UFormField>
-
-        <USeparator />
-
-        <UFormField
-          label="Create reels"
-          description="Generate a short vertical highlight video of the best scenes, shown in the reels feed."
-          name="create_reels"
-          :error="form.errors.create_reels"
-          :class="fieldClass"
-        >
-          <USwitch v-model="form.create_reels" />
-        </UFormField>
-
-        <USeparator />
-
-        <UFormField
-          label="Reel size"
-          description="Width and height of new reels in pixels, cropped to fill. Vertical 1080 × 1920 suits phones."
-          name="reel_width"
-          :error="form.errors.reel_width || form.errors.reel_height"
-          :class="fieldClass"
-        >
-          <div class="flex items-center gap-2">
-            <UInputNumber
-              v-model="form.reel_width"
-              class="w-32"
-              :min="240"
-              :max="3840"
-              :step="2"
-              :disabled="!form.create_reels"
-              aria-label="Reel width"
-            />
-            <span class="text-muted">×</span>
-            <UInputNumber
-              v-model="form.reel_height"
-              class="w-32"
-              :min="240"
-              :max="3840"
-              :step="2"
-              :disabled="!form.create_reels"
-              aria-label="Reel height"
-            />
-          </div>
-        </UFormField>
-
-        <USeparator />
-
-        <UFormField
-          label="Reel frame rate"
-          description="Frames per second of new reels."
-          name="reel_fps"
-          :error="form.errors.reel_fps"
-          :class="fieldClass"
-        >
-          <UInputNumber
-            v-model="form.reel_fps"
-            class="w-32"
-            :min="10"
-            :max="60"
-            :disabled="!form.create_reels"
-          />
         </UFormField>
       </template>
     </UPageCard>

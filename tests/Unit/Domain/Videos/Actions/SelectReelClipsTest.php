@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Domain\Chapters\Enums\ChapterType;
 use Domain\Videos\Actions\SelectReelClips;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ReelSettings;
+use Foxws\Media\Executables\Executable;
 use Foxws\Media\Facades\Media;
 use Foxws\Media\FFMpeg\Clip;
 use Foxws\Media\Testing\FakeProbe;
@@ -53,7 +55,7 @@ it('keeps cuts out of skippable chapters and the edges of the video', function (
 it('cuts evenly spaced parts when the video has too few scene changes', function () {
     $cuts = selectReelCuts(Video::factory()->create(), 200, [100.0]);
 
-    expect($cuts)->toHaveCount(SelectReelClips::MAXIMUM_CUTS)
+    expect($cuts)->toHaveCount(8)
         ->and($cuts[0])->toBe([19.25, 23.25])
         ->and($cuts[7])->toBe([176.75, 180.75]);
 });
@@ -61,9 +63,25 @@ it('cuts evenly spaced parts when the video has too few scene changes', function
 it('limits a reel to eight cuts', function () {
     $cuts = selectReelCuts(Video::factory()->create(), 2000, range(210.0, 1890.0, 210.0));
 
-    expect($cuts)->toHaveCount(SelectReelClips::MAXIMUM_CUTS);
+    expect($cuts)->toHaveCount(8);
 });
 
 it('uses short videos whole', function () {
     expect(selectReelCuts(Video::factory()->create(), 10, [5.0]))->toBe([[0.0, 10.0]]);
+});
+
+it('follows the reel settings', function () {
+    ReelSettings::fake(['cuts' => 3, 'cut_duration' => 2.0, 'duration' => 20, 'scene_threshold' => 0.5]);
+
+    $cuts = selectReelCuts(Video::factory()->create(), 200, [20.0, 60.0, 100.0, 140.0]);
+
+    expect($cuts)->toBe([[20.5, 22.5], [60.5, 62.5], [100.5, 102.5]]);
+    Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => str_contains(implode(' ', $arguments), "select='gt(scene,0.5)'"));
+});
+
+it('uses videos up to one and a half times the reel duration whole', function () {
+    ReelSettings::fake(['duration' => 20]);
+
+    expect(selectReelCuts(Video::factory()->create(), 30, [10.0, 20.0]))->toBe([[0.0, 30.0]])
+        ->and(selectReelCuts(Video::factory()->create(), 31, [10.0, 20.0]))->not->toBe([[0.0, 31.0]]);
 });

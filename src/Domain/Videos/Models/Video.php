@@ -176,7 +176,7 @@ class Video extends Model implements HasMedia
             ->addMediaCollection('reels')
             ->useDisk(static::getReelsDisk())
             ->singleFile()
-            ->acceptsMimeTypes(['video/mp4']);
+            ->acceptsMimeTypes(['video/av1', 'video/mp4']);
     }
 
     public function registerMediaConversions(?BaseMedia $media = null): void

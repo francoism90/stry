@@ -3,6 +3,7 @@
 use Domain\Chapters\Settings\ChapterSettings;
 use Domain\Videos\Settings\PlaybackSettings;
 use Domain\Videos\Settings\ProcessingSettings;
+use Domain\Videos\Settings\ReelSettings;
 use Foundation\Settings\GeneralSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
@@ -22,6 +23,7 @@ return [
         PlaybackSettings::class,
         ChapterSettings::class,
         ProcessingSettings::class,
+        ReelSettings::class,
     ],
 
     /*

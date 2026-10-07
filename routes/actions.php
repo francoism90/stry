@@ -12,6 +12,7 @@ use Modules\Web\Settings\Controllers\ApplicationSettingsController;
 use Modules\Web\Settings\Controllers\ChapterSettingsController;
 use Modules\Web\Settings\Controllers\PlaybackSettingsController;
 use Modules\Web\Settings\Controllers\ProcessingSettingsController;
+use Modules\Web\Settings\Controllers\ReelSettingsController;
 use Modules\Web\Shuffle\Controllers\ShuffleController;
 use Modules\Web\Users\Controllers\UserSettingsController;
 use Modules\Web\Videos\Controllers\VideoDispatchTranscodeController;
@@ -27,6 +28,7 @@ Route::prefix('/settings')->name('settings.')->group(function () {
     Route::singleton('playback', PlaybackSettingsController::class)->only(['show', 'update']);
     Route::singleton('chapters', ChapterSettingsController::class)->only(['show', 'update']);
     Route::singleton('processing', ProcessingSettingsController::class)->only(['show', 'update']);
+    Route::singleton('reels', ReelSettingsController::class)->only(['show', 'update']);
 });
 
 // Profiles

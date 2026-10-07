@@ -6,27 +6,22 @@ namespace Domain\Videos\Actions;
 
 use Domain\Chapters\Models\Chapter;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ReelSettings;
 use Foxws\Media\FFMpeg\Clip;
 use Foxws\Media\FFMpeg\Scene;
 use Foxws\Media\Opener;
 
 /**
- * Picks the cuts of a reel: short parts of the scenes that change the most, spread over the video and
+ * Picks the cuts of a reel, as set in the reel settings: short parts of the scenes that change the most, spread over the video and
  * kept out of its opening and ending and of skippable chapters (intros, credits, sponsors and so on).
  * Videos without enough scene changes get evenly spaced cuts instead, and short videos are used whole.
  */
 class SelectReelClips
 {
-    public const int MAXIMUM_CUTS = 8;
-
-    public const float CUT_DURATION = 4.0;
-
-    public const float MAXIMUM_DURATION = 32.0;
-
     /**
-     * Shorter videos are used whole instead of cut.
+     * Videos up to this many times the reel duration are used whole instead of cut.
      */
-    public const float MINIMUM_VIDEO_DURATION = 45.0;
+    public const float WHOLE_VIDEO_FACTOR = 1.5;
 
     /**
      * Cuts start this far into their scene, past the transition.
@@ -43,6 +38,10 @@ class SelectReelClips
      */
     protected const float EDGE = 0.05;
 
+    public function __construct(
+        protected readonly ReelSettings $settings,
+    ) {}
+
     /**
      * @return list<Clip>
      */
@@ -54,13 +53,13 @@ class SelectReelClips
             return [];
         }
 
-        if ($duration < self::MINIMUM_VIDEO_DURATION) {
+        if ($duration <= $this->settings->duration * self::WHOLE_VIDEO_FACTOR) {
             return [Clip::make(0, $duration)];
         }
 
         $excluded = $this->excludedRanges($video, $duration);
 
-        $cuts = $this->fromScenes($opener->scenes(), $duration, $excluded);
+        $cuts = $this->fromScenes($opener->scenes($this->settings->scene_threshold), $duration, $excluded);
 
         if (count($cuts) < 3) {
             $cuts = $this->evenlySpaced($duration, $excluded);
@@ -100,12 +99,12 @@ class SelectReelClips
     protected function evenlySpaced(float $duration, array $excluded): array
     {
         $start = $duration * self::EDGE;
-        $step = ($duration * (1 - 2 * self::EDGE)) / self::MAXIMUM_CUTS;
+        $step = ($duration * (1 - 2 * self::EDGE)) / $this->settings->cuts;
 
         $candidates = [];
 
-        for ($index = 0; $index < self::MAXIMUM_CUTS; $index++) {
-            $from = $start + $step * ($index + 0.5) - self::CUT_DURATION / 2;
+        for ($index = 0; $index < $this->settings->cuts; $index++) {
+            $from = $start + $step * ($index + 0.5) - $this->settings->cut_duration / 2;
 
             $candidates[] = $this->cutOf($from, $duration, $excluded);
         }
@@ -123,7 +122,7 @@ class SelectReelClips
         $total = 0.0;
 
         foreach ($candidates as $candidate) {
-            if (count($cuts) >= self::MAXIMUM_CUTS || $total + $candidate->duration() > self::MAXIMUM_DURATION) {
+            if (count($cuts) >= $this->settings->cuts || $total + $candidate->duration() > $this->settings->duration) {
                 break;
             }
 
@@ -141,14 +140,14 @@ class SelectReelClips
     }
 
     /**
-     * A cut from the given time, at most CUT_DURATION long and ending before $end, or null when it would
+     * A cut from the given time, at most the cut duration long and ending before $end, or null when it would
      * be too short or overlap an excluded range.
      *
      * @param  list<array{float, float}>  $excluded
      */
     protected function cutOf(float $from, float $end, array $excluded): ?Clip
     {
-        $to = min($from + self::CUT_DURATION, $end);
+        $to = min($from + $this->settings->cut_duration, $end);
 
         if ($to - $from < self::MINIMUM_CUT_DURATION) {
             return null;

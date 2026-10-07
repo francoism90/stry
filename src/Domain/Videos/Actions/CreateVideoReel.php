@@ -6,7 +6,7 @@ namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
-use Domain\Videos\Settings\ProcessingSettings;
+use Domain\Videos\Settings\ReelSettings;
 use Foxws\Media\Encoding\Format;
 use Foxws\Media\FFMpeg\Clip;
 use Foxws\Media\Filters\Fps;
@@ -15,7 +15,7 @@ use Foxws\Media\MediaFactory;
 use Illuminate\Support\Str;
 
 /**
- * Joins the selected cuts of the best clip into an H.264 reel of the size and frame rate in the processing
+ * Joins the selected cuts of the best clip into an H.264 reel of the size and frame rate in the reel
  * settings (vertical 1080×1920 by default), cropped to fill the frame, and keeps it in the video's "reels" collection, replacing the previous reel.
  */
 class CreateVideoReel
@@ -28,7 +28,7 @@ class CreateVideoReel
     public function __construct(
         protected readonly MediaFactory $media,
         protected readonly SelectReelClips $selectClips,
-        protected readonly ProcessingSettings $settings,
+        protected readonly ReelSettings $settings,
     ) {}
 
     public function handle(Video $video): ?Media
@@ -53,7 +53,7 @@ class CreateVideoReel
             ->ffmpeg()
             ->clips($cuts)
             ->toneMap()
-            ->addFilter(Scale::fill($this->settings->reel_width, $this->settings->reel_height), new Fps($this->settings->reel_fps))
+            ->addFilter(Scale::fill($this->settings->width, $this->settings->height), new Fps($this->settings->fps))
             ->inFormat(Format::h264())
             ->withContext(['video_id' => $video->getKey()])
             ->timeout(self::TIMEOUT)

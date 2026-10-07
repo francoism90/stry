@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Domain\Videos\Jobs\GenerateVideoReel;
 use Domain\Videos\Models\Video;
 use Domain\Videos\Pipes\QueueVideoReel;
-use Domain\Videos\Settings\ProcessingSettings;
+use Domain\Videos\Settings\ReelSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 
@@ -28,7 +28,7 @@ function addReelPipeMedia(Video $video, string $collection): void
 }
 
 it('queues a reel for a video with a clip', function () {
-    ProcessingSettings::fake(['create_reels' => true]);
+    ReelSettings::fake(['enabled' => true]);
     $video = Video::factory()->create();
     addReelPipeMedia($video, 'clips');
 
@@ -38,7 +38,7 @@ it('queues a reel for a video with a clip', function () {
 });
 
 it('skips videos with a reel, without clips, or when reels are off', function (bool $hasReel, bool $hasClip, bool $enabled) {
-    ProcessingSettings::fake(['create_reels' => $enabled]);
+    ReelSettings::fake(['enabled' => $enabled]);
     $video = Video::factory()->create();
 
     if ($hasClip) {
