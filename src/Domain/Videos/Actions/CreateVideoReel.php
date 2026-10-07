@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 
 /**
  * Joins the selected cuts of the best clip into an H.264 (or HEVC or AV1) reel of the size and frame rate in the reel
- * settings (vertical 1080×1920 by default), fitted to the frame as the reel settings say, and keeps it in the video's "reels" collection, replacing the previous reel.
+ * settings (vertical 1080×1920 by default), filling the frame's height by default, and keeps it in the video's "reels" collection, replacing the previous reel.
  * The reel is encoded on the CPU, or on the GPU in media.ladder.hardware when the reel settings turn it on
  * and it can be opened.
  */
@@ -83,11 +83,11 @@ class CreateVideoReel
     }
 
     /**
-     * How the picture fits the reel's frame. Cropped, the zoom (0-100) decides how much of the frame a
-     * wider picture fills: 100 fills all of it and cuts off the most of the sides, 0 shows the whole
-     * picture, and in between it fills a band across the full width. The rest of the frame is a blurred,
-     * darkened copy of the picture, made at a quarter of the size, which is much faster and looks the
-     * same. Letterboxed, the whole picture gets black bars.
+     * How the picture fits the reel's frame. Filled, it takes the full height and the sides are cut off,
+     * like YouTube Shorts. On a blur, the zoom (0-100) decides how much of the frame a wider picture
+     * fills: 100 fills all of it, 0 shows the whole picture, and in between it fills a band across the
+     * full width. The rest of the frame is a blurred, darkened copy of the picture, made at a quarter of
+     * the size, which is much faster and looks the same. Letterboxed, the whole picture gets black bars.
      */
     protected function fit(Opener $opener): Filter
     {
@@ -96,6 +96,10 @@ class CreateVideoReel
 
         if ($this->settings->fit === 'letterbox') {
             return Scale::fit($width, $height);
+        }
+
+        if ($this->settings->fit !== 'blur') {
+            return Scale::fill($width, $height);
         }
 
         $band = $this->bandHeight($opener->probe()->videoStream());

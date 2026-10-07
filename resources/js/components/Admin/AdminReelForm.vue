@@ -8,7 +8,8 @@ const loaded = ref(false)
 const http = useHttp<object, ReelSettings>({})
 
 const fits = [
-  { label: 'Crop', value: 'crop' },
+  { label: 'Fill', value: 'fill' },
+  { label: 'Blur', value: 'blur' },
   { label: 'Letterbox', value: 'letterbox' },
 ]
 
@@ -23,7 +24,7 @@ const form = useForm(update(), {
   width: 1080,
   height: 1920,
   fps: 30,
-  fit: 'crop' as ReelSettings['fit'],
+  fit: 'fill' as ReelSettings['fit'],
   zoom: 50,
   codec: 'h264' as ReelSettings['codec'],
   hardware: false,
@@ -139,7 +140,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Fit"
-          description="How videos of another shape, such as landscape ones, fill the frame. Crop zooms them in on a blurred copy of themselves; letterbox shows them whole with black bars."
+          description="How videos of another shape, such as landscape ones, fit the frame. Fill takes the full height and cuts off the sides, like YouTube Shorts; blur zooms them in on a blurred copy of themselves; letterbox shows them whole with black bars."
           name="fit"
           :error="form.errors.fit"
           :class="fieldClass"
@@ -155,7 +156,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Zoom"
-          description="How much of the frame a cropped landscape video fills. 100 fills it and cuts off the most of the sides, 0 shows the whole picture; the rest is the blurred background."
+          description="How much of the frame a landscape video on a blur fills. 100 fills it and cuts off the most of the sides, 0 shows the whole picture; the rest is the blurred background."
           name="zoom"
           :error="form.errors.zoom"
           :class="fieldClass"
@@ -166,7 +167,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             :min="0"
             :max="100"
             :step="5"
-            :disabled="form.fit !== 'crop'"
+            :disabled="form.fit !== 'blur'"
           />
         </UFormField>
 

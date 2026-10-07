@@ -17,12 +17,13 @@ class ReelSettings extends Settings
     public int $fps = 30;
 
     /**
-     * How the picture fits the frame: crop (zoomed by $zoom, on a blurred copy of itself) or letterbox.
+     * How the picture fits the frame: fill (the full height, cutting off the sides), blur (zoomed by
+     * $zoom, on a blurred copy of itself) or letterbox.
      */
-    public string $fit = 'crop';
+    public string $fit = 'fill';
 
     /**
-     * How much of the frame a cropped picture fills (0-100): 100 fills it all, 0 shows the whole picture.
+     * How much of the frame a picture on a blur fills (0-100): 100 fills it all, 0 shows the whole picture.
      */
     public int $zoom = 50;
 

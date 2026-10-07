@@ -77,7 +77,7 @@ it('rejects reel settings ffmpeg cannot use', function (array $values, string $f
     'too high frame rate' => [['fps' => 120], 'fps'],
     'quality out of range' => [['quality' => 60], 'quality'],
     'unknown codec' => [['codec' => 'mpeg2'], 'codec'],
-    'unknown fit' => [['fit' => 'blur'], 'fit'],
+    'unknown fit' => [['fit' => 'crop'], 'fit'],
     'zoom out of range' => [['zoom' => 150], 'zoom'],
     'cuts shorter than the minimum' => [['cut_duration' => 1], 'cut_duration'],
     'scene threshold out of range' => [['scene_threshold' => 1.5], 'scene_threshold'],

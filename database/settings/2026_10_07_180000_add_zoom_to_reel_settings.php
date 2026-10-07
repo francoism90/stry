@@ -5,8 +5,7 @@ use Spatie\LaravelSettings\Migrations\SettingsMigration;
 return new class extends SettingsMigration
 {
     /**
-     * Cropping zooms by a setting now, which also covers showing the whole picture on a blurred
-     * background, so the separate blur fit makes way for crop.
+     * The blur fit zooms by a setting now, and crop, which fills the full height, is called fill.
      */
     public function up(): void
     {
@@ -15,7 +14,7 @@ return new class extends SettingsMigration
         }
 
         if ($this->migrator->exists('reels.fit')) {
-            $this->migrator->update('reels.fit', fn (mixed $fit): mixed => $fit === 'blur' ? 'crop' : $fit);
+            $this->migrator->update('reels.fit', fn (mixed $fit): mixed => $fit === 'crop' ? 'fill' : $fit);
         }
     }
 };
