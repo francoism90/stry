@@ -23,7 +23,7 @@ Use environment variables instead of editing the `config/*.php` files. That keep
 
 ## Admin-managed settings
 
-A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
+A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing / Reels**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
 
 | Settings class       | Admin tab   | What it covers                                                                   |
 | -------------------- | ----------- | -------------------------------------------------------------------------------- |
@@ -31,6 +31,7 @@ A few settings are stored in the database instead of `.env`. Admins change them 
 | `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, rendition heights             |
 | `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically            |
 | `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions |
+| `ReelSettings`       | Reels       | Creating reels, their size, frame rate, length, cuts and scene sensitivity       |
 
 ### Shipping new defaults
 
@@ -169,6 +170,18 @@ VIDEO_IMPORT_BATCH_SIZE=20
 
 # How much of a video must be watched before it counts as finished (0.0-1.0)
 VIDEO_COMPLETION_THRESHOLD=0.95
+```
+
+### Reels
+
+A reel is a short vertical highlight video, shown in the **Reels** feed. To make one, stry finds where the picture changes the most and joins short cuts of those scenes. It skips the first and last 5% of the video and chapters you can skip, such as intros, credits and sponsors. Videos up to one and a half times the reel duration are used whole. The result is cropped to fill the frame and encoded as H.264.
+
+Turn on **Create reels** under **Admin → Reels** to make a reel for each video as it's processed. The same tab sets the size (1080 × 1920 by default), frame rate, length, number of cuts, cut duration and scene sensitivity. Changes only apply to new reels. Run `php artisan videos:reels --force` to regenerate the existing ones, or `videos:reels --missing` to make reels for videos that don't have one yet. Reels are encoded on the `processing` queue.
+
+```env
+# Disk that reels are stored on. It must make temporary URLs (S3, or a local
+# disk with serve enabled), because the feed plays reels from them.
+VIDEO_REELS_DISK=conversions
 ```
 
 ### AV1 transcoding (ab-av1)
