@@ -64,7 +64,7 @@ it('replaces the previous reel', function () {
     Storage::disk('conversions')->assertMissing($first->getPathRelativeToRoot());
 });
 
-it('makes no reel of videos without clips or too short to cut', function (bool $hasClip, float $duration) {
+it('makes no reel of videos without clips or without a duration', function (bool $hasClip, float $duration) {
     Media::fake(['clip.mp4' => FakeProbe::video(duration: $duration)]);
     $video = Video::factory()->create();
 
@@ -77,5 +77,5 @@ it('makes no reel of videos without clips or too short to cut', function (bool $
     Media::assertRanTimes(Executable::FFMpeg, 0);
 })->with([
     'no clips' => [false, 200],
-    'too short' => [true, 30],
+    'no duration' => [true, 0],
 ]);

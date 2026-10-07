@@ -64,6 +64,6 @@ it('limits a reel to eight cuts', function () {
     expect($cuts)->toHaveCount(SelectReelClips::MAXIMUM_CUTS);
 });
 
-it('makes no reel of short videos', function () {
-    expect(selectReelCuts(Video::factory()->create(), 30, [10.0, 20.0]))->toBe([]);
+it('uses short videos whole', function () {
+    expect(selectReelCuts(Video::factory()->create(), 10, [5.0]))->toBe([[0.0, 10.0]]);
 });

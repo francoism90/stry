@@ -13,7 +13,7 @@ use Foxws\Media\Opener;
 /**
  * Picks the cuts of a reel: short parts of the scenes that change the most, spread over the video and
  * kept out of its opening and ending and of skippable chapters (intros, credits, sponsors and so on).
- * Videos without enough scene changes get evenly spaced cuts instead.
+ * Videos without enough scene changes get evenly spaced cuts instead, and short videos are used whole.
  */
 class SelectReelClips
 {
@@ -23,6 +23,9 @@ class SelectReelClips
 
     public const float MAXIMUM_DURATION = 32.0;
 
+    /**
+     * Shorter videos are used whole instead of cut.
+     */
     public const float MINIMUM_VIDEO_DURATION = 45.0;
 
     /**
@@ -47,8 +50,12 @@ class SelectReelClips
     {
         $duration = $opener->probe()->duration();
 
-        if ($duration < self::MINIMUM_VIDEO_DURATION) {
+        if ($duration <= 0) {
             return [];
+        }
+
+        if ($duration < self::MINIMUM_VIDEO_DURATION) {
+            return [Clip::make(0, $duration)];
         }
 
         $excluded = $this->excludedRanges($video, $duration);
