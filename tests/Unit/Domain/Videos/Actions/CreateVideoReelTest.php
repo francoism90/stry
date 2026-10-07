@@ -66,6 +66,21 @@ it('uses the reel size and frame rate from the reel settings', function () {
     ));
 });
 
+it('encodes at the reel quality, as a crf on the cpu or a qp on the gpu', function (?string $hardware, string $option) {
+    config(['media.ladder.hardware' => $hardware ?? 'none']);
+    ReelSettings::fake(['quality' => 30]);
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
+    $video = Video::factory()->create();
+    createReelClip($video);
+
+    app(CreateVideoReel::class)->handle($video);
+
+    Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => str_contains(implode(' ', $arguments), "{$option} 30"));
+})->with([
+    'cpu' => [null, '-crf'],
+    'vaapi' => ['vaapi', '-qp'],
+]);
+
 it('encodes the reel on the configured gpu', function () {
     config(['media.ladder.hardware' => 'vaapi']);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);

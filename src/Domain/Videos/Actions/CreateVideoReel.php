@@ -56,7 +56,7 @@ class CreateVideoReel
             ->toneMap()
             ->addFilter(Scale::fill($this->settings->width, $this->settings->height), new Fps($this->settings->fps))
             ->hardware()
-            ->inFormat(Format::h264())
+            ->inFormat(Format::h264(crf: $this->settings->quality))
             ->withContext(['video_id' => $video->getKey()])
             ->timeout(self::TIMEOUT)
             ->save($path);

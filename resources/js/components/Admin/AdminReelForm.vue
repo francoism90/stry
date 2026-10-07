@@ -12,6 +12,7 @@ const form = useForm(update(), {
   width: 1080,
   height: 1920,
   fps: 30,
+  quality: 26,
   cuts: 8,
   cut_duration: 4,
   duration: 32,
@@ -56,7 +57,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 7"
+      v-for="i in 8"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -133,6 +134,23 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             class="w-32"
             :min="10"
             :max="60"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Quality"
+          description="Lower is sharper and larger. A CRF on the CPU, or the matching quality setting on a GPU; 26 suits reels on phones."
+          name="quality"
+          :error="form.errors.quality"
+          :class="fieldClass"
+        >
+          <UInputNumber
+            v-model="form.quality"
+            class="w-32"
+            :min="15"
+            :max="40"
           />
         </UFormField>
 

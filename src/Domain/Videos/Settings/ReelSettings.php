@@ -16,6 +16,8 @@ class ReelSettings extends Settings
 
     public int $fps = 30;
 
+    public int $quality = 26;
+
     public int $cuts = 8;
 
     public float $cut_duration = 4.0;

@@ -25,6 +25,7 @@ it('allows a super-admin to update reel settings', function () {
         'width' => 720,
         'height' => 1280,
         'fps' => 24,
+        'quality' => 28,
         'cuts' => 5,
         'cut_duration' => 2.5,
         'duration' => 20,
@@ -39,6 +40,7 @@ it('allows a super-admin to update reel settings', function () {
         'width' => 720,
         'height' => 1280,
         'fps' => 24,
+        'quality' => 28,
         'cuts' => 5,
         'cut_duration' => 2.5,
         'duration' => 20,
@@ -65,6 +67,7 @@ it('rejects reel settings ffmpeg cannot use', function (array $values, string $f
     'odd width' => [['width' => 1081], 'width'],
     'too small height' => [['height' => 100], 'height'],
     'too high frame rate' => [['fps' => 120], 'fps'],
+    'quality out of range' => [['quality' => 60], 'quality'],
     'cuts shorter than the minimum' => [['cut_duration' => 1], 'cut_duration'],
     'scene threshold out of range' => [['scene_threshold' => 1.5], 'scene_threshold'],
 ]);

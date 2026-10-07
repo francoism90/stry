@@ -136,6 +136,7 @@ export type ReelSettings = {
   width: number
   height: number
   fps: number
+  quality: number
   cuts: number
   cut_duration: number
   duration: number
