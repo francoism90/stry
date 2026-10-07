@@ -2,43 +2,25 @@
 # another PHP version.
 ARG FRANKENPHP_VERSION=1-php8.5
 
+# FFmpeg release branch of the BtbN static builds. Pass --build-arg
+# FFMPEG_VERSION=... for another one.
+ARG FFMPEG_VERSION=9.0
+
 FROM docker.io/rust:latest AS builder
+
+ARG FFMPEG_VERSION
 
 WORKDIR /tmp
 
-# Install build tools
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    ca-certificates curl build-essential cmake ninja-build musl-tools pkg-config libssl-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# FFmpeg Build Extraction
+# FFmpeg static build
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) ARCH="linux64" ;; \
       aarch64) ARCH="linuxarm64" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
-    && RELEASES=$(curl -fsSL "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest") \
-    && FFMPEG_URL=$(echo "${RELEASES}" | grep -o "https://[^\"]*${ARCH}-gpl\.tar\.xz" | head -1) \
-    && if [ -z "${FFMPEG_URL}" ]; then FFMPEG_URL=$(echo "${RELEASES}" | grep -oE "https://[^\"]*${ARCH}-gpl-[0-9.]+\.tar\.xz" | grep -v shared | head -1); fi \
-    && if [ -z "${FFMPEG_URL}" ]; then echo "Unable to resolve FFmpeg download URL for architecture ${ARCH}"; exit 1; fi \
+    && FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n${FFMPEG_VERSION}-latest-${ARCH}-gpl-${FFMPEG_VERSION}.tar.xz" \
     && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
     && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
-
-  # Shaka Packager
-  RUN arch="$(uname -m)" && case "$arch" in \
-        x86_64) \
-          PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.9.3/packager-linux-x64" ; \
-          PACKAGER_SHA256="7a3cf35ad146fd7810b4ededab363c8a3e6121d1b2c8391f53863126186f9ee6" ;; \
-        aarch64) \
-          PACKAGER_URL="https://github.com/shaka-project/shaka-packager/releases/download/v3.9.3/packager-linux-arm64" ; \
-          PACKAGER_SHA256="d3a50cecc139b54435be1bbbfba5c0ea822d9e1e7edc3531f7821fba65ceebb0" ;; \
-        *) echo "Unsupported architecture: $arch"; exit 1 ;; \
-      esac \
-      && curl -fsSL ${PACKAGER_URL} -o /usr/local/bin/packager \
-      && echo "${PACKAGER_SHA256}  /usr/local/bin/packager" | sha256sum -c - \
-      && chmod +x /usr/local/bin/packager
 
 # ab-av1 (use BuildKit cache mounts)
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
@@ -70,18 +52,17 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
-# Main dependencies
+# Main dependencies. BtbN's arm64 builds of FFmpeg have no VA-API or QSV, so
+# the VA-API and Intel drivers are only installed on amd64.
 RUN arch="$(dpkg --print-architecture)" \
     && AMD64_DRIVERS="" \
     && if [ "$arch" = "amd64" ]; then \
-    AMD64_DRIVERS="libmfx-gen1.2 libvpl2 intel-media-va-driver-non-free"; \
+    AMD64_DRIVERS="libva2 libva-drm2 mesa-va-drivers libmfx-gen1.2 intel-media-va-driver-non-free"; \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates gosu python3 \
-    libavif-bin jpegoptim optipng pngquant gifsicle \
-    libva2 libva-drm2 \
-    mesa-va-drivers mesa-vulkan-drivers \
+    gnupg curl ca-certificates gosu \
+    libavif-bin jpegoptim optipng pngquant gifsicle webp \
     ${AMD64_DRIVERS} \
     && apt-get -y autoremove \
     && apt-get clean \
@@ -122,7 +103,7 @@ RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 # Install PHP extensions
 RUN install-php-extensions @composer \
     apcu bcmath exif ffi gd opcache \
-    igbinary imagick inotify intl pcntl \
+    imagick intl pcntl \
     pdo_pgsql redis sockets uv zip
 
 # Install additional PHP extensions if specified
@@ -149,23 +130,10 @@ RUN npm install -g npm@latest corepack@latest svgo@latest \
     && pnpm config set store-dir ${PNPM_HOME}/store \
     && chown -R docker:docker ${PNPM_HOME} /config /data
 
-# Copy FFmpeg, Shaka Packager, and ab-av1 from builder stage
+# Copy FFmpeg and ab-av1 from builder stage
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
-COPY --from=builder /usr/local/bin/packager /usr/local/bin/packager
 COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
-
-# Build Shaka Streamer and set up Python environment. python3-venv/python3-pip
-# are only needed to build the venv, so install and purge them within this
-# single layer instead of keeping them installed for the whole image.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3-venv python3-pip \
-    && python3 -m venv /opt/shaka-streamer-env \
-    && /opt/shaka-streamer-env/bin/pip install --no-cache-dir shaka-streamer \
-    && ln -s /opt/shaka-streamer-env/bin/shaka-streamer /usr/local/bin/shaka-streamer \
-    && apt-get purge -y --auto-remove python3-venv python3-pip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Entrypoint
 COPY --chmod=755 podman/production/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh

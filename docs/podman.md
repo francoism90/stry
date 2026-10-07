@@ -99,7 +99,7 @@ See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the [
 
 Resource limits such as `Memory=` and `ShmSize=` are set in `containers/stubs/production/quadlets/*.quadlets`. After changing them, generate the files again (`php artisan podman:generate production`) and reinstall the service (`lpod install ... --replace`).
 
-The app image includes VA-API drivers. By default, `horizon.quadlets` gives `stry-horizon` access to `/dev/dri` for hardware-accelerated transcoding:
+The app image includes the VA-API drivers for Intel and AMD, and the Quick Sync runtime for Intel. By default, `horizon.quadlets` gives `stry-horizon` access to `/dev/dri` for hardware-accelerated transcoding:
 
 ```ini
 [Container]
@@ -124,6 +124,32 @@ This setting applies to the whole host, not just one container. Every rootless P
 :::
 
 **To turn off GPU access**, for example to force software encoding, remove both lines from `containers/stubs/production/quadlets/horizon.quadlets` (and from `development/quadlets/horizon.quadlets` if you use that preset). Then generate the files again and reinstall:
+
+```bash
+php artisan podman:generate production
+lpod install production/horizon.quadlets --replace
+```
+
+### NVIDIA
+
+:::warning
+This is untested. It's what NVIDIA GPUs probably need, and we're waiting for feedback from someone who has tried it.
+:::
+
+The app image has no NVIDIA libraries, and it doesn't need them. FFmpeg loads `libcuda`, `libnvcuvid` (NVDEC) and `libnvidia-encode` (NVENC) when it runs. These come with the host's NVIDIA driver and must match its version, so the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) mounts them into the container. Install the toolkit, then generate the CDI spec once on the host (and again after every driver update):
+
+```bash
+sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+```
+
+In `containers/stubs/production/quadlets/horizon.quadlets`, replace the `/dev/dri` device with the GPU:
+
+```ini
+[Container]
+AddDevice=nvidia.com/gpu=all
+```
+
+Set `MEDIA_LADDER_HARDWARE=nvenc` in `.env`, then generate the files again and reinstall the service:
 
 ```bash
 php artisan podman:generate production

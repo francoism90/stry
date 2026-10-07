@@ -148,6 +148,30 @@ queue:
 The host needs the right GPU drivers: VA-API (Intel), Mesa (AMD) or NVENC (Nvidia). See the [FFmpeg hardware acceleration docs](https://trac.ffmpeg.org/wiki/HWAccelIntro). GPU access is more limited on Docker Desktop than on Linux.
 :::
 
+### NVIDIA
+
+:::warning
+This is untested. It's what NVIDIA GPUs probably need, and we're waiting for feedback from someone who has tried it.
+:::
+
+The image has no NVIDIA libraries: the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) mounts the host driver's `libcuda`, `libnvcuvid` (NVDEC) and `libnvidia-encode` (NVENC) into the container. Install it on the host, then give the `queue` service the GPU instead of `/dev/dri`. The `video` capability is needed for NVENC and NVDEC, and isn't included by default:
+
+```yaml
+queue:
+    environment:
+        APP_SERVICE: horizon
+        NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
+    deploy:
+        resources:
+            reservations:
+                devices:
+                    - driver: nvidia
+                      count: all
+                      capabilities: [gpu]
+```
+
+Set `MEDIA_LADDER_HARDWARE=nvenc` in `.env`.
+
 ## Troubleshooting
 
 - **A container won't start**: check its logs with `docker compose -f containers/docker/docker-compose.yml logs app`.
