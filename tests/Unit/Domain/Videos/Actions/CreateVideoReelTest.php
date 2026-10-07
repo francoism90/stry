@@ -68,7 +68,7 @@ it('uses the reel size and frame rate from the reel settings', function () {
 
 it('encodes at the reel quality, as a crf on the cpu or a qp on the gpu', function (?string $hardware, string $option) {
     config(['media.ladder.hardware' => $hardware ?? 'none']);
-    ReelSettings::fake(['quality' => 30]);
+    ReelSettings::fake(['quality' => 30, 'hardware' => $hardware !== null]);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
     $video = Video::factory()->create();
     createReelClip($video);
@@ -99,6 +99,7 @@ it('encodes with the reel codec', function (string $codec, string $encoder) {
 
 it('encodes the reel on the configured gpu', function () {
     config(['media.ladder.hardware' => 'vaapi']);
+    ReelSettings::fake(['hardware' => true]);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
     $video = Video::factory()->create();
     createReelClip($video);
@@ -139,9 +140,9 @@ it('makes no reel of videos without clips or without a duration', function (bool
     'no duration' => [true, 0],
 ]);
 
-it('encodes on the cpu when the reel settings turn the gpu off', function () {
+it('encodes on the cpu unless the reel settings turn the gpu on', function () {
     config(['media.ladder.hardware' => 'vaapi']);
-    ReelSettings::fake(['codec' => 'hevc', 'hardware' => false]);
+    ReelSettings::fake(['codec' => 'hevc']);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
     $video = Video::factory()->create();
     createReelClip($video);

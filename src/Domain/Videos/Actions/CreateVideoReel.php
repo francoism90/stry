@@ -17,8 +17,8 @@ use Illuminate\Support\Str;
 /**
  * Joins the selected cuts of the best clip into an H.264 (or HEVC or AV1) reel of the size and frame rate in the reel
  * settings (vertical 1080×1920 by default), cropped to fill the frame, and keeps it in the video's "reels" collection, replacing the previous reel.
- * The reel is encoded on the GPU in media.ladder.hardware when the reel settings allow it, or on the CPU
- * when they don't or the GPU can't be opened.
+ * The reel is encoded on the CPU, or on the GPU in media.ladder.hardware when the reel settings turn it on
+ * and it can be opened.
  */
 class CreateVideoReel
 {

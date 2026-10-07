@@ -5,13 +5,13 @@ use Spatie\LaravelSettings\Migrations\SettingsMigration;
 return new class extends SettingsMigration
 {
     /**
-     * Reels can be encoded on the CPU, and go back to H.264 by default, since some GPUs (AMD with
-     * VAAPI) write corrupted HEVC.
+     * Reels are encoded on the CPU unless the GPU is turned on, and go back to H.264 by default, since
+     * some GPUs (AMD with VAAPI) write corrupted HEVC.
      */
     public function up(): void
     {
         if (! $this->migrator->exists('reels.hardware')) {
-            $this->migrator->add('reels.hardware', true);
+            $this->migrator->add('reels.hardware', false);
         }
 
         if ($this->migrator->exists('reels.codec')) {

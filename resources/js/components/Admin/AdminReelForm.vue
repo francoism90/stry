@@ -19,7 +19,7 @@ const form = useForm(update(), {
   height: 1920,
   fps: 30,
   codec: 'h264' as ReelSettings['codec'],
-  hardware: true,
+  hardware: false,
   quality: 26,
   cuts: 8,
   cut_duration: 4,
@@ -165,7 +165,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Encode on GPU"
-          description="Use the GPU set in MEDIA_LADDER_HARDWARE, or the CPU when it can't be opened. Turn this off if reels come out corrupted, as HEVC does on some AMD GPUs."
+          description="Use the GPU set in MEDIA_LADDER_HARDWARE instead of the CPU. Faster, but larger files at the same quality, and some GPUs write corrupted HEVC (AMD with VAAPI)."
           name="hardware"
           :error="form.errors.hardware"
           :class="fieldClass"
