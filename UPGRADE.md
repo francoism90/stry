@@ -26,15 +26,15 @@ Because of this, 2.0 removes the packaged playlists and some stored files that o
 
 **Remove these keys.** They belonged to packages that 2.0 no longer uses, and are ignored now:
 
-| Removed | Replaced by |
-| --- | --- |
-| `VIDEO_CREATE_PLAYLISTS` | Nothing: videos play directly |
-| `QUEUE_TRANSCODING_MIN_PROCESSES`, `QUEUE_TRANSCODING_MAX_PROCESSES` | Transcodes run on the `processing` supervisor. `QUEUE_MEDIA_MIN_PROCESSES` and `QUEUE_MEDIA_MAX_PROCESSES` set the workers for the new `media` queue |
-| `PACKAGER_*` (laravel-shaka) | `MEDIA_*`, see [Direct play](docs/configuration.md#direct-play) |
-| `STREAMER_*` (laravel-streamer) | `MEDIA_*`, and `MEDIA_DELIVERY_HARDWARE` for GPU encoding |
-| `FFMPEG_LOG_CHANNEL`, `FFMPEG_TEMPORARY_FILES_ROOT`, `FFMPEG_TEMPORARY_ENCRYPTED_HLS`, `FFMPEG_THREADS` | `MEDIA_LOG_CHANNEL`, `MEDIA_TEMPORARY_FILES_ROOT` |
-| `AB_AV1_LOG_CHANNEL`, `AB_AV1_TEMPORARY_FILES_ROOT`, `AB_AV1_CACHE_FILES_ROOT` | `MEDIA_LOG_CHANNEL`, `MEDIA_TEMPORARY_FILES_ROOT`, `MEDIA_CACHE_FILES_ROOT` |
-| `AB_AV1_FORCE_GENERIC_INPUT`, `AB_AV1_VERBOSITY`, `AB_AV1_VFRAMES` | Nothing |
+| Removed                                                                                                 | Replaced by                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VIDEO_CREATE_PLAYLISTS`                                                                                | Nothing: videos play directly                                                                                                                        |
+| `QUEUE_TRANSCODING_MIN_PROCESSES`, `QUEUE_TRANSCODING_MAX_PROCESSES`                                    | Transcodes run on the `processing` supervisor. `QUEUE_MEDIA_MIN_PROCESSES` and `QUEUE_MEDIA_MAX_PROCESSES` set the workers for the new `media` queue |
+| `PACKAGER_*` (laravel-shaka)                                                                            | `MEDIA_*`, see [Direct play](docs/configuration.md#direct-play)                                                                                      |
+| `STREAMER_*` (laravel-streamer)                                                                         | `MEDIA_*`, and `MEDIA_DELIVERY_HARDWARE` for GPU encoding                                                                                            |
+| `FFMPEG_LOG_CHANNEL`, `FFMPEG_TEMPORARY_FILES_ROOT`, `FFMPEG_TEMPORARY_ENCRYPTED_HLS`, `FFMPEG_THREADS` | `MEDIA_LOG_CHANNEL`, `MEDIA_TEMPORARY_FILES_ROOT`                                                                                                    |
+| `AB_AV1_LOG_CHANNEL`, `AB_AV1_TEMPORARY_FILES_ROOT`, `AB_AV1_CACHE_FILES_ROOT`                          | `MEDIA_LOG_CHANNEL`, `MEDIA_TEMPORARY_FILES_ROOT`, `MEDIA_CACHE_FILES_ROOT`                                                                          |
+| `AB_AV1_FORCE_GENERIC_INPUT`, `AB_AV1_VERBOSITY`, `AB_AV1_VFRAMES`                                      | Nothing                                                                                                                                              |
 
 `FFMPEG_PATH` and `FFPROBE_PATH` still work. The other `AB_AV1_*` keys, such as `AB_AV1_PRESET` and `AB_AV1_MIN_VMAF`, are unchanged.
 
@@ -113,12 +113,12 @@ The packaged segments and encryption keys of 1.x stay in the `segments` and `sec
 
 ### Commands
 
-| 1.x | 2.0 |
-| --- | --- |
-| `playlists:clear` | Removed |
-| — | `videos:thumbnails`: regenerate seek preview thumbnails |
-| — | `media:prune`: delete cached segments (runs daily) |
-| — | `media:info`: show the FFmpeg, ffprobe and ab-av1 that were found |
+| 1.x               | 2.0                                                               |
+| ----------------- | ----------------------------------------------------------------- |
+| `playlists:clear` | Removed                                                           |
+| —                 | `videos:thumbnails`: regenerate seek preview thumbnails           |
+| —                 | `media:prune`: delete cached segments (runs daily)                |
+| —                 | `media:info`: show the FFmpeg, ffprobe and ab-av1 that were found |
 
 ### Rolling back
 
