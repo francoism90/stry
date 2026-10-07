@@ -12,6 +12,7 @@ const form = useForm(update(), {
   extract_chapters: true,
   extract_storyboard: true,
   create_renditions: false,
+  create_reels: false,
 })
 
 onMounted(() =>
@@ -22,6 +23,7 @@ onMounted(() =>
         extract_chapters: data.extract_chapters,
         extract_storyboard: data.extract_storyboard,
         create_renditions: data.create_renditions,
+        create_reels: data.create_reels,
       })
       form.reset()
       loaded.value = true
@@ -57,7 +59,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 4"
+      v-for="i in 5"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -124,6 +126,18 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           :class="fieldClass"
         >
           <USwitch v-model="form.create_renditions" />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Create reels"
+          description="Generate a short vertical highlight video of the best scenes, shown in the reels feed."
+          name="create_reels"
+          :error="form.errors.create_reels"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.create_reels" />
         </UFormField>
       </template>
     </UPageCard>

@@ -16,6 +16,8 @@ class ProcessingSettings extends Settings
 
     public bool $create_renditions = false;
 
+    public bool $create_reels = false;
+
     public static function group(): string
     {
         return 'processing';

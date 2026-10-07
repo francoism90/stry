@@ -33,6 +33,7 @@ it('allows a super-admin to update processing settings', function () {
         'extract_chapters' => false,
         'extract_storyboard' => false,
         'create_renditions' => true,
+        'create_reels' => true,
     ]);
 
     $response->assertRedirect();
@@ -43,7 +44,8 @@ it('allows a super-admin to update processing settings', function () {
     expect($settings->extract_captions)->toBeFalse()
         ->and($settings->extract_chapters)->toBeFalse()
         ->and($settings->extract_storyboard)->toBeFalse()
-        ->and($settings->create_renditions)->toBeTrue();
+        ->and($settings->create_renditions)->toBeTrue()
+        ->and($settings->create_reels)->toBeTrue();
 });
 
 it('denies a regular user from updating processing settings', function () {
