@@ -29,6 +29,11 @@ class CreateVideoReel
      */
     public const int TIMEOUT = 1500;
 
+    /**
+     * How bright the blurred background stays (0-1), so it doesn't compete with the picture.
+     */
+    public const float BACKGROUND_BRIGHTNESS = 0.5;
+
     public function __construct(
         protected readonly MediaFactory $media,
         protected readonly SelectReelClips $selectClips,
@@ -77,8 +82,8 @@ class CreateVideoReel
 
     /**
      * How the picture fits the reel's frame: whole and centred on a blurred, zoomed copy of itself, whole
-     * with black bars, or cropped to fill the frame. The background is blurred at a quarter of the size,
-     * which is much faster and looks the same.
+     * with black bars, or cropped to fill the frame. The background is blurred and darkened at a quarter of
+     * the size, which is much faster and looks the same.
      */
     protected function fit(): Filter
     {
@@ -90,7 +95,7 @@ class CreateVideoReel
             'letterbox' => Scale::fit($width, $height),
             default => Custom::video(implode(';', [
                 'split[background][foreground]',
-                sprintf('[background]%s,boxblur=10:1,scale=%d:%d[blurred]', Scale::fill(intdiv($width, 8) * 2, intdiv($height, 8) * 2), $width, $height),
+                sprintf('[background]%s,boxblur=10:1,lutyuv=y=val*%s,scale=%d:%d[blurred]', Scale::fill(intdiv($width, 8) * 2, intdiv($height, 8) * 2), self::BACKGROUND_BRIGHTNESS, $width, $height),
                 sprintf('[foreground]scale=%d:%d:force_original_aspect_ratio=decrease[fitted]', $width, $height),
                 '[blurred][fitted]overlay=(W-w)/2:(H-h)/2,setsar=1',
             ])),
