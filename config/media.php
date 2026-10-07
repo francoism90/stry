@@ -183,11 +183,17 @@ return [
     | instead of being downloaded first. ffprobe then only fetches the parts
     | of the file it needs.
     |
+    | FFmpeg 9 verifies TLS certificates by default. For storage behind a
+    | private CA, point "ca_file" at its certificate; set "verify_tls" to
+    | false to accept any certificate, e.g. a self-signed one in development.
+    |
     */
 
     'remote_inputs' => [
         'enabled' => (bool) env('MEDIA_REMOTE_INPUTS', true),
         'url_lifetime' => (int) env('MEDIA_REMOTE_INPUTS_URL_LIFETIME', 3600),
+        'verify_tls' => (bool) env('MEDIA_REMOTE_INPUTS_VERIFY_TLS', true),
+        'ca_file' => env('MEDIA_REMOTE_INPUTS_CA_FILE'),
     ],
 
     /*
