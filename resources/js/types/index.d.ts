@@ -136,6 +136,7 @@ export type ProcessingSettings = {
   extract_chapters: boolean
   extract_storyboard: boolean
   create_renditions: boolean
+  create_reels: boolean
 }
 
 export type MediaStream = {
@@ -245,6 +246,14 @@ export type Chapter = Model & {
   end_time: number
   sort: number
   skippable: boolean
+}
+
+export type VideoReel = Pick<Video, 'id' | 'title' | 'thumb' | 'liked' | 'saved'> & {
+  reel_url: string | null
+}
+
+export type VideoReelCollection = Omit<Paginator, 'data'> & {
+  data: VideoReel[] | undefined
 }
 
 export type Playlist = {
