@@ -28,7 +28,7 @@ it('lists the reels of valid videos', function () {
     addFeedReel(Video::factory()->pending()->create());
     Video::factory()->create();
 
-    $response = $this->actingAs(User::factory()->create())->get(action(VideoReelController::class));
+    $response = $this->actingAs(User::factory()->create())->get(action([VideoReelController::class, 'index']));
 
     $response->assertInertia(fn (AssertableInertia $page) => $page
         ->component('Videos/VideoReels')
@@ -41,12 +41,12 @@ it('keeps the shuffled order across pages', function () {
     Video::factory()->count(10)->create()->each(fn (Video $video) => addFeedReel($video));
     $user = User::factory()->create();
 
-    $first = data_get($this->actingAs($user)->get(action(VideoReelController::class))->viewData('page'), 'props.items.data.*.id');
-    $second = data_get($this->actingAs($user)->get(action(VideoReelController::class, ['page' => 2]))->viewData('page'), 'props.items.data.*.id');
+    $first = data_get($this->actingAs($user)->get(action([VideoReelController::class, 'index']))->viewData('page'), 'props.items.data.*.id');
+    $second = data_get($this->actingAs($user)->get(action([VideoReelController::class, 'index'], ['page' => 2]))->viewData('page'), 'props.items.data.*.id');
 
     expect([...$first, ...$second])->toHaveCount(10)->toEqualCanonicalizing(Video::all()->map->getRouteKey()->all());
 });
 
 it('redirects guests to the login page', function () {
-    $this->get(action(VideoReelController::class))->assertRedirect(route('login'));
+    $this->get(action([VideoReelController::class, 'index']))->assertRedirect(route('login'));
 });

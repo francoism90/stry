@@ -41,7 +41,7 @@ Route::resource('transcodes', TranscodeController::class)->only(['index', 'destr
 Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
 
 // Videos
-Route::get('reels', VideoReelController::class)->name('reels');
+Route::resource('reels', VideoReelController::class)->only(['index']);
 Route::resource('videos', VideoController::class)->except(['create', 'store', 'edit']);
 Route::resource('videos.transcodes', VideoTranscodeController::class)->scoped()->only(['update', 'destroy']);
 Route::resource('videos.chapters', VideoChapterController::class)->scoped()->only(['store', 'update', 'destroy']);

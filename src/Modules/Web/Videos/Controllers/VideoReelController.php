@@ -29,7 +29,7 @@ class VideoReelController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Request $request): Response
+    public function index(Request $request): Response
     {
         $seed = $this->seed($request);
 
