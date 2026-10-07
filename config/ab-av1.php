@@ -32,11 +32,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | The seconds one ab-av1 command may run. Encoding a long video can take
-    | hours, so keep this at or below your queue job's $timeout.
+    | hours. Keep this below the TranscodeVideo job's $timeout (14400), so
+    | the job can mark the transcode as failed and upload the result in time.
     |
     */
 
-    'timeout' => (int) env('AB_AV1_TIMEOUT', 14400),
+    'timeout' => (int) env('AB_AV1_TIMEOUT', 13800),
 
     /*
     |--------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Videos\Actions\CreateNewVideoTranscode;
+use Domain\Videos\Jobs\TranscodeVideo;
 use Domain\Videos\Models\Video;
 use Foxws\AbAv1\AbAv1Executable;
 use Foxws\AbAv1\Testing\FakeAbAv1;
@@ -75,4 +76,10 @@ it('marks the transcode as failed when ab-av1 fails', function () {
 
     expect($transcode->isFailed())->toBeTrue()
         ->and($transcode->error_message)->toContain('ab-av1 exited with code 1');
+});
+
+it('stops ab-av1 before the transcode job times out', function () {
+    $jobTimeout = new ReflectionClass(TranscodeVideo::class)->getDefaultProperties()['timeout'];
+
+    expect(config('ab-av1.timeout'))->toBeLessThan($jobTimeout);
 });
