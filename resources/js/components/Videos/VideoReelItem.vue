@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { show } from '@/actions/Modules/Web/Videos/Controllers/VideoController'
-import type { ReelPreload } from '@/composables/reels'
-import { useVideo } from '@/composables/video'
+import { useReelGroups, useReelPlayback, useReelVisibility, type ReelPreload } from '@/composables/reels'
 import type { VideoReel } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { useIntersectionObserver } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   item: VideoReel
@@ -25,60 +23,16 @@ const emit = defineEmits<{
 const root = ref<HTMLElement>()
 const element = ref<HTMLVideoElement>()
 
-const liked = ref(props.item.liked ?? false)
-const saved = ref(props.item.saved ?? false)
+useReelVisibility(root, () => emit('visible'))
 
-const { toggleLike, toggleSave } = useVideo()
+useReelPlayback(element, {
+  active: () => props.active,
+  playing: () => props.playing,
+  muted: () => props.muted,
+  onBlocked: () => emit('blocked'),
+})
 
-useIntersectionObserver(
-  root,
-  ([entry]) => {
-    if (entry?.isIntersecting) {
-      emit('visible')
-    }
-  },
-  { threshold: 0.6 },
-)
-
-const play = (video: HTMLVideoElement): void => {
-  // Browsers only autoplay muted video, and the attribute may not be set yet after hydration.
-  video.muted = props.muted
-  video.play().catch(() => {
-    // Unmuted playback was blocked; continue muted.
-    emit('blocked')
-    video.muted = true
-    video.play().catch(() => {})
-  })
-}
-
-watch(
-  () => [element.value, props.active, props.playing] as const,
-  ([video, active, playing]) => {
-    if (!video) return
-
-    if (active && playing) {
-      play(video)
-      return
-    }
-
-    video.pause()
-
-    if (!active) {
-      video.currentTime = 0
-    }
-  },
-  { flush: 'post' },
-)
-
-const onLike = (): void => {
-  liked.value = !liked.value
-  toggleLike(props.item, ['collections'])
-}
-
-const onSave = (): void => {
-  saved.value = !saved.value
-  toggleSave(props.item, ['collections'])
-}
+const { liked, saved, like, save } = useReelGroups(props.item)
 </script>
 
 <template>
@@ -135,7 +89,7 @@ const onSave = (): void => {
           variant="ghost"
           size="xl"
           :class="liked ? undefined : 'text-white'"
-          @click="onLike"
+          @click="like"
         />
 
         <UButton
@@ -145,7 +99,7 @@ const onSave = (): void => {
           variant="ghost"
           size="xl"
           :class="saved ? undefined : 'text-white'"
-          @click="onSave"
+          @click="save"
         />
 
         <UButton
