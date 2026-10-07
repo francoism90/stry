@@ -136,6 +136,7 @@ export type ReelSettings = {
   width: number
   height: number
   fps: number
+  codec: 'h264' | 'hevc' | 'av1'
   quality: number
   cuts: number
   cut_duration: number

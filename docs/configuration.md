@@ -31,7 +31,7 @@ A few settings are stored in the database instead of `.env`. Admins change them 
 | `PlaybackSettings`   | Playback    | Subtitle language, stream encryption, URL refresh, rendition heights                |
 | `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically               |
 | `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions    |
-| `ReelSettings`       | Reels       | Creating reels, their size, frame rate, quality, length, cuts and scene sensitivity |
+| `ReelSettings`       | Reels       | Creating reels, their size, frame rate, codec, quality, length, cuts and scene sensitivity |
 
 ### Shipping new defaults
 
@@ -174,7 +174,7 @@ VIDEO_COMPLETION_THRESHOLD=0.95
 
 ### Reels
 
-A reel is a short vertical highlight video, shown in the **Reels** feed. To make one, stry finds where the picture changes the most and joins short cuts of those scenes. It skips the first and last 5% of the video and chapters you can skip, such as intros, credits and sponsors. Videos up to one and a half times the reel duration are used whole. The result is cropped to fill the frame and encoded as H.264.
+A reel is a short vertical highlight video, shown in the **Reels** feed. To make one, stry finds where the picture changes the most and joins short cuts of those scenes. It skips the first and last 5% of the video and chapters you can skip, such as intros, credits and sponsors. Videos up to one and a half times the reel duration are used whole. The result is cropped to fill the frame and encoded as HEVC (H.265) by default. HEVC is about a third smaller than H.264 but doesn't play in most versions of Firefox, so pick H.264 under **Admin → Reels** if your users watch there. AV1 is also available.
 
 Turn on **Create reels** under **Admin → Reels** to make a reel for each video as it's processed. The same tab sets the size (1080 × 1920 by default), frame rate, quality (a CRF on the CPU, or the matching quality setting on a GPU; 26 by default), length, number of cuts, cut duration and scene sensitivity. Cuts may run past a scene change, and move closer together when they're too far apart to fill most of the reel. Changes only apply to new reels. Run `php artisan videos:reels --force` to regenerate the existing ones, or `videos:reels --missing` to make reels for videos that don't have one yet. Reels are encoded on the `processing` queue.
 

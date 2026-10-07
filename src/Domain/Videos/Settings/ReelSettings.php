@@ -16,6 +16,11 @@ class ReelSettings extends Settings
 
     public int $fps = 30;
 
+    /**
+     * The video codec: h264, hevc or av1.
+     */
+    public string $codec = 'hevc';
+
     public int $quality = 26;
 
     public int $cuts = 8;

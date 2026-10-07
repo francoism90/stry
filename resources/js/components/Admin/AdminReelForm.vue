@@ -7,11 +7,18 @@ import { onMounted, ref } from 'vue'
 const loaded = ref(false)
 const http = useHttp<object, ReelSettings>({})
 
+const codecs = [
+  { label: 'HEVC (H.265)', value: 'hevc' },
+  { label: 'H.264', value: 'h264' },
+  { label: 'AV1', value: 'av1' },
+]
+
 const form = useForm(update(), {
   enabled: false,
   width: 1080,
   height: 1920,
   fps: 30,
+  codec: 'hevc' as ReelSettings['codec'],
   quality: 26,
   cuts: 8,
   cut_duration: 4,
@@ -57,7 +64,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 8"
+      v-for="i in 9"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -134,6 +141,22 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             class="w-32"
             :min="10"
             :max="60"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Codec"
+          description="HEVC is about a third smaller than H.264 and plays in Safari, Chrome and Edge, but not in most versions of Firefox. H.264 plays everywhere. AV1 is the smallest, but slow to encode on the CPU and needs a recent GPU to encode on it."
+          name="codec"
+          :error="form.errors.codec"
+          :class="fieldClass"
+        >
+          <USelect
+            v-model="form.codec"
+            class="w-56"
+            :items="codecs"
           />
         </UFormField>
 

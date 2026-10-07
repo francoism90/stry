@@ -81,6 +81,22 @@ it('encodes at the reel quality, as a crf on the cpu or a qp on the gpu', functi
     'vaapi' => ['vaapi', '-qp'],
 ]);
 
+it('encodes with the reel codec', function (string $codec, string $encoder) {
+    config(['media.ladder.hardware' => 'none']);
+    ReelSettings::fake(['codec' => $codec]);
+    Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
+    $video = Video::factory()->create();
+    createReelClip($video);
+
+    app(CreateVideoReel::class)->handle($video);
+
+    Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => str_contains(implode(' ', $arguments), "-c:v {$encoder}"));
+})->with([
+    'hevc' => ['hevc', 'libx265'],
+    'h264' => ['h264', 'libx264'],
+    'av1' => ['av1', 'libsvtav1'],
+]);
+
 it('encodes the reel on the configured gpu', function () {
     config(['media.ladder.hardware' => 'vaapi']);
     Media::fake(['clip.mp4' => FakeProbe::video(duration: 200)]);
@@ -91,7 +107,7 @@ it('encodes the reel on the configured gpu', function () {
 
     Media::assertRan(Executable::FFMpeg, fn (array $arguments): bool => in_array('-vaapi_device', $arguments, true)
         && str_contains(implode(' ', $arguments), 'fps=30,format=nv12,hwupload[v]')
-        && in_array('h264_vaapi', $arguments, true));
+        && in_array('hevc_vaapi', $arguments, true));
 });
 
 it('replaces the previous reel', function () {
