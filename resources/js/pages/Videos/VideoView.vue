@@ -82,10 +82,13 @@ const moreItems = computed<DropdownMenuItem[]>(() =>
 
 const { get: getPlayerSetting, update: updatePlayerSettings } = useSettings('player')
 
-const isAutoplayEnabled = computed<boolean>({
-  get: () => getPlayerSetting('autoplay', true) ?? true,
-  set: (autoplay) => updatePlayerSettings({ autoplay }),
-})
+// Saving runs in the background without reloading the page props, so the switch keeps its own state.
+const isAutoplayEnabled = ref<boolean>(getPlayerSetting('autoplay', true) ?? true)
+
+const setAutoplay = (autoplay: boolean): void => {
+  isAutoplayEnabled.value = autoplay
+  updatePlayerSettings({ autoplay })
+}
 
 const nextVideo = computed<Video | undefined>(() => props.queue?.[0])
 
@@ -206,7 +209,8 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
           </h2>
 
           <USwitch
-            v-model="isAutoplayEnabled"
+            :model-value="isAutoplayEnabled"
+            @update:model-value="setAutoplay"
             label="Autoplay"
             size="sm"
             :ui="{ root: 'flex-row-reverse gap-2', label: 'text-xs font-normal text-muted' }"
