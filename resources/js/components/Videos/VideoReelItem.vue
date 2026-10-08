@@ -47,7 +47,7 @@ const reelButton =
       v-if="loaded && item.thumb"
       :src="item.thumb"
       alt=""
-      class="pointer-events-none absolute inset-0 -z-10 size-full scale-110 object-cover opacity-40 blur-3xl saturate-160"
+      class="pointer-events-none absolute inset-0 -z-10 size-full scale-110 object-cover opacity-15 blur-3xl"
       aria-hidden="true"
     />
 
