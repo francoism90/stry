@@ -143,7 +143,7 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
     <UPageHeader
       :title="video.title"
       :ui="{
-        root: 'pt-4 pb-0',
+        root: 'border-0 pt-4 pb-0',
         headline: 'mb-0',
         wrapper: 'flex-row flex-wrap items-start justify-between gap-x-4 gap-y-3 lg:items-start',
         title: 'min-w-0 flex-1 basis-80 text-xl wrap-anywhere capitalize sm:text-2xl',
