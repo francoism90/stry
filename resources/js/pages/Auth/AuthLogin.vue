@@ -20,7 +20,7 @@ const onSubmit = () =>
 </script>
 
 <template>
-  <Head title="Log In" />
+  <Head title="Log in" />
 
   <UPageCard
     title="Login"

@@ -21,7 +21,7 @@ const open = defineModel<boolean>('open')
 
 const tabs: TabsItem[] = [
   { label: 'General', icon: 'i-lucide-file-text', slot: 'general' },
-  { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
+  { label: 'Danger zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
 
 const { items, types, filter } = useTags(props.item.related || [])
@@ -55,6 +55,7 @@ const onSubmit = (close: () => void) =>
       <slot>
         <UButton
           icon="i-lucide-pencil"
+          :aria-label="`Edit ${item.name}`"
           color="neutral"
           variant="ghost"
           size="sm"

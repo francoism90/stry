@@ -27,7 +27,7 @@ const tabs: TabsItem[] = [
   { label: 'Media', icon: 'i-lucide-image', slot: 'media' },
   { label: 'Chapters', icon: 'i-lucide-list-video', slot: 'chapters' },
   { label: 'Conversions', icon: 'i-lucide-film', slot: 'conversions' },
-  { label: 'Danger Zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
+  { label: 'Danger zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
 
 const stateOptions: OptionItem[] = [

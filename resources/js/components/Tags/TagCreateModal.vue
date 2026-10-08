@@ -36,7 +36,7 @@ const onSubmit = (close: () => void) =>
 <template>
   <FormModal
     v-model:open="open"
-    title="Create Tag"
+    title="Create tag"
     submit-label="Create tag"
     :processing="form.processing"
     @submit="onSubmit"

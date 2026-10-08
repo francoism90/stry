@@ -34,7 +34,7 @@ const onSubmit = (close: () => void) =>
 <template>
   <FormModal
     v-model:open="open"
-    title="Create User"
+    title="Create user"
     submit-label="Create user"
     :processing="form.processing"
     @submit="onSubmit"
@@ -102,6 +102,7 @@ const onSubmit = (close: () => void) =>
         <UFormField
           label="Confirm password"
           required
+          :error="form.errors.password_confirmation"
         >
           <UInput
             v-model="form.password_confirmation"
