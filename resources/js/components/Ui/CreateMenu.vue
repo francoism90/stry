@@ -60,7 +60,7 @@ const items = computed<DropdownMenuItem[]>(() => [
       color="neutral"
       variant="outline"
       :ui="{
-        base: 'me-2',
+        base: 'me-2 rounded-full bg-(--glass) ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)',
         label: 'hidden sm:inline-flex',
       }"
     />

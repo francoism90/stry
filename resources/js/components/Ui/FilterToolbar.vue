@@ -28,10 +28,19 @@ const { form, onSubmit } = inject(QueryInjectionKey)!
           container: 'sr-only',
           wrapper: 'me-0',
           fieldset: 'flex-nowrap overflow-x-auto',
-          item: 'shrink-0 border-0 bg-neutral-800/75 px-2.5 py-1.5 has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
-          label: 'text-inherit',
+          item: 'shrink-0 rounded-lg border border-(--glass-border) bg-(--glass) px-3 py-1.5 font-medium text-highlighted backdrop-blur-md backdrop-saturate-140 has-data-[state=checked]:border-white has-data-[state=checked]:bg-white has-data-[state=checked]:text-black',
+          label: 'flex items-center gap-1.5 text-inherit',
         }"
-      />
+      >
+        <template #label="{ item }">
+          <UIcon
+            v-if="typeof item === 'object' && item.icon"
+            :name="item.icon"
+            class="size-4 shrink-0"
+          />
+          {{ typeof item === 'object' ? item.label : item }}
+        </template>
+      </URadioGroup>
     </template>
 
     <template #right>
@@ -40,8 +49,11 @@ const { form, onSubmit } = inject(QueryInjectionKey)!
         v-model="form.sort"
         :items="sorters"
         placeholder="Sort by"
-        class="w-36 text-sm"
+        class="w-38 text-sm"
         @update:model-value="onSubmit"
+        :ui="{
+          base: 'rounded-lg bg-(--glass) font-medium text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140',
+        }"
       />
     </template>
   </UDashboardToolbar>

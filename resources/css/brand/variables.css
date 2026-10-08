@@ -41,4 +41,13 @@
   --ui-primary: var(--ui-color-primary-300);
   --ui-secondary: var(--ui-color-secondary-300);
   --ui-border-accented: var(--ui-color-neutral-800);
+  --glass: rgb(255 255 255 / 0.08);
+  --glass-strong: rgb(255 255 255 / 0.14);
+  --glass-border: rgb(255 255 255 / 0.12);
+  --logo-gradient: linear-gradient(
+    135deg,
+    var(--color-indigo-500) 0%,
+    var(--color-purple-500) 55%,
+    var(--color-pink-500) 100%
+  );
 }

@@ -36,7 +36,10 @@ const { isHeaderCollapsed } = useHeaderCollapse()
 <template>
   <UDashboardPanel :id="id">
     <template #header>
-      <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
+      <div
+        class="sticky top-0 z-50 transition-colors duration-300"
+        :class="isHeaderCollapsed ? 'bg-default/75 backdrop-blur' : 'bg-transparent'"
+      >
         <AppHeader />
 
         <div

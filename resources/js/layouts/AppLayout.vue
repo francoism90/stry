@@ -37,7 +37,7 @@ useFlash()
           root: 'mx-auto flex w-full max-w-(--ui-container) flex-wrap items-center gap-3 border-0 py-4',
         },
         dashboardSidebar: {
-          root: 'sticky top-0 h-svh max-w-xs bg-(--ui-sidebar)',
+          root: 'sticky top-0 h-svh max-w-xs border-(--glass-border) bg-(--ui-sidebar)/55 backdrop-blur-xl',
           content: 'max-w-xs bg-(--ui-sidebar)',
           overlay: 'xl:block',
         },
@@ -53,7 +53,7 @@ useFlash()
         :unit="unit"
         :storage="storage"
         :storage-key="storageKey"
-        class="relative overflow-clip"
+        class="relative isolate overflow-clip"
       >
         <AppSidebar :mode="mode" />
 

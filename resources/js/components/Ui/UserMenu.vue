@@ -56,7 +56,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
       :src="user?.avatar ?? undefined"
       :alt="user?.name ?? 'User'"
       :ui="{
-        root: 'cursor-pointer p-1',
+        root: 'cursor-pointer bg-(--glass-strong) ring ring-(--glass-border)',
         fallback: 'flex size-full items-center justify-center',
       }"
       size="sm"
