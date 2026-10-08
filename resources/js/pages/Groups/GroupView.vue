@@ -62,10 +62,13 @@ const rowActions = (video: Video): DropdownMenuItem[] =>
       ]
     : []
 
-// The header and filters live in the page, so only the query state goes to the layout.
+// The header and filters live in the page. Layouts also receive page props, so clear the
+// scopes and sorters to keep the layout from rendering a second filter bar.
 watchEffect(() => {
   setLayoutProps({
     id: 'collections.show',
+    scopes: undefined,
+    sorters: undefined,
     filter: props.filter,
     sort: props.sort,
     query: props.query,
@@ -147,19 +150,18 @@ useEcho(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.u
       :items-element="() => itemBody"
       :buffer="200"
     >
-      <ol
+      <ul
         ref="itemBody"
         :aria-label="`Videos in ${group.title}`"
         class="flex flex-col gap-1"
       >
         <VideoRow
-          v-for="(item, position) in items?.data ?? []"
+          v-for="item in items?.data ?? []"
           :key="item.id"
           :item="item"
-          :position="position + 1"
           :actions="rowActions(item)"
         />
-      </ol>
+      </ul>
 
       <template #loading>
         <div
@@ -171,7 +173,7 @@ useEcho(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.u
             :key="i"
             class="flex items-center gap-3 p-2"
           >
-            <USkeleton class="aspect-video w-24 shrink-0 rounded-lg bg-(--glass) sm:ms-10 sm:w-32" />
+            <USkeleton class="aspect-video w-24 shrink-0 rounded-lg bg-(--glass) sm:w-32" />
             <div class="flex flex-1 flex-col gap-2">
               <USkeleton class="h-3.5 w-1/2 rounded-sm bg-(--glass)" />
               <USkeleton class="h-3 w-1/4 rounded-sm bg-(--glass)" />

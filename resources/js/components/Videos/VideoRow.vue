@@ -7,7 +7,6 @@ import VideoTags from './VideoTags.vue'
 withDefaults(
   defineProps<{
     item: Video
-    position: number
     actions?: DropdownMenuItem[]
   }>(),
   {
@@ -18,10 +17,8 @@ withDefaults(
 
 <template>
   <li
-    class="group/row flex items-center gap-3 rounded-xl border border-transparent p-2 transition-colors hover:border-(--glass-border) hover:bg-(--glass)"
+    class="group/row flex items-center gap-3 rounded-lg border border-transparent p-2 transition-colors hover:border-(--glass-border) hover:bg-(--glass)"
   >
-    <span class="hidden w-7 shrink-0 text-center text-muted tabular-nums sm:block">{{ position }}</span>
-
     <ULink
       :to="show.url(item.id)"
       :aria-label="`Play ${item.title}`"
