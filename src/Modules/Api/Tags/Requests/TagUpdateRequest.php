@@ -8,6 +8,7 @@ use Domain\Tags\Enums\TagType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class TagUpdateRequest extends FormRequest
 {
@@ -27,6 +28,8 @@ class TagUpdateRequest extends FormRequest
             'related' => ['sometimes', 'nullable', 'array', 'max:15'],
             'related.*.id' => ['required', 'string', 'exists:tags,ulid'],
             'description' => ['sometimes', 'nullable', 'string', 'max:8096'],
+            'avatar' => ['sometimes', 'nullable', File::image()->max('10mb')],
+            'remove_avatar' => ['sometimes', 'boolean'],
         ];
     }
 }

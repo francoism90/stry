@@ -2,6 +2,7 @@
 import VideoDispatchTranscodeController from '@/actions/Modules/Web/Videos/Controllers/VideoDispatchTranscodeController'
 import TranscodeDeleteModal from '@/components/Transcodes/TranscodeDeleteModal.vue'
 import TranscodeImportModal from '@/components/Transcodes/TranscodeImportModal.vue'
+import ResourceRow from '@/components/Ui/ResourceRow.vue'
 import type { Transcode, Video } from '@/types'
 import { router } from '@inertiajs/vue3'
 
@@ -9,6 +10,17 @@ const props = defineProps<{
   video?: Video
   items?: Transcode[] | undefined
 }>()
+
+const stateColors: Record<string, string> = {
+  success: 'text-success',
+  error: 'text-error',
+  warning: 'text-warning',
+  info: 'text-info',
+  primary: 'text-primary',
+}
+
+const description = (item: Transcode): string =>
+  [item.encoder, item.file_size, item.error_message].filter(Boolean).join(' · ')
 
 const createTranscode = (): void =>
   void router.post(VideoDispatchTranscodeController.url(props.video!.id), {}, { preserveScroll: true })
@@ -37,42 +49,78 @@ const createTranscode = (): void =>
 
     <div
       v-if="items === undefined"
-      class="flex flex-col gap-2"
+      class="flex flex-col gap-1"
+      aria-hidden="true"
     >
-      <USkeleton
+      <div
         v-for="i in 3"
         :key="i"
-        class="h-14 w-full rounded-md"
-      />
+        class="flex items-center gap-3 p-2"
+      >
+        <USkeleton class="size-10 shrink-0 rounded-full bg-(--glass)" />
+        <div class="flex flex-1 flex-col gap-2">
+          <USkeleton class="h-3.5 w-1/3 rounded-sm bg-(--glass)" />
+          <USkeleton class="h-3 w-1/4 rounded-sm bg-(--glass)" />
+        </div>
+      </div>
     </div>
 
-    <UPageList
+    <ul
       v-else-if="items.length"
-      divide
+      class="flex flex-col gap-1"
     >
-      <UPageCard
+      <ResourceRow
         v-for="item in items"
         :key="item.id"
-        variant="naked"
-        class="py-3 first:pt-0 last:pb-0"
+        :title="video ? item.id : (item.resource?.label ?? item.id)"
+        :description="description(item)"
       >
-        <div class="flex items-center justify-between">
-          <UUser
-            :name="video ? item.id : (item.resource?.label ?? item.id)"
-            :description="`${item.state.label} · ${item.file_size}`"
-            :avatar="{
-              alt: item.id,
-              loading: 'lazy',
-              decoding: 'async',
-              class: 'rounded-sm size-10 me-1',
-            }"
-          />
+        <template #leading>
+          <span
+            class="grid size-10 shrink-0 place-items-center rounded-full bg-(--glass-strong)"
+            :class="stateColors[item.state.color ?? ''] ?? 'text-muted'"
+            aria-hidden="true"
+          >
+            <UIcon
+              :name="item.processing ? 'i-lucide-loader-circle' : item.state.icon || 'i-lucide-film'"
+              class="size-5"
+              :class="{ 'animate-spin': item.processing }"
+            />
+          </span>
+        </template>
 
-          <div class="z-10 flex items-center gap-2">
-            <TranscodeDeleteModal :item="item" />
-          </div>
-        </div>
-      </UPageCard>
-    </UPageList>
+        <template #meta>
+          <UBadge
+            :label="item.state.label"
+            :color="item.state.color"
+            variant="subtle"
+            size="sm"
+            class="rounded-full"
+          />
+        </template>
+
+        <template #actions>
+          <TranscodeDeleteModal :item="item">
+            <UButton
+              icon="i-lucide-trash-2"
+              :aria-label="`Delete transcode ${item.id}`"
+              color="error"
+              variant="ghost"
+              size="sm"
+              class="rounded-full"
+            />
+          </TranscodeDeleteModal>
+        </template>
+      </ResourceRow>
+    </ul>
+
+    <UEmpty
+      v-else-if="!video"
+      icon="i-lucide-film"
+      title="No transcodes"
+      description="Transcodes appear here once videos have been processed."
+      variant="naked"
+      class="py-24"
+    />
   </div>
 </template>

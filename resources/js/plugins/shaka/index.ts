@@ -92,6 +92,9 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     seekOnTaps: true,
     bigButtons: [],
     seekBarColors: {
+      base: 'rgba(255, 255, 255, 0.3)',
+      buffered: 'rgba(255, 255, 255, 0.35)',
+      played: 'var(--ui-primary)',
       chapters: 'rgba(255, 255, 255, 0.7)',
     },
     controlPanelElements: [

@@ -12,7 +12,9 @@ const props = withDefaults(
     id?: string
     title?: string
     description?: string
+    headline?: ButtonProps
     links?: ButtonProps[]
+    chips?: ButtonProps[]
     scopes?: OptionItem[]
     sorters?: OptionItem[]
     filter?: QueryFilter
@@ -36,7 +38,10 @@ const { isHeaderCollapsed } = useHeaderCollapse()
 <template>
   <UDashboardPanel :id="id">
     <template #header>
-      <div class="sticky top-0 z-50 bg-default/75 backdrop-blur">
+      <div
+        class="sticky top-0 z-50 transition-colors duration-300"
+        :class="isHeaderCollapsed ? 'bg-default/75 backdrop-blur' : 'bg-transparent'"
+      >
         <AppHeader />
 
         <div
@@ -48,9 +53,56 @@ const { isHeaderCollapsed } = useHeaderCollapse()
             <UPageHeader
               :title="title"
               :description="description"
-              :links="links"
               class="mx-auto w-full max-w-(--ui-container) px-4 py-4 sm:px-6"
-            />
+              :ui="{
+                wrapper: 'flex-row flex-wrap items-center justify-between gap-3 lg:items-center',
+                title: 'min-w-0 flex-1 basis-60 wrap-anywhere capitalize',
+                description: 'mt-1 text-sm text-muted',
+              }"
+            >
+              <template
+                v-if="headline"
+                #headline
+              >
+                <UButton
+                  v-bind="headline"
+                  color="neutral"
+                  variant="outline"
+                  size="xs"
+                  class="rounded-full bg-(--glass) ps-2 pe-2.5 text-default ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong) hover:text-highlighted"
+                />
+              </template>
+
+              <template
+                v-if="links?.length"
+                #links
+              >
+                <UButton
+                  v-for="link in links"
+                  :key="link.label ?? link.icon"
+                  color="neutral"
+                  variant="outline"
+                  size="sm"
+                  v-bind="link"
+                  class="rounded-full bg-(--glass) text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)"
+                />
+              </template>
+
+              <div
+                v-if="chips?.length"
+                class="mt-3 flex flex-wrap items-center gap-1.5"
+              >
+                <UButton
+                  v-for="chip in chips"
+                  :key="chip.label"
+                  v-bind="chip"
+                  color="neutral"
+                  variant="outline"
+                  size="xs"
+                  class="rounded-full bg-(--glass) ps-2 pe-3 text-default ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong) hover:text-highlighted"
+                />
+              </div>
+            </UPageHeader>
           </div>
         </div>
 

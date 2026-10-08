@@ -77,7 +77,8 @@ defineShortcuts({
       @keydown.enter="onSearch(true)"
       :ui="{
         root: 'w-full max-w-fit md:min-w-sm lg:min-w-lg',
-        base: 'rounded-full',
+        base: 'rounded-full bg-(--glass) text-highlighted ring ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 placeholder:text-muted hover:bg-(--glass-strong) focus:bg-(--glass-strong)',
+        leadingIcon: 'text-muted',
         trailing: 'hidden md:inline-flex',
       }"
     >

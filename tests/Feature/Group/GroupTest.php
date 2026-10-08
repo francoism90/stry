@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use Domain\Groups\Enums\GroupType;
+use Domain\Groups\Models\Group;
+use Domain\Profiles\Models\Profile;
+use Domain\Profiles\Support\CurrentProfileContext;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -103,4 +106,38 @@ it('keeps cached group types separate per user', function () {
 
     expect($video->isInGroupOf($user, GroupType::Saved))->toBeTrue()
         ->and($video->isInGroupOf($otherUser, GroupType::Saved))->toBeFalse();
+});
+
+it('uses the most recently added video with a clip as its cover video', function () {
+    $group = Group::factory()->custom()->create();
+
+    $earlier = Video::factory()->create();
+    $later = Video::factory()->create();
+    $latestWithoutClip = Video::factory()->create();
+
+    createClipFor($earlier);
+    createClipFor($later);
+
+    $this->travelTo(now()->subDays(2), fn () => $group->videos()->attach($earlier));
+    $this->travelTo(now()->subDay(), fn () => $group->videos()->attach($later));
+    $group->videos()->attach($latestWithoutClip);
+
+    expect($group->coverVideo()?->getKey())->toBe($later->getKey());
+});
+
+it('skips adult videos for the cover on a kids profile', function () {
+    $group = Group::factory()->custom()->create();
+
+    $safe = Video::factory()->create(['adult' => false]);
+    $adult = Video::factory()->create(['adult' => true]);
+
+    createClipFor($safe);
+    createClipFor($adult);
+
+    $this->travelTo(now()->subDay(), fn () => $group->videos()->attach($safe));
+    $group->videos()->attach($adult);
+
+    app(CurrentProfileContext::class)->set(Profile::factory()->create(['is_kids' => true]));
+
+    expect($group->coverVideo()?->getKey())->toBe($safe->getKey());
 });

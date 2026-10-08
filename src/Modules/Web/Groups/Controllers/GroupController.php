@@ -77,6 +77,8 @@ class GroupController implements HasMiddleware
             ->defaultSort($updatedSort)
             ->jsonSimplePaginate(defaultSize: 16);
 
+        collect($scout->items())->each(fn (Group $group) => $group->append('thumb'));
+
         return Inertia::render('Groups/GroupIndex', [
             'scopes' => fn () => Options::forEnum(GroupScope::class),
             'sorters' => fn () => Options::forEnum(GroupSorter::class),
@@ -112,7 +114,7 @@ class GroupController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Groups/GroupView', [
-            'group' => fn () => new GroupResourceProperty($group),
+            'group' => fn () => new GroupResourceProperty($group, appends: ['thumb']),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),

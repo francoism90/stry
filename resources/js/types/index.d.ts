@@ -201,6 +201,7 @@ export type Tag = Model & {
   category: string
   type: string | null
   adult: boolean
+  avatar?: string | null
   thumb?: AvatarProps['src'] | null
   related?: Tag[]
   videos?: number
@@ -306,6 +307,7 @@ export type Group = Model & {
   type: string | null
   state: ModelState
   videos?: number
+  thumb?: string | null
   has?: boolean
 }
 

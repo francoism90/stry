@@ -6,6 +6,8 @@ use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Failed;
 use Domain\Videos\States\Verified;
+use Illuminate\Support\Collection;
+use Inertia\Testing\AssertableInertia as Assert;
 use Modules\Web\Videos\Controllers\VideoController;
 
 // index
@@ -17,6 +19,18 @@ it('allows super-admins to view the video library', function () {
     $response = $this->actingAs($user)->get(action([VideoController::class, 'index']));
 
     $response->assertSuccessful();
+});
+
+it('offers the video library sorters without recommended, newest first', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->get(action([VideoController::class, 'index']));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('sorters.0.value', 'newest')
+        ->where('sorters', fn (Collection $sorters) => $sorters->doesntContain('value', 'recommended'))
+    );
 });
 
 it('redirects guests from viewing the video library', function () {

@@ -1,21 +1,61 @@
 <script setup lang="ts">
+import { index } from '@/actions/Modules/Web/Account/Controllers/NotificationsController'
+import NotificationItem from '@/components/Notifications/NotificationItem.vue'
 import { useNotifications } from '@/composables/notifications'
-import AppLayout from '@/layouts/AppLayout.vue'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
-import type { NotificationCollection } from '@/types'
-import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import { toRef } from 'vue'
+import AppLayout from '@/layouts/AppLayout.vue'
+import type { Notification, NotificationCollection } from '@/types'
+import { Head, InfiniteScroll, router, setLayoutProps, usePage } from '@inertiajs/vue3'
+import { computed, toRef } from 'vue'
 
 const props = defineProps<{
   notifications: NotificationCollection
+  filter: 'all' | 'unread'
 }>()
 
 defineOptions({
   layout: [AppLayout, ResourceLayout],
 })
 
-const { hasUnread, getTitle, getMessage, toggleRead, remove, markAllAsRead } = useNotifications(
-  toRef(props, 'notifications'),
+// Layouts also receive page props; keep this page's read filter out of the layout's query filter.
+setLayoutProps({
+  filter: undefined,
+})
+
+const { hasUnread, markAllAsRead } = useNotifications(toRef(props, 'notifications'))
+
+const unreadCount = computed<number>(() => usePage().props.unread ?? 0)
+
+const filters = [
+  { label: 'All', value: 'all' },
+  { label: 'Unread', value: 'unread' },
+] as const
+
+const applyFilter = (filter: 'all' | 'unread'): void => {
+  router.get(
+    index.url({ query: { filter: filter === 'all' ? undefined : filter } }),
+    {},
+    {
+      preserveState: true,
+      preserveScroll: true,
+      only: ['notifications', 'filter'],
+      reset: ['notifications'],
+    },
+  )
+}
+
+const isToday = (notification: Notification): boolean =>
+  new Date(notification.created_at.replace(' ', 'T')).toDateString() === new Date().toDateString()
+
+const sections = computed(() =>
+  [
+    { id: 'today', title: 'Today', items: (props.notifications?.data ?? []).filter(isToday) },
+    {
+      id: 'earlier',
+      title: 'Earlier',
+      items: (props.notifications?.data ?? []).filter((notification) => !isToday(notification)),
+    },
+  ].filter((section) => section.items.length),
 )
 </script>
 
@@ -23,95 +63,92 @@ const { hasUnread, getTitle, getMessage, toggleRead, remove, markAllAsRead } = u
   <Head title="Notifications" />
 
   <UPage>
-    <UPageHeader
-      title="Notifications"
-      description="Your recent activity and alerts."
-    >
-      <template #links>
-        <UButton
-          v-if="hasUnread"
-          label="Mark all read"
-          variant="soft"
-          color="neutral"
-          icon="i-lucide-check-check"
-          @click="markAllAsRead"
-        />
-      </template>
-    </UPageHeader>
+    <div class="flex flex-col gap-6 pt-4">
+      <header class="flex flex-col gap-1">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h1 class="min-w-0 flex-[1_1_15rem] text-3xl font-bold text-highlighted sm:text-4xl">Notifications</h1>
 
-    <UPageBody>
+          <UButton
+            v-if="hasUnread"
+            label="Mark all read"
+            icon="i-lucide-check-check"
+            color="neutral"
+            variant="outline"
+            size="sm"
+            class="rounded-full bg-(--glass) text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)"
+            @click="markAllAsRead"
+          />
+        </div>
+
+        <p class="text-sm text-muted">
+          {{ unreadCount > 0 ? `${Intl.NumberFormat().format(unreadCount)} unread` : "You're all caught up" }}
+        </p>
+      </header>
+
+      <div
+        class="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Show"
+      >
+        <UButton
+          v-for="option in filters"
+          :key="option.value"
+          :label="option.label"
+          :aria-pressed="filter === option.value"
+          color="neutral"
+          variant="outline"
+          size="sm"
+          class="rounded-lg px-3"
+          :class="
+            filter === option.value
+              ? 'bg-white text-black ring-white hover:bg-white'
+              : 'bg-(--glass) text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)'
+          "
+          @click="applyFilter(option.value)"
+        />
+      </div>
+
       <InfiniteScroll
         data="notifications"
-        items-element="#infinite-items"
+        items-element="#notification-sections"
         :buffer="200"
       >
-        <div id="infinite-items">
-          <div
-            v-if="!notifications?.data?.length"
-            class="flex flex-col items-center justify-center gap-3 py-24 text-center"
-          >
-            <UIcon
-              name="i-lucide-bell-off"
-              class="size-10 text-muted"
-            />
-            <p class="font-semibold">No notifications</p>
-            <p class="text-sm text-muted">You're all caught up!</p>
-          </div>
+        <div
+          id="notification-sections"
+          class="flex flex-col gap-6"
+        >
+          <UEmpty
+            v-if="!sections.length"
+            icon="i-lucide-bell-off"
+            :title="filter === 'unread' ? 'No unread notifications' : 'No notifications'"
+            description="You're all caught up!"
+            variant="naked"
+            class="py-24"
+          />
 
-          <div
-            v-else
-            class="flex flex-col"
+          <section
+            v-for="section in sections"
+            :key="section.id"
+            :aria-labelledby="`notifications-${section.id}`"
+            class="flex flex-col gap-2"
           >
-            <div
-              v-for="notification in notifications?.data"
-              :key="notification.id"
-              class="flex items-start gap-4 border-b border-default py-4 last:border-0"
-              :class="{ 'opacity-60': notification.read_at }"
+            <h2
+              :id="`notifications-${section.id}`"
+              class="text-xs font-medium text-muted"
             >
-              <div
-                class="mt-1 shrink-0 rounded-full p-2"
-                :class="
-                  notification.read_at ? 'bg-neutral-100 dark:bg-neutral-800' : 'bg-primary-50 dark:bg-primary-950'
-                "
-              >
-                <UIcon
-                  name="i-lucide-bell"
-                  class="size-4"
-                  :class="notification.read_at ? 'text-muted' : 'text-primary'"
-                />
-              </div>
+              {{ section.title }}
+            </h2>
 
-              <div class="min-w-0 flex-1">
-                <p class="text-sm font-medium">{{ getTitle(notification) }}</p>
-                <p
-                  v-if="getMessage(notification)"
-                  class="mt-0.5 text-sm text-muted"
-                >
-                  {{ getMessage(notification) }}
-                </p>
-                <p class="mt-1 text-xs text-muted">{{ notification.created_at }}</p>
-              </div>
-
-              <div class="flex shrink-0 items-center gap-1">
-                <UButton
-                  :icon="notification.read_at ? 'i-lucide-mail' : 'i-lucide-mail-open'"
-                  variant="ghost"
-                  color="neutral"
-                  size="xs"
-                  @click="toggleRead(notification)"
-                />
-                <UButton
-                  icon="i-lucide-trash-2"
-                  variant="ghost"
-                  color="neutral"
-                  size="xs"
-                  @click="remove(notification)"
-                />
-              </div>
-            </div>
-          </div>
+            <ul class="flex flex-col gap-1">
+              <NotificationItem
+                v-for="notification in section.items"
+                :key="notification.id"
+                :item="notification"
+              />
+            </ul>
+          </section>
         </div>
       </InfiniteScroll>
-    </UPageBody>
+    </div>
   </UPage>
 </template>

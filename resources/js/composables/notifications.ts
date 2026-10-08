@@ -3,6 +3,22 @@ import type { NotificationCollection, Notification as NotificationModel } from '
 import { router } from '@inertiajs/vue3'
 import { computed, type Ref } from 'vue'
 
+type NotificationLevel = 'success' | 'error' | 'warning' | 'info'
+
+const levelIcons: Record<NotificationLevel, string> = {
+  success: 'i-lucide-circle-check',
+  error: 'i-lucide-circle-x',
+  warning: 'i-lucide-flag',
+  info: 'i-lucide-bell',
+}
+
+const levelColors: Record<NotificationLevel, string> = {
+  success: 'text-success',
+  error: 'text-error',
+  warning: 'text-warning',
+  info: 'text-primary',
+}
+
 export function useNotifications(notifications?: Ref<NotificationCollection>) {
   const hasUnread = computed(() => notifications?.value?.data?.some((n: NotificationModel) => !n.read_at) ?? false)
 
@@ -12,13 +28,28 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
   const getMessage = (notification: NotificationModel): string | undefined =>
     notification.data.message as string | undefined
 
+  const getUrl = (notification: NotificationModel): string | undefined => notification.data.url as string | undefined
+
+  const getThumb = (notification: NotificationModel): string | undefined =>
+    notification.data.thumb as string | undefined
+
+  const getLevel = (notification: NotificationModel): NotificationLevel => {
+    const level = notification.data.level as string | undefined
+
+    return level && level in levelIcons ? (level as NotificationLevel) : 'info'
+  }
+
+  const getIcon = (notification: NotificationModel): string => levelIcons[getLevel(notification)]
+
+  const getIconColor = (notification: NotificationModel): string => levelColors[getLevel(notification)]
+
   const toggleRead = (notification: NotificationModel): void => {
     router.patch(
       `/notifications/${notification.id}`,
       {},
       {
         preserveScroll: true,
-        only: ['notifications'],
+        only: ['notifications', 'unread'],
         reset: ['notifications'],
       },
     )
@@ -27,7 +58,7 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
   const remove = (notification: NotificationModel): void => {
     router.delete(`/notifications/${notification.id}`, {
       preserveScroll: true,
-      only: ['notifications'],
+      only: ['notifications', 'unread'],
       reset: ['notifications'],
     })
   }
@@ -38,11 +69,22 @@ export function useNotifications(notifications?: Ref<NotificationCollection>) {
       {},
       {
         preserveScroll: true,
-        only: ['notifications'],
+        only: ['notifications', 'unread'],
         reset: ['notifications'],
       },
     )
   }
 
-  return { hasUnread, getTitle, getMessage, toggleRead, remove, markAllAsRead }
+  return {
+    hasUnread,
+    getTitle,
+    getMessage,
+    getUrl,
+    getThumb,
+    getIcon,
+    getIconColor,
+    toggleRead,
+    remove,
+    markAllAsRead,
+  }
 }

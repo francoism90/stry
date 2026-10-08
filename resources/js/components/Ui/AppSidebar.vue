@@ -101,8 +101,8 @@ if (auth.value) {
       :items="items"
       orientation="vertical"
       :ui="{
-        link: 'py-3',
-        separator: 'my-1',
+        link: 'py-3 before:rounded-lg hover:before:bg-(--glass) data-active:before:bg-(--glass-strong)!',
+        separator: 'my-2 bg-(--glass-border)',
       }"
     />
   </UDashboardSidebar>

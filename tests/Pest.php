@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
@@ -34,3 +35,22 @@ uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)
         $this->seed();
     })
     ->in(__DIR__);
+
+/**
+ * Gives the video a clip record, so it counts as having a thumbnail.
+ */
+function createClipFor(Video $video): void
+{
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'media',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+}

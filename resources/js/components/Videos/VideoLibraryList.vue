@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import VideoEditModal from '@/components/Videos/VideoEditModal.vue'
+import VideoRow from '@/components/Videos/VideoRow.vue'
 import { show } from '@/routes/videos'
 import type { OptionItem, Video } from '@/types'
 import { defineProps, ref } from 'vue'
@@ -23,61 +24,88 @@ const edit = (item: Video): void => {
   <div class="flex flex-col gap-3">
     <div
       v-if="items === undefined"
-      class="flex flex-col gap-2"
+      class="flex flex-col gap-1"
+      aria-hidden="true"
     >
-      <USkeleton
+      <div
         v-for="i in 3"
         :key="i"
-        class="h-14 w-full rounded-md"
-      />
+        class="flex items-center gap-3 p-2"
+      >
+        <USkeleton class="aspect-video w-24 shrink-0 rounded-lg bg-(--glass) sm:w-32" />
+        <div class="flex flex-1 flex-col gap-2">
+          <USkeleton class="h-3.5 w-1/2 rounded-sm bg-(--glass)" />
+          <USkeleton class="h-3 w-1/3 rounded-sm bg-(--glass)" />
+        </div>
+      </div>
     </div>
 
-    <UPageList
+    <ul
       v-else-if="items.length"
-      divide
+      class="flex flex-col gap-1"
     >
-      <UPageCard
+      <VideoRow
         v-for="item in items"
         :key="item.id"
-        variant="naked"
-        class="py-3 first:pt-0 last:pb-0"
+        :item="item"
       >
-        <div class="flex items-center justify-between">
-          <UUser
-            :name="item.title"
-            :description="[item.filesize, item.codec, item.resolution, item.bitrate].filter(Boolean).join(' · ')"
-            :avatar="{
-              src: item.thumb ?? undefined,
-              alt: item.title,
-              loading: 'lazy',
-              decoding: 'async',
-              class: 'rounded-sm size-10 me-1',
-            }"
-          />
+        <template #meta>
+          <span class="dot-separated flex flex-wrap">
+            <span
+              v-for="detail in [item.filesize, item.codec, item.resolution, item.bitrate].filter(Boolean)"
+              :key="detail"
+            >
+              {{ detail }}
+            </span>
+          </span>
+        </template>
 
-          <div class="z-10 flex items-center gap-2">
+        <template #actions>
+          <div class="flex shrink-0 items-center gap-1">
             <UButton
               :to="show.url(item.id)"
               icon="i-lucide-eye"
+              :aria-label="`Watch ${item.title}`"
               color="neutral"
               variant="ghost"
               size="sm"
+              class="rounded-full text-muted hover:bg-(--glass-strong) hover:text-highlighted"
             />
 
             <UButton
               v-if="item.manage"
               icon="i-lucide-pencil"
+              :aria-label="`Edit ${item.title}`"
               color="neutral"
               variant="ghost"
               size="sm"
+              class="rounded-full text-muted hover:bg-(--glass-strong) hover:text-highlighted"
               @click="edit(item)"
             />
 
-            <VideoDeleteModal :item="item" />
+            <VideoDeleteModal :item="item">
+              <UButton
+                icon="i-lucide-trash-2"
+                :aria-label="`Delete ${item.title}`"
+                color="error"
+                variant="ghost"
+                size="sm"
+                class="rounded-full"
+              />
+            </VideoDeleteModal>
           </div>
-        </div>
-      </UPageCard>
-    </UPageList>
+        </template>
+      </VideoRow>
+    </ul>
+
+    <UEmpty
+      v-else
+      icon="i-lucide-library-big"
+      title="No videos"
+      description="Import a video to get started."
+      variant="naked"
+      class="py-24"
+    />
 
     <VideoEditModal
       v-if="editingItem"

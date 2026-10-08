@@ -7,6 +7,7 @@ namespace Modules\Web\Account\Controllers;
 use Domain\Users\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
@@ -24,13 +25,18 @@ class NotificationsController implements HasMiddleware
         ];
     }
 
-    public function index(#[CurrentUser] User $user): Response
+    public function index(Request $request, #[CurrentUser] User $user): Response
     {
         Gate::authorize('update', $user);
 
-        $query = $user->notifications()->simplePaginate(perPage: 20);
+        $filter = $request->query('filter') === 'unread' ? 'unread' : 'all';
+
+        $query = ($filter === 'unread' ? $user->unreadNotifications() : $user->notifications())
+            ->simplePaginate(perPage: 20)
+            ->withQueryString();
 
         return Inertia::render('Account/NotificationIndex', [
+            'filter' => $filter,
             'notifications' => Inertia::scroll(fn () => NotificationResource::collection($query)),
         ]);
     }

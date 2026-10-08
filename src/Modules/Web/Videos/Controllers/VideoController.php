@@ -34,7 +34,6 @@ use Modules\Web\Videos\Responses\VideoResourceProperty;
 use Modules\Web\Videos\Responses\VideoTranscodesProperty;
 use Spatie\LaravelOptions\Options;
 use Support\Scout\Filters;
-use Support\Scout\Sorts\RecommendedSorter;
 
 class VideoController implements HasMiddleware
 {
@@ -51,8 +50,8 @@ class VideoController implements HasMiddleware
     {
         Gate::authorize('viewAny', Video::class);
 
-        // Relevant sort options
-        $defaultSort = AllowedSort::custom('recommended', new RecommendedSorter);
+        // Newest first by default
+        $defaultSort = AllowedSort::latest('newest', 'created_at');
 
         // Scout builder
         $scout = ScoutBuilder::for(Video::class)
@@ -65,7 +64,6 @@ class VideoController implements HasMiddleware
             )
             ->allowedSorts(
                 $defaultSort,
-                AllowedSort::latest('newest', 'created_at'),
                 AllowedSort::oldest('oldest', 'created_at'),
                 AllowedSort::field('ordered', 'title'),
                 AllowedSort::field('shortest', 'duration'),
@@ -79,7 +77,7 @@ class VideoController implements HasMiddleware
 
         return Inertia::render('Videos/VideoLibrary', [
             'scopes' => fn () => Options::forEnum(VideoLibraryScope::class),
-            'sorters' => fn () => Options::forEnum(VideoSorter::class),
+            'sorters' => fn () => Options::forEnum(VideoSorter::class)->except(VideoSorter::Recommended),
             'chapters' => fn () => new ChapterTypeOptionsProperty,
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
             new ScoutBuilderProperties('videos'),

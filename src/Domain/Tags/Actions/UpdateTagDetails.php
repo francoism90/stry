@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Tags\Actions;
 
 use Domain\Tags\Models\Tag;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -33,5 +34,14 @@ class UpdateTagDetails
             // Keep tags in their natural display order
             $this->sorter->handle();
         });
+
+        // Replace or remove the tag's own picture
+        $avatar = data_get($attributes, 'avatar');
+
+        if ($avatar instanceof UploadedFile) {
+            $tag->addMedia($avatar)->toMediaCollection('avatar');
+        } elseif (data_get($attributes, 'remove_avatar')) {
+            $tag->clearMediaCollection('avatar');
+        }
     }
 }

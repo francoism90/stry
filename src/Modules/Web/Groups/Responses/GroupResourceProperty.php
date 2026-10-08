@@ -11,8 +11,12 @@ use Modules\Api\Groups\Resources\GroupResource;
 
 readonly class GroupResourceProperty implements ProvidesInertiaProperty
 {
+    /**
+     * @param  list<string>|null  $appends
+     */
     public function __construct(
         protected ?Group $group = null,
+        protected ?array $appends = null,
     ) {}
 
     public function toInertiaProperty(PropertyContext $context): mixed
@@ -26,6 +30,6 @@ readonly class GroupResourceProperty implements ProvidesInertiaProperty
             return null;
         }
 
-        return GroupResource::make($this->group->loadCount('groupables'));
+        return GroupResource::make($this->group->loadCount('groupables')->append($this->appends ?? []));
     }
 }

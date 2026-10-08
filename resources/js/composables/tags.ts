@@ -7,6 +7,16 @@ import { computed, readonly, ref, toValue, watchEffect, type MaybeRefOrGetter } 
 
 const isServer = import.meta.env.SSR
 
+const tagIcons: Record<string, string> = {
+  serie: 'i-lucide-tv',
+  studio: 'i-lucide-video',
+  genre: 'i-lucide-shapes',
+  person: 'i-lucide-user-round',
+  language: 'i-lucide-languages',
+}
+
+export const tagIcon = (type: string | null | undefined): string => tagIcons[type ?? ''] ?? 'i-lucide-tag'
+
 export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
   const state = ref<TagCollection>()
   const ready = ref(false)

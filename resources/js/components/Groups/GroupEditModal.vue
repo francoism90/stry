@@ -5,12 +5,25 @@ import GroupDeleteModal from '@/components/Groups/GroupDeleteModal.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import type { Group } from '@/types'
 import { useForm } from '@inertiajs/vue3'
+import type { TabsItem } from '@nuxt/ui'
+import { computed } from 'vue'
 
 const props = defineProps<{
   group: Group
 }>()
 
 const open = defineModel<boolean>('open')
+
+const tabs: TabsItem[] = [
+  { label: 'Details', slot: 'details' },
+  { label: 'Danger zone', slot: 'danger' },
+]
+
+const videoCount = computed(() => props.group.videos ?? 0)
+
+const keptVideosLabel = computed(() =>
+  videoCount.value === 1 ? 'Its video stays' : `Its ${Intl.NumberFormat().format(videoCount.value)} videos stay`,
+)
 
 const form = useForm(update(props.group.id), {
   name: props.group.name ?? props.group.title,
@@ -27,78 +40,85 @@ const onSubmit = (close: () => void) =>
 <template>
   <FormModal
     v-model:open="open"
-    :title="`Edit ${group.title}`"
+    title="Edit collection"
+    submit-label="Save"
     :processing="form.processing"
+    :tabs="tabs"
     @submit="onSubmit"
   >
-    <template #body>
-      <div class="flex flex-col gap-4">
-        <UForm
-          :state="form"
-          class="flex flex-col gap-3"
+    <template #details>
+      <UForm
+        :state="form"
+        class="flex flex-col gap-4"
+      >
+        <UFormField
+          label="Name"
+          required
+          :error="form.errors.name"
         >
-          <UFormField
-            label="Name"
-            required
-            :error="form.errors.name"
-          >
-            <UInput
-              v-model="form.name"
-              :model-modifiers="{ string: true, trim: true }"
-              autofocus
-              autocapitalize="words"
-            />
-          </UFormField>
+          <UInput
+            v-model="form.name"
+            :model-modifiers="{ string: true, trim: true }"
+            autofocus
+            autocapitalize="words"
+            class="w-full"
+          />
+        </UFormField>
 
-          <USeparator />
+        <UFormField
+          label="Description"
+          :error="form.errors.content"
+        >
+          <UTextarea
+            v-model="form.content"
+            :model-modifiers="{ nullable: true, string: true, trim: true }"
+            :rows="3"
+            autoresize
+            placeholder="What is this collection for?"
+            class="w-full"
+          />
+        </UFormField>
+      </UForm>
+    </template>
 
-          <UFormField
-            label="Content"
-            :error="form.errors.content"
-          >
-            <UTextarea
-              v-model="form.content"
-              :model-modifiers="{ nullable: true, string: true, trim: true }"
-              :rows="5"
-              autoresize
-              placeholder="Enter markdown"
-              class="w-full"
-            />
-          </UFormField>
-        </UForm>
-
-        <USeparator />
-
-        <div class="flex flex-col gap-2">
-          <p class="text-sm font-semibold text-error">Clear collection</p>
-          <p class="text-sm text-muted">Remove all videos from this collection.</p>
+    <template #danger>
+      <div class="flex flex-col gap-3">
+        <div
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-error/35 bg-error/8 p-4"
+        >
+          <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
+            <span class="font-medium text-highlighted">Clear this collection</span>
+            <span class="text-muted">Removes all videos from {{ group.title }}.</span>
+          </div>
 
           <GroupClearModal :item="group">
             <UButton
-              label="Clear collection"
+              label="Clear"
               icon="i-lucide-eraser"
               color="error"
-              variant="soft"
+              variant="outline"
               size="sm"
-              class="w-fit"
+              class="shrink-0 ring-error/50"
             />
           </GroupClearModal>
         </div>
 
-        <USeparator />
-
-        <div class="flex flex-col gap-2">
-          <p class="text-sm font-semibold text-error">Delete collection</p>
-          <p class="text-sm text-muted">Permanently remove this collection and all associated data.</p>
+        <div
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-error/35 bg-error/8 p-4"
+        >
+          <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
+            <span class="font-medium text-highlighted">Delete this collection</span>
+            <span class="text-muted"> {{ group.title }} will be removed. {{ keptVideosLabel }} in your library. </span>
+          </div>
 
           <GroupDeleteModal :item="group">
             <UButton
-              label="Delete collection"
-              icon="i-lucide-trash"
+              label="Delete"
+              icon="i-lucide-trash-2"
               color="error"
-              variant="soft"
+              variant="outline"
               size="sm"
-              class="w-fit"
+              class="shrink-0 ring-error/50"
             />
           </GroupDeleteModal>
         </div>

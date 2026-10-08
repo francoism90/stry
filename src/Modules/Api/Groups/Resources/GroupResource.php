@@ -30,6 +30,7 @@ class GroupResource extends JsonResource
             'type' => $this->type,
             'state' => $this->state->toArray(),
             'videos' => $this->whenCounted('groupables'),
+            'thumb' => $this->whenAppended('thumb'),
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
         ];

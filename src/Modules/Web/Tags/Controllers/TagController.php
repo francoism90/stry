@@ -56,7 +56,7 @@ class TagController implements HasMiddleware
 
         $scout = ScoutBuilder::for(Tag::class)
             ->query(function (Builder $query): void {
-                $query->withCount('videos')->with('relatables.related');
+                $query->withCount('videos')->with(['relatables.related', 'media']);
             })
             ->allowedFilters(
                 AllowedFilter::custom('scope', new TagScopeFilter),
@@ -70,7 +70,7 @@ class TagController implements HasMiddleware
             ->defaultSort($defaultSort)
             ->jsonSimplePaginate(defaultSize: 20);
 
-        collect($scout->items())->each(fn (Tag $tag) => $tag->append(['description', 'relates']));
+        collect($scout->items())->each(fn (Tag $tag) => $tag->append(['description', 'relates', 'avatar', 'thumb']));
 
         return Inertia::render('Tags/TagIndex', [
             'scopes' => fn () => Options::forEnum(TagScope::class),
@@ -108,7 +108,7 @@ class TagController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Tags/TagView', [
-            'tag' => fn () => new TagResourceProperty($tag, appends: ['description', 'relates']),
+            'tag' => fn () => new TagResourceProperty($tag, appends: ['description', 'relates', 'avatar', 'thumb']),
             'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),

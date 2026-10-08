@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import GroupList from '@/components/Groups/GroupList.vue'
+import GroupListSkeleton from '@/components/Groups/GroupListSkeleton.vue'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { GroupCollection, OptionItem, QueryFilter, QueryValue } from '@/types'
@@ -21,6 +22,7 @@ defineOptions({
 
 setLayoutProps({
   id: 'collections.index',
+  title: 'Collections',
   scopes: props.scopes,
   sorters: props.sorters,
   filter: props.filter,
@@ -44,6 +46,10 @@ const itemBody = ref()
         ref="itemBody"
         :items="items?.data"
       />
+
+      <template #loading>
+        <GroupListSkeleton class="mt-8" />
+      </template>
     </InfiniteScroll>
   </UPage>
 </template>
