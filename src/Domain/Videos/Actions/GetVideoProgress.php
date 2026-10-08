@@ -36,6 +36,20 @@ class GetVideoProgress
     }
 
     /**
+     * Share of the video a watch position covers, between 0 and 1, or 0 when the duration is unknown.
+     */
+    public function watchedFraction(Video $video, float $time): float
+    {
+        $duration = (float) $video->duration;
+
+        if ($duration <= 0) {
+            return 0.0;
+        }
+
+        return round(Number::clamp($time / $duration, 0, 1), 4);
+    }
+
+    /**
      * Turn a stored watch position into resumable progress: clamped to the duration, and 0 once
      * the video counts as watched.
      */

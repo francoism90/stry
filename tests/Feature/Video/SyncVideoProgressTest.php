@@ -33,10 +33,13 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-it('stores the first position in the viewed group', function () {
-    watchVideo($this->video, $this->user, 12.5);
+it('stores the first position in the viewed group with the share watched', function () {
+    watchVideo($this->video, $this->user, 150);
 
-    expect(storedWatchTime($this->video, $this->user))->toBe(12.5);
+    $options = $this->user->groupFor(GroupType::Viewed)->getGroupable($this->video)->options;
+
+    expect((float) $options['time'])->toBe(150.0)
+        ->and((float) $options['progress'])->toBe(0.25);
 });
 
 it('keeps the stored position while playback moves less than 15 seconds', function () {

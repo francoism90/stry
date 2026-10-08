@@ -9,7 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('indexes the watched share of a video in the viewed group', function () {
+it('indexes the watched share stored with the watch position', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->create();
+
+    $user->markInGroup($video, GroupType::Viewed, ['time' => 50, 'progress' => 0.4]);
+
+    $groupable = $user->groupFor(GroupType::Viewed)->getGroupable($video);
+
+    expect($groupable->toSearchableArray()['progress'])->toBe(0.4);
+});
+
+it('works out the watched share for positions stored without one', function () {
     $user = User::factory()->create();
     $video = Video::factory()->withDuration(200)->create();
 

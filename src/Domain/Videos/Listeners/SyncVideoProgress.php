@@ -41,7 +41,10 @@ class SyncVideoProgress
         // Lists and the "In progress" filter read the viewed group, so keep it close to the player
         // without writing (and re-indexing) on every player update
         if ($this->shouldPersist($video, $time, $persistedTime)) {
-            $user->markInGroup($video, GroupType::Viewed, ['time' => $time]);
+            $user->markInGroup($video, GroupType::Viewed, [
+                'time' => $time,
+                'progress' => $this->getVideoProgress->watchedFraction($video, $time),
+            ]);
 
             $video->modelCache($viewedKey, $time, now()->addHour());
         }
