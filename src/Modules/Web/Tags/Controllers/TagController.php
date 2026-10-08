@@ -108,7 +108,7 @@ class TagController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Tags/TagView', [
-            'tag' => fn () => new TagResourceProperty($tag, appends: ['description', 'relates', 'avatar']),
+            'tag' => fn () => new TagResourceProperty($tag, appends: ['description', 'relates', 'avatar', 'thumb']),
             'scopes' => fn () => Options::forEnum(VideoScope::class)->except(VideoScope::Untagged),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
