@@ -33,13 +33,24 @@ useReelPlayback(element, {
 })
 
 const { liked, saved, like, save } = useReelGroups(props.item)
+
+const reelButton =
+  'size-12 justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-lg backdrop-saturate-160 hover:bg-black/60 hover:text-white'
 </script>
 
 <template>
   <section
     ref="root"
-    class="flex h-dvh w-full snap-start snap-always justify-center bg-black"
+    class="relative isolate flex h-dvh w-full snap-start snap-always justify-center overflow-hidden bg-black"
   >
+    <img
+      v-if="loaded && item.thumb"
+      :src="item.thumb"
+      alt=""
+      class="pointer-events-none absolute inset-0 -z-10 size-full scale-110 object-cover opacity-40 blur-3xl saturate-160"
+      aria-hidden="true"
+    />
+
     <div class="relative h-full w-full max-w-[calc(100dvh*9/16)] overflow-hidden">
       <video
         v-if="loaded && item.reel_url"
@@ -67,39 +78,43 @@ const { liked, saved, like, save } = useReelGroups(props.item)
       >
         <Link
           :href="show.url(item.id)"
-          class="pointer-events-auto line-clamp-2 font-semibold text-white"
+          class="pointer-events-auto line-clamp-2 font-semibold text-white capitalize drop-shadow-sm"
         >
           {{ item.title }}
         </Link>
 
-        <div class="pointer-events-auto flex flex-col items-center gap-2">
+        <div class="pointer-events-auto flex flex-col items-center gap-3">
           <UButton
             :icon="muted ? 'i-lucide-volume-x' : 'i-lucide-volume-2'"
             :aria-label="muted ? 'Unmute' : 'Mute'"
             color="neutral"
             variant="ghost"
-            size="xl"
-            class="text-white"
+            size="lg"
+            :class="reelButton"
             @click="emit('toggleMute')"
           />
 
           <UButton
             icon="i-lucide-heart"
             :aria-label="liked ? 'Unlike' : 'Like'"
-            :color="liked ? 'error' : 'neutral'"
+            :aria-pressed="liked"
+            color="neutral"
             variant="ghost"
-            size="xl"
-            :class="liked ? undefined : 'text-white'"
+            size="lg"
+            :class="[reelButton, { 'text-error hover:text-error': liked }]"
+            :ui="{ leadingIcon: liked ? 'fill-current' : '' }"
             @click="like"
           />
 
           <UButton
             icon="i-lucide-bookmark"
             :aria-label="saved ? 'Unsave' : 'Save'"
-            :color="saved ? 'primary' : 'neutral'"
+            :aria-pressed="saved"
+            color="neutral"
             variant="ghost"
-            size="xl"
-            :class="saved ? undefined : 'text-white'"
+            size="lg"
+            :class="[reelButton, { 'text-primary hover:text-primary': saved }]"
+            :ui="{ leadingIcon: saved ? 'fill-current' : '' }"
             @click="save"
           />
 
@@ -109,8 +124,9 @@ const { liked, saved, like, save } = useReelGroups(props.item)
             aria-label="Watch full video"
             color="neutral"
             variant="ghost"
-            size="xl"
-            class="text-white"
+            size="lg"
+            :class="reelButton"
+            :ui="{ leadingIcon: 'ms-0.5 fill-current' }"
           />
         </div>
       </div>
