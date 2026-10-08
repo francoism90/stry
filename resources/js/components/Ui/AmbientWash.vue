@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAmbientWash } from '@/composables/ambient'
-import { useTemplateRef } from 'vue'
+import { useLoadedImages } from '@/composables/ambient'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -12,9 +12,9 @@ const props = withDefaults(
   },
 )
 
-const layer = useTemplateRef<HTMLDivElement>('layer')
+const layerKey = computed(() => props.images.join('|'))
 
-const { layerKey, isLoaded, markLoaded } = useAmbientWash(() => props.images, layer)
+const { isLoaded, markLoaded, trackImage } = useLoadedImages()
 </script>
 
 <template>
@@ -32,15 +32,14 @@ const { layerKey, isLoaded, markLoaded } = useAmbientWash(() => props.images, la
     >
       <div
         :key="layerKey"
-        ref="layer"
         class="absolute -inset-x-20 -top-20 bottom-0 flex saturate-160 will-change-transform motion-safe:animate-ambient-drift"
         :class="tall ? 'blur-[80px]' : 'blur-[72px]'"
       >
         <img
           v-for="image in images"
           :key="image"
+          :ref="trackImage(image)"
           :src="image"
-          :data-image="image"
           alt=""
           class="h-full min-w-0 flex-1 object-cover transition-opacity duration-700 ease-out"
           :class="isLoaded(image) ? 'opacity-100' : 'opacity-0'"
