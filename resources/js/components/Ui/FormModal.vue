@@ -53,9 +53,15 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
         <UTabs
           v-if="tabs?.length"
           :items="tabs"
-          variant="link"
+          variant="pill"
+          color="neutral"
+          size="sm"
           class="w-full gap-4"
-          :ui="{ trigger: 'grow' }"
+          :ui="{
+            list: 'rounded-full bg-(--glass)',
+            indicator: 'rounded-full bg-(--glass-strong) shadow-none',
+            trigger: 'grow rounded-full data-[state=active]:text-highlighted',
+          }"
         >
           <template
             v-for="tab in tabs"
@@ -78,6 +84,7 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
         label="Cancel"
         color="neutral"
         variant="soft"
+        class="rounded-full bg-(--glass) hover:bg-(--glass-strong)"
         @click.prevent="close"
       />
 
@@ -85,6 +92,7 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
         :label="submitLabel"
         color="primary"
         variant="solid"
+        class="rounded-full"
         :loading="processing"
         @click.prevent="emit('submit', close)"
       />

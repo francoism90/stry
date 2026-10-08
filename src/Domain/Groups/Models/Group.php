@@ -10,6 +10,7 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Profiles\Models\Profile;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
@@ -128,6 +129,19 @@ class Group extends Model implements HasMedia, Sortable
             ->withTimestamps();
     }
 
+    /**
+     * The most recently added video with a clip that the current profile may see, used as the cover.
+     */
+    public function coverVideo(): ?Video
+    {
+        return $this->videos()
+            ->forProfile(Profile::current())
+            ->withClips()
+            ->with('media')
+            ->orderByPivot('created_at', 'desc')
+            ->first();
+    }
+
     public function getGroupable(Model $model): ?Groupable
     {
         return $this->groupables()
@@ -217,6 +231,16 @@ class Group extends Model implements HasMedia, Sortable
     public function loadForResource(): static
     {
         return $this->loadCount('groupables');
+    }
+
+    /**
+     * @return Attribute<?string, never>
+     */
+    protected function thumb(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->coverVideo()?->thumb,
+        )->shouldCache();
     }
 
     /**

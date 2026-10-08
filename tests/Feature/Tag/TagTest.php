@@ -66,22 +66,6 @@ it('returns translated as a list in the searchable array', function () {
         ->and($translated)->toContain('Documentary', 'Documental', 'Un film');
 });
 
-function createClipFor(Video $video): void
-{
-    $video->media()->create([
-        'collection_name' => 'clips',
-        'name' => 'clip',
-        'file_name' => 'clip.mp4',
-        'mime_type' => 'video/mp4',
-        'disk' => 'media',
-        'size' => 1,
-        'manipulations' => [],
-        'custom_properties' => [],
-        'generated_conversions' => [],
-        'responsive_images' => [],
-    ]);
-}
-
 it('uses the newest tagged video with a clip as its thumbnail video', function () {
     $tag = Tag::factory()->create();
 

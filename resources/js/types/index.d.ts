@@ -307,6 +307,7 @@ export type Group = Model & {
   type: string | null
   state: ModelState
   videos?: number
+  thumb?: string | null
   has?: boolean
 }
 

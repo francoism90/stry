@@ -43,6 +43,16 @@ class VideoQueryBuilder extends Builder
             ->where('published_at', '<=', now());
     }
 
+    /**
+     * Videos that have at least one clip, so they have a thumbnail.
+     *
+     * @return self<TModel>
+     */
+    public function withClips(): self
+    {
+        return $this->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'clips'));
+    }
+
     /** @return self<TModel> */
     public function recent(): self
     {

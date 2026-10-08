@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(min(12.5rem,100%),1fr))] gap-x-4 gap-y-8">
     <GroupCard
       v-for="item in items"
       :key="item.id"

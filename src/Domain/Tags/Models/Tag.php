@@ -21,7 +21,6 @@ use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -153,7 +152,7 @@ class Tag extends BaseTag implements HasMedia
     {
         return $this->videos()
             ->forProfile(Profile::current())
-            ->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'clips'))
+            ->withClips()
             ->with('media')
             ->latest()
             ->first();
