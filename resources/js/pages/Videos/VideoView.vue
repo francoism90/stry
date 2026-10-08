@@ -80,12 +80,11 @@ const moreItems = computed<DropdownMenuItem[]>(() =>
     : [],
 )
 
-const { settings: playerSettings, get: getPlayerSetting, update: updatePlayerSettings } = useSettings('player')
+const { get: getPlayerSetting, update: updatePlayerSettings } = useSettings('player')
 
 const isAutoplayEnabled = computed<boolean>({
   get: () => getPlayerSetting('autoplay', true) ?? true,
-  // The settings action replaces the whole player group, so send the current values along.
-  set: (autoplay) => updatePlayerSettings({ ...playerSettings.value, autoplay }),
+  set: (autoplay) => updatePlayerSettings({ autoplay }),
 })
 
 const nextVideo = computed<Video | undefined>(() => props.queue?.[0])

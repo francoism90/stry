@@ -33,11 +33,12 @@ class UserSettingsController implements HasMiddleware
     {
         Gate::authorize('update', $user);
 
-        // Filter out any null values to avoid overwriting existing settings with null.
+        // Only keep the fields that were sent, so the defaults of the data objects don't overwrite
+        // the user's other settings. Groups that weren't sent are filtered out as well.
         $update = array_filter([
-            'player' => $settings->player instanceof PlayerSettings ? $settings->player->toArray() : null,
-            'general' => $settings->general instanceof GeneralSettings ? $settings->general->toArray() : null,
-            'appearance' => $settings->appearance instanceof AppearanceSettings ? $settings->appearance->toArray() : null,
+            'player' => $settings->player instanceof PlayerSettings ? $this->sentFields($request, 'player', $settings->player->toArray()) : null,
+            'general' => $settings->general instanceof GeneralSettings ? $this->sentFields($request, 'general', $settings->general->toArray()) : null,
+            'appearance' => $settings->appearance instanceof AppearanceSettings ? $this->sentFields($request, 'appearance', $settings->appearance->toArray()) : null,
         ]);
 
         // Update the user's settings with the provided values.
@@ -50,5 +51,14 @@ class UserSettingsController implements HasMiddleware
         toast(title: __('Settings saved'), description: __('Your settings have been updated successfully.'));
 
         return back();
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     * @return array<string, mixed>
+     */
+    protected function sentFields(Request $request, string $group, array $values): array
+    {
+        return array_intersect_key($values, (array) $request->input($group, []));
     }
 }
