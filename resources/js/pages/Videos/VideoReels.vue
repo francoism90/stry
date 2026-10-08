@@ -15,7 +15,7 @@ defineOptions({
   layout: [AppLayout],
 })
 
-const { active, muted, playing, activate, toggleMute, isLoaded, preload } = useReelFeed()
+const { active, muted, playing, isLoaded, preload } = useReelFeed()
 
 const itemBody = ref<HTMLElement>()
 </script>
@@ -67,8 +67,8 @@ const itemBody = ref<HTMLElement>()
               :preload="preload(index)"
               :muted="muted"
               :playing="playing"
-              @visible="activate(index)"
-              @toggle-mute="toggleMute"
+              @visible="active = index"
+              @toggle-mute="muted = !muted"
               @blocked="muted = true"
             />
           </div>

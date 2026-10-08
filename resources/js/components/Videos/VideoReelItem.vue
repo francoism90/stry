@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { show } from '@/actions/Modules/Web/Videos/Controllers/VideoController'
-import { useReelGroups, useReelPlayback, useReelVisibility, type ReelPreload } from '@/composables/reels'
+import { useReelActions, useReelPlayback, useReelVisibility, type ReelPreload } from '@/composables/reels'
 import type { VideoReel } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
@@ -32,7 +32,7 @@ useReelPlayback(element, {
   onBlocked: () => emit('blocked'),
 })
 
-const { liked, saved, like, save } = useReelGroups(props.item)
+const { liked, saved, like, save } = useReelActions(props.item)
 
 const reelButton =
   'size-12 justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-lg backdrop-saturate-160 hover:bg-black/60 hover:text-white'
