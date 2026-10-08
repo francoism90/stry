@@ -142,7 +142,7 @@ useEcho(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.u
     <FilterToolbar
       :scopes="scopes"
       :sorters="sorters"
-      class="px-0"
+      class="px-0 sm:px-0"
     />
 
     <InfiniteScroll
