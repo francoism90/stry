@@ -23,6 +23,7 @@ defineOptions({
 
 setLayoutProps({
   id: 'videos.index',
+  title: 'Library',
   scopes: props.scopes,
   sorters: props.sorters,
   chapters: props.chapters,
