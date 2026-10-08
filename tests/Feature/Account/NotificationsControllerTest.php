@@ -31,6 +31,31 @@ it('allows authenticated users to view their notifications', function () {
     $response->assertSuccessful();
 });
 
+it('lists only unread notifications when filtered to unread', function () {
+    $user = User::factory()->create();
+    $unread = createNotification($user, false);
+    createNotification($user, true);
+
+    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index'], ['filter' => 'unread']));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('filter', 'unread')
+        ->has('notifications.data', 1)
+        ->where('notifications.data.0.id', $unread->id));
+});
+
+it('lists all notifications for an unknown filter', function () {
+    $user = User::factory()->create();
+    createNotification($user, false);
+    createNotification($user, true);
+
+    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index'], ['filter' => 'bogus']));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('filter', 'all')
+        ->has('notifications.data', 2));
+});
+
 it('redirects guests from the notifications index', function () {
     $response = $this->get(action([NotificationsController::class, 'index']));
 
