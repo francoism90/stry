@@ -6,3 +6,18 @@
     user-select: none;
   }
 }
+
+/* Slow drift of the ambient wash; only applied with motion-safe */
+@theme {
+  --animate-ambient-drift: ambient-drift 40s ease-in-out infinite alternate;
+
+  @keyframes ambient-drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    to {
+      transform: translate3d(-3%, 2%, 0) scale(1.08);
+    }
+  }
+}
