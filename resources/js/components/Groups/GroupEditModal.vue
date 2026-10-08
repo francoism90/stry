@@ -21,9 +21,15 @@ const tabs: TabsItem[] = [
 
 const videoCount = computed(() => props.group.videos ?? 0)
 
-const keptVideosLabel = computed(() =>
-  videoCount.value === 1 ? 'Its video stays' : `Its ${Intl.NumberFormat().format(videoCount.value)} videos stay`,
-)
+const keptVideosLabel = computed(() => {
+  if (videoCount.value === 0) {
+    return ''
+  }
+
+  return videoCount.value === 1
+    ? 'Its video stays in your library.'
+    : `Its ${Intl.NumberFormat().format(videoCount.value)} videos stay in your library.`
+})
 
 const form = useForm(update(props.group.id), {
   name: props.group.name ?? props.group.title,
@@ -108,7 +114,7 @@ const onSubmit = (close: () => void) =>
         >
           <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
             <span class="font-medium text-highlighted">Delete this collection</span>
-            <span class="text-muted"> {{ group.title }} will be removed. {{ keptVideosLabel }} in your library. </span>
+            <span class="text-muted"> {{ group.title }} will be removed. {{ keptVideosLabel }} </span>
           </div>
 
           <GroupDeleteModal :item="group">
