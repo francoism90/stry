@@ -31,13 +31,28 @@ const form = useForm(update(props.item.id), {
   type: props.item.type,
   related: props.item.related || [],
   description: props.item.description || null,
+  avatar: null as File | null,
+  remove_avatar: false,
 })
 
-const onSubmit = (close: () => void) =>
-  form.submit({
+const onSubmit = (close: () => void) => {
+  const options = {
     preserveScroll: true,
-    onSuccess: () => close(),
-  })
+    onSuccess: () => {
+      form.reset('avatar', 'remove_avatar')
+      close()
+    },
+  }
+
+  // Files can only be sent as multipart POST, so spoof the PATCH method for uploads.
+  if (form.avatar) {
+    form.transform((data) => ({ ...data, _method: 'patch' })).post(update.url(props.item.id), options)
+
+    return
+  }
+
+  form.transform((data) => data).submit(options)
+}
 </script>
 
 <template>
@@ -117,6 +132,43 @@ const onSubmit = (close: () => void) =>
               </span>
             </template>
           </USelectMenu>
+        </UFormField>
+
+        <UFormField
+          label="Picture"
+          description="Without a picture, a thumbnail from one of the tag's videos is shown."
+          :error="form.errors.avatar"
+        >
+          <div
+            v-if="item.avatar && !form.avatar && !form.remove_avatar"
+            class="relative mt-2 overflow-hidden rounded-lg"
+          >
+            <img
+              :src="item.avatar"
+              :alt="`Picture of ${item.name}`"
+              class="aspect-video w-full object-cover"
+            />
+
+            <UButton
+              label="Remove"
+              icon="i-lucide-trash"
+              color="neutral"
+              variant="solid"
+              size="xs"
+              class="absolute end-2 top-2 bg-black/60 text-white backdrop-blur-sm hover:bg-black/75"
+              @click="form.remove_avatar = true"
+            />
+          </div>
+
+          <UFileUpload
+            v-else
+            v-model="form.avatar"
+            accept="image/*"
+            icon="i-lucide-image"
+            label="Drop a picture here"
+            description="JPG, PNG, WebP or AVIF, up to 10 MB"
+            class="mt-2 aspect-video w-full"
+          />
         </UFormField>
 
         <UFormField

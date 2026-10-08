@@ -6,6 +6,8 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Modules\Web\Tags\Controllers\TagController;
 
 uses(RefreshDatabase::class);
@@ -108,4 +110,62 @@ it('denies a regular user from deleting a tag', function () {
 
     $response->assertForbidden();
     $this->assertModelExists($tag);
+});
+
+it('stores an uploaded picture when updating a tag', function () {
+    Storage::fake('conversions');
+
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $tag = Tag::factory()->create(['type' => TagType::Genre]);
+
+    $response = $this->actingAs($user)->patch(action([TagController::class, 'update'], $tag), [
+        'name' => 'Documentary',
+        'type' => TagType::Genre->value,
+        'avatar' => UploadedFile::fake()->image('poster.jpg', 640, 360),
+    ]);
+
+    $response->assertRedirect();
+    $response->assertSessionHasNoErrors();
+
+    expect($tag->refresh()->getFirstMedia('avatar'))->not->toBeNull()
+        ->and($tag->getFirstMedia('avatar')->file_name)->toBe('poster.jpg');
+});
+
+it('removes the picture when updating a tag', function () {
+    Storage::fake('conversions');
+
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $tag = Tag::factory()->create(['type' => TagType::Genre]);
+    $tag->addMedia(UploadedFile::fake()->image('poster.jpg'))->toMediaCollection('avatar');
+
+    $this->actingAs($user)->patch(action([TagController::class, 'update'], $tag), [
+        'name' => 'Documentary',
+        'type' => TagType::Genre->value,
+        'remove_avatar' => true,
+    ]);
+
+    expect($tag->refresh()->getFirstMedia('avatar'))->toBeNull();
+});
+
+it('rejects a picture that is not an image', function () {
+    Storage::fake('conversions');
+
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $tag = Tag::factory()->create(['type' => TagType::Genre]);
+
+    $response = $this->actingAs($user)->patch(action([TagController::class, 'update'], $tag), [
+        'name' => 'Documentary',
+        'type' => TagType::Genre->value,
+        'avatar' => UploadedFile::fake()->create('notes.pdf', 10, 'application/pdf'),
+    ]);
+
+    $response->assertSessionHasErrors('avatar');
+
+    expect($tag->refresh()->getFirstMedia('avatar'))->toBeNull();
 });

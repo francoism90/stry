@@ -201,6 +201,7 @@ export type Tag = Model & {
   category: string
   type: string | null
   adult: boolean
+  avatar?: string | null
   thumb?: AvatarProps['src'] | null
   related?: Tag[]
   videos?: number

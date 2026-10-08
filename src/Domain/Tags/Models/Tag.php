@@ -6,6 +6,7 @@ namespace Domain\Tags\Models;
 
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
+use Domain\Profiles\Models\Profile;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
@@ -20,6 +21,7 @@ use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\Tag as BaseTag;
+use Support\MediaLibrary\TemporaryUrls;
 
 #[CollectedBy(TagCollection::class)]
 #[UseEloquentBuilder(TagQueryBuilder::class)]
@@ -120,6 +123,43 @@ class Tag extends BaseTag implements HasMedia
     }
 
     /**
+     * The tag's own picture, if one has been uploaded.
+     */
+    public function avatarUrl(): ?string
+    {
+        $media = $this->getFirstMedia('avatar');
+
+        if (! $media) {
+            return null;
+        }
+
+        $media->setRelation('model', $this);
+
+        return rescue(fn () => TemporaryUrls::make($media)->getUrl('thumb'));
+    }
+
+    /**
+     * The tag's own picture, or the picture of its thumbnail video when it has none.
+     */
+    public function thumbnailUrl(): ?string
+    {
+        return $this->avatarUrl() ?? $this->thumbnailVideo()?->thumb;
+    }
+
+    /**
+     * The newest tagged video with a clip that the current profile may see, used as the tag's picture.
+     */
+    public function thumbnailVideo(): ?Video
+    {
+        return $this->videos()
+            ->forProfile(Profile::current())
+            ->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'clips'))
+            ->with('media')
+            ->latest()
+            ->first();
+    }
+
+    /**
      * @param  Tag|iterable<array-key, Tag|string>|string  $values
      * @return Collection<int, string>
      */
@@ -189,6 +229,26 @@ class Tag extends BaseTag implements HasMedia
         return $query
             ->with('relatables.related')
             ->withCount('videos');
+    }
+
+    /**
+     * @return Attribute<?string, never>
+     */
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->avatarUrl(),
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string, never>
+     */
+    protected function thumb(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->thumbnailUrl(),
+        )->shouldCache();
     }
 
     /**

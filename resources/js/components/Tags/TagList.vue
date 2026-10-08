@@ -8,11 +8,11 @@ defineProps<{
 </script>
 
 <template>
-  <UBlogPosts class="grid grid-cols-2 gap-4 gap-y-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-y-3 xl:grid-cols-5">
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(min(13.75rem,100%),1fr))] gap-4">
     <TagCard
       v-for="item in items ?? []"
       :key="item.id"
       :item="item"
     />
-  </UBlogPosts>
+  </div>
 </template>
