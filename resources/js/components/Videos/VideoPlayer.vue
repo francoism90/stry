@@ -12,6 +12,10 @@ const props = defineProps<{
   progress?: number | undefined
 }>()
 
+const emit = defineEmits<{
+  ended: []
+}>()
+
 const container = ref<HTMLDivElement | undefined>()
 const element = ref<HTMLMediaElement | undefined>()
 
@@ -69,7 +73,7 @@ const actions = ref<ButtonProps[]>([
     <div
       ref="container"
       v-show="ready && !error"
-      class="relative aspect-video max-h-[35dvh] w-full [clip-path:inset(0_round_0.5rem)] md:max-h-[50dvh] lg:max-h-[60dvh] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
+      class="relative aspect-video max-h-[70dvh] w-full [clip-path:inset(0_round_0.5rem)] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
     >
       <video
         ref="element"
@@ -78,6 +82,7 @@ const actions = ref<ButtonProps[]>([
         preload="metadata"
         playsinline
         autoplay
+        @ended="emit('ended')"
       />
 
       <VideoChapterSkipButton
