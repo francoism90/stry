@@ -21,6 +21,7 @@ defineOptions({
 
 setLayoutProps({
   id: 'transcodes.index',
+  title: 'Transcodes',
   scopes: props.scopes,
   sorters: props.sorters,
   filter: props.filter,

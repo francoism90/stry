@@ -21,6 +21,7 @@ defineOptions({
 
 setLayoutProps({
   id: 'users.index',
+  title: 'Users',
   scopes: props.scopes,
   sorters: props.sorters,
   filter: props.filter,
