@@ -2,7 +2,9 @@
 import { useVideo } from '@/composables/video'
 import { show } from '@/routes/videos'
 import type { Video } from '@/types'
-import { ref } from 'vue'
+import { watchedFraction } from '@/utils/duration'
+import { computed, ref } from 'vue'
+import VideoProgressBar from './VideoProgressBar.vue'
 import VideoTags from './VideoTags.vue'
 
 const props = defineProps<{
@@ -17,6 +19,8 @@ const isLcp = props.index === 0
 const { toggleSave } = useVideo()
 
 const isSaved = ref(props.item.saved ?? false)
+
+const progressFraction = computed(() => watchedFraction(props.item.progress, props.item.duration))
 
 /**
  * Saves the video without reloading the list, so the infinite scroll keeps its pages.
@@ -85,7 +89,10 @@ const save = (): void => {
           @click.prevent="save"
         />
 
-        <div class="absolute inset-x-0 bottom-0 flex items-end justify-between p-2">
+        <div
+          class="absolute inset-x-0 bottom-0 flex items-end justify-between p-2"
+          :class="{ 'pb-3': progressFraction > 0 }"
+        >
           <UBadge
             v-if="item.captioned"
             label="CC"
@@ -107,6 +114,11 @@ const save = (): void => {
             class="bg-black/70 text-white tabular-nums backdrop-blur-sm"
           />
         </div>
+
+        <VideoProgressBar
+          v-if="progressFraction > 0"
+          :fraction="progressFraction"
+        />
       </div>
     </template>
 

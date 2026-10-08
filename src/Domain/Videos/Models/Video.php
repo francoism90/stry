@@ -17,6 +17,7 @@ use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Collections\VideoCollection;
 use Domain\Videos\Concerns\InteractsWithDirectPlay;
+use Domain\Videos\Concerns\InteractsWithProgress;
 use Domain\Videos\Concerns\InteractsWithReels;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\States\Verified;
@@ -69,6 +70,7 @@ class Video extends Model implements HasMedia
     use InteractsWithMedia;
 
     use InteractsWithModelCache;
+    use InteractsWithProgress;
     use InteractsWithReels;
     use InteractsWithTranscodes;
     use InteractsWithUser;

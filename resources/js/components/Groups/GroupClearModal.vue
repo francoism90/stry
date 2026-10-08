@@ -12,12 +12,13 @@ const handle = async () => router.post(GroupClearController.url(props.item.id))
 
 <template>
   <UModal
-    :title="item.title ?? item.id"
+    title="Clear this collection?"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>
       <UButton
         icon="i-lucide-eraser"
+        aria-label="Clear collection"
         color="error"
         variant="ghost"
         size="sm"
@@ -25,12 +26,11 @@ const handle = async () => router.post(GroupClearController.url(props.item.id))
     </slot>
 
     <template #body>
-      <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to clear this collection?</h3>
-        <p class="text-sm text-neutral-500">
-          All videos will be removed from this collection. This action cannot be undone.
-        </p>
-      </div>
+      <p class="text-sm text-muted">
+        All videos will be removed from
+        <span class="text-highlighted capitalize">{{ item.title ?? item.id }}</span
+        >. They stay in your library.
+      </p>
     </template>
 
     <template #footer="{ close }">
@@ -43,7 +43,7 @@ const handle = async () => router.post(GroupClearController.url(props.item.id))
 
       <UButton
         label="Clear collection"
-        variant="soft"
+        variant="solid"
         color="error"
         loading-auto
         @click.prevent="handle"

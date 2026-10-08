@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Models;
 
+use Domain\Videos\Actions\GetVideoProgress;
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Collection;
@@ -93,9 +95,33 @@ class Groupable extends MorphPivot
             'groupable_type' => $groupableType,
             "{$groupableType}_id" => $groupableId,
             'order_column' => (int) $this->order_column,
+            'progress' => $this->watchedFraction(),
             'created_at' => (int) $this->created_at?->getTimestamp(),
             'updated_at' => (int) $this->updated_at?->getTimestamp(),
         ];
+    }
+
+    /**
+     * Share of a video watched so far, for memberships that store a watch position (the viewed group).
+     */
+    protected function watchedFraction(): ?float
+    {
+        $options = $this->options ?? [];
+
+        $progress = data_get($options, 'progress');
+
+        if (is_numeric($progress)) {
+            return (float) $progress;
+        }
+
+        // Positions saved before the share was stored next to them
+        $time = data_get($options, 'time');
+
+        if (! is_numeric($time) || ! $this->groupable instanceof Video) {
+            return null;
+        }
+
+        return app(GetVideoProgress::class)->watchedFraction($this->groupable, (float) $time);
     }
 
     /**

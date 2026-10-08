@@ -8,6 +8,7 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Profiles\Models\Profile;
 use Domain\Videos\Enums\VideoScope;
+use Domain\Videos\Settings\PlaybackSettings;
 use Foxws\ScoutBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class VideoScopeFilter implements Filter
         }
 
         match (VideoScope::tryFrom($value)) {
+            VideoScope::Watching => $this->applyWatching($query),
             VideoScope::Shorts => $this->applyShorts($query),
             VideoScope::Unseen => $this->applyUnseen($query),
             VideoScope::Untagged => $this->applyUntagged($query),
@@ -60,31 +62,62 @@ class VideoScopeFilter implements Filter
     /**
      * @param  Builder<Model>  $query
      */
+    private function applyWatching(Builder $query): void
+    {
+        $group = $this->viewedGroup();
+
+        // Without a viewed group nothing has been started yet; no group has id 0, so this matches nothing
+        $groupId = $group?->getKey() ?? 0;
+
+        $threshold = app(PlaybackSettings::class)->completion_threshold;
+
+        $this->addJoinFilter($query, sprintf('$groupables(group_id:=%d && progress:>0 && progress:<%s)', $groupId, $threshold));
+    }
+
+    /**
+     * @param  Builder<Model>  $query
+     */
     private function applyUnseen(Builder $query): void
     {
-        // Get the current user's ID, either from the current profile or the authenticated user
-        $userId = Profile::current()->user_id ?? Auth::id();
-
-        if (blank($userId)) {
-            return;
-        }
-
-        // Find the "viewed" group for the user, which contains videos they've seen (if any).
-        $group = Group::query()
-            ->where('user_id', $userId)
-            ->where('type', GroupType::Viewed)
-            ->first();
+        $group = $this->viewedGroup();
 
         if (! $group) {
             return;
         }
 
+        $this->addJoinFilter($query, sprintf('$groupables(group_id:!=%d)', $group->getKey()));
+    }
+
+    /**
+     * Find the "viewed" group of the current profile's user, or of the authenticated user, which contains the videos they've seen.
+     */
+    private function viewedGroup(): ?Group
+    {
+        $userId = Profile::current()->user_id ?? Auth::id();
+
+        if (blank($userId)) {
+            return null;
+        }
+
+        return Group::query()
+            ->where('user_id', $userId)
+            ->where('type', GroupType::Viewed)
+            ->first();
+    }
+
+    /**
+     * Typesense join filters can't be expressed as Scout wheres, so they are appended to the search options.
+     *
+     * @param  Builder<Model>  $query
+     */
+    private function addJoinFilter(Builder $query, string $filter): void
+    {
         $previousCallback = $query->callback;
 
-        $query->callback = function ($typesense, $scoutQuery, $options) use ($group, $previousCallback) {
+        $query->callback = function ($typesense, $scoutQuery, $options) use ($filter, $previousCallback) {
             $options['filter_by'] = filled($options['filter_by'] ?? '')
-                ? sprintf('%s && $groupables(group_id:!=%d)', $options['filter_by'], $group->getKey())
-                : sprintf('$groupables(group_id:!=%d)', $group->getKey());
+                ? sprintf('%s && %s', $options['filter_by'], $filter)
+                : $filter;
 
             if ($previousCallback) {
                 return $previousCallback($typesense, $scoutQuery, $options);

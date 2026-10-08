@@ -2,22 +2,36 @@
 import { destroy } from '@/actions/Modules/Web/Groups/Controllers/GroupController'
 import type { Group } from '@/types'
 import { router } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
 const props = defineProps<{
   item: Group
 }>()
+
+const videoCount = computed(() => props.item.videos ?? 0)
+
+const keptVideosLabel = computed(() => {
+  if (videoCount.value === 0) {
+    return ''
+  }
+
+  return videoCount.value === 1
+    ? 'Its video stays in your library.'
+    : `Its ${Intl.NumberFormat().format(videoCount.value)} videos stay in your library.`
+})
 
 const handle = async () => router.delete(destroy.url(props.item.id))
 </script>
 
 <template>
   <UModal
-    :title="item.title ?? item.id"
+    title="Delete this collection?"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>
       <UButton
         icon="i-lucide-trash"
+        aria-label="Delete collection"
         color="error"
         variant="ghost"
         size="sm"
@@ -25,12 +39,10 @@ const handle = async () => router.delete(destroy.url(props.item.id))
     </slot>
 
     <template #body>
-      <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to delete this collection?</h3>
-        <p class="text-sm text-neutral-500">
-          This action cannot be undone. All associated data will be permanently removed.
-        </p>
-      </div>
+      <p class="text-sm text-muted">
+        <span class="text-highlighted capitalize">{{ item.title ?? item.id }}</span>
+        will be removed. {{ keptVideosLabel }}
+      </p>
     </template>
 
     <template #footer="{ close }">
@@ -43,7 +55,7 @@ const handle = async () => router.delete(destroy.url(props.item.id))
 
       <UButton
         label="Delete collection"
-        variant="soft"
+        variant="solid"
         color="error"
         loading-auto
         @click.prevent="handle"
