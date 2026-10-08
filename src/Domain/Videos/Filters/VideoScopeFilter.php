@@ -26,7 +26,7 @@ class VideoScopeFilter implements Filter
         }
 
         match (VideoScope::tryFrom($value)) {
-            VideoScope::InProgress => $this->applyInProgress($query),
+            VideoScope::Watching => $this->applyWatching($query),
             VideoScope::Shorts => $this->applyShorts($query),
             VideoScope::Unseen => $this->applyUnseen($query),
             VideoScope::Untagged => $this->applyUntagged($query),
@@ -62,7 +62,7 @@ class VideoScopeFilter implements Filter
     /**
      * @param  Builder<Model>  $query
      */
-    private function applyInProgress(Builder $query): void
+    private function applyWatching(Builder $query): void
     {
         $group = $this->viewedGroup();
 

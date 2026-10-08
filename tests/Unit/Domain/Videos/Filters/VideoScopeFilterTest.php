@@ -123,7 +123,7 @@ function filterByOf(Builder $builder): string
     return $options['filter_by'];
 }
 
-it('limits the in progress scope to started videos below the completion threshold', function (): void {
+it('limits the watching scope to started videos below the completion threshold', function (): void {
     PlaybackSettings::fake(['completion_threshold' => 0.9]);
 
     $user = User::factory()->create();
@@ -133,17 +133,17 @@ it('limits the in progress scope to started videos below the completion threshol
 
     $builder = new Builder(new Video, '*');
 
-    (new VideoScopeFilter)($builder, 'progress', 'scope');
+    (new VideoScopeFilter)($builder, 'watching', 'scope');
 
     expect(filterByOf($builder))->toBe("\$groupables(group_id:={$group->getKey()} && progress:>0 && progress:<0.9)");
 });
 
-it('matches nothing for the in progress scope without a viewed group', function (): void {
+it('matches nothing for the watching scope without a viewed group', function (): void {
     $this->actingAs(User::factory()->create());
 
     $builder = new Builder(new Video, '*');
 
-    (new VideoScopeFilter)($builder, 'progress', 'scope');
+    (new VideoScopeFilter)($builder, 'watching', 'scope');
 
     expect(filterByOf($builder))->toStartWith('$groupables(group_id:=0 ');
 });
