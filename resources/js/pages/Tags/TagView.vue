@@ -102,6 +102,8 @@ useEcho(`tags.${props.tag.id}`, '.tag.deleted', () => router.visit(index.url()))
         :items="items?.data"
       />
 
+      <template #previous />
+
       <template #loading>
         <VideoListSkeleton class="mt-10" />
       </template>

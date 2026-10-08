@@ -2,11 +2,12 @@
 import AmbientWash from '@/components/Ui/AmbientWash.vue'
 import VideoList from '@/components/Videos/VideoList.vue'
 import VideoListSkeleton from '@/components/Videos/VideoListSkeleton.vue'
+import { useWashImages } from '@/composables/ambient'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   items: VideoCollection
@@ -32,12 +33,7 @@ setLayoutProps({
 
 const itemBody = ref()
 
-const washImages = computed(() =>
-  (props.items?.data ?? [])
-    .slice(0, 3)
-    .map((item) => item.thumb)
-    .filter((thumb): thumb is string => !!thumb),
-)
+const washImages = useWashImages(() => (props.items?.data ?? []).map((item) => item.thumb), 3)
 </script>
 
 <template>
@@ -55,6 +51,8 @@ const washImages = computed(() =>
         ref="itemBody"
         :items="items?.data"
       />
+
+      <template #previous />
 
       <template #loading>
         <VideoListSkeleton class="mt-10" />

@@ -2,12 +2,13 @@
 import AmbientWash from '@/components/Ui/AmbientWash.vue'
 import TagList from '@/components/Tags/TagList.vue'
 import TagListSkeleton from '@/components/Tags/TagListSkeleton.vue'
+import { useWashImages } from '@/composables/ambient'
 import { tagIcon } from '@/composables/tags'
 import ContentLayout from '@/layouts/App/ContentLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, TagCollection } from '@/types'
 import { Head, InfiniteScroll, setLayoutProps } from '@inertiajs/vue3'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   items: TagCollection
@@ -35,12 +36,7 @@ setLayoutProps({
 
 const itemBody = ref()
 
-const washImages = computed(() =>
-  (props.items?.data ?? [])
-    .map((item) => item.thumb)
-    .filter((thumb): thumb is string => typeof thumb === 'string')
-    .slice(0, 1),
-)
+const washImages = useWashImages(() => (props.items?.data ?? []).map((item) => item.thumb), 1)
 </script>
 
 <template>

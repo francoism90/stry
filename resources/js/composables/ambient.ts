@@ -1,4 +1,4 @@
-import { computed, nextTick, reactive, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { computed, nextTick, reactive, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
 
 // Tracks which wash images have loaded so each can fade in. Server-rendered or cached images can
 // finish loading before the load listener is attached, so the container is also checked for images
@@ -34,4 +34,25 @@ export function useAmbientWash(
   )
 
   return { layerKey, isLoaded, markLoaded }
+}
+
+// Picks the wash images from the first items of a list and keeps them while infinite scroll merges
+// pages in. Opening a later page loads earlier pages in front of it, which would otherwise swap the
+// wash on every scroll up; new images are only picked once the current ones leave the list.
+export function useWashImages(thumbs: MaybeRefOrGetter<(string | null | undefined)[]>, count: number) {
+  const images = ref<string[]>([])
+
+  watch(
+    () => toValue(thumbs).filter((thumb): thumb is string => typeof thumb === 'string'),
+    (available) => {
+      const isStillListed = images.value.length > 0 && images.value.every((image) => available.includes(image))
+
+      if (!isStillListed) {
+        images.value = available.slice(0, count)
+      }
+    },
+    { immediate: true },
+  )
+
+  return images
 }
