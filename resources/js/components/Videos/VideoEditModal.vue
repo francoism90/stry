@@ -382,18 +382,22 @@ const onSubmit = (close: () => void) =>
 
         <USeparator v-if="video.manage" />
 
-        <div class="flex flex-col gap-2">
-          <p class="text-sm font-semibold text-error">Delete video</p>
-          <p class="text-sm text-muted">This may permanently remove this video and all associated data.</p>
+        <div
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-error/35 bg-error/8 p-4"
+        >
+          <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
+            <span class="font-medium text-highlighted">Delete this video</span>
+            <span class="text-muted">{{ video.title }} and all its data will be permanently removed.</span>
+          </div>
 
           <VideoDeleteModal :item="video">
             <UButton
-              label="Delete video"
-              icon="i-lucide-trash"
+              label="Delete"
+              icon="i-lucide-trash-2"
               color="error"
-              variant="soft"
+              variant="outline"
               size="sm"
-              class="w-fit"
+              class="shrink-0 ring-error/50"
             />
           </VideoDeleteModal>
         </div>

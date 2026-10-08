@@ -24,6 +24,7 @@ if (auth.value) {
       variant="link"
       color="neutral"
       icon="i-lucide-bell"
+      :aria-label="unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'"
       to="/notifications"
     />
   </UChip>
