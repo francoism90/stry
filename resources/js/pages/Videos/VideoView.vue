@@ -93,8 +93,14 @@ const setAutoplay = (autoplay: boolean): void => {
 const nextVideo = computed<Video | undefined>(() => props.queue?.[0])
 
 const playNext = (): void => {
-  if (isAutoplayEnabled.value && nextVideo.value) {
+  if (nextVideo.value) {
     router.visit(show.url(nextVideo.value.id))
+  }
+}
+
+const playNextOnEnd = (): void => {
+  if (isAutoplayEnabled.value) {
+    playNext()
   }
 }
 
@@ -123,7 +129,9 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :video="video"
       :playlist="playlist"
       :progress="progress"
-      @ended="playNext"
+      :has-next="!!nextVideo"
+      @ended="playNextOnEnd"
+      @next="playNext"
     />
 
     <VideoGroupModal

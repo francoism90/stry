@@ -80,7 +80,7 @@ const save = (): void => {
           :aria-pressed="isSaved"
           color="neutral"
           variant="solid"
-          class="absolute end-2 top-2 z-10 rounded-full border border-white/20 bg-black/45 text-white opacity-0 backdrop-blur-lg backdrop-saturate-160 transition-opacity group-hover/card:opacity-100 hover:bg-black/60 focus-visible:opacity-100"
+          class="pointer-events-auto absolute end-2 top-2 z-10 rounded-full border border-white/20 bg-black/45 text-white opacity-0 backdrop-blur-lg backdrop-saturate-160 transition-opacity group-hover/card:opacity-100 hover:bg-black/60 focus-visible:opacity-100"
           :class="{ 'text-primary': isSaved }"
           @click.prevent="save"
         />

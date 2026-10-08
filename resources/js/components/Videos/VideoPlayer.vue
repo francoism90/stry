@@ -10,10 +10,12 @@ const props = defineProps<{
   video?: Video | undefined
   playlist?: Playlist | undefined
   progress?: number | undefined
+  hasNext?: boolean | undefined
 }>()
 
 const emit = defineEmits<{
   ended: []
+  next: []
 }>()
 
 const container = ref<HTMLDivElement | undefined>()
@@ -73,7 +75,9 @@ const actions = ref<ButtonProps[]>([
     <div
       ref="container"
       v-show="ready && !error"
+      :data-has-next="hasNext || undefined"
       class="relative aspect-video max-h-[70dvh] w-full [clip-path:inset(0_round_0.5rem)] fullscreen:aspect-auto fullscreen:max-h-none fullscreen:[clip-path:inset(0)]"
+      @skipnext="emit('next')"
     >
       <video
         ref="element"

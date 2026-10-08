@@ -6,13 +6,16 @@ let instance: typeof shaka | undefined
 
 export async function loadShaka(): Promise<typeof shaka> {
   if (!instance) {
-    const [mod, seekRewindMod, seekForwardMod] = await Promise.all([
+    const [mod, seekRewindMod, seekForwardMod, upNextMod] = await Promise.all([
       import('shaka-player/dist/shaka-player.ui'),
       import('./SeekRewind') as Promise<{
         SeekRewind: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
       }>,
       import('./SeekForward') as Promise<{
         SeekForward: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
+      }>,
+      import('./UpNext') as Promise<{
+        UpNext: new (parent: HTMLElement, controls: shaka.ui.Controls) => shaka.ui.Element
       }>,
     ])
 
@@ -28,6 +31,10 @@ export async function loadShaka(): Promise<typeof shaka> {
 
     instance.ui.Controls.registerElement('seek_forward', {
       create: (parent: HTMLElement, controls: shaka.ui.Controls) => new seekForwardMod.SeekForward(parent, controls),
+    })
+
+    instance.ui.Controls.registerElement('up_next', {
+      create: (parent: HTMLElement, controls: shaka.ui.Controls) => new upNextMod.UpNext(parent, controls),
     })
 
     guardWindowKeyboardShortcuts()
@@ -100,8 +107,7 @@ export function configureOverlay(overlay: shaka.ui.Overlay): void {
     controlPanelElements: [
       'play_pause',
       'mute',
-      'skip_previous',
-      'skip_next',
+      'up_next',
       'seek_rewind',
       'seek_forward',
       'time_and_duration',
