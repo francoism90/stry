@@ -50,7 +50,7 @@ useFlash()
         modal: {
           overlay: 'bg-black/55',
           content:
-            'divide-(--glass-border) bg-elevated/72 ring-(--glass-border) backdrop-blur-2xl backdrop-saturate-160 sm:rounded-xl',
+            'divide-(--glass-border) bg-elevated/72 ring-(--glass-border) backdrop-blur-2xl backdrop-saturate-160',
         },
       }"
     >

@@ -58,9 +58,9 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
           size="sm"
           class="w-full gap-4"
           :ui="{
-            list: 'rounded-full bg-(--glass)',
-            indicator: 'rounded-full bg-(--glass-strong) shadow-none',
-            trigger: 'grow rounded-full data-[state=active]:text-highlighted',
+            list: 'rounded-lg bg-(--glass)',
+            indicator: 'rounded-md bg-(--glass-strong) shadow-none',
+            trigger: 'grow data-[state=active]:text-highlighted',
           }"
         >
           <template
@@ -84,7 +84,7 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
         label="Cancel"
         color="neutral"
         variant="soft"
-        class="rounded-full bg-(--glass) hover:bg-(--glass-strong)"
+        class="bg-(--glass) hover:bg-(--glass-strong)"
         @click.prevent="close"
       />
 
@@ -92,7 +92,6 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
         :label="submitLabel"
         color="primary"
         variant="solid"
-        class="rounded-full"
         :loading="processing"
         @click.prevent="emit('submit', close)"
       />

@@ -84,7 +84,7 @@ const onSubmit = (close: () => void) =>
     <template #danger>
       <div class="flex flex-col gap-3">
         <div
-          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-[10px] border border-error/35 bg-error/8 p-4"
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-error/35 bg-error/8 p-4"
         >
           <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
             <span class="font-medium text-highlighted">Clear this collection</span>
@@ -98,13 +98,13 @@ const onSubmit = (close: () => void) =>
               color="error"
               variant="outline"
               size="sm"
-              class="shrink-0 rounded-full ring-error/50"
+              class="shrink-0 ring-error/50"
             />
           </GroupClearModal>
         </div>
 
         <div
-          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-[10px] border border-error/35 bg-error/8 p-4"
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-error/35 bg-error/8 p-4"
         >
           <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
             <span class="font-medium text-highlighted">Delete this collection</span>
@@ -118,7 +118,7 @@ const onSubmit = (close: () => void) =>
               color="error"
               variant="outline"
               size="sm"
-              class="shrink-0 rounded-full ring-error/50"
+              class="shrink-0 ring-error/50"
             />
           </GroupDeleteModal>
         </div>
