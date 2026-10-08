@@ -73,16 +73,6 @@ const save = (): void => {
           </span>
         </div>
 
-        <UBadge
-          v-if="item.viewed"
-          label="Watched"
-          icon="i-lucide-check"
-          color="neutral"
-          variant="solid"
-          size="sm"
-          class="absolute start-2 top-2 bg-black/70 text-white backdrop-blur-sm transition-opacity group-hover/card:opacity-0"
-        />
-
         <UButton
           v-if="item.saved !== null"
           :icon="isSaved ? 'i-lucide-bookmark-check' : 'i-lucide-bookmark-plus'"

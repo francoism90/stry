@@ -46,17 +46,6 @@ withDefaults(
 
       <div class="flex flex-wrap items-center gap-x-1 text-sm text-muted">
         <slot name="meta">
-          <template v-if="item.viewed">
-            <span>Watched</span>
-            <span
-              v-if="item.tags?.length"
-              class="opacity-40 select-none"
-              aria-hidden="true"
-            >
-              ·
-            </span>
-          </template>
-
           <VideoTags :items="item.tags" />
         </slot>
       </div>
