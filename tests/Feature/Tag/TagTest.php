@@ -107,26 +107,22 @@ it('skips adult videos for the thumbnail on a kids profile', function () {
 });
 
 it('prefers its own picture over the thumbnail video', function () {
-    $tag = Tag::factory()->create();
+    $tag = Mockery::mock(Tag::class)->makePartial();
 
-    $video = Video::factory()->create();
-    createClipFor($video);
-    $tag->videos()->attach($video);
+    $tag->shouldReceive('avatarUrl')->andReturn('https://cdn.test/poster.jpg');
+    $tag->shouldNotReceive('thumbnailVideo');
 
-    $tag->media()->create([
-        'collection_name' => 'avatar',
-        'name' => 'avatar',
-        'file_name' => 'avatar.jpg',
-        'mime_type' => 'image/jpeg',
-        'disk' => 'conversions',
-        'conversions_disk' => 'conversions',
-        'size' => 1,
-        'manipulations' => [],
-        'custom_properties' => [],
-        'generated_conversions' => ['thumb' => true],
-        'responsive_images' => [],
-    ]);
+    expect($tag->thumbnailUrl())->toBe('https://cdn.test/poster.jpg');
+});
 
-    expect($tag->thumb)->toBeString()->toContain('avatar')
-        ->and($tag->thumb)->not->toBe($video->thumb);
+it('falls back to the thumbnail video without its own picture', function () {
+    $video = Mockery::mock(Video::class)->makePartial();
+    $video->shouldReceive('getAttribute')->with('thumb')->andReturn('https://cdn.test/frame.jpg');
+
+    $tag = Mockery::mock(Tag::class)->makePartial();
+
+    $tag->shouldReceive('avatarUrl')->andReturnNull();
+    $tag->shouldReceive('thumbnailVideo')->andReturn($video);
+
+    expect($tag->thumbnailUrl())->toBe('https://cdn.test/frame.jpg');
 });
