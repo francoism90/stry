@@ -6,6 +6,7 @@ use Domain\Groups\Models\Group;
 use Domain\Users\Models\User;
 use Domain\Videos\Filters\VideoScopeFilter;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\PlaybackSettings;
 use Laravel\Scout\Builder;
 
 it('adds a duration filter for the shorts scope', function (): void {
@@ -103,4 +104,46 @@ it('does not add a callback for the unseen scope without a viewed group', functi
     (new VideoScopeFilter)($builder, 'unseen', 'scope');
 
     expect($builder->callback)->toBeNull();
+});
+
+function filterByOf(Builder $builder): string
+{
+    $options = ($builder->callback)(
+        new class
+        {
+            public function search($options)
+            {
+                return $options;
+            }
+        },
+        $builder,
+        [],
+    );
+
+    return $options['filter_by'];
+}
+
+it('limits the in progress scope to started videos below the completion threshold', function (): void {
+    PlaybackSettings::fake(['completion_threshold' => 0.9]);
+
+    $user = User::factory()->create();
+    $group = Group::factory()->viewed()->create(['user_id' => $user->getKey()]);
+
+    $this->actingAs($user);
+
+    $builder = new Builder(new Video, '*');
+
+    (new VideoScopeFilter)($builder, 'progress', 'scope');
+
+    expect(filterByOf($builder))->toBe("\$groupables(group_id:={$group->getKey()} && progress:>0 && progress:<0.9)");
+});
+
+it('matches nothing for the in progress scope without a viewed group', function (): void {
+    $this->actingAs(User::factory()->create());
+
+    $builder = new Builder(new Video, '*');
+
+    (new VideoScopeFilter)($builder, 'progress', 'scope');
+
+    expect(filterByOf($builder))->toStartWith('$groupables(group_id:=0 ');
 });

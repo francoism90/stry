@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use stdClass;
 
 trait HasGroups
 {
@@ -106,6 +107,25 @@ trait HasGroups
      */
     public function groupTypesFor(Collection $models): Collection
     {
+        return $this
+            ->groupMembershipsFor($models)
+            ->map(fn (Collection $rows) => $rows
+                ->map(fn (object $row) => GroupType::from($row->type))
+                ->unique()
+                ->values()
+            );
+    }
+
+    /**
+     * Resolve the groups each of the given models belongs to, with the options stored for each, using a single query.
+     *
+     * @template TModel of Model
+     *
+     * @param  Collection<int, TModel>  $models
+     * @return Collection<array-key, Collection<int, stdClass>>
+     */
+    public function groupMembershipsFor(Collection $models): Collection
+    {
         if ($models->isEmpty()) {
             return Collection::make();
         }
@@ -115,13 +135,8 @@ trait HasGroups
             ->where('groupables.groupable_type', $models->first()->getMorphClass())
             ->whereIn('groupables.groupable_id', $models->map(fn (Model $model) => $model->getKey()))
             ->toBase()
-            ->get(['groups.type', 'groupables.groupable_id'])
-            ->groupBy('groupable_id')
-            ->map(fn (Collection $rows) => $rows
-                ->map(fn (object $row) => GroupType::from($row->type))
-                ->unique()
-                ->values()
-            );
+            ->get(['groups.type', 'groupables.groupable_id', 'groupables.options'])
+            ->groupBy('groupable_id');
     }
 
     public function groupHasModel(Model $model, GroupType $type): bool

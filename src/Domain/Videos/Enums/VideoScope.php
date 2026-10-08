@@ -9,6 +9,7 @@ use Domain\Shared\Contracts\Enumerable;
 enum VideoScope: string implements Enumerable
 {
     case All = 'all';
+    case InProgress = 'progress';
     case Shorts = 'shorts';
     case Unseen = 'unseen';
     case Untagged = 'untagged';
@@ -24,6 +25,7 @@ enum VideoScope: string implements Enumerable
     {
         return [
             'all' => __('All'),
+            'progress' => __('In progress'),
             'shorts' => __('Shorts'),
             'unseen' => __('Unseen'),
             'untagged' => __('Untagged'),

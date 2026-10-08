@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { show } from '@/routes/videos'
 import type { Video } from '@/types'
+import { formatTimeLeft, watchedFraction } from '@/utils/duration'
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { computed } from 'vue'
+import VideoProgressBar from './VideoProgressBar.vue'
 import VideoTags from './VideoTags.vue'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     item: Video
     actions?: DropdownMenuItem[]
@@ -13,6 +16,8 @@ withDefaults(
     actions: () => [],
   },
 )
+
+const progressFraction = computed(() => watchedFraction(props.item.progress, props.item.duration))
 </script>
 
 <template>
@@ -34,6 +39,11 @@ withDefaults(
         loading="lazy"
         decoding="async"
       />
+
+      <VideoProgressBar
+        v-if="progressFraction > 0"
+        :fraction="progressFraction"
+      />
     </ULink>
 
     <div class="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -46,7 +56,14 @@ withDefaults(
 
       <div class="flex flex-wrap items-center gap-x-1 text-sm text-muted">
         <slot name="meta">
-          <VideoTags :items="item.tags" />
+          <span v-if="progressFraction > 0 && item.progress && item.duration">
+            {{ formatTimeLeft(item.progress, item.duration) }}
+          </span>
+
+          <VideoTags
+            v-else
+            :items="item.tags"
+          />
         </slot>
       </div>
     </div>

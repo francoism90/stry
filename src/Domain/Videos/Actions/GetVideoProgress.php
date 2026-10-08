@@ -29,13 +29,17 @@ class GetVideoProgress
 
             $time = (float) data_get($record->options ?? [], 'time', 0);
 
-            return $this->normalizeProgress($video, $time);
+            return $this->fromTime($video, $time);
         }
 
-        return $this->normalizeProgress($video, (float) $video->modelCached($progressKey, 0));
+        return $this->fromTime($video, (float) $video->modelCached($progressKey, 0));
     }
 
-    protected function normalizeProgress(Video $video, ?float $time = null): float
+    /**
+     * Turn a stored watch position into resumable progress: clamped to the duration, and 0 once
+     * the video counts as watched.
+     */
+    public function fromTime(Video $video, ?float $time = null): float
     {
         $duration = (float) $video->duration;
 

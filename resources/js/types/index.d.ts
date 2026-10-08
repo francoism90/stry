@@ -245,6 +245,7 @@ export type Video = Model & {
   liked: boolean | null
   saved: boolean | null
   viewed: boolean | null
+  progress: number | null
   manage: boolean
   expires_at: string | null
   published_at: string | null

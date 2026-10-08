@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Domain\Groups\Enums\GroupType;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\PlaybackSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Api\Videos\Resources\VideoResource;
@@ -54,5 +55,42 @@ it('returns no group memberships for guests', function () {
 
     $item = VideoResource::make($video)->resolve(requestFor(null));
 
-    expect($item)->toMatchArray(['liked' => null, 'saved' => null, 'viewed' => null]);
+    expect($item)->toMatchArray(['liked' => null, 'saved' => null, 'viewed' => null, 'progress' => null]);
+});
+
+it('resolves watch progress for a collection of videos in the same query', function () {
+    PlaybackSettings::fake(['completion_threshold' => 0.9]);
+
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+
+    [$started, $finished, $othersOnly] = Video::factory()->withDuration(100)->count(3)->create()->all();
+
+    $user->markInGroup($started, GroupType::Viewed, ['time' => 42.5]);
+    $user->markInGroup($finished, GroupType::Viewed, ['time' => 95]);
+    $otherUser->markInGroup($othersOnly, GroupType::Viewed, ['time' => 30]);
+
+    $videos = Video::query()->whereKey([$started->id, $finished->id, $othersOnly->id])->get();
+
+    DB::enableQueryLog();
+
+    $items = collect(VideoResource::collection($videos)->resolve(requestFor($user)))->keyBy('id');
+
+    $groupQueries = collect(DB::getQueryLog())->filter(fn (array $query) => str_contains($query['query'], 'groupables'));
+
+    expect($groupQueries)->toHaveCount(1)
+        ->and($items[$started->ulid]['progress'])->toBe(42.5)
+        ->and($items[$finished->ulid]['progress'])->toBe(0.0)
+        ->and($items[$othersOnly->ulid]['progress'])->toBe(0.0);
+});
+
+it('resolves watch progress for a single video', function () {
+    $user = User::factory()->create();
+    $video = Video::factory()->withDuration(100)->create();
+
+    $user->markInGroup($video, GroupType::Viewed, ['time' => 20]);
+
+    $item = VideoResource::make($video)->resolve(requestFor($user));
+
+    expect($item['progress'])->toBe(20.0);
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Models;
 
+use Domain\Videos\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Collection;
@@ -93,9 +94,30 @@ class Groupable extends MorphPivot
             'groupable_type' => $groupableType,
             "{$groupableType}_id" => $groupableId,
             'order_column' => (int) $this->order_column,
+            'progress' => $this->watchedFraction(),
             'created_at' => (int) $this->created_at?->getTimestamp(),
             'updated_at' => (int) $this->updated_at?->getTimestamp(),
         ];
+    }
+
+    /**
+     * Share of a video watched so far, for memberships that store a watch position (the viewed group).
+     */
+    protected function watchedFraction(): ?float
+    {
+        $time = data_get($this->options ?? [], 'time');
+
+        if (! is_numeric($time) || ! $this->groupable instanceof Video) {
+            return null;
+        }
+
+        $duration = (float) $this->groupable->duration;
+
+        if ($duration <= 0) {
+            return null;
+        }
+
+        return round(min((float) $time / $duration, 1), 4);
     }
 
     /**

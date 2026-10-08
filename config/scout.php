@@ -759,6 +759,11 @@ return [
                             'sort' => true,
                         ],
                         [
+                            'name' => 'progress',
+                            'type' => 'float',
+                            'optional' => true,
+                        ],
+                        [
                             'name' => 'created_at',
                             'type' => 'int64',
                             'sort' => true,

@@ -37,6 +37,29 @@ class VideoFactory extends Factory
         ]);
     }
 
+    /**
+     * Give the video a clip whose stream lasts the given number of seconds.
+     */
+    public function withDuration(float $seconds): static
+    {
+        return $this->afterCreating(fn (Video $video) => $video->media()->create([
+            'collection_name' => 'clips',
+            'name' => 'clip',
+            'file_name' => 'clip.mp4',
+            'mime_type' => 'video/mp4',
+            'disk' => 'media',
+            'size' => 1,
+            'manipulations' => [],
+            'custom_properties' => [
+                'streams' => [
+                    ['codec_type' => 'video', 'duration' => $seconds],
+                ],
+            ],
+            'generated_conversions' => [],
+            'responsive_images' => [],
+        ]));
+    }
+
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
