@@ -12,12 +12,13 @@ const handle = async () => router.delete(destroy.url(props.item.id))
 
 <template>
   <UModal
-    :title="item.name"
+    title="Delete this tag?"
     :ui="{ footer: 'justify-end' }"
   >
     <slot>
       <UButton
         icon="i-lucide-trash"
+        aria-label="Delete tag"
         color="error"
         variant="ghost"
         size="sm"
@@ -25,12 +26,10 @@ const handle = async () => router.delete(destroy.url(props.item.id))
     </slot>
 
     <template #body>
-      <div class="flex h-24 flex-col gap-2">
-        <h3>Are you sure you want to delete this tag?</h3>
-        <p class="text-sm text-neutral-500">
-          This action cannot be undone. All associated data will be permanently removed.
-        </p>
-      </div>
+      <p class="text-sm text-muted">
+        <span class="text-highlighted">{{ item.name }}</span>
+        and all its data will be permanently removed. This can't be undone.
+      </p>
     </template>
 
     <template #footer="{ close }">
@@ -43,7 +42,7 @@ const handle = async () => router.delete(destroy.url(props.item.id))
 
       <UButton
         label="Delete tag"
-        variant="soft"
+        variant="solid"
         color="error"
         loading-auto
         @click.prevent="handle"

@@ -84,7 +84,7 @@ const onEnter = (event: KeyboardEvent, close: () => void): void => {
       <UButton
         :label="submitLabel"
         color="primary"
-        variant="soft"
+        variant="solid"
         :loading="processing"
         @click.prevent="emit('submit', close)"
       />

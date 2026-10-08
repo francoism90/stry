@@ -112,7 +112,7 @@ const save = () => formRef.value?.submit()
         :label="saved ? 'Saved' : 'Save changes'"
         :icon="saved ? 'i-lucide-check' : undefined"
         :color="saved ? 'success' : 'primary'"
-        variant="soft"
+        variant="solid"
         :loading="saving"
         @click="save"
       />

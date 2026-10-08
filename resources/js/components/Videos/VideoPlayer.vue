@@ -60,7 +60,7 @@ const actions = ref<ButtonProps[]>([
 
     <UEmpty
       v-if="error"
-      title="Playback Error"
+      title="Playback error"
       :description="error.message || 'An error occurred during video playback.'"
       icon="i-lucide-alert-circle"
       :actions="actions"

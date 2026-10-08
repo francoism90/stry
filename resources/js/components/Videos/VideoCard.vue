@@ -50,7 +50,7 @@ const isLcp = props.index === 0
             label="CC"
             color="neutral"
             variant="solid"
-            size="xs"
+            size="sm"
             class="bg-black/70 text-white backdrop-blur-sm"
             title="Closed captions available"
           />
@@ -62,8 +62,8 @@ const isLcp = props.index === 0
             :label="item.timestamp"
             color="neutral"
             variant="solid"
-            size="xs"
-            class="bg-black/70 text-white backdrop-blur-sm"
+            size="sm"
+            class="bg-black/70 text-white tabular-nums backdrop-blur-sm"
           />
         </div>
       </div>

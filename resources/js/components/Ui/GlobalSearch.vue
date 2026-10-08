@@ -90,6 +90,7 @@ defineShortcuts({
       :to="shuffleUrl"
       size="sm"
       icon="i-lucide-dices"
+      :aria-label="page.component === 'Tags/TagIndex' ? 'Random tag' : 'Random video'"
       color="neutral"
       variant="link"
       class="hidden md:inline-flex"

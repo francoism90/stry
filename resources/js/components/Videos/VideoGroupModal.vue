@@ -27,7 +27,7 @@ const toggle = (group: Group) => {
 <template>
   <UModal
     v-model:open="open"
-    title="Add to Collection"
+    title="Add to collection"
   >
     <template #body>
       <div
@@ -61,6 +61,8 @@ const toggle = (group: Group) => {
 
           <UButton
             :icon="group.has ? 'i-lucide-check' : 'i-lucide-plus'"
+            :aria-label="group.has ? `Remove from ${group.name}` : `Add to ${group.name}`"
+            :aria-pressed="group.has"
             :color="group.has ? 'primary' : 'neutral'"
             variant="ghost"
             size="sm"
