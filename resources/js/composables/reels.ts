@@ -26,20 +26,10 @@ export function useReelFeed() {
 
   const playing = computed(() => visibility.value === 'visible')
 
-  const activate = (index: number): void => {
-    active.value = index
-  }
-
-  const toggleMute = (): void => {
-    muted.value = !muted.value
-  }
-
   return {
     active,
     muted,
     playing,
-    activate,
-    toggleMute,
     isLoaded: (index: number) => isReelLoaded(index, active.value),
     preload: (index: number) => reelPreload(index, active.value),
   }
@@ -62,7 +52,8 @@ export function useReelVisibility(root: MaybeRefOrGetter<HTMLElement | undefined
 
 /**
  * Plays the reel while it's active and the page is visible, and rewinds it once it's swiped away.
- * When the browser blocks playback with sound, it plays muted and calls onBlocked.
+ * When the browser blocks playback with sound, it plays muted and calls onBlocked. A play() that is
+ * interrupted by swiping away is ignored, so it doesn't mute the feed.
  */
 export function useReelPlayback(
   element: MaybeRefOrGetter<HTMLVideoElement | undefined>,
@@ -76,7 +67,11 @@ export function useReelPlayback(
   const play = (video: HTMLVideoElement): void => {
     // Browsers only autoplay muted video, and the attribute may not be set yet after hydration.
     video.muted = toValue(options.muted)
-    video.play().catch(() => {
+    video.play().catch((error: unknown) => {
+      if (!(error instanceof DOMException) || error.name !== 'NotAllowedError') {
+        return
+      }
+
       options.onBlocked()
       video.muted = true
       video.play().catch(() => {})
@@ -86,7 +81,9 @@ export function useReelPlayback(
   watch(
     () => [toValue(element), toValue(options.active), toValue(options.playing)] as const,
     ([video, active, playing]) => {
-      if (!video) return
+      if (!video) {
+        return
+      }
 
       if (active && playing) {
         play(video)
@@ -107,7 +104,7 @@ export function useReelPlayback(
  * Likes and saves a reel. The buttons update at once, and only the sidebar's collections reload,
  * so the feed keeps its order.
  */
-export function useReelGroups(item: VideoReel) {
+export function useReelActions(item: VideoReel) {
   const { toggleLike, toggleSave } = useVideo()
 
   const liked = ref(item.liked ?? false)
