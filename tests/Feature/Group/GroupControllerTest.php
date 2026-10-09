@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Domain\Groups\Enums\GroupType;
 use Domain\Groups\Models\Group;
 use Domain\Users\Models\User;
+use Domain\Videos\Models\Video;
+use Illuminate\Support\Facades\DB;
 use Modules\Web\Groups\Controllers\GroupController;
 
 // index
@@ -82,6 +84,27 @@ it('accepts the mixer scope filter on the group index', function () {
     $response = $this->actingAs($user)->get(action([GroupController::class, 'index'], ['filter' => ['scope' => 'mixer']]));
 
     $response->assertSuccessful();
+});
+
+it('looks up the group thumbnails in the same number of queries however many groups are listed', function () {
+    $user = User::factory()->create();
+
+    $countGroupQueries = function () use ($user): int {
+        Group::factory()->custom()->for($user)->create()->videos()->attach(tap(Video::factory()->create(), createClipFor(...)));
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        $this->actingAs($user)->get(action([GroupController::class, 'index']))->assertOk();
+
+        return collect(DB::getQueryLog())->filter(fn (array $query) => str_contains($query['query'], 'groupables'))->count();
+    };
+
+    $withOneGroup = $countGroupQueries();
+
+    $countGroupQueries();
+
+    expect($countGroupQueries())->toBe($withOneGroup);
 });
 
 // show
