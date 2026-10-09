@@ -150,12 +150,26 @@ class Tag extends BaseTag implements HasMedia
      */
     public function thumbnailVideo(): ?Video
     {
+        if ($this->relationLoaded('thumbnailVideos')) {
+            return $this->thumbnailVideos->first();
+        }
+
+        return $this->thumbnailVideos()->first();
+    }
+
+    /**
+     * Holds at most the thumbnail video, so a list of tags can eager load all of them in one query.
+     *
+     * @return MorphToMany<Video, $this>
+     */
+    public function thumbnailVideos(): MorphToMany
+    {
         return $this->videos()
             ->forProfile(Profile::current())
             ->withClips()
             ->with('media')
             ->latest()
-            ->first();
+            ->limit(1);
     }
 
     /**

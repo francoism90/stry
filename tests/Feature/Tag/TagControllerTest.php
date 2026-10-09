@@ -5,12 +5,36 @@ declare(strict_types=1);
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Users\Models\User;
+use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Web\Tags\Controllers\TagController;
 
 uses(RefreshDatabase::class);
+
+it('looks up the tag thumbnails in the same number of queries however many tags are listed', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $countTagQueries = function () use ($user): int {
+        Tag::factory()->create()->videos()->attach(tap(Video::factory()->create(), createClipFor(...)));
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        $this->actingAs($user)->get(action([TagController::class, 'index']))->assertOk();
+
+        return collect(DB::getQueryLog())->filter(fn (array $query) => str_contains($query['query'], 'taggables'))->count();
+    };
+
+    $withOneTag = $countTagQueries();
+
+    $countTagQueries();
+
+    expect($countTagQueries())->toBe($withOneTag);
+});
 
 it('allows a super-admin to create a tag', function () {
     $user = User::factory()->create();
