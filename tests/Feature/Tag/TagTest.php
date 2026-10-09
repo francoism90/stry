@@ -97,7 +97,7 @@ it('eager loads the thumbnail video of each tag in a single query', function () 
 
     DB::enableQueryLog();
 
-    $tags = Tag::query()->with('thumbnailVideos')->whereKey([$documentary->getKey(), $comedy->getKey()])->get()->keyBy('id');
+    $tags = Tag::query()->with('thumbs')->whereKey([$documentary->getKey(), $comedy->getKey()])->get()->keyBy('id');
 
     $thumbnails = $tags->map(fn (Tag $tag) => $tag->thumbnailVideo()?->getKey());
 

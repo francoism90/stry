@@ -150,11 +150,11 @@ class Tag extends BaseTag implements HasMedia
      */
     public function thumbnailVideo(): ?Video
     {
-        if ($this->relationLoaded('thumbnailVideos')) {
-            return $this->thumbnailVideos->first();
+        if ($this->relationLoaded('thumbs')) {
+            return $this->thumbs->first();
         }
 
-        return $this->thumbnailVideos()->first();
+        return $this->thumbs()->first();
     }
 
     /**
@@ -162,7 +162,7 @@ class Tag extends BaseTag implements HasMedia
      *
      * @return MorphToMany<Video, $this>
      */
-    public function thumbnailVideos(): MorphToMany
+    public function thumbs(): MorphToMany
     {
         return $this->videos()
             ->forProfile(Profile::current())
