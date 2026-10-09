@@ -111,7 +111,6 @@ export default defineConfig(({ mode }) => {
           specifier: 'vite-plus/oxlint-plugin',
         },
       ],
-      ignorePatterns: ['website/**'],
       rules: {
         'vite-plus/prefer-vite-plus-imports': 'error',
       },

@@ -1,7 +1,6 @@
 ---
 title: Documentation
-slug: /
-sidebar_position: 1
+order: 0
 tags:
     - guides
     - documentation
@@ -12,6 +11,7 @@ metadata:
     status: active
     eyebrow: 'Streaming · Laravel · Inertia'
     desc: A streaming platform built with Laravel and Inertia.js.
+    image: https://raw.githubusercontent.com/francoism90/.github/main/assets/stry/home-hero.webp
 ---
 
 # Documentation

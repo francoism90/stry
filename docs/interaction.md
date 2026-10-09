@@ -1,6 +1,7 @@
 ---
 title: Interaction
-sidebar_position: 9
+section: Usage
+order: 1
 tags:
     - shell
     - bash

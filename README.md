@@ -12,9 +12,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
 [![Podman](https://img.shields.io/badge/Podman-5.x-892CA0?logo=podman)](https://podman.io)
-[![Demo](https://img.shields.io/badge/Demo-Screenshots-181717?logo=github)](https://francoism90.github.io/stry/screenshots)
+[![Demo](https://img.shields.io/badge/Demo-Screenshots-181717)](https://foxws.nl/stry/screenshots)
 
-[Demo](https://francoism90.github.io/stry/screenshots) • [Documentation](#documentation) • [Installation](#usage)
+[Demo](https://foxws.nl/stry/screenshots) • [Documentation](#documentation) • [Installation](#usage)
 
 ---
 
@@ -40,9 +40,9 @@
 
 ## Demo
 
-For a visual tour of the app, check out the [screenshots gallery](https://francoism90.github.io/stry/screenshots).
+For a visual tour of the app, check out the [screenshots gallery](https://foxws.nl/stry/screenshots).
 
-[![Home page showing the video library grid, search bar, filters, and sidebar navigation](docs/screenshots/home.webp)](https://francoism90.github.io/stry/screenshots#home)
+[![Home page showing the video library grid, search bar, filters, and sidebar navigation](https://raw.githubusercontent.com/francoism90/.github/main/assets/stry/home.webp)](https://foxws.nl/stry/screenshots#home)
 
 > [!NOTE]
 > A hosted demo is planned, but not yet available. Screenshots may lag behind active development — expect the UI to evolve as features are added and improved.
@@ -51,7 +51,7 @@ For a visual tour of the app, check out the [screenshots gallery](https://franco
 
 ## Why stry?
 
-**stry** is a streaming delivery platform, not a personal media server like Jellyfin/Plex — see the [full comparison](https://francoism90.github.io/stry/#why-stry) in the docs.
+**stry** is a streaming delivery platform, not a personal media server like Jellyfin/Plex — see the [full comparison](https://foxws.nl/stry#why-stry) in the docs.
 
 ---
 
@@ -72,29 +72,29 @@ For a visual tour of the app, check out the [screenshots gallery](https://franco
 
 ## Prerequisites
 
-Requires Linux with [Podman 5.3+](https://podman.io/)/Quadlet, or [Docker](https://www.docker.com/) (best-effort). Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://francoism90.github.io/stry/podman#prerequisites) or [Docker Compose](https://francoism90.github.io/stry/docker#prerequisites) for the full system requirements.
+Requires Linux with [Podman 5.3+](https://podman.io/)/Quadlet, or [Docker](https://www.docker.com/) (best-effort). Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://foxws.nl/stry/podman#prerequisites) or [Docker Compose](https://foxws.nl/stry/docker#prerequisites) for the full system requirements.
 
 ---
 
 ## Documentation
 
-Comprehensive guides are available on the [documentation site](https://francoism90.github.io/stry/) (or browse [`docs/`](docs) directly):
+Comprehensive guides are available on the [documentation site](https://foxws.nl/stry) (or browse [`docs/`](docs) directly):
 
-| Guide                                                               | Description                                          |
-| ------------------------------------------------------------------- | ---------------------------------------------------- |
-| [Screenshots](https://francoism90.github.io/stry/screenshots)       | Visual tour of the app                               |
-| [Production Setup](https://francoism90.github.io/stry/production)   | Deploy to production                                 |
-| [Upgrading](https://francoism90.github.io/stry/upgrading)           | Update an existing production install                |
-| [Development Guide](https://francoism90.github.io/stry/development) | Local development setup                              |
-| [Configuration](https://francoism90.github.io/stry/configuration)   | Configuration options                                |
-| [Podman Quadlet](https://francoism90.github.io/stry/podman)         | Container orchestration (services, install, secrets) |
-| [Docker Compose](https://francoism90.github.io/stry/docker)         | Alternative, best-effort containerization            |
-| [Reverse Proxy](https://francoism90.github.io/stry/proxy)           | Sibling-service routing; bring your own HTTPS        |
-| [S3 Storage](https://francoism90.github.io/stry/s3)                 | Object storage setup                                 |
-| [Interaction](https://francoism90.github.io/stry/interaction)       | CLI usage and commands                               |
+| Guide                                                  | Description                                          |
+| ------------------------------------------------------ | ---------------------------------------------------- |
+| [Screenshots](https://foxws.nl/stry/screenshots)       | Visual tour of the app                               |
+| [Production Setup](https://foxws.nl/stry/production)   | Deploy to production                                 |
+| [Upgrading](https://foxws.nl/stry/upgrading)           | Update an existing production install                |
+| [Development Guide](https://foxws.nl/stry/development) | Local development setup                              |
+| [Configuration](https://foxws.nl/stry/configuration)   | Configuration options                                |
+| [Podman Quadlet](https://foxws.nl/stry/podman)         | Container orchestration (services, install, secrets) |
+| [Docker Compose](https://foxws.nl/stry/docker)         | Alternative, best-effort containerization            |
+| [Reverse Proxy](https://foxws.nl/stry/proxy)           | Sibling-service routing; bring your own HTTPS        |
+| [S3 Storage](https://foxws.nl/stry/s3)                 | Object storage setup                                 |
+| [Interaction](https://foxws.nl/stry/interaction)       | CLI usage and commands                               |
 
 > [!TIP]
-> Quick start: pick [Production](https://francoism90.github.io/stry/production) or [Development](https://francoism90.github.io/stry/development) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
+> Quick start: pick [Production](https://foxws.nl/stry/production) or [Development](https://foxws.nl/stry/development) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
 
 ---
 
@@ -104,9 +104,9 @@ Comprehensive guides are available on the [documentation site](https://francoism
 systemctl --user start stry
 ```
 
-The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](https://francoism90.github.io/stry/proxy) in front of it)
+The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](https://foxws.nl/stry/proxy) in front of it)
 
-See the [Interaction Guide](https://francoism90.github.io/stry/interaction) for `lpod`, stry's Laravel Sail-style container CLI, and [Production Setup](https://francoism90.github.io/stry/production#install-and-start-the-services)/[Development Setup](https://francoism90.github.io/stry/development#admin-account) for seeding and creating admin users.
+See the [Interaction Guide](https://foxws.nl/stry/interaction) for `lpod`, stry's Laravel Sail-style container CLI, and [Production Setup](https://foxws.nl/stry/production#install-and-start-the-services)/[Development Setup](https://foxws.nl/stry/development#admin-account) for seeding and creating admin users.
 
 ---
 

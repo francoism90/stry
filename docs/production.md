@@ -1,6 +1,7 @@
 ---
 title: Production Setup
-sidebar_position: 2
+section: Getting Started
+order: 2
 tags:
     - production
     - deployment

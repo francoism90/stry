@@ -1,6 +1,7 @@
 ---
 title: Upgrading
-sidebar_position: 3
+section: Getting Started
+order: 4
 tags:
     - upgrade
     - production

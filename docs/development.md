@@ -1,6 +1,7 @@
 ---
 title: Development
-sidebar_position: 3
+section: Getting Started
+order: 3
 tags:
     - vscode
     - zed

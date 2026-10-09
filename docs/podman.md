@@ -1,6 +1,7 @@
 ---
 title: Podman Quadlet
-sidebar_position: 5
+section: Configuration
+order: 2
 tags:
     - podman
     - quadlet

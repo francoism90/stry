@@ -1,6 +1,7 @@
 ---
 title: Application Configuration
-sidebar_position: 4
+section: Configuration
+order: 1
 tags:
     - config
     - environment

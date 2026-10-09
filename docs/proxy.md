@@ -1,6 +1,7 @@
 ---
 title: Proxy
-sidebar_position: 7
+section: Configuration
+order: 4
 tags:
     - proxy
     - caddy
