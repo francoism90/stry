@@ -6,7 +6,6 @@ namespace Domain\Tags\Models;
 
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Profiles\Models\Profile;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
@@ -15,6 +14,7 @@ use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Users\Concerns\InteractsWithUser;
+use Domain\Videos\Concerns\InteractsWithThumbs;
 use Domain\Videos\Models\Video;
 use Foxws\Relatable\Concerns\InteractsWithRelated;
 use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
@@ -47,6 +48,10 @@ class Tag extends BaseTag implements HasMedia
     use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithRelated;
+
+    /** @use InteractsWithThumbs<MorphPivot> */
+    use InteractsWithThumbs;
+
     use InteractsWithUser;
     use Searchable;
 
@@ -146,16 +151,13 @@ class Tag extends BaseTag implements HasMedia
     }
 
     /**
-     * The newest tagged video with a clip that the current profile may see, used as the tag's picture.
+     * The newest tagged video comes first.
+     *
+     * @return MorphToMany<Video, $this>
      */
-    public function thumbnailVideo(): ?Video
+    protected function thumbnailCandidates(): MorphToMany
     {
-        return $this->videos()
-            ->forProfile(Profile::current())
-            ->withClips()
-            ->with('media')
-            ->latest()
-            ->first();
+        return $this->videos()->latest();
     }
 
     /**

@@ -8,6 +8,7 @@ use Domain\Tags\Enums\TagType;
 use Domain\Tags\Models\Tag;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
@@ -79,6 +80,32 @@ it('uses the newest tagged video with a clip as its thumbnail video', function (
     $tag->videos()->attach([$older->getKey(), $newer->getKey(), $newestWithoutClip->getKey()]);
 
     expect($tag->thumbnailVideo()?->getKey())->toBe($newer->getKey());
+});
+
+it('eager loads the thumbnail video of each tag in a single query', function () {
+    [$documentary, $comedy] = Tag::factory()->count(2)->create()->all();
+
+    $olderDocumentary = Video::factory()->create(['created_at' => now()->subDays(2)]);
+    $newerDocumentary = Video::factory()->create(['created_at' => now()->subDay()]);
+    $newerComedy = Video::factory()->create(['created_at' => now()]);
+    $olderComedy = Video::factory()->create(['created_at' => now()->subDays(3)]);
+
+    collect([$olderDocumentary, $newerDocumentary, $newerComedy, $olderComedy])->each(createClipFor(...));
+
+    $documentary->videos()->attach([$olderDocumentary->getKey(), $newerDocumentary->getKey()]);
+    $comedy->videos()->attach([$newerComedy->getKey(), $olderComedy->getKey()]);
+
+    DB::enableQueryLog();
+
+    $tags = Tag::query()->with('thumbs')->whereKey([$documentary->getKey(), $comedy->getKey()])->get()->keyBy('id');
+
+    $thumbnails = $tags->map(fn (Tag $tag) => $tag->thumbnailVideo()?->getKey());
+
+    $tagQueries = collect(DB::getQueryLog())->filter(fn (array $query) => str_contains($query['query'], 'taggables'));
+
+    expect($tagQueries)->toHaveCount(1)
+        ->and($thumbnails[$documentary->getKey()])->toBe($newerDocumentary->getKey())
+        ->and($thumbnails[$comedy->getKey()])->toBe($newerComedy->getKey());
 });
 
 it('has no thumbnail video when none of its videos has a clip', function () {

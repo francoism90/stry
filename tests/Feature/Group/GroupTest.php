@@ -9,6 +9,7 @@ use Domain\Profiles\Support\CurrentProfileContext;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
@@ -108,7 +109,7 @@ it('keeps cached group types separate per user', function () {
         ->and($video->isInGroupOf($otherUser, GroupType::Saved))->toBeFalse();
 });
 
-it('uses the most recently added video with a clip as its cover video', function () {
+it('uses the most recently added video with a clip as its thumbnail video', function () {
     $group = Group::factory()->custom()->create();
 
     $earlier = Video::factory()->create();
@@ -122,10 +123,35 @@ it('uses the most recently added video with a clip as its cover video', function
     $this->travelTo(now()->subDay(), fn () => $group->videos()->attach($later));
     $group->videos()->attach($latestWithoutClip);
 
-    expect($group->coverVideo()?->getKey())->toBe($later->getKey());
+    expect($group->thumbnailVideo()?->getKey())->toBe($later->getKey());
 });
 
-it('skips adult videos for the cover on a kids profile', function () {
+it('eager loads the thumbnail video of each group in a single query', function () {
+    [$watchLater, $favorites] = Group::factory()->custom()->count(2)->create()->all();
+
+    [$earlierWatchLater, $laterWatchLater, $laterFavorite, $earlierFavorite] = Video::factory()->count(4)->create()->all();
+
+    collect([$earlierWatchLater, $laterWatchLater, $laterFavorite, $earlierFavorite])->each(createClipFor(...));
+
+    $this->travelTo(now()->subDays(3), fn () => $favorites->videos()->attach($earlierFavorite));
+    $this->travelTo(now()->subDays(2), fn () => $watchLater->videos()->attach($earlierWatchLater));
+    $this->travelTo(now()->subDay(), fn () => $watchLater->videos()->attach($laterWatchLater));
+    $favorites->videos()->attach($laterFavorite);
+
+    DB::enableQueryLog();
+
+    $groups = Group::query()->with('thumbs')->whereKey([$watchLater->getKey(), $favorites->getKey()])->get()->keyBy('id');
+
+    $thumbnails = $groups->map(fn (Group $group) => $group->thumbnailVideo()?->getKey());
+
+    $groupQueries = collect(DB::getQueryLog())->filter(fn (array $query) => str_contains($query['query'], 'groupables'));
+
+    expect($groupQueries)->toHaveCount(1)
+        ->and($thumbnails[$watchLater->getKey()])->toBe($laterWatchLater->getKey())
+        ->and($thumbnails[$favorites->getKey()])->toBe($laterFavorite->getKey());
+});
+
+it('skips adult videos for the thumbnail on a kids profile', function () {
     $group = Group::factory()->custom()->create();
 
     $safe = Video::factory()->create(['adult' => false]);
@@ -139,5 +165,5 @@ it('skips adult videos for the cover on a kids profile', function () {
 
     app(CurrentProfileContext::class)->set(Profile::factory()->create(['is_kids' => true]));
 
-    expect($group->coverVideo()?->getKey())->toBe($safe->getKey());
+    expect($group->thumbnailVideo()?->getKey())->toBe($safe->getKey());
 });

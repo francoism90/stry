@@ -10,11 +10,11 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Profiles\Models\Profile;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
+use Domain\Videos\Concerns\InteractsWithThumbs;
 use Domain\Videos\Models\Video;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
@@ -49,6 +49,10 @@ class Group extends Model implements HasMedia, Sortable
     use HasTranslations;
     use HasUlidRouteKey;
     use InteractsWithMedia;
+
+    /** @use InteractsWithThumbs<Groupable> */
+    use InteractsWithThumbs;
+
     use InteractsWithUser;
     use Notifiable;
     use Prunable;
@@ -130,16 +134,13 @@ class Group extends Model implements HasMedia, Sortable
     }
 
     /**
-     * The most recently added video with a clip that the current profile may see, used as the cover.
+     * The most recently added video comes first.
+     *
+     * @return MorphToMany<Video, $this, Groupable>
      */
-    public function coverVideo(): ?Video
+    protected function thumbnailCandidates(): MorphToMany
     {
-        return $this->videos()
-            ->forProfile(Profile::current())
-            ->withClips()
-            ->with('media')
-            ->orderByPivot('created_at', 'desc')
-            ->first();
+        return $this->videos()->orderByPivot('created_at', 'desc');
     }
 
     public function getGroupable(Model $model): ?Groupable
@@ -239,7 +240,7 @@ class Group extends Model implements HasMedia, Sortable
     protected function thumb(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->coverVideo()?->thumb,
+            get: fn (): ?string => $this->thumbnailVideo()?->thumb,
         )->shouldCache();
     }
 

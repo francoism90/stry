@@ -62,7 +62,7 @@ class GroupController implements HasMiddleware
             ->tap(new GroupProfileScope)
             ->tap(new GroupTypeScope)
             ->query(function (Builder $query): void {
-                $query->withCount('groupables');
+                $query->withCount('groupables')->with('thumbs');
             })
             ->allowedFilters(
                 AllowedFilter::custom('scope', new GroupScopeFilter)->default(GroupScope::All->value),
