@@ -55,7 +55,8 @@ export default defineConfig(({ mode }) => {
           },
           dashboardToolbar: {
             slots: {
-              left: 'min-w-0',
+              left: 'min-w-0 overflow-x-auto',
+              right: 'shrink-0',
             },
           },
           input: {
@@ -69,9 +70,12 @@ export default defineConfig(({ mode }) => {
             },
           },
           radioGroup: {
-            slots: {
-              root: 'min-w-0',
-              fieldset: 'flex-nowrap overflow-x-auto',
+            variants: {
+              variant: {
+                card: {
+                  fieldset: 'flex-nowrap',
+                },
+              },
             },
           },
           textarea: {
