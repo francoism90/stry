@@ -53,6 +53,11 @@ export default defineConfig(({ mode }) => {
             secondary: 'neutral',
             neutral: 'neutral',
           },
+          dashboardToolbar: {
+            slots: {
+              left: 'min-w-0',
+            },
+          },
           input: {
             slots: {
               root: 'w-full',
@@ -61,6 +66,12 @@ export default defineConfig(({ mode }) => {
           inputDate: {
             slots: {
               base: 'w-full',
+            },
+          },
+          radioGroup: {
+            slots: {
+              root: 'min-w-0',
+              fieldset: 'flex-nowrap overflow-x-auto',
             },
           },
           textarea: {
