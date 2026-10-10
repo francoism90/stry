@@ -19,7 +19,7 @@ GroupAdd=keep-groups
 Volume={{workingPath}}:/app:rw,z
 Volume=/mnt/media/videos:/media:rw
 Volume=/mnt/media/import:/import:rw
-Volume={{application}}-cache.volume:/cache:rw,z
+Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network
 
 [Service]

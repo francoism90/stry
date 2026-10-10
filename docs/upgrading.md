@@ -42,9 +42,9 @@ Auto-update only pulls images and restarts containers. It doesn't run Artisan co
 
 You only need this when the release notes mention changes to `containers/stubs/*`. If they do, repeat the option you used during setup (see [Generate the Podman files](production.md#generate-the-podman-files)), then reinstall the changed units with `lpod install ... --replace`.
 
-### Removing `U` and relabeling from the media mounts
+### Removing `U` and `z` from the app's mounts
 
-Older `production` templates mounted the app's volumes with Podman's `U` option, and `/media` and `/import` with `z`. `U` makes `/cache` root-owned every time the app starts, which breaks streaming after the app wakes up, and `z` relabels your whole library on every container start. If your installed `stry`, `stry-horizon` or `stry-schedule` units still have them:
+Older `production` templates mounted the app's volumes with Podman's `U` option, and every mount with `z`. `U` makes `/cache` root-owned every time the app starts, which breaks streaming after the app wakes up. `z` walks your whole library and `/cache` on every container start, and the scheduler starts one every minute. Named volumes don't need `z`: Podman's SELinux policy already labels them. If your installed `stry`, `stry-horizon` or `stry-schedule` units still have them:
 
 1. On SELinux hosts, label the media folders once (see [Storage, ownership & SELinux](podman.md#storage-ownership--selinux)):
 
@@ -62,7 +62,7 @@ Older `production` templates mounted the app's volumes with Podman's `U` option,
     lpod install production/schedule.quadlets --replace
     ```
 
-If you installed the units by hand, remove `,U` from every `Volume=` line in `stry.container`, and `,z` from the `/media` and `/import` lines in all three units. Then run `systemctl --user daemon-reload` and restart them.
+If you installed the units by hand, remove `,U` from every `Volume=` line in `stry.container`, and `,z` from the `/media`, `/import`, `/config`, `/data` and `/cache` lines in all three units. Then run `systemctl --user daemon-reload` and restart them.
 
 ### Moving the idle check to lpod
 
