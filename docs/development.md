@@ -143,6 +143,7 @@ Available when you're logged in as a **super-admin**:
 
 - **A container won't start**: run `journalctl --user -u stry -f`. Look for a missing or invalid `stry-env` secret, or another process using port 8000, 5173 or 6001.
 - **Permission errors**: run `chown -R 1000:1000 ~/projects/stry/storage`. Use your own `PODMAN_QUADLET_UID` and `GID` if you changed them.
+- **Permission denied on `/media` or `/import`**: on SELinux hosts, label `/mnt/media` once for containers. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
 - **Assets don't build**: run `rm -rf bootstrap/ssr && lpod stry npm run build`.
 - **Tests fail with `could not translate host name "systemd-stry-pgsql"`**: you ran `php artisan test` on your machine instead of inside the container network. Start the containers with `lpod stry up`, then run `lpod stry artisan test`.
 

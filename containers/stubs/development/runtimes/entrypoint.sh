@@ -1,34 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Renumber the "docker" user/group to match the host's PUID/PGID, then drop
-# from root down to it. The image itself is always built with UID/GID 1000;
-# this is what lets one shared, prebuilt image still write correctly-owned
-# files on hosts where the deploying user isn't 1000.
-if [ "$(id -u)" = '0' ]; then
-    PUID=${PUID:-1000}
-    PGID=${PGID:-1000}
-
-    if [ "$(id -g docker)" != "${PGID}" ]; then
-        groupmod -o -g "${PGID}" docker
-    fi
-
-    if [ "$(id -u docker)" != "${PUID}" ]; then
-        usermod -o -u "${PUID}" docker
-    fi
-
-    chown -R docker:docker /app/storage /app/bootstrap/cache
-
-    # Podman's Volume=...,U chowns these to the image's declared USER, which
-    # is root (see above) -- not to PUID/PGID, so it needs redoing here.
-    # Skipped for /media and /import: those are host bind mounts that already
-    # line up via UserNS=keep-id, and could be too large to chown on every start.
-    for dir in /config /data /cache; do
-        [ -d "${dir}" ] && chown -R docker:docker "${dir}"
-    done
-
-    exec gosu docker "$0" "$@"
-fi
+# Unlike production, this image is built locally with the host's UID/GID
+# (see the app quadlet's BuildArg=UID/GID) and the Containerfile ends as
+# USER docker, not root -- so there's no renumbering or chown to do here.
 
 APP_COMMAND=${APP_COMMAND:-'/usr/bin/bash'}
 
