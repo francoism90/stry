@@ -96,6 +96,44 @@ journalctl --user -u stry -f
 
 See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the [`lpod` docs](https://github.com/foxws/lpod) for all `lpod` commands (`secrets`, `remove`, `list`, `print`, `uninstall` and more).
 
+## Storage, ownership & SELinux
+
+The app, Horizon and the scheduler share these mounts:
+
+| Mount     | Source                     | Holds                                                                      |
+| --------- | -------------------------- | -------------------------------------------------------------------------- |
+| `/media`  | `/mnt/media/videos` (host) | Your video library                                                         |
+| `/import` | `/mnt/media/import` (host) | Files waiting to be imported                                               |
+| `/config` | `stry-config` volume       | Configuration                                                              |
+| `/data`   | `stry-data` volume         | App data                                                                   |
+| `/cache`  | `stry-cache` volume        | Packaged stream segments, and media temporary files in `/cache/temp/media` |
+
+**Ownership.** The containers run as root only long enough for the entrypoint to switch to the `docker` user (your `PUID`/`PGID`). With `UserNS=keep-id`, your host user and the container user have the same ID, so files line up on both sides. Don't add Podman's `U` option to these mounts: it hands the volume to the image's user, which is root, on every start. With the `ondemand` preset that's every time the app wakes up, and a root-owned `/cache/temp` breaks streaming (see [Troubleshooting](#troubleshooting)). On each start, the entrypoint gives `/config`, `/data`, `/cache`, `/cache/temp` and `/cache/temp/media` back to the `docker` user if something else owns them.
+
+**SELinux.** On hosts with SELinux, such as Fedora, a container can only use a mount that has a container label:
+
+- The named volumes use `z`, which labels them so all containers can share them. Don't change this to `Z` (a private label): `/cache` is shared by the app, Horizon and the scheduler, and the last one to start would lock the others out.
+- `/media` and `/import` have no `z`. Relabeling would walk your whole library every time a container starts, and the scheduler starts one every minute. It would also change the labels of these folders on the host. Label them once on the host instead:
+
+    ```bash
+    sudo semanage fcontext -a -t container_file_t '/mnt/media(/.*)?'
+    sudo restorecon -R /mnt/media
+    ```
+
+    Use your own paths if your library lives elsewhere. Files you add later get the label automatically.
+
+### Troubleshooting
+
+**Streams fail with `Error opening output /cache/temp/media/…/fragment.mp4: No such file or directory`**: the app can't create its temporary folders, because something running as root owns `/cache/temp`. This happens after a command run with `podman exec` (which runs as root unless you pass `--user`), or on installs that still have `U` on the `/cache` volume. Fix it without restarting:
+
+```bash
+podman exec systemd-stry chown -R docker:docker /cache/temp
+```
+
+When you run your own commands with `podman exec`, pass `--user docker` so they don't leave root-owned files behind.
+
+**Permission denied on `/media` or `/import`**: the folders aren't labeled for containers yet. Run the `semanage` and `restorecon` commands above.
+
 ## Tuning & hardware acceleration
 
 Resource limits such as `Memory=` and `ShmSize=` are set in `containers/stubs/production/quadlets/*.quadlets`. After changing them, generate the files again (`php artisan podman:generate production`) and reinstall the service (`lpod install ... --replace`).
