@@ -12,7 +12,6 @@ Environment=PUID={{appUid}}
 Environment=PGID={{appGid}}
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan inertia:start-ssr"
 UserNS=keep-id
-ShmSize=128m
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Network={{application}}.network
 

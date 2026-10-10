@@ -10,7 +10,6 @@ AutoUpdate=local
 HealthCmd=none
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
 UserNS=keep-id
-ShmSize=128m
 Volume={{workingPath}}:/app:rw,z
 Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network

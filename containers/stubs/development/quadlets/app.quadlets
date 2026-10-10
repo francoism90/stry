@@ -20,7 +20,6 @@ Wants={{application}}-mailpit.container {{application}}-horizon.container {{appl
 Image={{application}}.build
 AutoUpdate=local
 UserNS=keep-id
-ShmSize=128m
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
 Volume={{workingPath}}:/app:rw,z,U
