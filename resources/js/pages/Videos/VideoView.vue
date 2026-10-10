@@ -14,7 +14,7 @@ import { show } from '@/routes/videos'
 import type { Group, Media, OptionItem, Playlist, QueryFilter, QueryValue, Transcode, Video } from '@/types'
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import type { ButtonProps, DropdownMenuItem } from '@nuxt/ui'
+import type { ButtonProps } from '@nuxt/ui'
 import { computed, defineOptions, defineProps, ref } from 'vue'
 
 const props = defineProps<{
@@ -66,10 +66,7 @@ const links = computed<ButtonProps[]>(() => [
     icon: 'i-lucide-list-plus',
     onClick: () => void (isAddModalOpen.value = true),
   },
-])
-
-const moreItems = computed<DropdownMenuItem[]>(() =>
-  props.video.manage
+  ...(props.video.manage
     ? [
         {
           label: 'Edit',
@@ -77,8 +74,8 @@ const moreItems = computed<DropdownMenuItem[]>(() =>
           onClick: () => void (isEditModalOpen.value = true),
         },
       ]
-    : [],
-)
+    : []),
+])
 
 const { get: getPlayerSetting, update: updatePlayerSettings } = useSettings('player')
 
@@ -173,21 +170,6 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
           :class="{ 'bg-(--glass-strong)': link.active }"
           :aria-pressed="link.active"
         />
-
-        <UDropdownMenu
-          v-if="moreItems.length"
-          :items="moreItems"
-          :content="{ align: 'end' }"
-        >
-          <UButton
-            icon="i-lucide-ellipsis"
-            aria-label="More actions"
-            color="neutral"
-            variant="outline"
-            size="xs"
-            class="rounded-full bg-(--glass) text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)"
-          />
-        </UDropdownMenu>
       </template>
 
       <template #description>
