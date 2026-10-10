@@ -42,6 +42,28 @@ Auto-update only pulls images and restarts containers. It doesn't run Artisan co
 
 You only need this when the release notes mention changes to `containers/stubs/*`. If they do, repeat the option you used during setup (see [Generate the Podman files](production.md#generate-the-podman-files)), then reinstall the changed units with `lpod install ... --replace`.
 
+### Removing `U` and relabeling from the media mounts
+
+Older `production` templates mounted the app's volumes with Podman's `U` option, and `/media` and `/import` with `z`. `U` makes `/cache` root-owned every time the app starts, which breaks streaming after the app wakes up, and `z` relabels your whole library on every container start. If your installed `stry`, `stry-horizon` or `stry-schedule` units still have them:
+
+1. On SELinux hosts, label the media folders once (see [Storage, ownership & SELinux](podman.md#storage-ownership--selinux)):
+
+    ```bash
+    sudo semanage fcontext -a -t container_file_t '/mnt/media(/.*)?'
+    sudo restorecon -R /mnt/media
+    ```
+
+2. Regenerate the files and reinstall the three units:
+
+    ```bash
+    php artisan podman:generate production
+    lpod install production/app.quadlets --replace
+    lpod install production/horizon.quadlets --replace
+    lpod install production/schedule.quadlets --replace
+    ```
+
+If you installed the units by hand, remove `,U` from every `Volume=` line in `stry.container`, and `,z` from the `/media` and `/import` lines in all three units. Then run `systemctl --user daemon-reload` and restart them.
+
 ### Moving the idle check to lpod
 
 Did you install `stry-idle.timer` from the `ondemand` preset? The idle check is part of `lpod` now. Upgrade `lpod` by running its installer again, then switch over once:

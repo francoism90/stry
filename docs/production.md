@@ -111,6 +111,8 @@ lpod stry artisan scout:sync --import
 
 Then create an admin account with `lpod stry artisan users:create --super-admin` (see [CLI Interaction](interaction.md#users)).
 
+The app reads your library from `/mnt/media/videos` and imports from `/mnt/media/import`. On SELinux hosts, such as Fedora, label these folders once before starting the services, or the containers can't read them. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
+
 By default, `stry-horizon` gets access to `/dev/dri` for hardware-accelerated transcoding, so the server needs a GPU that provides `/dev/dri`. See [Hardware acceleration](podman.md#tuning--hardware-acceleration) for driver setup, the SELinux `setsebool` step, and how to turn this off on a server without a GPU.
 
 Check that everything works:

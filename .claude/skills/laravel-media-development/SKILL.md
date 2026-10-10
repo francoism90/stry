@@ -33,6 +33,7 @@ $probe->stream(2)?->get('tags.title');   // any raw ffprobe field via dot notati
 
 - `open()` accepts several paths. `probe($path)` probes one (the first by default), and `probeAll()` returns them keyed by path. Results are cached on the opener; after `rememberProbes()` they're also kept in `media.delivery.cache_store` per file version, like keyframe indexes. `stream()` turns that on, so playlist and segment requests don't run ffprobe again.
 - On disks that provide temporary URLs (S3), ffprobe and ffmpeg read a short-lived signed URL instead of downloading the file. Set `media.remote_inputs.enabled` to false to download to the temporary root instead.
+- FFmpeg 9 verifies TLS certificates of those URLs. For storage behind a private CA, set `media.remote_inputs.ca_file`; `media.remote_inputs.verify_tls` false accepts any certificate (development only). When building your own ffmpeg or ffprobe command around `$media->inputPath()`, put `...$media->inputArguments()` before it; they're empty for local paths, where ffmpeg would reject them.
 
 ## Running ffmpeg
 
