@@ -68,7 +68,7 @@ class TagController implements HasMiddleware
                 AllowedSort::oldest('oldest', 'created_at'),
             )
             ->defaultSort($defaultSort)
-            ->jsonSimplePaginate(defaultSize: 20);
+            ->jsonSimplePaginate(defaultSize: 16);
 
         collect($scout->items())->each(fn (Tag $tag) => $tag->append(['description', 'relates', 'avatar', 'thumb']));
 
