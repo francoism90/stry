@@ -24,8 +24,6 @@ const tabs: TabsItem[] = [
   { label: 'Danger zone', icon: 'i-lucide-triangle-alert', slot: 'manage' },
 ]
 
-const { items, types, filter } = useTags(props.item.related || [])
-
 const form = useForm(update(props.item.id), {
   name: props.item.name,
   type: props.item.type,
@@ -34,6 +32,8 @@ const form = useForm(update(props.item.id), {
   avatar: null as File | null,
   remove_avatar: false,
 })
+
+const { items, types, filter } = useTags(() => form.related)
 
 const onSubmit = (close: () => void) => {
   const options = {

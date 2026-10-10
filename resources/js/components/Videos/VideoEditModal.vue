@@ -39,7 +39,6 @@ const stateOptions: OptionItem[] = [
 const open = defineModel<boolean>('open')
 
 const { toDateTime, fromDateTime, nowDateTime, toDate, fromDate, nowDate } = useLocale()
-const { items, filter } = useTags(props.video.tags || [])
 
 const form = useForm(update(props.video.id), {
   name: props.video.name,
@@ -55,6 +54,8 @@ const form = useForm(update(props.video.id), {
   released_at: props.video.released_at || null,
   state: props.video.state.name,
 })
+
+const { items, filter } = useTags(() => form.tags)
 
 const publishedAt = computed({
   get: () => toDateTime(form.published_at),
