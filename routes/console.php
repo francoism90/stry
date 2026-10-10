@@ -13,27 +13,26 @@ use Illuminate\Support\Facades\Schedule;
 use Laravel\Horizon\Console\SnapshotCommand;
 use Laravel\Sanctum\Console\Commands\PruneExpired;
 
+/**
+ * In production, the scheduler is a oneshot container that runs `schedule:run` once a minute and
+ * stops when it exits, killing anything still running. Don't use runInBackground() here.
+ */
 Schedule::command(PruneStaleTagsCommand::class)
-    ->hourly()
-    ->runInBackground();
+    ->hourly();
 
 Schedule::command(ClearResetsCommand::class)
-    ->everyFifteenMinutes()
-    ->runInBackground();
+    ->everyFifteenMinutes();
 
 Schedule::command(SnapshotCommand::class)
-    ->everyFiveMinutes()
-    ->runInBackground();
+    ->everyFiveMinutes();
 
 Schedule::command(CleanMediaCommand::class)
     ->withoutOverlapping()
-    ->hourly()
-    ->runInBackground();
+    ->hourly();
 
 Schedule::command(PruneExpired::class, ['--hours=24'])
     ->withoutOverlapping()
-    ->dailyAt('01:30')
-    ->runInBackground();
+    ->dailyAt('01:30');
 
 Schedule::command(PruneCommand::class, [
     '--model' => [
@@ -41,10 +40,8 @@ Schedule::command(PruneCommand::class, [
         Transcode::class,
     ]])
     ->withoutOverlapping()
-    ->dailyAt('02:30')
-    ->runInBackground();
+    ->dailyAt('02:30');
 
 Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
     ->withoutOverlapping()
-    ->dailyAt('03:30')
-    ->runInBackground();
+    ->dailyAt('03:30');
