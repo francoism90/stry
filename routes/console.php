@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
 use Domain\Transcodes\Models\Transcode;
+use Foxws\Media\Commands\CleanCommand as CleanMediaCommand;
+use Foxws\Media\Commands\PruneCommand as PruneMediaCommand;
 use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\PruneStaleTagsCommand;
 use Illuminate\Database\Console\PruneCommand;
@@ -23,6 +25,11 @@ Schedule::command(SnapshotCommand::class)
     ->everyFiveMinutes()
     ->runInBackground();
 
+Schedule::command(CleanMediaCommand::class)
+    ->withoutOverlapping()
+    ->hourly()
+    ->runInBackground();
+
 Schedule::command(PruneExpired::class, ['--hours=24'])
     ->withoutOverlapping()
     ->dailyAt('01:30')
@@ -37,7 +44,7 @@ Schedule::command(PruneCommand::class, [
     ->dailyAt('02:30')
     ->runInBackground();
 
-Schedule::command('media:prune', ['--older-than' => 10080])
+Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
     ->withoutOverlapping()
     ->dailyAt('03:30')
     ->runInBackground();
