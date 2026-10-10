@@ -141,7 +141,6 @@ services:
             APP_SERVICE: horizon
         env_file:
             - ../config/app.env
-        shm_size: 128m
         # NOTE: GPU passthrough for video encoding (AddDevice=/dev/dri).
         # Uncomment on Linux hosts with a compatible GPU:
         # devices:
