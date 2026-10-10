@@ -112,7 +112,7 @@ The app, Horizon and the scheduler share these mounts:
 
 **SELinux.** On hosts with SELinux, such as Fedora, a container can only use a mount that has a container label:
 
-- The named volumes use `z`, which labels them so all containers can share them. Don't change this to `Z` (a private label): `/cache` is shared by the app, Horizon and the scheduler, and the last one to start would lock the others out.
+- The named volumes (`/config`, `/data`, `/cache`) have no flags. Podman's SELinux policy already labels named volumes for containers, so `z` would only walk the whole volume on every start. Never use `Z` (a private label) on them: `/cache` is shared by the app, Horizon and the scheduler, and the last one to start would lock the others out. If a volume ends up with the wrong label, for example after copying a backup into it from the host, run `restorecon -R ~/.local/share/containers/storage/volumes`.
 - `/media` and `/import` have no `z`. Relabeling would walk your whole library every time a container starts, and the scheduler starts one every minute. It would also change the labels of these folders on the host. Label them once on the host instead:
 
     ```bash

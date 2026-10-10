@@ -18,9 +18,9 @@ GroupAdd=keep-groups
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume=/mnt/media/videos:/media:rw
 Volume=/mnt/media/import:/import:rw
-Volume={{application}}-config.volume:/config:rw,z
-Volume={{application}}-data.volume:/data:rw,z
-Volume={{application}}-cache.volume:/cache:rw,z
+Volume={{application}}-config.volume:/config:rw
+Volume={{application}}-data.volume:/data:rw
+Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network
 PublishPort=127.0.0.1:{{ondemandPort}}:8000
 Notify=healthy
