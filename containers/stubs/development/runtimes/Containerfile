@@ -125,9 +125,8 @@ RUN apt-get update \
 COPY podman/development/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
 
 # Node.js Configuration
-RUN npm install -g npm@latest corepack@latest svgo@latest \
+RUN npm install -g npm@latest pnpm@latest svgo@latest \
     && mkdir -p ${PNPM_HOME}/store \
-    && corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm config set store-dir ${PNPM_HOME}/store \
     && chown -R docker:docker ${PNPM_HOME} /config /data
 
