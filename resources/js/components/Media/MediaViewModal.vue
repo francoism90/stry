@@ -79,23 +79,12 @@ defineProps<{
     </template>
 
     <template #footer="{ close }">
-      <div class="flex justify-end gap-2">
-        <UButton
-          label="Close"
-          color="neutral"
-          variant="soft"
-          @click.prevent="close"
-        />
-
-        <UButton
-          :href="item.url ?? ''"
-          :disabled="!item.url"
-          label="Download"
-          icon="i-lucide-download"
-          variant="soft"
-          color="neutral"
-        />
-      </div>
+      <UButton
+        label="Close"
+        color="neutral"
+        variant="soft"
+        @click.prevent="close"
+      />
     </template>
   </UModal>
 </template>

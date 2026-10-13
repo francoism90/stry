@@ -1,20 +1,39 @@
 <script setup lang="ts">
+import VideoExportController from '@/actions/Modules/Web/Videos/Controllers/VideoExportController'
 import MediaDeleteModal from '@/components/Media/MediaDeleteModal.vue'
 import MediaEditModal from '@/components/Media/MediaEditModal.vue'
 import MediaViewModal from '@/components/Media/MediaViewModal.vue'
 import { useMedia } from '@/composables/media'
 import type { Media, Video } from '@/types'
+import { router } from '@inertiajs/vue3'
 
-defineProps<{
+const props = defineProps<{
   video: Video
   items?: Media[] | undefined
 }>()
 
 const { getStreamInfo } = useMedia()
+
+const exportVideo = (): void =>
+  void router.post(VideoExportController.url(props.video.id), {}, { preserveScroll: true })
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
+    <div
+      v-if="items?.length"
+      class="flex items-center gap-2"
+    >
+      <UButton
+        icon="i-lucide-folder-output"
+        label="Export"
+        color="neutral"
+        variant="outline"
+        size="sm"
+        @click="exportVideo"
+      />
+    </div>
+
     <div
       v-if="items === undefined"
       class="flex flex-col gap-2"

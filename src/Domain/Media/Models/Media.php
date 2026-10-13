@@ -127,16 +127,6 @@ class Media extends BaseMedia
     }
 
     /**
-     * @return Attribute<string, never>
-     */
-    protected function assetUri(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): string => route('actions.media.download', $this),
-        )->shouldCache();
-    }
-
-    /**
      * @return Attribute<array<string, mixed>, never>
      */
     protected function videoStream(): Attribute
