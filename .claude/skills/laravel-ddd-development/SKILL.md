@@ -46,6 +46,8 @@ php artisan ddd:install --no-dump-autoload # skip regenerating the autoloader
 
 Publish `config/ddd.php` (`--tag=ddd-config`) to add, rename, or remove layers, or point one at `App\` to keep it under `app/`. Remove `Infrastructure`/`Integrations` from the published config if the app doesn't need that distinction — then drop the matching entry from `composer.json`'s `autoload.psr-4` too.
 
+Event listeners and policies in any layer are auto-discovered (`discover_events`, `discover_policies`): `Domain\Users\Models\User` resolves to `Domain\Users\Policies\UserPolicy` without a custom `Gate::guessPolicyNamesUsing()` callback.
+
 ### 3. Generate classes into a layer
 
 ```bash
