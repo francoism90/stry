@@ -25,6 +25,7 @@ GroupAdd=keep-groups
 Volume={{workingPath}}:/app:rw,z,U
 Volume=/mnt/media/videos:/media:rw
 Volume=/mnt/media/import:/import:rw
+Volume=/mnt/media/exports:/exports:rw
 Volume={{application}}-config.volume:/config:rw
 Volume={{application}}-data.volume:/data:rw
 Volume={{application}}-cache.volume:/cache:rw

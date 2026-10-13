@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use Modules\Web\Groups\Controllers\GroupClearController;
 use Modules\Web\Groups\Controllers\GroupToggleController;
-use Modules\Web\Media\Controllers\MediaDownloadController;
 use Modules\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use Modules\Web\Profiles\Controllers\SwitchProfileController;
 use Modules\Web\Settings\Controllers\ApplicationSettingsController;
@@ -16,6 +15,7 @@ use Modules\Web\Settings\Controllers\ReelSettingsController;
 use Modules\Web\Shuffle\Controllers\ShuffleController;
 use Modules\Web\Users\Controllers\UserSettingsController;
 use Modules\Web\Videos\Controllers\VideoDispatchTranscodeController;
+use Modules\Web\Videos\Controllers\VideoExportController;
 use Modules\Web\Videos\Controllers\VideoImportController;
 use Modules\Web\Videos\Controllers\VideoLikeController;
 use Modules\Web\Videos\Controllers\VideoSaveController;
@@ -42,11 +42,6 @@ Route::prefix('/groups')->name('groups.')->group(function () {
     Route::post('/{group}/videos/{video}/toggle', GroupToggleController::class)->name('videos.toggle');
 });
 
-// Media
-Route::prefix('/media')->name('media.')->group(function () {
-    Route::get('/{media}/download', MediaDownloadController::class)->name('download');
-});
-
 // Notifications
 Route::prefix('/notifications')->name('notifications.')->group(function () {
     Route::post('/mark-all-read', MarkAllNotificationsReadController::class)->name('mark-all-read');
@@ -58,6 +53,7 @@ Route::get('/shuffle/{type}', ShuffleController::class)->name('shuffle');
 // Videos
 Route::prefix('/videos')->name('videos.')->group(function () {
     Route::post('/import', VideoImportController::class)->name('import');
+    Route::post('/{video}/export', VideoExportController::class)->name('export');
     Route::post('/{video}/like', VideoLikeController::class)->name('like');
     Route::post('/{video}/save', VideoSaveController::class)->name('save');
     Route::post('/{video}/transcode', VideoDispatchTranscodeController::class)->name('transcode');

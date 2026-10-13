@@ -32,7 +32,6 @@ class MediaResource extends JsonResource
             'collection_name' => $this->collection_name,
             'disk' => $this->disk,
             'conversions_disk' => $this->conversions_disk,
-            'url' => $this->asset_uri,
             'codec' => $this->codec,
             'resolution' => $this->resolution,
             'bitrate' => $this->bitrate,

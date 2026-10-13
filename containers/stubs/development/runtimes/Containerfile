@@ -95,8 +95,8 @@ RUN groupadd --force -g ${GID} docker \
     && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
 
 # Create directories and set ownership
-RUN mkdir -p /app /config /data /cache /media /import \
-    && chown -R docker:docker /app /config /data /cache /media /import
+RUN mkdir -p /app /config /data /cache /media /import /exports \
+    && chown -R docker:docker /app /config /data /cache /media /import /exports
 
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini

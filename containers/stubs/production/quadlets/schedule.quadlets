@@ -16,6 +16,7 @@ UserNS=keep-id
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
 Volume=/mnt/media/videos:/media:rw
 Volume=/mnt/media/import:/import:rw
+Volume=/mnt/media/exports:/exports:rw
 Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network
 

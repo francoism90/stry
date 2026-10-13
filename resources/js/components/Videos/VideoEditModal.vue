@@ -5,6 +5,7 @@ import MediaList from '@/components/Media/MediaList.vue'
 import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
+import VideoExportModal from '@/components/Videos/VideoExportModal.vue'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
 import type { Media, OptionItem, TagMenuItem, Transcode, Video } from '@/types'
@@ -382,6 +383,28 @@ const onSubmit = (close: () => void) =>
         </div>
 
         <USeparator v-if="video.manage" />
+
+        <div
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-default bg-elevated/50 p-4"
+        >
+          <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
+            <span class="font-medium text-highlighted">Export this video</span>
+            <span class="text-muted"
+              >Copy all media files to the exports folder, optionally deleting the video afterwards.</span
+            >
+          </div>
+
+          <VideoExportModal :video="video">
+            <UButton
+              label="Export"
+              icon="i-lucide-folder-output"
+              color="neutral"
+              variant="outline"
+              size="sm"
+              class="shrink-0"
+            />
+          </VideoExportModal>
+        </div>
 
         <div
           class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-error/35 bg-error/8 p-4"

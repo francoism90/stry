@@ -173,7 +173,6 @@ export type MediaCustomProperties = {
 
 export type Media = Model & {
   name: string
-  url?: string | null
   file_name: string
   mime_type: string
   size: number

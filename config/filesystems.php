@@ -71,6 +71,14 @@ return [
             'report' => true,
         ],
 
+        'exports' => [
+            'driver' => 'local',
+            'root' => '/exports',
+            'serve' => false,
+            'throw' => true,
+            'report' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -24,7 +24,7 @@ if [ "$(id -u)" = '0' ]; then
     # /cache/temp/media are checked on their own, because the media temporary
     # files live there and a root-owned folder breaks every ffmpeg run while
     # /cache itself looks fine.
-    # Skipped for /media and /import: those are host bind mounts that already
+    # Skipped for /media, /import and /exports: those are host bind mounts that already
     # line up via UserNS=keep-id.
     for dir in /app/storage /app/bootstrap/cache /config /data /cache /cache/temp /cache/temp/media; do
         if [ -d "${dir}" ] && [ "$(stat -c '%u:%g' "${dir}")" != "${PUID}:${PGID}" ]; then
