@@ -69,6 +69,6 @@ Pass `mutual: true` when both models should list each other in `relates`; withou
 
 ## References
 
-- [usage.md](../../../../docs/usage.md)
-- [scoring.md](../../../../docs/scoring.md)
-- [configuration.md](../../../../docs/configuration.md)
+- [usage.md](https://github.com/foxws/laravel-relatable/blob/main/docs/usage.md)
+- [scoring.md](https://github.com/foxws/laravel-relatable/blob/main/docs/scoring.md)
+- [configuration.md](https://github.com/foxws/laravel-relatable/blob/main/docs/configuration.md)

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcdaf1f5ee462ba64bd2a0b6c682b5b9",
+    "content-hash": "ba65b2eb9d01310a86a96eadb74be213",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1763,16 +1763,16 @@
         },
         {
             "name": "foxws/laravel-relatable",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-relatable.git",
-                "reference": "1d191d776b05add18dc0f10b89686a51540c65b8"
+                "reference": "40383ab580c5570094df8644fec807790afdcfd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/1d191d776b05add18dc0f10b89686a51540c65b8",
-                "reference": "1d191d776b05add18dc0f10b89686a51540c65b8",
+                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/40383ab580c5570094df8644fec807790afdcfd6",
+                "reference": "40383ab580c5570094df8644fec807790afdcfd6",
                 "shasum": ""
             },
             "require": {
@@ -1831,7 +1831,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-relatable/issues",
-                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.1"
+                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.2"
             },
             "funding": [
                 {
@@ -1839,7 +1839,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-02T11:39:10+00:00"
+            "time": "2026-10-13T12:08:45+00:00"
         },
         {
             "name": "foxws/laravel-scout-builder",
@@ -1922,16 +1922,16 @@
         },
         {
             "name": "foxws/laravel-scout-relations",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-relations.git",
-                "reference": "4cd59a4ad26308f04034cc89d883bd7683d01804"
+                "reference": "a8bf41c6f4ed10a1892e28a83d9e2c419b71ed88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/4cd59a4ad26308f04034cc89d883bd7683d01804",
-                "reference": "4cd59a4ad26308f04034cc89d883bd7683d01804",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-relations/zipball/a8bf41c6f4ed10a1892e28a83d9e2c419b71ed88",
+                "reference": "a8bf41c6f4ed10a1892e28a83d9e2c419b71ed88",
                 "shasum": ""
             },
             "require": {
@@ -1989,7 +1989,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-relations/issues",
-                "source": "https://github.com/foxws/laravel-scout-relations/tree/1.0.2"
+                "source": "https://github.com/foxws/laravel-scout-relations/tree/1.0.3"
             },
             "funding": [
                 {
@@ -1997,7 +1997,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-02T11:40:09+00:00"
+            "time": "2026-10-13T12:07:27+00:00"
         },
         {
             "name": "fruitcake/php-cors",
