@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Web\Videos\Controllers;
 
+use Domain\Users\Models\User;
 use Domain\Videos\Jobs\ExportVideo;
 use Domain\Videos\Models\Video;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
+use Modules\Api\Videos\Requests\VideoExportRequest;
 
 class VideoExportController implements HasMiddleware
 {
@@ -22,11 +25,17 @@ class VideoExportController implements HasMiddleware
         ];
     }
 
-    public function __invoke(Video $video): RedirectResponse
+    public function __invoke(VideoExportRequest $request, Video $video, #[CurrentUser] User $user): RedirectResponse
     {
         Gate::authorize('update', $video);
 
-        ExportVideo::dispatch($video);
+        $deleteAfterExport = $request->shouldDeleteAfterExport();
+
+        if ($deleteAfterExport) {
+            Gate::authorize('delete', $video);
+        }
+
+        ExportVideo::dispatch($video, $user, $deleteAfterExport);
 
         toast(title: (string) $video->name, description: __('Queued for export.'), type: 'info');
 

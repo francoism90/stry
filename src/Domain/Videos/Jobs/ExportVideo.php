@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Domain\Videos\Jobs;
 
 use Carbon\CarbonInterface;
+use Domain\Users\Models\User;
 use Domain\Videos\Actions\ExportVideoMedia;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Notifications\VideoExportedNotification;
+use Domain\Videos\Notifications\VideoExportFailedNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
@@ -14,6 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class ExportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
@@ -54,6 +58,8 @@ class ExportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
 
     public function __construct(
         public Video $video,
+        public User $user,
+        public bool $deleteAfterExport = false,
     ) {
         $this
             ->onConnection('redis-long')
@@ -63,6 +69,17 @@ class ExportVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterComm
     public function handle(): void
     {
         app(ExportVideoMedia::class)->handle($this->video);
+
+        if ($this->deleteAfterExport) {
+            $this->video->deleteOrFail();
+        }
+
+        $this->user->notify(new VideoExportedNotification($this->video, $this->deleteAfterExport));
+    }
+
+    public function failed(?Throwable $exception): void
+    {
+        $this->user->notify(new VideoExportFailedNotification($this->video));
     }
 
     public function retryUntil(): CarbonInterface

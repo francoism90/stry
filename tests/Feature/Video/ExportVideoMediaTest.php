@@ -87,3 +87,15 @@ it('leaves the exports of other videos untouched', function () {
 
     Storage::disk('exports')->assertExists("{$other->getRouteKey()}/clips/other.mp4");
 });
+
+it('fails when an exported file does not match its source', function () {
+    Storage::fake('media');
+    $exports = Mockery::mock(Storage::fake('exports'))->makePartial();
+    $exports->shouldReceive('size')->andReturn(1);
+    Storage::set('exports', $exports);
+
+    $video = Video::factory()->create();
+    createStoredMedia($video, 'clips', 'clip.mp4', 'clip-contents');
+
+    expect(fn () => app(ExportVideoMedia::class)->handle($video))->toThrow(RuntimeException::class);
+});

@@ -8,12 +8,15 @@ use Domain\Media\Models\Media;
 use Domain\Videos\Models\Video;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 class ExportVideoMedia
 {
     /**
      * Copy every media file of the video to "<video>/<collection>/<file>" on the exports disk,
      * replacing a previous export of the same video.
+     *
+     * @throws RuntimeException when an exported file does not match its source
      */
     public function handle(Video $video): void
     {
@@ -27,12 +30,25 @@ class ExportVideoMedia
             $path = $this->getExportPath($disk, $directory, $media);
 
             $disk->writeStream($path, $media->stream());
+
+            $this->ensureExported($disk, $path, $media);
         });
     }
 
     public static function getDisk(): Filesystem
     {
         return Storage::disk('exports');
+    }
+
+    protected function ensureExported(Filesystem $disk, string $path, Media $media): void
+    {
+        $expectedSize = Storage::disk($media->disk)->size($media->getPathRelativeToRoot());
+
+        throw_unless(
+            $disk->exists($path) && $disk->size($path) === $expectedSize,
+            RuntimeException::class,
+            "Exported file [{$path}] does not match media [{$media->getKey()}].",
+        );
     }
 
     protected function getExportPath(Filesystem $disk, string $directory, Media $media): string
