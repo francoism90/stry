@@ -5,6 +5,7 @@ _ide_helper.php
 .env.*
 !.env.example
 .agents
+.ai
 .claude
 .devcontainer
 .git
@@ -21,11 +22,12 @@ _ide_helper.php
 .vscode
 .mcp.json
 .zed
-*.key
-*.log
-*.sql
-*.tar.gz
-*.zip
+**/*.key
+**/*.log
+**/*.md
+**/*.sql
+**/*.tar.gz
+**/*.zip
 auto-imports.d.ts
 boost.json
 bootstrap/cache/*.php
@@ -42,6 +44,7 @@ node_modules
 npm-debug.log*
 pest-plugins.json
 phpstan.neon.dist
+phpstan.stub
 phpunit.xml
 pint.json
 pnpm-debug.log*
@@ -49,11 +52,9 @@ public/build
 public/hot
 public/storage
 public/vendor
+skills-lock.json
 storage/**/*.php
 storage/debugbar/*
 tests
 Thumbs.db
-AGENTS.md
-CLAUDE.md
-UPGRADING.md
 vendor
