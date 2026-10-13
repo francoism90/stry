@@ -7,7 +7,7 @@ use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Web\Profiles\Middlewares\ResolveCurrentProfile;
+use Modules\Web\Profiles\Middleware\ResolveCurrentProfile;
 
 uses(RefreshDatabase::class);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Web\Profiles\Middlewares;
+namespace Modules\Web\Profiles\Middleware;
 
 use Closure;
 use Domain\Profiles\Models\Profile;

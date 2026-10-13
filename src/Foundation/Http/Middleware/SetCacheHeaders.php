@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Foundation\Http\Middlewares;
+namespace Foundation\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Middleware\SetCacheHeaders as Middleware;
