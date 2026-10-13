@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9438ea0d26897746570b8a33eed7576",
+    "content-hash": "dcdaf1f5ee462ba64bd2a0b6c682b5b9",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1267,16 +1267,16 @@
         },
         {
             "name": "foxws/laravel-ddd",
-            "version": "0.0.5",
+            "version": "0.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ddd.git",
-                "reference": "00d0d80b2d807f00d3d2913219a348e8a95ee851"
+                "reference": "1bc16eafc66544a0f3249095c69fe476f7239ed8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ddd/zipball/00d0d80b2d807f00d3d2913219a348e8a95ee851",
-                "reference": "00d0d80b2d807f00d3d2913219a348e8a95ee851",
+                "url": "https://api.github.com/repos/foxws/laravel-ddd/zipball/1bc16eafc66544a0f3249095c69fe476f7239ed8",
+                "reference": "1bc16eafc66544a0f3249095c69fe476f7239ed8",
                 "shasum": ""
             },
             "require": {
@@ -1330,7 +1330,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ddd/issues",
-                "source": "https://github.com/foxws/laravel-ddd/tree/0.0.5"
+                "source": "https://github.com/foxws/laravel-ddd/tree/0.0.8"
             },
             "funding": [
                 {
@@ -1338,20 +1338,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-16T18:57:42+00:00"
+            "time": "2026-10-13T11:49:51+00:00"
         },
         {
             "name": "foxws/laravel-essentials",
-            "version": "0.0.3",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-essentials.git",
-                "reference": "6a9df2af51770c9298293534e8759312cad40922"
+                "reference": "fd41c63fb76e93dfb86fbefce82a7ecac811a324"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-essentials/zipball/6a9df2af51770c9298293534e8759312cad40922",
-                "reference": "6a9df2af51770c9298293534e8759312cad40922",
+                "url": "https://api.github.com/repos/foxws/laravel-essentials/zipball/fd41c63fb76e93dfb86fbefce82a7ecac811a324",
+                "reference": "fd41c63fb76e93dfb86fbefce82a7ecac811a324",
                 "shasum": ""
             },
             "require": {
@@ -1404,7 +1404,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-essentials/issues",
-                "source": "https://github.com/foxws/laravel-essentials/tree/0.0.3"
+                "source": "https://github.com/foxws/laravel-essentials/tree/0.0.4"
             },
             "funding": [
                 {
@@ -1412,7 +1412,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-16T18:39:11+00:00"
+            "time": "2026-10-02T11:54:41+00:00"
         },
         {
             "name": "foxws/laravel-media",
@@ -1593,16 +1593,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "5.5.0",
+            "version": "5.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "f0370b35fef9937761343d738e43e8f3e80c1e6d"
+                "reference": "cea5660d5a3176827055cb2951a33ccf48cbf79a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/f0370b35fef9937761343d738e43e8f3e80c1e6d",
-                "reference": "f0370b35fef9937761343d738e43e8f3e80c1e6d",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/cea5660d5a3176827055cb2951a33ccf48cbf79a",
+                "reference": "cea5660d5a3176827055cb2951a33ccf48cbf79a",
                 "shasum": ""
             },
             "require": {
@@ -1669,7 +1669,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/5.5.0"
+                "source": "https://github.com/foxws/laravel-podman/tree/5.5.1"
             },
             "funding": [
                 {
@@ -1677,7 +1677,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-12T12:16:39+00:00"
+            "time": "2026-10-13T11:04:10+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
@@ -2548,64 +2548,6 @@
                 }
             ],
             "time": "2026-08-24T17:13:02+00:00"
-        },
-        {
-            "name": "http-interop/http-factory-guzzle",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/http-interop/http-factory-guzzle.git",
-                "reference": "c2c859ceb05c3f42e710b60555f4c35b6a4a3995"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/http-interop/http-factory-guzzle/zipball/c2c859ceb05c3f42e710b60555f4c35b6a4a3995",
-                "reference": "c2c859ceb05c3f42e710b60555f4c35b6a4a3995",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/psr7": "^1.7||^2.0",
-                "php": ">=7.3",
-                "psr/http-factory": "^1.0"
-            },
-            "provide": {
-                "psr/http-factory-implementation": "^1.0"
-            },
-            "require-dev": {
-                "http-interop/http-factory-tests": "^0.9",
-                "phpunit/phpunit": "^9.5"
-            },
-            "suggest": {
-                "guzzlehttp/psr7": "Includes an HTTP factory starting in version 2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Http\\Factory\\Guzzle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "An HTTP Factory using Guzzle PSR7",
-            "keywords": [
-                "factory",
-                "http",
-                "psr-17",
-                "psr-7"
-            ],
-            "support": {
-                "issues": "https://github.com/http-interop/http-factory-guzzle/issues",
-                "source": "https://github.com/http-interop/http-factory-guzzle/tree/1.2.1"
-            },
-            "time": "2025-12-15T11:28:16+00:00"
         },
         {
             "name": "inertiajs/inertia-laravel",
@@ -14860,69 +14802,6 @@
                 "source": "https://github.com/laravel/doctor"
             },
             "time": "2026-07-22T17:39:59+00:00"
-        },
-        {
-            "name": "laravel/envoy",
-            "version": "v2.12.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/envoy.git",
-                "reference": "2f475252d9f2ab45e259d9b24e18cd179a6814df"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/envoy/zipball/2f475252d9f2ab45e259d9b24e18cd179a6814df",
-                "reference": "2f475252d9f2ab45e259d9b24e18cd179a6814df",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0|^7.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
-                "php": "^7.2|^8.0",
-                "symfony/console": "^4.3|^5.0|^6.0|^7.0|^8.0",
-                "symfony/process": "^4.3|^5.0|^6.0|^7.0|^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^8.0|^9.0|^10.4"
-            },
-            "suggest": {
-                "ext-posix": "Required to determine the System user on Unix systems."
-            },
-            "bin": [
-                "bin/envoy"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laravel\\Envoy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "Elegant SSH tasks for PHP.",
-            "keywords": [
-                "laravel",
-                "ssh"
-            ],
-            "support": {
-                "issues": "https://github.com/laravel/envoy/issues",
-                "source": "https://github.com/laravel/envoy/tree/v2.12.2"
-            },
-            "time": "2026-04-01T12:56:10+00:00"
         },
         {
             "name": "laravel/mcp",

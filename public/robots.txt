@@ -1,8 +1,15 @@
 User-agent: *
-Disallow: /api/
+Disallow: /_boost/
 Disallow: /_inertia/
-Disallow: /livewire/
+Disallow: /api/
 Disallow: /actions/
+Disallow: /broadcasting/
+Disallow: /horizon/
+Disallow: /telescope/
+Disallow: /livewire/
+Disallow: /storage/
+Disallow: /up/
+Disallow: /offline.html
 
 User-agent: ia_archiver
 Disallow: /

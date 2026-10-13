@@ -15,8 +15,7 @@ return [
     */
 
     'substitutions' => env('DDD_SUBSTITUTIONS', [
-        'channel' => 'Broadcasting',
-        'middleware' => 'Middlewares',
+        // 'action' => 'CustomActions',
     ]),
 
     /*
@@ -44,9 +43,30 @@ return [
     | everything lives under app_path(). This lets listeners under Domain,
     | Modules, or any other layer be discovered automatically.
     |
+    | Set it to true for every layer, false to disable it, or a list (or
+    | comma-separated string) of layer keys, e.g. ['Domain', 'Modules'].
+    |
     */
 
     'discover_events' => env('DDD_DISCOVER_EVENTS', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Policy Auto Discovery
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, Laravel's policy auto discovery also looks for policies
+    | next to each layer's models, e.g. Domain\Users\Models\User resolves to
+    | Domain\Users\Policies\UserPolicy, before Laravel's default guesses.
+    | Models outside a Models folder resolve to {Layer}\{PluralModel}\Policies,
+    | which only applies to Domain unless you list the layers yourself.
+    |
+    | Set it to true for every layer, false to disable it, or a list (or
+    | comma-separated string) of layer keys, e.g. ['Domain', 'Modules'].
+    |
+    */
+
+    'discover_policies' => env('DDD_DISCOVER_POLICIES', true),
 
     /*
     |--------------------------------------------------------------------------

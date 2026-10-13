@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Support\Inertia\Middlewares;
+namespace Support\Inertia\Middleware;
 
 use Domain\Shared\Enums\Language;
 use Domain\Shared\Enums\Locale;
