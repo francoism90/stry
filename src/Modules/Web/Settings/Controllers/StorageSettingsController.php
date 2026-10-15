@@ -83,7 +83,7 @@ class StorageSettingsController implements HasMiddleware
             return response()->noContent();
         }
 
-        toast(title: __('Settings saved'), description: __('Storage settings have been updated successfully.'));
+        toast(title: __('Settings saved'), description: __('Restart the app and its queue workers to use the new storage settings.'));
 
         return back();
     }

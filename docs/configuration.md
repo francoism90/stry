@@ -24,7 +24,7 @@ Use environment variables instead of editing the `config/*.php` files. That keep
 
 ## Admin-managed settings
 
-A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing / Reels / Storage**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy.
+A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing / Reels / Storage**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy. Storage is the exception: its disks are loaded when the app starts (see [Storage](#storage)).
 
 | Settings class       | Admin tab   | What it covers                                                                       |
 | -------------------- | ----------- | ------------------------------------------------------------------------------------ |
@@ -167,6 +167,7 @@ Disks are managed under **Admin → Storage**. Each disk is a local folder or an
 - Local disks are created in one of the folders of `Domain\Shared\Enums\DiskRoot`: `/media`, `/import`, `/exports`, `/mnt`, `/storage`, `/downloads`, `/vault`, `/videos`, `/movies`, `/tv`, `/shows`, `/library`, `/nas`, `/volumes` or `/srv/media`, or a subfolder of one. The folder must be mounted in the `app`, `horizon` and `schedule` containers; folders that aren't are shown but can't be picked. The app's own `/app`, `/data`, `/config` and `/cache` are never allowed. Turn on **Serve files** for disks that hold conversions, thumbnails or reels, because the browser loads those through temporary URLs.
 - S3 disks use the `s3` disk from `config/filesystems.php` (the `AWS_*` variables) for anything they leave empty, including the credentials. A key and secret set on a disk are stored encrypted with `APP_KEY` and are never shown again. Create the bucket and its CORS policy with `php artisan podman:s3-setup`.
 - A disk can't be removed while media are still stored on it.
+- The app and its queue workers load the disks when they start, so restart them after changing a disk: `php artisan octane:reload` and `php artisan horizon:terminate`, or restart the `app` and `horizon` services.
 - Transcodes stay on the static `cache` disk unless a disk is made their default. ffmpeg writes to it, so keep it local.
 
 The number of files an import picks up at once is set under **Admin → Processing**.

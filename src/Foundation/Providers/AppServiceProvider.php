@@ -7,7 +7,6 @@ namespace Foundation\Providers;
 use Domain\Profiles\Support\CurrentProfileContext;
 use Foundation\Settings\StorageSettings;
 use Illuminate\Database\Events\MigrationsEnded;
-use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Events\SettingsSaved;
@@ -47,8 +46,9 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Disks from the storage settings are registered at boot, and again when they're saved, after
-     * migrating and for each queued job, so long-running workers pick up changes.
+     * Disks from the storage settings are registered once when the application boots, so Octane and
+     * queue workers keep them until they restart. The process that saves them or runs the migrations
+     * registers them again.
      */
     protected function bootStorageDisks(): void
     {
@@ -57,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
         $register();
 
         Event::listen(MigrationsEnded::class, $register);
-        Event::listen(JobProcessing::class, $register);
         Event::listen(SettingsSaved::class, function (SettingsSaved $event) use ($register): void {
             if ($event->settings instanceof StorageSettings) {
                 $register();

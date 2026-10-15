@@ -13,32 +13,6 @@ use League\Flysystem\Visibility;
 class FilesystemManager extends BaseFilesystemManager
 {
     /**
-     * A hash of the configuration each resolved disk was built from.
-     *
-     * @var array<string, string>
-     */
-    protected array $fingerprints = [];
-
-    /**
-     * Rebuild a resolved disk once its configuration changed, as disks from the storage settings can
-     * change while a worker keeps running.
-     *
-     * @param  string  $name
-     */
-    protected function get($name)
-    {
-        $fingerprint = md5(serialize($this->getConfig($name)));
-
-        if (($this->fingerprints[$name] ?? $fingerprint) !== $fingerprint) {
-            unset($this->disks[$name]);
-        }
-
-        $this->fingerprints[$name] = $fingerprint;
-
-        return parent::get($name);
-    }
-
-    /**
      * @param  array<string, mixed>  $config
      */
     public function createS3Driver(array $config): S3TemporaryUrlAdapter
