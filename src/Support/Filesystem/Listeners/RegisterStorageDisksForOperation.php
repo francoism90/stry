@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Support\Filesystem\Listeners;
 
+use Laravel\Octane\Events\RequestReceived;
 use Support\Filesystem\RegisterStorageDisks;
 
 /**
@@ -12,7 +13,7 @@ use Support\Filesystem\RegisterStorageDisks;
  */
 class RegisterStorageDisksForOperation
 {
-    public function handle(object $event): void
+    public function handle(RequestReceived $event): void
     {
         $event->sandbox->make(RegisterStorageDisks::class)->handle();
     }

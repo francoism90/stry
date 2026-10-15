@@ -38,7 +38,7 @@ class StorageSettingsRequest extends FormRequest
             'disks.*.name' => ['required', 'string', 'max:64', 'regex:/^[a-z0-9][a-z0-9_-]*$/', 'distinct', Rule::notIn($this->getReservedDiskNames())],
             'disks.*.label' => ['required', 'string', 'max:100'],
             'disks.*.driver' => ['required', Rule::enum(DiskDriver::class)],
-            'disks.*.path' => ['nullable', 'string', 'max:255'],
+            'disks.*.path' => ['nullable', 'required_if:disks.*.driver,local', 'string', 'max:255', app(AllowedDiskRoot::class)],
             'disks.*.visibility' => ['required', Rule::in(['public', 'private'])],
             'disks.*.serve' => ['boolean'],
             'disks.*.contents' => ['array'],
@@ -63,7 +63,6 @@ class StorageSettingsRequest extends FormRequest
     public function after(): array
     {
         return [
-            $this->validateLocalPaths(...),
             $this->validateDefaults(...),
             $this->validateSecrets(...),
             $this->validateRemovedDisks(...),
@@ -76,7 +75,7 @@ class StorageSettingsRequest extends FormRequest
      */
     public function disks(): Collection
     {
-        return collect($this->validated('disks'))
+        return $this->safe()->collect('disks')
             ->map(fn (array $disk): StorageDisk => StorageDisk::from([
                 ...$disk,
                 'path' => (string) ($disk['path'] ?? ''),
@@ -96,7 +95,7 @@ class StorageSettingsRequest extends FormRequest
     {
         $stored = $this->getSettings()->credentials;
 
-        return collect($this->validated('disks'))
+        return $this->safe()->collect('disks')
             ->filter(fn (array $disk): bool => $disk['driver'] === DiskDriver::S3->value)
             ->mapWithKeys(fn (array $disk): array => [$disk['name'] => new StorageCredentials(
                 key: filled($disk['key'] ?? null) ? (string) $disk['key'] : ($stored[$disk['name']]->key ?? ''),
@@ -104,19 +103,6 @@ class StorageSettingsRequest extends FormRequest
             )])
             ->filter(fn (StorageCredentials $credentials): bool => $credentials->key !== '' || $credentials->hasSecret())
             ->all();
-    }
-
-    protected function validateLocalPaths(Validator $validator): void
-    {
-        foreach ($this->getSubmittedDisks() as $index => $disk) {
-            if (($disk['driver'] ?? null) !== DiskDriver::Local->value) {
-                continue;
-            }
-
-            $rule = app(AllowedDiskRoot::class);
-
-            $rule->validate('path', $disk['path'] ?? '', fn (string $message) => $validator->errors()->add("disks.{$index}.path", $message));
-        }
     }
 
     /**
@@ -223,11 +209,13 @@ class StorageSettingsRequest extends FormRequest
     }
 
     /**
-     * @return Collection<int, array<string, mixed>>
+     * @return Collection<int, array<array-key, mixed>>
      */
     protected function getSubmittedDisks(): Collection
     {
-        return collect((array) $this->input('disks', []))->filter(fn (mixed $disk): bool => is_array($disk));
+        return collect((array) $this->input('disks', []))
+            ->filter(fn (mixed $disk): bool => is_array($disk))
+            ->values();
     }
 
     /**

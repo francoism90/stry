@@ -21,6 +21,8 @@ class UpdateStorageSettings
         $settings->disks = $disks;
         $settings->credentials = $credentials;
 
-        return $settings->save();
+        $settings->save();
+
+        return $settings;
     }
 }
