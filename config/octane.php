@@ -23,6 +23,7 @@ use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
+use Support\Filesystem\Listeners\RegisterStorageDisksForOperation;
 
 return [
 
@@ -74,7 +75,7 @@ return [
         RequestReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
             ...Octane::prepareApplicationForNextRequest(),
-            //
+            RegisterStorageDisksForOperation::class,
         ],
 
         RequestHandled::class => [

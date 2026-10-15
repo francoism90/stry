@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Media\Concerns;
 
+use Domain\Shared\Enums\DiskContent;
 use Foxws\Media\FFMpeg\ThumbnailsResult;
-use Illuminate\Support\Facades\Config;
 
 /**
  * Thumbnail sprite sheets sampled from this clip, kept in its "thumbnails" custom property.
@@ -21,7 +21,7 @@ trait InteractsWithThumbnails
 
     public static function getThumbnailsDisk(): string
     {
-        return Config::string('videos.thumbnails_disk', 'conversions');
+        return DiskContent::Thumbnails->disk();
     }
 
     public function hasThumbnails(): bool

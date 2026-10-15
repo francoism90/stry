@@ -10,6 +10,7 @@ use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Shared\Concerns\InteractsWithCache;
+use Domain\Shared\Enums\DiskContent;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Tags\Enums\TagType;
 use Domain\Tags\QueryBuilders\TagQueryBuilder;
@@ -94,8 +95,8 @@ class Tag extends BaseTag implements HasMedia
     {
         $this
             ->addMediaCollection('avatar')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
+            ->useDisk(DiskContent::Conversions->disk())
+            ->storeConversionsOnDisk(DiskContent::Conversions->disk())
             ->singleFile()
             ->withResponsiveImages()
             ->acceptsMimeTypes([

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Videos\Actions;
 
 use Domain\Media\Models\Media;
+use Domain\Shared\Enums\DiskContent;
 use Domain\Videos\Models\Video;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +38,7 @@ class ExportVideoMedia
 
     public static function getDisk(): Filesystem
     {
-        return Storage::disk('exports');
+        return Storage::disk(DiskContent::Exports->disk());
     }
 
     protected function ensureExported(Filesystem $disk, string $path, Media $media): void

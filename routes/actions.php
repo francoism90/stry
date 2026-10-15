@@ -12,12 +12,14 @@ use Modules\Web\Settings\Controllers\ChapterSettingsController;
 use Modules\Web\Settings\Controllers\PlaybackSettingsController;
 use Modules\Web\Settings\Controllers\ProcessingSettingsController;
 use Modules\Web\Settings\Controllers\ReelSettingsController;
+use Modules\Web\Settings\Controllers\StorageSettingsController;
 use Modules\Web\Shuffle\Controllers\ShuffleController;
 use Modules\Web\Users\Controllers\UserSettingsController;
 use Modules\Web\Videos\Controllers\VideoDispatchTranscodeController;
 use Modules\Web\Videos\Controllers\VideoExportController;
 use Modules\Web\Videos\Controllers\VideoImportController;
 use Modules\Web\Videos\Controllers\VideoLikeController;
+use Modules\Web\Videos\Controllers\VideoMoveController;
 use Modules\Web\Videos\Controllers\VideoSaveController;
 use Modules\Web\Videos\Controllers\VideoTranscodedController;
 
@@ -29,6 +31,7 @@ Route::prefix('/settings')->name('settings.')->group(function () {
     Route::singleton('chapters', ChapterSettingsController::class)->only(['show', 'update']);
     Route::singleton('processing', ProcessingSettingsController::class)->only(['show', 'update']);
     Route::singleton('reels', ReelSettingsController::class)->only(['show', 'update']);
+    Route::singleton('storage', StorageSettingsController::class)->only(['show', 'update']);
 });
 
 // Profiles
@@ -55,6 +58,7 @@ Route::prefix('/videos')->name('videos.')->group(function () {
     Route::post('/import', VideoImportController::class)->name('import');
     Route::post('/{video}/export', VideoExportController::class)->name('export');
     Route::post('/{video}/like', VideoLikeController::class)->name('like');
+    Route::post('/{video}/move', VideoMoveController::class)->name('move');
     Route::post('/{video}/save', VideoSaveController::class)->name('save');
     Route::post('/{video}/transcode', VideoDispatchTranscodeController::class)->name('transcode');
     Route::post('/{video}/transcoded', VideoTranscodedController::class)->name('transcoded');

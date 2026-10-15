@@ -5,6 +5,7 @@ use Domain\Videos\Settings\PlaybackSettings;
 use Domain\Videos\Settings\ProcessingSettings;
 use Domain\Videos\Settings\ReelSettings;
 use Foundation\Settings\GeneralSettings;
+use Foundation\Settings\StorageSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
 use Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast;
@@ -24,6 +25,7 @@ return [
         ChapterSettings::class,
         ProcessingSettings::class,
         ReelSettings::class,
+        StorageSettings::class,
     ],
 
     /*

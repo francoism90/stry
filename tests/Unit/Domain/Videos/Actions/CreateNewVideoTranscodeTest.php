@@ -17,8 +17,7 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     Storage::fake('media');
-    Storage::fake('transcodes');
-    config(['videos.transcode_disk' => 'transcodes']);
+    Storage::fake('cache');
 
     $this->fake = FakeAbAv1::respond(Media::fake());
 });
@@ -47,7 +46,7 @@ it('encodes each clip to AV1 with verification and saves it as a completed trans
 
     expect($transcode->isCompleted())->toBeTrue()
         ->and($transcode->getOutputPath())->toEndWith('clip.mp4');
-    Storage::disk('transcodes')->assertExists($transcode->getOutputPath());
+    Storage::disk('cache')->assertExists($transcode->getOutputPath());
     $this->fake->assertRan(AbAv1Executable::AbAv1, fn (array $arguments) => $arguments[0] === 'auto-encode'
         && in_array('--verify', $arguments, true)
         && in_array('--fail-fast', $arguments, true));

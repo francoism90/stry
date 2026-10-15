@@ -8,6 +8,7 @@ use Database\Factories\TranscodeFactory;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
+use Domain\Shared\Enums\DiskContent;
 use Domain\Transcodes\Collections\TranscodeCollection;
 use Domain\Transcodes\Enums\TranscodeEncoder;
 use Domain\Transcodes\Observers\TranscodeObserver;
@@ -26,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Laravel\Scout\Searchable;
@@ -247,7 +247,7 @@ class Transcode extends Model
 
     public static function getDestinationDisk(): string
     {
-        return Config::string('videos.transcode_disk', 'cache');
+        return DiskContent::Transcodes->disk();
     }
 
     /**
