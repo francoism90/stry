@@ -187,6 +187,12 @@ export type VideoDiskOption = {
   current: boolean
 }
 
+export type StorageRoot = {
+  label: string
+  value: string
+  mounted: boolean
+}
+
 export type StorageContent = {
   value: string
   label: string
@@ -198,7 +204,7 @@ export type StorageSettings = {
   disks: StorageDisk[]
   drivers: OptionItem[]
   contents: StorageContent[]
-  allowed_roots: string[]
+  roots: StorageRoot[]
   s3_defaults: {
     bucket: string | null
     region: string | null

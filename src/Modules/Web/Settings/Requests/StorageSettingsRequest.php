@@ -113,7 +113,7 @@ class StorageSettingsRequest extends FormRequest
                 continue;
             }
 
-            $rule = new AllowedDiskRoot;
+            $rule = app(AllowedDiskRoot::class);
 
             $rule->validate('path', $disk['path'] ?? '', fn (string $message) => $validator->errors()->add("disks.{$index}.path", $message));
         }

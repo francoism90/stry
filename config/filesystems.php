@@ -26,6 +26,9 @@ return [
     |
     | Supported drivers: "local", "ftp", "sftp", "s3"
     |
+    | The media, import, exports and conversions disks are managed in the
+    | storage settings (Admin → Storage) and added here at runtime.
+    |
     */
 
     'disks' => [
@@ -71,37 +74,6 @@ return [
         ],
 
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Storage Disks
-    |--------------------------------------------------------------------------
-    |
-    | The media, import, exports and conversions disks are managed in the
-    | storage settings and added to the disks above at runtime. Local disks
-    | there must be inside one of these roots, which should be mounted in
-    | the container. Never add /app, /data, /config or /cache: they hold
-    | the application and its own data.
-    |
-    */
-
-    'allowed_roots' => array_filter(explode(',', (string) env('FILESYSTEM_ALLOWED_ROOTS', implode(',', [
-        '/media',
-        '/import',
-        '/exports',
-        '/mnt',
-        '/storage',
-        '/downloads',
-        '/vault',
-        '/videos',
-        '/movies',
-        '/tv',
-        '/shows',
-        '/library',
-        '/nas',
-        '/volumes',
-        '/srv/media',
-    ])))),
 
     /*
     |--------------------------------------------------------------------------

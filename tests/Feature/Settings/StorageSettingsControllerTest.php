@@ -10,6 +10,7 @@ use Foundation\Settings\StorageSettings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Modules\Web\Settings\Controllers\StorageSettingsController;
+use Modules\Web\Settings\Rules\AllowedDiskRoot;
 use Support\Filesystem\CheckDiskConnection;
 
 beforeEach(function () {
@@ -19,7 +20,7 @@ beforeEach(function () {
         File::ensureDirectoryExists("{$this->root}/{$directory}");
     }
 
-    config(['filesystems.allowed_roots' => [$this->root]]);
+    $this->app->bind(AllowedDiskRoot::class, fn () => new AllowedDiskRoot([$this->root]));
 
     $this->admin = User::factory()->create();
     $this->admin->assignRole('super-admin');
@@ -94,6 +95,7 @@ it('shows the disks to a super-admin without their secrets', function () {
     $response->assertJsonPath('disks.3.name', 'conversions');
     $response->assertJsonMissingPath('disks.3.secret');
     $response->assertJsonMissingPath('disks.3.key');
+    $response->assertJsonPath('roots.0.value', '/media');
     expect($response->json('disks.3'))->toHaveKey('has_secret');
 });
 

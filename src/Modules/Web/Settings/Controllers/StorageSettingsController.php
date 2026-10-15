@@ -8,13 +8,13 @@ use Domain\Shared\Actions\UpdateStorageSettings;
 use Domain\Shared\DataObjects\StorageDisk;
 use Domain\Shared\Enums\DiskContent;
 use Domain\Shared\Enums\DiskDriver;
+use Domain\Shared\Enums\DiskRoot;
 use Foundation\Settings\StorageSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
 use Modules\Web\Settings\Requests\StorageSettingsRequest;
 use Spatie\LaravelOptions\Options;
@@ -53,7 +53,11 @@ class StorageSettingsController implements HasMiddleware
                 'requires_temporary_urls' => $content->requiresTemporaryUrls(),
                 'prefers_local' => $content->prefersLocal(),
             ])->all(),
-            'allowed_roots' => Config::array('filesystems.allowed_roots', []),
+            'roots' => collect(DiskRoot::cases())->map(fn (DiskRoot $root): array => [
+                'label' => $root->label(),
+                'value' => $root->value,
+                'mounted' => $root->isMounted(),
+            ])->all(),
             's3_defaults' => [
                 'bucket' => $s3['bucket'] ?? null,
                 'region' => $s3['region'] ?? null,

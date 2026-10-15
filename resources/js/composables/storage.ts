@@ -1,4 +1,4 @@
-import type { OptionItem, StorageDisk, StorageContent, StorageSettings } from '@/types'
+import type { OptionItem, StorageContent, StorageDisk, StorageRoot, StorageSettings } from '@/types'
 import { computed, ref, toValue, type MaybeRefOrGetter } from 'vue'
 
 export const newStorageDisk = (path = ''): StorageDisk => ({
@@ -23,28 +23,84 @@ export const newStorageDisk = (path = ''): StorageDisk => ({
 })
 
 /**
+ * Splits a local disk path into the root it's in and the subfolder below it, using the longest
+ * matching root. A path outside every root keeps its full value as the subfolder.
+ */
+export const splitDiskPath = (path: string, roots: string[]): { root: string | undefined; subfolder: string } => {
+  const root = [...roots]
+    .sort((a, b) => b.length - a.length)
+    .find((candidate) => path === candidate || path.startsWith(`${candidate}/`))
+
+  if (!root) {
+    return { root: undefined, subfolder: path }
+  }
+
+  return { root, subfolder: path.slice(root.length).replace(/^\/+/, '') }
+}
+
+export const joinDiskPath = (root: string | undefined, subfolder: string): string => {
+  const trimmed = subfolder.replace(/^\/+|\/+$/g, '')
+
+  if (!root) {
+    return trimmed
+  }
+
+  return trimmed ? `${root}/${trimmed}` : root
+}
+
+/**
  * Editing a list of storage disks: adding and removing them, the contents they can hold and the
  * defaults S3 disks inherit.
  */
 export function useStorageDisks(disks: MaybeRefOrGetter<StorageDisk[]>) {
   const drivers = ref<OptionItem[]>([])
   const contents = ref<StorageContent[]>([])
-  const allowedRoots = ref<string[]>([])
+  const roots = ref<StorageRoot[]>([])
   const s3Defaults = ref<StorageSettings['s3_defaults'] | null>(null)
 
   const configure = (settings: StorageSettings): void => {
     drivers.value = settings.drivers
     contents.value = settings.contents
-    allowedRoots.value = settings.allowed_roots
+    roots.value = settings.roots
     s3Defaults.value = settings.s3_defaults
   }
 
   const addDisk = (): void => {
-    toValue(disks).push(newStorageDisk(allowedRoots.value[0] ?? ''))
+    toValue(disks).push(newStorageDisk(roots.value.find((root) => root.mounted)?.value ?? ''))
   }
 
   const removeDisk = (index: number): void => {
     toValue(disks).splice(index, 1)
+  }
+
+  const rootItems = computed<OptionItem[]>(() =>
+    [...roots.value]
+      .sort((a, b) => Number(b.mounted) - Number(a.mounted))
+      .map((root) => ({
+        label: root.mounted ? root.label : `${root.label} (not mounted)`,
+        value: root.value,
+        disabled: !root.mounted,
+      })),
+  )
+
+  const rootOf = (disk: StorageDisk): string | undefined =>
+    splitDiskPath(
+      disk.path,
+      roots.value.map((root) => root.value),
+    ).root
+
+  const subfolderOf = (disk: StorageDisk): string =>
+    splitDiskPath(
+      disk.path,
+      roots.value.map((root) => root.value),
+    ).subfolder
+
+  const setRoot = (disk: StorageDisk, root: string | undefined): void => {
+    disk.path = joinDiskPath(root, subfolderOf(disk))
+  }
+
+  const setSubfolder = (disk: StorageDisk, subfolder: string): void => {
+    disk.path = joinDiskPath(rootOf(disk), subfolder)
   }
 
   const contentItems = computed<OptionItem[]>(() =>
@@ -80,7 +136,12 @@ export function useStorageDisks(disks: MaybeRefOrGetter<StorageDisk[]>) {
   return {
     drivers,
     contents,
-    allowedRoots,
+    roots,
+    rootItems,
+    rootOf,
+    subfolderOf,
+    setRoot,
+    setSubfolder,
     s3Defaults,
     configure,
     addDisk,
