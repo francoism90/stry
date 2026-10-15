@@ -39,11 +39,11 @@ Run these with `lpod stry artisan ...`, or the shorter `lpod stry a ...`.
 
 ### Users
 
-| Command                      | Description                                      |
-| ---------------------------- | ------------------------------------------------ |
-| `users:create`               | Create a user account (asks for details)         |
-| `users:create --admin`       | The same, and give the user the admin role       |
-| `users:create --super-admin` | The same, and give the user the super-admin role |
+| Command                      | Description                                                                               |
+| ---------------------------- | ----------------------------------------------------------------------------------------- |
+| `users:create`               | Create a user account (asks for details)                                                  |
+| `users:create --admin`       | The same, and give the user the admin role                                                |
+| `users:create --super-admin` | The same, and give the user the super-admin role                                          |
 | `users:exists`               | Succeed when a user exists; `--admin` or `--super-admin` only counts users with that role |
 
 To create a user without prompts, for example from an installer, pass the details as options and the password through stdin, so it stays out of the process list:
