@@ -1,0 +1,106 @@
+name: Upgrade
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: upgrade-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    upgrade:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        name: Upgrade from latest release
+
+        services:
+            postgres:
+                image: postgres:latest
+                env:
+                    POSTGRES_DB: testing
+                    POSTGRES_USER: user
+                    POSTGRES_PASSWORD: password
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U user -d testing"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+            redis:
+                image: redis:latest
+                ports:
+                    - 6379:6379
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v7
+              with:
+                  fetch-depth: 0
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.5
+                  extensions: dom, curl, libxml, mbstring, pcntl, exif, iconv, fileinfo, xml, pdo, pdo_pgsql, redis
+                  coverage: none
+
+            - name: Get Composer cache directory
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v6
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+
+            - name: Determine latest release
+              id: release
+              run: echo "tag=$(git tag --list 'v*' --sort=-v:refname | grep -v -- '-' | head -n 1)" >> $GITHUB_OUTPUT
+
+            - name: Install latest release
+              env:
+                  RELEASE: ${{ steps.release.outputs.tag }}
+              run: |
+                  git checkout --quiet "$RELEASE"
+                  composer install --prefer-dist --no-interaction --no-progress
+                  cp .env.ci .env
+                  php artisan key:generate
+                  php artisan migrate --force --seed
+
+            - name: Upgrade to this commit
+              env:
+                  SHA: ${{ github.sha }}
+              run: |
+                  git checkout --quiet "$SHA"
+                  composer install --prefer-dist --no-interaction --no-progress
+                  php artisan app:update --no-restart
+
+            - name: Verify upgrade
+              run: |
+                  php artisan tinker --execute '
+                      foreach (["media", "import", "exports", "conversions"] as $disk) {
+                          config("filesystems.disks.{$disk}") ?? throw new RuntimeException("Disk [{$disk}] is not registered.");
+                      }
+
+                      $notices = app(Support\System\ApplicationNotices::class)->toArray();
+
+                      in_array(true, $notices, true) && throw new RuntimeException("Unexpected notices: ".json_encode($notices));
+
+                      echo "Upgrade verified.";
+                  '
