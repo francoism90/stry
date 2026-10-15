@@ -29,10 +29,12 @@ class UserExistsCommand extends Command
             default => null,
         };
 
-        $exists = User::query()
-            ->when($role !== null, fn ($query) => $query->role($role))
-            ->exists();
+        $query = User::query();
 
-        return $exists ? self::SUCCESS : self::FAILURE;
+        if ($role !== null) {
+            $query->role($role);
+        }
+
+        return $query->exists() ? self::SUCCESS : self::FAILURE;
     }
 }

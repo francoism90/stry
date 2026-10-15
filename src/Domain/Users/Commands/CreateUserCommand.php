@@ -34,8 +34,8 @@ class CreateUserCommand extends Command implements Isolatable
 
     public function handle(): int
     {
-        $name = $this->option('name') ?: $this->promptFor('Name', 'text');
-        $email = $this->option('email') ?: $this->promptFor('Email', 'text');
+        $name = $this->stringOption('name') ?? $this->promptFor('Name', 'text');
+        $email = $this->stringOption('email') ?? $this->promptFor('Email', 'text');
         $password = $this->option('password-stdin') ? $this->readPasswordFromStdin() : $this->promptFor('Password', 'password');
 
         if ($name === null || $email === null || $password === null) {
@@ -67,6 +67,13 @@ class CreateUserCommand extends Command implements Isolatable
         info("User has been created successfully ({$user->email}).");
 
         return self::SUCCESS;
+    }
+
+    protected function stringOption(string $key): ?string
+    {
+        $value = $this->option($key);
+
+        return is_string($value) && $value !== '' ? $value : null;
     }
 
     /**
