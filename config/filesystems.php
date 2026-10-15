@@ -84,7 +84,7 @@ return [
     |
     */
 
-    'allowed_roots' => array_filter(explode(',', (string) env('FILESYSTEM_ALLOWED_ROOTS', '/media,/import,/exports,/mnt'))),
+    'allowed_roots' => array_filter(explode(',', (string) env('FILESYSTEM_ALLOWED_ROOTS', '/media,/import,/exports,/mnt,/storage'))),
 
     /*
     |--------------------------------------------------------------------------
