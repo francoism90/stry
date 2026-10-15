@@ -25,20 +25,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return array_merge(parent::share($request), [
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
             'auth' => fn (): UserResourceProperty => new UserResourceProperty(
-                user: $request->user() ?? null,
+                user: $user,
                 appends: ['name', 'email', 'avatar', 'settings']
             ),
-            'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty(
-                user: $request->user() ?? null,
-            ),
-            'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
-            'notices' => fn (): ApplicationNoticesProperty => new ApplicationNoticesProperty(
-                user: $request->user() ?? null,
-            ),
+            'notices' => fn (): ApplicationNoticesProperty => new ApplicationNoticesProperty($user),
+            'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty($user),
+            'unread' => fn (): int => $user?->unreadNotifications()->count() ?? 0,
         ]);
     }
 
