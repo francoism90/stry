@@ -7,6 +7,7 @@ use Modules\Web\Groups\Controllers\GroupClearController;
 use Modules\Web\Groups\Controllers\GroupToggleController;
 use Modules\Web\Notifications\Controllers\MarkAllNotificationsReadController;
 use Modules\Web\Profiles\Controllers\SwitchProfileController;
+use Modules\Web\Settings\Controllers\ApplicationRestartController;
 use Modules\Web\Settings\Controllers\ApplicationSettingsController;
 use Modules\Web\Settings\Controllers\ChapterSettingsController;
 use Modules\Web\Settings\Controllers\PlaybackSettingsController;
@@ -27,6 +28,7 @@ use Modules\Web\Videos\Controllers\VideoTranscodedController;
 Route::prefix('/settings')->name('settings.')->group(function () {
     Route::patch('/', UserSettingsController::class)->name('update');
     Route::singleton('application', ApplicationSettingsController::class)->only(['show', 'update']);
+    Route::post('/application/restart', ApplicationRestartController::class)->name('application.restart');
     Route::singleton('playback', PlaybackSettingsController::class)->only(['show', 'update']);
     Route::singleton('chapters', ChapterSettingsController::class)->only(['show', 'update']);
     Route::singleton('processing', ProcessingSettingsController::class)->only(['show', 'update']);

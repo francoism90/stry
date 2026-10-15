@@ -27,6 +27,16 @@ lpod stry artisan migrate        # or: lpod stry a migrate
 
 Run these with `lpod stry artisan ...`, or the shorter `lpod stry a ...`.
 
+### Installing and upgrading
+
+| Command                   | Description                                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `app:install`             | Migrate, seed the roles, set up the search indexes and offer to create the S3 buckets and a super-admin. Safe to rerun |
+| `app:update`              | Run the migrations, clear the settings cache and restart the workers, after pulling a new release                      |
+| `app:update --scout`      | The same, and sync the search indexes                                                                                  |
+| `app:update --no-restart` | The same, without restarting the workers                                                                               |
+| `app:restart`             | Restart the Octane and queue workers, for example after changing the storage disks                                     |
+
 ### Users
 
 | Command                      | Description                                      |

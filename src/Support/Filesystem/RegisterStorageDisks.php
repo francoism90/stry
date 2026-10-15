@@ -22,10 +22,7 @@ class RegisterStorageDisks
      */
     public function handle(): void
     {
-        $disks = rescue(
-            fn (): array => $this->container->make(StorageSettings::class)->toFilesystemConfig(),
-            report: false,
-        );
+        $disks = $this->disks();
 
         if ($disks === null) {
             return;
@@ -52,5 +49,27 @@ class RegisterStorageDisks
         }
 
         $config->set('filesystems.managed', array_keys($disks));
+    }
+
+    /**
+     * A hash of the disks in the storage settings, to tell whether they changed after the disks
+     * were registered. It's null when the settings can't be read, such as before migrating.
+     */
+    public function fingerprint(): ?string
+    {
+        $disks = $this->disks();
+
+        return $disks === null ? null : hash('xxh128', serialize($disks));
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>|null
+     */
+    protected function disks(): ?array
+    {
+        return rescue(
+            fn (): array => $this->container->make(StorageSettings::class)->toFilesystemConfig(),
+            report: false,
+        );
     }
 }

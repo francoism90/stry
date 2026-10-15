@@ -100,16 +100,10 @@ lpod idle enable stry
 Next, set up object storage (see [Object Storage (S3)](s3.md)) and prepare the database and search:
 
 ```bash
-lpod stry artisan podman:s3-setup
-lpod stry artisan migrate --force
-lpod stry artisan db:seed --force
-lpod stry artisan scout:sync --import
+lpod stry artisan app:install
 ```
 
-- `db:seed` only runs `PermissionSeeder`, which creates the roles and permissions. You need it once, and it's safe to run again.
-- `scout:sync --import` sets up the Typesense collections and imports existing records. It's also safe to run again, but you only need to after a release adds new searchable models.
-
-Then create an admin account with `lpod stry artisan users:create --super-admin` (see [CLI Interaction](interaction.md#users)).
+It runs the migrations, seeds the roles and permissions, and sets up the Typesense collections. It then asks whether to create the S3 buckets (`podman:s3-setup`) and, when there's no super-admin yet, to create one (`users:create --super-admin`, see [CLI Interaction](interaction.md#users)). Every step is safe to run again.
 
 The app reads your library from `/mnt/media/videos` and imports from `/mnt/media/import`. On SELinux hosts, such as Fedora, label these folders once before starting the services, or the containers can't read them. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
 

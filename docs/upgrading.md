@@ -81,16 +81,14 @@ If you installed the Quadlet units by hand from the templates instead of running
 ## Run migrations
 
 ```bash
-lpod stry artisan migrate --force
+lpod stry artisan app:update
 ```
 
-This runs both the database migrations and the [settings migrations](configuration.md#shipping-new-defaults) in `database/settings/*`. Settings migrations update values that admins can edit, such as `ChapterSettings::$patterns`, on existing installs.
+This runs both the database migrations and the [settings migrations](configuration.md#shipping-new-defaults) in `database/settings/*`, clears the settings cache, and restarts the Octane and queue workers. Settings migrations update values that admins can edit, such as `ChapterSettings::$patterns`, on existing installs.
 
-If `SETTINGS_CACHE_ENABLED=true` (the default), clear the settings cache afterwards:
+Until the migrations have run, admins see a notice at the top of every page.
 
-```bash
-lpod stry artisan settings:clear-cache
-```
+To run this every time the app container starts, add `APP_AUTO_UPDATE=true` to your `.env`. Only the `stry` container runs it, before the web server starts.
 
 ## Re-sync search indexes, if needed
 
@@ -99,6 +97,8 @@ You only need this when a release adds a new searchable model or field:
 ```bash
 lpod stry artisan scout:sync --import
 ```
+
+Or run `lpod stry artisan app:update --scout` instead of the migration step above.
 
 See [CLI Interaction](interaction.md#search) for all Scout commands.
 

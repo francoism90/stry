@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppNotices from '@/components/Ui/AppNotices.vue'
 import AppSidebar from '@/components/Ui/AppSidebar.vue'
 import { useAppearance } from '@/composables/appearance'
 import { useFlash } from '@/composables/flash'
@@ -54,6 +55,8 @@ useFlash()
         },
       }"
     >
+      <AppNotices />
+
       <UDashboardGroup
         :unit="unit"
         :storage="storage"

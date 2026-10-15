@@ -85,6 +85,14 @@ if [ "${APP_OPTIMIZE:-true}" = "true" ]; then
     ${PHP_CLI} optimize
 fi
 
+# Run the migrations of a new release before the web server starts, when
+# APP_AUTO_UPDATE=true. Only the web server does this: the other containers
+# share this image and entrypoint, and the scheduler starts every minute.
+if [[ "${APP_COMMAND}" == *octane:frankenphp* ]] && { grep -q '^APP_AUTO_UPDATE=true' /app/.env || [ "${APP_AUTO_UPDATE:-false}" = "true" ]; }; then
+    log "INFO" "Updating application..."
+    ${PHP_CLI} app:update --no-restart --no-interaction || log "ERROR" "Updating failed. Run 'php artisan app:update' by hand."
+fi
+
 # Run the provided command
 log "INFO" "Starting command..."
 exec ${APP_COMMAND}

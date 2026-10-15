@@ -7,6 +7,11 @@ export type EchoConfig = {
   readonly scheme: string
 }
 
+export type AppNotices = {
+  readonly restart: boolean
+  readonly migrations: boolean
+}
+
 export type FlashType = 'success' | 'error' | 'warning' | 'info' | 'primary'
 
 export type FlashData = {

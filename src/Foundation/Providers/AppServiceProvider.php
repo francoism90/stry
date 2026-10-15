@@ -12,6 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Events\SettingsSaved;
 use Support\Filesystem\FilesystemManager;
 use Support\Filesystem\RegisterStorageDisks;
+use Support\System\ApplicationNotices;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Disks from the storage settings are registered once when the application boots, so Octane and
      * queue workers keep them until they restart. The process that saves them or runs the migrations
-     * registers them again.
+     * registers them again. The fingerprint they booted with tells admins when a restart is needed.
      */
     protected function bootStorageDisks(): void
     {
@@ -56,7 +57,13 @@ class AppServiceProvider extends ServiceProvider
 
         $register();
 
-        Event::listen(MigrationsEnded::class, $register);
+        config(['filesystems.fingerprint' => $this->app->make(RegisterStorageDisks::class)->fingerprint()]);
+
+        Event::listen(MigrationsEnded::class, function () use ($register): void {
+            $register();
+
+            $this->app->make(ApplicationNotices::class)->forgetPendingMigrations();
+        });
         Event::listen(SettingsSaved::class, function (SettingsSaved $event) use ($register): void {
             if ($event->settings instanceof StorageSettings) {
                 $register();
