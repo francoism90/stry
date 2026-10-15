@@ -7,14 +7,15 @@ namespace Support\Inertia\Middleware;
 use Domain\Shared\Enums\Language;
 use Domain\Shared\Enums\Locale;
 use Domain\Tags\Enums\TagType;
+use Domain\Users\Models\User;
 use Foundation\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Middleware;
 use Modules\Web\Groups\Responses\GroupCollectionsProperty;
+use Modules\Web\Settings\Responses\ApplicationNoticesProperty;
 use Modules\Web\Users\Responses\UserResourceProperty;
 use Spatie\LaravelOptions\Options;
-use Support\System\ApplicationNotices;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -25,20 +26,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        /** @var User|null $user */
+        $user = $request->user();
+
         return array_merge(parent::share($request), [
             'nonce' => fn (): string => app('csp-nonce'),
             'locale' => fn (): string => $request->getLocale(),
             'auth' => fn (): UserResourceProperty => new UserResourceProperty(
-                user: $request->user() ?? null,
+                user: $user,
                 appends: ['name', 'email', 'avatar', 'settings']
             ),
-            'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty(
-                user: $request->user() ?? null,
-            ),
-            'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
-            'notices' => fn (): ?array => $request->user()?->can('manage-application-settings')
-                ? app(ApplicationNotices::class)->toArray()
-                : null,
+            'notices' => fn (): ApplicationNoticesProperty => new ApplicationNoticesProperty($user),
+            'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty($user),
+            'unread' => fn (): int => $user?->unreadNotifications()->count() ?? 0,
         ]);
     }
 
