@@ -7,6 +7,7 @@ use Domain\Transcodes\Commands\ClearTranscodeCommand;
 use Domain\Transcodes\Commands\CreateTranscodeCommand;
 use Domain\Transcodes\Commands\ImportTranscodeCommand;
 use Domain\Users\Commands\CreateUserCommand;
+use Domain\Users\Commands\UserExistsCommand;
 use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
 use Domain\Videos\Commands\RegenerateVideoReelsCommand;
@@ -110,6 +111,7 @@ return Application::configure(basePath: $basePath)
         ImportTranscodeCommand::class,
         CreateTranscodeCommand::class,
         CreateUserCommand::class,
+        UserExistsCommand::class,
         ClearVideoCommand::class,
         ImportVideoCommand::class,
         RegenerateVideoReelsCommand::class,
