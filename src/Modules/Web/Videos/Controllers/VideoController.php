@@ -26,6 +26,7 @@ use Modules\Api\Videos\Requests\VideoUpdateRequest;
 use Modules\Api\Videos\Resources\VideoResource;
 use Modules\Web\Chapters\Responses\ChapterTypeOptionsProperty;
 use Modules\Web\Videos\Responses\VideoDirectPlayProperty;
+use Modules\Web\Videos\Responses\VideoDisksProperty;
 use Modules\Web\Videos\Responses\VideoGroupsProperty;
 use Modules\Web\Videos\Responses\VideoMediaProperty;
 use Modules\Web\Videos\Responses\VideoProgressProperty;
@@ -96,6 +97,7 @@ class VideoController implements HasMiddleware
             'groups' => Inertia::defer(fn () => new VideoGroupsProperty($video, Auth::user())),
             'media' => Inertia::defer(fn () => new VideoMediaProperty($video)),
             'transcodes' => Inertia::defer(fn () => new VideoTranscodesProperty($video)),
+            'disks' => Inertia::defer(fn () => new VideoDisksProperty($video, Auth::user())),
             'queue' => Inertia::defer(fn () => new VideoQueueProperty($video))->deepMerge()->matchOn('data.id'),
             new ScoutBuilderProperties('videos'),
         ]);

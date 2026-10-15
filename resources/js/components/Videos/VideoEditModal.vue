@@ -6,9 +6,10 @@ import TranscodeList from '@/components/Transcodes/TranscodeList.vue'
 import FormModal from '@/components/Ui/FormModal.vue'
 import VideoDeleteModal from '@/components/Videos/VideoDeleteModal.vue'
 import VideoExportModal from '@/components/Videos/VideoExportModal.vue'
+import VideoMoveModal from '@/components/Videos/VideoMoveModal.vue'
 import { useLocale } from '@/composables/locale'
 import { useTags } from '@/composables/tags'
-import type { Media, OptionItem, TagMenuItem, Transcode, Video } from '@/types'
+import type { Media, OptionItem, TagMenuItem, Transcode, Video, VideoDiskOption } from '@/types'
 import { capitalize } from '@/utils/case'
 import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDate, CalendarDateTime } from '@internationalized/date'
@@ -21,6 +22,7 @@ const props = defineProps<{
   media?: Media[] | undefined
   transcodes?: Transcode[] | undefined
   chapters?: OptionItem[] | undefined
+  disks?: VideoDiskOption[] | undefined
 }>()
 
 const tabs: TabsItem[] = [
@@ -404,6 +406,32 @@ const onSubmit = (close: () => void) =>
               class="shrink-0"
             />
           </VideoExportModal>
+        </div>
+
+        <div
+          v-if="disks && disks.length > 1"
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-lg border border-default bg-elevated/50 p-4"
+        >
+          <div class="flex min-w-0 flex-[1_1_15rem] flex-col gap-0.5 text-sm">
+            <span class="font-medium text-highlighted">Move this video</span>
+            <span class="text-muted"
+              >Store its clips and captions on another disk, for example one that's backed up.</span
+            >
+          </div>
+
+          <VideoMoveModal
+            :video="video"
+            :disks="disks"
+          >
+            <UButton
+              label="Move"
+              icon="i-lucide-hard-drive"
+              color="neutral"
+              variant="outline"
+              size="sm"
+              class="shrink-0"
+            />
+          </VideoMoveModal>
         </div>
 
         <div
