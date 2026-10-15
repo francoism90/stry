@@ -21,7 +21,7 @@ class AllowedDiskRoot implements ValidationRule
         $path = realpath((string) $value);
 
         if ($path === false || ! File::isDirectory($path) || ! File::isWritable($path)) {
-            $fail(__('The :attribute must be an existing, writable directory.'));
+            $fail(__('The path must be an existing, writable directory. Check that it is mounted in the container.'));
 
             return;
         }
@@ -31,7 +31,7 @@ class AllowedDiskRoot implements ValidationRule
             ->contains(fn (string $root): bool => $path === $root || Str::startsWith($path, "{$root}/"));
 
         if (! $isAllowed) {
-            $fail(__('The :attribute must be inside :roots.', [
+            $fail(__('The path must be inside :roots.', [
                 'roots' => implode(', ', Config::array('filesystems.allowed_roots', [])),
             ]));
         }

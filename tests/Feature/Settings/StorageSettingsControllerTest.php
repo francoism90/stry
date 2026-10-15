@@ -128,7 +128,16 @@ it('rejects a local disk outside the allowed roots', function () {
 
     $response = $this->actingAs($this->admin)->patch(action([StorageSettingsController::class, 'update']), ['disks' => $disks]);
 
-    $response->assertInvalid(['disks.0.path']);
+    $response->assertInvalid(['disks.0.path' => 'The path must be inside']);
+});
+
+it('rejects a local disk that does not exist', function () {
+    $disks = storageDisks();
+    $disks[0]['path'] = "{$this->root}/missing";
+
+    $response = $this->actingAs($this->admin)->patch(action([StorageSettingsController::class, 'update']), ['disks' => $disks]);
+
+    $response->assertInvalid(['disks.0.path' => 'The path must be an existing, writable directory.']);
 });
 
 it('rejects a content without a default disk', function () {
