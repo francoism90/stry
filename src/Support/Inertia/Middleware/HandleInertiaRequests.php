@@ -7,6 +7,7 @@ namespace Support\Inertia\Middleware;
 use Domain\Shared\Enums\Language;
 use Domain\Shared\Enums\Locale;
 use Domain\Tags\Enums\TagType;
+use Domain\Users\Models\User;
 use Foundation\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -25,6 +26,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        /** @var User|null $user */
         $user = $request->user();
 
         return array_merge(parent::share($request), [
