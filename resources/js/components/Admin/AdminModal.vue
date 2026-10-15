@@ -31,6 +31,12 @@ const definitions: AdminSectionDefinition[] = [
     component: AdminApplicationForm,
   },
   {
+    value: 'storage',
+    label: 'Storage',
+    icon: 'i-lucide-hard-drive',
+    component: AdminStorageForm,
+  },
+  {
     value: 'playback',
     label: 'Playback',
     icon: 'i-lucide-clapperboard',
@@ -53,12 +59,6 @@ const definitions: AdminSectionDefinition[] = [
     label: 'Reels',
     icon: 'i-lucide-film',
     component: AdminReelForm,
-  },
-  {
-    value: 'storage',
-    label: 'Storage',
-    icon: 'i-lucide-hard-drive',
-    component: AdminStorageForm,
   },
 ]
 
