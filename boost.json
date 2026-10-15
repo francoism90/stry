@@ -18,7 +18,10 @@
         "foxws/laravel-relatable",
         "foxws/laravel-ab-av1",
         "foxws/laravel-media",
-        "foxws/laravel-scout-relations"
+        "foxws/laravel-scout-relations",
+        "foxws/laravel-modelcache",
+        "foxws/laravel-pwa",
+        "foxws/laravel-scout-builder"
     ],
     "sail": false,
     "skills": [
@@ -37,11 +40,14 @@
         "laravel-ddd-development",
         "laravel-essentials-development",
         "laravel-media-development",
+        "modelcache-development",
         "podman-lpod",
         "podman-presets",
         "podman-s3",
         "podman-upgrade",
+        "pwa-development",
         "relatable-development",
+        "scout-builder-development",
         "scout-relations-development",
         "medialibrary-development",
         "laravel-permission-development",
