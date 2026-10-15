@@ -11,7 +11,17 @@ import { useVideo } from '@/composables/video'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { show } from '@/routes/videos'
-import type { Group, Media, OptionItem, Playlist, QueryFilter, QueryValue, Transcode, Video } from '@/types'
+import type {
+  Group,
+  Media,
+  OptionItem,
+  Playlist,
+  QueryFilter,
+  QueryValue,
+  Transcode,
+  Video,
+  VideoDiskOption,
+} from '@/types'
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
@@ -24,6 +34,7 @@ const props = defineProps<{
   groups?: Group[] | undefined
   media?: Media[] | undefined
   transcodes?: Transcode[] | undefined
+  disks?: VideoDiskOption[] | undefined
   chapters?: OptionItem[] | undefined
   queue?: Video[] | undefined
   filter?: QueryFilter
@@ -144,6 +155,7 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       :progress="progress"
       :media="media"
       :transcodes="transcodes"
+      :disks="disks"
       :chapters="chapters"
     />
 

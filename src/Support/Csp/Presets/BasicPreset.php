@@ -47,7 +47,7 @@ class BasicPreset implements Preset
         // app host (e.g. app on "stry.domain.tld" with storage/websockets on
         // sibling hosts like "stry-s3.domain.tld"), so add their actual
         // configured hosts explicitly rather than relying on "*.{$host}".
-        if ($s3Host = $this->getS3Host()) {
+        foreach ($this->getS3Hosts() as $s3Host) {
             $policy
                 ->add(Directive::CONNECT, "https://{$s3Host}")
                 ->add([Directive::FRAME, Directive::FONT, Directive::STYLE, Directive::IMG, Directive::MEDIA], $s3Host);
@@ -63,9 +63,21 @@ class BasicPreset implements Preset
         return Uri::of(Config::string('app.url', 'localhost'))->host();
     }
 
-    protected function getS3Host(): ?string
+    /**
+     * The hosts of every S3 disk, including those from the storage settings.
+     *
+     * @return array<int, string>
+     */
+    protected function getS3Hosts(): array
     {
-        return $this->resolveHost((string) Config::get('filesystems.disks.s3.url'));
+        return collect((array) Config::get('filesystems.disks', []))
+            ->filter(fn (mixed $disk): bool => is_array($disk) && ($disk['driver'] ?? null) === 's3')
+            ->flatMap(fn (array $disk): array => [$disk['url'] ?? null, $disk['temporary_url'] ?? null])
+            ->map(fn (mixed $url): ?string => $this->resolveHost((string) $url))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 
     protected function getReverbHost(): ?string

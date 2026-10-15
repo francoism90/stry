@@ -14,6 +14,7 @@ use Domain\Profiles\Support\CurrentProfileContext;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
+use Domain\Shared\Enums\DiskContent;
 use Domain\Users\Concerns\InteractsWithUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
@@ -85,8 +86,8 @@ class Profile extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('avatar')
-            ->useDisk('conversions')
-            ->storeConversionsOnDisk('conversions')
+            ->useDisk(DiskContent::Conversions->disk())
+            ->storeConversionsOnDisk(DiskContent::Conversions->disk())
             ->singleFile()
             ->withResponsiveImages()
             ->acceptsMimeTypes([

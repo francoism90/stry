@@ -26,6 +26,9 @@ return [
     |
     | Supported drivers: "local", "ftp", "sftp", "s3"
     |
+    | The media, import, exports and conversions disks are managed in the
+    | storage settings (Admin → Storage) and added here at runtime.
+    |
     */
 
     'disks' => [
@@ -55,30 +58,6 @@ return [
             'report' => true,
         ],
 
-        'media' => [
-            'driver' => 'local',
-            'root' => '/media',
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
-        ],
-
-        'import' => [
-            'driver' => 'local',
-            'root' => '/import',
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
-        ],
-
-        'exports' => [
-            'driver' => 'local',
-            'root' => '/exports',
-            'serve' => false,
-            'throw' => true,
-            'report' => true,
-        ],
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -92,24 +71,6 @@ return [
             'visibility' => 'private',
             'throw' => false,
             'report' => true,
-        ],
-
-        'conversions' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => 'conversions',
-            'url' => env('AWS_URL'),
-            'temporary_url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'private',
-            'throw' => false,
-            'report' => false,
-            'options' => [
-                'CacheControl' => 'public, max-age=604800, immutable', // 7 days
-            ],
         ],
 
     ],
