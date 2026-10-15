@@ -153,6 +153,61 @@ export type ProcessingSettings = {
   extract_chapters: boolean
   extract_storyboard: boolean
   create_renditions: boolean
+  import_batch_size: number
+}
+
+export type StorageDiskDriver = 'local' | 's3'
+
+export type StorageDisk = {
+  name: string
+  label: string
+  driver: StorageDiskDriver
+  path: string
+  visibility: 'public' | 'private'
+  serve: boolean
+  contents: string[]
+  default_for: string[]
+  bucket: string | null
+  region: string | null
+  endpoint: string | null
+  url: string | null
+  temporary_url: string | null
+  use_path_style_endpoint: boolean | null
+  cache_control: string | null
+  masked_key?: string | null
+  has_secret?: boolean
+  key?: string | null
+  secret?: string | null
+}
+
+export type VideoDiskOption = {
+  label: string
+  value: string
+  driver: StorageDiskDriver
+  current: boolean
+}
+
+export type StorageContent = {
+  value: string
+  label: string
+  requires_temporary_urls: boolean
+  prefers_local: boolean
+}
+
+export type StorageSettings = {
+  disks: StorageDisk[]
+  drivers: OptionItem[]
+  contents: StorageContent[]
+  allowed_roots: string[]
+  s3_defaults: {
+    bucket: string | null
+    region: string | null
+    endpoint: string | null
+    url: string | null
+    temporary_url: string | null
+    use_path_style_endpoint: boolean
+    has_credentials: boolean
+  }
 }
 
 export type MediaStream = {
