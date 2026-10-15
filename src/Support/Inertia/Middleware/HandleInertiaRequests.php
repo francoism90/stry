@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Inertia\Middleware;
 use Modules\Web\Groups\Responses\GroupCollectionsProperty;
+use Modules\Web\Settings\Responses\ApplicationNoticesProperty;
 use Modules\Web\Users\Responses\UserResourceProperty;
 use Spatie\LaravelOptions\Options;
-use Support\System\ApplicationNotices;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,9 +36,9 @@ class HandleInertiaRequests extends Middleware
                 user: $request->user() ?? null,
             ),
             'unread' => fn (): int => $request->user()?->unreadNotifications()->count() ?? 0,
-            'notices' => fn (): ?array => $request->user()?->can('manage-application-settings')
-                ? app(ApplicationNotices::class)->toArray()
-                : null,
+            'notices' => fn (): ApplicationNoticesProperty => new ApplicationNoticesProperty(
+                user: $request->user() ?? null,
+            ),
         ]);
     }
 
