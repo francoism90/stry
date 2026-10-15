@@ -12,6 +12,7 @@ use Domain\Shared\Casts\AsDate;
 use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
 use Domain\Shared\Concerns\HasUlidRouteKey;
+use Domain\Shared\Enums\DiskContent;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
 use Domain\Users\Concerns\InteractsWithUser;
@@ -20,6 +21,7 @@ use Domain\Videos\Concerns\InteractsWithDirectPlay;
 use Domain\Videos\Concerns\InteractsWithProgress;
 use Domain\Videos\Concerns\InteractsWithReels;
 use Domain\Videos\QueryBuilders\VideoQueryBuilder;
+use Domain\Videos\Settings\ProcessingSettings;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
@@ -33,7 +35,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Number;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -143,8 +144,8 @@ class Video extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('clips')
-            ->useDisk('media')
-            ->storeConversionsOnDisk('conversions')
+            ->useDisk(DiskContent::Videos->disk())
+            ->storeConversionsOnDisk(DiskContent::Conversions->disk())
             ->acceptsMimeTypes([
                 'video/av1',
                 'video/mp4',
@@ -161,8 +162,8 @@ class Video extends Model implements HasMedia
 
         $this
             ->addMediaCollection('captions')
-            ->useDisk('media')
-            ->storeConversionsOnDisk('conversions')
+            ->useDisk(DiskContent::Captions->disk())
+            ->storeConversionsOnDisk(DiskContent::Conversions->disk())
             ->acceptsMimeTypes([
                 'application/octet-stream',
                 'application/x-subrip',
@@ -263,17 +264,17 @@ class Video extends Model implements HasMedia
 
     public static function getImportDisk(): string
     {
-        return Config::string('videos.import_disk', 'import');
+        return DiskContent::Import->disk();
     }
 
     public static function getReelsDisk(): string
     {
-        return Config::string('videos.reels_disk', 'conversions');
+        return DiskContent::Reels->disk();
     }
 
     public static function getImportBatchSize(): int
     {
-        return Config::integer('videos.import_batch_size', 10);
+        return app(ProcessingSettings::class)->import_batch_size;
     }
 
     /**

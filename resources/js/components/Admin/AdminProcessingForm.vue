@@ -12,6 +12,7 @@ const form = useForm(update(), {
   extract_chapters: true,
   extract_storyboard: true,
   create_renditions: false,
+  import_batch_size: 10,
 })
 
 onMounted(() =>
@@ -22,6 +23,7 @@ onMounted(() =>
         extract_chapters: data.extract_chapters,
         extract_storyboard: data.extract_storyboard,
         create_renditions: data.create_renditions,
+        import_batch_size: data.import_batch_size,
       })
       form.reset()
       loaded.value = true
@@ -124,6 +126,23 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           :class="fieldClass"
         >
           <USwitch v-model="form.create_renditions" />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Import batch size"
+          description="How many files an import picks up from the import disk at once."
+          name="import_batch_size"
+          :error="form.errors.import_batch_size"
+          :class="fieldClass"
+        >
+          <UInputNumber
+            v-model="form.import_batch_size"
+            class="w-32"
+            :min="1"
+            :max="500"
+          />
         </UFormField>
       </template>
     </UPageCard>

@@ -33,6 +33,7 @@ it('allows a super-admin to update processing settings', function () {
         'extract_chapters' => false,
         'extract_storyboard' => false,
         'create_renditions' => true,
+        'import_batch_size' => 25,
     ]);
 
     $response->assertRedirect();
@@ -43,7 +44,8 @@ it('allows a super-admin to update processing settings', function () {
     expect($settings->extract_captions)->toBeFalse()
         ->and($settings->extract_chapters)->toBeFalse()
         ->and($settings->extract_storyboard)->toBeFalse()
-        ->and($settings->create_renditions)->toBeTrue();
+        ->and($settings->create_renditions)->toBeTrue()
+        ->and($settings->import_batch_size)->toBe(25);
 });
 
 it('denies a regular user from updating processing settings', function () {
@@ -65,4 +67,15 @@ it('rejects a non-boolean value', function () {
     ]);
 
     $response->assertInvalid(['extract_captions']);
+});
+
+it('rejects an import batch size below one', function () {
+    $user = User::factory()->create();
+    $user->assignRole('super-admin');
+
+    $response = $this->actingAs($user)->patch(action([ProcessingSettingsController::class, 'update']), [
+        'import_batch_size' => 0,
+    ]);
+
+    $response->assertInvalid(['import_batch_size']);
 });
