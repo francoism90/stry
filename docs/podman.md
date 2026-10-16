@@ -100,14 +100,14 @@ See [CLI Interaction](interaction.md) for stry's own Artisan commands, and the [
 
 The app, Horizon and the scheduler share these mounts:
 
-| Mount      | Source                      | Holds                                                                      |
-| ---------- | --------------------------- | -------------------------------------------------------------------------- |
-| `/media`   | `/mnt/media/videos` (host)  | Your video library, set with `PODMAN_VIDEOS_PATH`                          |
-| `/import`  | `/mnt/media/import` (host)  | Files waiting to be imported, set with `PODMAN_IMPORT_PATH`                |
-| `/exports` | `/mnt/media/exports` (host) | Videos exported from the library, set with `PODMAN_EXPORTS_PATH`           |
-| `/config`  | `stry-config` volume        | Configuration                                                              |
-| `/data`    | `stry-data` volume          | App data                                                                   |
-| `/cache`   | `stry-cache` volume         | Packaged stream segments, and media temporary files in `/cache/temp/media` |
+| Mount      | Source                        | Holds                                                                      |
+| ---------- | ----------------------------- | -------------------------------------------------------------------------- |
+| `/media`   | `/srv/library/videos` (host)  | Your video library, set with `PODMAN_VIDEOS_PATH`                          |
+| `/import`  | `/srv/library/import` (host)  | Files waiting to be imported, set with `PODMAN_IMPORT_PATH`                |
+| `/exports` | `/srv/library/exports` (host) | Videos exported from the library, set with `PODMAN_EXPORTS_PATH`           |
+| `/config`  | `stry-config` volume          | Configuration                                                              |
+| `/data`    | `stry-data` volume            | App data                                                                   |
+| `/cache`   | `stry-cache` volume           | Packaged stream segments, and media temporary files in `/cache/temp/media` |
 
 **Ownership.** The containers run as root only long enough for the entrypoint to switch to the `docker` user (your `PUID`/`PGID`). With `UserNS=keep-id`, your host user and the container user have the same ID, so files line up on both sides. Don't add Podman's `U` option to these mounts: it hands the volume to the image's user, which is root, on every start. With the `ondemand` preset that's every time the app wakes up, and a root-owned `/cache/temp` breaks streaming (see [Troubleshooting](#troubleshooting)). On each start, the entrypoint gives `/config`, `/data`, `/cache`, `/cache/temp` and `/cache/temp/media` back to the `docker` user if something else owns them.
 
@@ -117,9 +117,10 @@ The app, Horizon and the scheduler share these mounts:
 - `/media`, `/import` and `/exports` have no `z`. Relabeling would walk your whole library every time a container starts, and the scheduler starts one every minute. It would also change the labels of these folders on the host. Create them and label them once on the host instead:
 
     ```bash
-    mkdir -p /mnt/media/videos /mnt/media/import /mnt/media/exports
-    sudo semanage fcontext -a -t container_file_t '/mnt/media(/.*)?'
-    sudo restorecon -R /mnt/media
+    sudo mkdir -p /srv/library/videos /srv/library/import /srv/library/exports
+    sudo chown -R "$USER:" /srv/library
+    sudo semanage fcontext -a -t container_file_t '/srv/library(/.*)?'
+    sudo restorecon -R /srv/library
     ```
 
     If your library lives elsewhere, set `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` and `PODMAN_EXPORTS_PATH` in `.env` before generating the Quadlet files, and label those folders instead. Files you add later get the label automatically.

@@ -105,7 +105,7 @@ lpod stry artisan app:install
 
 It runs the migrations, seeds the roles and permissions, and sets up the Typesense collections. It then asks whether to create the S3 buckets (`podman:s3-setup`) and, when there's no super-admin yet, to create one (`users:create --super-admin`, see [CLI Interaction](interaction.md#users)). Every step is safe to run again.
 
-The app reads your library from `/mnt/media/videos` and imports from `/mnt/media/import`, unless you set other folders with `PODMAN_VIDEOS_PATH` and `PODMAN_IMPORT_PATH`. On SELinux hosts, such as Fedora, label these folders once before starting the services, or the containers can't read them. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
+The app reads your library from `/srv/library/videos` and imports from `/srv/library/import`, unless you set other folders with `PODMAN_VIDEOS_PATH` and `PODMAN_IMPORT_PATH`. On SELinux hosts, such as Fedora, label these folders once before starting the services, or the containers can't read them. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
 
 By default, `stry-horizon` gets access to `/dev/dri` for hardware-accelerated transcoding, so the server needs a GPU that provides `/dev/dri`. See [Hardware acceleration](podman.md#tuning--hardware-acceleration) for driver setup, the SELinux `setsebool` step, and how to turn this off on a server without a GPU.
 
