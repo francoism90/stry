@@ -16,12 +16,12 @@ How to upgrade a running production install to a new **stry** release. For a fir
 
 - Check the [GitHub releases](https://github.com/francoism90/stry/releases) for breaking changes since your current version. Upgrading from 1.x to 2.0 needs extra steps: follow the [upgrade guide](https://github.com/francoism90/stry/blob/main/UPGRADE.md).
 - Back up the database. See the [backup example](production.md#security-checklist) in Production Setup.
-- Images are tagged `latest` (the newest stable release), `{major}.{minor}` and the full version number. Use a specific tag instead of `latest` if you want to decide when to upgrade.
+- Images are tagged `latest` (the newest stable release), `{major}`, `{major}.{minor}` and the full version number. The Quadlet files use the major tag, such as `ghcr.io/francoism90/stry:2`, so updates stay within the release line you're on. Set `PODMAN_IMAGE_REGISTRY` in `.env` to pin another tag.
 
 ## Pull the new image
 
 ```bash
-podman pull ghcr.io/francoism90/stry:latest
+podman pull ghcr.io/francoism90/stry:2
 lpod install production/app.quadlets --replace
 # ...repeat for every other service whose image changed, such as stry-horizon...
 ```
@@ -34,7 +34,7 @@ Instead of pulling and reinstalling each service by hand, you can let Podman do 
 systemctl --user restart podman-auto-update
 ```
 
-Podman pulls a new image for each of these services and restarts only the ones that changed. This runs once. To run it on a schedule, enable `podman-auto-update.timer`.
+Podman pulls a new image for each of these services and restarts only the ones that changed. It stays on the tag in the Quadlet file, so `stry:2` gets 2.x releases but never moves to 3.0 by itself: a new major comes with an upgrade guide, and its Quadlet files use the new tag. This runs once. To run it on a schedule, enable `podman-auto-update.timer`.
 
 Auto-update only pulls images and restarts containers. It doesn't run Artisan commands, so you still need the migration and cache steps below.
 
