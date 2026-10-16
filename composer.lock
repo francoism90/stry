@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c4f11984470ce645aee1202cb55419d",
+    "content-hash": "4db5c6bb841abff5354749332dffdf2b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1593,16 +1593,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "5.5.2",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "1d18fbfb65ea2feda2d02a73696de2268ca0b490"
+                "reference": "0e0ff3cd96d364f41633353080b88f4bf18d904a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/1d18fbfb65ea2feda2d02a73696de2268ca0b490",
-                "reference": "1d18fbfb65ea2feda2d02a73696de2268ca0b490",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/0e0ff3cd96d364f41633353080b88f4bf18d904a",
+                "reference": "0e0ff3cd96d364f41633353080b88f4bf18d904a",
                 "shasum": ""
             },
             "require": {
@@ -1610,6 +1610,7 @@
                 "illuminate/console": "^11.0|^12.0|^13.0",
                 "illuminate/contracts": "^11.0||^12.0||^13.0",
                 "illuminate/filesystem": "^11.0|^12.0|^13.0",
+                "illuminate/process": "^11.0|^12.0|^13.0",
                 "illuminate/support": "^11.0|^12.0|^13.0",
                 "php": "^8.4",
                 "spatie/laravel-package-tools": "^1.16",
@@ -1669,7 +1670,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/5.5.2"
+                "source": "https://github.com/foxws/laravel-podman/tree/6.0.1"
             },
             "funding": [
                 {
@@ -1677,7 +1678,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:21:59+00:00"
+            "time": "2026-10-16T13:00:59+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
