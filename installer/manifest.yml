@@ -1,0 +1,66 @@
+# The stry installer. Build it with:
+#
+#   podman build -t stry-installer installer/
+#
+# and run it as described in https://github.com/foxws/laravel-installer.
+name: stry
+
+steps:
+  - id: welcome
+    file: welcome.md
+
+  - id: requirements
+    type: requirements
+    file: requirements.md
+
+  - id: secrets
+    type: secrets
+    file: secrets.md
+    presets: [production, ondemand]
+    values:
+      POSTGRES_DB: DB_DATABASE
+      POSTGRES_USER: DB_USERNAME
+      POSTGRES_PASSWORD: DB_PASSWORD
+      TYPESENSE_API_KEY: TYPESENSE_API_KEY
+      RUSTFS_ACCESS_KEY: AWS_ACCESS_KEY_ID
+      RUSTFS_SECRET_KEY: AWS_SECRET_ACCESS_KEY
+    files:
+      /app/.env: .env
+
+  - id: services
+    type: services
+    file: services.md
+    presets: [production, ondemand]
+
+  - id: install
+    type: command
+    file: install.md
+    run:
+      container: systemd-stry
+      command: [php, artisan, app:install, --no-interaction]
+
+  - id: admin
+    type: command
+    file: admin.md
+    inputs:
+      - { name: name, label: Name }
+      - { name: email, label: Email, type: email, rules: required|email }
+      - { name: password, label: Password, type: password, rules: required|min:12 }
+    run:
+      container: systemd-stry
+      command:
+        [
+          php,
+          artisan,
+          users:create,
+          --super-admin,
+          --no-interaction,
+          --password-stdin,
+          '--name={name}',
+          '--email={email}',
+        ]
+      stdin: '{password}'
+      skip_if: [php, artisan, users:exists, --super-admin]
+
+  - id: finish
+    file: finish.md
