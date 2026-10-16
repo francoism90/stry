@@ -42,6 +42,18 @@ Auto-update only pulls images and restarts containers. It doesn't run Artisan co
 
 You only need this when the release notes mention changes to `containers/stubs/*`. If they do, repeat the option you used during setup (see [Generate the Podman files](production.md#generate-the-podman-files)), then reinstall the changed units with `lpod install ... --replace`.
 
+### Media folders moved to `/srv/library`
+
+The media folders used to be fixed at `/mnt/media/videos`, `/mnt/media/import` and `/mnt/media/exports`. They're now set with `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` and `PODMAN_EXPORTS_PATH`, and default to `/srv/library/videos`, `/srv/library/import` and `/srv/library/exports`. To keep your library where it is, add these to your `.env` **before** you regenerate the Podman files:
+
+```ini
+PODMAN_VIDEOS_PATH=/mnt/media/videos
+PODMAN_IMPORT_PATH=/mnt/media/import
+PODMAN_EXPORTS_PATH=/mnt/media/exports
+```
+
+Without them, the regenerated `stry`, `stry-horizon` and `stry-schedule` units mount the empty `/srv/library` folders, and your videos can't be found until you set them and reinstall the units. Nothing is deleted: the files stay in `/mnt/media`.
+
 ### Removing `U` and `z` from the app's mounts
 
 Older `production` templates mounted the app's volumes with Podman's `U` option, and every mount with `z`. `U` makes `/cache` root-owned every time the app starts, which breaks streaming after the app wakes up. `z` walks your whole library and `/cache` on every container start, and the scheduler starts one every minute. Named volumes don't need `z`: Podman's SELinux policy already labels them. If your installed `stry`, `stry-horizon` or `stry-schedule` units still have them:
