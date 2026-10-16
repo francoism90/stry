@@ -10,4 +10,4 @@ Next steps:
 - Create the S3 buckets when you use RustFS or another S3 server: `podman exec systemd-stry php artisan podman:s3-setup`.
 - Schedule database backups, see the [security checklist](https://github.com/francoism90/stry/blob/main/docs/production.md#security-checklist).
 
-You can stop the installer now with Ctrl+C. It's removed when it stops.
+You can now stop the installer container. It's removed when it stops.
