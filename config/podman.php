@@ -138,9 +138,9 @@ return [
 
     'substitutions' => [
         '{{image}}' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:latest'),
-        '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/mnt/media/videos'),
-        '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/mnt/media/import'),
-        '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/mnt/media/exports'),
+        '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/srv/library/videos'),
+        '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/srv/library/import'),
+        '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/srv/library/exports'),
     ],
 
     /*
