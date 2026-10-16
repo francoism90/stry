@@ -1,7 +1,7 @@
 ---
 title: Development
 section: Getting Started
-order: 3
+order: 4
 tags:
     - vscode
     - zed

@@ -1,0 +1,7 @@
+# The stry installer: the generic Laravel Installer with stry's steps. Build
+# it from this folder:
+#
+#   podman build -t stry-installer installer/
+FROM ghcr.io/foxws/laravel-installer:1
+
+COPY . /app/installer/
