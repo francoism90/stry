@@ -146,6 +146,7 @@ pnpm install
 
 ## Troubleshooting
 
+- **"stry is installed on this host already"**: the requirements step found stry's units, so it stops to protect a running install. To update it, follow [Upgrading](upgrading.md). If an earlier run of the installer stopped halfway, add `-e INSTALLER_ALLOW_EXISTING=true` to the `podman run` command to continue.
 - **A service failed to start**: run `journalctl --user -u SERVICE -n 50` on the host, fix the problem, then press "Try again".
 - **The on-demand socket failed**: another process uses its port, `8000` by default. Set another one with `PODMAN_ONDEMAND_LISTEN` in `.env`, then press "Try again".
 - **"No workspace is mounted"**: the checkout isn't mounted at `/workspace`. Check the `-v "$HOME/stry:/workspace"` line.
