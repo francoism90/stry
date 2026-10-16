@@ -17,8 +17,8 @@
     "require": {
         "php": "^8.3",
         "foxws/laravel-ab-av1": "^3.1.1",
-        "foxws/laravel-ddd": "^0.0.8",
-        "foxws/laravel-essentials": "^0.0.4",
+        "foxws/laravel-ddd": "^0.0.9",
+        "foxws/laravel-essentials": "^0.0.5",
         "foxws/laravel-media": "^0.3.8",
         "foxws/laravel-modelcache": "^1.5.0",
         "foxws/laravel-podman": "^6.0.1",
