@@ -56,9 +56,15 @@ AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 
 PODMAN_DEFAULT_PRESETS=production,ondemand
+
+PODMAN_VIDEOS_PATH=/srv/library/videos     # your video library
+PODMAN_IMPORT_PATH=/srv/library/import     # files waiting to be imported
+PODMAN_EXPORTS_PATH=/srv/library/exports   # videos exported from the library
 ```
 
-Create the media folders. They default to `/srv/library`, or set `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` and `PODMAN_EXPORTS_PATH` for your own. On SELinux hosts, such as Fedora, label them too:
+The `PODMAN_*_PATH` folders are on the host, and the app sees them as `/media`, `/import` and `/exports`. The values above are the defaults, so set them when your library lives elsewhere, such as on a NAS mount.
+
+Create the media folders. On SELinux hosts, such as Fedora, label them too. With your own folders, use those paths here:
 
 ```bash
 sudo mkdir -p /srv/library/videos /srv/library/import /srv/library/exports
