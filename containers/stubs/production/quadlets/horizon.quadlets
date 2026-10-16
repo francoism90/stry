@@ -16,9 +16,9 @@ UserNS=keep-id
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
 Secret={{application}}-env,target=/app/.env,mode=0400,uid={{appUid}},gid={{appGid}}
-Volume=/mnt/media/videos:/media:rw
-Volume=/mnt/media/import:/import:rw
-Volume=/mnt/media/exports:/exports:rw
+Volume={{videosPath}}:/media:rw
+Volume={{importPath}}:/import:rw
+Volume={{exportsPath}}:/exports:rw
 Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network
 

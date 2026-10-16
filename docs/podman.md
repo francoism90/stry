@@ -102,9 +102,9 @@ The app, Horizon and the scheduler share these mounts:
 
 | Mount      | Source                      | Holds                                                                      |
 | ---------- | --------------------------- | -------------------------------------------------------------------------- |
-| `/media`   | `/mnt/media/videos` (host)  | Your video library                                                         |
-| `/import`  | `/mnt/media/import` (host)  | Files waiting to be imported                                               |
-| `/exports` | `/mnt/media/exports` (host) | Videos exported from the library                                           |
+| `/media`   | `/mnt/media/videos` (host)  | Your video library, set with `PODMAN_VIDEOS_PATH`                          |
+| `/import`  | `/mnt/media/import` (host)  | Files waiting to be imported, set with `PODMAN_IMPORT_PATH`                |
+| `/exports` | `/mnt/media/exports` (host) | Videos exported from the library, set with `PODMAN_EXPORTS_PATH`           |
 | `/config`  | `stry-config` volume        | Configuration                                                              |
 | `/data`    | `stry-data` volume          | App data                                                                   |
 | `/cache`   | `stry-cache` volume         | Packaged stream segments, and media temporary files in `/cache/temp/media` |
@@ -122,7 +122,7 @@ The app, Horizon and the scheduler share these mounts:
     sudo restorecon -R /mnt/media
     ```
 
-    Use your own paths if your library lives elsewhere. Files you add later get the label automatically.
+    If your library lives elsewhere, set `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` and `PODMAN_EXPORTS_PATH` in `.env` before generating the Quadlet files, and label those folders instead. Files you add later get the label automatically.
 
 ### Troubleshooting
 

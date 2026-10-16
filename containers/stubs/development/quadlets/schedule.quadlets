@@ -11,9 +11,9 @@ HealthCmd=none
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan schedule:work"
 UserNS=keep-id
 Volume={{workingPath}}:/app:rw,z
-Volume=/mnt/media/videos:/media:rw
-Volume=/mnt/media/import:/import:rw
-Volume=/mnt/media/exports:/exports:rw
+Volume={{videosPath}}:/media:rw
+Volume={{importPath}}:/import:rw
+Volume={{exportsPath}}:/exports:rw
 Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network
 
