@@ -49,14 +49,17 @@ TimeoutStopSec=30
 # FileName={{application}}-config
 [Volume]
 Label={{application}}-config
+VolumeName={{application}}-config
 ---
 # FileName={{application}}-data
 [Volume]
 Label={{application}}-data
+VolumeName={{application}}-data
 ---
 # FileName={{application}}-cache
 [Volume]
 Label={{application}}-cache
+VolumeName={{application}}-cache
 ---
 # FileName={{application}}
 [Network]

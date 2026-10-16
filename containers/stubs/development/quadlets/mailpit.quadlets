@@ -33,3 +33,4 @@ TimeoutStopSec=60
 # FileName={{application}}-mailpit
 [Volume]
 Label={{application}}-mailpit
+VolumeName={{application}}-mailpit
