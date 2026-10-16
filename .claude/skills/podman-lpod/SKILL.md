@@ -99,7 +99,7 @@ lpod self-update                     # v2.2.0 and later
 `lpod remove NAME` and `lpod uninstall APPLICATION` delete the service's Podman volumes (databases, uploads, search indexes). There is no undo. Never run them without the user's explicit confirmation. Offer a backup first:
 
 ```bash
-podman volume export systemd-my-app-pgsql -o pgsql-backup.tar
+podman volume export my-app-pgsql -o pgsql-backup.tar
 lpod my-app-pgsql run sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB"' > backup.sql
 ```
 

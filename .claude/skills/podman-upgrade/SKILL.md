@@ -1,13 +1,23 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman to v5 (from v4, or from v3 through v4). v5 lets services sleep with the on-demand app, renames the frankenphp-octane preset to production, moves the on-demand socket into an "ondemand" preset with an idle check (podman:idle), and must be installed without --dev when production runs in its containers. v4 made on-demand the default (systemd/ folder, BindsTo= to PartOf=, app health check, frankenphp-octane (now production) worker and scheduler changes). Covers updating published presets in containers/stubs without losing customizations, and reinstalling with lpod. Use when upgrading the package, or when published presets still use BindsTo=, lack StopWhenUnneeded={{ondemand}}, keep ondemand.socket in their systemd/ folder, or a frankenphp-octane preset still exists.
+description: Upgrade foxws/laravel-podman to v6 (from v5) or v5 (from v4, or from v3 through v4). v6 names the volumes without Quadlet's systemd- prefix, so existing data must be copied to the new volume names. v5 lets services sleep with the on-demand app, renames the frankenphp-octane preset to production, moves the on-demand socket into an "ondemand" preset with an idle check (podman:idle), and must be installed without --dev when production runs in its containers. v4 made on-demand the default (systemd/ folder, BindsTo= to PartOf=, app health check, frankenphp-octane (now production) worker and scheduler changes). Covers updating published presets in containers/stubs without losing customizations, and reinstalling with lpod. Use when upgrading the package, or when published presets still use BindsTo=, lack StopWhenUnneeded={{ondemand}}, keep ondemand.socket in their systemd/ folder, or a frankenphp-octane preset still exists.
 ---
 
 # Upgrading laravel-podman
 
-Check the installed major with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5".
+Check the installed major with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6".
 
 The human guide is [UPGRADING.md](https://github.com/foxws/laravel-podman/blob/main/UPGRADING.md). It isn't shipped in `vendor/`, and these notes cover the same steps.
+
+## From v5 to v6
+
+v6 names the presets' volumes `{{application}}-pgsql` instead of `systemd-{{application}}-pgsql` (and `{{proxy}}-data` instead of `systemd-{{proxy}}-data`). Containers and networks keep their `systemd-` names, so hosts in `.env` don't change. The data stays in the old volumes, and regenerated units start with new, empty ones, so it must be copied first. Never remove the old volumes yourself; leave that to the user once they've checked their data.
+
+1. `composer require foxws/laravel-podman:^6.0` (with `--dev` if it was a dev dependency).
+2. In published presets under `containers/stubs`, remove `systemd-` from every `VolumeName=` line, unless the user wants to keep the old names (then skip step 4).
+3. Ask the user to stop the app and its services: `systemctl --user stop 'my-app*'`.
+4. Copy each volume while they're stopped. For every name from `podman volume ls --format '{{.Name}}' --filter name='^systemd-my-app-'`: `podman volume create NEW`, then `podman volume export OLD | podman volume import NEW -`, where NEW is OLD without `systemd-`. Repeat for `systemd-proxy-` when the `proxy` preset is used.
+5. `php artisan podman:setup`, reinstall the units with `lpod install ... --replace`, then `lpod my-app up`.
 
 ## From v4 to v5
 
