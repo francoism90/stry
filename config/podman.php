@@ -130,12 +130,17 @@ return [
     |--------------------------------------------------------------------------
     |
     | Extra "{{placeholder}}" => value pairs merged into every rendered
-    | template, on top of the built-in ones.
+    | template, on top of the built-in ones. The media paths are the host
+    | folders the app, Horizon and the scheduler mount as "/media",
+    | "/import" and "/exports".
     |
     */
 
     'substitutions' => [
         '{{image}}' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:latest'),
+        '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/mnt/media/videos'),
+        '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/mnt/media/import'),
+        '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/mnt/media/exports'),
     ],
 
     /*
