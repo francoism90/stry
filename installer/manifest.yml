@@ -3,6 +3,9 @@
 #   podman build -t stry-installer installer/
 #
 # and run it as described in https://github.com/foxws/laravel-installer.
+# The secrets and services steps install the presets in the app's
+# PODMAN_DEFAULT_PRESETS, such as "production,ondemand" on a server, or
+# "development,ondemand" for development.
 name: stry
 
 steps:
@@ -16,7 +19,6 @@ steps:
   - id: secrets
     type: secrets
     file: secrets.md
-    presets: [production, ondemand]
     values:
       POSTGRES_DB: DB_DATABASE
       POSTGRES_USER: DB_USERNAME
@@ -30,7 +32,6 @@ steps:
   - id: services
     type: services
     file: services.md
-    presets: [production, ondemand]
 
   - id: install
     type: command
