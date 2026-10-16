@@ -32,3 +32,4 @@ TimeoutStopSec=60
 # FileName={{application}}-pgsql
 [Volume]
 Label={{application}}-pgsql
+VolumeName={{application}}-pgsql
