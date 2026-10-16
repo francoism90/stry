@@ -28,7 +28,7 @@
         "foxws/laravel-scout-relations": "^1.0.4",
         "inertiajs/inertia-laravel": "^3.5.1",
         "laravel/fortify": "^1.41.0",
-        "laravel/framework": "^13.36.0",
+        "laravel/framework": "^13.37.0",
         "laravel/horizon": "^5.50.1",
         "laravel/octane": "^2.22.0",
         "laravel/prompts": "^0.3.26",
