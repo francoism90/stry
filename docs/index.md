@@ -30,7 +30,8 @@ Jellyfin and Plex are media servers first. **stry** is built for streaming first
 
 ## Getting started
 
-- **[Production Setup](production.md)**: start here to deploy stry on a server.
+- **[Installer](install.md)**: start here to set stry up on a server from your browser.
+- **[Production Setup](production.md)**: set stry up on a server by hand.
 - **[Development Setup](development.md)**: start here to work on stry locally.
 - **[Screenshots](screenshots.md)**: see what stry looks like before you install it.
 

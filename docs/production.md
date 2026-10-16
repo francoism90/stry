@@ -1,7 +1,7 @@
 ---
 title: Production Setup
 section: Getting Started
-order: 2
+order: 3
 tags:
     - production
     - deployment

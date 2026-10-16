@@ -1,7 +1,7 @@
 ---
 title: Upgrading
 section: Getting Started
-order: 4
+order: 5
 tags:
     - upgrade
     - production
