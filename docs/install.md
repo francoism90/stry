@@ -14,6 +14,10 @@ The installer sets **stry** up on a server in your browser. It runs once as a co
 
 To set things up by hand instead, see [Production Setup](production.md).
 
+:::warning
+Only use the installer for a first install. Don't run it on a server where **stry** is already running: it renders and reinstalls the services, which restarts them, and with "Replace" ticked it overwrites your Podman secrets. To update an existing install, follow [Upgrading](upgrading.md) instead.
+:::
+
 ## What it does
 
 1. **Requirements**: checks Podman, cgroups v2 and subordinate IDs through the Podman socket.
@@ -22,7 +26,7 @@ To set things up by hand instead, see [Production Setup](production.md).
 4. **Install**: runs `php artisan app:install`: the migrations, the roles and permissions, and the search collections.
 5. **Admin account**: creates the super-admin you sign in with, unless one exists.
 
-Every step is safe to run again.
+If a step fails, fix the problem and run it again. The steps are safe to repeat during the install.
 
 ## Before you start
 
