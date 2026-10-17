@@ -36,7 +36,7 @@
         "laravel/sanctum": "^4.3.3",
         "laravel/scout": "^11.9.0",
         "laravel/tinker": "^3.0.2",
-        "laravel/wayfinder": "^0.1.22",
+        "laravel/wayfinder": "^0.1.23",
         "league/flysystem-aws-s3-v3": "^3.35.3",
         "pusher/pusher-php-server": "^7.3.0",
         "spatie/eloquent-sortable": "^5.0.1",
