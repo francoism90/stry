@@ -19,11 +19,6 @@ const form = useForm(update(), {
 
 const {
   drivers,
-  rootItems,
-  rootOf,
-  subfolderOf,
-  setRoot,
-  setSubfolder,
   s3Defaults,
   configure,
   addDisk,
@@ -199,35 +194,19 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             />
           </UFormField>
 
-          <template v-if="disk.driver === 'local'">
-            <UFormField
-              label="Folder"
-              description="A folder mounted in the containers. Mount one first to make it available."
-              :error="error(index, 'path')"
-              :class="fieldClass"
-            >
-              <USelect
-                :model-value="rootOf(disk)"
-                :items="rootItems"
-                placeholder="Choose a folder"
-                class="w-56"
-                @update:model-value="(root) => setRoot(disk, root as string | undefined)"
-              />
-            </UFormField>
-
-            <UFormField
-              label="Subfolder"
-              description="An optional folder inside it, which must already exist."
-              :class="fieldClass"
-            >
-              <UInput
-                :model-value="subfolderOf(disk)"
-                class="w-56"
-                placeholder="e.g. backups"
-                @update:model-value="(subfolder) => setSubfolder(disk, String(subfolder ?? ''))"
-              />
-            </UFormField>
-          </template>
+          <UFormField
+            v-if="disk.driver === 'local'"
+            label="Folder"
+            description="An existing folder mounted in the containers. The application's own folders, /tmp and system folders can't be used."
+            :error="error(index, 'path')"
+            :class="fieldClass"
+          >
+            <UInput
+              v-model="disk.path"
+              class="w-56"
+              placeholder="e.g. /media/videos"
+            />
+          </UFormField>
 
           <UFormField
             v-else

@@ -32,7 +32,7 @@ Existing media keep the disk stored on their record, so renaming or removing a d
 
 Rules that `StorageSettingsRequest` enforces:
 
-- `AllowedDiskRoot`: a local disk's path must be a writable folder inside the allowed roots.
+- `AllowedDiskPath`: a local disk's path must be a writable folder that isn't inside, or around, one of its `FORBIDDEN` folders (the app's own, `/tmp` and system folders) or `base_path()`.
 - `DiskSupportsContents`: a local disk can only hold conversions, thumbnails or reels (`requiresTemporaryUrls()`) when `serve` is on.
 - `CheckDiskConnection`: a disk must be reachable before it's saved.
 
@@ -57,6 +57,6 @@ To show when a restart is needed, `bootStorageDisks()` stores `filesystems.finge
 See `tests/Feature/Settings/StorageSettingsControllerTest.php` and `tests/Feature/Video/MoveVideoMediaTest.php`:
 
 - Create the local disk folders under `storage_path('framework/testing/disks')` and delete them in `afterEach`.
-- Bind `AllowedDiskRoot` to that root, and mock `CheckDiskConnection` so nothing connects to S3.
+- Bind `AllowedDiskPath` with its own forbidden folders (the test disks live under `/app`, which is forbidden by default), and mock `CheckDiskConnection` so nothing connects to S3.
 - Set disks with `UpdateStorageSettings` or the settings class. The `SettingsSaved` listener registers them, so `Storage::disk($name)` resolves the new config straight away.
 - The upgrade path from the latest release is covered by `.github/workflows/upgrade.yml`. It fails when a disk is missing after the upgrade or a notice is still showing.
