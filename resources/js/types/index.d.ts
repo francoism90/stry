@@ -291,6 +291,7 @@ export type Video = Model & {
   duration: number | null
   timestamp: string | null
   filesize?: string
+  disk?: string
   codec?: string
   resolution?: string
   bitrate?: string
