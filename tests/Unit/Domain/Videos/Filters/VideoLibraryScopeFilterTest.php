@@ -42,6 +42,14 @@ it('adds a state filter for the failed scope', function (): void {
     ]);
 });
 
+it('only includes trashed videos for the deleted scope', function (): void {
+    $builder = new Builder(new Video, '*');
+
+    (new VideoLibraryScopeFilter)($builder, 'deleted', 'scope');
+
+    expect($builder->wheres)->toBe(['__soft_deleted' => 1]);
+});
+
 it('does not add a filter for the all scope', function (): void {
     $builder = new Builder(new Video, '*');
 

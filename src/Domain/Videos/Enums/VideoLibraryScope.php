@@ -12,6 +12,7 @@ enum VideoLibraryScope: string implements Enumerable
     case Verified = 'verified';
     case Pending = 'pending';
     case Failed = 'failed';
+    case Deleted = 'deleted';
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum VideoLibraryScope: string implements Enumerable
             'verified' => __('Verified'),
             'pending' => __('Pending'),
             'failed' => __('Failed'),
+            'deleted' => __('Deleted'),
         ];
     }
 }
