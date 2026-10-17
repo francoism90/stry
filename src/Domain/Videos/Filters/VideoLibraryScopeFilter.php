@@ -20,12 +20,10 @@ class VideoLibraryScopeFilter implements Filter
             return;
         }
 
-        $scope = VideoLibraryScope::tryFrom($value);
-
-        if (! $scope instanceof VideoLibraryScope || $scope === VideoLibraryScope::All) {
-            return;
-        }
-
-        $query->where('state', $scope->value);
+        match ($scope = VideoLibraryScope::tryFrom($value)) {
+            null, VideoLibraryScope::All => null,
+            VideoLibraryScope::Deleted => $query->onlyTrashed(),
+            default => $query->where('state', $scope->value),
+        };
     }
 }

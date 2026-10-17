@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use Domain\Shared\DataObjects\StorageDisk;
+use Domain\Shared\Enums\DiskDriver;
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States\Verified;
+use Foundation\Settings\StorageSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -331,6 +334,38 @@ it('has a null resolution when there are no clips', function () {
     $video = Video::factory()->create();
 
     expect($video->resolution)->toBeNull();
+});
+
+it('labels the disk of the first clip', function () {
+    $settings = app(StorageSettings::class);
+    $settings->disks = [
+        ...$settings->disks,
+        new StorageDisk(name: 'archive', label: 'Archive', driver: DiskDriver::Local, path: '/mnt/archive', contents: ['videos']),
+    ];
+    $settings->save();
+
+    $video = Video::factory()->create();
+
+    $video->media()->create([
+        'collection_name' => 'clips',
+        'name' => 'clip',
+        'file_name' => 'clip.mp4',
+        'mime_type' => 'video/mp4',
+        'disk' => 'archive',
+        'size' => 1,
+        'manipulations' => [],
+        'custom_properties' => [],
+        'generated_conversions' => [],
+        'responsive_images' => [],
+    ]);
+
+    expect($video->disk)->toBe('Archive');
+});
+
+it('has a null disk when there are no clips', function () {
+    $video = Video::factory()->create();
+
+    expect($video->disk)->toBeNull();
 });
 
 it('can store seasonal information', function () {

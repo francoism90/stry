@@ -56,6 +56,7 @@ class VideoResource extends JsonResource
             'summary' => $this->whenAppended('summary'),
             'content' => $this->whenAppended('content'),
             'filesize' => $this->whenAppended('filesize'),
+            'disk' => $this->whenAppended('disk'),
             'codec' => $this->whenAppended('codec'),
             'resolution' => $this->whenAppended('resolution'),
             'bitrate' => $this->whenAppended('bitrate'),

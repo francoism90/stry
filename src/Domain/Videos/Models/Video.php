@@ -24,6 +24,7 @@ use Domain\Videos\QueryBuilders\VideoQueryBuilder;
 use Domain\Videos\Settings\ProcessingSettings;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
+use Foundation\Settings\StorageSettings;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -496,6 +497,20 @@ class Video extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn (): string => Number::fileSize((int) $this->totalSize),
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string, never>
+     */
+    protected function disk(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?string {
+                $disk = $this->getClips()->first()?->disk;
+
+                return $disk === null ? null : (app(StorageSettings::class)->find($disk)->label ?? $disk);
+            },
         )->shouldCache();
     }
 

@@ -52,7 +52,7 @@ const edit = (item: Video): void => {
         <template #meta>
           <span class="dot-separated flex flex-wrap">
             <span
-              v-for="detail in [item.filesize, item.codec, item.resolution, item.bitrate].filter(Boolean)"
+              v-for="detail in [item.filesize, item.disk, item.codec, item.resolution, item.bitrate].filter(Boolean)"
               :key="detail"
             >
               {{ detail }}
