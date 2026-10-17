@@ -47,7 +47,11 @@ it('only includes trashed videos for the deleted scope', function (): void {
 
     (new VideoLibraryScopeFilter)($builder, 'deleted', 'scope');
 
-    expect($builder->wheres)->toBe(['__soft_deleted' => 1]);
+    expect($builder->wheres)->toContain([
+        'field' => '__soft_deleted',
+        'operator' => '=',
+        'value' => 1,
+    ]);
 });
 
 it('does not add a filter for the all scope', function (): void {
