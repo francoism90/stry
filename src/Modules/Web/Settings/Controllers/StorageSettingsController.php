@@ -8,7 +8,6 @@ use Domain\Shared\Actions\UpdateStorageSettings;
 use Domain\Shared\DataObjects\StorageDisk;
 use Domain\Shared\Enums\DiskContent;
 use Domain\Shared\Enums\DiskDriver;
-use Domain\Shared\Enums\DiskRoot;
 use Foundation\Settings\StorageSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -52,11 +51,6 @@ class StorageSettingsController implements HasMiddleware
                 'label' => $content->label(),
                 'requires_temporary_urls' => $content->requiresTemporaryUrls(),
                 'prefers_local' => $content->prefersLocal(),
-            ])->all(),
-            'roots' => collect(DiskRoot::cases())->map(fn (DiskRoot $root): array => [
-                'label' => $root->label(),
-                'value' => $root->value,
-                'mounted' => $root->isMounted(),
             ])->all(),
             's3_defaults' => [
                 'bucket' => $s3['bucket'] ?? null,

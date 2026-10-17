@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Modules\Web\Settings\Rules\AllowedDiskRoot;
+use Modules\Web\Settings\Rules\AllowedDiskPath;
 use Modules\Web\Settings\Rules\DiskSupportsContents;
 use Support\Filesystem\CheckDiskConnection;
 
@@ -38,7 +38,7 @@ class StorageSettingsRequest extends FormRequest
             'disks.*.name' => ['required', 'string', 'max:64', 'regex:/^[a-z0-9][a-z0-9_-]*$/', 'distinct', Rule::notIn($this->getReservedDiskNames())],
             'disks.*.label' => ['required', 'string', 'max:100'],
             'disks.*.driver' => ['required', Rule::enum(DiskDriver::class)],
-            'disks.*.path' => ['nullable', 'required_if:disks.*.driver,local', 'string', 'max:255', app(AllowedDiskRoot::class)],
+            'disks.*.path' => ['nullable', 'required_if:disks.*.driver,local', 'string', 'max:255', app(AllowedDiskPath::class)],
             'disks.*.visibility' => ['required', Rule::in(['public', 'private'])],
             'disks.*.serve' => ['boolean'],
             'disks.*.contents' => ['array'],

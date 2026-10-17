@@ -10,7 +10,7 @@ use Foundation\Settings\StorageSettings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Modules\Web\Settings\Controllers\StorageSettingsController;
-use Modules\Web\Settings\Rules\AllowedDiskRoot;
+use Modules\Web\Settings\Rules\AllowedDiskPath;
 use Support\Filesystem\CheckDiskConnection;
 
 beforeEach(function () {
@@ -20,7 +20,7 @@ beforeEach(function () {
         File::ensureDirectoryExists("{$this->root}/{$directory}");
     }
 
-    $this->app->bind(AllowedDiskRoot::class, fn () => new AllowedDiskRoot([$this->root]));
+    $this->app->bind(AllowedDiskPath::class, fn () => new AllowedDiskPath([config_path()]));
 
     $this->admin = User::factory()->create();
     $this->admin->assignRole('super-admin');
@@ -95,7 +95,6 @@ it('shows the disks to a super-admin without their secrets', function () {
     $response->assertJsonPath('disks.3.name', 'conversions');
     $response->assertJsonMissingPath('disks.3.secret');
     $response->assertJsonMissingPath('disks.3.key');
-    $response->assertJsonPath('roots.0.value', '/media');
     expect($response->json('disks.3'))->toHaveKey('has_secret');
 });
 
@@ -124,14 +123,17 @@ it('saves the disks and writes new videos to the default disk', function () {
         ->and(config('filesystems.disks.archive.root'))->toBe("{$this->root}/archive");
 });
 
-it('rejects a local disk outside the allowed roots', function () {
+it('rejects a local disk inside or around a forbidden folder', function (string $path) {
     $disks = storageDisks();
-    $disks[0]['path'] = base_path();
+    $disks[0]['path'] = $path;
 
     $response = $this->actingAs($this->admin)->patch(action([StorageSettingsController::class, 'update']), ['disks' => $disks]);
 
-    $response->assertInvalid(['disks.0.path' => 'The path must be inside']);
-});
+    $response->assertInvalid(['disks.0.path' => "The path can't be inside or contain"]);
+})->with([
+    'the folder itself' => fn (): string => config_path(),
+    'a folder around it' => fn (): string => base_path(),
+]);
 
 it('rejects a local disk that does not exist', function () {
     $disks = storageDisks();

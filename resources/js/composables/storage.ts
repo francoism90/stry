@@ -1,5 +1,5 @@
-import type { OptionItem, StorageContent, StorageDisk, StorageRoot, StorageSettings } from '@/types'
-import { joinDiskPath, newStorageDisk, splitDiskPath } from '@/utils/storage'
+import type { OptionItem, StorageContent, StorageDisk, StorageSettings } from '@/types'
+import { newStorageDisk } from '@/utils/storage'
 import { computed, ref, toValue, type MaybeRefOrGetter } from 'vue'
 
 /**
@@ -9,52 +9,20 @@ import { computed, ref, toValue, type MaybeRefOrGetter } from 'vue'
 export function useStorageDisks(disks: MaybeRefOrGetter<StorageDisk[]>) {
   const drivers = ref<OptionItem[]>([])
   const contents = ref<StorageContent[]>([])
-  const roots = ref<StorageRoot[]>([])
   const s3Defaults = ref<StorageSettings['s3_defaults'] | null>(null)
 
   const configure = (settings: StorageSettings): void => {
     drivers.value = settings.drivers
     contents.value = settings.contents
-    roots.value = settings.roots
     s3Defaults.value = settings.s3_defaults
   }
 
   const addDisk = (): void => {
-    toValue(disks).push(newStorageDisk(roots.value.find((root) => root.mounted)?.value ?? ''))
+    toValue(disks).push(newStorageDisk())
   }
 
   const removeDisk = (index: number): void => {
     toValue(disks).splice(index, 1)
-  }
-
-  const rootItems = computed<OptionItem[]>(() =>
-    [...roots.value]
-      .sort((a, b) => Number(b.mounted) - Number(a.mounted))
-      .map((root) => ({
-        label: root.mounted ? root.label : `${root.label} (not mounted)`,
-        value: root.value,
-        disabled: !root.mounted,
-      })),
-  )
-
-  const rootOf = (disk: StorageDisk): string | undefined =>
-    splitDiskPath(
-      disk.path,
-      roots.value.map((root) => root.value),
-    ).root
-
-  const subfolderOf = (disk: StorageDisk): string =>
-    splitDiskPath(
-      disk.path,
-      roots.value.map((root) => root.value),
-    ).subfolder
-
-  const setRoot = (disk: StorageDisk, root: string | undefined): void => {
-    disk.path = joinDiskPath(root, subfolderOf(disk))
-  }
-
-  const setSubfolder = (disk: StorageDisk, subfolder: string): void => {
-    disk.path = joinDiskPath(rootOf(disk), subfolder)
   }
 
   const contentItems = computed<OptionItem[]>(() =>
@@ -90,12 +58,6 @@ export function useStorageDisks(disks: MaybeRefOrGetter<StorageDisk[]>) {
   return {
     drivers,
     contents,
-    roots,
-    rootItems,
-    rootOf,
-    subfolderOf,
-    setRoot,
-    setSubfolder,
     s3Defaults,
     configure,
     addDisk,
