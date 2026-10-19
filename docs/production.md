@@ -90,11 +90,10 @@ lpod stry secrets
 lpod stry up
 ```
 
-To let the app and its services sleep when nobody uses them, install the on-demand socket and enable the idle check. Skip this with `PODMAN_ONDEMAND_ENABLED=false`:
+To let the app and its services sleep when nobody uses them, install the on-demand socket. The idle check comes with it. Skip this with `PODMAN_ONDEMAND_ENABLED=false`:
 
 ```bash
 lpod install ondemand/stry-ondemand.socket --replace
-lpod idle enable stry
 ```
 
 Next, set up object storage (see [Object Storage (S3)](s3.md)) and prepare the database and search:

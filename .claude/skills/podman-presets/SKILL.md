@@ -63,7 +63,7 @@ VolumeName={{application}}-valkey
 | `{{systemctl}}` | `systemctl --user`, or `systemctl` when `quadlet_uid` is `0` (root) |
 | `{{appUpstream}}` | Where the proxy sends app traffic: `systemd-{app}:8000`, or the on-demand socket |
 | `{{ondemand}}` | `yes` when `ondemand.enabled`, otherwise `no`. Used for `StopWhenUnneeded=` on the app and services |
-| `{{ondemandListen}}`, `{{ondemandPort}}`, `{{ondemandIdleTimeout}}` | `ondemand.listen`, `ondemand.port`, `ondemand.idle_timeout` |
+| `{{ondemandListen}}`, `{{ondemandPort}}`, `{{ondemandIdleTimeout}}`, `{{ondemandIdleWorkers}}` | `ondemand.listen`, `ondemand.port`, `ondemand.idle_timeout`, `ondemand.idle_workers` (space-separated) |
 
 Add your own in `config/podman.php`. They also override built-in placeholders:
 
@@ -119,13 +119,12 @@ Publish `proxy`, then edit `containers/stubs/proxy/runtimes/Caddyfile` and `site
 On by default. `PODMAN_ONDEMAND_ENABLED=false` renders `StopWhenUnneeded=no` everywhere and points the proxy straight at the container.
 
 - **Socket:** the `ondemand` preset (shared by `development` and `production`) holds the socket and its `systemd-socket-proxyd` service. Files in a preset's `systemd/` folder are plain systemd units, rendered as `{application}-{file}`; `production` also has `systemd/schedule.timer`.
-- **Idle check:** part of `lpod`. While the app sleeps, it runs `podman:idle` in the running queue worker or Horizon, and once nothing is in progress, stops the workers and the scheduler timer. Add another worker with `Environment=LPOD_IDLE_WORKERS=imports` in a drop-in on `lpod-idle@{application}.service`. Without lpod, such as apps set up with laravel-installer, the preset's `idle.timer`/`idle.service` run the same check; install one or the other, never both.
+- **Idle check:** the `ondemand` preset's `idle.timer`/`idle.service`. The socket `Wants=` the timer, and the timer is `PartOf=` the socket, so installing the socket turns it on, with or without lpod. While the app sleeps, it runs `podman:idle` in each running worker of `ondemand.idle_workers` (`PODMAN_ONDEMAND_IDLE_WORKERS`, default `queue,horizon`), and once nothing is in progress, stops the workers and the scheduler timer. To check another worker, add it to `idle_workers` rather than editing `idle.service`.
 - **Sleeping services:** a service with `StopWhenUnneeded={{ondemand}}` stops once no running unit needs it, so it must be in the app's `Requires=` or `Wants=`, or it stops right after starting.
 - **App quadlet:** when editing it, keep `StopWhenUnneeded={{ondemand}}`, `Notify=healthy` with the `/up` health check, and the `127.0.0.1:{{ondemandPort}}` publish.
 
 ```bash
 lpod install ondemand/{application}-ondemand.socket --replace
-lpod idle enable {application}
 ```
 
 ### Extra PHP extensions or packages

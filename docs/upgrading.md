@@ -76,17 +76,18 @@ Older `production` templates mounted the app's volumes with Podman's `U` option,
 
 If you installed the units by hand, remove `,U` from every `Volume=` line in `stry.container`, and `,z` from the `/media`, `/import`, `/config`, `/data` and `/cache` lines in all three units. Then run `systemctl --user daemon-reload` and restart them.
 
-### Moving the idle check to lpod
+### The idle check comes with the socket
 
-Did you install `stry-idle.timer` from the `ondemand` preset, and do you manage stry with `lpod`? The idle check is part of `lpod` now. Upgrade `lpod` by running its installer again, then switch over once:
+The idle check is part of the on-demand socket now (laravel-podman 6.1, lpod v3). `config/podman.php` sets `idle_workers` to `horizon`, so it only checks Horizon. Regenerate the preset, turn off the old check, and reinstall the socket once:
 
 ```bash
-curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash
-lpod remove stry-idle.timer
-lpod idle enable stry
+php artisan podman:generate ondemand
+lpod self-update
+lpod idle disable stry
+lpod install ondemand/stry-ondemand.socket --replace
 ```
 
-Hosts set up with the [installer](install.md) don't use `lpod`, so keep `stry-idle.timer` there. Install one or the other, never both.
+On hosts set up with the [installer](install.md), which don't use `lpod`, copy `podman/ondemand/stry-ondemand.*` and `podman/ondemand/stry-idle.*` to `~/.config/systemd/user`, then run `systemctl --user daemon-reload` and `systemctl --user restart stry-ondemand.socket`.
 
 ### The proxy's volumes lost their `systemd-` prefix
 

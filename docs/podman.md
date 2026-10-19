@@ -71,10 +71,9 @@ lpod stry up
 
 # Let the app and its services sleep when idle (skip with PODMAN_ONDEMAND_ENABLED=false):
 lpod install ondemand/stry-ondemand.socket --replace
-lpod idle enable stry
 ```
 
-`lpod idle enable` runs the [idle check](https://github.com/foxws/laravel-podman/blob/main/docs/ondemand.md#the-idle-check) every minute. Once the app is asleep and has no work left, it stops Horizon and the scheduler timer, so the database and other services can sleep too.
+The socket comes with the [idle check](https://github.com/foxws/laravel-podman/blob/main/docs/ondemand.md#the-idle-check), which runs every minute. It only looks at Horizon (`PODMAN_ONDEMAND_IDLE_WORKERS=horizon`). Once the app is asleep and has no work left, it stops Horizon and the scheduler timer, so the database and other services can sleep too.
 
 See the package's [Quick Start](https://github.com/foxws/laravel-podman#quick-start) for the full steps.
 
