@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "638f0b90fa80a892b594d9eccfa69664",
+    "content-hash": "4df7dfe8b4d351b811a44e2e1140bfe8",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1844,16 +1844,16 @@
         },
         {
             "name": "foxws/laravel-scout-builder",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-builder.git",
-                "reference": "1a0c78a342a364cd54459c94fe7dc1d38f3974d6"
+                "reference": "8e10fdb730d0df12748d8462e91965ba35be8113"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/1a0c78a342a364cd54459c94fe7dc1d38f3974d6",
-                "reference": "1a0c78a342a364cd54459c94fe7dc1d38f3974d6",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/8e10fdb730d0df12748d8462e91965ba35be8113",
+                "reference": "8e10fdb730d0df12748d8462e91965ba35be8113",
                 "shasum": ""
             },
             "require": {
@@ -1911,7 +1911,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-builder/issues",
-                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.1.0"
+                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.2.0"
             },
             "funding": [
                 {
@@ -1919,7 +1919,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:18:48+00:00"
+            "time": "2026-10-20T08:52:00+00:00"
         },
         {
             "name": "foxws/laravel-scout-relations",

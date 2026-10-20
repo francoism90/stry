@@ -88,7 +88,7 @@ lpod idle disable stry                       # turns off the old lpod-idle@stry.
 systemctl --user disable stry-idle.timer     # only if you enabled it by hand before
 ```
 
-Hosts set up with the [installer](install.md) don't use `lpod`. The installer already copies the idle timer with the socket, so there's nothing to change there.
+On hosts set up with the [installer](install.md), which don't use `lpod`, the old `stry-idle.timer` keeps working until you copy the new units over. To switch, copy `podman/ondemand/stry-ondemand.*` and `podman/ondemand/stry-idle.*` to `~/.config/systemd/user`, then run `systemctl --user daemon-reload` and `systemctl --user restart stry-ondemand.socket`.
 
 ### The proxy's volumes lost their `systemd-` prefix
 

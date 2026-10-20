@@ -24,7 +24,7 @@
         "foxws/laravel-podman": "^6.1",
         "foxws/laravel-pwa": "^2.6.0",
         "foxws/laravel-relatable": "^1.0.3",
-        "foxws/laravel-scout-builder": "^1.1.0",
+        "foxws/laravel-scout-builder": "*",
         "foxws/laravel-scout-relations": "^1.0.4",
         "inertiajs/inertia-laravel": "^3.5.1",
         "laravel/fortify": "^1.41.0",
