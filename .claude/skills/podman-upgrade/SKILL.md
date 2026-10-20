@@ -1,11 +1,11 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman to v6 (from v5) or v5 (from v4, or from v3 through v4). v6 names the volumes without Quadlet's systemd- prefix, so existing data must be copied to the new volume names. v5 lets services sleep with the on-demand app, renames the frankenphp-octane preset to production, moves the on-demand socket into an "ondemand" preset with an idle check (podman:idle), and must be installed without --dev when production runs in its containers. v4 made on-demand the default (systemd/ folder, BindsTo= to PartOf=, app health check, frankenphp-octane (now production) worker and scheduler changes). Covers updating published presets in containers/stubs without losing customizations, and reinstalling with lpod. Use when upgrading the package, or when published presets still use BindsTo=, lack StopWhenUnneeded={{ondemand}}, keep ondemand.socket in their systemd/ folder, or a frankenphp-octane preset still exists.
+description: Upgrade foxws/laravel-podman to 6.1 (from 6.0), v6 (from v5) or v5 (from v4, or from v3 through v4). 6.1 ships the idle check with the on-demand socket (Wants= the idle timer), adds ondemand.idle_workers (PODMAN_ONDEMAND_IDLE_WORKERS) and replaces lpod's lpod-idle@ timer, LPOD_IDLE_WORKERS and "lpod idle enable". v6 names the volumes without Quadlet's systemd- prefix, so existing data must be copied to the new volume names. v5 lets services sleep with the on-demand app, renames the frankenphp-octane preset to production, moves the on-demand socket into an "ondemand" preset with an idle check (podman:idle), and must be installed without --dev when production runs in its containers. v4 made on-demand the default (systemd/ folder, BindsTo= to PartOf=, app health check, frankenphp-octane (now production) worker and scheduler changes). Covers updating published presets in containers/stubs without losing customizations, and reinstalling with lpod. Use when upgrading the package, or when published presets still use BindsTo=, lack StopWhenUnneeded={{ondemand}}, keep ondemand.socket in their systemd/ folder, a frankenphp-octane preset still exists, or a host still uses lpod-idle@ timers.
 ---
 
 # Upgrading laravel-podman
 
-Check the installed major with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6".
+Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1".
 
 The human guide is [UPGRADING.md](https://github.com/foxws/laravel-podman/blob/main/UPGRADING.md). It isn't shipped in `vendor/`, and these notes cover the same steps.
 
@@ -18,6 +18,21 @@ v6 names the presets' volumes `{{application}}-pgsql` instead of `systemd-{{appl
 3. Ask the user to stop the app and its services: `systemctl --user stop 'my-app*'`.
 4. Copy each volume while they're stopped. For every name from `podman volume ls --format '{{.Name}}' --filter name='^systemd-my-app-'`: `podman volume create NEW`, then `podman volume export OLD | podman volume import NEW -`, where NEW is OLD without `systemd-`. Repeat for `systemd-proxy-` when the `proxy` preset is used.
 5. `php artisan podman:setup`, reinstall the units with `lpod install ... --replace`, then `lpod my-app up`.
+
+## From 6.0 to 6.1
+
+The idle check comes with the on-demand socket: `{{application}}-ondemand.socket` has `Wants={{application}}-idle.timer`, and the timer is `PartOf=` the socket with no `[Install]` section. `lpod` v3.0.0 installs the idle units with the socket, and no longer has its own `lpod-idle@` check. The workers to check are set with `ondemand.idle_workers` (`PODMAN_ONDEMAND_IDLE_WORKERS`, default `queue,horizon`).
+
+1. If `config/podman.php` is published, add `'idle_workers' => env('PODMAN_ONDEMAND_IDLE_WORKERS', 'queue,horizon'),` to its `ondemand` block. Ask which workers the app runs: an app that only uses Horizon should set `horizon`.
+2. If the user set `LPOD_IDLE_WORKERS` in a drop-in on `lpod-idle@my-app.service`, add those workers to `idle_workers` too. If they published `containers/stubs/ondemand`, update it from the vendor's `stubs/ondemand` (or delete it when it has no other changes).
+3. `php artisan podman:generate ondemand`, then hand the user these commands (don't run them yourself unless asked):
+
+```bash
+lpod self-update                               # to v3.0.0 or later
+lpod idle disable my-app                       # turns off the old lpod-idle@my-app.timer
+systemctl --user disable my-app-idle.timer     # only if an earlier release enabled it by hand
+lpod install ondemand/my-app-ondemand.socket --replace
+```
 
 ## From v4 to v5
 
@@ -52,7 +67,7 @@ For each published `development` or `production` preset, compare it with `vendor
 - **`app.quadlets` `Wants=`:** every installed service besides what the app `Requires=` must be listed, or it stops right after starting. Check which services the user installs (`lpod list`, or the `.quadlets` they published) and add those. In `production`, also add the worker they use (`queue` or `horizon`) and `{{application}}-schedule.timer`.
 - **Workers that keep running** (every `production` worker, and `development` workers without `PartOf=` the app): add a `Wants=` line with the services their jobs use (from the app's code: filesystems → `rustfs`, Scout → `typesense`/`meilisearch`, broadcasting → `reverb`, mail → `mailpit`).
 - **`systemd/`:** delete `ondemand.socket` and `ondemand.service`. The `ondemand` preset provides them now, along with the idle check. Keep `schedule.timer` in `production`.
-- **Idle check:** it moved to `lpod idle` (lpod v2.2.0 or later). If the user published `containers/stubs/ondemand` and added a worker to `systemd/idle.service`, note it for `LPOD_IDLE_WORKERS` (a drop-in on `lpod-idle@my-app.service`, see the package's ondemand docs).
+- **Idle check:** it comes with the `ondemand` preset's socket (see "From 6.0 to 6.1"). If the user published `containers/stubs/ondemand` and added a worker to `systemd/idle.service`, move it to `PODMAN_ONDEMAND_IDLE_WORKERS` and delete the published `ondemand` preset unless it has other changes.
 
 ### 5. Verify and hand over
 
@@ -66,8 +81,6 @@ Run `php artisan podman:setup` (or `podman:generate` for each preset, including 
 
 ```bash
 lpod install ondemand/my-app-ondemand.socket --replace
-lpod remove my-app-idle.timer   # only if an earlier v5 release installed it
-lpod idle enable my-app
 lpod install development/app.quadlets --replace
 # every other service in use, e.g.:
 lpod install development/pgsql.quadlets --replace

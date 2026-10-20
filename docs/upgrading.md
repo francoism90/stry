@@ -76,17 +76,19 @@ Older `production` templates mounted the app's volumes with Podman's `U` option,
 
 If you installed the units by hand, remove `,U` from every `Volume=` line in `stry.container`, and `,z` from the `/media`, `/import`, `/config`, `/data` and `/cache` lines in all three units. Then run `systemctl --user daemon-reload` and restart them.
 
-### Moving the idle check to lpod
+### The idle check comes with the on-demand socket
 
-Did you install `stry-idle.timer` from the `ondemand` preset, and do you manage stry with `lpod`? The idle check is part of `lpod` now. Upgrade `lpod` by running its installer again, then switch over once:
+The idle check is part of the on-demand socket now: installing `stry-ondemand.socket` also installs and starts `stry-idle.timer`. `lpod idle enable` isn't needed anymore. Upgrade `lpod` to 3.0 or later by running its installer again, regenerate the `ondemand` preset, then reinstall the socket and turn off the old check:
 
 ```bash
 curl -fsSL https://github.com/foxws/lpod/releases/latest/download/install.sh | bash
-lpod remove stry-idle.timer
-lpod idle enable stry
+php artisan podman:generate ondemand
+lpod install ondemand/stry-ondemand.socket --replace
+lpod idle disable stry                       # turns off the old lpod-idle@stry.timer
+systemctl --user disable stry-idle.timer     # only if you enabled it by hand before
 ```
 
-Hosts set up with the [installer](install.md) don't use `lpod`, so keep `stry-idle.timer` there. Install one or the other, never both.
+Hosts set up with the [installer](install.md) don't use `lpod`. The installer already copies the idle timer with the socket, so there's nothing to change there.
 
 ### The proxy's volumes lost their `systemd-` prefix
 
