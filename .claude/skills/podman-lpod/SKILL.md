@@ -60,7 +60,7 @@ lpod my-app open                     # open APP_URL in the browser
 
 ## Troubleshooting the host
 
-Run `lpod doctor` when services don't start or the proxy doesn't answer. It checks Podman, systemd, linger, subordinate IDs, unprivileged ports, the idle templates, the proxy's certificate, `APP_URL` and failed services, and prints fixes. Fixes with `sudo` are for the user to run.
+Run `lpod doctor` when services don't start or the proxy doesn't answer. It checks Podman, systemd, linger, subordinate IDs, unprivileged ports, leftover `lpod-idle@` timers, the proxy's certificate, `APP_URL` and failed services, and prints fixes. Fixes with `sudo` are for the user to run.
 
 ## Installing rendered services
 
@@ -77,14 +77,14 @@ After changing a `.quadlets` file or its template, regenerate and reinstall with
 
 ## On-demand idle check
 
+The idle check (`my-app-idle.timer` and `my-app-idle.service`) comes with the on-demand socket: `lpod install ondemand/my-app-ondemand.socket --replace` installs and starts it. There's no separate enable step.
+
 ```bash
-lpod idle enable my-app              # stop workers and the scheduler timer once the sleeping app is idle
-lpod idle my-app                     # run the check once
-lpod idle disable my-app
-journalctl --user -u lpod-idle@my-app
+lpod idle my-app                     # run the check once (lpod v3.0.0 and later)
+journalctl --user -u my-app-idle
 ```
 
-Needs `lpod` v2.2.0 or later. Extra workers to check and stop go in `LPOD_IDLE_WORKERS`, set in a drop-in on `lpod-idle@my-app.service`.
+The workers it checks and stops are set with `PODMAN_ONDEMAND_IDLE_WORKERS` (default `queue,horizon`); regenerate the `ondemand` preset and reinstall the socket after changing it. `lpod idle disable` only turns off the `lpod-idle@` timer of lpod releases before v3.0.0, and `lpod idle enable` only prints how to install the socket.
 
 ## Installing and upgrading lpod
 
