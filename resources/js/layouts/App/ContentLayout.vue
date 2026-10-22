@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AppFooter from '@/components/Ui/AppFooter.vue'
-import AppHeader from '@/components/Ui/AppHeader.vue'
 import FilterToolbar from '@/components/Ui/FilterToolbar.vue'
+import StickyHeader from '@/components/Ui/StickyHeader.vue'
 import { provideQuery } from '@/composables/query'
-import { useHeaderCollapse } from '@/composables/scroll'
 import type { OptionItem, QueryFilter, QueryValue } from '@/types'
 import type { ButtonProps } from '@nuxt/ui'
 
@@ -27,39 +26,26 @@ const props = withDefaults(
 )
 
 provideQuery(props)
-
-const { isHeaderCollapsed } = useHeaderCollapse()
 </script>
 
 <template>
   <UDashboardPanel :id="id">
     <template #header>
-      <div
-        class="sticky top-0 z-50 transition-colors duration-300"
-        :class="isHeaderCollapsed ? 'bg-default/75 backdrop-blur' : 'bg-transparent'"
-      >
-        <AppHeader />
-
-        <div
-          v-if="title"
-          class="grid transition-[grid-template-rows] duration-300 ease-in-out"
-          :class="isHeaderCollapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]'"
-        >
-          <div class="overflow-hidden">
-            <UPageHeader
-              :title="title"
-              :description="description"
-              :links="links"
-              class="mx-auto w-full max-w-(--ui-container) px-4 py-4 sm:px-6"
-            />
-          </div>
-        </div>
-
-        <FilterToolbar
-          :scopes="scopes"
-          :sorters="sorters"
+      <StickyHeader :collapsible="!!title">
+        <UPageHeader
+          :title="title"
+          :description="description"
+          :links="links"
+          class="mx-auto w-full max-w-(--ui-container) px-4 py-4 sm:px-6"
         />
-      </div>
+
+        <template #toolbar>
+          <FilterToolbar
+            :scopes="scopes"
+            :sorters="sorters"
+          />
+        </template>
+      </StickyHeader>
     </template>
 
     <template #body>
