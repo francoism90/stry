@@ -166,7 +166,7 @@ return [
     */
 
     'substitutions' => [
-        '{{image}}' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:2'),
+        '{{image}}' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:3'),
         '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/srv/library/videos'),
         '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/srv/library/import'),
         '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/srv/library/exports'),
