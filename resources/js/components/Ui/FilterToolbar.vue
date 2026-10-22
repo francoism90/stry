@@ -14,7 +14,7 @@ const { form, onSubmit } = inject(QueryInjectionKey)!
 <template>
   <UDashboardToolbar
     :ui="{
-      root: 'scrollbar-thin scrollbar-track-transparent scrollbar-thumb-transparent hover:scrollbar-thumb-(--ui-border-accented)',
+      root: 'scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent hover:scrollbar-thumb-(--ui-border-accented)',
     }"
   >
     <template #left>
