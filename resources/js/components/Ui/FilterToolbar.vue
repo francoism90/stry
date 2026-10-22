@@ -12,11 +12,7 @@ const { form, onSubmit } = inject(QueryInjectionKey)!
 </script>
 
 <template>
-  <UDashboardToolbar
-    :ui="{
-      root: 'scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent hover:scrollbar-thumb-(--ui-border-accented)',
-    }"
-  >
+  <UDashboardToolbar>
     <template #left>
       <URadioGroup
         v-if="scopes"
