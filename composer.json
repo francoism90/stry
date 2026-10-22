@@ -21,7 +21,7 @@
         "foxws/laravel-essentials": "^0.0.5",
         "foxws/laravel-media": "^0.3.8",
         "foxws/laravel-modelcache": "^1.5.0",
-        "foxws/laravel-podman": "^6.1",
+        "foxws/laravel-podman": "^6.2",
         "foxws/laravel-pwa": "^2.6.0",
         "foxws/laravel-relatable": "^1.0.3",
         "foxws/laravel-scout-builder": "^1.2",
