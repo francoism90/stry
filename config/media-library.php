@@ -14,6 +14,7 @@ use Spatie\MediaLibrary\Conversions\ImageGenerators\Pdf;
 use Spatie\MediaLibrary\Conversions\ImageGenerators\Svg;
 use Spatie\MediaLibrary\Conversions\ImageGenerators\Webp;
 use Spatie\MediaLibrary\Downloaders\DefaultDownloader;
+use Spatie\MediaLibrary\MediaCollections\FileAdder;
 use Spatie\MediaLibrary\MediaCollections\Models\Observers\MediaObserver;
 use Spatie\MediaLibrary\ResponsiveImages\TinyPlaceholderGenerator\Blurred;
 use Spatie\MediaLibrary\ResponsiveImages\WidthCalculator\FileSizeOptimizedWidthCalculator;
@@ -34,10 +35,43 @@ return [
     'disk_name' => env('MEDIA_DISK', 'media'),
 
     /*
+     * The disk on which to store conversions (thumbnails, etc.) and responsive images
+     * when no disk is specified explicitly on the media collection or via
+     * `storingConversionsOnDisk()`. When left null, conversions are stored on the
+     * same disk as the original media — preserving previous behavior.
+     *
+     * This is useful when the originals live on a remote disk (e.g. S3) but the
+     * generated derivatives should stay local for faster access and lower egress.
+     */
+    'conversions_disk_name' => env('MEDIA_CONVERSIONS_DISK', 'conversions'),
+
+    /*
      * The maximum file size of an item in bytes.
      * Adding a larger file will result in an exception.
      */
     'max_file_size' => 1024 * 1024 * 20000, // 20GB
+
+    /*
+     * Uploads whose file name contains any of these extensions will be rejected.
+     * The check looks at every extension in the file name, so a file named
+     * `malicious.php.jpg` is blocked as well. Matching is case-insensitive
+     * and a leading dot is optional.
+     *
+     * The default list lives on the `FileAdder` class so the shipped config
+     * and the in-code fallback (used when the config is cached without the
+     * key) cannot drift. Override here to extend or shrink it.
+     */
+    'disallowed_extensions' => FileAdder::$defaultDisallowedExtensions,
+
+    /*
+     * When this is set to an array of extensions, only uploads whose final
+     * extension is in the list will be accepted. Matching is case-insensitive
+     * and a leading dot is optional. The `disallowed_extensions` list above
+     * is still enforced, so an interior dangerous segment (such as the `php`
+     * in `shell.php.jpg`) is rejected even if the final extension is allowed.
+     * Leave `null` to disable allowlisting.
+     */
+    'allowed_extensions' => null,
 
     /*
      * This queue connection will be used to generate derived and responsive images.

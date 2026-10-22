@@ -83,6 +83,7 @@ return [
         'scope' => env('PWA_SCOPE', '/'),
         'display_override' => ['standalone', 'minimal-ui'],
         'display' => env('PWA_DISPLAY', 'standalone'),
+        'orientation' => env('PWA_ORIENTATION', 'any'),
         'background_color' => env('PWA_BACKGROUND_COLOR', '#18181B'),
         'theme_color' => env('PWA_THEME_COLOR', '#18181B'),
         'lang' => env('PWA_LANG', 'en'),

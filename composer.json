@@ -26,9 +26,9 @@
         "foxws/laravel-relatable": "^1.0.3",
         "foxws/laravel-scout-builder": "^1.2",
         "foxws/laravel-scout-relations": "^1.0.4",
-        "inertiajs/inertia-laravel": "^3.5.1",
+        "inertiajs/inertia-laravel": "^3.5.2",
         "laravel/fortify": "^1.41.0",
-        "laravel/framework": "^13.37.0",
+        "laravel/framework": "^13.38.0",
         "laravel/horizon": "^5.50.1",
         "laravel/octane": "^2.22.0",
         "laravel/prompts": "^0.3.26",
@@ -53,7 +53,7 @@
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "^3.401.3",
+        "aws/aws-sdk-php": "^3.401.5",
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.13.0",

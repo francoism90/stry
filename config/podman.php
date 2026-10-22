@@ -95,12 +95,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Base Path
+    |--------------------------------------------------------------------------
+    |
+    | The project folder presets are read from and rendered into, as this
+    | process sees it. Relative "stubs_path" and "publish_path" values are
+    | resolved against it. Defaults to base_path(); override when rendering
+    | another project than the running app, e.g. from an installer container
+    | with the project mounted somewhere else.
+    |
+    */
+
+    'base_path' => env('PODMAN_BASE_PATH'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Working Path
     |--------------------------------------------------------------------------
     |
     | The host path baked into the "{{workingPath}}"/"{{runtimePath}}"
     | placeholders. It does not affect where Artisan itself reads or writes
-    | files — that's always base_path(). Defaults to base_path(); override
+    | files — that's always "base_path". Defaults to "base_path"; override
     | when rendering happens somewhere whose filesystem view of the project
     | isn't the host's, e.g. inside the container used by "Setting up
     | without PHP on the host".
@@ -108,6 +123,20 @@ return [
     */
 
     'working_path' => env('PODMAN_WORKING_PATH'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Config Path
+    |--------------------------------------------------------------------------
+    |
+    | The host path baked into the "{{configPath}}" placeholder, for services
+    | that read their configuration from a host directory outside the project
+    | itself (for example a proxy Containerfile mounting "{{configPath}}/
+    | {{application}}" as "/etc/caddy"). Defaults to "working_path".
+    |
+    */
+
+    'config_path' => env('PODMAN_CONFIG_PATH'),
 
     /*
     |--------------------------------------------------------------------------
@@ -157,6 +186,19 @@ return [
     */
 
     'publish_path' => env('PODMAN_PUBLISH_PATH', 'podman'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Podman Binary
+    |--------------------------------------------------------------------------
+    |
+    | The Podman binary the package runs, such as for creating the secrets a
+    | preset's units use. Set it to "podman-remote" when running inside a
+    | container with the host's Podman socket mounted.
+    |
+    */
+
+    'binary' => env('PODMAN_BINARY', 'podman'),
 
     /*
     |--------------------------------------------------------------------------
