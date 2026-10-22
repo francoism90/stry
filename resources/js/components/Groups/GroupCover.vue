@@ -54,7 +54,7 @@ const cover = computed(() => groupCover(props.item.type))
         :name="groupIcon(item.type)"
         class="drop-shadow-md"
         :class="[
-          item.thumb ? 'absolute end-3 bottom-3 size-6 text-white' : 'size-12 text-white/90',
+          item.thumb ? 'absolute inset-e-3 bottom-3 size-6 text-white' : 'size-12 text-white/90',
           size === 'lg' && item.thumb ? 'size-7' : '',
         ]"
       />
