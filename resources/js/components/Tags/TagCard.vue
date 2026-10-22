@@ -51,7 +51,7 @@ const videoCountLabel = computed(
     >
       <span
         v-if="item.type"
-        class="absolute start-2.5 top-2.5 flex items-center gap-1 rounded-full border border-white/20 bg-black/45 py-0.75 ps-1.5 pe-2 text-xs font-medium text-white capitalize backdrop-blur-md backdrop-saturate-160"
+        class="absolute inset-s-2.5 top-2.5 flex items-center gap-1 rounded-full border border-white/20 bg-black/45 py-0.75 ps-1.5 pe-2 text-xs font-medium text-white capitalize backdrop-blur-md backdrop-saturate-160"
       >
         <UIcon
           :name="tagIcon(item.type)"
@@ -73,7 +73,7 @@ const videoCountLabel = computed(
         color="neutral"
         variant="solid"
         size="xs"
-        class="absolute end-2 top-2 z-10 rounded-full border border-white/20 bg-black/45 text-white opacity-0 backdrop-blur-md transition-opacity group-hover/card:opacity-100 hover:bg-black/60 focus-visible:opacity-100"
+        class="absolute inset-e-2 top-2 z-10 rounded-full border border-white/20 bg-black/45 text-white opacity-0 backdrop-blur-md transition-opacity group-hover/card:opacity-100 hover:bg-black/60 focus-visible:opacity-100"
       />
     </TagEditModal>
   </div>

@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
           },
           dashboardToolbar: {
             slots: {
-              left: 'min-w-0 overflow-x-auto',
+              left: 'min-w-0 scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-x-auto hover:scrollbar-thumb-(--ui-border-accented)',
               right: 'shrink-0',
             },
           },

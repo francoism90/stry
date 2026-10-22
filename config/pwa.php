@@ -88,6 +88,36 @@ return [
         'theme_color' => env('PWA_THEME_COLOR', '#18181B'),
         'lang' => env('PWA_LANG', 'en'),
         'dir' => env('PWA_DIR', 'ltr'),
+        'screenshots' => [
+            [
+                'src' => '/storage/images/screenshots/home.webp',
+                'sizes' => '1920x1080',
+                'type' => 'image/webp',
+                'form_factor' => 'wide',
+                'label' => 'Browse your videos',
+            ],
+            [
+                'src' => '/storage/images/screenshots/videos-view.webp',
+                'sizes' => '1920x1608',
+                'type' => 'image/webp',
+                'form_factor' => 'wide',
+                'label' => 'Watch videos with chapters and captions',
+            ],
+            [
+                'src' => '/storage/images/screenshots/collections.webp',
+                'sizes' => '1920x1080',
+                'type' => 'image/webp',
+                'form_factor' => 'wide',
+                'label' => 'Keep track of liked, saved and viewed videos',
+            ],
+            [
+                'src' => '/storage/images/screenshots/reels.webp',
+                'sizes' => '1079x1919',
+                'type' => 'image/webp',
+                'form_factor' => 'narrow',
+                'label' => 'Swipe through reels',
+            ],
+        ],
     ],
 
     /*

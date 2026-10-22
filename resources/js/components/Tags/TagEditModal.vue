@@ -155,7 +155,7 @@ const onSubmit = (close: () => void) => {
               color="neutral"
               variant="solid"
               size="xs"
-              class="absolute end-2 top-2 bg-black/60 text-white backdrop-blur-sm hover:bg-black/75"
+              class="absolute inset-e-2 top-2 bg-black/60 text-white backdrop-blur-sm hover:bg-black/75"
               @click="form.remove_avatar = true"
             />
           </div>
