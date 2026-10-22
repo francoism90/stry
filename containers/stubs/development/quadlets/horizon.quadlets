@@ -11,7 +11,7 @@ Wants={{application}}-rustfs.container {{application}}-typesense.container {{app
 Image={{application}}.build
 AutoUpdate=local
 HealthCmd=none
-Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon"
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon:listen"
 UserNS=keep-id
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
