@@ -1,13 +1,21 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.1), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
+description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.3), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
 ---
 
 # Upgrading laravel-podman
 
-Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1".
+Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3".
 
 The human guide is [UPGRADING.md](https://github.com/foxws/laravel-podman/blob/main/UPGRADING.md). It isn't shipped in `vendor/`, and these notes cover the same steps.
+
+## From 6.2 to 6.3
+
+Nothing breaks; generated files, published presets and published configs keep working.
+
+1. `composer require foxws/laravel-podman:^6.3` (with `--dev` if it was a dev dependency).
+2. Optional cleanup: if `config/podman.php` is published with `proxy_prefix`, move its value into `substitutions` as `'proxy' => env('PODMAN_PROXY_PREFIX', 'proxy')` (no longer kebab-cased) and remove the key. Until then the old key is still read.
+3. Replace calls to the deprecated `PodmanConfig::proxy()` with `app(PodmanSubstitutions::class)->all($preset)['{{proxy}}']`.
 
 ## From v5 to v6
 
