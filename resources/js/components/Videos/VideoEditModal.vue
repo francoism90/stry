@@ -14,7 +14,7 @@ import { capitalize } from '@/utils/case'
 import { router, useForm } from '@inertiajs/vue3'
 import type { CalendarDate, CalendarDateTime } from '@internationalized/date'
 import type { TabsItem } from '@nuxt/ui'
-import { computed, defineModel, defineProps } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   video: Video

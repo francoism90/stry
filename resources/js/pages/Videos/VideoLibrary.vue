@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import type { OptionItem, QueryFilter, QueryValue, VideoCollection } from '@/types'
 import { Head, InfiniteScroll, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
-import { defineOptions, defineProps, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   items: VideoCollection
