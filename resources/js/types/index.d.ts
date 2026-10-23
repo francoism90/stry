@@ -5,6 +5,7 @@ export type EchoConfig = {
   readonly host: string
   readonly port: number
   readonly scheme: string
+  readonly path: string
 }
 
 export type AppNotices = {

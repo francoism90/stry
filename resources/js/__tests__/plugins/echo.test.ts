@@ -7,7 +7,7 @@ vi.mock('@laravel/echo-vue', () => ({
   configureEcho: vi.fn<(...args: unknown[]) => void>(),
 }))
 
-const config: EchoConfig = { key: 'app-key', host: 'reverb.test', port: 443, scheme: 'https' }
+const config: EchoConfig = { key: 'app-key', host: 'laravel.test', port: 443, scheme: 'https', path: '/ws' }
 
 describe('bootEcho', () => {
   beforeEach(() => {
@@ -23,7 +23,13 @@ describe('bootEcho', () => {
     bootEcho(config)
 
     expect(configureEcho).toHaveBeenCalledWith(
-      expect.objectContaining({ broadcaster: 'reverb', key: 'app-key', wsHost: 'reverb.test', forceTLS: true }),
+      expect.objectContaining({
+        broadcaster: 'reverb',
+        key: 'app-key',
+        wsHost: 'laravel.test',
+        wsPath: '/ws',
+        forceTLS: true,
+      }),
     )
   })
 

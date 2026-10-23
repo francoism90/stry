@@ -161,7 +161,8 @@ return [
     | Extra "{{placeholder}}" => value pairs merged into every rendered
     | template, on top of the built-in ones. The media paths are the host
     | folders the app, Horizon and the scheduler mount as "/media",
-    | "/import" and "/exports".
+    | "/import" and "/exports". "mailpitPath" is the path Mailpit serves
+    | its web UI from, matching the route in config/octane.php.
     |
     */
 
@@ -170,6 +171,7 @@ return [
         '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/srv/library/videos'),
         '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/srv/library/import'),
         '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/srv/library/exports'),
+        'mailpitPath' => env('MAILPIT_PATH'),
     ],
 
     /*

@@ -16,6 +16,7 @@ export function bootEcho(config: EchoConfig | undefined): void {
     wsHost: config.host,
     wsPort: config.port,
     wssPort: config.port,
+    wsPath: config.path,
     forceTLS: config.scheme === 'https',
     enabledTransports: ['ws', 'wss'],
   })

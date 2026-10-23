@@ -1,5 +1,6 @@
 <?php
 
+use Foxws\Podman\Support\PodmanCaddyRoutes;
 use Foxws\Podman\Support\PodmanCaddySites;
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\RequestHandled;
@@ -282,12 +283,18 @@ return [
             // in APP_COMMAND (see the production Containerfile).
             'CADDY_EXTRA_CONFIG' => PodmanCaddySites::render([
                 PodmanCaddySites::hostFromUrl((string) env('AWS_URL')) => PodmanCaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
-                (string) env('MAILPIT_UI_HOST') => PodmanCaddySites::hostPort((string) env('MAIL_HOST'), 8025),
                 (string) env('RUSTFS_CONSOLE_HOST') => PodmanCaddySites::hostPort(PodmanCaddySites::hostFromUrl((string) env('AWS_ENDPOINT')), 9001),
                 // Port must match "server.port" in vite.config.ts.
                 (string) env('VITE_HMR_HOST') => PodmanCaddySites::hostPort((string) env('VITE_SERVER_HOST'), 5173),
-                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => PodmanCaddySites::hostPort((string) env('REVERB_HOST'), (string) env('REVERB_PORT', 6001)),
             ], (int) env('OCTANE_PORT', 8000)),
+            // Routes under the app's own domain. This replaces Octane's
+            // Mercure directives, which stry doesn't use.
+            'CADDY_SERVER_EXTRA_DIRECTIVES' => PodmanCaddyRoutes::make()
+                // Reverb keeps serving from "/"; Echo connects to the path ("wsPath").
+                ->route(env('VITE_REVERB_PATH'), env('REVERB_HOST'), env('REVERB_PORT', 6001))
+                // Mailpit serves from the path itself ("MP_WEBROOT" in mailpit.quadlets).
+                ->route(env('MAILPIT_PATH'), env('MAIL_HOST'), 8025, stripPrefix: false)
+                ->render(),
         ],
     ],
 ];

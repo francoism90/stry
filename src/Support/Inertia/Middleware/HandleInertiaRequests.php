@@ -59,6 +59,7 @@ class HandleInertiaRequests extends Middleware
                 'host' => Config::string('reverb.apps.apps.0.options.wsHost', 'localhost'),
                 'port' => Config::integer('reverb.apps.apps.0.options.wsPort', 6001),
                 'scheme' => Config::string('reverb.apps.apps.0.options.wsScheme', 'http'),
+                'path' => Config::string('reverb.apps.apps.0.options.wsPath', ''),
             ],
         ]);
     }

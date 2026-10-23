@@ -85,6 +85,7 @@ return [
                     'wsHost' => (string) env('VITE_REVERB_HOST', env('REVERB_HOST')),
                     'wsPort' => (int) env('VITE_REVERB_PORT', env('REVERB_PORT', 6001)),
                     'wsScheme' => (string) env('VITE_REVERB_SCHEME', env('REVERB_SCHEME', 'https')),
+                    'wsPath' => (string) env('VITE_REVERB_PATH', ''),
                 ],
                 'allowed_origins' => ['*'],
                 'ping_interval' => env('REVERB_APP_PING_INTERVAL', 60),

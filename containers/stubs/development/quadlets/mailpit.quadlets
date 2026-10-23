@@ -8,6 +8,7 @@ Image=docker.io/axllent/mailpit:latest
 AutoUpdate=registry
 Environment=MP_MAX_MESSAGES=5000
 Environment=MP_DATABASE=/data/mailpit.db
+Environment=MP_WEBROOT={{mailpitPath}}
 Environment=MP_SMTP_AUTH_ACCEPT_ANY=1
 Environment=MP_SMTP_AUTH_ALLOW_INSECURE=1
 Volume={{application}}-mailpit.volume:/data:rw,Z,U
