@@ -53,7 +53,8 @@ VolumeName={{application}}-valkey
 | Placeholder | Value |
 | --- | --- |
 | `{{application}}` | `quadlet_prefix`, kebab-cased (default `APP_NAME`) |
-| `{{proxy}}` | `proxy_prefix`, kebab-cased |
+| `{{containerPrefix}}` | `container_prefix` (default `systemd-`), Quadlet's prefix for container and network names |
+| `{{proxy}}` | `proxy`, or the `proxy` substitution (`PODMAN_PROXY_PREFIX`) |
 | `{{appEnv}}`, `{{appName}}`, `{{appUrl}}` | `app.env`, `app.name`, `app.url` |
 | `{{appHost}}` | Host part of `app.url` |
 | `{{appUid}}`/`{{appGid}}` | `quadlet_uid`/`quadlet_gid` |
@@ -62,14 +63,18 @@ VolumeName={{application}}-valkey
 | `{{runtimePath}}` | The preset's rendered `runtimes/` folder |
 | `{{systemctl}}` | `systemctl --user`, or `systemctl` when `quadlet_uid` is `0` (root) |
 | `{{appUpstream}}` | Where the proxy sends app traffic: `systemd-{app}:8000`, or the on-demand socket |
+| `{{viteHost}}`, `{{reverbHost}}`, `{{s3Host}}`, `{{s3ConsoleHost}}`, `{{mailHost}}` | `vite.`, `ws.`, `s3.`, `fs.`, `mail.` + `{{appHost}}` |
+| `{{viteUpstream}}`, `{{reverbUpstream}}`, `{{s3Upstream}}`, `{{s3ConsoleUpstream}}`, `{{mailUpstream}}` | The presets' services: `systemd-{app}-vite:5173`, `-reverb:6001`, `-rustfs:9000`, `-rustfs:9001`, `-mailpit:8025` (web UI) |
 | `{{ondemand}}` | `yes` when `ondemand.enabled`, otherwise `no`. Used for `StopWhenUnneeded=` on the app and services |
 | `{{ondemandListen}}`, `{{ondemandPort}}`, `{{ondemandIdleTimeout}}`, `{{ondemandIdleWorkers}}` | `ondemand.listen`, `ondemand.port`, `ondemand.idle_timeout`, `ondemand.idle_workers` (space-separated) |
 
-Add your own in `config/podman.php`. They also override built-in placeholders:
+Add your own in `config/podman.php`, usually from `.env` so templates and the app read the same values. Braces are optional, `null` renders as an empty string, and values may contain built-in placeholders (not custom ones). They also override built-in placeholders:
 
 ```php
 'substitutions' => [
-    '{{apiEndpoint}}' => env('API_ENDPOINT'),
+    'apiEndpoint' => env('API_ENDPOINT'),
+    'viteUrl' => env('VITE_HMR_URL', 'https://vite.{{appHost}}'),
+    'searchUpstream' => '{{containerPrefix}}{{application}}-typesense:8108',
 ],
 ```
 
@@ -112,7 +117,9 @@ Add `Memory=1G` under `[Container]` in that service's `.quadlets` file, then reg
 
 ### Proxy (Caddy)
 
-Publish `proxy`, then edit `containers/stubs/proxy/runtimes/Caddyfile` and `sites/*.Caddyfile`. The default site routes `APP_URL` to the app, and the subdomains `vite.`, `ws.` (Reverb), `s3.` and `fs.` (RustFS) and `mail.` (Mailpit). Regenerate and run `lpod proxy restart`.
+Publish `proxy`, then edit `containers/stubs/proxy/runtimes/Caddyfile` and `sites/*.Caddyfile`. The default site routes `APP_URL` to the app and `vite.`, `ws.` (Reverb), `s3.` and `fs.` (RustFS) and `mail.` (Mailpit) to their services, all through placeholders (`{{viteHost}}`/`{{viteUpstream}}` and so on). Change a host or upstream in `substitutions` without publishing, e.g. `'viteHost' => env('VITE_HMR_HOST', 'vite.{{appHost}}')`; keep a default, since an empty host stops Caddy. Publish to drop or add sites. Regenerate and run `lpod proxy restart`.
+
+To serve Reverb or Mailpit under a path of the app's domain (`/ws`, `/mail`) instead of a subdomain, build `CADDY_SERVER_EXTRA_DIRECTIVES` in `config/octane.php` with `PodmanCaddyRoutes::make()->route($path, $host, $port)` (Reverb, stripped path, plus Echo's `wsPath`) and `->route(..., stripPrefix: false)` (Mailpit, with `MP_WEBROOT` set to the same path). Keep S3, the RustFS console and Vite on subdomains: signed S3 URLs and Vite's modules break under a path. See docs/customizing.md "Paths instead of subdomains".
 
 ### On-demand (scale-to-zero)
 
@@ -133,4 +140,4 @@ Edit `containers/stubs/{preset}/runtimes/Containerfile`, or pass the `PHP_EXTENS
 
 ## Config keys
 
-`PODMAN_QUADLET_PREFIX`, `PODMAN_PROXY_PREFIX`, `PODMAN_STUBS_PATH`, `PODMAN_WORKING_PATH` (override once with `podman:generate --working-path=`), `PODMAN_CONFIG_PATH`, `PODMAN_QUADLET_UID`/`_GID`, `PODMAN_PUBLISH_PATH`, `PODMAN_SELINUX_VOLUME_MAPPING` (turn off on hosts without SELinux), `PODMAN_DEFAULT_PRESETS`, `PODMAN_ONDEMAND_ENABLED`/`_LISTEN`/`_PORT`/`_IDLE_TIMEOUT`.
+`PODMAN_QUADLET_PREFIX`, `PODMAN_CONTAINER_PREFIX`, `PODMAN_PROXY_PREFIX`, `PODMAN_STUBS_PATH`, `PODMAN_WORKING_PATH` (override once with `podman:generate --working-path=`), `PODMAN_CONFIG_PATH`, `PODMAN_QUADLET_UID`/`_GID`, `PODMAN_PUBLISH_PATH`, `PODMAN_SELINUX_VOLUME_MAPPING` (turn off on hosts without SELinux), `PODMAN_DEFAULT_PRESETS`, `PODMAN_ONDEMAND_ENABLED`/`_LISTEN`/`_PORT`/`_IDLE_TIMEOUT`.

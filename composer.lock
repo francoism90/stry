@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "048694c87fba8ab75c7de49eb8f0a3d0",
+    "content-hash": "d18a82b1cf98c5f0915958f3365bbf5f",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1593,16 +1593,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "6.2.0",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "1f3233a0015de93539f54ab9152ed299d19ebc8f"
+                "reference": "342ad730c58b9f472f9d46454d252ce49d2b66e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/1f3233a0015de93539f54ab9152ed299d19ebc8f",
-                "reference": "1f3233a0015de93539f54ab9152ed299d19ebc8f",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/342ad730c58b9f472f9d46454d252ce49d2b66e7",
+                "reference": "342ad730c58b9f472f9d46454d252ce49d2b66e7",
                 "shasum": ""
             },
             "require": {
@@ -1670,7 +1670,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/6.2.0"
+                "source": "https://github.com/foxws/laravel-podman/tree/6.3.0"
             },
             "funding": [
                 {
@@ -1678,7 +1678,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-22T09:17:46+00:00"
+            "time": "2026-10-23T09:15:20+00:00"
         },
         {
             "name": "foxws/laravel-pwa",

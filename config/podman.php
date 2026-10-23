@@ -75,8 +75,6 @@ return [
 
     'quadlet_prefix' => env('PODMAN_QUADLET_PREFIX', env('APP_NAME', 'laravel')),
 
-    'proxy_prefix' => env('PODMAN_PROXY_PREFIX', 'proxy'),
-
     /*
     |--------------------------------------------------------------------------
     | Stubs Path
@@ -166,10 +164,11 @@ return [
     */
 
     'substitutions' => [
-        '{{image}}' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:3'),
-        '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/srv/library/videos'),
-        '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/srv/library/import'),
-        '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/srv/library/exports'),
+        'image' => env('PODMAN_IMAGE_REGISTRY', 'ghcr.io/francoism90/stry:3'),
+        'proxy' => env('PODMAN_PROXY_PREFIX', 'proxy'),
+        'videosPath' => env('PODMAN_VIDEOS_PATH', '/srv/library/videos'),
+        'importPath' => env('PODMAN_IMPORT_PATH', '/srv/library/import'),
+        'exportsPath' => env('PODMAN_EXPORTS_PATH', '/srv/library/exports'),
     ],
 
     /*
