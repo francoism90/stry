@@ -25,7 +25,7 @@ import type {
 import { Deferred, Head, router, setLayoutProps } from '@inertiajs/vue3'
 import { useEcho } from '@laravel/echo-vue'
 import type { ButtonProps } from '@nuxt/ui'
-import { computed, defineOptions, defineProps, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   video: Video

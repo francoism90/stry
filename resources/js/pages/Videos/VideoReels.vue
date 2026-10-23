@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import { home } from '@/routes'
 import type { VideoReelCollection } from '@/types'
 import { Head, InfiniteScroll } from '@inertiajs/vue3'
-import { defineOptions, defineProps, ref } from 'vue'
+import { ref } from 'vue'
 
 defineProps<{
   items: VideoReelCollection
