@@ -75,8 +75,6 @@ return [
 
     'quadlet_prefix' => env('PODMAN_QUADLET_PREFIX', env('APP_NAME', 'laravel')),
 
-    'proxy_prefix' => env('PODMAN_PROXY_PREFIX', 'proxy'),
-
     /*
     |--------------------------------------------------------------------------
     | Stubs Path
@@ -170,6 +168,7 @@ return [
         '{{videosPath}}' => env('PODMAN_VIDEOS_PATH', '/srv/library/videos'),
         '{{importPath}}' => env('PODMAN_IMPORT_PATH', '/srv/library/import'),
         '{{exportsPath}}' => env('PODMAN_EXPORTS_PATH', '/srv/library/exports'),
+        'proxy' => env('PODMAN_PROXY_PREFIX', 'proxy'),
     ],
 
     /*
