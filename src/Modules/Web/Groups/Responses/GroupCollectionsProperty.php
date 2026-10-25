@@ -34,7 +34,7 @@ readonly class GroupCollectionsProperty implements ProvidesInertiaProperty
         return once(fn () => $this->getCollections());
     }
 
-    /** @return Collection<int, array{id: string, name: string, title: string, type: value-of<GroupType>}> */
+    /** @return Collection<int, array{id: string, name: string, title: string, type: GroupType}> */
     protected function getCollections(): Collection
     {
         $userId = Profile::current()->user_id ?? $this->user?->id;
@@ -63,7 +63,7 @@ readonly class GroupCollectionsProperty implements ProvidesInertiaProperty
                 'id' => (string) $group->getRouteKey(),
                 'name' => (string) $group->name,
                 'title' => (string) $group->title,
-                'type' => $group->type->value,
+                'type' => $group->type,
             ]);
     }
 }
