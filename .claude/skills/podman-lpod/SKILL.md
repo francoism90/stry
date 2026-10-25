@@ -77,11 +77,11 @@ After changing a `.quadlets` file or its template, regenerate and reinstall with
 
 ## On-demand idle check
 
-The idle check (`my-app-idle.timer` and `my-app-idle.service`) comes with the on-demand socket: `lpod install ondemand/my-app-ondemand.socket --replace` installs and starts it. There's no separate enable step.
+The idle check comes with the on-demand socket: `lpod install ondemand/my-app-ondemand.socket --replace` installs and starts it. There's no separate enable step. It's the `laravel-idle@.timer`/`laravel-idle@.service` template shared by every app on the host, run as `laravel-idle@my-app`, with the app's settings in the drop-in `laravel-idle@my-app.service.d/idle.conf` (lpod v3.1.0 and later).
 
 ```bash
 lpod idle my-app                     # run the check once (lpod v3.0.0 and later)
-journalctl --user -u my-app-idle
+journalctl --user -u laravel-idle@my-app
 ```
 
 The workers it checks and stops are set with `PODMAN_ONDEMAND_IDLE_WORKERS` (default `queue,horizon`); regenerate the `ondemand` preset and reinstall the socket after changing it. `lpod idle disable` only turns off the `lpod-idle@` timer of lpod releases before v3.0.0, and `lpod idle enable` only prints how to install the socket.

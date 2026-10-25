@@ -1,13 +1,29 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.3), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
+description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.4), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
 ---
 
 # Upgrading laravel-podman
 
-Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3".
+Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3", then "From 6.3 to 6.4".
 
 The human guide is [UPGRADING.md](https://github.com/foxws/laravel-podman/blob/main/UPGRADING.md). It isn't shipped in `vendor/`, and these notes cover the same steps.
+
+## From 6.3 to 6.4
+
+The idle check is a systemd template shared by every on-demand app on the host: `laravel-idle@.timer` and `laravel-idle@.service` replace `{{application}}-idle.timer` and `{{application}}-idle.service`. The socket has `Wants=laravel-idle@{{application}}.timer`, and the app's workers are in the drop-in `laravel-idle@{{application}}.service.d/idle.conf`. Installing it needs `lpod` v3.1.0 or later.
+
+1. `composer require foxws/laravel-podman:^6.4` (with `--dev` if it was a dev dependency).
+2. If the user published `containers/stubs/ondemand`, update it from the vendor's `stubs/ondemand` (or delete it when it has no other changes): `systemd/idle.*` became `systemd/laravel-idle@.*` plus `systemd/laravel-idle@{{application}}.service.d/idle.conf`.
+3. `php artisan podman:generate ondemand`, then hand the user these commands for every on-demand app on the host (don't run them yourself unless asked). Apps on one host share the template, so upgrade them together:
+
+```bash
+lpod self-update                               # to v3.1.0 or later
+lpod remove my-app-idle.timer                  # also removes my-app-idle.service
+lpod install ondemand/my-app-ondemand.socket --replace
+```
+
+4. Code that installs a `PodmanRenderedPreset` itself must copy `systemdDropIns` too, and must not enable `systemdTemplates()`; `systemdUnitsOfType()` leaves templates out.
 
 ## From 6.2 to 6.3
 
@@ -81,7 +97,7 @@ For each published `development` or `production` preset, compare it with `vendor
 
 Run `php artisan podman:setup` (or `podman:generate` for each preset, including `ondemand`), then check:
 
-- `podman/ondemand/` has `{app}-ondemand.socket`, `{app}-ondemand.service`, `{app}-idle.timer` and `{app}-idle.service`.
+- `podman/ondemand/` has `{app}-ondemand.socket`, `{app}-ondemand.service`, `laravel-idle@.timer`, `laravel-idle@.service` and `laravel-idle@{app}.service.d/idle.conf`.
 - Every service quadlet in `podman/{preset}/` has `StopWhenUnneeded=yes`.
 - `php artisan podman:idle` succeeds when nothing is running.
 
