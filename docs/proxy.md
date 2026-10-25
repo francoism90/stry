@@ -32,6 +32,22 @@ Handle HTTPS in front of port `8000` with whatever you already use: the reverse 
 Your TLS proxy must pass the original `Host` header through unchanged. The app's Caddy uses it to route each request.
 :::
 
+### Example: Caddy
+
+With Caddy on the same host, list every hostname in one site and send it to port `8000`. Caddy passes the `Host` header through by default:
+
+```caddy
+example.com, s3.example.com, ws.example.com {
+	reverse_proxy 127.0.0.1:8000 {
+		stream_close_delay 5m
+	}
+}
+```
+
+Add `vite.example.com` when you run the Vite dev server behind it. `stream_close_delay` keeps WebSocket connections (Reverb, Vite HMR) open for a while after a Caddy reload, instead of closing them right away. For a server that's only reachable on your LAN, use a wildcard certificate through a DNS challenge instead, as Let's Encrypt can't reach it over HTTP.
+
+Don't add `header_up Host {upstream_hostport}`, which some guides suggest: it replaces the hostname with `127.0.0.1:8000`, and every request ends up at the app.
+
 ## Adding another service
 
 Add the service's public hostname and its internal `host:port` to the map passed to `CaddySites::render()` in `config/octane.php`. That's all: you don't need a new Quadlet unit, host port or proxy entry.
