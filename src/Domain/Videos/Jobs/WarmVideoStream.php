@@ -57,7 +57,7 @@ class WarmVideoStream implements ShouldBeUniqueUntilProcessing, ShouldQueueAfter
     ) {
         $this
             ->onConnection('redis-long')
-            ->onQueue('warming');
+            ->onQueue('background');
     }
 
     public function handle(CreateVideoDirectStream $action): void

@@ -105,7 +105,7 @@ return [
         'redis:default' => 90,
         'redis:broadcasts' => 30,
         'redis-long:processing' => 600,
-        'redis-long:warming' => 86400,
+        'redis-long:background' => 86400,
     ],
 
     /*
@@ -275,10 +275,10 @@ return [
 
         'supervisor-5' => [
             'connection' => 'redis-long',
-            'queue' => ['warming'],
+            'queue' => ['background'],
             'balance' => false,
             'minProcesses' => 1,
-            'maxProcesses' => (int) env('QUEUE_WARMING_MAX_PROCESSES', 2),
+            'maxProcesses' => (int) env('QUEUE_BACKGROUND_MAX_PROCESSES', 2),
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 256,
