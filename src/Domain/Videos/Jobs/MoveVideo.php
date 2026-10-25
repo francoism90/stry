@@ -70,6 +70,8 @@ class MoveVideo implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
     {
         app(MoveVideoMedia::class)->handle($this->video, $this->disk);
 
+        WarmVideoStream::dispatch($this->video);
+
         $this->user->notify(new VideoMovedNotification($this->video));
     }
 

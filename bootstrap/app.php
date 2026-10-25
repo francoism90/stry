@@ -12,6 +12,7 @@ use Domain\Videos\Commands\ClearVideoCommand;
 use Domain\Videos\Commands\ImportVideoCommand;
 use Domain\Videos\Commands\RegenerateVideoReelsCommand;
 use Domain\Videos\Commands\RegenerateVideoThumbnailsCommand;
+use Domain\Videos\Commands\WarmVideoStreamsCommand;
 use Foundation\Http\Middleware\AddCspHeaders;
 use Foundation\Http\Middleware\AddHorizonCspNonce;
 use Foundation\Http\Middleware\AddTelescopeCspNonce;
@@ -116,6 +117,7 @@ return Application::configure(basePath: $basePath)
         ImportVideoCommand::class,
         RegenerateVideoReelsCommand::class,
         RegenerateVideoThumbnailsCommand::class,
+        WarmVideoStreamsCommand::class,
         SyncScoutCommand::class,
         InstallApplicationCommand::class,
         RestartApplicationCommand::class,
