@@ -117,6 +117,7 @@ it('offers the picked renditions below the clip when processing creates them', f
     'none picked' => [true, [], 1],
     'not created' => [false, [720, 480], 1],
     'as large as the clip' => [true, [1080], 1],
+    'larger than the clip' => [true, [2160, 1440], 1],
 ]);
 
 it('offers trick play in the manifest', function () {

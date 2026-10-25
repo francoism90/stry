@@ -156,7 +156,7 @@ const renditions = computed({
 
         <UFormField
           label="Renditions"
-          description="Smaller sizes offered next to the original when Processing creates renditions, so players can switch to them on slow connections. Only sizes smaller than the original are offered, and each segment is encoded the first time it's watched."
+          description="Sizes offered next to the original when Processing creates renditions, so players can switch to them on slow connections. Only sizes smaller than the original are offered, and each segment is encoded the first time it's watched."
           name="renditions"
           :error="form.errors.renditions"
           :class="fieldClass"

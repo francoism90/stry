@@ -30,7 +30,7 @@ class PlaybackSettingsRequest extends FormRequest
             'refresh_before' => ['sometimes', 'integer', 'min:0'],
             'completion_threshold' => ['sometimes', 'numeric', 'between:0.5,1'],
             'renditions' => ['sometimes', 'array'],
-            'renditions.*' => ['integer', 'distinct', Rule::in(array_map(fn (Rendition $rendition): int => $rendition->height, Ladder::standard()->renditions))],
+            'renditions.*' => ['integer', 'distinct', Rule::in(array_map(fn (Rendition $rendition): int => $rendition->height, Ladder::uhd()->renditions))],
         ];
     }
 }

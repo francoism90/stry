@@ -36,7 +36,7 @@ class PlaybackSettingsController implements HasMiddleware
             'rendition_options' => array_map(fn (Rendition $rendition): array => [
                 'value' => $rendition->height,
                 'label' => "{$rendition->height}p",
-            ], Ladder::standard()->renditions),
+            ], Ladder::uhd()->renditions),
         ]);
     }
 

@@ -21,6 +21,8 @@ it('allows a super-admin to fetch playback settings', function () {
         'completion_threshold' => 0.95,
         'renditions' => [],
         'rendition_options' => [
+            ['value' => 2160, 'label' => '2160p'],
+            ['value' => 1440, 'label' => '1440p'],
             ['value' => 1080, 'label' => '1080p'],
             ['value' => 720, 'label' => '720p'],
             ['value' => 480, 'label' => '480p'],
@@ -46,7 +48,7 @@ it('allows a super-admin to update playback settings', function () {
         'encryption' => true,
         'refresh_before' => 120,
         'completion_threshold' => 0.9,
-        'renditions' => [480, '720'],
+        'renditions' => [480, '2160', 1440],
     ]);
 
     $response->assertRedirect();
@@ -58,7 +60,7 @@ it('allows a super-admin to update playback settings', function () {
         ->and($settings->encryption)->toBeTrue()
         ->and($settings->refresh_before)->toBe(120)
         ->and($settings->completion_threshold)->toBe(0.9)
-        ->and($settings->renditions)->toBe([720, 480]);
+        ->and($settings->renditions)->toBe([2160, 1440, 480]);
 });
 
 it('denies a regular user from updating playback settings', function () {

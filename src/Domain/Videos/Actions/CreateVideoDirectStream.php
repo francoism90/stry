@@ -61,7 +61,7 @@ class CreateVideoDirectStream
     }
 
     /**
-     * The renditions picked in the playback settings, at the standard ladder's bitrates, or none
+     * The renditions picked in the playback settings, at the UHD ladder's bitrates, or none
      * when the processing settings don't create renditions.
      */
     protected function renditions(): ?Ladder
@@ -71,7 +71,7 @@ class CreateVideoDirectStream
         }
 
         $renditions = array_values(array_filter(
-            Ladder::standard()->renditions,
+            Ladder::uhd()->renditions,
             fn (Rendition $rendition): bool => in_array($rendition->height, $this->settings->renditions, true),
         ));
 

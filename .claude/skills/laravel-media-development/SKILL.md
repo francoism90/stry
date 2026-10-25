@@ -609,6 +609,8 @@ $result = Media::fromDisk('uploads')->open($upload)
 
 $result->paths();   // ["videos/1/1080p.mp4", "videos/1/720p.mp4", ...]
 
+Ladder::uhd();   // 2160p and 1440p above the standard sizes, for 4K sources
+
 // stream them straight away, or package them
 Media::fromDisk('renditions')->open($result->paths())->stream();
 
