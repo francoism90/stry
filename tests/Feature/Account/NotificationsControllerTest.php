@@ -36,10 +36,10 @@ it('lists only unread notifications when filtered to unread', function () {
     $unread = createNotification($user, false);
     createNotification($user, true);
 
-    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index'], ['filter' => 'unread']));
+    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index'], ['filter' => ['scope' => 'unread']]));
 
     $response->assertInertia(fn (Assert $page) => $page
-        ->where('filter', 'unread')
+        ->where('filter.scope', 'unread')
         ->has('notifications.data', 1)
         ->where('notifications.data.0.id', $unread->id));
 });
@@ -49,10 +49,10 @@ it('lists all notifications for an unknown filter', function () {
     createNotification($user, false);
     createNotification($user, true);
 
-    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index'], ['filter' => 'bogus']));
+    $response = $this->actingAs($user)->get(action([NotificationsController::class, 'index'], ['filter' => ['scope' => 'bogus']]));
 
     $response->assertInertia(fn (Assert $page) => $page
-        ->where('filter', 'all')
+        ->where('filter.scope', 'all')
         ->has('notifications.data', 2));
 });
 

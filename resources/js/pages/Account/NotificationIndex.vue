@@ -5,21 +5,16 @@ import { useNotifications } from '@/composables/notifications'
 import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Notification, NotificationCollection } from '@/types'
-import { Head, InfiniteScroll, router, setLayoutProps, usePage } from '@inertiajs/vue3'
+import { Head, InfiniteScroll, router, usePage } from '@inertiajs/vue3'
 import { computed, toRef } from 'vue'
 
 const props = defineProps<{
   notifications: NotificationCollection
-  filter: 'all' | 'unread'
+  filter: { scope: 'all' | 'unread' }
 }>()
 
 defineOptions({
   layout: [AppLayout, ResourceLayout],
-})
-
-// Layouts also receive page props; keep this page's read filter out of the layout's query filter.
-setLayoutProps({
-  filter: undefined,
 })
 
 const { hasUnread, markAllAsRead } = useNotifications(toRef(props, 'notifications'))
@@ -31,9 +26,9 @@ const filters = [
   { label: 'Unread', value: 'unread' },
 ] as const
 
-const applyFilter = (filter: 'all' | 'unread'): void => {
+const applyFilter = (scope: 'all' | 'unread'): void => {
   router.get(
-    index.url({ query: { filter: filter === 'all' ? undefined : filter } }),
+    index.url({ query: { filter: { scope: scope === 'all' ? undefined : scope } } }),
     {},
     {
       preserveState: true,
@@ -94,13 +89,13 @@ const sections = computed(() =>
           v-for="option in filters"
           :key="option.value"
           :label="option.label"
-          :aria-pressed="filter === option.value"
+          :aria-pressed="filter.scope === option.value"
           color="neutral"
           variant="outline"
           size="sm"
           class="rounded-lg px-3"
           :class="
-            filter === option.value
+            filter.scope === option.value
               ? 'bg-white text-black ring-white hover:bg-white'
               : 'bg-(--glass) text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)'
           "
@@ -120,7 +115,7 @@ const sections = computed(() =>
           <UEmpty
             v-if="!sections.length"
             icon="i-lucide-bell-off"
-            :title="filter === 'unread' ? 'No unread notifications' : 'No notifications'"
+            :title="filter.scope === 'unread' ? 'No unread notifications' : 'No notifications'"
             description="You're all caught up!"
             variant="naked"
             class="py-24"

@@ -29,14 +29,14 @@ class NotificationsController implements HasMiddleware
     {
         Gate::authorize('update', $user);
 
-        $filter = $request->query('filter') === 'unread' ? 'unread' : 'all';
+        $scope = $request->input('filter.scope') === 'unread' ? 'unread' : 'all';
 
-        $query = ($filter === 'unread' ? $user->unreadNotifications() : $user->notifications())
+        $query = ($scope === 'unread' ? $user->unreadNotifications() : $user->notifications())
             ->simplePaginate(perPage: 20)
             ->withQueryString();
 
         return Inertia::render('Account/NotificationIndex', [
-            'filter' => $filter,
+            'filter' => ['scope' => $scope],
             'notifications' => Inertia::scroll(fn () => NotificationResource::collection($query)),
         ]);
     }
