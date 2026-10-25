@@ -105,6 +105,7 @@ return [
         'redis:default' => 90,
         'redis:broadcasts' => 30,
         'redis-long:processing' => 600,
+        'redis-long:warming' => 86400,
     ],
 
     /*
@@ -271,6 +272,20 @@ return [
             'timeout' => 300,
             'nice' => 0,
         ],
+
+        'supervisor-5' => [
+            'connection' => 'redis-long',
+            'queue' => ['warming'],
+            'balance' => false,
+            'minProcesses' => 1,
+            'maxProcesses' => (int) env('QUEUE_WARMING_MAX_PROCESSES', 2),
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 256,
+            'tries' => 3,
+            'timeout' => 1800,
+            'nice' => 19,
+        ],
     ],
 
     'environments' => [
@@ -279,6 +294,7 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
+            'supervisor-5' => [],
         ],
 
         'staging' => [
@@ -286,6 +302,7 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
+            'supervisor-5' => [],
         ],
 
         'local' => [
@@ -293,6 +310,7 @@ return [
             'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
+            'supervisor-5' => [],
         ],
     ],
 

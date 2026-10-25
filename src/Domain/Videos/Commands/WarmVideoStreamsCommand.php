@@ -32,22 +32,23 @@ class WarmVideoStreamsCommand extends Command implements Isolatable
 
         $videos = Video::query()
             ->whereHas('media', fn ($query) => $query->where('collection_name', 'clips'))
-            ->when($ids !== [], fn ($query) => $query->whereKey($ids))
-            ->get();
+            ->when($ids !== [], fn ($query) => $query->whereKey($ids));
 
-        if ($videos->isEmpty()) {
+        $count = $videos->count();
+
+        if ($count === 0) {
             info('No videos found to warm.');
 
             return self::SUCCESS;
         }
 
-        if (! $this->option('force') && ! confirm("Warm the streams of {$videos->count()} videos?")) {
+        if (! $this->option('force') && ! confirm("Warm the streams of {$count} videos?")) {
             return self::SUCCESS;
         }
 
-        $videos->each(fn (Video $video) => WarmVideoStream::dispatch($video));
+        $videos->lazyById()->each(fn (Video $video) => WarmVideoStream::dispatch($video));
 
-        info("Queued the streams of {$videos->count()} videos.");
+        info("Queued the streams of {$count} videos.");
 
         return self::SUCCESS;
     }

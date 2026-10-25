@@ -17,7 +17,8 @@ use Illuminate\Queue\SerializesModels;
 
 /**
  * Probes and indexes the clip of a video and converts its embedded subtitles before it's first
- * played, since indexing reads the whole file.
+ * played, since indexing reads the whole file. Runs on its own queue with few workers, so a
+ * backfill of the library doesn't hold up processing or saturate the disks.
  */
 class WarmVideoStream implements ShouldBeUniqueUntilProcessing, ShouldQueueAfterCommit
 {
@@ -56,7 +57,7 @@ class WarmVideoStream implements ShouldBeUniqueUntilProcessing, ShouldQueueAfter
     ) {
         $this
             ->onConnection('redis-long')
-            ->onQueue('processing');
+            ->onQueue('warming');
     }
 
     public function handle(CreateVideoDirectStream $action): void
