@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { Head, useForm } from '@inertiajs/vue3'
+import { passkeyErrorMessage } from '@/composables/passkeys'
+import { Head, router, useForm } from '@inertiajs/vue3'
+import { usePasskeyVerify } from '@laravel/passkeys/vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   action: string
@@ -17,6 +20,16 @@ const onSubmit = () =>
     preserveState: true,
     onSuccess: () => form.reset('password'),
   })
+
+const passkey = usePasskeyVerify({
+  autofill: true,
+  remember: () => form.remember,
+  onSuccess: (response) => router.visit(response.redirect ?? '/'),
+})
+
+const passkeyError = computed(() =>
+  passkey.errorInstance.value ? passkeyErrorMessage(passkey.errorInstance.value) : null,
+)
 </script>
 
 <template>
@@ -43,7 +56,7 @@ const onSubmit = () =>
           type="email"
           required
           autofocus
-          autocomplete="email"
+          autocomplete="email webauthn"
           placeholder="email@example.com"
           size="lg"
         />
@@ -86,6 +99,27 @@ const onSubmit = () =>
         variant="solid"
         loading-auto
       />
+
+      <template v-if="passkey.isSupported.value">
+        <USeparator label="or" />
+
+        <UButton
+          label="Sign in with a passkey"
+          icon="i-lucide-key-round"
+          color="neutral"
+          variant="soft"
+          class="justify-center"
+          :loading="passkey.isLoading.value"
+          @click.prevent="passkey.verify"
+        />
+
+        <p
+          v-if="passkeyError"
+          class="text-center text-sm text-error"
+        >
+          {{ passkeyError }}
+        </p>
+      </template>
     </UForm>
   </UPageCard>
 </template>
