@@ -31,9 +31,12 @@ export function useQuery(options: {
     form.sort = toValue(options.sort) ?? null
   })
 
+  // A new filter, sort or search starts over on page 1 at the top, so
+  // infinite scroll doesn't resume mid-list.
   const onSubmit = () => {
     router.reload({
       data: form,
+      onSuccess: () => window.scrollTo({ top: 0 }),
       reset: toValue(options.reset) ?? ['items', 'page'],
       only: toValue(options.only) ?? ['items', 'page', 'filter', 'sort', 'query'],
     })
