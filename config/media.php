@@ -73,8 +73,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | Streaming straight from the stored files, packaging segments when they
-    | are requested. Keyframe indexes are kept in the cache store (null for the
-    | default store) for index_lifetime seconds, per version of a file.
+    | are requested. Probes and keyframe indexes are kept per version of a
+    | file in index_store: "cache" keeps them in the cache store (null for the
+    | default store) for index_lifetime seconds, "database" keeps them in the
+    | media_indexes table on index_connection until "media:prune" finds the
+    | file changed or deleted. Publish its migration with the media-migrations
+    | tag. Call warm() on a stream, e.g. in a queued job after an upload, to
+    | index a file before it's first played.
     |
     | Packaged segments are cached on cache_disk under cache_path, which can be
     | any disk: local storage, a mounted /tmp or RAM disk, or S3. Segments on
@@ -102,6 +107,8 @@ return [
         'url_lifetime' => (int) env('MEDIA_DELIVERY_URL_LIFETIME', 14400),
         'lock_timeout' => (int) env('MEDIA_DELIVERY_LOCK_TIMEOUT', 120),
         'cache_store' => env('MEDIA_DELIVERY_CACHE_STORE'),
+        'index_store' => env('MEDIA_DELIVERY_INDEX_STORE', 'database'),
+        'index_connection' => env('MEDIA_DELIVERY_INDEX_CONNECTION'),
         'index_lifetime' => (int) env('MEDIA_DELIVERY_INDEX_LIFETIME', 604800),
         'look_ahead' => (int) env('MEDIA_DELIVERY_LOOK_AHEAD', 3),
         'look_ahead_via' => env('MEDIA_DELIVERY_LOOK_AHEAD_VIA', 'queue'),
