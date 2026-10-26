@@ -6,10 +6,10 @@ namespace Support\Scout\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\TypesenseEngine;
+use Typesense\Client;
 use Typesense\Exceptions\ObjectNotFound;
 
 use function Laravel\Prompts\info;
@@ -46,8 +46,10 @@ class SyncScoutCommand extends Command implements Isolatable
             $this->call('scout:index', ['name' => $model]);
 
             // Typesense only creates collections on import, so empty ones would be missing for joins
-            if ($engine instanceof TypesenseEngine) {
-                $this->createTypesenseCollection($engine, new $model, $settings['collection-schema'] ?? []);
+            $instance = new $model;
+
+            if ($engine instanceof TypesenseEngine && method_exists($instance, 'indexableAs')) {
+                $this->createTypesenseCollection($instance->indexableAs(), $settings['collection-schema'] ?? []);
             }
 
             // Import records
@@ -60,14 +62,14 @@ class SyncScoutCommand extends Command implements Isolatable
     /**
      * @param  array<string, mixed>  $schema
      */
-    protected function createTypesenseCollection(TypesenseEngine $engine, Model $model, array $schema): void
+    protected function createTypesenseCollection(string $name, array $schema): void
     {
-        $name = $model->indexableAs();
+        $client = new Client(Config::array('scout.typesense.client-settings'));
 
         try {
-            $engine->getCollections()->{$name}->retrieve();
+            $client->getCollections()->{$name}->retrieve();
         } catch (ObjectNotFound) {
-            $engine->getCollections()->create([...$schema, 'name' => $name]);
+            $client->getCollections()->create([...$schema, 'name' => $name]);
         }
     }
 }
