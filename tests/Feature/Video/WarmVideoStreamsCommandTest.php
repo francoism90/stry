@@ -55,3 +55,29 @@ it('asks before queueing', function () {
 
     Bus::assertNotDispatched(WarmVideoStream::class);
 });
+
+it('queues at most the limit, in order of id, and tells where to continue', function () {
+    [$first, $second, $third] = collect(range(1, 3))->map(fn () => createWarmedClip(Video::factory()->create()))->all();
+
+    $this->artisan('videos:warm', ['--limit' => 2, '--force' => true])
+        ->expectsOutputToContain('Queued the streams of 2 videos.')
+        ->expectsOutputToContain("Continue with --after={$second->getKey()}.")
+        ->assertSuccessful();
+
+    Bus::assertDispatchedTimes(WarmVideoStream::class, 2);
+    Bus::assertDispatched(WarmVideoStream::class, fn (WarmVideoStream $job): bool => $job->video->is($first));
+    Bus::assertDispatched(WarmVideoStream::class, fn (WarmVideoStream $job): bool => $job->video->is($second));
+    Bus::assertNotDispatched(WarmVideoStream::class, fn (WarmVideoStream $job): bool => $job->video->is($third));
+});
+
+it('continues after the given id', function () {
+    $first = createWarmedClip(Video::factory()->create());
+    $second = createWarmedClip(Video::factory()->create());
+
+    $this->artisan('videos:warm', ['--after' => $first->getKey(), '--limit' => 5, '--force' => true])
+        ->doesntExpectOutputToContain('Continue with')
+        ->assertSuccessful();
+
+    Bus::assertDispatchedTimes(WarmVideoStream::class, 1);
+    Bus::assertDispatched(WarmVideoStream::class, fn (WarmVideoStream $job): bool => $job->video->is($second));
+});
