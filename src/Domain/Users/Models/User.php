@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Laravel\Fortify\Contracts\PasskeyUser;
+use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -38,7 +40,7 @@ use Support\MediaLibrary\TemporaryUrls;
 
 #[CollectedBy(UserCollection::class)]
 #[UseEloquentBuilder(UserQueryBuilder::class)]
-class User extends Authenticatable implements HasMedia, MustVerifyEmail
+class User extends Authenticatable implements HasMedia, MustVerifyEmail, PasskeyUser
 {
     use BroadcastsModelEvents;
     use HasApiTokens;
@@ -54,6 +56,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use InteractsWithMedia;
     use InteractsWithVideos;
     use Notifiable;
+    use PasskeyAuthenticatable;
     use Searchable;
     use SoftDeletes;
 

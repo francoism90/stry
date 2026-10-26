@@ -166,6 +166,9 @@ return [
         Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
+        Features::passkeys([
+            'confirmPassword' => true,
+        ]),
         // Features::registration(),
         // Features::twoFactorAuthentication([
         //     'confirm' => true,

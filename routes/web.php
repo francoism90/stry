@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Modules\Web\Account\Controllers\NotificationsController;
+use Modules\Web\Account\Controllers\PasskeyController;
 use Modules\Web\Groups\Controllers\GroupController;
 use Modules\Web\Home\Controllers\HomeController;
 use Modules\Web\Media\Controllers\MediaController;
@@ -21,6 +22,7 @@ Route::get('/', HomeController::class)->name('home');
 
 // Account
 Route::resource('notifications', NotificationsController::class)->only(['index', 'update', 'destroy']);
+Route::resource('passkeys', PasskeyController::class)->only(['index']);
 
 // Profiles
 Route::resource('profiles', ProfileController::class)->only(['index', 'store', 'update', 'destroy']);

@@ -386,6 +386,14 @@ export type Notification = {
   updated_at: string
 }
 
+export type Passkey = {
+  id: number
+  name: string
+  authenticator: string | null
+  last_used_at: string | null
+  created_at: string
+}
+
 export type NotificationCollection = Omit<Paginator, 'data'> & {
   data: Notification[] | undefined
 }

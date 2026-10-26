@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePasskeyLogin } from '@/composables/passkeys'
 import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
@@ -17,6 +18,13 @@ const onSubmit = () =>
     preserveState: true,
     onSuccess: () => form.reset('password'),
   })
+
+const {
+  supported: passkeySupported,
+  verifying: verifyingPasskey,
+  error: passkeyError,
+  verify: verifyPasskey,
+} = usePasskeyLogin(() => form.remember)
 </script>
 
 <template>
@@ -43,7 +51,7 @@ const onSubmit = () =>
           type="email"
           required
           autofocus
-          autocomplete="email"
+          autocomplete="email webauthn"
           placeholder="email@example.com"
           size="lg"
         />
@@ -86,6 +94,27 @@ const onSubmit = () =>
         variant="solid"
         loading-auto
       />
+
+      <template v-if="passkeySupported">
+        <USeparator label="or" />
+
+        <UButton
+          label="Sign in with a passkey"
+          icon="i-lucide-key-round"
+          color="neutral"
+          variant="soft"
+          class="justify-center"
+          :loading="verifyingPasskey"
+          @click.prevent="verifyPasskey"
+        />
+
+        <p
+          v-if="passkeyError"
+          class="text-center text-sm text-error"
+        >
+          {{ passkeyError }}
+        </p>
+      </template>
     </UForm>
   </UPageCard>
 </template>
