@@ -31,7 +31,7 @@ $probe->format()->bitRate;
 $probe->stream(2)?->get('tags.title');   // any raw ffprobe field via dot notation
 ```
 
-- `open()` accepts several paths. `probe($path)` probes one (the first by default), and `probeAll()` returns them keyed by path. Results are cached on the opener; after `rememberProbes()` they're also kept in `media.delivery.cache_store` per file version, like keyframe indexes. `stream()` turns that on, so playlist and segment requests don't run ffprobe again.
+- `open()` accepts several paths. `probe($path)` probes one (the first by default), and `probeAll()` returns them keyed by path. Results are cached on the opener; after `rememberProbes()` they're also kept in the `media.delivery.index_store` per file version, like keyframe indexes. `stream()` turns that on, so playlist and segment requests don't run ffprobe again.
 - On disks that provide temporary URLs (S3), ffprobe and ffmpeg read a short-lived signed URL instead of downloading the file. Set `media.remote_inputs.enabled` to false to download to the temporary root instead.
 - FFmpeg 9 verifies TLS certificates of those URLs. For storage behind a private CA, set `media.remote_inputs.ca_file`; `media.remote_inputs.verify_tls` false accepts any certificate (development only). When building your own ffmpeg or ffprobe command around `$media->inputPath()`, put `...$media->inputArguments()` before it; they're empty for local paths, where ffmpeg would reject them.
 
@@ -76,7 +76,7 @@ $index->segments(6);        // list<Segment> (index, start, duration, end()), ea
 $index->longestSegment(6);  // the HLS target duration
 ```
 
-- Indexes are cached on the opener and in `media.delivery.cache_store` (null for the default store) for `media.delivery.index_lifetime` seconds, keyed by disk, path, size and modification time, so a changed file is indexed again.
+- Indexes are cached on the opener and in the `media.delivery.index_store`, keyed by disk, path, size and modification time, so a changed file is indexed again. `cache` (the default) keeps them in `media.delivery.cache_store` for `media.delivery.index_lifetime` seconds; `database` keeps them in the `media_indexes` table (publish it with `--tag=media-migrations`) until `media:prune` finds the file changed or deleted. Indexing reads the whole file, so call `$stream->warm()` in a queued job after an upload to index it before the first play.
 - Audio-only files have no keyframes and are split into even segments.
 - `media.delivery.segment_duration` (`MEDIA_DELIVERY_SEGMENT_DURATION`, 6) is the default target length.
 
@@ -133,7 +133,7 @@ public function segment(Video $video, int $variant, int $segment): Response
   - Streams fall back to `defer` on a `sync` queue, or when the media or cache disk isn't a configured disk name that a job could open.
   - Per stream: `->lookAhead(4)`, `->lookAhead(1, LookAheadStrategy::Defer)` or `->lookAhead(0)`. Without the route macro, call `packageAhead($variant, 0, $track)` after serving a playlist and `packageStart()` after a DASH manifest; `segmentResponse()` and `initSegmentResponse()` look ahead by themselves.
   - The per-segment lock still applies, so a segment being packaged ahead is never packaged twice; a request for it waits for the running package.
-- **Probes:** each file is probed once per version, then read from `media.delivery.cache_store` for `media.delivery.index_lifetime` seconds, so playlist, init and segment requests skip ffprobe.
+- **Probes:** each file is probed once per version, then read from the `media.delivery.index_store`, so playlist, init and segment requests skip ffprobe. `warm()` probes and indexes every opened file and converts embedded subtitles ahead of the first request.
 - **Segments:** `ffmpeg -ss … -t … -copyts -c copy -f mpegts` copies each segment exactly, because segments start on keyframes. S3 sources are read through signed URLs with range requests, so only the needed bytes are fetched. Concurrent requests for the same segment package it once (`Cache::lock`).
 - **The segment cache:** `media.delivery.cache_disk` can be local storage, a mounted `/tmp` or RAM disk, or S3 (override per stream with `toCache()`). Segments are keyed by file version, so a changed file gets new segments. On disks with temporary URLs, `segmentResponse()` redirects to one valid for `media.delivery.url_lifetime` seconds; otherwise it returns the file with long cache headers.
 - **Errors:** out-of-range segments and variants throw `SegmentNotFoundException` (a 404). Files with codecs MPEG-TS can't carry (VP9, AV1, Opus, ...) throw `InvalidMediaException`.
@@ -678,7 +678,7 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 | `disk` | Default disk for `Media::open()` (`MEDIA_DISK`) |
 | `packager.default` | Packager driver (`MEDIA_PACKAGER`, `native`) |
 | `executables.ffmpeg`, `.ffprobe` | Path or command name (`MEDIA_FFMPEG_PATH`, …) |
-| `delivery.segment_duration`, `.cache_store`, `.index_lifetime` | Segment length and keyframe index caching for streaming from stored files |
+| `delivery.segment_duration`, `.index_store`, `.index_connection`, `.cache_store`, `.index_lifetime` | Segment length and where probes and keyframe indexes are kept for streaming from stored files |
 | `delivery.cache_disk`, `.cache_path`, `.url_lifetime`, `.lock_timeout` | Where packaged segments are cached and how they're served (`media:prune` trims the cache) |
 | `delivery.look_ahead`, `.look_ahead_via`, `.look_ahead_connection`, `.look_ahead_queue` | Segments packaged ahead of the player, and where (`queue`, `defer` or `null`) |
 | `ladder.hardware`, `.vaapi_device` | GPU encoding for `ladder()` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc`, `qsv`), falling back to the CPU when the device can't be opened |
