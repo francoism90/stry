@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { passkeyErrorMessage } from '@/composables/passkeys'
-import { Head, router, useForm } from '@inertiajs/vue3'
-import { usePasskeyVerify } from '@laravel/passkeys/vue'
-import { computed, ref } from 'vue'
+import { usePasskeyLogin } from '@/composables/passkeys'
+import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   action: string
@@ -21,27 +19,12 @@ const onSubmit = () =>
     onSuccess: () => form.reset('password'),
   })
 
-const passkey = usePasskeyVerify({
-  autofill: true,
-  remember: () => form.remember,
-  onSuccess: (response) => router.visit(response.redirect ?? '/'),
-})
-
-const verifyingPasskey = ref(false)
-
-const onPasskey = async () => {
-  verifyingPasskey.value = true
-
-  try {
-    await passkey.verify()
-  } finally {
-    verifyingPasskey.value = false
-  }
-}
-
-const passkeyError = computed(() =>
-  passkey.errorInstance.value ? passkeyErrorMessage(passkey.errorInstance.value) : null,
-)
+const {
+  supported: passkeySupported,
+  verifying: verifyingPasskey,
+  error: passkeyError,
+  verify: verifyPasskey,
+} = usePasskeyLogin(() => form.remember)
 </script>
 
 <template>
@@ -112,7 +95,7 @@ const passkeyError = computed(() =>
         loading-auto
       />
 
-      <template v-if="passkey.isSupported.value">
+      <template v-if="passkeySupported">
         <USeparator label="or" />
 
         <UButton
@@ -122,7 +105,7 @@ const passkeyError = computed(() =>
           variant="soft"
           class="justify-center"
           :loading="verifyingPasskey"
-          @click.prevent="onPasskey"
+          @click.prevent="verifyPasskey"
         />
 
         <p

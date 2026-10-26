@@ -2,9 +2,10 @@ import { index } from '@/actions/Modules/Web/Account/Controllers/PasskeyControll
 import { destroy } from '@/routes/passkey'
 import { confirmation } from '@/routes/password'
 import type { Passkey } from '@/types'
-import { useHttp } from '@inertiajs/vue3'
+import { router, useHttp } from '@inertiajs/vue3'
 import { PasskeyError, PasskeyExistsError, UserCancelledError } from '@laravel/passkeys'
-import { readonly, ref } from 'vue'
+import { usePasskeyVerify } from '@laravel/passkeys/vue'
+import { computed, readonly, ref, type MaybeRefOrGetter } from 'vue'
 
 export const passkeyErrorMessage = (error: unknown): string | null => {
   if (error instanceof UserCancelledError) {
@@ -50,5 +51,35 @@ export function usePasskeys() {
     refresh,
     remove,
     isPasswordConfirmed,
+  }
+}
+
+export function usePasskeyLogin(remember: MaybeRefOrGetter<boolean>) {
+  const verifying = ref(false)
+
+  // The adapter stays loading while autofill waits for a passkey, so the button tracks its own state.
+  const passkey = usePasskeyVerify({
+    autofill: true,
+    remember,
+    onSuccess: (response) => router.visit(response.redirect ?? '/'),
+  })
+
+  const verify = async () => {
+    verifying.value = true
+
+    try {
+      await passkey.verify()
+    } finally {
+      verifying.value = false
+    }
+  }
+
+  const error = computed(() => (passkey.errorInstance.value ? passkeyErrorMessage(passkey.errorInstance.value) : null))
+
+  return {
+    supported: readonly(passkey.isSupported),
+    verifying: readonly(verifying),
+    error,
+    verify,
   }
 }
