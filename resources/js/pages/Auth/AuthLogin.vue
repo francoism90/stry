@@ -2,7 +2,7 @@
 import { passkeyErrorMessage } from '@/composables/passkeys'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { usePasskeyVerify } from '@laravel/passkeys/vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   action: string
@@ -26,6 +26,18 @@ const passkey = usePasskeyVerify({
   remember: () => form.remember,
   onSuccess: (response) => router.visit(response.redirect ?? '/'),
 })
+
+const verifyingPasskey = ref(false)
+
+const onPasskey = async () => {
+  verifyingPasskey.value = true
+
+  try {
+    await passkey.verify()
+  } finally {
+    verifyingPasskey.value = false
+  }
+}
 
 const passkeyError = computed(() =>
   passkey.errorInstance.value ? passkeyErrorMessage(passkey.errorInstance.value) : null,
@@ -109,8 +121,8 @@ const passkeyError = computed(() =>
           color="neutral"
           variant="soft"
           class="justify-center"
-          :loading="passkey.isLoading.value"
-          @click.prevent="passkey.verify"
+          :loading="verifyingPasskey"
+          @click.prevent="onPasskey"
         />
 
         <p
