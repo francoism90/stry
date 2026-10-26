@@ -76,7 +76,7 @@ $index->segments(6);        // list<Segment> (index, start, duration, end()), ea
 $index->longestSegment(6);  // the HLS target duration
 ```
 
-- Indexes are cached on the opener and in the `media.delivery.index_store`, keyed by disk, path, size and modification time, so a changed file is indexed again. `cache` (the default) keeps them in `media.delivery.cache_store` for `media.delivery.index_lifetime` seconds; `database` keeps them in the `media_indexes` table (publish it with `--tag=media-migrations`) until `media:prune` finds the file changed or deleted. Indexing reads the whole file, so call `$stream->warm()` in a queued job after an upload to index it before the first play.
+- Indexes are cached on the opener and in the `media.delivery.index_store`, keyed by disk, path, size and modification time, so a changed file is indexed again. `cache` (the default) keeps them in `media.delivery.cache_store` for `media.delivery.index_lifetime` seconds; `database` keeps them in the `media_indexes` table (publish it with `--tag=media-migrations`) until `media:prune` finds the file changed or deleted. MP4 and MOV files on local disks are indexed from their sample tables (a few megabytes); other files are listed packet by packet with ffprobe, which reads the whole file, so call `$stream->warm()` in a queued job after an upload to index it before the first play. `warm()` also converts every embedded text subtitle stream in one ffmpeg run.
 - Audio-only files have no keyframes and are split into even segments.
 - `media.delivery.segment_duration` (`MEDIA_DELIVERY_SEGMENT_DURATION`, 6) is the default target length.
 
