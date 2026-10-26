@@ -277,7 +277,7 @@ return [
             'connection' => 'redis-long',
             'queue' => ['background'],
             'balance' => false,
-            'minProcesses' => 1,
+            'minProcesses' => (int) env('QUEUE_BACKGROUND_MIN_PROCESSES', 1),
             'maxProcesses' => (int) env('QUEUE_BACKGROUND_MAX_PROCESSES', 2),
             'maxTime' => 0,
             'maxJobs' => 0,
