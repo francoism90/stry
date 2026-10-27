@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Shared\Actions;
 
 use Foundation\Settings\SnapshotSettings;
+use Illuminate\Support\Facades\Config;
 use Spatie\DbSnapshots\Snapshot;
 use Spatie\DbSnapshots\SnapshotFactory;
 use Spatie\DbSnapshots\SnapshotRepository;
@@ -24,9 +25,9 @@ class CreateDatabaseSnapshot
     {
         $snapshot = $this->snapshotFactory->create(
             snapshotName: now()->format('Y-m-d_H-i-s'),
-            diskName: config()->string('db-snapshots.disk'),
-            connectionName: config('db-snapshots.default_connection') ?? config()->string('database.default'),
-            compress: config()->boolean('db-snapshots.compress'),
+            diskName: Config::string('db-snapshots.disk'),
+            connectionName: Config::get('db-snapshots.default_connection') ?? Config::string('database.default'),
+            compress: Config::boolean('db-snapshots.compress'),
         );
 
         $this->snapshotRepository->getAll()
