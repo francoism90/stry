@@ -24,6 +24,7 @@ class ProcessingSettingsRequest extends FormRequest
             'extract_chapters' => ['sometimes', 'boolean'],
             'extract_storyboard' => ['sometimes', 'boolean'],
             'create_renditions' => ['sometimes', 'boolean'],
+            'warm_streams' => ['sometimes', 'boolean'],
             'import_batch_size' => ['sometimes', 'integer', 'min:1', 'max:500'],
         ];
     }

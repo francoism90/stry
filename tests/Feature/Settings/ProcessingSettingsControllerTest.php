@@ -33,6 +33,7 @@ it('allows a super-admin to update processing settings', function () {
         'extract_chapters' => false,
         'extract_storyboard' => false,
         'create_renditions' => true,
+        'warm_streams' => false,
         'import_batch_size' => 25,
     ]);
 
@@ -45,6 +46,7 @@ it('allows a super-admin to update processing settings', function () {
         ->and($settings->extract_chapters)->toBeFalse()
         ->and($settings->extract_storyboard)->toBeFalse()
         ->and($settings->create_renditions)->toBeTrue()
+        ->and($settings->warm_streams)->toBeFalse()
         ->and($settings->import_batch_size)->toBe(25);
 });
 
