@@ -16,7 +16,7 @@ use Support\Filesystem\CheckDiskConnection;
 beforeEach(function () {
     $this->root = storage_path('framework/testing/disks');
 
-    foreach (['media', 'archive', 'import', 'exports', 'conversions'] as $directory) {
+    foreach (['media', 'archive', 'import', 'exports', 'snapshots', 'conversions'] as $directory) {
         File::ensureDirectoryExists("{$this->root}/{$directory}");
     }
 
@@ -84,6 +84,7 @@ function storageDisks(array $extra = [], ?array $conversions = null): array
         localDisk('import', ['import'], ['import']),
         localDisk('exports', ['exports'], ['exports']),
         $conversions ?? localDisk('conversions', ['conversions', 'thumbnails', 'reels'], ['conversions', 'thumbnails', 'reels'], serve: true),
+        localDisk('snapshots', ['snapshots'], ['snapshots']),
         ...$extra,
     ];
 }

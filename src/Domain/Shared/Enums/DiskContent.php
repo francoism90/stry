@@ -17,6 +17,7 @@ enum DiskContent: string implements Enumerable
     case Transcodes = 'transcodes';
     case Import = 'import';
     case Exports = 'exports';
+    case Snapshots = 'snapshots';
 
     public function label(): string
     {
@@ -35,6 +36,7 @@ enum DiskContent: string implements Enumerable
             'transcodes' => __('Transcodes'),
             'import' => __('Import'),
             'exports' => __('Exports'),
+            'snapshots' => __('Snapshots'),
         ];
     }
 
@@ -57,6 +59,7 @@ enum DiskContent: string implements Enumerable
             self::Transcodes => 'cache',
             self::Import => 'import',
             self::Exports => 'exports',
+            self::Snapshots => 'snapshots',
         };
     }
 

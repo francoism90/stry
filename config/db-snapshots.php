@@ -3,8 +3,8 @@
 return [
 
     /*
-     * The name of the disk on which the snapshots are stored. It's registered at runtime as the
-     * "snapshots" folder of the disk that holds exports (Admin → Storage).
+     * The name of the disk on which the snapshots are stored, for the package's own commands such as
+     * snapshot:load. The app:snapshot command uses the default disk for snapshots (Admin → Storage).
      */
     'disk' => 'snapshots',
 

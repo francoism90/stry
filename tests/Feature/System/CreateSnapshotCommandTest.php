@@ -26,8 +26,8 @@ beforeEach(function () {
             'path' => "{$this->root}/archive",
             'visibility' => 'private',
             'serve' => false,
-            'contents' => ['exports'],
-            'default_for' => ['exports'],
+            'contents' => ['snapshots'],
+            'default_for' => ['snapshots'],
         ]),
     ];
     $settings->save();
@@ -35,14 +35,8 @@ beforeEach(function () {
 
 afterEach(fn () => File::deleteDirectory($this->root));
 
-it('keeps snapshots in the snapshots folder of the exports disk', function () {
-    Storage::disk('snapshots')->put('2026-10-27_04-30-00.sql.gz', 'dump');
-
-    expect("{$this->root}/archive/snapshots/2026-10-27_04-30-00.sql.gz")->toBeFile();
-});
-
 it('creates a snapshot and deletes the ones beyond the number to keep', function () {
-    $disk = Storage::disk('snapshots');
+    $disk = Storage::disk('archive');
 
     foreach (['2026-10-24', '2026-10-25', '2026-10-26'] as $day) {
         $disk->put("{$day}_04-30-00.sql.gz", 'dump');

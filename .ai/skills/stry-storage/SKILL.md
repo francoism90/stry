@@ -13,7 +13,7 @@ The `media`, `import`, `exports` and `conversions` disks aren't in `config/files
 |---|---|---|
 | Settings | `src/Foundation/Settings/StorageSettings.php` | `disks` (list of `StorageDisk`), `credentials` (S3 keys by disk name, stored encrypted) |
 | Disk | `src/Domain/Shared/DataObjects/StorageDisk.php` | One disk; `toConfig()` turns it into a `filesystems.disks` entry |
-| Contents | `src/Domain/Shared/Enums/DiskContent.php` | What a disk holds (videos, captions, conversions, thumbnails, reels, transcodes, import, exports) |
+| Contents | `src/Domain/Shared/Enums/DiskContent.php` | What a disk holds (videos, captions, conversions, thumbnails, reels, transcodes, import, exports, snapshots) |
 | Registering | `src/Support/Filesystem/RegisterStorageDisks.php` | Writes the disks to config, forgets resolved disks that changed, makes the fingerprint |
 | Boot hook | `AppServiceProvider::bootStorageDisks()` | Registers on boot, after migrations and after `StorageSettings` is saved |
 | Notices | `src/Support/System/ApplicationNotices.php` | `restart` and `migrations` flags for the admin banner |

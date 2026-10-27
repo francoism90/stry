@@ -72,7 +72,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
   >
     <UPageCard
       title="Snapshots"
-      description="Compressed dumps of the database, saved in the snapshots folder of the exports disk. Restore one with snapshot:load."
+      description="Compressed dumps of the database, saved on the default disk for snapshots (see Storage). Restore one with snapshot:load."
       variant="naked"
       orientation="vertical"
       :ui="{
