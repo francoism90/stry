@@ -24,7 +24,7 @@ Use environment variables instead of editing the `config/*.php` files. That keep
 
 ## Admin-managed settings
 
-A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Playback / Chapters / Processing / Reels / Storage**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy. Storage is the exception: its disks are loaded when the app starts (see [Storage](#storage)).
+A few settings are stored in the database instead of `.env`. Admins change them in the app under **Admin → Application / Storage / Snapshots / Playback / Chapters / Processing / Reels**, which needs an `admin` or `super-admin` account. They're stored with [spatie/laravel-settings](https://github.com/spatie/laravel-settings), so a change applies to every request right away, without a restart or redeploy. Storage is the exception: its disks are loaded when the app starts (see [Storage](#storage)).
 
 | Settings class       | Admin tab   | What it covers                                                                       |
 | -------------------- | ----------- | ------------------------------------------------------------------------------------ |
@@ -33,6 +33,7 @@ A few settings are stored in the database instead of `.env`. Admins change them 
 | `ChapterSettings`    | Chapters    | Patterns and the default type used to classify chapters automatically                |
 | `ProcessingSettings` | Processing  | Extracting captions, chapters and storyboards on import, and creating renditions     |
 | `ReelSettings`       | Reels       | Creating reels, their size, fit, frame rate, codec, quality, length, cuts and scenes |
+| `SnapshotSettings`   | Snapshots   | How often database snapshots are made, how many are kept and whether they're gzipped |
 
 ### Shipping new defaults
 
@@ -162,7 +163,7 @@ To play a video in another codec, or to make it smaller, transcode it to AV1 wit
 
 ### Storage
 
-Disks are managed under **Admin → Storage**. Each disk is a local folder or an S3 bucket, and holds one or more kinds of content: videos, captions, conversions, thumbnails, reels, transcodes, imports or exports. One disk is the default for each kind, and new files are written there. Existing files stay on their disk; move a video's clips and captions to another disk from **Move** in its edit dialog, for example to a disk that's backed up.
+Disks are managed under **Admin → Storage**. Each disk is a local folder or an S3 bucket, and holds one or more kinds of content: videos, captions, conversions, thumbnails, reels, transcodes, imports, exports or database snapshots (see [Database Snapshots](backups.md)). One disk is the default for each kind, and new files are written there. Existing files stay on their disk; move a video's clips and captions to another disk from **Move** in its edit dialog, for example to a disk that's backed up.
 
 - Local disks are created in one of the folders of `Domain\Shared\Enums\DiskRoot`: `/media`, `/import`, `/exports`, `/mnt`, `/storage`, `/downloads`, `/vault`, `/videos`, `/movies`, `/tv`, `/shows`, `/library`, `/nas`, `/volumes` or `/srv/media`, or a subfolder of one. The folder must be mounted in the `app`, `horizon` and `schedule` containers; folders that aren't are shown but can't be picked. The app's own `/app`, `/data`, `/config` and `/cache` are never allowed. Turn on **Serve files** for disks that hold conversions, thumbnails or reels, because the browser loads those through temporary URLs.
 - S3 disks use the `s3` disk from `config/filesystems.php` (the `AWS_*` variables) for anything they leave empty, including the credentials. A key and secret set on a disk are stored encrypted with `APP_KEY` and are never shown again. Create the bucket and its CORS policy with `php artisan podman:s3-setup`.

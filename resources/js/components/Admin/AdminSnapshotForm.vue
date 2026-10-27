@@ -83,7 +83,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
       <template #body>
         <UFormField
           label="Frequency"
-          description="How often a snapshot is created, at 04:30 (on Mondays for weekly, on the first of the month for monthly)."
+          description="How often a snapshot is created, at 04:30 UTC (on Mondays for weekly, on the first of the month for monthly)."
           name="frequency"
           :error="form.errors.frequency"
           :class="fieldClass"

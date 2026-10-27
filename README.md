@@ -33,10 +33,11 @@
 - 🖥️ **Responsive UI** - Modern interface powered by Inertia.js and NuxtUI
 - 🚀 **High Performance** - Powered by Laravel Octane and PostgreSQL
 - 🔍 **Fast Search** - Lightning-fast search with Typesense
+- 💾 **Database Snapshots** - Scheduled, compressed database dumps to any local or S3 disk, set up from the admin settings
 - 🐳 **Container-Ready** - Fully containerized with Podman/Quadlet support
 
 > [!WARNING]
-> Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library.
+> Always follow [3-2-1](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/) backup plan to protect your media library. [Database snapshots](https://foxws.nl/stry/backups) only cover the database, not your media files.
 
 ## Demo
 
@@ -91,6 +92,7 @@ Comprehensive guides are available on the [documentation site](https://foxws.nl/
 | [Docker Compose](https://foxws.nl/stry/docker)         | Alternative, best-effort containerization            |
 | [Reverse Proxy](https://foxws.nl/stry/proxy)           | Sibling-service routing; bring your own HTTPS        |
 | [S3 Storage](https://foxws.nl/stry/s3)                 | Object storage setup                                 |
+| [Database Snapshots](https://foxws.nl/stry/backups)    | Scheduled database backups and restoring them        |
 | [Interaction](https://foxws.nl/stry/interaction)       | CLI usage and commands                               |
 
 > [!TIP]

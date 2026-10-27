@@ -43,6 +43,7 @@ Jellyfin and Plex are media servers first. **stry** is built for streaming first
 | [Docker Compose](docker.md)                   | An alternative setup, maintained best-effort  |
 | [Reverse Proxy](proxy.md)                     | Subdomain routing and bringing your own HTTPS |
 | [Object Storage (S3)](s3.md)                  | S3-compatible storage for generated images    |
+| [Database Snapshots](backups.md)              | Scheduled database backups and restoring them |
 | [Application Configuration](configuration.md) | Direct play, video and encoding settings      |
 | [CLI Interaction](interaction.md)             | `lpod` and stry's own Artisan commands        |
 | [Upgrading](upgrading.md)                     | Updating an existing production install       |
