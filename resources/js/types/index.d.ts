@@ -158,6 +158,7 @@ export type ProcessingSettings = {
   extract_chapters: boolean
   extract_storyboard: boolean
   create_renditions: boolean
+  warm_streams: boolean
   import_batch_size: number
 }
 

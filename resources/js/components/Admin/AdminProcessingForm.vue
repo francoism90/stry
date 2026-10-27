@@ -12,6 +12,7 @@ const form = useForm(update(), {
   extract_chapters: true,
   extract_storyboard: true,
   create_renditions: false,
+  warm_streams: true,
   import_batch_size: 10,
 })
 
@@ -23,6 +24,7 @@ onMounted(() =>
         extract_chapters: data.extract_chapters,
         extract_storyboard: data.extract_storyboard,
         create_renditions: data.create_renditions,
+        warm_streams: data.warm_streams,
         import_batch_size: data.import_batch_size,
       })
       form.reset()
@@ -126,6 +128,18 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           :class="fieldClass"
         >
           <USwitch v-model="form.create_renditions" />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Warm streams"
+          description="Index a video's stream after processing, so the first play starts without waiting."
+          name="warm_streams"
+          :error="form.errors.warm_streams"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.warm_streams" />
         </UFormField>
 
         <USeparator />

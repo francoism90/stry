@@ -16,6 +16,8 @@ class ProcessingSettings extends Settings
 
     public bool $create_renditions = false;
 
+    public bool $warm_streams = true;
+
     public int $import_batch_size = 10;
 
     public static function group(): string
