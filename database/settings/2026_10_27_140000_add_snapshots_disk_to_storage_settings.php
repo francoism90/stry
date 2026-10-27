@@ -16,7 +16,7 @@ return new class extends SettingsMigration
         $exports = null;
 
         $this->migrator->update('storage.disks', function (array $disks) use (&$exports): array {
-            $disks = json_decode((string) json_encode($disks), true);
+            $disks = $this->toArrays($disks);
 
             if (Collection::make($disks)->contains(fn (array $disk): bool => $disk['name'] === 'snapshots')) {
                 return $disks;
@@ -51,6 +51,17 @@ return new class extends SettingsMigration
         }
 
         $this->copyCredentials($exports['name']);
+    }
+
+    /**
+     * The migrator casts the disks to StorageDisk objects, which are turned back into plain arrays.
+     *
+     * @param  array<int, mixed>  $disks
+     * @return array<int, array<string, mixed>>
+     */
+    protected function toArrays(array $disks): array
+    {
+        return array_map(fn (mixed $disk): array => (array) json_decode((string) json_encode($disk), true), $disks);
     }
 
     /**
