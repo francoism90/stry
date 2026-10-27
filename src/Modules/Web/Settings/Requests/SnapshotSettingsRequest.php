@@ -24,6 +24,7 @@ class SnapshotSettingsRequest extends FormRequest
         return [
             'frequency' => ['sometimes', Rule::enum(SnapshotFrequency::class)],
             'keep' => ['sometimes', 'integer', 'min:1', 'max:100'],
+            'compress' => ['sometimes', 'boolean'],
         ];
     }
 }

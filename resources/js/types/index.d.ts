@@ -167,6 +167,7 @@ export type SnapshotFrequency = 'never' | 'daily' | 'weekly' | 'monthly'
 export type SnapshotSettings = {
   frequency: SnapshotFrequency
   keep: number
+  compress: boolean
 }
 
 export type StorageDiskDriver = 'local' | 's3'

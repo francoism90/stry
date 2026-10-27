@@ -17,6 +17,7 @@ const frequencies = [
 const form = useForm(update(), {
   frequency: 'never' as SnapshotSettings['frequency'],
   keep: 7,
+  compress: true,
 })
 
 onMounted(() =>
@@ -57,7 +58,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
     class="flex flex-col gap-3"
   >
     <USkeleton
-      v-for="i in 2"
+      v-for="i in 3"
       :key="i"
       class="h-10 w-full rounded-md"
     />
@@ -72,7 +73,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
   >
     <UPageCard
       title="Snapshots"
-      description="Compressed dumps of the database, saved on the default disk for snapshots (see Storage). Restore one with snapshot:load."
+      description="Dumps of the database, saved on the default disk for snapshots (see Storage). Restore one with snapshot:load."
       variant="naked"
       orientation="vertical"
       :ui="{
@@ -109,6 +110,18 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             :min="1"
             :max="100"
           />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Compress"
+          description="Gzip snapshots, which makes them much smaller but slower to create and restore."
+          name="compress"
+          :error="form.errors.compress"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.compress" />
         </UFormField>
       </template>
     </UPageCard>

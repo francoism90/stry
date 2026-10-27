@@ -16,6 +16,8 @@ class SnapshotSettings extends Settings
      */
     public int $keep = 7;
 
+    public bool $compress = true;
+
     public static function group(): string
     {
         return 'snapshots';

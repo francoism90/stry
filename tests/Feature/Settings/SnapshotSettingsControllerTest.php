@@ -14,7 +14,7 @@ it('allows a super-admin to fetch snapshot settings', function () {
     $response = $this->actingAs($user)->get(action([SnapshotSettingsController::class, 'show']));
 
     $response->assertOk();
-    $response->assertExactJson(['frequency' => 'never', 'keep' => 7]);
+    $response->assertExactJson(['frequency' => 'never', 'keep' => 7, 'compress' => true]);
 });
 
 it('denies a regular user from fetching snapshot settings', function () {
@@ -32,6 +32,7 @@ it('allows a super-admin to update snapshot settings', function () {
     $response = $this->actingAs($user)->patch(action([SnapshotSettingsController::class, 'update']), [
         'frequency' => 'weekly',
         'keep' => 4,
+        'compress' => false,
     ]);
 
     $response->assertRedirect();
@@ -40,7 +41,8 @@ it('allows a super-admin to update snapshot settings', function () {
     $settings = app(SnapshotSettings::class);
 
     expect($settings->frequency)->toBe(SnapshotFrequency::Weekly)
-        ->and($settings->keep)->toBe(4);
+        ->and($settings->keep)->toBe(4)
+        ->and($settings->compress)->toBeFalse();
 });
 
 it('denies a regular user from updating snapshot settings', function () {

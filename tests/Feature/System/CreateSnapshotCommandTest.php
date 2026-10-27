@@ -45,11 +45,13 @@ it('creates a snapshot and deletes the ones beyond the number to keep', function
 
     $settings = app(SnapshotSettings::class);
     $settings->keep = 2;
+    $settings->compress = false;
     $settings->save();
 
     $this->mock(SnapshotFactory::class)
         ->shouldReceive('create')
         ->once()
+        ->withArgs(fn (string $name, string $disk, string $connection, bool $compress): bool => $disk === 'archive' && ! $compress)
         ->andReturnUsing(function () use ($disk): Snapshot {
             $disk->put('2026-10-27_04-30-00.sql.gz', 'dump');
 

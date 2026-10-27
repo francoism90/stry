@@ -32,7 +32,7 @@ class CreateDatabaseSnapshot
             snapshotName: Date::now()->format('Y-m-d_H-i-s'),
             diskName: $disk,
             connectionName: Config::get('db-snapshots.default_connection') ?? Config::string('database.default'),
-            compress: Config::boolean('db-snapshots.compress'),
+            compress: $this->settings->compress,
         );
 
         new SnapshotRepository(Storage::disk($disk))->getAll()
