@@ -13,6 +13,7 @@ use Modules\Web\Settings\Controllers\ChapterSettingsController;
 use Modules\Web\Settings\Controllers\PlaybackSettingsController;
 use Modules\Web\Settings\Controllers\ProcessingSettingsController;
 use Modules\Web\Settings\Controllers\ReelSettingsController;
+use Modules\Web\Settings\Controllers\SnapshotSettingsController;
 use Modules\Web\Settings\Controllers\StorageSettingsController;
 use Modules\Web\Shuffle\Controllers\ShuffleController;
 use Modules\Web\Users\Controllers\UserSettingsController;
@@ -33,6 +34,7 @@ Route::prefix('/settings')->name('settings.')->group(function () {
     Route::singleton('chapters', ChapterSettingsController::class)->only(['show', 'update']);
     Route::singleton('processing', ProcessingSettingsController::class)->only(['show', 'update']);
     Route::singleton('reels', ReelSettingsController::class)->only(['show', 'update']);
+    Route::singleton('snapshots', SnapshotSettingsController::class)->only(['show', 'update']);
     Route::singleton('storage', StorageSettingsController::class)->only(['show', 'update']);
 });
 

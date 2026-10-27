@@ -162,6 +162,14 @@ export type ProcessingSettings = {
   import_batch_size: number
 }
 
+export type SnapshotFrequency = 'never' | 'daily' | 'weekly' | 'monthly'
+
+export type SnapshotSettings = {
+  frequency: SnapshotFrequency
+  keep: number
+  compress: boolean
+}
+
 export type StorageDiskDriver = 'local' | 's3'
 
 export type StorageDisk = {

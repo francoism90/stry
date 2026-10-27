@@ -34,6 +34,7 @@ use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Support\Inertia\Middleware\HandleInertiaRequests;
 use Support\Scout\Commands\SyncScoutCommand;
+use Support\System\Commands\CreateSnapshotCommand;
 use Support\System\Commands\InstallApplicationCommand;
 use Support\System\Commands\RestartApplicationCommand;
 use Support\System\Commands\UpdateApplicationCommand;
@@ -119,6 +120,7 @@ return Application::configure(basePath: $basePath)
         RegenerateVideoThumbnailsCommand::class,
         WarmVideoStreamsCommand::class,
         SyncScoutCommand::class,
+        CreateSnapshotCommand::class,
         InstallApplicationCommand::class,
         RestartApplicationCommand::class,
         UpdateApplicationCommand::class,

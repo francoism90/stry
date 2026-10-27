@@ -86,6 +86,14 @@ printf '%s' "$PASSWORD" | lpod stry artisan users:create --super-admin --no-inte
 | `scout:delete-index Model` | Delete the index of one model, for example when it's corrupted |
 | `scout:import Model`       | Import one model into its search index                         |
 
+### Database snapshots
+
+| Command                  | Description                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `app:snapshot`           | Create a database snapshot now and delete the oldest ones (see [Database Snapshots](backups.md))     |
+| `snapshot:list`          | List the database snapshots, newest first                                                            |
+| `snapshot:load --latest` | Drop every table and load the newest snapshot. Pass a name instead of `--latest` to load another one |
+
 ### Settings
 
 | Command                | Description                                                                                                                                   |
