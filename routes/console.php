@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Groups\Models\Group;
+use Domain\Shared\Enums\SnapshotFrequency;
 use Domain\Transcodes\Models\Transcode;
 use Foxws\Media\Commands\CleanCommand as CleanMediaCommand;
 use Foxws\Media\Commands\PruneCommand as PruneMediaCommand;
@@ -12,6 +13,7 @@ use Illuminate\Database\Console\PruneCommand;
 use Illuminate\Support\Facades\Schedule;
 use Laravel\Horizon\Console\SnapshotCommand;
 use Laravel\Sanctum\Console\Commands\PruneExpired;
+use Support\System\Commands\CreateSnapshotCommand;
 
 /**
  * In production, the scheduler is a oneshot container that runs `schedule:run` once a minute and
@@ -45,3 +47,9 @@ Schedule::command(PruneCommand::class, [
 Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
     ->withoutOverlapping()
     ->dailyAt('03:30');
+
+if ($snapshotExpression = SnapshotFrequency::configured()->expression()) {
+    Schedule::command(CreateSnapshotCommand::class)
+        ->withoutOverlapping()
+        ->cron($snapshotExpression);
+}

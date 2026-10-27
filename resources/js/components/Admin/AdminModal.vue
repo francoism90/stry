@@ -4,6 +4,7 @@ import AdminChapterForm from '@/components/Admin/AdminChapterForm.vue'
 import AdminPlaybackForm from '@/components/Admin/AdminPlaybackForm.vue'
 import AdminProcessingForm from '@/components/Admin/AdminProcessingForm.vue'
 import AdminReelForm from '@/components/Admin/AdminReelForm.vue'
+import AdminSnapshotForm from '@/components/Admin/AdminSnapshotForm.vue'
 import AdminStorageForm from '@/components/Admin/AdminStorageForm.vue'
 import { computed, ref, type Component } from 'vue'
 
@@ -35,6 +36,12 @@ const definitions: AdminSectionDefinition[] = [
     label: 'Storage',
     icon: 'i-lucide-hard-drive',
     component: AdminStorageForm,
+  },
+  {
+    value: 'snapshots',
+    label: 'Snapshots',
+    icon: 'i-lucide-database-backup',
+    component: AdminSnapshotForm,
   },
   {
     value: 'playback',
