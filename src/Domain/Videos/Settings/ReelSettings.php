@@ -47,7 +47,7 @@ class ReelSettings extends Settings
     public int $duration = 32;
 
     /**
-     * Use videos up to $short_duration seconds whole, so short videos show in full instead of cut.
+     * Show videos up to $short_duration seconds in the reels feed, playing their clip when they have no reel.
      */
     public bool $short_videos = false;
 

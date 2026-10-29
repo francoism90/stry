@@ -7,6 +7,7 @@ namespace Modules\Web\Videos\Controllers;
 use Domain\Profiles\Models\Profile;
 use Domain\Videos\Actions\GetReelShuffleSeed;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ReelSettings;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -24,7 +25,7 @@ class VideoReelController implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): Response
+    public function index(Request $request, ReelSettings $settings): Response
     {
         // A new shuffle on every visit, kept while scrolling to the next pages
         $seed = app(GetReelShuffleSeed::class)->handle(
@@ -35,7 +36,7 @@ class VideoReelController implements HasMiddleware
         $reels = Video::query()
             ->verified()
             ->forProfile(Profile::current())
-            ->whereHas('media', fn ($query) => $query->where('collection_name', 'reels'))
+            ->withReelOrShortClip($settings->short_videos ? $settings->short_duration : null)
             ->with(['media'])
             ->shuffled($seed)
             ->simplePaginate(8);

@@ -15,8 +15,7 @@ use Foxws\Media\Opener;
  * Picks the cuts of a reel, as set in the reel settings: short parts of the scenes that change the most, spread over the video and
  * kept out of its opening and ending and of skippable chapters (intros, credits, sponsors and so on).
  * Cuts move closer together when they're too far apart to fill the reel, videos without enough scene
- * changes get evenly spaced cuts instead, and short videos are used whole: those up to one and a half times
- * the reel duration, or up to the short video duration when the reel settings turn that on.
+ * changes get evenly spaced cuts instead, and short videos are used whole.
  */
 class SelectReelClips
 {
@@ -60,7 +59,7 @@ class SelectReelClips
             return [];
         }
 
-        if ($this->usesWhole($duration)) {
+        if ($duration <= $this->settings->duration * self::WHOLE_VIDEO_FACTOR) {
             return [Clip::make(0, $duration)];
         }
 
@@ -75,15 +74,6 @@ class SelectReelClips
         usort($cuts, fn (Clip $a, Clip $b): int => $a->from <=> $b->from);
 
         return $cuts;
-    }
-
-    protected function usesWhole(float $duration): bool
-    {
-        if ($this->settings->short_videos && $duration <= $this->settings->short_duration) {
-            return true;
-        }
-
-        return $duration <= $this->settings->duration * self::WHOLE_VIDEO_FACTOR;
     }
 
     /**

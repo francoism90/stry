@@ -53,6 +53,20 @@ class VideoQueryBuilder extends Builder
         return $this->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'clips'));
     }
 
+    /**
+     * Videos with a reel, or with a clip of up to the given number of seconds when given.
+     *
+     * @return self<TModel>
+     */
+    public function withReelOrShortClip(?int $seconds = null): self
+    {
+        return $this->where(fn (Builder $query) => $query
+            ->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'reels'))
+            ->when($seconds !== null, fn (Builder $query) => $query->orWhereHas('media', fn (Builder $query) => $query
+                ->where('collection_name', 'clips')
+                ->whereRaw("(select max((stream->>'duration')::numeric) from jsonb_array_elements(custom_properties->'streams') as stream) <= ?", [$seconds]))));
+    }
+
     /** @return self<TModel> */
     public function recent(): self
     {
