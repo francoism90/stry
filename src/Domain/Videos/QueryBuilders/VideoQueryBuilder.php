@@ -7,6 +7,7 @@ namespace Domain\Videos\QueryBuilders;
 use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Domain\Profiles\Models\Profile;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ReelSettings;
 use Domain\Videos\States;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -55,17 +56,19 @@ class VideoQueryBuilder extends Builder
     }
 
     /**
-     * Videos with a reel, or with a clip of up to the given number of seconds when given.
+     * Videos with a reel, or with a clip up to the short video duration when the reel settings show short videos.
      *
      * @return self<TModel>
      */
-    public function withReelOrShortClip(?int $seconds = null): self
+    public function withReelOrShortClip(): self
     {
+        $settings = app(ReelSettings::class);
+
         return $this->where(fn (Builder $query) => $query
             ->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'reels'))
-            ->when($seconds !== null, fn (Builder $query) => $query->orWhereHas('media', fn (MediaQueryBuilder $query) => $query
+            ->when($settings->short_videos, fn (Builder $query) => $query->orWhereHas('media', fn (MediaQueryBuilder $query) => $query
                 ->where('collection_name', 'clips')
-                ->whereDurationAtMost($seconds))));
+                ->whereDurationAtMost($settings->short_duration))));
     }
 
     /** @return self<TModel> */
