@@ -276,7 +276,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
           <UInputNumber
             v-model="form.short_duration"
             class="w-32"
-            :min="5"
+            :min="0"
             :max="600"
             :disabled="!form.short_videos"
           />

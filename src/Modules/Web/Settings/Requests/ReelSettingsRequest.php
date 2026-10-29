@@ -34,7 +34,7 @@ class ReelSettingsRequest extends FormRequest
             'cut_duration' => ['sometimes', 'numeric', 'between:1.5,30'],
             'duration' => ['sometimes', 'integer', 'between:5,180'],
             'short_videos' => ['sometimes', 'boolean'],
-            'short_duration' => ['sometimes', 'integer', 'between:5,600'],
+            'short_duration' => ['sometimes', 'integer', 'between:0,600'],
             'scene_threshold' => ['sometimes', 'numeric', 'between:0.05,0.9'],
         ];
     }
