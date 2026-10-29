@@ -50,6 +50,16 @@ it('queues only the given videos or those without a reel', function () {
     Bus::assertDispatched(GenerateVideoReel::class, fn (GenerateVideoReel $job): bool => $job->video->is($with));
 });
 
+it('queues only videos up to the maximum duration', function () {
+    $short = Video::factory()->withDuration(45)->create();
+    Video::factory()->withDuration(90)->create();
+
+    $this->artisan('videos:reels', ['--max-duration' => 60, '--force' => true])->assertSuccessful();
+
+    Bus::assertDispatchedTimes(GenerateVideoReel::class, 1);
+    Bus::assertDispatched(GenerateVideoReel::class, fn (GenerateVideoReel $job): bool => $job->video->is($short));
+});
+
 it('asks before queueing', function () {
     addRegeneratedReelMedia(Video::factory()->create(), 'clips');
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\Users\Models\User;
 use Domain\Videos\Models\Video;
+use Domain\Videos\Settings\ReelSettings;
 use Inertia\Testing\AssertableInertia;
 use Modules\Web\Videos\Controllers\VideoReelController;
 
@@ -35,6 +36,28 @@ it('lists the reels of valid videos', function () {
         ->has('items.data', 1)
         ->where('items.data.0.id', $withReel->getRouteKey())
         ->has('items.data.0.reel_url'));
+});
+
+it('lists short videos without a reel when the reel settings turn that on', function () {
+    ReelSettings::fake(['short_videos' => true, 'short_duration' => 60]);
+    $short = Video::factory()->withDuration(60)->create();
+    Video::factory()->withDuration(61)->create();
+
+    $response = $this->actingAs(User::factory()->create())->get(action([VideoReelController::class, 'index']));
+
+    $response->assertInertia(fn (AssertableInertia $page) => $page
+        ->has('items.data', 1)
+        ->where('items.data.0.id', $short->getRouteKey())
+        ->has('items.data.0.reel_url'));
+});
+
+it('leaves out short videos without a reel when the reel settings turn that off', function () {
+    ReelSettings::fake(['short_videos' => false, 'short_duration' => 60]);
+    Video::factory()->withDuration(30)->create();
+
+    $response = $this->actingAs(User::factory()->create())->get(action([VideoReelController::class, 'index']));
+
+    $response->assertInertia(fn (AssertableInertia $page) => $page->has('items.data', 0));
 });
 
 it('keeps the shuffled order across pages', function () {

@@ -35,7 +35,7 @@ class VideoReelController implements HasMiddleware
         $reels = Video::query()
             ->verified()
             ->forProfile(Profile::current())
-            ->whereHas('media', fn ($query) => $query->where('collection_name', 'reels'))
+            ->withReelOrShortClip()
             ->with(['media'])
             ->shuffled($seed)
             ->simplePaginate(8);
