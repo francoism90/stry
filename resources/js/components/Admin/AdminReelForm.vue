@@ -256,7 +256,7 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
 
         <UFormField
           label="Show short videos"
-          description="Also show short videos without a reel in the reels feed, playing the video itself. They aren't made for reels, so they may not fit the frame like one."
+          description="Also show short videos without a reel in the reels feed, playing the video itself."
           name="short_videos"
           :error="form.errors.short_videos"
           :class="fieldClass"
