@@ -50,4 +50,24 @@ describe('useReelPlayback', () => {
     expect(onBlocked).not.toHaveBeenCalled()
     expect(video.muted).toBe(false)
   })
+
+  it('waits for the stream to be ready before playing', async () => {
+    const video = {
+      muted: false,
+      play: vi.fn<() => Promise<void>>().mockResolvedValue(),
+      pause: vi.fn<() => void>(),
+    }
+    const element = ref<HTMLVideoElement>(video as unknown as HTMLVideoElement)
+    const ready = ref(false)
+
+    useReelPlayback(element, { active: true, playing: true, muted: true, ready, onBlocked: () => {} })
+    await nextTick()
+
+    expect(video.play).not.toHaveBeenCalled()
+
+    ready.value = true
+    await nextTick()
+
+    expect(video.play).toHaveBeenCalledOnce()
+  })
 })

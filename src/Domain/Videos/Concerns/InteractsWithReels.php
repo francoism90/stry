@@ -8,7 +8,7 @@ use Domain\Media\Models\Media;
 
 /**
  * A short vertical highlight video of the best scenes, kept in the "reels" collection and shown in the reels feed.
- * Short videos without a reel can show in the feed too, playing their clip.
+ * Short videos without a reel can show in the feed too, streaming their clip.
  */
 trait InteractsWithReels
 {
@@ -24,6 +24,6 @@ trait InteractsWithReels
 
     public function getReelUrl(): ?string
     {
-        return $this->temporaryMediaUrl($this->getReel() ?? $this->getClips()->first());
+        return $this->temporaryMediaUrl($this->getReel());
     }
 }

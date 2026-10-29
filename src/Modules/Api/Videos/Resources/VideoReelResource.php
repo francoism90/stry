@@ -25,6 +25,7 @@ class VideoReelResource extends JsonResource
             'title' => $this->title,
             'thumb' => $this->thumb,
             'reel_url' => $this->getReelUrl(),
+            'stream' => $this->hasReel() ? null : VideoDirectPlayResource::make($this),
             'liked' => $user ? $this->isInGroupOf($user, GroupType::Liked) : null,
             'saved' => $user ? $this->isInGroupOf($user, GroupType::Saved) : null,
         ];

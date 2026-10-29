@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { show } from '@/actions/Modules/Web/Videos/Controllers/VideoController'
-import { useReelActions, useReelPlayback, useReelVisibility, type ReelPreload } from '@/composables/reels'
+import {
+  useReelActions,
+  useReelPlayback,
+  useReelStream,
+  useReelVisibility,
+  type ReelPreload,
+} from '@/composables/reels'
 import type { VideoReel } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
@@ -25,10 +31,13 @@ const element = ref<HTMLVideoElement>()
 
 useReelVisibility(root, () => emit('visible'))
 
+const { ready } = useReelStream(element, () => props.item.stream)
+
 useReelPlayback(element, {
   active: () => props.active,
   playing: () => props.playing,
   muted: () => props.muted,
+  ready,
   onBlocked: () => emit('blocked'),
 })
 
@@ -53,9 +62,9 @@ const reelButton =
 
     <div class="relative h-full w-full max-w-[calc(100dvh*9/16)] overflow-hidden">
       <video
-        v-if="loaded && item.reel_url"
+        v-if="loaded && (item.reel_url || item.stream)"
         ref="element"
-        :src="item.reel_url"
+        :src="item.reel_url ?? undefined"
         :poster="item.thumb ?? undefined"
         :preload="preload"
         :muted="muted"

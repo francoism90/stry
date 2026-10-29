@@ -47,7 +47,7 @@ class ReelSettings extends Settings
     public int $duration = 32;
 
     /**
-     * Show videos up to $short_duration seconds in the reels feed, playing their clip when they have no reel.
+     * Show videos up to $short_duration seconds in the reels feed, streaming their clip when they have no reel.
      */
     public bool $short_videos = false;
 
