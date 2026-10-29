@@ -1,6 +1,8 @@
 import { useVideo } from '@/composables/video'
-import type { VideoReel } from '@/types'
-import { useDocumentVisibility, useIntersectionObserver } from '@vueuse/core'
+import { loadShaka, resolveAssetUri } from '@/plugins/shaka'
+import type { Playlist, VideoReel } from '@/types'
+import { tryOnScopeDispose, useDocumentVisibility, useIntersectionObserver } from '@vueuse/core'
+import type shaka from 'shaka-player/dist/shaka-player.ui'
 import { computed, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
 
 export type ReelPreload = 'auto' | 'none'
@@ -51,6 +53,57 @@ export function useReelVisibility(root: MaybeRefOrGetter<HTMLElement | undefined
 }
 
 /**
+ * Streams a short video without a reel into the reel's video element, as the video page does, since
+ * its clip can't be played from a URL. Ready at once when there's no stream, for reels.
+ */
+export function useReelStream(
+  element: MaybeRefOrGetter<HTMLVideoElement | undefined>,
+  stream: MaybeRefOrGetter<Playlist | null>,
+) {
+  const ready = ref(toValue(stream) === null)
+  let player: shaka.Player | undefined
+
+  const destroy = (): void => {
+    player?.destroy().catch(() => {})
+    player = undefined
+  }
+
+  watch(
+    () => [toValue(element), toValue(stream)] as const,
+    async ([video, playlist]) => {
+      destroy()
+      ready.value = playlist === null
+
+      if (!video || !playlist) {
+        return
+      }
+
+      const shakaInstance = await loadShaka()
+      const current = new shakaInstance.Player()
+      player = current
+
+      current.configure({ streaming: { preferNativeHls: true } })
+
+      try {
+        await current.attach(video)
+        await current.load(resolveAssetUri(playlist, video) ?? playlist.asset)
+      } catch {
+        return
+      }
+
+      if (player === current) {
+        ready.value = true
+      }
+    },
+    { immediate: true },
+  )
+
+  tryOnScopeDispose(destroy)
+
+  return { ready }
+}
+
+/**
  * Plays the reel while it's active and the page is visible, and rewinds it once it's swiped away.
  * When the browser blocks playback with sound, it plays muted and calls onBlocked. A play() that is
  * interrupted by swiping away is ignored, so it doesn't mute the feed.
@@ -61,6 +114,7 @@ export function useReelPlayback(
     active: MaybeRefOrGetter<boolean>
     playing: MaybeRefOrGetter<boolean>
     muted: MaybeRefOrGetter<boolean>
+    ready?: MaybeRefOrGetter<boolean>
     onBlocked: () => void
   },
 ) {
@@ -79,9 +133,10 @@ export function useReelPlayback(
   }
 
   watch(
-    () => [toValue(element), toValue(options.active), toValue(options.playing)] as const,
-    ([video, active, playing]) => {
-      if (!video) {
+    () =>
+      [toValue(element), toValue(options.active), toValue(options.playing), toValue(options.ready ?? true)] as const,
+    ([video, active, playing, ready]) => {
+      if (!video || !ready) {
         return
       }
 

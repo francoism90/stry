@@ -35,7 +35,8 @@ it('lists the reels of valid videos', function () {
         ->component('Videos/VideoReels')
         ->has('items.data', 1)
         ->where('items.data.0.id', $withReel->getRouteKey())
-        ->has('items.data.0.reel_url'));
+        ->has('items.data.0.reel_url')
+        ->where('items.data.0.stream', null));
 });
 
 it('lists short videos without a reel when the reel settings turn that on', function () {
@@ -48,7 +49,8 @@ it('lists short videos without a reel when the reel settings turn that on', func
     $response->assertInertia(fn (AssertableInertia $page) => $page
         ->has('items.data', 1)
         ->where('items.data.0.id', $short->getRouteKey())
-        ->has('items.data.0.reel_url'));
+        ->where('items.data.0.reel_url', null)
+        ->has('items.data.0.stream.asset'));
 });
 
 it('leaves out short videos without a reel when the reel settings turn that off', function () {

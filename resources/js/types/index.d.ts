@@ -338,6 +338,7 @@ export type Chapter = Model & {
 
 export type VideoReel = Pick<Video, 'id' | 'title' | 'thumb' | 'liked' | 'saved'> & {
   reel_url: string | null
+  stream: Playlist | null
 }
 
 export type VideoReelCollection = Omit<Paginator, 'data'> & {
