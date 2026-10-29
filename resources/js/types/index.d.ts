@@ -150,6 +150,8 @@ export type ReelSettings = {
   cuts: number
   cut_duration: number
   duration: number
+  short_videos: boolean
+  short_duration: number
   scene_threshold: number
 }
 

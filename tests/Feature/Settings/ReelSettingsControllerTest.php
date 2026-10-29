@@ -33,6 +33,8 @@ it('allows a super-admin to update reel settings', function () {
         'cuts' => 5,
         'cut_duration' => 2.5,
         'duration' => 20,
+        'short_videos' => true,
+        'short_duration' => 45,
         'scene_threshold' => 0.4,
     ]);
 
@@ -52,6 +54,8 @@ it('allows a super-admin to update reel settings', function () {
         'cuts' => 5,
         'cut_duration' => 2.5,
         'duration' => 20,
+        'short_videos' => true,
+        'short_duration' => 45,
         'scene_threshold' => 0.4,
     ]);
 });
@@ -80,5 +84,6 @@ it('rejects reel settings ffmpeg cannot use', function (array $values, string $f
     'unknown fit' => [['fit' => 'crop'], 'fit'],
     'zoom out of range' => [['zoom' => 150], 'zoom'],
     'cuts shorter than the minimum' => [['cut_duration' => 1], 'cut_duration'],
+    'short duration out of range' => [['short_duration' => 1000], 'short_duration'],
     'scene threshold out of range' => [['scene_threshold' => 1.5], 'scene_threshold'],
 ]);

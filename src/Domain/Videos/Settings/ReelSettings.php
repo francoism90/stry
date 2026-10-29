@@ -46,6 +46,13 @@ class ReelSettings extends Settings
 
     public int $duration = 32;
 
+    /**
+     * Use videos up to $short_duration seconds whole, so short videos show in full instead of cut.
+     */
+    public bool $short_videos = false;
+
+    public int $short_duration = 60;
+
     public float $scene_threshold = 0.3;
 
     public static function group(): string

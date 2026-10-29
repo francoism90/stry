@@ -32,6 +32,8 @@ const form = useForm(update(), {
   cuts: 8,
   cut_duration: 4,
   duration: 32,
+  short_videos: false,
+  short_duration: 60,
   scene_threshold: 0.3,
 })
 
@@ -247,6 +249,36 @@ const fieldClass = 'flex max-sm:flex-col justify-between items-start gap-4'
             class="w-32"
             :min="5"
             :max="180"
+          />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Show short videos whole"
+          description="Use short videos in full instead of cutting them into highlights. Run videos:reels --max-duration to regenerate the reels of existing ones."
+          name="short_videos"
+          :error="form.errors.short_videos"
+          :class="fieldClass"
+        >
+          <USwitch v-model="form.short_videos" />
+        </UFormField>
+
+        <USeparator />
+
+        <UFormField
+          label="Short video length"
+          description="The longest a video is, in seconds, to count as short."
+          name="short_duration"
+          :error="form.errors.short_duration"
+          :class="fieldClass"
+        >
+          <UInputNumber
+            v-model="form.short_duration"
+            class="w-32"
+            :min="5"
+            :max="600"
+            :disabled="!form.short_videos"
           />
         </UFormField>
 

@@ -86,6 +86,17 @@ it('uses videos up to one and a half times the reel duration whole', function ()
         ->and(selectReelCuts(Video::factory()->create(), 31, [10.0, 20.0]))->not->toBe([[0.0, 31.0]]);
 });
 
+it('uses short videos whole up to the short video duration when turned on', function () {
+    ReelSettings::fake(['duration' => 20, 'short_videos' => true, 'short_duration' => 60]);
+
+    expect(selectReelCuts(Video::factory()->create(), 60, [10.0, 20.0, 30.0, 40.0]))->toBe([[0.0, 60.0]])
+        ->and(selectReelCuts(Video::factory()->create(), 61, [10.0, 20.0, 30.0, 40.0]))->not->toBe([[0.0, 61.0]]);
+
+    ReelSettings::fake(['duration' => 20, 'short_videos' => false, 'short_duration' => 60]);
+
+    expect(selectReelCuts(Video::factory()->create(), 60, [10.0, 20.0, 30.0, 40.0]))->not->toBe([[0.0, 60.0]]);
+});
+
 it('moves cuts closer together until they fill the reel', function () {
     $cuts = selectReelCuts(Video::factory()->create(), 400, range(100.0, 190.0, 10.0));
 
