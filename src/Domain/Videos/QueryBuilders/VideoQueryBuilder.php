@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Videos\QueryBuilders;
 
+use Domain\Media\QueryBuilders\MediaQueryBuilder;
 use Domain\Profiles\Models\Profile;
 use Domain\Videos\Models\Video;
 use Domain\Videos\States;
@@ -62,9 +63,9 @@ class VideoQueryBuilder extends Builder
     {
         return $this->where(fn (Builder $query) => $query
             ->whereHas('media', fn (Builder $query) => $query->where('collection_name', 'reels'))
-            ->when($seconds !== null, fn (Builder $query) => $query->orWhereHas('media', fn (Builder $query) => $query
+            ->when($seconds !== null, fn (Builder $query) => $query->orWhereHas('media', fn (MediaQueryBuilder $query) => $query
                 ->where('collection_name', 'clips')
-                ->whereRaw("(select max((stream->>'duration')::numeric) from jsonb_array_elements(custom_properties->'streams') as stream) <= ?", [$seconds]))));
+                ->whereDurationAtMost($seconds))));
     }
 
     /** @return self<TModel> */

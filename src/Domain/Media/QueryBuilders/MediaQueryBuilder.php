@@ -23,4 +23,14 @@ class MediaQueryBuilder extends Builder
     {
         return (int) $this->sum('size');
     }
+
+    /**
+     * Media whose longest stream lasts up to the given number of seconds. Media without stream durations are left out.
+     *
+     * @return self<TModel>
+     */
+    public function whereDurationAtMost(float $seconds): self
+    {
+        return $this->whereRaw("(select max((stream->>'duration')::numeric) from jsonb_array_elements(custom_properties->'streams') as stream) <= ?", [$seconds]);
+    }
 }
