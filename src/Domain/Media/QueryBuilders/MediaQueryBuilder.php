@@ -31,6 +31,6 @@ class MediaQueryBuilder extends Builder
      */
     public function whereDurationAtMost(float $seconds): self
     {
-        return $this->whereRaw("(select max((stream->>'duration')::numeric) from jsonb_array_elements(custom_properties->'streams') as stream) <= ?", [$seconds]);
+        return $this->whereRaw("(select max((stream->>'duration')::numeric) from jsonb_array_elements((custom_properties->'streams')::jsonb) as stream) <= ?", [$seconds]);
     }
 }
