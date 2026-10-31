@@ -11,6 +11,7 @@ Environment=TYPESENSE_LOG_LEVEL=error
 Secret={{application}}-typesense-api-key,type=env,target=TYPESENSE_API_KEY
 Volume={{application}}-typesense.volume:/data:rw,Z,U
 Network={{application}}.network
+ExposeHostPort=8108
 Notify=healthy
 HealthStartupCmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8108 && printf "GET /health HTTP/1.0\r\n\r\n" >&3 && grep -q "\"ok\":true" <&3'
 HealthStartupInterval=1s

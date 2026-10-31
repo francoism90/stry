@@ -30,6 +30,7 @@ Volume={{application}}-config.volume:/config:rw
 Volume={{application}}-data.volume:/data:rw
 Volume={{application}}-cache.volume:/cache:rw
 Network={{application}}.network
+ExposeHostPort=8000
 PublishPort=127.0.0.1:{{ondemandPort}}:8000
 Notify=healthy
 HealthStartupCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up

@@ -20,6 +20,8 @@ Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Volume={{application}}-rustfs-data.volume:/data:rw,Z,U
 Volume={{application}}-rustfs-logs.volume:/logs:rw,Z,U
 Network={{application}}.network
+ExposeHostPort=9000
+ExposeHostPort=9001
 PublishPort=9000:9000
 PublishPort=9001:9001
 Notify=healthy

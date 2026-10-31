@@ -13,6 +13,7 @@ Secret={{application}}-pgsql-password,type=env,target=PGPASSWORD
 ShmSize=256m
 Volume={{application}}-pgsql.volume:/var/lib/postgresql:rw,Z,U
 Network={{application}}.network
+ExposeHostPort=5432
 Notify=healthy
 HealthStartupCmd=pg_isready -q -h 127.0.0.1 -U "$$POSTGRES_USER" -d postgres
 HealthStartupInterval=1s

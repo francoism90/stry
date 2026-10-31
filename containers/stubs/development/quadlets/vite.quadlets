@@ -12,6 +12,7 @@ Environment=APP_COMMAND="pnpm run dev -- --host=0.0.0.0"
 UserNS=keep-id
 Volume={{workingPath}}:/app:rw,z
 Network={{application}}.network
+ExposeHostPort=5173
 PublishPort=5173:5173
 
 [Service]

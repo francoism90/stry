@@ -146,6 +146,4 @@ COPY --chmod=755 podman/development/runtimes/entrypoint.sh /usr/local/bin/entryp
 
 USER docker
 
-EXPOSE 5173 6001 8000 13714
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

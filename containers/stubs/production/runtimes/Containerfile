@@ -177,6 +177,4 @@ RUN rm -f .env
 # runtime PUID/PGID before dropping privileges
 USER root
 
-EXPOSE 6001 8000 13714
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
