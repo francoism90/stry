@@ -22,7 +22,7 @@ RUN arch="$(uname -m)" && case "$arch" in \
     esac \
     && FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n${FFMPEG_VERSION}-latest-${ARCH}-gpl-shared-${FFMPEG_VERSION}.tar.xz" \
     && mkdir -p /opt/ffmpeg \
-    && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=1 -C /opt/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' '*/lib/*.so.*' \
+    && curl -fsSL "${FFMPEG_URL}" | tar -xJ --no-same-owner --strip-components=1 -C /opt/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' '*/lib/*.so.*' \
     && chmod +x /opt/ffmpeg/bin/ffmpeg /opt/ffmpeg/bin/ffprobe
 
 # ab-av1 (use BuildKit cache mounts)
