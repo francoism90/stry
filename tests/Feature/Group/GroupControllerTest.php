@@ -118,6 +118,20 @@ it('allows the owner to view their group', function () {
     $response->assertSuccessful();
 });
 
+it('reloads the group prop live when the group broadcasts an update', function () {
+    $user = User::factory()->create();
+    $group = Group::factory()->create(['user_id' => $user->getKey()]);
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'show'], $group));
+
+    expect($response->viewData('page')['liveProps']['group']['listeners'])->toBe([
+        [
+            'channel' => ['name' => "groups.{$group->getRouteKey()}", 'type' => 'private'],
+            'events' => ['group.updated'],
+        ],
+    ]);
+});
+
 it('forbids other users from viewing a group they do not own', function () {
     $owner = User::factory()->create();
     $other = User::factory()->create();

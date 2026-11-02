@@ -4,8 +4,7 @@ import AppLogo from '@/components/Ui/AppLogo.vue'
 import { useAuth } from '@/composables/auth'
 import { useGroups } from '@/composables/groups'
 import type { CollectionItem } from '@/types'
-import { router, usePage } from '@inertiajs/vue3'
-import { useEcho } from '@laravel/echo-vue'
+import { usePage } from '@inertiajs/vue3'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed, defineProps } from 'vue'
 
@@ -13,7 +12,7 @@ defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
 }>()
 
-const { user: auth, hasRole } = useAuth()
+const { hasRole } = useAuth()
 const { groupIcon } = useGroups()
 
 const collections = computed<CollectionItem[]>(() => usePage().props.collections ?? [])
@@ -79,12 +78,6 @@ const items = computed<NavigationMenuItem[][]>(() => [
     : []),
   ...(collectionItems.value.length ? [collectionItems.value] : []),
 ])
-
-if (auth.value) {
-  const reloadCollections = () => router.reload({ only: ['collections'] })
-
-  useEcho(`users.${auth.value.id}`, ['.group.created', '.group.updated', '.group.trashed'], reloadCollections)
-}
 </script>
 
 <template>

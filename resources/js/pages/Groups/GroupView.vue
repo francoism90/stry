@@ -76,7 +76,6 @@ watchEffect(() => {
   })
 })
 
-useEcho(`groups.${props.group.id}`, '.group.updated', () => router.reload({ only: ['group'] }))
 useEcho(`groups.${props.group.id}`, '.group.trashed', () => router.visit(index.url()))
 </script>
 

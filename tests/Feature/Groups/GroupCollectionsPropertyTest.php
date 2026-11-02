@@ -72,3 +72,16 @@ it('orders custom groups by most recently updated first', function () {
         ->where('collections.1.id', $older->getRouteKey())
     );
 });
+
+it('reloads the collections prop live when the user broadcasts a group event', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(action([GroupController::class, 'index']));
+
+    expect($response->viewData('page')['liveProps']['collections']['listeners'])->toBe([
+        [
+            'channel' => ['name' => "users.{$user->getRouteKey()}", 'type' => 'private'],
+            'events' => ['group.created', 'group.updated', 'group.trashed'],
+        ],
+    ]);
+});

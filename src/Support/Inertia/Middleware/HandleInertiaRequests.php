@@ -9,8 +9,10 @@ use Domain\Shared\Enums\Locale;
 use Domain\Tags\Enums\TagType;
 use Domain\Users\Models\User;
 use Foundation\Settings\GeneralSettings;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Inertia\Inertia;
 use Inertia\Middleware;
 use Modules\Web\Groups\Responses\GroupCollectionsProperty;
 use Modules\Web\Settings\Responses\ApplicationNoticesProperty;
@@ -37,9 +39,29 @@ class HandleInertiaRequests extends Middleware
                 appends: ['name', 'email', 'avatar', 'settings']
             ),
             'notices' => fn (): ApplicationNoticesProperty => new ApplicationNoticesProperty($user),
-            'collections' => fn (): GroupCollectionsProperty => new GroupCollectionsProperty($user),
+            'collections' => $this->collections($user),
             'unread' => fn (): int => $user?->unreadNotifications()->count() ?? 0,
         ]);
+    }
+
+    /**
+     * Reloads the sidebar collections whenever one of the user's groups changes.
+     *
+     * @see https://inertiajs.com/docs/v3/data-props/live-props
+     */
+    protected function collections(?User $user): mixed
+    {
+        $collections = fn (): GroupCollectionsProperty => new GroupCollectionsProperty($user);
+
+        if (! $user) {
+            return $collections;
+        }
+
+        return Inertia::live(
+            $collections,
+            on: ['group.created', 'group.updated', 'group.trashed'],
+            channel: new PrivateChannel($user->broadcastChannel()),
+        );
     }
 
     /**
