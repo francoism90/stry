@@ -95,9 +95,9 @@ COPY podman/production/runtimes/php-production.ini ${PHP_INI_DIR}/php.d/xx-php-u
 # Node.js Configuration
 RUN npm install -g npm@latest pnpm@latest svgo@latest \
     && npm cache clean --force \
-    && mkdir -p ${PNPM_HOME}/store \
+    && mkdir -p ${PNPM_HOME}/store /home/docker/.cache/composer /home/docker/.cache/pnpm \
     && pnpm config set store-dir ${PNPM_HOME}/store \
-    && chown -R docker:docker ${PNPM_HOME} /config /data
+    && chown -R docker:docker ${PNPM_HOME} /home/docker/.cache /config /data
 
 # Copy FFmpeg and ab-av1 from builder stage
 COPY --from=builder /opt/ffmpeg/bin/ /usr/local/bin/
