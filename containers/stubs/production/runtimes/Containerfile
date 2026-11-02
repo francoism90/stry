@@ -94,6 +94,7 @@ COPY podman/production/runtimes/php-production.ini ${PHP_INI_DIR}/php.d/xx-php-u
 
 # Node.js Configuration
 RUN npm install -g npm@latest pnpm@latest svgo@latest \
+    && npm cache clean --force \
     && mkdir -p ${PNPM_HOME}/store \
     && pnpm config set store-dir ${PNPM_HOME}/store \
     && chown -R docker:docker ${PNPM_HOME} /config /data
@@ -123,7 +124,7 @@ USER docker
 RUN cp .env.example .env
 
 # Install PHP dependencies
-RUN --mount=type=cache,target=/home/docker/.composer/cache,uid=${UID},gid=${GID} \
+RUN --mount=type=cache,target=/home/docker/.cache/composer,uid=${UID},gid=${GID} \
     composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Complete composer setup
@@ -142,6 +143,7 @@ RUN ${PHP_CLI} storage:link
 # pruning in a later layer wouldn't remove devDependencies (vite, playwright,
 # typescript, eslint, ...) from the image.
 RUN --mount=type=cache,target=/home/docker/.local/share/pnpm/store,uid=${UID},gid=${GID} \
+    --mount=type=cache,target=/home/docker/.cache/pnpm,uid=${UID},gid=${GID} \
     pnpm install --frozen-lockfile \
     && pnpm build && pnpm build:ssr \
     && pnpm prune --prod
