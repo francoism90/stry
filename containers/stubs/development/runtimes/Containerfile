@@ -2,7 +2,7 @@
 # another PHP version.
 ARG FRANKENPHP_VERSION=1-php8.5
 
-# FFmpeg release branch of the BtbN static builds. Pass --build-arg
+# FFmpeg release branch of the BtbN builds. Pass --build-arg
 # FFMPEG_VERSION=... for another one.
 ARG FFMPEG_VERSION=9.0
 
@@ -12,15 +12,17 @@ ARG FFMPEG_VERSION
 
 WORKDIR /tmp
 
-# FFmpeg static build
+# FFmpeg shared build: ffmpeg and ffprobe share one copy of the libraries,
+# where the static build gives each binary its own.
 RUN arch="$(uname -m)" && case "$arch" in \
       x86_64) ARCH="linux64" ;; \
       aarch64) ARCH="linuxarm64" ;; \
       *) echo "Unsupported architecture: $arch"; exit 1 ;; \
     esac \
-    && FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n${FFMPEG_VERSION}-latest-${ARCH}-gpl-${FFMPEG_VERSION}.tar.xz" \
-    && curl -fsSL "${FFMPEG_URL}" | tar -xJ --strip-components=2 -C /usr/local/bin --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' \
-    && chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe
+    && FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n${FFMPEG_VERSION}-latest-${ARCH}-gpl-shared-${FFMPEG_VERSION}.tar.xz" \
+    && mkdir -p /opt/ffmpeg \
+    && curl -fsSL "${FFMPEG_URL}" | tar -xJ --no-same-owner --strip-components=1 -C /opt/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' '*/lib/*.so.*' \
+    && chmod +x /opt/ffmpeg/bin/ffmpeg /opt/ffmpeg/bin/ffprobe
 
 # ab-av1 (use BuildKit cache mounts)
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
@@ -122,10 +124,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Custom PHP configuration
-COPY podman/development/runtimes/php-development.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY podman/development/runtimes/php-development.ini ${PHP_INI_DIR}/conf.d/xx-php-user.ini
 
 # Node.js Configuration
 RUN npm install -g npm@latest pnpm@latest svgo@latest \
+    && npm cache clean --force \
     && mkdir -p ${PNPM_HOME}/store \
     && pnpm config set store-dir ${PNPM_HOME}/store \
     && chown -R docker:docker ${PNPM_HOME} /config /data
@@ -137,9 +140,16 @@ RUN npx -y playwright install-deps \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy FFmpeg and ab-av1 from builder stage
-COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
+COPY --from=builder /opt/ffmpeg/bin/ /usr/local/bin/
+COPY --from=builder /opt/ffmpeg/lib/ /usr/local/lib/
 COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
+
+# Register the FFmpeg libraries, and make sure both binaries start and the
+# VMAF filter ab-av1 scores its encodes with is there
+RUN ldconfig \
+    && ffmpeg -hide_banner -version \
+    && ffprobe -hide_banner -version \
+    && ffmpeg -hide_banner -filters | grep -q libvmaf
 
 # Entrypoint
 COPY --chmod=755 podman/development/runtimes/entrypoint.sh /usr/local/bin/entrypoint.sh
