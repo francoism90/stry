@@ -13,6 +13,9 @@ minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-win32-arm64-msvc@1.0.0-rc.1'
   - '@voidzero-dev/vite-plus-win32-x64-msvc@1.0.0-rc.1'
   - vite-plus@1.0.0-rc.1
+  - '@inertiajs/core@3.11.0'
+  - '@inertiajs/vue3@3.11.0'
+  - '@inertiajs/vite@3.11.0'
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@1.4.0
   vite-plus: 1.4.0
