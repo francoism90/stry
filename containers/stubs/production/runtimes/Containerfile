@@ -1,6 +1,7 @@
-# FrankenPHP 1 with PHP 8.5. Pass --build-arg FRANKENPHP_VERSION=... for
-# another PHP version.
-ARG FRANKENPHP_VERSION=1-php8.5
+# Static FrankenPHP with PHP 8.5, the runtime stage of laravel-podman's
+# production preset. Pass --build-arg RUNTIME_IMAGE=... for a local build of
+# it, for another PHP version or other PHP extensions.
+ARG RUNTIME_IMAGE=ghcr.io/foxws/laravel-frankenphp:php-8.5
 
 # FFmpeg release branch of the BtbN static builds. Pass --build-arg
 # FFMPEG_VERSION=... for another one.
@@ -27,27 +28,19 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     cargo install ab-av1 --root /usr/local
 
-FROM docker.io/dunglas/frankenphp:${FRANKENPHP_VERSION} AS production
+FROM ${RUNTIME_IMAGE} AS production
 
 ARG UID=1000
 ARG GID=1000
 ARG NODE_VERSION=26
 ARG POSTGRES_VERSION=18
-ARG PHP_EXTENSIONS=""
 
 WORKDIR /app
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
-ENV LANG=C.UTF-8
 ENV PNPM_HOME="/home/docker/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
+ENV PHP_CLI="php /app/artisan"
 ENV APP_COMMAND="${PHP_CLI} octane:frankenphp --host=0.0.0.0 --port=8000"
-ENV APP_USER="docker"
-
-# Set timezone
-RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
@@ -61,7 +54,7 @@ RUN arch="$(dpkg --print-architecture)" \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates gosu \
+    gnupg \
     libavif-bin jpegoptim optipng pngquant gifsicle webp \
     ${AMD64_DRIVERS} \
     && apt-get -y autoremove \
@@ -89,39 +82,13 @@ RUN mkdir -p /etc/apt/keyrings \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Create non-root user
-RUN groupadd --force -g ${GID} docker \
-    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
-
-# Create directories and set ownership
-RUN mkdir -p /app /config /data /cache /media /import /exports \
-    && chown -R docker:docker /app /config /data /cache /media /import /exports
-
-# PHP Configuration
-RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
-
-# Install PHP extensions
-RUN install-php-extensions @composer \
-    apcu bcmath exif ffi gd opcache \
-    imagick intl pcntl \
-    pdo_pgsql redis sockets uv zip
-
-# Install additional PHP extensions if specified
-RUN if [ -n "$PHP_EXTENSIONS" ]; then \
-    install-php-extensions $PHP_EXTENSIONS; \
-fi
-
-# Strip file capabilities from frankenphp. libcap2-bin is only needed to run
-# setcap, so install and purge it within this single layer.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libcap2-bin \
-    && setcap -r /usr/local/bin/frankenphp \
-    && apt-get purge -y --auto-remove libcap2-bin \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Create directories and set ownership. The runtime image has the "docker"
+# user, /app, /config and /data.
+RUN mkdir -p /cache /media /import /exports \
+    && chown -R docker:docker /cache /media /import /exports
 
 # Custom PHP configuration
-COPY podman/production/runtimes/php-production.ini /usr/local/etc/php/conf.d/xx-php-user.ini
+COPY podman/production/runtimes/php-production.ini ${PHP_INI_DIR}/php.d/xx-php-user.ini
 
 # Node.js Configuration
 RUN npm install -g npm@latest pnpm@latest svgo@latest \
