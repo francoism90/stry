@@ -44,7 +44,7 @@
         "typescript": "^6.0.3",
         "vite": "catalog:",
         "vite-plus": "catalog:",
-        "vue-tsc": "^3.3.13"
+        "vue-tsc": "^3.3.14"
     },
     "optionalDependencies": {
         "@laravel/multiplex": "^0.4.5"
