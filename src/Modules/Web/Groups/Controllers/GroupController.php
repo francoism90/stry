@@ -23,6 +23,7 @@ use Foundation\Http\Properties\ScoutBuilderProperties;
 use Foxws\ScoutBuilder\AllowedFilter;
 use Foxws\ScoutBuilder\AllowedSort;
 use Foxws\ScoutBuilder\ScoutBuilder;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -114,7 +115,11 @@ class GroupController implements HasMiddleware
             ->jsonSimplePaginate(defaultSize: 16);
 
         return Inertia::render('Groups/GroupView', [
-            'group' => fn () => new GroupResourceProperty($group, appends: ['thumb']),
+            'group' => Inertia::live(
+                fn () => new GroupResourceProperty($group, appends: ['thumb']),
+                on: 'group.updated',
+                channel: new PrivateChannel($group->broadcastChannel()),
+            ),
             'scopes' => fn () => Options::forEnum(VideoScope::class),
             'sorters' => fn () => Options::forEnum(VideoSorter::class),
             'items' => Inertia::scroll(fn () => VideoResource::collection($scout)),
