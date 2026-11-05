@@ -1,7 +1,6 @@
 # Spatie Laravel & PHP Guidelines (Reference)
 
 ## Table of Contents
-
 - [Core Laravel Principle](#core-laravel-principle)
 - [PHP Standards](#php-standards)
 - [Class Structure](#class-structure)
@@ -22,11 +21,9 @@
 - [Quick Reference](#quick-reference)
 
 ## Core Laravel Principle
-
 **Follow Laravel conventions first.** If Laravel has a documented way to do something, use it. Only deviate when you have a clear justification.
 
 ## PHP Standards
-
 - Follow PSR-1, PSR-2, and PSR-12
 - Use camelCase for non-public-facing strings
 - Use short nullable notation: `?string` not `string|null`
@@ -34,7 +31,6 @@
 - Don't use `final` or `readonly` by default
 
 ## Class Structure
-
 - Use typed properties, not docblocks
 - Use constructor property promotion when all properties can be promoted
 - Use one trait per line
@@ -52,7 +48,6 @@ class MyClass {
 ```
 
 ## Type Declarations and Docblocks
-
 - Use typed properties over docblocks
 - Specify return types including `void`
 - Use short nullable syntax: `?Type` not `Type|null`
@@ -64,7 +59,6 @@ public function getUsers(): Collection
 ```
 
 ### Docblock Rules
-
 - Don't use docblocks for fully type-hinted methods (unless description needed)
 - Only add descriptions that provide context beyond the signature, and write them as full sentences with a period.
 - Always import classnames in docblocks; never use fully qualified names:
@@ -99,7 +93,6 @@ function someFunction(array $myArray, int $typedArgument) {}
 ```
 
 ## Control Flow
-
 - Happy path last: handle error conditions first, success case last
 - Avoid `else`: use early returns instead of nested conditions
 - Separate conditions: prefer multiple if statements over compound conditions
@@ -135,7 +128,6 @@ $condition
 ## Laravel Conventions
 
 ### Routes
-
 - URLs: kebab-case (`/open-source`)
 - Route names: camelCase (`->name('openSource')`)
 - Parameters: camelCase (`{userId}`)
@@ -150,7 +142,6 @@ Route::post('users', [UsersController::class, 'store'])->name('users.store');
 ```
 
 ### Controllers
-
 - Use plural resource names (`PostsController`)
 - Stick to CRUD methods (`index`, `create`, `store`, `show`, `edit`, `update`, `destroy`)
 - Extract new controllers for non-CRUD actions
@@ -177,11 +168,9 @@ class FavoritePostsController
 ```
 
 ### Views
-
 - View files use camelCase: `openSource.blade.php`
 
 ### Configuration
-
 - Files: kebab-case (`pdf-generator.php`)
 - Keys: snake_case (`chrome_path`)
 - Add service configs to `config/services.php`, don't create new files
@@ -198,7 +187,6 @@ return [
 ```
 
 ### Artisan Commands
-
 - Names: kebab-case (`delete-old-records`)
 - Always provide feedback (`$this->comment('All ok!')`)
 - Show progress for loops, summary at end
@@ -214,7 +202,6 @@ $this->comment("Processed {$items->count()} items.");
 ```
 
 ## Strings and Formatting
-
 - Use string interpolation over concatenation:
 
 ```php
@@ -222,7 +209,6 @@ $greeting = "Hi, I am {$name}.";
 ```
 
 ## Method Chaining
-
 - Once a chained call breaks across lines, start every subsequent `->` on a new line.
 - Keeping every `->` on one line is fine, especially when accessing a property.
 - Never mix single-line and multi-line chaining.
@@ -243,7 +229,6 @@ $user->team->update([
 ```
 
 ## Enums
-
 - Use PascalCase for enum values:
 
 ```php
@@ -264,7 +249,6 @@ class Session {
 ```
 
 ## Comments
-
 - Avoid comments; write expressive code instead
 - When needed, use proper formatting:
 
@@ -279,7 +263,6 @@ class Session {
 - Refactor comments into descriptive function names
 
 ## Whitespace
-
 - Add blank lines between statements for readability
 - Exception: sequences of equivalent single-line operations
 - No extra empty lines between `{}` brackets
@@ -303,7 +286,6 @@ public function getPage($url)
 ```
 
 ## Validation
-
 - Use array notation for multiple rules (easier for custom rule classes):
 
 ```php
@@ -324,7 +306,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 ```
 
 ## Blade Templates
-
 - Indent with 4 spaces
 - No spaces after control structures:
 
@@ -335,7 +316,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 ```
 
 ## Authorization
-
 - Policies use camelCase: `Gate::define('editPost', ...)`
 - Use CRUD words, but `view` instead of `show`
 
@@ -346,7 +326,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 ```
 
 ## Translations
-
 - Use `__()` function over `@lang`:
 
 ```blade
@@ -354,7 +333,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 ```
 
 ## API Routing
-
 - Use plural resource names: `/errors`
 - Use kebab-case: `/error-occurrences`
 - Limit deep nesting for simplicity:
@@ -365,14 +343,12 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 ```
 
 ## Test Classes
-
 - Keep classes created for a specific test case in the same test file when possible.
 - Move test support classes into dedicated files when they are reused across tests.
 
 ## Quick Reference
 
 ### Naming Conventions
-
 - Classes: PascalCase (`UserController`, `OrderStatus`)
 - Non-public-facing string-like names: camelCase (`getUserName`, `$firstName`)
 - Routes: kebab-case (`/open-source`, `/user-profile`)
@@ -381,7 +357,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 - Artisan commands: kebab-case (`php artisan delete-old-records`)
 
 ### File Structure
-
 - Controllers: plural resource name + `Controller` (`PostsController`)
 - Views: camelCase (`openSource.blade.php`)
 - Jobs: action-based (`CreateUser`, `SendEmailNotification`)
@@ -393,7 +368,6 @@ Validator::extend('organisation_type', function ($attribute, $value) {
 - Enums: descriptive name, no prefix (`OrderStatus`, `BookingType`)
 
 ### Code Quality Reminders
-
 - Use typed properties over docblocks
 - Prefer early returns over nested if/else
 - Use constructor property promotion when all properties can be promoted

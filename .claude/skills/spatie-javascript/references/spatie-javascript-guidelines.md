@@ -1,19 +1,16 @@
 # Spatie JavaScript Guidelines (Reference)
 
 ## Prettier Configuration
-
 - Indentation: 4 spaces (via `.editorconfig`, not Prettier default of 2)
 - Print width: 120 characters (not Prettier default of 80)
 - Quote style: single quotes
 
 ## Variable Declarations
-
 - Prefer `const` over `let`. Only use `let` when a variable will be reassigned.
 - Never use `var`.
 - Reassigning object properties is fine with `const` — the reference is not reassigned.
 
 ## Variable Names
-
 - Don't abbreviate variable names. Use full, descriptive names.
 - Exception: abbreviations are allowed in single-line arrow functions where the context is obvious.
 
@@ -28,7 +25,6 @@ userSessions.forEach(s => saveUserSession(s));
 ```
 
 ## Comparisons
-
 - Always use `===` (strict equality). Never use `==`.
 - If unsure of the type, cast it first:
 
@@ -43,18 +39,15 @@ if (number === 5) {
 ## Functions
 
 ### Function Declarations
-
 - Use the `function` keyword for named functions to clearly signal it's a function.
 
 ### Arrow Functions
-
 - Terse, single-line functions may use arrow syntax.
 - Anonymous functions should use arrow syntax unless they need access to `this`.
 - Higher-order functions may use arrow syntax when it improves readability.
 - Keep functions pure and limit the use of `this`.
 
 ### Object Methods
-
 - Use shorthand method syntax:
 
 ```javascript
@@ -74,7 +67,6 @@ const object = {
 ```
 
 ## Destructuring
-
 - Prefer destructuring over manual property/index access:
 
 ```javascript
