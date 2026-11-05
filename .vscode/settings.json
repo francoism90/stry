@@ -1,51 +1,51 @@
 {
-  "[php]": {
-    "editor.defaultFormatter": "laravel.vscode-laravel"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "[vue]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "explicit",
-    "source.organizeImports": "explicit"
-  },
-  "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "file",
-  "oxc.disableNestedConfig": true,
-  "oxc.fmt.disableNestedConfig": true,
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
-  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "class:list", "ui"],
-  "tailwindCSS.classFunctions": ["cva", "cx", "tv"],
-  "tailwindCSS.experimental.classRegex": [
-    ":\\s*?[\"'`]([^\"'`]*).*?,",
-    "(?:const|let|var)\\s+[\\w$_][_\\w\\d]*\\s*=\\s*['\\\"](.*?)['\\\"]",
-    "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
-    ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-    ["twJoin\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"],
-    ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"],
-    ["\\s*.className\\s*=\\s*['\\\"](.*?)['\\\"]"],
-    ["classList.(?:add|remove|toggle)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"]
-  ],
-  "tailwindCSS.experimental.configFile": "resources/css/app.css",
-  "tailwindCSS.includeLanguages": {
-    "blade": "html",
-    "blade.php": "html"
-  }
+    "[php]": {
+        "editor.defaultFormatter": "laravel.vscode-laravel"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "oxc.disableNestedConfig": true,
+    "oxc.fmt.disableNestedConfig": true,
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "tailwindCSS.classAttributes": ["class", "className", "ngClass", "class:list", "ui"],
+    "tailwindCSS.classFunctions": ["cva", "cx", "tv"],
+    "tailwindCSS.experimental.classRegex": [
+        ":\\s*?[\"'`]([^\"'`]*).*?,",
+        "(?:const|let|var)\\s+[\\w$_][_\\w\\d]*\\s*=\\s*['\\\"](.*?)['\\\"]",
+        "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
+        ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
+        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+        ["twJoin\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"],
+        ["(?:twMerge|twJoin)\\(([^;]*)[\\);]", "[`'\"`]([^'\"`;]*)[`'\"`]"],
+        ["\\s*.className\\s*=\\s*['\\\"](.*?)['\\\"]"],
+        ["classList.(?:add|remove|toggle)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"]
+    ],
+    "tailwindCSS.experimental.configFile": "resources/css/app.css",
+    "tailwindCSS.includeLanguages": {
+        "blade": "html",
+        "blade.php": "html"
+    }
 }

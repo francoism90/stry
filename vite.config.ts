@@ -150,6 +150,8 @@ export default defineConfig(({ mode }) => {
         '.claude',
         '.github',
         '.mcp.json',
+        '.vscode/mcp.json',
+        '.zed/settings.json',
         '/AGENTS.md',
         '/CLAUDE.md',
         'boost.json',
