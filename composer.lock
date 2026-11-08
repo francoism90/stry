@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ede723cac7d3542c536f00c31054488e",
+    "content-hash": "ef4908a6af668548ce42a1005aaecb3c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1616,16 +1616,16 @@
         },
         {
             "name": "foxws/laravel-podman",
-            "version": "6.6.0",
+            "version": "6.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-podman.git",
-                "reference": "764f78bf1349860eede85e9aafffbd05b78fa8d4"
+                "reference": "fde90411361d50b2b33a9c56cd6831990907b626"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/764f78bf1349860eede85e9aafffbd05b78fa8d4",
-                "reference": "764f78bf1349860eede85e9aafffbd05b78fa8d4",
+                "url": "https://api.github.com/repos/foxws/laravel-podman/zipball/fde90411361d50b2b33a9c56cd6831990907b626",
+                "reference": "fde90411361d50b2b33a9c56cd6831990907b626",
                 "shasum": ""
             },
             "require": {
@@ -1693,7 +1693,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-podman/issues",
-                "source": "https://github.com/foxws/laravel-podman/tree/6.6.0"
+                "source": "https://github.com/foxws/laravel-podman/tree/6.6.1"
             },
             "funding": [
                 {
@@ -1701,8 +1701,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-08T13:15:46+00:00",
-            "published-time": "2026-11-08T13:19:12+00:00"
+            "time": "2026-11-08T13:22:47+00:00",
+            "published-time": "2026-11-08T13:26:39+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
