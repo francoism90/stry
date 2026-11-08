@@ -7,6 +7,8 @@ description: Customize foxws/laravel-podman presets and Quadlet templates, such 
 
 `foxws/laravel-podman` renders preset templates into Podman Quadlet files. Settings live in `config/podman.php`.
 
+**Ask first:** Never run a command that deletes or overwrites data without the user's explicit confirmation first, such as `podman volume rm`, `lpod remove`, `podman secret rm` or `podman:publish --force`. Swapping the database or cache starts with a new, empty volume; leave the old one for the user to remove once they've moved their data. See "Destructive commands" in the `podman-lpod` skill for the full list.
+
 ## How it fits together
 
 - A preset is a folder with `quadlets/` (`*.quadlets` files) and `runtimes/` (`Containerfile`, `entrypoint.sh`, PHP ini, Caddy files).
@@ -67,6 +69,7 @@ VolumeName={{application}}-valkey
 | `{{viteUpstream}}`, `{{reverbUpstream}}`, `{{s3Upstream}}`, `{{s3ConsoleUpstream}}`, `{{mailUpstream}}` | The presets' services: `systemd-{app}-vite:5173`, `-reverb:6001`, `-rustfs:9000`, `-rustfs:9001`, `-mailpit:8025` (web UI) |
 | `{{ondemand}}` | `yes` when `ondemand.enabled`, otherwise `no`. Used for `StopWhenUnneeded=` on the app and services |
 | `{{ondemandListen}}`, `{{ondemandPort}}`, `{{ondemandIdleTimeout}}`, `{{ondemandIdleWorkers}}` | `ondemand.listen`, `ondemand.port`, `ondemand.idle_timeout`, `ondemand.idle_workers` (space-separated) |
+| `{{scheduleCalendar}}` | One `OnCalendar=` line per time a task in the app's schedule is due (at :00), plus a wake-up 30 seconds before each (at :30, after which `schedule.quadlets` waits for the due minute), or `OnCalendar=*-*-* *:*:00` when it can't be expressed (sub-minute tasks, `L`/`W`/`#`, UTC offsets) |
 
 Add your own in `config/podman.php`, usually from `.env` so templates and the app read the same values. Braces are optional, `null` renders as an empty string, and values may contain built-in placeholders (not custom ones). They also override built-in placeholders:
 
@@ -126,7 +129,7 @@ To serve Reverb or Mailpit under a path of the app's domain (`/ws`, `/mail`) ins
 On by default. `PODMAN_ONDEMAND_ENABLED=false` renders `StopWhenUnneeded=no` everywhere and points the proxy straight at the container.
 
 - **Socket:** the `ondemand` preset (shared by `development` and `production`) holds the socket and its `systemd-socket-proxyd` service. Files in a preset's `systemd/` folder are plain systemd units, rendered as `{application}-{file}`; `production` also has `systemd/schedule.timer`.
-- **Idle check:** the `ondemand` preset's `laravel-idle@.timer`/`laravel-idle@.service` templates, shared by every app on the host (`%i` is the app), plus the app's drop-in `laravel-idle@{{application}}.service.d/idle.conf`. Files with `@.` in their name keep it when rendered, and `.d` folders render as drop-ins with placeholders in their name. The socket `Wants=laravel-idle@{{application}}.timer`, and the timer is `PartOf=%i-ondemand.socket`, so installing the socket turns it on, with or without lpod. While the app sleeps, it runs `podman:idle` in each running worker of `ondemand.idle_workers` (`PODMAN_ONDEMAND_IDLE_WORKERS`, default `queue,horizon`), and once nothing is in progress, stops the workers and the scheduler timer. To check another worker, add it to `idle_workers` rather than editing the template: the drop-in sets `LARAVEL_IDLE_WORKERS` from it.
+- **Idle check:** the `ondemand` preset's `laravel-idle@.timer`/`laravel-idle@.service` templates, shared by every app on the host (`%i` is the app), plus the app's drop-in `laravel-idle@{{application}}.service.d/idle.conf`. Files with `@.` in their name keep it when rendered, and `.d` folders render as drop-ins with placeholders in their name. The socket `Wants=laravel-idle@{{application}}.timer`, and the timer is `PartOf=%i-ondemand.socket`, so installing the socket turns it on, with or without lpod. While the app sleeps, it runs `podman:idle` in each running worker of `ondemand.idle_workers` (`PODMAN_ONDEMAND_IDLE_WORKERS`, default `queue,horizon`), and once nothing is in progress, stops the workers, and the scheduler timer only if it fires every minute. A timer rendered from the schedule (`{{scheduleCalendar}}`) keeps running, so tasks still run while the app sleeps. To check another worker, add it to `idle_workers` rather than editing the template: the drop-in sets `LARAVEL_IDLE_WORKERS` from it.
 - **Sleeping services:** a service with `StopWhenUnneeded={{ondemand}}` stops once no running unit needs it, so it must be in the app's `Requires=` or `Wants=`, or it stops right after starting.
 - **App quadlet:** when editing it, keep `StopWhenUnneeded={{ondemand}}`, `Notify=healthy` with the `/up` health check, and the `127.0.0.1:{{ondemandPort}}` publish.
 
