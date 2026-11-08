@@ -1,8 +1,25 @@
+# Runs "schedule:run" only in the minutes a task is due, rendered from the
+# app's schedule by "podman:generate". Regenerate and reinstall it after
+# changing the schedule. It falls back to every minute when the schedule
+# has sub-minute tasks or cron syntax systemd can't express.
+#
+# Each due minute (at :00) also has a wake-up 30 seconds before it (at
+# :30). The scheduler then starts the database and cache ahead of time,
+# and waits for the due minute before it runs (see "schedule.quadlets").
+# The trigger at :00 only starts it when a wake-up didn't.
+#
+# "schedule:run" only runs the tasks due in the minute it starts in, so
+# keep these as they are:
+# - AccuracySec=1s: systemd's default of 1min may fire it up to a minute
+#   late, skipping the tasks.
+# - No RandomizedDelaySec=, for the same reason.
+# - No Persistent=true: a run missed while the host was off would start at
+#   boot, when nothing is due, and only wake the stack.
 [Unit]
 Description=Laravel Schedule timer
 
 [Timer]
-OnCalendar=*-*-* *:*:00
+{{scheduleCalendar}}
 AccuracySec=1s
 
 [Install]
