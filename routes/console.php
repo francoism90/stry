@@ -16,17 +16,20 @@ use Laravel\Sanctum\Console\Commands\PruneExpired;
 use Support\System\Commands\CreateSnapshotCommand;
 
 /**
- * In production, the scheduler is a oneshot container that runs `schedule:run` once a minute and
- * stops when it exits, killing anything still running. Don't use runInBackground() here.
+ * In production, the scheduler is a oneshot container that runs `schedule:run` and stops when it
+ * exits, killing anything still running. Don't use runInBackground() here.
+ *
+ * Every run wakes the database, cache and object storage, so keep frequent tasks to a minimum and
+ * let them share the same minutes (the top of the hour, or a fixed time at night).
  */
 Schedule::command(PruneStaleTagsCommand::class)
     ->hourly();
 
 Schedule::command(ClearResetsCommand::class)
-    ->everyFifteenMinutes();
+    ->hourly();
 
 Schedule::command(SnapshotCommand::class)
-    ->everyFiveMinutes();
+    ->hourly();
 
 Schedule::command(CleanMediaCommand::class)
     ->withoutOverlapping()
