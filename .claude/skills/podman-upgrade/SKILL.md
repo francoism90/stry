@@ -1,15 +1,24 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.5), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
+description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.6), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
 ---
 
 # Upgrading laravel-podman
 
-Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3", then "From 6.3 to 6.4", then "From 6.4 to 6.5".
+Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3", then "From 6.3 to 6.4", then "From 6.4 to 6.5", then "From 6.5 to 6.6".
 
 **Ask first:** Never run a command that deletes or overwrites data without the user's explicit confirmation first, such as `podman volume rm`, `podman volume import` into a volume with data, `lpod remove` or `lpod uninstall`. An upgrade that moves data to new volumes leaves the old ones in place; the user removes them once they've checked their data. See "Destructive commands" in the `podman-lpod` skill for the full list.
 
 The human guide is [UPGRADING.md](https://github.com/foxws/laravel-podman/blob/main/UPGRADING.md). It isn't shipped in `vendor/`, and these notes cover the same steps.
+
+## From 6.5 to 6.6
+
+The `production` and `development` Containerfiles start `FROM ${RUNTIME_IMAGE}`: `ghcr.io/foxws/laravel-frankenphp:php-8.5` (production) or `:php-8.5-dev` (development), built from the package's `images/frankenphp/Containerfile`. It's the official FrankenPHP image with the extensions, Composer, Node.js, pnpm, the PostgreSQL client and the `docker` user (1000:1000), flattened so it has no inherited `EXPOSE`, `HEALTHCHECK` or entrypoint. The app Containerfiles renumber `docker` when `UID`/`GID` differ. Nothing breaks for unpublished presets.
+
+1. `composer require foxws/laravel-podman:^6.6` (with `--dev` if it was a dev dependency).
+2. If the user published `containers/stubs/production` or `containers/stubs/development`, their `runtimes/Containerfile` keeps working on `dunglas/frankenphp`. Only move it to the new image if the user wants to: start from the vendor's `stubs/{preset}/runtimes/Containerfile` and add the user's own packages and extensions back (`install-php-extensions` and `PHP_EXTENSIONS` still work). Leave out the layers the runtime image has: the timezone, the apt packages, the PostgreSQL and NodeSource repositories, the `docker` user, `php.ini-*`, the base extensions, `setcap` and the global npm packages.
+3. `FRANKENPHP_VERSION`, `NODE_VERSION` and `POSTGRES_VERSION` are no longer app build args. PHP 8.4: `BuildArg=RUNTIME_IMAGE=ghcr.io/foxws/laravel-frankenphp:php-8.4` (`php-8.4-dev` for development) under `[Build]` in the app quadlet. Other Node.js or PostgreSQL versions: build `images/frankenphp/Containerfile` from `vendor/foxws/laravel-podman` with `--build-arg NODE_VERSION=`/`POSTGRES_VERSION=` and `--target=runtime` (or `development`), and set `RUNTIME_IMAGE` to its tag.
+4. `php artisan podman:generate production` (or `development`), then hand the user `lpod my-app-build restart` to rebuild (don't run it yourself unless asked).
 
 ## From 6.4 to 6.5
 

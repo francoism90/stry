@@ -139,7 +139,9 @@ lpod install ondemand/{application}-ondemand.socket --replace
 
 ### Extra PHP extensions or packages
 
-Edit `containers/stubs/{preset}/runtimes/Containerfile`, or pass the `PHP_EXTENSIONS` build arg.
+Edit `containers/stubs/{preset}/runtimes/Containerfile`, or pass the `PHP_EXTENSIONS` build arg (space-separated `install-php-extensions` names, e.g. `BuildArg=PHP_EXTENSIONS=mongodb` under `[Build]`).
+
+The `production` and `development` Containerfiles start `FROM ${RUNTIME_IMAGE}`, `ghcr.io/foxws/laravel-frankenphp:php-8.5` (`:php-8.5-dev` for development), which already has FrankenPHP, `apcu bcmath exif ffi gd igbinary imagick inotify intl opcache pcntl pdo_pgsql redis sockets uv zip` (plus `xdebug` in `-dev`), Composer, Node.js, pnpm, the PostgreSQL client and the `docker` user. Don't add those again. For PHP 8.4 set `BuildArg=RUNTIME_IMAGE=ghcr.io/foxws/laravel-frankenphp:php-8.4`. For other Node.js or PostgreSQL versions, build the package's `images/frankenphp/Containerfile` with `--build-arg NODE_VERSION=`/`POSTGRES_VERSION=` and point `RUNTIME_IMAGE` at it. Don't add `EXPOSE` or `HEALTHCHECK` to the Containerfiles: the quadlets set ports and health checks.
 
 ## Config keys
 
