@@ -7,6 +7,8 @@ description: Create S3 buckets and apply a CORS policy with foxws/laravel-podman
 
 `php artisan podman:s3-setup` creates buckets and applies a CORS policy through the S3 API. It uses the app's `s3` disk from `config/filesystems.php` (`key`, `secret`, `region`, `endpoint`, `use_path_style_endpoint`). Nothing else needs configuring.
 
+**Ask first:** Never delete buckets or objects (`aws s3 rb`, `aws s3 rm`, `mc rb`, `mc rm`, or a bucket's lifecycle rule that expires objects), or the RustFS volume, without the user's explicit confirmation first. `podman:s3-setup` only creates buckets and sets CORS, so it's safe to run again. See "Destructive commands" in the `podman-lpod` skill for the full list.
+
 ## Requirements
 
 Needs `aws/aws-sdk-php`. Without it, the command shows an error:

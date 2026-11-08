@@ -20,5 +20,10 @@ Network={{application}}.network
 
 [Service]
 Type=oneshot
+# When the timer's wake-up (at :30) started the scheduler, the database
+# and cache are started first (After=), and this then waits for the due
+# minute, so "schedule:run" runs the tasks due in it. A start at the due
+# minute itself, or by hand, runs right away. Needs systemd 248 or later.
+ExecStartPre=-/bin/sh -c 'trigger=$$({{systemctl}} show -P LastTriggerUSec --timestamp=unix {{application}}-schedule.timer); trigger=$${trigger#@}; case "$$trigger" in ""|*[!0-9]*) exit 0;; esac; [ $$((trigger %% 60)) -ge 30 ] || exit 0; wait=$$(( (trigger / 60 + 1) * 60 - $$(date +%%s) )); [ "$$wait" -le 0 ] || exec sleep "$$wait"'
 TimeoutStartSec=300
 TimeoutStopSec=60

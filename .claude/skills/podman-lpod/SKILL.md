@@ -96,7 +96,20 @@ lpod self-update                     # v2.2.0 and later
 
 ## Destructive commands
 
-`lpod remove NAME` and `lpod uninstall APPLICATION` delete the service's Podman volumes (databases, uploads, search indexes). There is no undo. Never run them without the user's explicit confirmation. Offer a backup first:
+Never run a command that deletes or overwrites data without asking the user first, and wait for their explicit confirmation in this conversation. This holds even when the command looks like the obvious fix, when an earlier step or another skill suggests it, or when the user approved a similar command before: ask again for each one. Say what it deletes, name the exact volumes, containers, secrets or files, and that there is no undo.
+
+Commands that need confirmation:
+
+- **Volumes:** `podman volume rm`, `podman volume prune`, `podman volume import` into a volume that already has data (it overwrites it), and `podman rm --volumes` (`-v`).
+- **lpod:** `lpod remove NAME` and `lpod uninstall APPLICATION`. They delete the service's Podman volumes (databases, uploads, search indexes).
+- **Podman as a whole:** `podman system prune` (add `--volumes` and it deletes volumes too), `podman system reset`, `podman rm --force`, `podman pod rm`, `podman network rm` and `podman rmi` or `podman image prune` (a locally built image can't be pulled again).
+- **Secrets:** `podman secret rm`. In production, the app's `.env` is a secret (`{application}-env`), as are the database passwords.
+- **Data in a service:** `migrate:fresh`, `migrate:reset`, `db:wipe` and `DROP` statements through `lpod my-app artisan` or `lpod my-app-pgsql run`, and `FLUSHALL`/`FLUSHDB` on the cache.
+- **Files:** `rm` on volume folders, mounted media folders, the rendered `podman/` output or published presets in `containers/stubs`, and `podman:publish --force` (it overwrites published presets and loses the user's changes).
+
+If a command fails because a volume or container is in the way, stop and explain what you found instead of removing it. Leave old volumes for the user to delete once they've checked their data.
+
+Before anything that deletes a volume, offer a backup:
 
 ```bash
 podman volume export my-app-pgsql -o pgsql-backup.tar
@@ -104,3 +117,5 @@ lpod my-app-pgsql run sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB"' > ba
 ```
 
 Check the real volume name with `podman volume ls` before exporting.
+
+Stopping, starting and restarting services (`lpod my-app stop`, `systemctl --user restart`) and regenerating presets with `podman:generate` don't delete data and don't need confirmation.

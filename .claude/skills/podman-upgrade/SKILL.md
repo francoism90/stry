@@ -1,13 +1,35 @@
 ---
 name: podman-upgrade
-description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.4), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
+description: Upgrade foxws/laravel-podman between major and minor versions (v3 through 6.5), including published presets in containers/stubs, volumes and the on-demand idle check. Use when upgrading the package, or when published presets or installed units look older than the installed version.
 ---
 
 # Upgrading laravel-podman
 
-Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3", then "From 6.3 to 6.4".
+Check the installed version with `composer show foxws/laravel-podman`. Coming from v3, do "From v3 to v4" first, then "From v4 to v5", then "From v5 to v6", then "From 6.0 to 6.1", then "From 6.2 to 6.3", then "From 6.3 to 6.4", then "From 6.4 to 6.5".
+
+**Ask first:** Never run a command that deletes or overwrites data without the user's explicit confirmation first, such as `podman volume rm`, `podman volume import` into a volume with data, `lpod remove` or `lpod uninstall`. An upgrade that moves data to new volumes leaves the old ones in place; the user removes them once they've checked their data. See "Destructive commands" in the `podman-lpod` skill for the full list.
 
 The human guide is [UPGRADING.md](https://github.com/foxws/laravel-podman/blob/main/UPGRADING.md). It isn't shipped in `vendor/`, and these notes cover the same steps.
+
+## From 6.4 to 6.5
+
+The `production` scheduler timer renders `{{scheduleCalendar}}`: one `OnCalendar=` line per minute a task in the app's schedule is due (at :00), plus a wake-up 30 seconds before each (at :30). `schedule.quadlets` has an `ExecStartPre=` that waits for the due minute after a wake-up. The idle check only stops a scheduler timer that still fires every minute, and moved to :10 with `AccuracySec=15s`. Nothing breaks: published every-minute timers keep working as before.
+
+1. `composer require foxws/laravel-podman:^6.5` (with `--dev` if it was a dev dependency).
+2. If the user published `containers/stubs/production`, edit it in place, keeping their changes:
+    - `systemd/schedule.timer`: replace the `OnCalendar=` line with `{{scheduleCalendar}}`. Keep `AccuracySec=1s`, and don't add `RandomizedDelaySec=` or `Persistent=true`.
+    - `quadlets/schedule.quadlets`: add the vendor's `ExecStartPre=` line (with its comment) to `[Service]`, unchanged. Without it, a wake-up runs `schedule:run` 30 seconds early, when nothing is due, and the :00 trigger then runs the tasks.
+3. If the user published `containers/stubs/ondemand`, update `systemd/laravel-idle@.service` and `systemd/laravel-idle@.timer` from the vendor's `stubs/ondemand`, or delete the preset when it has no other changes.
+4. `php artisan podman:generate production` and `php artisan podman:generate ondemand`, then check that `podman/production/{{application}}-schedule.timer` lists the due minutes rather than `OnCalendar=*-*-* *:*:00`. If it still fires every minute, the schedule has a sub-minute task, `L`/`W`/`#`, or a UTC offset timezone; tell the user which task. Then hand the user these commands (don't run them yourself unless asked):
+
+```bash
+lpod install production/my-app-schedule.timer --replace
+lpod install production/schedule.quadlets --replace
+lpod install ondemand/my-app-ondemand.socket --replace
+```
+
+5. The timer is rendered from the schedule at `podman:generate` time. Tell the user to regenerate and reinstall the timer whenever the schedule changes, for example as a deploy step; until then, new tasks don't run.
+6. The wait needs systemd 248 or later (`systemctl --version` on the host). On older versions the tasks still run at the due minute, after an early run that does nothing.
 
 ## From 6.3 to 6.4
 
