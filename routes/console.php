@@ -19,21 +19,18 @@ use Support\System\Commands\CreateSnapshotCommand;
  * In production, the scheduler is a oneshot container that runs `schedule:run` and stops when it
  * exits, killing anything still running. Don't use runInBackground() here.
  *
- * Every run wakes the database, cache and object storage, so keep frequent tasks to a minimum and
- * let them share the same minutes (the top of the hour, or a fixed time at night).
+ * Every run wakes the database and cache, so keep frequent tasks to a minimum and
+ * group the rest at a few fixed times at night. Tasks that share a minute run one after another in
+ * the same run, so only group quick ones: the scheduler container is stopped after 5 minutes.
  */
-Schedule::command(PruneStaleTagsCommand::class)
-    ->hourly();
-
-Schedule::command(ClearResetsCommand::class)
-    ->hourly();
-
 Schedule::command(SnapshotCommand::class)
     ->hourly();
 
-Schedule::command(CleanMediaCommand::class)
-    ->withoutOverlapping()
-    ->hourly();
+Schedule::command(PruneStaleTagsCommand::class)
+    ->dailyAt('01:30');
+
+Schedule::command(ClearResetsCommand::class)
+    ->dailyAt('01:30');
 
 Schedule::command(PruneExpired::class, ['--hours=24'])
     ->withoutOverlapping()
@@ -46,6 +43,10 @@ Schedule::command(PruneCommand::class, [
     ]])
     ->withoutOverlapping()
     ->dailyAt('02:30');
+
+Schedule::command(CleanMediaCommand::class)
+    ->withoutOverlapping()
+    ->dailyAt('03:30');
 
 Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
     ->withoutOverlapping()
