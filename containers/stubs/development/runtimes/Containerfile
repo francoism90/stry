@@ -1,6 +1,9 @@
-# FrankenPHP 1 with PHP 8.5. Pass --build-arg FRANKENPHP_VERSION=... for
-# another PHP version.
-ARG FRANKENPHP_VERSION=1-php8.5
+# Built on ghcr.io/foxws/laravel-frankenphp:php-8.5-dev, which has
+# FrankenPHP, the PHP extensions, Composer, Node.js, pnpm, the PostgreSQL
+# client, Xdebug, Playwright's browser deps and the "docker" user (see
+# laravel-podman's docs/runtime.md). Pass --build-arg RUNTIME_IMAGE=... for
+# another one.
+ARG RUNTIME_IMAGE=ghcr.io/foxws/laravel-frankenphp:php-8.5-dev
 
 # FFmpeg release branch of the BtbN builds. Pass --build-arg
 # FFMPEG_VERSION=... for another one.
@@ -29,34 +32,23 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     cargo install ab-av1 --root /usr/local
 
-FROM docker.io/dunglas/frankenphp:${FRANKENPHP_VERSION} AS development
+FROM ${RUNTIME_IMAGE} AS development
 
 ARG UID=1000
 ARG GID=1000
-ARG NODE_VERSION=26
-ARG POSTGRES_VERSION=18
 ARG PHP_EXTENSIONS=""
 
 WORKDIR /app
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
-ENV LANG=C.UTF-8
-ENV PNPM_HOME="/home/docker/.local/share/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
 ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
 ENV APP_COMMAND="${PHP_CLI} octane:frankenphp --host=0.0.0.0 --port=8000 --watch"
-ENV APP_USER="docker"
-ENV PLAYWRIGHT_BROWSERS_PATH=0
-
-# Set timezone
-RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
-# Main dependencies. BtbN's arm64 builds of FFmpeg have no VA-API or QSV, so
-# the VA-API and Intel drivers are only installed on amd64.
+# Packages the runtime image doesn't have. BtbN's arm64 builds of FFmpeg
+# have no VA-API or QSV, so the VA-API and Intel drivers are only installed
+# on amd64.
 RUN arch="$(dpkg --print-architecture)" \
     && AMD64_DRIVERS="" \
     && if [ "$arch" = "amd64" ]; then \
@@ -64,80 +56,31 @@ RUN arch="$(dpkg --print-architecture)" \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    gnupg curl ca-certificates \
-    libavif-bin jpegoptim optipng pngquant gifsicle webp \
+    webp \
     ${AMD64_DRIVERS} \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Add PostgreSQL APT repository and install client
-RUN mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg \
-    && CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME") \
-    && echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt ${CODENAME}-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends postgresql-client-${POSTGRES_VERSION} \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Add NodeSource APT repository and install Node.js
-RUN mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends nodejs \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Create non-root user
-RUN groupadd --force -g ${GID} docker \
-    && useradd -u ${UID} -g docker -d /home/docker -s /bin/bash -m docker
+# The runtime image's "docker" user is 1000:1000. Renumber it when building
+# with another UID/GID.
+RUN if [ "$(id -u docker)" != "${UID}" ] || [ "$(id -g docker)" != "${GID}" ]; then \
+        groupmod -o -g "${GID}" docker \
+        && usermod -o -u "${UID}" -g "${GID}" docker \
+        && chown -R docker:docker /home/docker /app /config /data; \
+    fi
 
 # Create directories and set ownership
-RUN mkdir -p /app /config /data /cache /media /import /exports \
-    && chown -R docker:docker /app /config /data /cache /media /import /exports
-
-# PHP Configuration
-RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
-
-# Install PHP extensions
-RUN install-php-extensions @composer \
-    apcu bcmath exif ffi gd \
-    imagick intl pcntl \
-    pdo_pgsql redis sockets uv zip
+RUN mkdir -p /cache /media /import /exports \
+    && chown -R docker:docker /cache /media /import /exports
 
 # Install additional PHP extensions if specified
 RUN if [ -n "$PHP_EXTENSIONS" ]; then \
     install-php-extensions $PHP_EXTENSIONS; \
 fi
 
-# Strip file capabilities from frankenphp. libcap2-bin is only needed to run
-# setcap, so install and purge it within this single layer.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libcap2-bin \
-    && setcap -r /usr/local/bin/frankenphp \
-    && apt-get purge -y --auto-remove libcap2-bin \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Custom PHP configuration
 COPY podman/development/runtimes/php-development.ini ${PHP_INI_DIR}/conf.d/xx-php-user.ini
-
-# Node.js Configuration
-RUN npm install -g npm@latest pnpm@latest svgo@latest \
-    && npm cache clean --force \
-    && mkdir -p ${PNPM_HOME}/store \
-    && pnpm config set store-dir ${PNPM_HOME}/store \
-    && chown -R docker:docker ${PNPM_HOME} /config /data
-
-# Playwright's OS-level browser deps; browsers are installed per-project via `npx playwright install`
-RUN npx -y playwright install-deps \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy FFmpeg and ab-av1 from builder stage
 COPY --from=builder /opt/ffmpeg/bin/ /usr/local/bin/
