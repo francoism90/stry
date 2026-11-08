@@ -56,7 +56,6 @@ RUN arch="$(dpkg --print-architecture)" \
     fi \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    webp \
     ${AMD64_DRIVERS} \
     && apt-get -y autoremove \
     && apt-get clean \
