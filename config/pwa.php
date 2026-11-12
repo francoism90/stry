@@ -10,13 +10,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | When set to false, pwa:generate writes a self-unregistering service
-    | worker that clears all caches and removes itself. Set this to false
-    | in local and staging environments via the PWA_ENABLED env variable,
-    | or rely on the default which enables PWA only in production.
+    | worker that clears all caches and removes itself. By default the
+    | PWA is disabled when APP_ENV is local, so the service worker can't
+    | cache Vite dev server assets. Override this with PWA_ENABLED, for
+    | example to disable it on staging or to test the PWA locally.
     |
     */
 
-    'enabled' => (bool) env('PWA_ENABLED', true),
+    'enabled' => (bool) env('PWA_ENABLED', env('APP_ENV') !== 'local'),
 
     /*
     |--------------------------------------------------------------------------
