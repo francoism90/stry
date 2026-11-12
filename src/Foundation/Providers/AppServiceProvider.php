@@ -6,8 +6,10 @@ namespace Foundation\Providers;
 
 use Domain\Profiles\Support\CurrentProfileContext;
 use Foundation\Settings\StorageSettings;
+use Illuminate\Database\Events\MigrationFailed;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Events\SettingsSaved;
 use Support\Filesystem\FilesystemManager;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->bootStorageDisks();
+        $this->bootMigrationFailures();
     }
 
     protected function registerFilesystem(): void
@@ -68,6 +71,20 @@ class AppServiceProvider extends ServiceProvider
             if ($event->settings instanceof StorageSettings) {
                 $register();
             }
+        });
+    }
+
+    /**
+     * The migrations run when the containers start, and the exception alone doesn't say which
+     * migration broke. Migrations that ran before it are recorded, so the pending state is checked
+     * again as well.
+     */
+    protected function bootMigrationFailures(): void
+    {
+        Event::listen(MigrationFailed::class, function (MigrationFailed $event): void {
+            Log::error("Migration [{$event->name}] failed while running [{$event->method}]: {$event->exception->getMessage()}");
+
+            $this->app->make(ApplicationNotices::class)->forgetPendingMigrations();
         });
     }
 }

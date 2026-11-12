@@ -46,11 +46,10 @@ class BasicPreset implements Preset
         // The S3/rustfs and Reverb hosts aren't necessarily subdomains of the
         // app host (e.g. app on "stry.domain.tld" with storage/websockets on
         // sibling hosts like "stry-s3.domain.tld"), so add their actual
-        // configured hosts explicitly rather than relying on "*.{$host}".
-        foreach ($this->getS3Hosts() as $s3Host) {
-            $policy
-                ->add(Directive::CONNECT, "https://{$s3Host}")
-                ->add([Directive::FRAME, Directive::FONT, Directive::STYLE, Directive::IMG, Directive::MEDIA], $s3Host);
+        // configured origins explicitly rather than relying on "*.{$host}". The origin keeps the
+        // scheme and port, so a disk like "http://rustfs:9000" isn't allowed as "https://rustfs".
+        foreach ($this->getS3Origins() as $s3Origin) {
+            $policy->add([Directive::CONNECT, Directive::FRAME, Directive::FONT, Directive::STYLE, Directive::IMG, Directive::MEDIA], $s3Origin);
         }
 
         if ($reverbHost = $this->getReverbHost()) {
@@ -64,16 +63,16 @@ class BasicPreset implements Preset
     }
 
     /**
-     * The hosts of every S3 disk, including those from the storage settings.
+     * The origins of every S3 disk, including those from the storage settings.
      *
      * @return array<int, string>
      */
-    protected function getS3Hosts(): array
+    protected function getS3Origins(): array
     {
         return collect((array) Config::get('filesystems.disks', []))
             ->filter(fn (mixed $disk): bool => is_array($disk) && ($disk['driver'] ?? null) === 's3')
             ->flatMap(fn (array $disk): array => [$disk['url'] ?? null, $disk['temporary_url'] ?? null])
-            ->map(fn (mixed $url): ?string => $this->resolveHost((string) $url))
+            ->map(fn (mixed $url): ?string => $this->resolveOrigin((string) $url))
             ->filter()
             ->unique()
             ->values()
@@ -88,12 +87,12 @@ class BasicPreset implements Preset
         return $host === '' ? null : $host;
     }
 
-    protected function resolveHost(string $url): ?string
+    protected function resolveOrigin(string $url): ?string
     {
         if ($url === '') {
             return null;
         }
 
-        return Uri::of($url)->host();
+        return Uri::of($url)->origin();
     }
 }

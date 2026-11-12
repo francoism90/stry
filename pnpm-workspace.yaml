@@ -17,8 +17,8 @@ minimumReleaseAgeExclude:
   - '@inertiajs/vue3@3.11.0'
   - '@inertiajs/vite@3.11.0'
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@1.5.0
-  vite-plus: 1.5.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.6.0
+  vite-plus: 1.6.0
 overrides:
   vite@*: 'catalog:'
 peerDependencyRules:

@@ -21,6 +21,26 @@ it('scopes connect/img/style/font/media sources to the configured s3 and reverb 
         ->toContain('https://ws.example.com');
 });
 
+it('keeps the scheme and port of the s3 disk urls', function () {
+    config([
+        'app.url' => 'https://app.example.com',
+        'filesystems.disks.s3.url' => 'http://rustfs.example.com:9000/bucket',
+        'filesystems.disks.s3.temporary_url' => 'https://S3.example.com:443/bucket',
+    ]);
+
+    $policy = new Policy;
+    (new BasicPreset)->configure($policy);
+
+    $mediaDirective = collect(explode(';', $policy->getContents()))
+        ->first(fn (string $directive) => str_starts_with(trim($directive), 'media-src'));
+
+    expect($mediaDirective)
+        ->toContain('http://rustfs.example.com:9000')
+        ->toContain('https://s3.example.com')
+        ->not->toContain('/bucket')
+        ->not->toContain(':443');
+});
+
 it('allows blob: connections for the video player', function () {
     config([
         'app.url' => 'https://app.example.com',
