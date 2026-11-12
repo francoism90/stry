@@ -17,9 +17,11 @@ const tagIcons: Record<string, string> = {
 
 export const tagIcon = (type: string | null | undefined): string => tagIcons[type ?? ''] ?? 'i-lucide-tag'
 
-export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
+// Fetches the first tag suggestions once `enabled` turns true. Modals pass their open state, because
+// every tag card renders an edit modal and fetching on mount would send one request per card.
+export function useTags(tags?: MaybeRefOrGetter<Tag[]>, enabled: MaybeRefOrGetter<boolean> = true) {
   const state = ref<TagCollection>()
-  const ready = ref(false)
+  let hasRequestedSuggestions = false
   const http = useHttp<object, TagCollection>({})
   const types = computed(() => usePage().props.tags)
 
@@ -27,27 +29,23 @@ export function useTags(tags?: MaybeRefOrGetter<Tag[]>) {
 
   const filter = async (options?: RouteQueryOptions) => {
     if (isServer) {
-      ready.value = true
-
       return
     }
 
-    try {
-      await http.get(index.url(options), {
-        onSuccess: (data) => {
-          state.value = Object.assign(state.value || {}, data)
-        },
-      })
-    } finally {
-      ready.value = true
-    }
+    await http.get(index.url(options), {
+      onSuccess: (data) => {
+        state.value = Object.assign(state.value || {}, data)
+      },
+    })
   }
 
+  // Flagged before the request starts, so reopening a modal while it is still loading doesn't fetch twice.
   watchEffect(() => {
-    if (isServer || ready.value) {
+    if (isServer || hasRequestedSuggestions || !toValue(enabled)) {
       return
     }
 
+    hasRequestedSuggestions = true
     void filter()
   })
 

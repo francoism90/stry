@@ -33,7 +33,10 @@ const form = useForm(update(props.item.id), {
   remove_avatar: false,
 })
 
-const { items, types, filter } = useTags(() => form.related)
+const { items, types, filter } = useTags(
+  () => form.related,
+  () => open.value === true,
+)
 
 const onSubmit = (close: () => void) => {
   const options = {
