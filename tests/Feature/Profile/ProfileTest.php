@@ -86,6 +86,14 @@ it('casts profile settings to an array object', function () {
         ]);
 });
 
+it('stores cleared profile settings as null', function () {
+    $profile = Profile::factory()->create();
+
+    $profile->update(['settings' => null]);
+
+    expect(Profile::query()->whereKey($profile)->whereNull('settings')->exists())->toBeTrue();
+});
+
 it('can scope enabled and disabled profiles', function () {
     $user = User::factory()->create();
 

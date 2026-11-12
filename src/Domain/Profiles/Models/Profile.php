@@ -71,7 +71,7 @@ class Profile extends Model implements HasMedia
             'is_kids' => 'boolean',
             'is_primary' => 'boolean',
             'state' => ProfileState::class,
-            'settings' => AsArrayObject::class,
+            'settings' => AsArrayObject::nullable(),
             'created_at' => AsDateTime::class,
             'updated_at' => AsDateTime::class,
         ];

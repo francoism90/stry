@@ -48,7 +48,7 @@ class Groupable extends MorphPivot
     protected function casts(): array
     {
         return [
-            'options' => AsArrayObject::class,
+            'options' => AsArrayObject::nullable(),
         ];
     }
 

@@ -77,6 +77,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Container Prefix
+    |--------------------------------------------------------------------------
+    |
+    | Quadlet names containers and networks "systemd-" followed by the unit
+    | name, e.g. "systemd-laravel-pgsql". Change this when your units set
+    | their own "ContainerName="/"NetworkName=" or run outside Quadlet. It's
+    | used for "{{containerPrefix}}" and the built-in upstreams.
+    |
+    */
+
+    'container_prefix' => env('PODMAN_CONTAINER_PREFIX', 'systemd-'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Stubs Path
     |--------------------------------------------------------------------------
     |

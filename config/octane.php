@@ -2,6 +2,7 @@
 
 use Foxws\Podman\Support\PodmanCaddySites;
 use Laravel\Octane\Contracts\OperationTerminated;
+use Laravel\Octane\Events\OperationReleased;
 use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
 use Laravel\Octane\Events\RequestTerminated;
@@ -20,6 +21,7 @@ use Laravel\Octane\Listeners\EnsureUploadedFilesCanBeMoved;
 use Laravel\Octane\Listeners\FlushOnce;
 use Laravel\Octane\Listeners\FlushTemporaryContainerInstances;
 use Laravel\Octane\Listeners\FlushUploadedFiles;
+use Laravel\Octane\Listeners\ReleaseFreedMemory;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
@@ -107,7 +109,11 @@ return [
             FlushOnce::class,
             FlushTemporaryContainerInstances::class,
             // DisconnectFromDatabases::class,
+        ],
+
+        OperationReleased::class => [
             // CollectGarbage::class,
+            // ReleaseFreedMemory::class,
         ],
 
         WorkerErrorOccurred::class => [
