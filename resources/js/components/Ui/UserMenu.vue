@@ -2,6 +2,7 @@
 import AdminModal from '@/components/Admin/AdminModal.vue'
 import SettingsModal from '@/components/Settings/SettingsModal.vue'
 import { useAuth } from '@/composables/auth'
+import { index as horizon } from '@/routes/horizon'
 import { router } from '@inertiajs/vue3'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { computed, ref } from 'vue'
@@ -32,6 +33,13 @@ const items = computed<DropdownMenuItem[][]>(() => [
             label: 'Admin',
             icon: 'i-lucide-shield-half',
             onClick: () => (isAdminOpen.value = true),
+          },
+          {
+            label: 'Queue',
+            icon: 'i-lucide-layers',
+            to: horizon.url(),
+            target: '_blank',
+            external: true,
           },
         ]
       : []),
