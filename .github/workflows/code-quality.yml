@@ -65,7 +65,7 @@ jobs:
               run: composer types:check
 
             - name: Check formatting and linting
-              run: vp check
+              run: vp run check
 
             - name: Run TypeScript type check
               run: vp run types:check

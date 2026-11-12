@@ -28,8 +28,7 @@ const handle = async () => router.post(GroupClearController.url(props.item.id))
     <template #body>
       <p class="text-sm text-muted">
         All videos will be removed from
-        <span class="text-highlighted capitalize">{{ item.title ?? item.id }}</span
-        >. They stay in your library.
+        <span class="text-highlighted capitalize">{{ item.title ?? item.id }}</span>. They stay in your library.
       </p>
     </template>
 
