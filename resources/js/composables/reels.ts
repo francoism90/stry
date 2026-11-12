@@ -70,7 +70,12 @@ export function useReelStream(
 
   watch(
     () => [toValue(element), toValue(stream)] as const,
-    async ([video, playlist]) => {
+    async ([video, playlist], _previous, onCleanup) => {
+      // Runs when the element or stream changes again and when the reel is swiped away, so a
+      // run still waiting for Shaka doesn't create a player nothing would destroy.
+      let isCancelled = false
+      onCleanup(() => (isCancelled = true))
+
       destroy()
       ready.value = playlist === null
 
@@ -79,6 +84,11 @@ export function useReelStream(
       }
 
       const shakaInstance = await loadShaka()
+
+      if (isCancelled) {
+        return
+      }
+
       const current = new shakaInstance.Player()
       player = current
 

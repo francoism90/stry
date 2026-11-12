@@ -1,6 +1,29 @@
-import { isReelLoaded, reelPreload, useReelPlayback } from '@/composables/reels'
+import { isReelLoaded, reelPreload, useReelPlayback, useReelStream } from '@/composables/reels'
+import type { Playlist } from '@/types'
 import { describe, expect, it, vi } from 'vite-plus/test'
-import { nextTick, ref } from 'vue'
+import { effectScope, nextTick, ref } from 'vue'
+
+const shaka = vi.hoisted(() => {
+  const Player = vi.fn<(this: Record<string, unknown>) => void>(function (this: Record<string, unknown>) {
+    this.configure = vi.fn<() => void>()
+    this.attach = vi.fn<() => Promise<void>>(() => Promise.resolve())
+    this.load = vi.fn<() => Promise<void>>(() => Promise.resolve())
+    this.destroy = vi.fn<() => Promise<void>>(() => Promise.resolve())
+  })
+
+  let resolveLoad: (instance: unknown) => void = () => {}
+
+  return {
+    Player,
+    loadShaka: vi.fn<() => Promise<unknown>>(() => new Promise((resolve) => (resolveLoad = resolve))),
+    finishLoading: () => resolveLoad({ Player }),
+  }
+})
+
+vi.mock('@/plugins/shaka', () => ({
+  loadShaka: shaka.loadShaka,
+  resolveAssetUri: (playlist: Playlist) => playlist.asset,
+}))
 
 describe('isReelLoaded', () => {
   it('keeps the previous reel and the next two loaded around the active one', () => {
@@ -69,5 +92,23 @@ describe('useReelPlayback', () => {
     await nextTick()
 
     expect(video.play).toHaveBeenCalledOnce()
+  })
+})
+
+describe('useReelStream', () => {
+  it('does not create a player when the reel is swiped away while Shaka loads', async () => {
+    const scope = effectScope()
+    const video = {} as HTMLVideoElement
+
+    scope.run(() => useReelStream(video, { id: '1', asset: 'https://example.test/reel.m3u8' } as Playlist))
+    await nextTick()
+    expect(shaka.loadShaka).toHaveBeenCalledOnce()
+
+    scope.stop()
+    shaka.finishLoading()
+    await Promise.resolve()
+    await Promise.resolve()
+
+    expect(shaka.Player).not.toHaveBeenCalled()
   })
 })

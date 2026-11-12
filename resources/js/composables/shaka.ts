@@ -30,6 +30,9 @@ export function useShaka(
   const currentTime = ref<number>(0)
   const hasStartedPlayback = ref<boolean>(false)
 
+  // Set when the component unmounts, so an initialize() still awaiting Shaka doesn't create a player.
+  let isDisposed = false
+
   const ready = computed(() => player.value !== undefined && !initializing.value && loaded.value)
   const media = computed(() => player.value?.getMediaElement() ?? null)
 
@@ -42,6 +45,11 @@ export function useShaka(
 
     try {
       const shakaInstance = await loadShaka()
+
+      // The page was left while Shaka was loading, and destroy() already ran without a player.
+      if (isDisposed) {
+        return
+      }
 
       if (!shakaInstance.Player.isBrowserSupported()) {
         onErrorEvent(new CustomEvent('error', { detail: new Error('Shaka Player is not supported in this browser.') }))
@@ -298,6 +306,10 @@ export function useShaka(
       do {
         queued = false
 
+        if (isDisposed) {
+          return
+        }
+
         const videoContainer = toValue(container) as HTMLElement | undefined
         const mediaElement = toValue(element) as HTMLMediaElement | undefined
         const playlistModel = toValue(playlist) as Playlist | null
@@ -324,7 +336,10 @@ export function useShaka(
 
   watch(() => [toValue(container), toValue(element), toValue(playlist), toValue(progress)], sync, { immediate: true })
 
-  tryOnScopeDispose(() => destroy())
+  tryOnScopeDispose(() => {
+    isDisposed = true
+    void destroy()
+  })
 
   return {
     player,
