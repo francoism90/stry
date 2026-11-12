@@ -2,18 +2,26 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 if (! function_exists('duration')) {
-    function duration(mixed $value): string
+    /**
+     * Format a length in seconds as m:ss, or h:mm:ss from an hour on, without wrapping after 24 hours.
+     */
+    function duration(float|int $seconds): string
     {
-        $time = Carbon::parse($value)
-            ->utc()
-            ->toTimeString();
+        $seconds = (int) $seconds;
 
-        return preg_replace('/^0(?:0:0?)?/', '', $time) ?? $time;
+        $hours = intdiv($seconds, 3600);
+        $minutes = intdiv($seconds % 3600, 60);
+        $remainder = $seconds % 60;
+
+        if ($hours > 0) {
+            return sprintf('%d:%02d:%02d', $hours, $minutes, $remainder);
+        }
+
+        return sprintf('%d:%02d', $minutes, $remainder);
     }
 }
 
