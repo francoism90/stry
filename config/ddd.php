@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'substitutions' => env('DDD_SUBSTITUTIONS', [
+    'substitutions' => [
         // 'action' => 'CustomActions',
-    ]),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -29,9 +29,9 @@ return [
     |
     */
 
-    'stubs' => env('DDD_STUBS', [
+    'stubs' => [
         // 'action' => 'stubs/ddd/custom-action.stub',
-    ]),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -67,6 +67,22 @@ return [
     */
 
     'discover_policies' => env('DDD_DISCOVER_POLICIES', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Command Auto Discovery
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, the console commands in each domain's command folder,
+    | e.g. src/Domain/Users/Commands, are registered with Artisan, so they
+    | don't have to be listed in bootstrap/app.php's withCommands().
+    |
+    | Set it to true for every layer, false to disable it, or a list (or
+    | comma-separated string) of layer keys, e.g. ['Domain', 'Modules'].
+    |
+    */
+
+    'discover_commands' => env('DDD_DISCOVER_COMMANDS', true),
 
     /*
     |--------------------------------------------------------------------------

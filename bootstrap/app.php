@@ -2,17 +2,6 @@
 
 declare(strict_types=1);
 
-use Domain\Groups\Commands\ClearGroupCommand;
-use Domain\Transcodes\Commands\ClearTranscodeCommand;
-use Domain\Transcodes\Commands\CreateTranscodeCommand;
-use Domain\Transcodes\Commands\ImportTranscodeCommand;
-use Domain\Users\Commands\CreateUserCommand;
-use Domain\Users\Commands\UserExistsCommand;
-use Domain\Videos\Commands\ClearVideoCommand;
-use Domain\Videos\Commands\ImportVideoCommand;
-use Domain\Videos\Commands\RegenerateVideoReelsCommand;
-use Domain\Videos\Commands\RegenerateVideoThumbnailsCommand;
-use Domain\Videos\Commands\WarmVideoStreamsCommand;
 use Foundation\Http\Middleware\AddCspHeaders;
 use Foundation\Http\Middleware\AddHorizonCspNonce;
 use Foundation\Http\Middleware\AddTelescopeCspNonce;
@@ -33,11 +22,6 @@ use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Support\Inertia\Middleware\HandleInertiaRequests;
-use Support\Scout\Commands\SyncScoutCommand;
-use Support\System\Commands\CreateSnapshotCommand;
-use Support\System\Commands\InstallApplicationCommand;
-use Support\System\Commands\RestartApplicationCommand;
-use Support\System\Commands\UpdateApplicationCommand;
 
 $basePath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
 
@@ -104,25 +88,4 @@ return Application::configure(basePath: $basePath)
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
     })
-    ->withEvents(discover: [
-        base_path('src/Domain/*/Listeners'),
-    ])
-    ->withCommands([
-        ClearGroupCommand::class,
-        ClearTranscodeCommand::class,
-        ImportTranscodeCommand::class,
-        CreateTranscodeCommand::class,
-        CreateUserCommand::class,
-        UserExistsCommand::class,
-        ClearVideoCommand::class,
-        ImportVideoCommand::class,
-        RegenerateVideoReelsCommand::class,
-        RegenerateVideoThumbnailsCommand::class,
-        WarmVideoStreamsCommand::class,
-        SyncScoutCommand::class,
-        CreateSnapshotCommand::class,
-        InstallApplicationCommand::class,
-        RestartApplicationCommand::class,
-        UpdateApplicationCommand::class,
-    ])
     ->create();
