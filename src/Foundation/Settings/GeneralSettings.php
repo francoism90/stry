@@ -9,7 +9,7 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-    public string $site_name = 'My Site';
+    public string $site_name = 'Stry';
 
     public string $timezone = 'Europe/Amsterdam';
 
