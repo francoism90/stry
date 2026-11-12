@@ -185,7 +185,7 @@ useEcho(videoChannel, ['.media.created', '.media.updated', '.media.deleted'], ()
       </template>
 
       <template #description>
-        <p
+        <div
           v-if="video.description?.length"
           v-html="video.description"
         />
