@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f0f4470cf26c8fe8078d67536329686",
+    "content-hash": "0eb4e46b2a9ff503e7d868e31fd3d13a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1706,16 +1706,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "79cbadacfba3a32cda3a7073b1c82e9bd2109759"
+                "reference": "39c974f06740fa68ce425e4f38c1012f6ae7c1d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/79cbadacfba3a32cda3a7073b1c82e9bd2109759",
-                "reference": "79cbadacfba3a32cda3a7073b1c82e9bd2109759",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/39c974f06740fa68ce425e4f38c1012f6ae7c1d0",
+                "reference": "39c974f06740fa68ce425e4f38c1012f6ae7c1d0",
                 "shasum": ""
             },
             "require": {
@@ -1776,7 +1776,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/2.6.0"
+                "source": "https://github.com/foxws/laravel-pwa/tree/2.7.0"
             },
             "funding": [
                 {
@@ -1784,8 +1784,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:17:48+00:00",
-            "published-time": "2026-10-14T07:24:34+00:00"
+            "time": "2026-11-12T12:10:17+00:00",
+            "published-time": "2026-11-12T12:13:05+00:00"
         },
         {
             "name": "foxws/laravel-relatable",

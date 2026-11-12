@@ -59,7 +59,7 @@ Run it after every config change and on deploy. Create `public/offline.html` you
 
 ### 5. Disable when needed
 
-Set `PWA_ENABLED=false` (e.g. local or staging) and run `pwa:generate`: it writes a self-unregistering service worker that clears its caches and removes itself. The Blade templates and `manifest.json` stay unchanged.
+The service worker is disabled by default when `APP_ENV` is `local`. Set `PWA_ENABLED=false` (e.g. staging) or `PWA_ENABLED=true` (to test the PWA locally) and run `pwa:generate`: it writes a self-unregistering service worker that clears its caches and removes itself. The Blade templates and `manifest.json` stay unchanged.
 
 ## Rules
 
