@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0eb4e46b2a9ff503e7d868e31fd3d13a",
+    "content-hash": "9a47b372072f1070466b7033820bc672",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "foxws/laravel-ddd",
-            "version": "0.0.9",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ddd.git",
-                "reference": "5a0de313784514356a774c2f756bc28b45168315"
+                "reference": "7245a6a92a6a5a1af4d999f30ec6c057bb080118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ddd/zipball/5a0de313784514356a774c2f756bc28b45168315",
-                "reference": "5a0de313784514356a774c2f756bc28b45168315",
+                "url": "https://api.github.com/repos/foxws/laravel-ddd/zipball/7245a6a92a6a5a1af4d999f30ec6c057bb080118",
+                "reference": "7245a6a92a6a5a1af4d999f30ec6c057bb080118",
                 "shasum": ""
             },
             "require": {
@@ -1349,7 +1349,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ddd/issues",
-                "source": "https://github.com/foxws/laravel-ddd/tree/0.0.9"
+                "source": "https://github.com/foxws/laravel-ddd/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1357,21 +1357,21 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:20:48+00:00",
-            "published-time": "2026-10-14T07:24:21+00:00"
+            "time": "2026-11-12T13:37:40+00:00",
+            "published-time": "2026-11-12T13:38:21+00:00"
         },
         {
             "name": "foxws/laravel-essentials",
-            "version": "0.0.5",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-essentials.git",
-                "reference": "05e33761e55db0fca464152eebe1d40ffeaea8da"
+                "reference": "d5a18e7c139d3c4dd6d751dd49fbe515defa5bb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-essentials/zipball/05e33761e55db0fca464152eebe1d40ffeaea8da",
-                "reference": "05e33761e55db0fca464152eebe1d40ffeaea8da",
+                "url": "https://api.github.com/repos/foxws/laravel-essentials/zipball/d5a18e7c139d3c4dd6d751dd49fbe515defa5bb9",
+                "reference": "d5a18e7c139d3c4dd6d751dd49fbe515defa5bb9",
                 "shasum": ""
             },
             "require": {
@@ -1424,7 +1424,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-essentials/issues",
-                "source": "https://github.com/foxws/laravel-essentials/tree/0.0.5"
+                "source": "https://github.com/foxws/laravel-essentials/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1432,8 +1432,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:21:20+00:00",
-            "published-time": "2026-10-14T07:24:24+00:00"
+            "time": "2026-11-12T13:24:22+00:00",
+            "published-time": "2026-11-12T13:25:01+00:00"
         },
         {
             "name": "foxws/laravel-media",
@@ -1531,16 +1531,16 @@
         },
         {
             "name": "foxws/laravel-modelcache",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-modelcache.git",
-                "reference": "ef9a09856514e076691a2d8975a19b92d930a261"
+                "reference": "546eac7738123785d2644f5a6f31cfac4a7ea699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/ef9a09856514e076691a2d8975a19b92d930a261",
-                "reference": "ef9a09856514e076691a2d8975a19b92d930a261",
+                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/546eac7738123785d2644f5a6f31cfac4a7ea699",
+                "reference": "546eac7738123785d2644f5a6f31cfac4a7ea699",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1603,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-modelcache/issues",
-                "source": "https://github.com/foxws/laravel-modelcache/tree/1.5.0"
+                "source": "https://github.com/foxws/laravel-modelcache/tree/1.6.0"
             },
             "funding": [
                 {
@@ -1611,8 +1611,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:19:58+00:00",
-            "published-time": "2026-10-14T07:24:38+00:00"
+            "time": "2026-11-12T13:18:13+00:00",
+            "published-time": "2026-11-12T13:18:42+00:00"
         },
         {
             "name": "foxws/laravel-podman",
@@ -1706,16 +1706,16 @@
         },
         {
             "name": "foxws/laravel-pwa",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-pwa.git",
-                "reference": "39c974f06740fa68ce425e4f38c1012f6ae7c1d0"
+                "reference": "f493b9df1447dfdb5a0ea039506ca5410e84e0e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/39c974f06740fa68ce425e4f38c1012f6ae7c1d0",
-                "reference": "39c974f06740fa68ce425e4f38c1012f6ae7c1d0",
+                "url": "https://api.github.com/repos/foxws/laravel-pwa/zipball/f493b9df1447dfdb5a0ea039506ca5410e84e0e4",
+                "reference": "f493b9df1447dfdb5a0ea039506ca5410e84e0e4",
                 "shasum": ""
             },
             "require": {
@@ -1776,7 +1776,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-pwa/issues",
-                "source": "https://github.com/foxws/laravel-pwa/tree/2.7.0"
+                "source": "https://github.com/foxws/laravel-pwa/tree/2.7.1"
             },
             "funding": [
                 {
@@ -1784,21 +1784,21 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-12T12:10:17+00:00",
-            "published-time": "2026-11-12T12:13:05+00:00"
+            "time": "2026-11-12T13:21:50+00:00",
+            "published-time": "2026-11-12T13:22:23+00:00"
         },
         {
             "name": "foxws/laravel-relatable",
-            "version": "v1.0.3",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-relatable.git",
-                "reference": "1fa1cbe9a6fbd3fd08c656bd03ff6b4807ffc3ea"
+                "reference": "b39fa4c912654f54e6f98e6c47969c08084042ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/1fa1cbe9a6fbd3fd08c656bd03ff6b4807ffc3ea",
-                "reference": "1fa1cbe9a6fbd3fd08c656bd03ff6b4807ffc3ea",
+                "url": "https://api.github.com/repos/foxws/laravel-relatable/zipball/b39fa4c912654f54e6f98e6c47969c08084042ff",
+                "reference": "b39fa4c912654f54e6f98e6c47969c08084042ff",
                 "shasum": ""
             },
             "require": {
@@ -1857,7 +1857,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-relatable/issues",
-                "source": "https://github.com/foxws/laravel-relatable/tree/v1.0.3"
+                "source": "https://github.com/foxws/laravel-relatable/tree/v1.1.0"
             },
             "funding": [
                 {
@@ -1865,21 +1865,21 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-14T07:22:11+00:00",
-            "published-time": "2026-10-14T07:24:28+00:00"
+            "time": "2026-11-12T13:33:34+00:00",
+            "published-time": "2026-11-12T13:34:00+00:00"
         },
         {
             "name": "foxws/laravel-scout-builder",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-scout-builder.git",
-                "reference": "a973c6e90326ff59dd9eaf6fec1bab3ffe98ef4b"
+                "reference": "efc4a4e390cd03adbede07809e62f3cb189c858c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/a973c6e90326ff59dd9eaf6fec1bab3ffe98ef4b",
-                "reference": "a973c6e90326ff59dd9eaf6fec1bab3ffe98ef4b",
+                "url": "https://api.github.com/repos/foxws/laravel-scout-builder/zipball/efc4a4e390cd03adbede07809e62f3cb189c858c",
+                "reference": "efc4a4e390cd03adbede07809e62f3cb189c858c",
                 "shasum": ""
             },
             "require": {
@@ -1937,7 +1937,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-scout-builder/issues",
-                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.2.1"
+                "source": "https://github.com/foxws/laravel-scout-builder/tree/1.2.2"
             },
             "funding": [
                 {
@@ -1945,8 +1945,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-26T12:33:08+00:00",
-            "published-time": "2026-10-26T12:33:55+00:00"
+            "time": "2026-11-12T13:30:34+00:00",
+            "published-time": "2026-11-12T13:31:13+00:00"
         },
         {
             "name": "foxws/laravel-scout-relations",

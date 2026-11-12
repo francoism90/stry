@@ -35,7 +35,7 @@ return [
     |
     */
 
-    'configurables' => env('ESSENTIALS_CONFIGURABLES', [
+    'configurables' => [
         AggressivePrefetching::class,
         AutomaticallyEagerLoadRelationships::class,
         EnforceMorphMap::class,
@@ -47,7 +47,7 @@ return [
         PreventStrayRequests::class,
         ProhibitDestructiveCommands::class,
         ResourceWithoutWrapping::class,
-    ]),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -59,7 +59,7 @@ return [
     |
     */
 
-    'morph_map' => env('ESSENTIALS_MORPH_MAP', [
+    'morph_map' => [
         'group' => Group::class,
         'media' => Media::class,
         'profile' => Profile::class,
@@ -67,6 +67,6 @@ return [
         'tag' => Tag::class,
         'user' => User::class,
         'video' => Video::class,
-    ]),
+    ],
 
 ];
