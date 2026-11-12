@@ -58,7 +58,10 @@ const form = useForm(update(props.video.id), {
   state: props.video.state.name,
 })
 
-const { items, filter } = useTags(() => form.tags)
+const { items, filter } = useTags(
+  () => form.tags,
+  () => open.value === true,
+)
 
 const publishedAt = computed({
   get: () => toDateTime(form.published_at),

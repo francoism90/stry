@@ -15,7 +15,7 @@ withDefaults(
 
 const open = defineModel<boolean>('open')
 
-const { types } = useTags()
+const { types } = useTags([], false)
 
 const form = useForm(store(), {
   name: '',
