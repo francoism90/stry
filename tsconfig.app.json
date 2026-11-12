@@ -8,7 +8,7 @@
         "auto-imports.d.ts",
         "components.d.ts"
     ],
-    "exclude": ["resources/**/__tests__/*"],
+    "exclude": ["resources/**/__tests__/*", "resources/js/plugins/**/vite.ts"],
     "compilerOptions": {
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
         "paths": {
