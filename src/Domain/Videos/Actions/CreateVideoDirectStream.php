@@ -43,11 +43,13 @@ class CreateVideoDirectStream
             $stream->withEncryption(EncryptionKey::derive(Config::string('app.key'), "video:{$video->getKey()}"));
         }
 
-        if ($video->getCaptions()->isEmpty()) {
+        $captions = $video->getCaptions();
+
+        if ($captions->isEmpty()) {
             $stream->withEmbeddedSubtitles();
         }
 
-        $video->getCaptions()->each(fn (Media $caption) => $stream->withSubtitles(
+        $captions->each(fn (Media $caption) => $stream->withSubtitles(
             path: $caption->getPathRelativeToRoot(),
             language: $caption->getCustomProperty('language_code', $this->settings->text_language->value),
             label: $caption->name,

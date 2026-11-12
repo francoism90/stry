@@ -85,7 +85,10 @@ return [
     | any disk: local storage, a mounted /tmp or RAM disk, or S3. Segments on
     | disks with temporary URLs are served by redirecting to one that is valid
     | for url_lifetime seconds. lock_timeout is how long concurrent requests
-    | for the same segment wait while it's packaged. Schedule "media:prune" to
+    | for the same segment wait while it's packaged. Renditions encoded on
+    | request wait rendition_lock_wait seconds instead, then answer 503 with
+    | Retry-After; it stays below Shaka's 30 second request timeout, so a
+    | worker isn't held after the player gave up. Schedule "media:prune" to
     | delete old segments; they are packaged again when requested.
     |
     | After a segment is requested, the next look_ahead segments are packaged
@@ -106,6 +109,7 @@ return [
         'cache_path' => env('MEDIA_DELIVERY_CACHE_PATH', 'media-segments'),
         'url_lifetime' => (int) env('MEDIA_DELIVERY_URL_LIFETIME', 14400),
         'lock_timeout' => (int) env('MEDIA_DELIVERY_LOCK_TIMEOUT', 120),
+        'rendition_lock_wait' => (int) env('MEDIA_DELIVERY_RENDITION_LOCK_WAIT', 25),
         'cache_store' => env('MEDIA_DELIVERY_CACHE_STORE'),
         'index_store' => env('MEDIA_DELIVERY_INDEX_STORE', 'database'),
         'index_connection' => env('MEDIA_DELIVERY_INDEX_CONNECTION'),

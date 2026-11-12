@@ -129,7 +129,7 @@ public function segment(Video $video, int $variant, int $segment): Response
 
 - `masterPlaylist(fn (int $variant) => ...)` lists the variants with their bandwidth, resolution, frame rate and codecs.
 - **Look-ahead:** after a segment is requested, the next `media.delivery.look_ahead` segments (2 by default) that aren't cached yet are packaged ahead of their requests. Playlist and DASH manifest requests do the same for the first segments.
-  - `look_ahead_via` `"queue"` (the default) dispatches a `Foxws\Media\Delivery\PackageSegments` job on `look_ahead_connection`/`look_ahead_queue`, e.g. a `media` queue on Horizon. `"defer"` packages them in the same process after the response, and `null` turns look-ahead off.
+  - `look_ahead_via` `"queue"` (the default) dispatches a `Foxws\Media\Delivery\PackageSegments` job per segment on `look_ahead_connection`/`look_ahead_queue`, e.g. a `media` queue on Horizon. `"defer"` packages them in the same process after the response, and `null` turns look-ahead off.
   - Streams fall back to `defer` on a `sync` queue, or when the media or cache disk isn't a configured disk name that a job could open.
   - Per stream: `->lookAhead(4)`, `->lookAhead(1, LookAheadStrategy::Defer)` or `->lookAhead(0)`. Without the route macro, call `packageAhead($variant, 0, $track)` after serving a playlist and `packageStart()` after a DASH manifest; `segmentResponse()` and `initSegmentResponse()` look ahead by themselves.
   - The per-segment lock still applies, so a segment being packaged ahead is never packaged twice; a request for it waits for the running package.
@@ -209,6 +209,7 @@ $video->update(['scenes' => array_map(fn (Scene $scene) => $scene->toArray(), $m
 - **HLS:** every video and audio media playlist gets `#EXT-X-PROGRAM-DATE-TIME:1970-01-01T00:00:00.000Z`, so a marker's `START-DATE` is the epoch plus its start in seconds, and one `#EXT-X-DATERANGE` per marker with `ID="{class}-{n}"`, `CLASS`, `DURATION` and the title as `X-TITLE`. Subtitle and image playlists get the same anchor. Without markers, no date tags are added.
 - **DASH:** one `<EventStream schemeIdUri="urn:foxws:media:marker" value="{class}" timescale="1000">` per class at the start of the Period, with `<Event id presentationTime duration>` in milliseconds and the title as its text.
 - **Players:** Shaka Player fires `timelineregionadded` for DASH events, and for HLS date ranges since 5.2 (older versions fire `metadata` with type `com.apple.quicktime.HLS`). Read `event.detail.schemeIdUri`/`value` (DASH) or the `CLASS` (HLS) to tell the kinds apart.
+- `withMarkers()` and `withThumbnails()` also take a closure, called the first time a playlist, manifest, chapter track or sheet needs it, so segment requests don't run its queries.
 - `markers()` returns them all, chapters included, sorted by start. `Marker` refuses a negative start, an end before its start and an empty class.
 - **Chapter track:** `chapters.vtt` (`MediaStream::chaptersUrl()`) serves the markers of class `chapter` as WebVTT cues with ids `{class}-{n}`, for seek bars, e.g. Shaka Player's `player.addChaptersTrack($url, 'en')` after `load()`. Each cue ends where the next one starts, and one without an end runs to the end of the stream; it's a 404 without chapters. `->chapterTrackFrom(['chapter', 'intro'], 'Main')` lists other classes (`null` for every marker) and fills the gaps between them and after the last one with a cue titled `Main`, so players don't show the last chapter's title until the end. `chapterTrack()->toWebVtt()` returns it without a route.
 
@@ -227,7 +228,7 @@ MediaStream::define('videos', fn (Video $video) => Media::fromDisk('videos')->op
 
 - **Key URLs:** `Route::mediaStream()` links and serves the keys itself. Without it, pass the key URL as the second argument of `withEncryption()` (or call `keyUrlsUsing()`), as `fn (int $period, int $variant) => ...`, and return `$stream->keyResponse($period)` from your key route after authorizing the viewer.
 - **How it works:** media playlists get `#EXT-X-KEY:METHOD=AES-128` tags, a new one for each rotation period. `segmentResponse()` encrypts each segment for the request with AES-128-CBC, using its period's key and its media sequence number as the IV (the HLS default, so playlists leave the IV out).
-- **What's cached:** segments stay unencrypted on the cache disk and are shared by every key. Keep that disk private. Encrypted streams are served by the app instead of redirecting to the cache disk.
+- **What's cached:** segments stay unencrypted on the cache disk and are shared by every key, and each is encrypted once per key into an `encrypted-{hash}` copy next to it, which `media:prune` trims like the others. Keep that disk private. Encrypted streams are served by the app instead of redirecting to the cache disk.
 - **Keys:** `EncryptionKey::derive($secret, $context)` makes keys deterministic per context (HMAC-SHA256), so they don't need storing. Pass a fixed `EncryptionKey` instead of a callback for one stored key.
 - **Serving keys:** `keyResponse($period)` returns the raw 16-byte key with `no-store`, and `key($period)` returns the `EncryptionKey`. Always authorize the key route; with `Route::mediaStream()` the resolver and route middleware run for key requests too.
 
@@ -679,7 +680,7 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 | `packager.default` | Packager driver (`MEDIA_PACKAGER`, `native`) |
 | `executables.ffmpeg`, `.ffprobe` | Path or command name (`MEDIA_FFMPEG_PATH`, …) |
 | `delivery.segment_duration`, `.index_store`, `.index_connection`, `.cache_store`, `.index_lifetime` | Segment length and where probes and keyframe indexes are kept for streaming from stored files |
-| `delivery.cache_disk`, `.cache_path`, `.url_lifetime`, `.lock_timeout` | Where packaged segments are cached and how they're served (`media:prune` trims the cache) |
+| `delivery.cache_disk`, `.cache_path`, `.url_lifetime`, `.lock_timeout`, `.rendition_lock_wait` | Where packaged segments are cached and how they're served (`media:prune` trims the cache; requests stop waiting for a rendition encode after `rendition_lock_wait` with a 503) |
 | `delivery.look_ahead`, `.look_ahead_via`, `.look_ahead_connection`, `.look_ahead_queue` | Segments packaged ahead of the player, and where (`queue`, `defer` or `null`) |
 | `ladder.hardware`, `.vaapi_device` | GPU encoding for `ladder()` (`MEDIA_LADDER_HARDWARE`: `none`, `vaapi`, `nvenc`, `qsv`), falling back to the CPU when the device can't be opened |
 | `delivery.hardware` | GPU for renditions encoded on request (`MEDIA_DELIVERY_HARDWARE`), defaulting to `ladder.hardware` |
