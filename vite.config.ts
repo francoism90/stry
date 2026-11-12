@@ -7,8 +7,8 @@ import laravel from 'laravel-vite-plugin'
 import { google } from 'laravel-vite-plugin/fonts'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, lazyPlugins, loadEnv } from 'vite-plus'
-import { lucideIcons } from './resources/js/plugins/build/lucide-icons'
 import { stripCss } from './resources/js/plugins/build/strip-css'
+import { lucideIcons } from './resources/js/plugins/iconify/vite'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -38,7 +38,10 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      lucideIcons(),
+      lucideIcons({
+        // The Shaka player maps its controls to bare Lucide names.
+        bareNameSources: ['resources/js/plugins/shaka/*.ts'],
+      }),
       stripCss(
         // Remove Roboto @font-face from shaka-player's controls.css — violates CSP font-src 'self'
         /@font-face\{[^}]*font-family:Roboto[^}]*fonts\.gstatic\.com[^}]*\}/g,
