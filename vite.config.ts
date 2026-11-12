@@ -7,6 +7,7 @@ import laravel from 'laravel-vite-plugin'
 import { google } from 'laravel-vite-plugin/fonts'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, lazyPlugins, loadEnv } from 'vite-plus'
+import { lucideIcons } from './resources/js/plugins/build/lucide-icons'
 import { stripCss } from './resources/js/plugins/build/strip-css'
 
 // https://vite.dev/config/
@@ -26,7 +27,6 @@ export default defineConfig(({ mode }) => {
       inertia({
         ssr: {
           port: 13714,
-          cluster: true,
         },
       }),
       tailwindcss(),
@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
+      lucideIcons(),
       stripCss(
         // Remove Roboto @font-face from shaka-player's controls.css — violates CSP font-src 'self'
         /@font-face\{[^}]*font-family:Roboto[^}]*fonts\.gstatic\.com[^}]*\}/g,
@@ -181,6 +182,10 @@ export default defineConfig(({ mode }) => {
           manualChunks(id) {
             const chunk = (name: string, packages: string[]) =>
               packages.some((pkg) => id.includes(`node_modules/${pkg}`)) ? name : undefined
+
+            if (id.includes('virtual:lucide-icons')) {
+              return 'icons'
+            }
 
             return (
               chunk('player', ['shaka-player']) ??

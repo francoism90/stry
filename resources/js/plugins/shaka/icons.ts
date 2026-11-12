@@ -1,4 +1,4 @@
-import iconSet from '@iconify-json/lucide/icons.json'
+import iconSet from 'virtual:lucide-icons'
 
 /**
  * Mirrors shaka.ui.Enums.MaterialDesignSVGIcons as a typed constant,
@@ -89,13 +89,12 @@ const lucideMap: Record<ShakaIconName, string> = {
   VIDEO_TYPE: 'film',
 }
 
-type IconSetIcons = typeof iconSet.icons
-type LucideIconName = keyof IconSetIcons
+type LucideIconName = keyof (typeof import('@iconify-json/lucide/icons.json'))['icons']
 
 export function iconDataUrl(iconName: LucideIconName): string {
-  const icon = iconSet.icons[iconName]
-  const width = ('width' in icon ? icon.width : undefined) ?? iconSet.width
-  const height = ('height' in icon ? icon.height : undefined) ?? iconSet.height
+  const icon = iconSet.icons[iconName]!
+  const width = icon.width ?? iconSet.width
+  const height = icon.height ?? iconSet.height
   const body = icon.body
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">${body}</svg>`
 
