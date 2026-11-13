@@ -48,9 +48,9 @@ enum SnapshotFrequency: string implements Enumerable
     {
         return match ($this) {
             self::Never => null,
-            self::Daily => '30 4 * * *',
-            self::Weekly => '30 4 * * 1',
-            self::Monthly => '30 4 1 * *',
+            self::Daily => '0 3 * * *',
+            self::Weekly => '0 3 * * 1',
+            self::Monthly => '0 3 1 * *',
         };
     }
 }
