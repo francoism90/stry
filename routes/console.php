@@ -17,8 +17,8 @@ use Support\System\Commands\CreateSnapshotCommand;
 
 /**
  * In production, the scheduler is a oneshot container that runs `schedule:run` and stops when it
- * exits, killing anything still running. Don't use runInBackground() here, and don't use
- * withoutOverlapping(): a run can't outlive the container, and a killed run would keep its lock.
+ * exits, killing anything still running. Don't use runInBackground() here. Give withoutOverlapping()
+ * a short expiry, so a run killed by the container's timeout doesn't keep its lock for a day.
  *
  * Every run wakes the database and cache, so all tasks share the hourly run at minute 0 instead
  * of adding wake-ups of their own. Tasks in the same run go one after another and the container
@@ -35,6 +35,7 @@ Schedule::command(ClearResetsCommand::class)
     ->dailyAt('01:00');
 
 Schedule::command(PruneExpired::class, ['--hours=24'])
+    ->withoutOverlapping(10)
     ->dailyAt('01:00');
 
 Schedule::command(PruneCommand::class, [
@@ -42,12 +43,14 @@ Schedule::command(PruneCommand::class, [
         Group::class,
         Transcode::class,
     ]])
+    ->withoutOverlapping(10)
     ->dailyAt('01:00');
 
 Schedule::command(CleanMediaCommand::class)
     ->dailyAt('02:00');
 
 Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
+    ->withoutOverlapping(10)
     ->dailyAt('02:00');
 
 if ($snapshotExpression = SnapshotFrequency::configured()->expression()) {
