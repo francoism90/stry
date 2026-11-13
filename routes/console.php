@@ -25,39 +25,39 @@ use Support\System\Commands\CreateSnapshotCommand;
  * is stopped after 5 minutes, so each hour gets one kind of work: quick cleanup at 01:00, media
  * at 02:00 and the database snapshot alone at 03:00.
  *
- * Tasks only run in production, so the database and cache of other environments can scale to zero.
+ * The hourly Horizon snapshot only runs in production, so the database and cache of other
+ * environments can scale to zero between the nightly tasks.
  */
-Schedule::environments('production')->group(function (): void {
-    Schedule::command(SnapshotCommand::class)
-        ->hourly();
+Schedule::command(SnapshotCommand::class)
+    ->environments('production')
+    ->hourly();
 
-    Schedule::command(PruneStaleTagsCommand::class)
-        ->dailyAt('01:00');
+Schedule::command(PruneStaleTagsCommand::class)
+    ->dailyAt('01:00');
 
-    Schedule::command(ClearResetsCommand::class)
-        ->dailyAt('01:00');
+Schedule::command(ClearResetsCommand::class)
+    ->dailyAt('01:00');
 
-    Schedule::command(PruneExpired::class, ['--hours=24'])
-        ->withoutOverlapping(10)
-        ->dailyAt('01:00');
+Schedule::command(PruneExpired::class, ['--hours=24'])
+    ->withoutOverlapping(10)
+    ->dailyAt('01:00');
 
-    Schedule::command(PruneCommand::class, [
-        '--model' => [
-            Group::class,
-            Transcode::class,
-        ]])
-        ->withoutOverlapping(10)
-        ->dailyAt('01:00');
+Schedule::command(PruneCommand::class, [
+    '--model' => [
+        Group::class,
+        Transcode::class,
+    ]])
+    ->withoutOverlapping(10)
+    ->dailyAt('01:00');
 
-    Schedule::command(CleanMediaCommand::class)
-        ->dailyAt('02:00');
+Schedule::command(CleanMediaCommand::class)
+    ->dailyAt('02:00');
 
-    Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
-        ->withoutOverlapping(10)
-        ->dailyAt('02:00');
+Schedule::command(PruneMediaCommand::class, ['--older-than' => 10080])
+    ->withoutOverlapping(10)
+    ->dailyAt('02:00');
 
-    if ($snapshotExpression = SnapshotFrequency::configured()->expression()) {
-        Schedule::command(CreateSnapshotCommand::class)
-            ->cron($snapshotExpression);
-    }
-});
+if ($snapshotExpression = SnapshotFrequency::configured()->expression()) {
+    Schedule::command(CreateSnapshotCommand::class)
+        ->cron($snapshotExpression);
+}
