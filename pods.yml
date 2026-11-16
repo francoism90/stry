@@ -59,12 +59,11 @@ ondemand:
     user: docker
     command: php -d variables_order=EGPCS /app/artisan app:idle
   # Runs "schedule:run" only in the minutes a task is due, so the database
-  # and cache can sleep in between. Keep "at" in sync with the schedule
-  # (routes/console.php and the packages' scheduled tasks).
+  # and cache can sleep in between. "at" is in UTC. Keep it in sync with the
+  # schedule (routes/console.php and the packages' scheduled tasks).
   schedule:
     container: stry-schedule
     at: ["*:00", "01:00", "02:00"]
-    timezone: UTC
     environment:
       APP_COMMAND: php -d variables_order=EGPCS /app/artisan schedule:run
       APP_OPTIMIZE: "false"
