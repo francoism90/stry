@@ -34,7 +34,7 @@ class InstallApplicationCommand extends Command implements Isolatable
         $this->call('scout:sync', ['--import' => true]);
 
         if (confirm(label: 'Create the S3 buckets and apply their CORS policy?', default: false)) {
-            $this->call('podman:s3-setup');
+            $this->call('app:s3-setup');
         }
 
         if (User::role('super-admin')->doesntExist()) {

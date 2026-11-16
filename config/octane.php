@@ -1,6 +1,5 @@
 <?php
 
-use Foxws\Podman\Support\PodmanCaddySites;
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\OperationReleased;
 use Laravel\Octane\Events\RequestHandled;
@@ -25,6 +24,7 @@ use Laravel\Octane\Listeners\ReleaseFreedMemory;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
+use Support\Octane\CaddySites;
 
 return [
 
@@ -271,27 +271,20 @@ return [
     | and internal "host:port" upstream -- nothing else needs to change.
     |
     | This must read raw env() rather than config(), since config files
-    | cannot safely depend on each other's load order -- that also means
-    | this reads PODMAN_ENABLED directly rather than config('podman.enabled'),
-    | even though it's the same flag documented in config/podman.php.
-    |
-    | Guarded so foxws/laravel-podman (which provides PodmanCaddySites) can
-    | stay a require-dev package: PODMAN_ENABLED opts out even when it's
-    | installed, and class_exists() keeps a stray "true" from being fatal
-    | when it isn't -- e.g. the "composer install --no-dev" production build.
+    | cannot safely depend on each other's load order.
     |
     */
 
     'caddy' => [
-        'env' => ! env('PODMAN_ENABLED', true) || ! class_exists(PodmanCaddySites::class) ? [] : [
+        'env' => [
             // Port must match the "--port" passed to "octane:frankenphp"
             // in APP_COMMAND (see the production Containerfile).
-            'CADDY_EXTRA_CONFIG' => PodmanCaddySites::render([
-                PodmanCaddySites::hostFromUrl((string) env('AWS_URL')) => PodmanCaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
-                (string) env('MAILPIT_UI_HOST') => PodmanCaddySites::hostPort((string) env('MAIL_HOST'), 8025),
-                (string) env('RUSTFS_CONSOLE_HOST') => PodmanCaddySites::hostPort(PodmanCaddySites::hostFromUrl((string) env('AWS_ENDPOINT')), 9001),
-                (string) env('VITE_HMR_HOST') => PodmanCaddySites::hostPort((string) env('VITE_SERVER_HOST'), (string) env('VITE_SERVER_PORT', 5173)),
-                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => PodmanCaddySites::hostPort((string) env('REVERB_HOST'), (string) env('REVERB_PORT', 6001)),
+            'CADDY_EXTRA_CONFIG' => CaddySites::render([
+                CaddySites::hostFromUrl((string) env('AWS_URL')) => CaddySites::hostPortFromUrl((string) env('AWS_ENDPOINT')),
+                (string) env('MAILPIT_UI_HOST') => CaddySites::hostPort((string) env('MAIL_HOST'), 8025),
+                (string) env('RUSTFS_CONSOLE_HOST') => CaddySites::hostPort(CaddySites::hostFromUrl((string) env('AWS_ENDPOINT')), 9001),
+                (string) env('VITE_HMR_HOST') => CaddySites::hostPort((string) env('VITE_SERVER_HOST'), (string) env('VITE_SERVER_PORT', 5173)),
+                (string) env('VITE_REVERB_HOST', env('REVERB_HOST')) => CaddySites::hostPort((string) env('REVERB_HOST'), (string) env('REVERB_PORT', 6001)),
             ], (int) env('OCTANE_PORT', 8000)),
         ],
     ],
