@@ -1,0 +1,12 @@
+[Volume]
+# Videos exported from the library, mounted as /exports. A folder on the host, not a
+# Podman volume: change Device= to use another folder, then remove the
+# volume ("podman volume rm stry-exports") so it's created again. Removing
+# it never deletes the files in the folder. On SELinux hosts, label the
+# folder once (see docs/podman.md).
+VolumeName=stry-exports
+Label=stry-exports
+Type=none
+Options=bind
+Device=/srv/library/exports
+Copy=false

@@ -1,0 +1,39 @@
+{
+    "name": "stry-devcontainer",
+    "initializeCommand": "podman network create --ignore systemd-stry",
+    "image": "ghcr.io/foxws/laravel-podman-devcontainer:php-8.5-ai",
+    "remoteUser": "docker",
+    "containerUser": "docker",
+    "runArgs": [
+        "--security-opt=label=disable",
+        "--network=systemd-stry",
+        "--userns=keep-id:uid=1000,gid=1000",
+        "--init"
+    ],
+    "containerEnv": {
+        "PUID": "1000",
+        "PGID": "1000"
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+    "workspaceFolder": "/app",
+    "mounts": [
+        // Uncomment the host folders you want in the container. Podman won't
+        // start the container if a source folder doesn't exist on your host.
+        //
+        // GitHub CLI login:
+        // "source=${localEnv:HOME}/.config/gh,target=/home/docker/.config/gh,type=bind",
+        // AWS CLI credentials:
+        // "source=${localEnv:HOME}/.aws,target=/home/docker/.aws,type=bind",
+        // Laravel Cloud CLI login:
+        // "source=${localEnv:HOME}/.config/cloud,target=/home/docker/.config/cloud,type=bind",
+        // Other projects, e.g. packages you develop alongside this app:
+        // "source=${localEnv:HOME}/workspace,target=/workspace,type=bind",
+        // Claude Code login (create ~/.claude.json with "touch" first):
+        // "source=${localEnv:HOME}/.claude,target=/home/docker/.claude,type=bind",
+        // "source=${localEnv:HOME}/.claude.json,target=/home/docker/.claude.json,type=bind",
+        // OpenAI Codex CLI login:
+        // "source=${localEnv:HOME}/.codex,target=/home/docker/.codex,type=bind",
+        // SSH keys for Git, read-only:
+        "source=${localEnv:HOME}/.ssh,target=/home/docker/.ssh,type=bind,ro=true"
+    ]
+}

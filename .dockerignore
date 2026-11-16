@@ -33,7 +33,7 @@ boost.json
 bootstrap/cache/*.php
 components.d.ts
 containers/**
-!containers/stubs/*/runtimes/**
+!containers/runtimes/**
 Containerfile
 dist
 docs

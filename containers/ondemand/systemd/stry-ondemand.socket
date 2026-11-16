@@ -1,0 +1,12 @@
+# Listens on port 8000 and starts the app on the first request. Install
+# every file in containers/ondemand/ (see docs/podman.md): the app's
+# drop-in there moves the app itself to 127.0.0.1:18000.
+[Unit]
+Description=stry on-demand socket
+Wants=stry-idle.timer stry-schedule.timer
+
+[Socket]
+ListenStream=8000
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=Vite dev server container
+After=stry.container
+PartOf=stry.container
+
+[Container]
+Image=stry.build
+AutoUpdate=local
+HealthCmd=none
+Environment=APP_COMMAND="pnpm run dev -- --host=0.0.0.0"
+UserNS=keep-id
+Volume=stry-source.volume:/app:rw,z
+Network=stry.network
+PublishPort=5173:5173
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

@@ -1,0 +1,21 @@
+[Unit]
+Description=Laravel Reverb container
+After=stry.container
+StopWhenUnneeded=yes
+
+[Container]
+Image=stry.build
+AutoUpdate=local
+HealthCmd=none
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
+UserNS=keep-id
+Volume=stry-source.volume:/app:rw,z
+Volume=stry-cache.volume:/cache:rw
+Network=stry.network
+PublishPort=6001:6001
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

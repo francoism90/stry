@@ -1,0 +1,25 @@
+[Unit]
+Description=Valkey container
+StopWhenUnneeded=yes
+
+[Container]
+Image=docker.io/valkey/valkey:9
+AutoUpdate=registry
+Exec=valkey-server --save 60 1 --maxmemory-policy noeviction --loglevel warning
+Volume=stry-valkey.volume:/data:rw,Z,U
+Network=stry.network
+ExposeHostPort=6379
+Notify=healthy
+HealthStartupCmd=valkey-cli ping
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=valkey-cli ping
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

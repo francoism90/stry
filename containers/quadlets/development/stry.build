@@ -1,0 +1,10 @@
+[Build]
+# The build context is your checkout of stry. Change the path below (here
+# and in stry-source.volume) if it isn't in ~/projects/stry.
+ImageTag=localhost/stry:latest
+Target=development
+BuildArg=UID=%U
+BuildArg=GID=%G
+SetWorkingDirectory=%h/projects/stry
+File=containers/runtimes/development/Containerfile
+IgnoreFile=containers/runtimes/development/dockerignore
