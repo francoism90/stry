@@ -35,6 +35,7 @@ _ide_helper.php
 /public/storage
 /public/sw.js
 /docker
+/podman
 /public/vendor
 /resources/js/actions
 /resources/js/routes
