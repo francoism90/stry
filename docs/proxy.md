@@ -56,7 +56,7 @@ Add the service's public hostname and its internal `host:port` to the map passed
 
 Port `8000` is the port FrankenPHP listens on inside the container (`--port=8000` in `APP_COMMAND`). `OCTANE_PORT` in `config/octane.php` must match it, because `CaddySites` uses it to build the hostname rules.
 
-To use a different port on the host, you don't need to change either of those. In `app.quadlets`, `PublishPort=8001:8000` keeps FrankenPHP on port `8000` inside the container and makes it available on port `8001` on the host. Then point your reverse proxy and firewall at port `8001`.
+To use a different port on the host, you don't need to change either of those. In a drop-in for `stry.container` (see [Changing a unit](podman.md#changing-a-unit)), an empty `PublishPort=` followed by `PublishPort=8001:8000` keeps FrankenPHP on port `8000` inside the container and makes it available on port `8001` on the host. Then point your reverse proxy and firewall at port `8001`.
 
 Only change `OCTANE_PORT` (and the `--port` in `APP_COMMAND`) if FrankenPHP itself needs to listen on a different port inside the container.
 
