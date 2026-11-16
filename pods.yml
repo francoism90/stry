@@ -1,0 +1,42 @@
+# How Pods (https://github.com/foxws/pods) offers and installs stry. Pods
+# reads it when you add stry from Git; it never changes the Quadlet files.
+version: 1
+name: stry
+description: Self-hosted video library and streaming
+
+sources:
+  production:
+    path: containers/quadlets/production
+    description: The published image from ghcr.io/francoism90/stry
+  development:
+    path: containers/quadlets/development
+    description: Builds and runs a checkout in ~/projects/stry on the host
+
+secrets:
+  stry-env:
+    description: Your .env file. The other secrets are filled in from it.
+    format: dotenv
+  stry-pgsql-db:
+    description: Name of the database
+    from: stry-env
+    key: DB_DATABASE
+  stry-pgsql-user:
+    description: Database user
+    from: stry-env
+    key: DB_USERNAME
+  stry-pgsql-password:
+    description: Password of the database user
+    from: stry-env
+    key: DB_PASSWORD
+  stry-typesense-api-key:
+    description: Typesense API key
+    from: stry-env
+    key: TYPESENSE_API_KEY
+  stry-rustfs-access-key:
+    description: RustFS access key
+    from: stry-env
+    key: AWS_ACCESS_KEY_ID
+  stry-rustfs-secret-key:
+    description: RustFS secret key
+    from: stry-env
+    key: AWS_SECRET_ACCESS_KEY

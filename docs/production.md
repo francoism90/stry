@@ -42,7 +42,7 @@ The app reads your library from `/srv/library/videos` and imports from `/srv/lib
 
 ## Install
 
-**With [Pods](https://github.com/foxws/pods):** add an application from Git with the repository `https://github.com/francoism90/stry.git`, a release tag and the directory `containers/quadlets/production`. Pods asks for the secrets: paste your `.env` as `stry-env`, and use the matching values from it for the database, Typesense and RustFS secrets.
+**With [Pods](https://github.com/foxws/pods):** add an application from Git with the repository `https://github.com/francoism90/stry.git` and a release tag, and choose the **production** source. Paste your `.env` as `stry-env`: Pods fills the database, Typesense and RustFS secrets in from it (see [Podman Quadlet](podman.md#with-pods)).
 
 **By hand:**
 

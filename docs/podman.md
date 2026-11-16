@@ -61,13 +61,11 @@ The units don't hard-code anything about your host:
 
 ### With Pods
 
-In [Pods](https://github.com/foxws/pods), add an application from Git:
+In [Pods](https://github.com/foxws/pods), add an application from Git with the repository `https://github.com/francoism90/stry.git` and `main` or a release tag. Pods reads stry's `pods.yml` and offers its two sources: choose **production** (or **development**, which needs a checkout in `~/projects/stry` on the host).
 
-- **Repository:** `https://github.com/francoism90/stry.git`
-- **Branch or tag:** `main`, or a release tag
-- **Directory:** `containers/quadlets/production`
+Pods then shows the units and asks for the secrets they use. Paste your `.env` file as `stry-env`: Pods fills the database, Typesense and RustFS secrets in from its `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `TYPESENSE_API_KEY`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, so the app and the services use the same values. It creates the secrets, then installs and starts the units.
 
-Pods shows the units, asks for the value of every secret they use, creates the secrets and then installs and starts the units. Use your `.env` file as the value of `stry-env`, and the matching keys in it for the others (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `TYPESENSE_API_KEY`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`), so the app and the services use the same values.
+`pods.yml` only tells Pods how to offer stry; the units are the same ones you'd install by hand.
 
 ### By hand
 
