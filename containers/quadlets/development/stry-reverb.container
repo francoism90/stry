@@ -17,7 +17,7 @@ UserNS=keep-id
 Volume=stry-source.volume:/app:rw,z
 Volume=stry-cache.volume:/cache:rw
 Network=stry.network
-PublishPort=6001:6001
+ExposeHostPort=6001
 
 [Service]
 Restart=always

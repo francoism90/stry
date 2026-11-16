@@ -62,7 +62,7 @@ Only change `OCTANE_PORT` (and the `--port` in `APP_COMMAND`) if FrankenPHP itse
 
 ## Local development
 
-You don't need any of this locally. The app is available at `http://localhost:8000`. See [Development Setup](development.md).
+The development units publish only the app's port (8000), so Vite's live reload, Reverb, RustFS and Mailpit also go through these hostnames locally. See [Development Setup](development.md).
 
 ## Troubleshooting
 

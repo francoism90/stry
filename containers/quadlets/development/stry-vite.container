@@ -16,7 +16,7 @@ Environment=APP_COMMAND="pnpm run dev -- --host=0.0.0.0"
 UserNS=keep-id
 Volume=stry-source.volume:/app:rw,z
 Network=stry.network
-PublishPort=5173:5173
+ExposeHostPort=5173
 
 [Service]
 Restart=always

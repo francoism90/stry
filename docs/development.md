@@ -41,7 +41,15 @@ The first start builds the development image, which takes a while. To test a pro
 
 The development units read `.env` from your checkout, so there are no secrets to create. Set `APP_ENV=local`, `APP_DEBUG=true` and `PWA_ENABLED=false` in it, plus any other local settings you need.
 
-When it's running, the app is available at `http://localhost:8000`. You don't need a reverse proxy locally. See [Reverse Proxy](proxy.md) if you want to test the subdomain routing used in production.
+When it's running, the app is available at `http://localhost:8000`. It's the only port the development units publish on the host, so they don't clash with another user's apps on the same machine. To use another port, add a drop-in, for example `~/.config/containers/systemd/stry.container.d/port.conf`:
+
+```ini
+[Container]
+PublishPort=
+PublishPort=28000:8000
+```
+
+The other services only listen on the `stry` network. Your browser reaches Vite, Reverb, RustFS and the Mailpit web UI through the app, by the hostnames in `VITE_HMR_HOST`, `VITE_REVERB_HOST`, `AWS_URL`, `RUSTFS_CONSOLE_HOST` and `MAILPIT_UI_HOST` (see [Reverse Proxy](proxy.md)), so point those names at this machine, for example with a wildcard DNS entry. For the database, cache and search, run their clients inside the containers, such as `lpod stry-pgsql run psql -U user -d stry`.
 
 Once the containers are up, install the dependencies and seed the database:
 

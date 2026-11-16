@@ -24,8 +24,8 @@ Environment=RUSTFS_OBS_LOGGER_LEVEL=error
 Volume=stry-rustfs-data.volume:/data:rw,Z,U
 Volume=stry-rustfs-logs.volume:/logs:rw,Z,U
 Network=stry.network
-PublishPort=9000:9000
-PublishPort=9001:9001
+ExposeHostPort=9000
+ExposeHostPort=9001
 Notify=healthy
 HealthStartupCmd=curl -fsS -o /dev/null http://127.0.0.1:9000/health
 HealthStartupInterval=1s
