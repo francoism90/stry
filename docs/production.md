@@ -89,7 +89,7 @@ Once the services are installed, you no longer need the cloned repository on the
 ## Security checklist
 
 - Use strong, random secrets (`openssl rand -hex 32`) for everything you store with `lpod SERVICE secrets`. Never reuse development credentials.
-- Terminate HTTPS at your own reverse proxy in front of the app's port `8000`, for example your router or NAS, Nginx Proxy Manager, Traefik or Cloudflare Tunnel. See [Reverse Proxy](proxy.md) for how the app routes subdomains internally.
+- Terminate HTTPS at your own reverse proxy in front of the app. The units don't publish its port `8000` on the host, so publish it with a drop-in (see [Podman Quadlet](podman.md#the-units)) and point your proxy at it, for example your router or NAS, Nginx Proxy Manager, Traefik or Cloudflare Tunnel. See [Reverse Proxy](proxy.md) for how the app routes subdomains internally.
 - Only allow ports 22, 80 and 443 through the firewall.
 - Never run `AdminSeeder` or other demo or test seeders in production. Only the plain `db:seed` (`PermissionSeeder`) from the setup above is safe to run again.
 - Keep Podman and the base images up to date. See [Upgrading](upgrading.md).

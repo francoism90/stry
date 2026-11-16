@@ -41,15 +41,16 @@ The first start builds the development image, which takes a while. To test a pro
 
 The development units read `.env` from your checkout, so there are no secrets to create. Set `APP_ENV=local`, `APP_DEBUG=true` and `PWA_ENABLED=false` in it, plus any other local settings you need.
 
-When it's running, the app is available at `http://localhost:8000`. It's the only port the development units publish on the host, so they don't clash with another user's apps on the same machine. To use another port, add a drop-in, for example `~/.config/containers/systemd/stry.container.d/port.conf`:
+The units don't publish any port on the host, so they don't clash with another user's apps on the same machine. To open the app in your browser, publish its port with a drop-in, for example on port 28000 in `~/.config/containers/systemd/stry.container.d/port.conf`:
 
 ```ini
 [Container]
-PublishPort=
 PublishPort=28000:8000
 ```
 
-The other services only listen on the `stry` network. Your browser reaches Vite, Reverb, RustFS and the Mailpit web UI through the app, by the hostnames in `VITE_HMR_HOST`, `VITE_REVERB_HOST`, `AWS_URL`, `RUSTFS_CONSOLE_HOST` and `MAILPIT_UI_HOST` (see [Reverse Proxy](proxy.md)), so point those names at this machine, for example with a wildcard DNS entry. For the database, cache and search, run their clients inside the containers, such as `lpod stry-pgsql run psql -U user -d stry`.
+Run `systemctl --user daemon-reload` and restart `stry`; the app is then at `http://localhost:28000`.
+
+The other services only listen on the `stry` network too. Your browser reaches Vite, Reverb, RustFS and the Mailpit web UI through the app, by the hostnames in `VITE_HMR_HOST`, `VITE_REVERB_HOST`, `AWS_URL`, `RUSTFS_CONSOLE_HOST` and `MAILPIT_UI_HOST` (see [Reverse Proxy](proxy.md)), so point those names at this machine, for example with a wildcard DNS entry. For the database, cache and search, run their clients inside the containers, such as `lpod stry-pgsql run psql -U user -d stry`.
 
 Once the containers are up, install the dependencies and seed the database:
 
@@ -123,14 +124,14 @@ lpod stry bin larastan
 
 Available when you're logged in as a **super-admin**:
 
-| Service       | URL                               | Description                          |
-| ------------- | --------------------------------- | ------------------------------------ |
-| **Horizon**   | `http://localhost:8000/horizon`   | Monitor and manage queues            |
-| **Telescope** | `http://localhost:8000/telescope` | Debugging tool (only in development) |
+| Service       | URL                 | Description                          |
+| ------------- | ------------------- | ------------------------------------ |
+| **Horizon**   | `APP_URL/horizon`   | Monitor and manage queues            |
+| **Telescope** | `APP_URL/telescope` | Debugging tool (only in development) |
 
 ## Troubleshooting
 
-- **A container won't start**: run `journalctl --user -u stry -f`. Look for a missing or invalid `stry-env` secret, or another process using port 8000, 5173 or 6001.
+- **A container won't start**: run `journalctl --user -u stry -f`. Look for a missing or invalid `stry-env` secret, or, if you published the app's port with a drop-in, another process using that port.
 - **Permission errors**: run `sudo chown -R "$USER:" ~/projects/stry/storage`. The containers run as your own user, so this is only needed after running a command as root, such as `podman exec` without `--user docker`.
 - **Permission denied on `/media` or `/import`**: the development units keep the library in `storage/app/library/` in your checkout. If you pointed `stry-videos.volume` or the others at another folder, label it once for containers on SELinux hosts. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
 - **The database or caches are empty after regenerating the Podman files**: the `development` volumes used to be named `systemd-stry-pgsql`, `systemd-stry-cache` and so on. They're now named like the production ones, `stry-pgsql` and `stry-cache`, so the services start with new volumes. Your old data is still in the `systemd-stry-*` volumes. For the database, run `lpod stry artisan migrate --seed` to start fresh, or copy the old volume over while the services are stopped: `podman volume export systemd-stry-pgsql | podman volume import stry-pgsql -`. Once you no longer need them, list the old volumes with `podman volume ls --filter name=systemd-stry` and remove them with `podman volume rm`.

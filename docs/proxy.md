@@ -26,7 +26,7 @@ This mapping is set in `config/octane.php` (`caddy.env.CADDY_EXTRA_CONFIG`) and 
 
 ## Bring your own TLS termination
 
-Handle HTTPS in front of port `8000` with whatever you already use: the reverse proxy on your router or NAS (Synology, pfSense, OPNsense), Nginx Proxy Manager, Traefik, Cloudflare Tunnel and so on. Point every subdomain above at the same host and port. You don't need to open a port per service, because the app's Caddy tells them apart by the `Host` header.
+The units don't publish port `8000` on the host, so publish it first with a drop-in (see [Podman Quadlet](podman.md#the-units)). Then handle HTTPS in front of it with whatever you already use: the reverse proxy on your router or NAS (Synology, pfSense, OPNsense), Nginx Proxy Manager, Traefik, Cloudflare Tunnel and so on. Point every subdomain above at the same host and port. You don't need to open a port per service, because the app's Caddy tells them apart by the `Host` header.
 
 :::warning
 Your TLS proxy must pass the original `Host` header through unchanged. The app's Caddy uses it to route each request.
@@ -56,13 +56,13 @@ Add the service's public hostname and its internal `host:port` to the map passed
 
 Port `8000` is the port FrankenPHP listens on inside the container (`--port=8000` in `APP_COMMAND`). `OCTANE_PORT` in `config/octane.php` must match it, because `CaddySites` uses it to build the hostname rules.
 
-To use a different port on the host, you don't need to change either of those. In a drop-in for `stry.container` (see [Changing a unit](podman.md#changing-a-unit)), an empty `PublishPort=` followed by `PublishPort=8001:8000` keeps FrankenPHP on port `8000` inside the container and makes it available on port `8001` on the host. Then point your reverse proxy and firewall at port `8001`.
+To use a different port on the host, you don't need to change either of those. The drop-in that publishes the app picks the host port: `PublishPort=8001:8000` keeps FrankenPHP on port `8000` inside the container and makes it available on port `8001` on the host. Then point your reverse proxy and firewall at port `8001`.
 
 Only change `OCTANE_PORT` (and the `--port` in `APP_COMMAND`) if FrankenPHP itself needs to listen on a different port inside the container.
 
 ## Local development
 
-The development units publish only the app's port (8000), so Vite's live reload, Reverb, RustFS and Mailpit also go through these hostnames locally. See [Development Setup](development.md).
+The development units don't publish any service either, so Vite's live reload, Reverb, RustFS and Mailpit also go through these hostnames locally. See [Development Setup](development.md).
 
 ## Troubleshooting
 

@@ -49,7 +49,14 @@ tags:
 | `stry-rustfs`      | S3-compatible storage                      |
 | `stry-typesense`   | Search                                     |
 
-Only `stry` opens a port on the host (8000). The other services are only reachable on the internal `stry.network`. A few of them need to be reachable from outside (Reverb, RustFS and the Mailpit web UI); the app's built-in Caddy server forwards requests to them based on the hostname. See [Reverse Proxy](proxy.md).
+No unit publishes a port on the host: every service, the app included, is only reachable on the internal `stry.network` (`ExposeHostPort=`). That keeps the units from clashing with other apps or other users on the same host. To reach the app, either run a reverse proxy container that joins `stry.network` (a proxy app for Pods is planned), or publish the app's port with a drop-in, for example `~/.config/containers/systemd/stry.container.d/port.conf`:
+
+```ini
+[Container]
+PublishPort=8000:8000
+```
+
+Then point your reverse proxy at that port. A few services need to be reachable from the browser (Vite, Reverb, RustFS and the Mailpit web UI); the app's built-in Caddy server forwards requests to them based on the hostname. See [Reverse Proxy](proxy.md).
 
 The units don't hard-code anything about your host:
 

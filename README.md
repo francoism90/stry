@@ -106,7 +106,7 @@ Comprehensive guides are available on the [documentation site](https://foxws.nl/
 systemctl --user start stry
 ```
 
-The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](https://foxws.nl/stry/proxy) in front of it)
+The units don't publish any port on the host. Publish the app's port with a drop-in, or put a [reverse proxy](https://foxws.nl/stry/proxy) in front of it (see [Podman Quadlet](https://foxws.nl/stry/podman)).
 
 See the [Interaction Guide](https://foxws.nl/stry/interaction) for `lpod`, stry's Laravel Sail-style container CLI, and [Production Setup](https://foxws.nl/stry/production#install-and-start-the-services)/[Development Setup](https://foxws.nl/stry/development#admin-account) for seeding and creating admin users.
 
