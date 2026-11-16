@@ -7,6 +7,9 @@
 # PROXY_SCHEME is https by default, so Caddy gets certificates itself. Set
 # it to http when another proxy in front of this one handles HTTPS.
 
+# With on-demand services (see docs/podman.md), send this to the socket
+# on the host instead, so a request wakes the app:
+# reverse_proxy host.containers.internal:8000
 {$PROXY_SCHEME:https}://{$STRY_HOST} {
 	encode zstd gzip
 	reverse_proxy systemd-stry:8000

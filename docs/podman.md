@@ -30,7 +30,6 @@ tags:
 | --------------------------------- | ------------------------------------------------------------------------------------------- |
 | `containers/quadlets/production`  | The application and its services, from the image CI publishes to `ghcr.io/francoism90/stry` |
 | `containers/quadlets/development` | The same services, running against your checkout (see [Development](development.md))        |
-| `containers/ondemand`             | Optional: starts the app on its first request, and lets it and its services sleep when idle |
 | `containers/devcontainer`         | A [Dev Containers](https://containers.dev/) config (see [Development](development.md))      |
 | `containers/runtimes`             | The Containerfiles of the app image                                                         |
 
@@ -104,37 +103,28 @@ See [Production Setup](production.md) for the full walkthrough. Once the units a
 
 ## On-demand services
 
-The app can start on its first request and stop after 10 minutes without traffic, so it and the services it needs only use memory while someone uses **stry**. This is optional, and the units in `containers/ondemand/` add it to an installed `production` or `development` app:
+The app can start on its first request and stop after 10 minutes without traffic, so it and the services it needs only use memory while someone uses **stry**. This is optional. [lpod](https://github.com/foxws/lpod) writes the units from the settings in the `ondemand:` section of `pods.yml`:
 
-| File                                               | Role                                                                                                |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `systemd/stry-ondemand.socket`                     | Listens on port 8000 and starts the app on the first request                                        |
-| `systemd/stry-ondemand.service`                    | Forwards the socket to the app, and exits after 10 minutes without connections                      |
-| `systemd/stry-idle.service`, `stry-idle.timer`     | The idle check: once the app sleeps and `php artisan app:idle` finds no work left, it stops Horizon |
-| `systemd/stry-schedule.timer`                      | Starts the scheduler only in the minutes a task is due                                              |
-| `quadlets/stry.container.d/ondemand.conf`          | Moves the app to `127.0.0.1:18000`, and lets it stop once the socket no longer needs it             |
-| `quadlets/stry-schedule.container.d/ondemand.conf` | Turns the scheduler into a `schedule:run` that the timer starts                                     |
+- a socket on port 8000 that starts the app on the first request, and a proxy that forwards to it on `127.0.0.1:18000` and exits after 10 minutes without connections;
+- an idle check that stops Horizon once the app sleeps and `php artisan app:idle` finds no work left, so the database and cache can sleep too;
+- a timer that starts the scheduler only in the minutes a task is due, as a `schedule:run`.
 
-Install them, then switch from the app's own port to the socket:
+Turn it on for an installed `production` or `development` app:
 
 ```bash
-cp containers/ondemand/systemd/* ~/.config/systemd/user/
-cp -r containers/ondemand/quadlets/. ~/.config/containers/systemd/
-systemctl --user daemon-reload
-systemctl --user stop stry
-systemctl --user enable --now stry-ondemand.socket
+lpod stry ondemand enable --json \
+    --port 8000 --app-port 8000 --idle-timeout 10min \
+    --worker stry-horizon \
+    --idle-container stry-horizon --idle-user docker \
+    --idle-command "php -d variables_order=EGPCS /app/artisan app:idle" \
+    --schedule stry-schedule --schedule-at "*:00" --schedule-at 01:00 --schedule-at 02:00 \
+    --schedule-env "APP_COMMAND=php -d variables_order=EGPCS /app/artisan schedule:run" \
+    --schedule-env APP_OPTIMIZE=false
 ```
 
-To turn it off again, disable the socket, remove these files and start `stry` again:
+Pick another `--port` when 8000 is taken on the host. Your proxy then sends stry's hostname to that port on the host, not to the `stry` container: with the Pods proxy, change `systemd-stry:8000` in `stry.Caddyfile` to `host.containers.internal:8000`. `lpod stry ondemand status --json` shows the settings and whether the app is awake, and `lpod stry ondemand disable --json` turns it off again and starts the app.
 
-```bash
-systemctl --user disable --now stry-ondemand.socket
-rm ~/.config/systemd/user/stry-{ondemand,idle,schedule}.* ~/.config/containers/systemd/{stry,stry-schedule}.container.d/ondemand.conf
-systemctl --user daemon-reload
-systemctl --user start stry
-```
-
-A sleeping app skips nothing on the schedule: the scheduler timer still starts the database and cache for the minutes a task is due. Keep its `OnCalendar=` lines in sync when you change the schedule (see the comments in `stry-schedule.timer`). The first request after a sleep waits for every service to start. To change the idle timeout, change `--exit-idle-time=` in `stry-ondemand.service`.
+A sleeping app skips nothing on the schedule: the scheduler timer still starts the database and cache for the minutes a task is due. Keep `schedule.at` in `pods.yml` (and `--schedule-at`) in sync when you change the schedule, then run `enable` again. The first request after a sleep waits for every service to start.
 
 ## Day to day
 

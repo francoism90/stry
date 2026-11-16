@@ -40,3 +40,31 @@ secrets:
     description: RustFS secret key
     from: stry-env
     key: AWS_SECRET_ACCESS_KEY
+
+# Optional: start the app on its first request, and let it and its services
+# sleep when idle. lpod writes the units (`lpod stry ondemand enable`, see
+# docs/podman.md); the keys match its flags.
+ondemand:
+  # The socket listens here, and a proxy sends stry's hostname to it.
+  port: 8000
+  # Where Octane listens inside the app container.
+  app_port: 8000
+  idle_timeout: 10min
+  # Keeps running after the app stops, until the idle check stops it.
+  workers:
+    - stry-horizon
+  # Succeeds when no jobs or queries are in progress.
+  idle_check:
+    container: stry-horizon
+    user: docker
+    command: php -d variables_order=EGPCS /app/artisan app:idle
+  # Runs "schedule:run" only in the minutes a task is due, so the database
+  # and cache can sleep in between. Keep "at" in sync with the schedule
+  # (routes/console.php and the packages' scheduled tasks).
+  schedule:
+    container: stry-schedule
+    at: ["*:00", "01:00", "02:00"]
+    timezone: UTC
+    environment:
+      APP_COMMAND: php -d variables_order=EGPCS /app/artisan schedule:run
+      APP_OPTIMIZE: "false"

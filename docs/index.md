@@ -54,7 +54,7 @@ Jellyfin and Plex are media servers first. **stry** is built for streaming first
 ## Key concepts
 
 - **`stry-env` secret**: the app's `.env` file, stored as a Podman secret and mounted at `/app/.env` in every app container.
-- **Units**: the Quadlet files in `containers/quadlets/{production,development}/`. `production` runs the app and its services from the published image, `development` runs them against your local code. `containers/ondemand/` adds optional on-demand services, and `containers/devcontainer/` a VS Code development container.
+- **Units**: the Quadlet files in `containers/quadlets/{production,development}/`. `production` runs the app and its services from the published image, `development` runs them against your local code. `pods.yml` holds the settings of the optional on-demand services, and `containers/devcontainer/` a VS Code development container.
 - **Quadlet**: the systemd integration that starts the containers in the right order on boot.
 
 ## Common tasks

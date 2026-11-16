@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 
 /**
- * Used by the idle check of the on-demand services (containers/ondemand/),
+ * Used by the idle check of the on-demand services (the `ondemand:` section of pods.yml),
  * which stops Horizon once the app sleeps and this command succeeds.
  */
 class CheckIdleCommand extends Command

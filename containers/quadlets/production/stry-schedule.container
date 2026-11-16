@@ -2,7 +2,7 @@
 Description=Laravel Schedule container
 # Runs "schedule:work" next to the app. With on-demand services, a drop-in
 # turns this into a "schedule:run" that a timer starts only in the minutes
-# a task is due (see containers/ondemand/).
+# a task is due (see "On-demand services" in docs/podman.md).
 After=stry.container
 PartOf=stry.container
 # Restart=always retries a crash every 5 seconds, which never reaches
