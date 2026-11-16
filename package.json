@@ -33,7 +33,7 @@
         "@inertiajs/vite": "^3.11.0",
         "@laravel/vite-plugin-wayfinder": "^0.1.11",
         "@tailwindcss/vite": "^4.3.5",
-        "@tsconfig/node24": "^24.0.5",
+        "@tsconfig/node24": "^24.0.6",
         "@types/jsdom": "^30.0.0",
         "@types/node": "^26.6.6",
         "@vitejs/plugin-vue": "^6.0.11",
