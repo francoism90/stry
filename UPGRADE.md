@@ -35,6 +35,12 @@
     ```bash
     cd ~/projects/stry && git pull
     podman quadlet install --application=stry containers/quadlets/production
+
+    # Publish the app's port again, if your reverse proxy points at 8000
+    mkdir -p ~/.config/containers/systemd/stry.container.d
+    printf '[Container]\nPublishPort=8000:8000\n' > ~/.config/containers/systemd/stry.container.d/port.conf
+    systemctl --user daemon-reload
+
     systemctl --user start stry
     ```
 
