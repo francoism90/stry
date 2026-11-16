@@ -126,6 +126,8 @@ Pick another `--port` when 8000 is taken on the host. Your proxy then sends stry
 
 A sleeping app skips nothing on the schedule: the scheduler timer still starts the database and cache for the minutes a task is due. Keep `schedule.at` in `pods.yml` (and `--schedule-at`) in sync when you change the schedule, then run `enable` again. The first request after a sleep waits for every service to start.
 
+In development, only page loads count as traffic: Vite's hot reload talks to its own container, so the app falls asleep while you edit. Pass a longer `--idle-timeout`, such as `60min`, or leave on-demand off on a development machine.
+
 ## Day to day
 
 ```bash
