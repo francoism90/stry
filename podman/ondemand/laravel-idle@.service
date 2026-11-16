@@ -1,0 +1,28 @@
+# The idle check, shared by every on-demand app on this host:
+# "laravel-idle@my-app.service" checks "my-app". Started every minute by
+# its timer while the app's on-demand socket listens. It stops the app's
+# workers once it's asleep and they have no work left, so the database
+# and cache can sleep too. Each app sets its workers in the drop-in
+# "laravel-idle@my-app.service.d/idle.conf".
+[Unit]
+Description=Laravel idle check for %i
+
+[Service]
+Type=oneshot
+TimeoutStartSec=50
+Environment="LARAVEL_IDLE_WORKERS=queue horizon"
+Environment="LARAVEL_CONTAINER_PREFIX=systemd-"
+Environment="LARAVEL_ONDEMAND=yes"
+ExecCondition=/usr/bin/test "${LARAVEL_ONDEMAND}" = yes
+ExecCondition=systemctl --user --quiet is-active %i-ondemand.socket
+ExecCondition=/bin/sh -c 'case "$$(systemctl --user is-active %i.service)" in inactive|failed) exit 0;; *) exit 1;; esac'
+ExecCondition=/bin/sh -c '! systemctl --user --quiet is-active %i-schedule.service || { echo "The scheduler of %i is still running."; exit 1; }'
+ExecCondition=/bin/sh -c 'for worker in $$LARAVEL_IDLE_WORKERS; do ! systemctl --user --quiet is-active %i-$$worker.service || podman exec "$${LARAVEL_CONTAINER_PREFIX}%i-$$worker" php -d variables_order=EGPCS /app/artisan podman:idle || { echo "%i has work in progress, keeping its workers running."; exit 1; }; done'
+# A request may have woken the app while "podman:idle" ran.
+ExecCondition=/bin/sh -c 'case "$$(systemctl --user is-active %i.service)" in inactive|failed) exit 0;; *) exit 1;; esac'
+ExecStart=-/bin/sh -c 'for worker in $$LARAVEL_IDLE_WORKERS; do ! systemctl --user --quiet is-active %i-$$worker.service || systemctl --user stop --no-block %i-$$worker.service; done'
+# A scheduler timer that only fires when a task is due keeps running, so
+# scheduled tasks still run while the app sleeps. One that fires every
+# minute would keep the database and cache awake, so it stops until the
+# next request starts it again.
+ExecStart=-/bin/sh -c '! systemctl --user --quiet is-active %i-schedule.timer || ! systemctl --user cat %i-schedule.timer | grep -qxF "OnCalendar=*-*-* *:*:00" || exec systemctl --user stop --no-block %i-schedule.timer'

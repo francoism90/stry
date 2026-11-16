@@ -1,0 +1,9 @@
+[Unit]
+Description=Laravel App (Octane) on-demand socket
+Wants=laravel-idle@stry-dev.timer
+
+[Socket]
+ListenStream=8001
+
+[Install]
+WantedBy=sockets.target

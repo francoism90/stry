@@ -1,0 +1,7 @@
+[Unit]
+Description=Laravel App (Octane) on-demand proxy
+Requires=stry-dev.service stry-dev-ondemand.socket
+After=stry-dev.service stry-dev-ondemand.socket
+
+[Service]
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd --exit-idle-time=10min 127.0.0.1:18001

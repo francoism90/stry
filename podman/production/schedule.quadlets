@@ -1,0 +1,29 @@
+# FileName=stry-dev-schedule
+[Unit]
+Description=Laravel Schedule container
+Requires=stry-dev-pgsql.container stry-dev-valkey.container
+After=stry-dev-pgsql.container stry-dev-valkey.container
+
+[Container]
+Image=ghcr.io/francoism90/stry:3
+AutoUpdate=registry
+HealthCmd=none
+Environment=PUID=1001
+Environment=PGID=1001
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan schedule:run"
+Environment=APP_OPTIMIZE=false
+UserNS=keep-id
+Secret=stry-dev-env,target=/app/.env,mode=0400,uid=1001,gid=1001
+Volume=/var/home/dev/appdata/stry/exports:/exports:rw
+Volume=stry-dev-cache.volume:/cache:rw
+Network=stry-dev.network
+
+[Service]
+Type=oneshot
+# When the timer's wake-up (at :30) started the scheduler, the database
+# and cache are started first (After=), and this then waits for the due
+# minute, so "schedule:run" runs the tasks due in it. A start at the due
+# minute itself, or by hand, runs right away. Needs systemd 248 or later.
+ExecStartPre=-/bin/sh -c 'trigger=$$(systemctl --user show -P LastTriggerUSec --timestamp=unix stry-dev-schedule.timer); trigger=$${trigger#@}; case "$$trigger" in ""|*[!0-9]*) exit 0;; esac; [ $$((trigger %% 60)) -ge 30 ] || exit 0; wait=$$(( (trigger / 60 + 1) * 60 - $$(date +%%s) )); [ "$$wait" -le 0 ] || exec sleep "$$wait"'
+TimeoutStartSec=300
+TimeoutStopSec=60
