@@ -24,6 +24,30 @@ It works by hostname. You send every subdomain to the app on port `8000`, and Ca
 
 This mapping is set in `config/octane.php` (`caddy.env.CADDY_EXTRA_CONFIG`) and turned into Caddy config by `Support\Octane\CaddySites`. If you leave `MAILPIT_UI_HOST`, `RUSTFS_CONSOLE_HOST` or `VITE_HMR_HOST` empty, that service isn't exposed at all: `CaddySites::render()` skips any entry without a hostname.
 
+## With the Pods proxy
+
+The simplest setup is the [Pods proxy](https://github.com/foxws/pods#proxy), a Caddy container that routes each hostname straight to the right container, so nothing needs a port on the host. **stry** ships its routes in `containers/proxy/`:
+
+| File                               | What it does                                                                           |
+| ---------------------------------- | -------------------------------------------------------------------------------------- |
+| `stry.Caddyfile`                   | Routes the app, Reverb and RustFS's S3 API                                             |
+| `stry-development.Caddyfile`       | Also routes Vite, the Mailpit web UI and the RustFS console, for the development units |
+| `pods-proxy.container.d/stry.conf` | Lets the proxy join `stry.network`, and sets the hostnames the routes use              |
+
+With the proxy installed:
+
+```bash
+cp containers/proxy/stry.Caddyfile ~/.config/pods-proxy/sites/
+# In development, also: cp containers/proxy/stry-development.Caddyfile ~/.config/pods-proxy/sites/
+mkdir -p ~/.config/containers/systemd/pods-proxy.container.d
+cp containers/proxy/pods-proxy.container.d/stry.conf ~/.config/containers/systemd/pods-proxy.container.d/
+# Change the hostnames in stry.conf to yours, then:
+systemctl --user daemon-reload
+systemctl --user restart pods-proxy
+```
+
+The hostnames must match `.env`: `STRY_HOST` the host in `APP_URL`, `STRY_WS_HOST` `VITE_REVERB_HOST`, `STRY_S3_HOST` the host in `AWS_URL`, and in development `STRY_VITE_HOST` `VITE_HMR_HOST`, `STRY_MAIL_HOST` `MAILPIT_UI_HOST` and `STRY_S3_CONSOLE_HOST` `RUSTFS_CONSOLE_HOST`. The proxy gets certificates itself; behind another proxy that handles HTTPS, uncomment `PROXY_SCHEME=http` in `stry.conf`.
+
 ## Bring your own TLS termination
 
 The units don't publish port `8000` on the host, so publish it first with a drop-in (see [Podman Quadlet](podman.md#the-units)). Then handle HTTPS in front of it with whatever you already use: the reverse proxy on your router or NAS (Synology, pfSense, OPNsense), Nginx Proxy Manager, Traefik, Cloudflare Tunnel and so on. Point every subdomain above at the same host and port. You don't need to open a port per service, because the app's Caddy tells them apart by the `Host` header.
