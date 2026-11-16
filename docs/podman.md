@@ -54,7 +54,7 @@ Only `stry` opens a port on the host (8000). The other services are only reachab
 The units don't hard-code anything about your host:
 
 - **Your user.** The app containers run as your own user through `UserNS=keep-id`, with `%U` and `%G` (systemd's specifiers for your user and group ID) wherever an ID is needed.
-- **Your library.** `/media`, `/import` and `/exports` are the `stry-videos`, `stry-import` and `stry-exports` volumes. Each one is a folder on the host, `/srv/library/videos`, `/srv/library/import` and `/srv/library/exports` by default. To use another folder, change `Device=` in its `.volume` file before you install. See [Storage, ownership & SELinux](#storage-ownership--selinux).
+- **Your library.** `/media`, `/import` and `/exports` are the `stry-videos`, `stry-import` and `stry-exports` volumes. Each one is a folder on the host: `/srv/library/videos`, `/srv/library/import` and `/srv/library/exports` in production, which you create once (see below), and `storage/app/library/*` in your checkout in development, which the volumes create themselves. To use another folder, change `Device=` in its `.volume` file before you install. See [Storage, ownership & SELinux](#storage-ownership--selinux).
 - **Your secrets.** Passwords and the `.env` file are Podman secrets, which the units read with `Secret=`.
 
 ## Install
