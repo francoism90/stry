@@ -1,10 +1,13 @@
 [Build]
-# The build context is your checkout of stry. Change the path below (here
-# and in stry-source.volume) if it isn't in ~/projects/stry.
+# Builds the development image from your checkout of stry. Change
+# ~/projects/stry below (three times here, and in stry-source.volume) if
+# your checkout is somewhere else. The paths are absolute on purpose:
+# SetWorkingDirectory= only sets the build context, so podman build would
+# look for a relative File= or IgnoreFile= in the service's own directory.
 ImageTag=localhost/stry:latest
 Target=development
 BuildArg=UID=%U
 BuildArg=GID=%G
 SetWorkingDirectory=%h/projects/stry
-File=containers/runtimes/development/Containerfile
-IgnoreFile=containers/runtimes/development/dockerignore
+File=%h/projects/stry/containers/runtimes/development/Containerfile
+IgnoreFile=%h/projects/stry/containers/runtimes/development/dockerignore
