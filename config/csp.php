@@ -1,9 +1,9 @@
 <?php
 
 use Foxws\Essentials\Csp\Nonce\ViteNonceGenerator;
+use Foxws\Essentials\Csp\Presets\ReverbPreset;
 use Spatie\Csp\Presets\BunnyFonts;
 use Support\Csp\Presets\BasicPreset;
-use Support\Csp\Presets\ReverbPreset;
 
 // use Spatie\Csp\Directive;
 // use Spatie\Csp\Keyword;

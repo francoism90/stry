@@ -1,7 +1,7 @@
 <?php
 
+use Foxws\Essentials\Csp\Presets\ReverbPreset;
 use Spatie\Csp\Policy;
-use Support\Csp\Presets\ReverbPreset;
 
 it('allows websocket connections to reverb', function (string $scheme, int $port, string $origin) {
     config([
@@ -20,7 +20,7 @@ it('allows websocket connections to reverb', function (string $scheme, int $port
 ]);
 
 it('adds no reverb origin when no host is configured', function () {
-    config(['reverb.apps.apps.0.options.wsHost' => '']);
+    config(['reverb.apps.apps.0.options' => ['wsHost' => '', 'host' => null]]);
 
     $policy = new Policy;
     (new ReverbPreset)->configure($policy);
