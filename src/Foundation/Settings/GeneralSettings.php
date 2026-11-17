@@ -6,7 +6,9 @@ namespace Foundation\Settings;
 
 use Domain\Shared\Enums\Locale;
 use Spatie\LaravelSettings\Settings;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript(name: 'ApplicationSettings')]
 class GeneralSettings extends Settings
 {
     public string $site_name = 'Stry';

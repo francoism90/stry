@@ -1,4 +1,32 @@
+import type {
+  AppearanceSettings,
+  ApplicationSettings,
+  ChapterSettings as ChapterSettingsData,
+  DiskDriver,
+  GeneralSettings,
+  PlaybackSettings,
+  PlayerSettings,
+  ProcessingSettings,
+  ReelSettings,
+  SnapshotFrequency,
+  SnapshotSettings,
+  StorageDisk as StorageDiskData,
+  UserSettings,
+} from '@/types/generated'
 import type { AvatarProps, BadgeProps, SelectItem, SelectMenuItem } from '@nuxt/ui'
+
+export type {
+  AppearanceSettings,
+  ApplicationSettings,
+  GeneralSettings,
+  PlaybackSettings,
+  PlayerSettings,
+  ProcessingSettings,
+  ReelSettings,
+  SnapshotFrequency,
+  SnapshotSettings,
+  UserSettings,
+}
 
 export type EchoConfig = {
   readonly key: string
@@ -79,117 +107,17 @@ export type ProfileCollection = Omit<Paginator, 'data'> & {
   data: Profile[] | undefined
 }
 
-export type UserSettings = {
-  general: GeneralSettings
-  appearance: AppearanceSettings
-  player: PlayerSettings
-}
-
-export type GeneralSettings = {
-  timezone: string
-  locale: string
-  language: string
-  date_format: string
-  time_format: string
-}
-
-export type AppearanceSettings = {
-  theme: string
-  default_view: string
-}
-
-export type PlayerSettings = {
-  autoplay: boolean
-  muted: boolean
-  volume: number
-  loop: boolean
-  captions: boolean
-  quality: string
-  playback_speed: number
-  audio_language: string
-  caption_language: string
-}
-
-export type ApplicationSettings = {
-  site_name: string
-  timezone: string
-  default_locale: 'en-US' | 'nl-NL'
-  allow_registration: boolean
-  max_profiles_per_user: number | null
-  maintenance_message: string | null
-}
-
-export type ChapterSettings = {
-  patterns: Record<string, string>
-  default_type: 'intro' | 'recap' | 'credits' | 'sponsor' | 'filler' | 'interaction_reminder' | 'scene' | 'main_event'
+export type ChapterSettings = ChapterSettingsData & {
   type_options: OptionItem[]
-}
-
-export type PlaybackSettings = {
-  text_language: 'en' | 'nl'
-  encryption: boolean
-  refresh_before: number
-  completion_threshold: number
-  renditions: number[]
 }
 
 export type PlaybackSettingsResponse = PlaybackSettings & {
   rendition_options: { value: number; label: string }[]
 }
 
-export type ReelSettings = {
-  enabled: boolean
-  width: number
-  height: number
-  fps: number
-  fit: 'fill' | 'blur' | 'letterbox'
-  zoom: number
-  codec: 'h264' | 'hevc' | 'av1'
-  hardware: boolean
-  quality: number
-  cuts: number
-  cut_duration: number
-  duration: number
-  short_videos: boolean
-  short_duration: number
-  scene_threshold: number
-}
+export type StorageDiskDriver = DiskDriver
 
-export type ProcessingSettings = {
-  extract_captions: boolean
-  extract_chapters: boolean
-  extract_storyboard: boolean
-  create_renditions: boolean
-  warm_streams: boolean
-  import_batch_size: number
-}
-
-export type SnapshotFrequency = 'never' | 'daily' | 'weekly' | 'monthly'
-
-export type SnapshotSettings = {
-  frequency: SnapshotFrequency
-  keep: number
-  compress: boolean
-}
-
-export type StorageDiskDriver = 'local' | 's3'
-
-export type StorageDisk = {
-  name: string
-  label: string
-  driver: StorageDiskDriver
-  path: string
-  visibility: 'public' | 'private'
-  serve: boolean
-  contents: string[]
-  default_for: string[]
-  bucket: string | null
-  region: string | null
-  endpoint: string | null
-  url: string | null
-  temporary_url: string | null
-  use_path_style_endpoint: boolean | null
-  cache_control: string | null
+export type StorageDisk = StorageDiskData & {
   masked_key?: string | null
   has_secret?: boolean
   key?: string | null

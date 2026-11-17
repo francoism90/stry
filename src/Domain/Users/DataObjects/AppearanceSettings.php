@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Domain\Users\DataObjects;
 
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class AppearanceSettings extends Data
 {
     public function __construct(

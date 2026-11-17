@@ -7,7 +7,9 @@ namespace Domain\Users\DataObjects;
 use Domain\Users\Models\User;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class UserSettings extends Data
 {
     public function __construct(

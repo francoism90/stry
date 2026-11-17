@@ -51,6 +51,7 @@
         "spatie/laravel-settings": "^3.10.2",
         "spatie/laravel-tags": "^4.12",
         "spatie/laravel-translatable": "^6.15.0",
+        "spatie/laravel-typescript-transformer": "^3.3",
         "typesense/typesense-php": "^6.0"
     },
     "require-dev": {
@@ -146,6 +147,10 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "types:generate": [
+            "@php artisan typescript:transform",
+            "pnpm exec vp fmt resources/js/types/generated.ts"
         ]
     },
     "extra": {

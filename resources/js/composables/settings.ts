@@ -4,7 +4,7 @@ import { useHttp, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
 export function useSettings<N extends keyof UserSettings>(namespace: N) {
-  type S = UserSettings[N]
+  type S = NonNullable<UserSettings[N]>
 
   const settings = computed(() => usePage().props.auth?.settings?.[namespace] as S | undefined)
   const http = useHttp({})

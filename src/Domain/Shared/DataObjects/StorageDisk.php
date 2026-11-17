@@ -8,7 +8,10 @@ use Domain\Shared\Enums\DiskContent;
 use Domain\Shared\Enums\DiskDriver;
 use Illuminate\Support\Facades\Config;
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class StorageDisk extends Data
 {
     /**
@@ -20,6 +23,7 @@ class StorageDisk extends Data
         public string $label,
         public DiskDriver $driver,
         public string $path = '',
+        #[LiteralTypeScriptType("'public' | 'private'")]
         public string $visibility = 'private',
         public bool $serve = false,
         public array $contents = [],

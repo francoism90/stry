@@ -6,7 +6,9 @@ namespace Domain\Chapters\Settings;
 
 use Domain\Chapters\Enums\ChapterType;
 use Spatie\LaravelSettings\Settings;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class ChapterSettings extends Settings
 {
     /**
