@@ -6,7 +6,9 @@ namespace Foundation\Settings;
 
 use Domain\Shared\Enums\SnapshotFrequency;
 use Spatie\LaravelSettings\Settings;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class SnapshotSettings extends Settings
 {
     public SnapshotFrequency $frequency = SnapshotFrequency::Never;
