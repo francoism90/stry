@@ -41,6 +41,38 @@ secrets:
     from: stry-env
     key: AWS_SECRET_ACCESS_KEY
 
+# Steps the application page in Pods offers once the units are up. Each one
+# runs in the container of a Quadlet, and is safe to run again.
+after_install:
+  install:
+    label: Install stry
+    description: Migrates the database, seeds the roles and sets up the search indexes.
+    container: stry
+    user: docker
+    command: php artisan app:install --no-interaction
+  s3:
+    label: Create the S3 buckets
+    description: Creates the buckets and their CORS policy in RustFS.
+    container: stry
+    user: docker
+    command: php artisan app:s3-setup --no-interaction
+  admin:
+    label: Create a super-admin
+    container: stry
+    user: docker
+    command: php artisan users:create --super-admin --password-stdin --no-interaction
+    inputs:
+      name:
+        label: Name
+        option: --name
+      email:
+        label: Email
+        type: email
+        option: --email
+      password:
+        label: Password
+        type: password
+
 # Optional: start the app on its first request, and let it and its services
 # sleep when idle. lpod writes the units (`lpod stry ondemand enable`, see
 # docs/podman.md); the keys match its flags.

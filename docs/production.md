@@ -70,6 +70,8 @@ lpod stry artisan app:install
 
 It runs the migrations, seeds the roles and permissions, and sets up the Typesense collections. It then asks whether to create the S3 buckets (`app:s3-setup`) and, when there's no super-admin yet, to create one (`users:create --super-admin`, see [CLI Interaction](interaction.md#users)). Every step is safe to run again.
 
+Installed with [Pods](https://github.com/foxws/pods), the application page offers the same steps under "Finish setup" (`after_install` in `pods.yml`), and asks for the super-admin's name, email and password there. The password goes to `users:create --password-stdin` on stdin.
+
 To let the app and its services sleep when nobody uses them, add the [on-demand services](podman.md#on-demand-services).
 
 By default, `stry-horizon` gets access to `/dev/dri` for hardware-accelerated transcoding, so the server needs a GPU that provides `/dev/dri`. See [Hardware acceleration](podman.md#tuning--hardware-acceleration) for driver setup, the SELinux `setsebool` step, and how to turn this off on a server without a GPU.
