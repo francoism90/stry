@@ -116,3 +116,7 @@ Read before executing:
 - Do not hand-roll `app/` subfolder conventions once this package is installed — use `ddd:make` (or its layer-specific shortcuts) so generated classes land in the configured namespace and subfolder.
 - Do not use this package for the opinionated Laravel defaults (`Model::shouldBeStrict()`, `URL::forceHttps()`, etc.) — that's the separate `foxws/laravel-essentials` package.
 - Do not document package internals here; keep the skill focused on adoption in Laravel apps.
+
+## Enums with labels
+
+- With foxws/laravel-essentials installed, generate enums with `--type=enumerable` instead of `--type=enum`: the stub implements `Foxws\Essentials\Contracts\Enumerable`, uses `Foxws\Essentials\Concerns\HasLabels`, and writes `label()` as an exhaustive `match ($this)`. Replace the `Example` case with the real cases

@@ -10,14 +10,15 @@ use Domain\Groups\Enums\GroupType;
 use Domain\Groups\QueryBuilders\GroupQueryBuilder;
 use Domain\Groups\States\GroupState;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
-use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Concerns\InteractsWithThumbs;
 use Domain\Videos\Models\Video;
+use Foxws\Essentials\Casts\AsDateTime;
+use Foxws\Essentials\Concerns\HasUlid;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -38,6 +39,7 @@ use Spatie\Translatable\HasTranslations;
 
 #[CollectedBy(GroupCollection::class)]
 #[UseEloquentBuilder(GroupQueryBuilder::class)]
+#[RouteKey('ulid')]
 class Group extends Model implements HasMedia, Sortable
 {
     use BroadcastsModelEvents;
@@ -47,7 +49,7 @@ class Group extends Model implements HasMedia, Sortable
 
     use HasStates;
     use HasTranslations;
-    use HasUlidRouteKey;
+    use HasUlid;
     use InteractsWithMedia;
 
     /** @use InteractsWithThumbs<Groupable> */

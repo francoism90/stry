@@ -23,12 +23,12 @@
         "@vueuse/core": "^15.0.0",
         "laravel-echo": "^2.6.3",
         "pusher-js": "^8.6.0",
-        "shaka-player": "^5.3.4",
+        "shaka-player": "^5.3.5",
         "tailwindcss": "^4.3.5",
         "vue": "^3.5.45"
     },
     "devDependencies": {
-        "@iconify-json/lucide": "^1.2.154",
+        "@iconify-json/lucide": "^1.2.155",
         "@iconify/utils": "^3.1.7",
         "@inertiajs/vite": "^3.11.0",
         "@laravel/vite-plugin-wayfinder": "^0.1.11",
@@ -41,7 +41,7 @@
         "chokidar": "^6.0.0",
         "jiti": "^2.7.0",
         "laravel-vite-plugin": "^3.2.1",
-        "playwright": "^1.65.0",
+        "playwright": "^1.65.1",
         "typescript": "^6.0.3",
         "vite": "catalog:",
         "vite-plus": "catalog:",

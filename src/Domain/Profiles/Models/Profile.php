@@ -11,13 +11,14 @@ use Domain\Profiles\Exceptions\CurrentProfileException;
 use Domain\Profiles\QueryBuilders\ProfileQueryBuilder;
 use Domain\Profiles\States\ProfileState;
 use Domain\Profiles\Support\CurrentProfileContext;
-use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
-use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Shared\Enums\DiskContent;
 use Domain\Users\Concerns\InteractsWithUser;
+use Foxws\Essentials\Casts\AsDateTime;
+use Foxws\Essentials\Concerns\HasUlid;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -32,6 +33,7 @@ use Support\MediaLibrary\TemporaryUrls;
 
 #[CollectedBy(ProfileCollection::class)]
 #[UseEloquentBuilder(ProfileQueryBuilder::class)]
+#[RouteKey('ulid')]
 class Profile extends Model implements HasMedia
 {
     use BroadcastsModelEvents;
@@ -40,7 +42,7 @@ class Profile extends Model implements HasMedia
     use HasFactory;
 
     use HasStates;
-    use HasUlidRouteKey;
+    use HasUlid;
     use InteractsWithMedia;
     use InteractsWithUser;
     use Searchable;

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum VideoSorter: string implements Enumerable
 {
+    use HasLabels;
+
     case Recommended = 'recommended';
     case Newest = 'newest';
     case Oldest = 'oldest';
@@ -18,20 +21,14 @@ enum VideoSorter: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'recommended' => __('Recommended'),
-            'newest' => __('Newest'),
-            'oldest' => __('Oldest'),
-            'longest' => __('Longest'),
-            'shortest' => __('Shortest'),
-            'ordered' => __('Ordered'),
-            'filesize' => __('File Size'),
-        ];
+        return match ($this) {
+            self::Recommended => __('Recommended'),
+            self::Newest => __('Newest'),
+            self::Oldest => __('Oldest'),
+            self::Longest => __('Longest'),
+            self::Shortest => __('Shortest'),
+            self::Ordered => __('Ordered'),
+            self::Filesize => __('File Size'),
+        };
     }
 }

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Domain\Transcodes\Models;
 
 use Database\Factories\TranscodeFactory;
-use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
-use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Shared\Enums\DiskContent;
 use Domain\Transcodes\Collections\TranscodeCollection;
 use Domain\Transcodes\Enums\TranscodeEncoder;
@@ -17,9 +15,12 @@ use Domain\Transcodes\States;
 use Domain\Transcodes\States\TranscodeState;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Models\Video;
+use Foxws\Essentials\Casts\AsDateTime;
+use Foxws\Essentials\Concerns\HasUlid;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,7 @@ use Spatie\ModelStates\HasStates;
 #[ObservedBy(TranscodeObserver::class)]
 #[CollectedBy(TranscodeCollection::class)]
 #[UseEloquentBuilder(TranscodeQueryBuilder::class)]
+#[RouteKey('ulid')]
 class Transcode extends Model
 {
     use BroadcastsModelEvents;
@@ -46,7 +48,7 @@ class Transcode extends Model
     use HasFactory;
 
     use HasStates;
-    use HasUlidRouteKey;
+    use HasUlid;
     use InteractsWithUser;
     use Prunable;
     use Searchable;

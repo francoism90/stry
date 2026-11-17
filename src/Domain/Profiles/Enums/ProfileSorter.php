@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace Domain\Profiles\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum ProfileSorter: string implements Enumerable
 {
+    use HasLabels;
+
     case Name = 'name';
     case Newest = 'newest';
     case Oldest = 'oldest';
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'name' => __('Name'),
-            'newest' => __('Newest'),
-            'oldest' => __('Oldest'),
-        ];
+        return match ($this) {
+            self::Name => __('Name'),
+            self::Newest => __('Newest'),
+            self::Oldest => __('Oldest'),
+        };
     }
 }
