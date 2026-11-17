@@ -71,3 +71,21 @@ it('does not add s3/reverb hosts when they are not configured', function () {
 
     expect($contents)->not->toContain('example.com');
 });
+
+it('upgrades insecure requests when the app runs on https', function () {
+    config(['app.url' => 'https://app.example.com']);
+
+    $policy = new Policy;
+    (new BasicPreset)->configure($policy);
+
+    expect($policy->getContents())->toContain('upgrade-insecure-requests');
+});
+
+it('leaves requests alone when the app runs on http', function () {
+    config(['app.url' => 'http://localhost:8000']);
+
+    $policy = new Policy;
+    (new BasicPreset)->configure($policy);
+
+    expect($policy->getContents())->not->toContain('upgrade-insecure-requests');
+});
