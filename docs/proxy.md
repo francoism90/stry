@@ -34,12 +34,12 @@ The simplest setup is the [Pods proxy](https://github.com/foxws/pods#proxy), a C
 ```bash
 echo '{"routes": [
     {"role": "app", "host": "stry.example.com", "upstream": "systemd-stry:8000"},
-    {"role": "websockets", "host": "ws.stry.example.com", "upstream": "systemd-stry-reverb:6001"},
-    {"role": "s3", "host": "s3.stry.example.com", "upstream": "systemd-stry-rustfs:9000"}
+    {"role": "ws", "host": "ws.stry.example.com", "upstream": "systemd-stry-reverb:6001", "via": "main"},
+    {"role": "s3", "host": "s3.stry.example.com", "upstream": "systemd-stry-rustfs:9000", "via": "main"}
 ]}' | lpod stry routes set --stdin --json
 ```
 
-lpod writes `~/.config/pods-proxy/sites/stry.Caddyfile`, lets the proxy join `stry.network`, and reloads it. The hostnames must match `.env`: the host in `APP_URL`, `VITE_REVERB_HOST`, the host in `AWS_URL`, and in development `VITE_HMR_HOST`, `MAILPIT_UI_HOST` and `RUSTFS_CONSOLE_HOST`. The proxy gets certificates itself. Behind another proxy that handles HTTPS, set `Environment=PROXY_SCHEME=http` in a drop-in for `pods-proxy`.
+lpod writes `~/.config/pods-proxy/sites/stry.Caddyfile`, lets the proxy join `stry.network`, and reloads it. The `ws` and `s3` routes go `via: main`, to the app, whose own Caddy forwards them to Reverb and RustFS (see the table above), so they wake the app while it's on demand too. With one wildcard certificate (`*.home.example.com`, through a DNS challenge), lpod writes `sites/stry.caddy` handlers instead, and the hostnames must be one label under the wildcard, such as `stry-ws.home.example.com` and `stry-s3.home.example.com`. The hostnames must match `.env`: the host in `APP_URL`, `VITE_REVERB_HOST`, the host in `AWS_URL`, and in development `VITE_HMR_HOST`, `MAILPIT_UI_HOST` and `RUSTFS_CONSOLE_HOST`. The proxy gets certificates itself. Behind another proxy that handles HTTPS, set `Environment=PROXY_SCHEME=http` in a drop-in for `pods-proxy`.
 
 ## Bring your own TLS termination
 

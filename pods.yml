@@ -78,16 +78,19 @@ after_install:
 # AWS_URL in your .env (and in development VITE_HMR_HOST, MAILPIT_UI_HOST and
 # RUSTFS_CONSOLE_HOST). Leave one empty for no route. The first is the main
 # one: while stry is on demand, lpod sends it to the socket, so a request
-# wakes the app.
+# wakes the app. "via: main" routes go there too, and stry's own Caddy
+# (Support\Octane\CaddySites) forwards them, so they wake the app as well.
 routes:
   app:
     upstream: systemd-stry:8000
     description: The web app (the host in APP_URL)
-  websockets:
+  ws:
     upstream: systemd-stry-reverb:6001
+    via: main
     description: Laravel Reverb (VITE_REVERB_HOST)
   s3:
     upstream: systemd-stry-rustfs:9000
+    via: main
     description: RustFS's S3 API (the host in AWS_URL)
   vite:
     upstream: systemd-stry-vite:5173
