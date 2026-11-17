@@ -24,10 +24,6 @@ class BasicPreset extends Preset
         foreach ($this->getS3Origins() as $s3Origin) {
             $policy->add([Directive::CONNECT, Directive::FRAME, Directive::FONT, Directive::STYLE, Directive::IMG, Directive::MEDIA], $s3Origin);
         }
-
-        if ($reverbHost = $this->getReverbHost()) {
-            $policy->add(Directive::CONNECT, ["https://{$reverbHost}", "wss://{$reverbHost}"]);
-        }
     }
 
     /**
@@ -46,14 +42,6 @@ class BasicPreset extends Preset
             ->unique()
             ->values()
             ->all();
-    }
-
-    protected function getReverbHost(): ?string
-    {
-        // "wsHost" is a bare hostname (e.g. "ws.laravel.test"), not a URL.
-        $host = (string) Config::get('reverb.apps.apps.0.options.wsHost');
-
-        return $host === '' ? null : $host;
     }
 
     protected function resolveOrigin(string $url): ?string
