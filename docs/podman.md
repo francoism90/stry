@@ -122,7 +122,7 @@ lpod stry ondemand enable --json \
     --schedule-env APP_OPTIMIZE=false
 ```
 
-Pick another `--port` when 8000 is taken on the host. Your proxy then sends stry's hostname to that port on the host, not to the `stry` container: with the Pods proxy, change `systemd-stry:8000` in `stry.Caddyfile` to `host.containers.internal:8000`. `lpod stry ondemand status --json` shows the settings and whether the app is awake, and `lpod stry ondemand disable --json` turns it off again and starts the app.
+Pick another `--port` when 8000 is taken on the host. Your proxy then sends stry's hostname to that port on the host, not to the `stry` container. The Pods proxy does that by itself: while stry is on demand, lpod sends its main route to `host.containers.internal:PORT`. The socket must listen on an address the proxy container reaches, so don't pass `--listen 127.0.0.1` then. `lpod stry ondemand status --json` shows the settings and whether the app is awake, and `lpod stry ondemand disable --json` turns it off again and starts the app.
 
 A sleeping app skips nothing on the schedule: the scheduler timer still starts the database and cache for the minutes a task is due. Keep `schedule.at` in `pods.yml` (and `--schedule-at`) in sync when you change the schedule, then run `enable` again. The first request after a sleep waits for every service to start.
 

@@ -26,27 +26,20 @@ This mapping is set in `config/octane.php` (`caddy.env.CADDY_EXTRA_CONFIG`) and 
 
 ## With the Pods proxy
 
-The simplest setup is the [Pods proxy](https://github.com/foxws/pods#proxy), a Caddy container that routes each hostname straight to the right container, so nothing needs a port on the host. **stry** ships its routes in `containers/proxy/`:
+The simplest setup is the [Pods proxy](https://github.com/foxws/pods#proxy), a Caddy container that routes each hostname straight to the right container, so nothing needs a port on the host. `routes:` in `pods.yml` names stry's containers: the app, Reverb and RustFS's S3 API, and in development also Vite, the Mailpit web UI and the RustFS console.
 
-| File                               | What it does                                                                           |
-| ---------------------------------- | -------------------------------------------------------------------------------------- |
-| `stry.Caddyfile`                   | Routes the app, Reverb and RustFS's S3 API                                             |
-| `stry-development.Caddyfile`       | Also routes Vite, the Mailpit web UI and the RustFS console, for the development units |
-| `pods-proxy.container.d/stry.conf` | Lets the proxy join `stry.network`, and sets the hostnames the routes use              |
-
-With the proxy installed:
+- **With Pods**, the install page asks for a hostname for each route, and the Routes card on the application page changes them later. Leave the development ones empty in production.
+- **Without Pods**, give lpod the hostnames yourself:
 
 ```bash
-cp containers/proxy/stry.Caddyfile ~/.config/pods-proxy/sites/
-# In development, also: cp containers/proxy/stry-development.Caddyfile ~/.config/pods-proxy/sites/
-mkdir -p ~/.config/containers/systemd/pods-proxy.container.d
-cp containers/proxy/pods-proxy.container.d/stry.conf ~/.config/containers/systemd/pods-proxy.container.d/
-# Change the hostnames in stry.conf to yours, then:
-systemctl --user daemon-reload
-systemctl --user restart pods-proxy
+echo '{"routes": [
+    {"role": "app", "host": "stry.example.com", "upstream": "systemd-stry:8000"},
+    {"role": "websockets", "host": "ws.stry.example.com", "upstream": "systemd-stry-reverb:6001"},
+    {"role": "s3", "host": "s3.stry.example.com", "upstream": "systemd-stry-rustfs:9000"}
+]}' | lpod stry routes set --stdin --json
 ```
 
-The hostnames must match `.env`: `STRY_HOST` the host in `APP_URL`, `STRY_WS_HOST` `VITE_REVERB_HOST`, `STRY_S3_HOST` the host in `AWS_URL`, and in development `STRY_VITE_HOST` `VITE_HMR_HOST`, `STRY_MAIL_HOST` `MAILPIT_UI_HOST` and `STRY_S3_CONSOLE_HOST` `RUSTFS_CONSOLE_HOST`. The proxy gets certificates itself; behind another proxy that handles HTTPS, uncomment `PROXY_SCHEME=http` in `stry.conf`.
+lpod writes `~/.config/pods-proxy/sites/stry.Caddyfile`, lets the proxy join `stry.network`, and reloads it. The hostnames must match `.env`: the host in `APP_URL`, `VITE_REVERB_HOST`, the host in `AWS_URL`, and in development `VITE_HMR_HOST`, `MAILPIT_UI_HOST` and `RUSTFS_CONSOLE_HOST`. The proxy gets certificates itself. Behind another proxy that handles HTTPS, set `Environment=PROXY_SCHEME=http` in a drop-in for `pods-proxy`.
 
 ## Bring your own TLS termination
 

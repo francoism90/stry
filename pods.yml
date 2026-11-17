@@ -73,6 +73,32 @@ after_install:
         label: Password
         type: password
 
+# The containers the Pods proxy can give a hostname. Pods asks for the
+# hostnames when installing; they must match APP_URL, VITE_REVERB_HOST and
+# AWS_URL in your .env (and in development VITE_HMR_HOST, MAILPIT_UI_HOST and
+# RUSTFS_CONSOLE_HOST). Leave one empty for no route. The first is the main
+# one: while stry is on demand, lpod sends it to the socket, so a request
+# wakes the app.
+routes:
+  app:
+    upstream: systemd-stry:8000
+    description: The web app (the host in APP_URL)
+  websockets:
+    upstream: systemd-stry-reverb:6001
+    description: Laravel Reverb (VITE_REVERB_HOST)
+  s3:
+    upstream: systemd-stry-rustfs:9000
+    description: RustFS's S3 API (the host in AWS_URL)
+  vite:
+    upstream: systemd-stry-vite:5173
+    description: Development only, the Vite dev server (VITE_HMR_HOST)
+  mail:
+    upstream: systemd-stry-mailpit:8025
+    description: Development only, Mailpit's web UI (MAILPIT_UI_HOST)
+  s3-console:
+    upstream: systemd-stry-rustfs:9001
+    description: Development only, the RustFS console (RUSTFS_CONSOLE_HOST)
+
 # Optional: start the app on its first request, and let it and its services
 # sleep when idle. lpod writes the units (`lpod stry ondemand enable`, see
 # docs/podman.md); the keys match its flags.
