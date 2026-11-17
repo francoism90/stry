@@ -9,7 +9,9 @@ use Domain\Shared\Enums\Locale;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class GeneralSettings extends Data
 {
     public function __construct(

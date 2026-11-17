@@ -6,9 +6,7 @@ namespace Domain\Tags\Models;
 
 use Database\Factories\TagFactory;
 use Domain\Media\Concerns\InteractsWithMedia;
-use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
-use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Shared\Concerns\InteractsWithCache;
 use Domain\Shared\Enums\DiskContent;
 use Domain\Tags\Collections\TagCollection;
@@ -17,10 +15,13 @@ use Domain\Tags\QueryBuilders\TagQueryBuilder;
 use Domain\Users\Concerns\InteractsWithUser;
 use Domain\Videos\Concerns\InteractsWithThumbs;
 use Domain\Videos\Models\Video;
+use Foxws\Essentials\Casts\AsDateTime;
+use Foxws\Essentials\Concerns\HasUlid;
 use Foxws\Relatable\Concerns\InteractsWithRelated;
 use Foxws\ScoutRelations\Concerns\HasSearchableRelations;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +38,7 @@ use Support\MediaLibrary\TemporaryUrls;
 
 #[CollectedBy(TagCollection::class)]
 #[UseEloquentBuilder(TagQueryBuilder::class)]
+#[RouteKey('ulid')]
 class Tag extends BaseTag implements HasMedia
 {
     use BroadcastsModelEvents;
@@ -45,7 +47,7 @@ class Tag extends BaseTag implements HasMedia
     use HasFactory;
 
     use HasSearchableRelations;
-    use HasUlidRouteKey;
+    use HasUlid;
     use InteractsWithCache;
     use InteractsWithMedia;
     use InteractsWithRelated;

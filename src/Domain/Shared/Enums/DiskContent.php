@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Domain\Shared\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
 use Foundation\Settings\StorageSettings;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum DiskContent: string implements Enumerable
 {
+    use HasLabels;
+
     case Videos = 'videos';
     case Captions = 'captions';
     case Conversions = 'conversions';
@@ -21,23 +24,17 @@ enum DiskContent: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'videos' => __('Videos'),
-            'captions' => __('Captions'),
-            'conversions' => __('Conversions'),
-            'thumbnails' => __('Thumbnails'),
-            'reels' => __('Reels'),
-            'transcodes' => __('Transcodes'),
-            'import' => __('Import'),
-            'exports' => __('Exports'),
-            'snapshots' => __('Snapshots'),
-        ];
+        return match ($this) {
+            self::Videos => __('Videos'),
+            self::Captions => __('Captions'),
+            self::Conversions => __('Conversions'),
+            self::Thumbnails => __('Thumbnails'),
+            self::Reels => __('Reels'),
+            self::Transcodes => __('Transcodes'),
+            self::Import => __('Import'),
+            self::Exports => __('Exports'),
+            self::Snapshots => __('Snapshots'),
+        };
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 
+use Foxws\Essentials\Csp\Nonce\ViteNonceGenerator;
+use Foxws\Essentials\Csp\Presets\ReverbPreset;
 use Spatie\Csp\Presets\BunnyFonts;
-use Support\Csp\Nonce\ViteNonceGenerator;
 use Support\Csp\Presets\BasicPreset;
 
 // use Spatie\Csp\Directive;
@@ -16,6 +17,7 @@ return [
     'presets' => [
         BasicPreset::class,
         BunnyFonts::class,
+        ReverbPreset::class,
     ],
 
     /**

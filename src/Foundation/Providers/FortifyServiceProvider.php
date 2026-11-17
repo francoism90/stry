@@ -67,7 +67,7 @@ class FortifyServiceProvider extends ServiceProvider
     protected function configureViews(): static
     {
         Fortify::loginView(fn () => Inertia::render('Auth/AuthLogin', [
-            'action' => fn () => route('login'),
+            'action' => fn () => route('login.store', absolute: false),
             'status' => fn () => session('status'),
         ]));
 

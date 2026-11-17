@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum GroupSorter: string implements Enumerable
 {
+    use HasLabels;
+
     case Name = 'name';
     case Videos = 'videos';
     case Newest = 'newest';
@@ -16,18 +19,12 @@ enum GroupSorter: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'name' => __('Name'),
-            'videos' => __('Most videos'),
-            'newest' => __('Newest'),
-            'oldest' => __('Oldest'),
-            'updated' => __('Recently updated'),
-        ];
+        return match ($this) {
+            self::Name => __('Name'),
+            self::Videos => __('Most videos'),
+            self::Newest => __('Newest'),
+            self::Oldest => __('Oldest'),
+            self::Updated => __('Recently updated'),
+        };
     }
 }

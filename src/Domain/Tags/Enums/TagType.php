@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum TagType: string implements Enumerable
 {
+    use HasLabels;
+
     case Serie = 'serie';
     case Studio = 'studio';
     case Genre = 'genre';
@@ -16,18 +19,12 @@ enum TagType: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'serie' => __('Serie'),
-            'studio' => __('Studio'),
-            'genre' => __('Genre'),
-            'person' => __('Person'),
-            'language' => __('Language'),
-        ];
+        return match ($this) {
+            self::Serie => __('Serie'),
+            self::Studio => __('Studio'),
+            self::Genre => __('Genre'),
+            self::Person => __('Person'),
+            self::Language => __('Language'),
+        };
     }
 }

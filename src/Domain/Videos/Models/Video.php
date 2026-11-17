@@ -9,9 +9,7 @@ use Domain\Chapters\Concerns\InteractsWithChapters;
 use Domain\Groups\Concerns\InteractsWithGroups;
 use Domain\Media\Models\Media;
 use Domain\Shared\Casts\AsDate;
-use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
-use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Shared\Enums\DiskContent;
 use Domain\Tags\Collections\TagCollection;
 use Domain\Transcodes\Concerns\InteractsWithTranscodes;
@@ -25,10 +23,13 @@ use Domain\Videos\Settings\ProcessingSettings;
 use Domain\Videos\States\Verified;
 use Domain\Videos\States\VideoState;
 use Foundation\Settings\StorageSettings;
+use Foxws\Essentials\Casts\AsDateTime;
+use Foxws\Essentials\Concerns\HasUlid;
 use Foxws\ModelCache\Concerns\InteractsWithModelCache;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +54,7 @@ use Support\MediaLibrary\TemporaryUrls;
  */
 #[CollectedBy(VideoCollection::class)]
 #[UseEloquentBuilder(VideoQueryBuilder::class)]
+#[RouteKey('ulid')]
 class Video extends Model implements HasMedia
 {
     use BroadcastsModelEvents;
@@ -63,7 +65,7 @@ class Video extends Model implements HasMedia
     use HasStates;
     use HasTags;
     use HasTranslations;
-    use HasUlidRouteKey;
+    use HasUlid;
     use InteractsWithChapters;
     use InteractsWithDirectPlay;
     use InteractsWithGroups;

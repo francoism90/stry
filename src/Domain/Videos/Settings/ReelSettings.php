@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Domain\Videos\Settings;
 
 use Spatie\LaravelSettings\Settings;
+use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class ReelSettings extends Settings
 {
     public bool $enabled = false;
@@ -20,6 +23,7 @@ class ReelSettings extends Settings
      * How the picture fits the frame: fill (the full height, cutting off the sides), blur (zoomed by
      * $zoom, on a blurred copy of itself) or letterbox.
      */
+    #[LiteralTypeScriptType("'fill' | 'blur' | 'letterbox'")]
     public string $fit = 'fill';
 
     /**
@@ -30,6 +34,7 @@ class ReelSettings extends Settings
     /**
      * The video codec: h264, hevc or av1.
      */
+    #[LiteralTypeScriptType("'h264' | 'hevc' | 'av1'")]
     public string $codec = 'h264';
 
     /**

@@ -6,7 +6,9 @@ namespace Domain\Shared\DataObjects;
 
 use SensitiveParameter;
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\Hidden;
 
+#[Hidden]
 class StorageCredentials extends Data
 {
     public function __construct(

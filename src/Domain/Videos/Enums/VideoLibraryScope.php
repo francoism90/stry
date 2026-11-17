@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Videos\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum VideoLibraryScope: string implements Enumerable
 {
+    use HasLabels;
+
     case All = 'all';
     case Verified = 'verified';
     case Pending = 'pending';
@@ -16,18 +19,12 @@ enum VideoLibraryScope: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'all' => __('All'),
-            'verified' => __('Verified'),
-            'pending' => __('Pending'),
-            'failed' => __('Failed'),
-            'deleted' => __('Deleted'),
-        ];
+        return match ($this) {
+            self::All => __('All'),
+            self::Verified => __('Verified'),
+            self::Pending => __('Pending'),
+            self::Failed => __('Failed'),
+            self::Deleted => __('Deleted'),
+        };
     }
 }

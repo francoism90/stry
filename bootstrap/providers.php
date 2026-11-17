@@ -10,6 +10,7 @@ use Foundation\Providers\HorizonServiceProvider;
 use Foundation\Providers\InertiaServiceProvider;
 use Foundation\Providers\RouteServiceProvider;
 use Foundation\Providers\ScoutServiceProvider;
+use Foundation\Providers\TypeScriptTransformerServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -20,4 +21,5 @@ return [
     InertiaServiceProvider::class,
     RouteServiceProvider::class,
     ScoutServiceProvider::class,
+    TypeScriptTransformerServiceProvider::class,
 ];

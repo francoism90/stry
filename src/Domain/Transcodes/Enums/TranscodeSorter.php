@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace Domain\Transcodes\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum TranscodeSorter: string implements Enumerable
 {
+    use HasLabels;
+
     case Newest = 'newest';
     case Oldest = 'oldest';
     case Updated = 'updated';
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'newest' => __('Newest'),
-            'oldest' => __('Oldest'),
-            'updated' => __('Recently updated'),
-        ];
+        return match ($this) {
+            self::Newest => __('Newest'),
+            self::Oldest => __('Oldest'),
+            self::Updated => __('Recently updated'),
+        };
     }
 }

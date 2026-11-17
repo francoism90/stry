@@ -124,3 +124,16 @@ Read before executing:
 - Do not call `Essentials::configure()` yourself — it already runs on `booted()` and is idempotent; calling it again is a no-op, not a way to force re-configuration.
 - Do not use this package for Domain Driven Design scaffolding (`ddd:install`, `ddd:make`) — that lives in the separate `foxws/laravel-ddd` package.
 - Do not document package internals here; keep the skill focused on adoption in Laravel apps.
+
+### Content Security Policy (optional, requires `spatie/laravel-csp`)
+
+- Presets: `Foxws\Essentials\Csp\Presets\BasicPreset` (strict same-origin policy plus `*.{app host}`, nonce + `strict-dynamic` scripts) `IconifyPreset` (`connect-src api.iconify.design`) and `ReverbPreset` (`connect-src` for Echo's websocket to Reverb, from the first Reverb app's `wsHost`/`wsPort`/`wsScheme` options, falling back to `host`/`port`/`scheme`)
+- Set `csp.nonce_generator` to `Foxws\Essentials\Csp\Nonce\ViteNonceGenerator` so the header and Vite's tags share one nonce
+- Append Spatie's `Spatie\Csp\AddCspHeaders` to the web middleware; Horizon and Telescope run inside the app and keep its policy
+- Add `Foxws\Essentials\Csp\Middleware\AddHorizonCspNonce` to `horizon.middleware` and `AddTelescopeCspNonce` to `telescope.middleware`, so their inline style and script tags get the nonce; keep `Spatie\Csp\Presets\BunnyFonts` for their font
+
+### Casts, concerns and contracts
+
+- `Foxws\Essentials\Casts\AsDateTime` stores dates in `app.timezone` (Laravel's `datetime` casts drop the offset instead) and reads blank values as `null`
+- `Foxws\Essentials\Concerns\HasUlid` keeps the incrementing id and fills a unique `ulid` column; add `$table->ulid('ulid')->unique()` to the migration, and `#[RouteKey('ulid')]` on the model to bind routes to it. `Model::findFromUlid($ulid)` looks a model up by it; `findFromUlidOr($ulid, $callback)` and `findFromUlidOrFail($ulid)` mirror Eloquent's `findOr()` and `findOrFail()`. All three look in the `ulid` column, or the column passed as the last argument. Inside a query or relation, use the `whereUlid($ulidOrList, $column = null)` scope, e.g. `$user->posts()->whereUlid($ulid)->firstOrFail()`
+- `Foxws\Essentials\Contracts\Enumerable`: a backed enum with `label()` and `static labels()` (labels keyed by value, as spatie/laravel-options reads them). Write `label()` as an exhaustive `match ($this)` and `use Foxws\Essentials\Concerns\HasLabels;` to build `labels()` from it

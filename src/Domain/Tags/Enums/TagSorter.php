@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace Domain\Tags\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum TagSorter: string implements Enumerable
 {
+    use HasLabels;
+
     case Videos = 'videos';
     case Newest = 'newest';
     case Oldest = 'oldest';
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'videos' => __('Videos'),
-            'newest' => __('Newest'),
-            'oldest' => __('Oldest'),
-        ];
+        return match ($this) {
+            self::Videos => __('Videos'),
+            self::Newest => __('Newest'),
+            self::Oldest => __('Oldest'),
+        };
     }
 }

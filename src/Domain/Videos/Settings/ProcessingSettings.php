@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Domain\Videos\Settings;
 
 use Spatie\LaravelSettings\Settings;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class ProcessingSettings extends Settings
 {
     public bool $extract_captions = true;

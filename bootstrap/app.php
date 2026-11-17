@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Foundation\Http\Middleware\AddCspHeaders;
-use Foundation\Http\Middleware\AddHorizonCspNonce;
-use Foundation\Http\Middleware\AddTelescopeCspNonce;
 use Foundation\Http\Middleware\SetCacheHeaders;
+use Foxws\Essentials\Csp\Middleware\AddHorizonCspNonce;
+use Foxws\Essentials\Csp\Middleware\AddTelescopeCspNonce;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

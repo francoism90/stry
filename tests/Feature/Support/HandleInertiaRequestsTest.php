@@ -29,3 +29,8 @@ it('shares the site name from the application settings', function () {
     $this->get(route('login'))
         ->assertInertia(fn ($page) => $page->where('app', 'Stry Test'));
 });
+
+it('gives the login page a relative action, whatever scheme urls are generated with', function () {
+    $this->get(route('login'))
+        ->assertInertia(fn ($page) => $page->where('action', '/login'));
+});

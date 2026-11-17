@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace Domain\Shared\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum Locale: string implements Enumerable
 {
+    use HasLabels;
+
     case EnUs = 'en-US';
     case NlNl = 'nl-NL';
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'en-US' => __('English (US)'),
-            'nl-NL' => __('Dutch (Netherlands)'),
-        ];
+        return match ($this) {
+            self::EnUs => __('English (US)'),
+            self::NlNl => __('Dutch (Netherlands)'),
+        };
     }
 }

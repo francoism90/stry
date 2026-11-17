@@ -6,7 +6,9 @@ namespace Domain\Videos\Settings;
 
 use Domain\Shared\Enums\Language;
 use Spatie\LaravelSettings\Settings;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class PlaybackSettings extends Settings
 {
     public Language $text_language = Language::English;
