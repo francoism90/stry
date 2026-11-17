@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Transcodes\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum TranscodeScope: string implements Enumerable
 {
+    use HasLabels;
+
     case All = 'all';
     case Pending = 'pending';
     case Processing = 'processing';
@@ -16,18 +19,12 @@ enum TranscodeScope: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'all' => __('All'),
-            'pending' => __('Pending'),
-            'processing' => __('Processing'),
-            'completed' => __('Completed'),
-            'failed' => __('Failed'),
-        ];
+        return match ($this) {
+            self::All => __('All'),
+            self::Pending => __('Pending'),
+            self::Processing => __('Processing'),
+            self::Completed => __('Completed'),
+            self::Failed => __('Failed'),
+        };
     }
 }

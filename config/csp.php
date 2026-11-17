@@ -1,7 +1,7 @@
 <?php
 
+use Foxws\Essentials\Csp\Nonce\ViteNonceGenerator;
 use Spatie\Csp\Presets\BunnyFonts;
-use Support\Csp\Nonce\ViteNonceGenerator;
 use Support\Csp\Presets\BasicPreset;
 
 // use Spatie\Csp\Directive;

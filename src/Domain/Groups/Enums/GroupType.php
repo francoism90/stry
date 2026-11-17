@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Groups\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum GroupType: string implements Enumerable
 {
+    use HasLabels;
+
     case Custom = 'custom';
     case Liked = 'liked';
     case Mixer = 'mixer';
@@ -16,7 +19,13 @@ enum GroupType: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
+        return match ($this) {
+            self::Custom => __('Custom'),
+            self::Liked => __('Liked'),
+            self::Mixer => __('Mixer'),
+            self::Saved => __('Saved'),
+            self::Viewed => __('Viewed'),
+        };
     }
 
     public function priority(): int
@@ -28,17 +37,5 @@ enum GroupType: string implements Enumerable
             self::Custom => 3,
             self::Mixer => 4,
         };
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'custom' => __('Custom'),
-            'liked' => __('Liked'),
-            'mixer' => __('Mixer'),
-            'saved' => __('Saved'),
-            'viewed' => __('Viewed'),
-        ];
     }
 }

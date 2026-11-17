@@ -8,17 +8,18 @@ use Database\Factories\UserFactory;
 use Domain\Groups\Concerns\HasGroups;
 use Domain\Media\Concerns\InteractsWithMedia;
 use Domain\Profiles\Concerns\HasProfiles;
-use Domain\Shared\Casts\AsDateTime;
 use Domain\Shared\Concerns\BroadcastsModelEvents;
-use Domain\Shared\Concerns\HasUlidRouteKey;
 use Domain\Users\Collections\UserCollection;
 use Domain\Users\DataObjects\UserSettings;
 use Domain\Users\QueryBuilders\UserQueryBuilder;
 use Domain\Users\States\UserState;
 use Domain\Videos\Concerns\InteractsWithVideos;
+use Foxws\Essentials\Casts\AsDateTime;
+use Foxws\Essentials\Concerns\HasUlid;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,7 @@ use Support\MediaLibrary\TemporaryUrls;
 
 #[CollectedBy(UserCollection::class)]
 #[UseEloquentBuilder(UserQueryBuilder::class)]
+#[RouteKey('ulid')]
 class User extends Authenticatable implements HasMedia, MustVerifyEmail, PasskeyUser
 {
     use BroadcastsModelEvents;
@@ -52,7 +54,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail, Passkey
     use HasProfiles;
     use HasRoles;
     use HasStates;
-    use HasUlidRouteKey;
+    use HasUlid;
     use InteractsWithMedia;
     use InteractsWithVideos;
     use Notifiable;

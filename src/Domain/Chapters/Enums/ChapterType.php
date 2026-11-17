@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Chapters\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum ChapterType: string implements Enumerable
 {
+    use HasLabels;
+
     case Intro = 'intro';
     case Recap = 'recap';
     case Credits = 'credits';
@@ -19,22 +22,16 @@ enum ChapterType: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'intro' => __('Intro'),
-            'recap' => __('Recap'),
-            'credits' => __('Credits'),
-            'sponsor' => __('Sponsor'),
-            'filler' => __('Filler'),
-            'interaction_reminder' => __('Interaction Reminder'),
-            'scene' => __('Scene'),
-            'main_event' => __('Main Event'),
-        ];
+        return match ($this) {
+            self::Intro => __('Intro'),
+            self::Recap => __('Recap'),
+            self::Credits => __('Credits'),
+            self::Sponsor => __('Sponsor'),
+            self::Filler => __('Filler'),
+            self::InteractionReminder => __('Interaction Reminder'),
+            self::Scene => __('Scene'),
+            self::MainEvent => __('Main Event'),
+        };
     }
 
     public function isSkippable(): bool

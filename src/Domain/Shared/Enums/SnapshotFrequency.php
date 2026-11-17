@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Domain\Shared\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
 use Foundation\Settings\SnapshotSettings;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum SnapshotFrequency: string implements Enumerable
 {
+    use HasLabels;
+
     case Never = 'never';
     case Daily = 'daily';
     case Weekly = 'weekly';
@@ -16,18 +19,12 @@ enum SnapshotFrequency: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'never' => __('Never'),
-            'daily' => __('Daily'),
-            'weekly' => __('Weekly'),
-            'monthly' => __('Monthly'),
-        ];
+        return match ($this) {
+            self::Never => __('Never'),
+            self::Daily => __('Daily'),
+            self::Weekly => __('Weekly'),
+            self::Monthly => __('Monthly'),
+        };
     }
 
     /**

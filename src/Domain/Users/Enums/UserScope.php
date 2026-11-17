@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Users\Enums;
 
-use Domain\Shared\Contracts\Enumerable;
+use Foxws\Essentials\Concerns\HasLabels;
+use Foxws\Essentials\Contracts\Enumerable;
 
 enum UserScope: string implements Enumerable
 {
+    use HasLabels;
+
     case All = 'all';
     case Verified = 'verified';
     case Unverified = 'unverified';
@@ -15,17 +18,11 @@ enum UserScope: string implements Enumerable
 
     public function label(): string
     {
-        return self::labels()[$this->value];
-    }
-
-    /** @return array<string, string> */
-    public static function labels(): array
-    {
-        return [
-            'all' => __('All'),
-            'verified' => __('Verified'),
-            'unverified' => __('Unverified'),
-            'deleted' => __('Deleted'),
-        ];
+        return match ($this) {
+            self::All => __('All'),
+            self::Verified => __('Verified'),
+            self::Unverified => __('Unverified'),
+            self::Deleted => __('Deleted'),
+        };
     }
 }
