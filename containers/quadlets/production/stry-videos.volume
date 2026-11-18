@@ -1,0 +1,12 @@
+[Volume]
+# Your video library, mounted as /media. A folder on the host, not a
+# Podman volume: change Device= to use another folder, then remove the
+# volume ("podman volume rm stry-videos") so it's created again. Removing
+# it never deletes the files in the folder. On SELinux hosts, label the
+# folder once (see docs/podman.md).
+VolumeName=stry-videos
+Label=stry-videos
+Type=none
+Options=bind
+Device=/srv/library/videos
+Copy=false

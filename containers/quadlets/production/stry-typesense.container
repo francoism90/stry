@@ -1,0 +1,32 @@
+[Unit]
+Description=Typesense container
+StopWhenUnneeded=yes
+# Restart=always retries a crash every 5 seconds, which never reaches
+# systemd's default start limit (5 in 10s). Give up after 5 tries in
+# 5 minutes instead, so a broken setup ends up failed, not looping.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Container]
+Image=docker.io/typesense/typesense:30.2
+AutoUpdate=registry
+Environment=TYPESENSE_DATA_DIR=/data
+Environment=TYPESENSE_LOG_LEVEL=error
+Secret=stry-typesense-api-key,type=env,target=TYPESENSE_API_KEY
+Volume=stry-typesense.volume:/data:rw,Z,U
+Network=stry.network
+ExposeHostPort=8108
+Notify=healthy
+HealthStartupCmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8108 && printf "GET /health HTTP/1.0\r\n\r\n" >&3 && grep -q "\"ok\":true" <&3'
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8108 && printf "GET /health HTTP/1.0\r\n\r\n" >&3 && grep -q "\"ok\":true" <&3'
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

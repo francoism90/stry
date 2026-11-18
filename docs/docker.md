@@ -42,8 +42,8 @@ cd stry
 Docker only reads `.dockerignore` from the root of the build context, so copy the template there first. Otherwise files such as your local `.env` or `vendor/` end up inside the image:
 
 ```bash
-cp containers/stubs/production/runtimes/dockerignore .dockerignore
-docker build -f containers/stubs/production/runtimes/Containerfile -t stry:latest .
+cp containers/runtimes/production/dockerignore .dockerignore
+docker build -f containers/runtimes/production/Containerfile -t stry:latest .
 ```
 
 ### Create the environment files

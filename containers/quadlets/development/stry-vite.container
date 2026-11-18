@@ -1,0 +1,25 @@
+[Unit]
+Description=Vite dev server container
+After=stry.container
+PartOf=stry.container
+# Restart=always retries a crash every 5 seconds, which never reaches
+# systemd's default start limit (5 in 10s). Give up after 5 tries in
+# 5 minutes instead, so a broken setup ends up failed, not looping.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Container]
+Image=stry.build
+AutoUpdate=local
+HealthCmd=none
+Environment=APP_COMMAND="pnpm run dev -- --host=0.0.0.0"
+UserNS=keep-id
+Volume=stry-source.volume:/app:rw,z
+Network=stry.network
+ExposeHostPort=5173
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

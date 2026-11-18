@@ -1,5 +1,55 @@
 # Upgrade Guide
 
+## Moving to plain Quadlet units
+
+**stry** no longer uses [foxws/laravel-podman](https://github.com/foxws/laravel-podman) or [Laravel Installer](https://github.com/foxws/laravel-installer). The Quadlet units are plain files in `containers/quadlets/`, ready to install with [Pods](https://github.com/foxws/pods) or `podman quadlet install`: there's no `php artisan podman:setup`, no `podman/` folder and no `PODMAN_*` keys anymore. The units, containers, volumes and secrets keep their names (`stry`, `systemd-stry-pgsql`, `stry-pgsql`, `stry-env` and so on), so your data and `.env` stay as they are.
+
+### What changes
+
+- **Units.** `containers/stubs/*/quadlets/*.quadlets` became one file per unit in `containers/quadlets/production/` and `containers/quadlets/development/`. The Containerfiles moved to `containers/runtimes/`.
+- **Settings in `.env`.** The `PODMAN_*` keys are gone. Your user and group ID come from systemd (`%U` and `%G`). The library folders are the `stry-videos`, `stry-import` and `stry-exports` volumes, which point at `/srv/library/*` by default: if you set `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` or `PODMAN_EXPORTS_PATH`, point them at those folders with a drop-in (see [Another library folder](docs/podman.md#another-library-folder)). For other changes, such as `PODMAN_IMAGE_REGISTRY`, use a drop-in (see [Changing a unit](docs/podman.md#changing-a-unit)).
+- **No ports on the host.** Every unit, the app included, uses `ExposeHostPort=`, so the units don't clash with other apps or users. If your reverse proxy pointed at port 8000, publish it again with a drop-in, `~/.config/containers/systemd/stry.container.d/port.conf` with `[Container]` and `PublishPort=8000:8000` (see [Podman Quadlet](docs/podman.md#the-units)).
+- **On-demand is optional.** The app now starts at boot. To keep it sleeping when idle, turn it on with `lpod stry ondemand enable` (see [On-demand services](docs/podman.md#on-demand-services)), which writes the units from the settings in `pods.yml`. Its idle check runs `php artisan app:idle` instead of `podman:idle`, and the `laravel-idle@.timer` template is replaced by `stry-idle.timer`.
+- **Commands.** `podman:s3-setup` is now `app:s3-setup`. Its buckets are set in `config/filesystems.php` (`buckets` and `cors_buckets`) instead of `PODMAN_S3_BUCKETS` and `PODMAN_S3_CORS_BUCKETS`.
+- **Installer.** The `installer/` folder and its guide are gone. Install with Pods, or follow [Production Setup](docs/production.md).
+- **Devcontainer.** `containers/devcontainer/devcontainer.json` replaces the generated configs. Point your `.devcontainer/devcontainer.json` symlink at it (see [Development](docs/development.md#vs-code-dev-containers)).
+- **Podman 6** is now the minimum.
+
+### Steps
+
+1. **Back up the database and your volumes.** See the [backup example](docs/production.md#security-checklist). Don't use `lpod remove` or `lpod uninstall` for the steps below: they delete the service's volumes.
+
+2. **Turn off the old on-demand units**, if you installed them:
+
+    ```bash
+    systemctl --user disable --now stry-ondemand.socket laravel-idle@stry.timer stry-schedule.timer
+    rm -r ~/.config/systemd/user/stry-ondemand.* ~/.config/systemd/user/stry-schedule.timer ~/.config/systemd/user/laravel-idle@stry.service.d
+    ```
+
+    Also remove `~/.config/systemd/user/laravel-idle@.service` and `laravel-idle@.timer` when no other app on the host uses them.
+
+3. **Remove the old unit files.** List them with `podman quadlet list`, then remove stry's with `podman quadlet rm` (add `--recursive` for units that belong to an application). This removes the Quadlet files only; the Podman volumes, such as `stry-pgsql`, and the secrets stay.
+
+4. **Install the new units**, with Pods (see [Production Setup](docs/production.md#install)) or by hand:
+
+    ```bash
+    cd ~/projects/stry && git pull
+    podman quadlet install --application=stry containers/quadlets/production
+
+    # Publish the app's port again, if your reverse proxy points at 8000
+    mkdir -p ~/.config/containers/systemd/stry.container.d
+    printf '[Container]\nPublishPort=8000:8000\n' > ~/.config/containers/systemd/stry.container.d/port.conf
+    systemctl --user daemon-reload
+
+    systemctl --user start stry
+    ```
+
+    The `stry-videos`, `stry-import` and `stry-exports` volumes are new: they're created on the first start and point at your library, so nothing is copied. If your library isn't in `/srv/library`, add their drop-ins (see [Another library folder](docs/podman.md#another-library-folder)) before that first start, with Pods too.
+
+5. **Remove `PODMAN_*` from your `.env`**, and store it as the `stry-env` secret again (`podman secret create --replace stry-env .env`). The keys are ignored now, so this is only cleanup.
+
+6. Add the [on-demand services](docs/podman.md#on-demand-services) again if you used them.
+
 ## Upgrading to 2.0 from 1.x
 
 stry 2.0 plays every video directly from its stored file. Playlists no longer have to be packaged before a video can be watched: the app builds the DASH manifest and HLS playlist when a player asks for them, and cuts the segments as they're requested. This is done by [foxws/laravel-media](https://github.com/foxws/laravel-media), which replaces laravel-ffmpeg, laravel-shaka and laravel-streamer.

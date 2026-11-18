@@ -1,0 +1,12 @@
+[Volume]
+# Files waiting to be imported, mounted as /import. A folder on the host, not a
+# Podman volume: change Device= to use another folder, then remove the
+# volume ("podman volume rm stry-import") so it's created again. Removing
+# it never deletes the files in the folder. On SELinux hosts, label the
+# folder once (see docs/podman.md).
+VolumeName=stry-import
+Label=stry-import
+Type=none
+Options=bind
+Device=/srv/library/import
+Copy=false

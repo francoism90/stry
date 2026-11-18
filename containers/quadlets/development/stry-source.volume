@@ -1,0 +1,14 @@
+[Volume]
+# Your checkout of stry, mounted into the app, Horizon, Reverb, the
+# scheduler and Vite as /app. If it isn't in ~/projects/stry, override
+# Device= with a stry-source.volume.d/ drop-in (and stry.build's paths),
+# see "Another checkout folder" in docs/development.md. The volume is
+# created once, so remove it ("podman volume rm stry-source") after
+# changing the path.
+# Removing it never deletes your checkout.
+VolumeName=stry-source
+Label=stry-source
+Type=none
+Options=bind
+Device=%h/projects/stry
+Copy=false

@@ -1,0 +1,31 @@
+[Unit]
+Description=Laravel Schedule container
+# Runs "schedule:work" next to the app. With on-demand services, a drop-in
+# turns this into a "schedule:run" that a timer starts only in the minutes
+# a task is due (see "On-demand services" in docs/podman.md).
+After=stry.container
+PartOf=stry.container
+# Restart=always retries a crash every 5 seconds, which never reaches
+# systemd's default start limit (5 in 10s). Give up after 5 tries in
+# 5 minutes instead, so a broken setup ends up failed, not looping.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Container]
+Image=ghcr.io/francoism90/stry:3
+AutoUpdate=registry
+HealthCmd=none
+Environment=PUID=%U
+Environment=PGID=%G
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan schedule:work"
+UserNS=keep-id
+Secret=stry-env,target=/app/.env,mode=0400,uid=%U,gid=%G
+Volume=stry-exports.volume:/exports:rw
+Volume=stry-cache.volume:/cache:rw
+Network=stry.network
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

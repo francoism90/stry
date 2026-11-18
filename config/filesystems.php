@@ -77,6 +77,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | S3 Buckets
+    |--------------------------------------------------------------------------
+    |
+    | The buckets "app:s3-setup" creates on the s3 disk, and the ones it
+    | applies the CORS policy to, because browsers load files from them.
+    |
+    */
+
+    'buckets' => ['local', 'conversions'],
+
+    'cors_buckets' => ['conversions'],
+
+    /*
+    |--------------------------------------------------------------------------
     | Symbolic Links
     |--------------------------------------------------------------------------
     |

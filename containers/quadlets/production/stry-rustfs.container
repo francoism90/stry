@@ -1,0 +1,40 @@
+[Unit]
+Description=RustFS container
+StopWhenUnneeded=yes
+# Restart=always retries a crash every 5 seconds, which never reaches
+# systemd's default start limit (5 in 10s). Give up after 5 tries in
+# 5 minutes instead, so a broken setup ends up failed, not looping.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Container]
+Image=docker.io/rustfs/rustfs:latest
+AutoUpdate=registry
+Environment=RUSTFS_VOLUMES=/data
+Environment=RUSTFS_ADDRESS=0.0.0.0:9000
+Environment=RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
+Environment=RUSTFS_CONSOLE_ENABLE=true
+Environment=RUSTFS_CORS_ALLOWED_ORIGINS=*
+Environment=RUSTFS_BUFFER_PROFILE=WebWorkload
+Environment=RUSTFS_OBS_LOGGER_LEVEL=error
+Secret=stry-rustfs-access-key,type=env,target=RUSTFS_ACCESS_KEY
+Secret=stry-rustfs-secret-key,type=env,target=RUSTFS_SECRET_KEY
+Volume=stry-rustfs-data.volume:/data:rw,Z,U
+Volume=stry-rustfs-logs.volume:/logs:rw,Z,U
+Network=stry.network
+ExposeHostPort=9000
+ExposeHostPort=9001
+Notify=healthy
+HealthStartupCmd=curl -fsS -o /dev/null http://127.0.0.1:9000/health
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=curl -fsS -o /dev/null http://127.0.0.1:9000/health
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=60

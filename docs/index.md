@@ -30,8 +30,7 @@ Jellyfin and Plex are media servers first. **stry** is built for streaming first
 
 ## Getting started
 
-- **[Installer](install.md)**: start here to set stry up on a server from your browser.
-- **[Production Setup](production.md)**: set stry up on a server by hand.
+- **[Production Setup](production.md)**: start here to set stry up on a server, with [Pods](https://github.com/foxws/pods) or by hand.
 - **[Development Setup](development.md)**: start here to work on stry locally.
 - **[Screenshots](screenshots.md)**: see what stry looks like before you install it.
 
@@ -49,13 +48,13 @@ Jellyfin and Plex are media servers first. **stry** is built for streaming first
 | [Upgrading](upgrading.md)                     | Updating an existing production install       |
 
 :::tip
-The Podman side is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman) and its standalone [`lpod`](https://github.com/foxws/lpod) CLI. Their docs cover the general topics, such as secrets and customizing presets. These guides only cover what is specific to **stry**.
+**stry** ships plain Podman Quadlet units, which you can install with [Pods](https://github.com/foxws/pods), with `podman quadlet install`, or by hand. The optional [`lpod`](https://github.com/foxws/lpod) CLI runs Artisan and other commands in the containers. See the [Podman Quadlet documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) for the general topics.
 :::
 
 ## Key concepts
 
 - **`stry-env` secret**: the app's `.env` file, stored as a Podman secret and mounted at `/app/.env` in every app container.
-- **Presets**: the templates in `containers/stubs/{preset}/`. `production` runs the app and its services, `development` runs them against your local code, `s3` sets up buckets and CORS, and `devcontainer` builds a VS Code development container.
+- **Units**: the Quadlet files in `containers/quadlets/{production,development}/`. `production` runs the app and its services from the published image, `development` runs them against your local code. `pods.yml` holds the settings of the optional on-demand services, and `containers/devcontainer/` a VS Code development container.
 - **Quadlet**: the systemd integration that starts the containers in the right order on boot.
 
 ## Common tasks

@@ -43,36 +43,8 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v7
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 8.5
-                  extensions: dom, curl, libxml, mbstring, pcntl, exif, iconv, fileinfo, xml
-                  coverage: none
-
-            - name: Get Composer cache directory
-              id: composer-cache
-              run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-            - name: Cache Composer dependencies
-              uses: actions/cache@v6
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
-
-            - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-interaction --no-progress
-
-            - name: Render Podman quadlets
-              run: |
-                  cp .env.ci .env
-                  php artisan key:generate
-                  php artisan podman:generate production
-
             - name: Install dockerignore
-              run: cp containers/stubs/production/runtimes/dockerignore .dockerignore
+              run: cp containers/runtimes/production/dockerignore .dockerignore
 
             - name: Set platform pair
               id: platform
@@ -100,7 +72,7 @@ jobs:
               with:
                   image: ${{ env.IMAGE_NAME }}
                   tags: ci-${{ steps.platform.outputs.pair }}-${{ github.sha }}
-                  containerfiles: podman/production/runtimes/Containerfile
+                  containerfiles: containers/runtimes/production/Containerfile
                   context: .
                   platform: ${{ matrix.platform }}
                   layers: true

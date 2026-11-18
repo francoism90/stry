@@ -11,7 +11,7 @@
 [![Nuxt UI](https://img.shields.io/badge/Nuxt_UI-4.x-00DC82?logo=nuxtdotjs)](https://ui.nuxt.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
-[![Podman](https://img.shields.io/badge/Podman-5.x_%7C_6.x-892CA0?logo=podman)](https://podman.io)
+[![Podman](https://img.shields.io/badge/Podman-6.x-892CA0?logo=podman)](https://podman.io)
 [![Demo](https://img.shields.io/badge/Demo-Screenshots-181717)](https://foxws.nl/stry/screenshots)
 
 [Demo](https://foxws.nl/stry/screenshots) • [Documentation](#documentation) • [Installation](#usage)
@@ -63,7 +63,7 @@ For a visual tour of the app, check out the [screenshots gallery](https://foxws.
 | **Backend**           | [Laravel 13.x](https://laravel.com/)                                                   |
 | **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)              |
 | **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                         |
-| **Containers**        | [Laravel Podman](https://github.com/foxws/laravel-podman) (Podman 5.x)                 |
+| **Containers**        | Podman Quadlet (Podman 6.x), installable with [Pods](https://github.com/foxws/pods)    |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                               |
 | **Video Streaming**   | [Laravel Media](https://github.com/foxws/laravel-media) (direct-play HLS + DASH, CMAF) |
 | **Video Transcoding** | [Laravel ab-av1](https://github.com/foxws/laravel-ab-av1) (beta)                       |
@@ -73,7 +73,7 @@ For a visual tour of the app, check out the [screenshots gallery](https://foxws.
 
 ## Prerequisites
 
-Requires Linux with [Podman 5.3+](https://podman.io/)/Quadlet, or [Docker](https://www.docker.com/) (best-effort). Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://foxws.nl/stry/podman#prerequisites) or [Docker Compose](https://foxws.nl/stry/docker#prerequisites) for the full system requirements.
+Requires Linux with [Podman 6+](https://podman.io/)/Quadlet, or [Docker](https://www.docker.com/) (best-effort). Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://foxws.nl/stry/podman#prerequisites) or [Docker Compose](https://foxws.nl/stry/docker#prerequisites) for the full system requirements.
 
 ---
 
@@ -96,7 +96,7 @@ Comprehensive guides are available on the [documentation site](https://foxws.nl/
 | [Interaction](https://foxws.nl/stry/interaction)       | CLI usage and commands                               |
 
 > [!TIP]
-> Quick start: pick [Production](https://foxws.nl/stry/production) or [Development](https://foxws.nl/stry/development) setup. Podman/Quadlet itself is handled by [foxws/laravel-podman](https://github.com/foxws/laravel-podman), paired with the standalone [`lpod`](https://github.com/foxws/lpod) CLI — see their own docs for secrets and customizing presets. The guides above only cover what's specific to **stry**.
+> Quick start: pick [Production](https://foxws.nl/stry/production) or [Development](https://foxws.nl/stry/development) setup. **stry** ships plain Podman Quadlet units in `containers/quadlets/`: install them with [Pods](https://github.com/foxws/pods) or `podman quadlet install`, and use the optional [`lpod`](https://github.com/foxws/lpod) CLI for day-to-day commands.
 
 ---
 
@@ -106,7 +106,7 @@ Comprehensive guides are available on the [documentation site](https://foxws.nl/
 systemctl --user start stry
 ```
 
-The instance will be available at: **<http://localhost:8000>** (or your own domain, once you've set up a [reverse proxy](https://foxws.nl/stry/proxy) in front of it)
+The units don't publish any port on the host. Publish the app's port with a drop-in, or put a [reverse proxy](https://foxws.nl/stry/proxy) in front of it (see [Podman Quadlet](https://foxws.nl/stry/podman)).
 
 See the [Interaction Guide](https://foxws.nl/stry/interaction) for `lpod`, stry's Laravel Sail-style container CLI, and [Production Setup](https://foxws.nl/stry/production#install-and-start-the-services)/[Development Setup](https://foxws.nl/stry/development#admin-account) for seeding and creating admin users.
 

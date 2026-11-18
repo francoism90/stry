@@ -1,0 +1,34 @@
+[Unit]
+Description=PostgreSQL container
+StopWhenUnneeded=yes
+# Restart=always retries a crash every 5 seconds, which never reaches
+# systemd's default start limit (5 in 10s). Give up after 5 tries in
+# 5 minutes instead, so a broken setup ends up failed, not looping.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Container]
+Image=docker.io/library/postgres:18
+AutoUpdate=registry
+Secret=stry-pgsql-db,type=env,target=POSTGRES_DB
+Secret=stry-pgsql-user,type=env,target=POSTGRES_USER
+Secret=stry-pgsql-password,type=env,target=POSTGRES_PASSWORD
+Secret=stry-pgsql-password,type=env,target=PGPASSWORD
+ShmSize=256m
+Volume=stry-pgsql.volume:/var/lib/postgresql:rw,Z,U
+Network=stry.network
+ExposeHostPort=5432
+Notify=healthy
+HealthStartupCmd=pg_isready -q -h 127.0.0.1 -U "$$POSTGRES_USER" -d postgres
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=pg_isready -q -h 127.0.0.1 -U "$$POSTGRES_USER" -d postgres
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=60

@@ -1,0 +1,107 @@
+# Built on ghcr.io/foxws/laravel-frankenphp:php-8.5-dev, which has
+# FrankenPHP, the PHP extensions, Composer, Node.js, pnpm, the PostgreSQL
+# client, Xdebug, Playwright's browser deps and the "docker" user (see
+# docs/runtime.md in foxws/laravel-podman, which builds it). Pass
+# --build-arg RUNTIME_IMAGE=... for another one.
+ARG RUNTIME_IMAGE=ghcr.io/foxws/laravel-frankenphp:php-8.5-dev
+
+# FFmpeg release branch of the BtbN builds. Pass --build-arg
+# FFMPEG_VERSION=... for another one.
+ARG FFMPEG_VERSION=9.0
+
+FROM docker.io/rust:latest AS builder
+
+ARG FFMPEG_VERSION
+
+WORKDIR /tmp
+
+# FFmpeg shared build: ffmpeg and ffprobe share one copy of the libraries,
+# where the static build gives each binary its own.
+RUN arch="$(uname -m)" && case "$arch" in \
+      x86_64) ARCH="linux64" ;; \
+      aarch64) ARCH="linuxarm64" ;; \
+      *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+    esac \
+    && FFMPEG_URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n${FFMPEG_VERSION}-latest-${ARCH}-gpl-shared-${FFMPEG_VERSION}.tar.xz" \
+    && mkdir -p /opt/ffmpeg \
+    && curl -fsSL "${FFMPEG_URL}" | tar -xJ --no-same-owner --strip-components=1 -C /opt/ffmpeg --wildcards '*/bin/ffmpeg' '*/bin/ffprobe' '*/lib/*.so.*' \
+    && chmod +x /opt/ffmpeg/bin/ffmpeg /opt/ffmpeg/bin/ffprobe
+
+# ab-av1 (use BuildKit cache mounts)
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    cargo install ab-av1 --root /usr/local
+
+FROM ${RUNTIME_IMAGE} AS development
+
+# The base image's labels name laravel-podman, where it's built...
+LABEL org.opencontainers.image.title="stry" \
+      org.opencontainers.image.description="Self-hosted video library and streaming" \
+      org.opencontainers.image.source="https://github.com/francoism90/stry" \
+      org.opencontainers.image.licenses="MIT"
+
+ARG UID=1000
+ARG GID=1000
+ARG PHP_EXTENSIONS=""
+
+WORKDIR /app
+
+ENV PHP_CLI="php -d variables_order=EGPCS /app/artisan"
+ENV APP_COMMAND="${PHP_CLI} octane:frankenphp --host=0.0.0.0 --port=8000 --watch"
+
+# Enable non-free and non-free-firmware repositories (for Intel VA drivers)
+RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
+
+# Packages the runtime image doesn't have. BtbN's arm64 builds of FFmpeg
+# have no VA-API or QSV, so the VA-API and Intel drivers are only installed
+# on amd64.
+RUN arch="$(dpkg --print-architecture)" \
+    && AMD64_DRIVERS="" \
+    && if [ "$arch" = "amd64" ]; then \
+    AMD64_DRIVERS="libva2 libva-drm2 mesa-va-drivers libmfx-gen1.2 intel-media-va-driver-non-free"; \
+    fi \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+    ${AMD64_DRIVERS} \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# The runtime image's "docker" user is 1000:1000. Renumber it when building
+# with another UID/GID.
+RUN if [ "$(id -u docker)" != "${UID}" ] || [ "$(id -g docker)" != "${GID}" ]; then \
+        groupmod -o -g "${GID}" docker \
+        && usermod -o -u "${UID}" -g "${GID}" docker \
+        && chown -R docker:docker /home/docker /app /config /data; \
+    fi
+
+# Create directories and set ownership
+RUN mkdir -p /cache /media /import /exports \
+    && chown -R docker:docker /cache /media /import /exports
+
+# Install additional PHP extensions if specified
+RUN if [ -n "$PHP_EXTENSIONS" ]; then \
+    install-php-extensions $PHP_EXTENSIONS; \
+fi
+
+# Custom PHP configuration
+COPY containers/runtimes/development/php-development.ini ${PHP_INI_DIR}/conf.d/xx-php-user.ini
+
+# Copy FFmpeg and ab-av1 from builder stage
+COPY --from=builder /opt/ffmpeg/bin/ /usr/local/bin/
+COPY --from=builder /opt/ffmpeg/lib/ /usr/local/lib/
+COPY --from=builder /usr/local/bin/ab-av1 /usr/local/bin/ab-av1
+
+# Register the FFmpeg libraries, and make sure both binaries start and the
+# VMAF filter ab-av1 scores its encodes with is there
+RUN ldconfig \
+    && ffmpeg -hide_banner -version \
+    && ffprobe -hide_banner -version \
+    && ffmpeg -hide_banner -filters | grep -q libvmaf
+
+# Entrypoint
+COPY --chmod=755 containers/runtimes/development/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+USER docker
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

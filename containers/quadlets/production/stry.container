@@ -1,0 +1,45 @@
+[Unit]
+Description=Laravel App (Octane) container
+Requires=stry-pgsql.container stry-valkey.container
+After=stry-pgsql.container stry-valkey.container stry-rustfs.container stry-typesense.container
+Wants=stry-mailpit.container stry-horizon.container stry-schedule.container stry-reverb.container stry-inertia-ssr.container stry-rustfs.container stry-typesense.container
+# Restart=always retries a crash every 5 seconds, which never reaches
+# systemd's default start limit (5 in 10s). Give up after 5 tries in
+# 5 minutes instead, so a broken setup ends up failed, not looping.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Container]
+Image=ghcr.io/francoism90/stry:3
+AutoUpdate=registry
+Environment=PUID=%U
+Environment=PGID=%G
+UserNS=keep-id
+AddDevice=/dev/dri:/dev/dri
+GroupAdd=keep-groups
+Secret=stry-env,target=/app/.env,mode=0400,uid=%U,gid=%G
+Volume=stry-videos.volume:/media:rw
+Volume=stry-import.volume:/import:rw
+Volume=stry-exports.volume:/exports:rw
+Volume=stry-config.volume:/config:rw
+Volume=stry-data.volume:/data:rw
+Volume=stry-cache.volume:/cache:rw
+Network=stry.network
+ExposeHostPort=8000
+Notify=healthy
+HealthStartupCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up
+HealthStartupInterval=1s
+HealthStartupTimeout=5s
+HealthCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up
+HealthInterval=1m
+HealthTimeout=5s
+HealthRetries=3
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
