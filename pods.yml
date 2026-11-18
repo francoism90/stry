@@ -124,7 +124,7 @@ ondemand:
   # schedule (routes/console.php and the packages' scheduled tasks).
   schedule:
     container: stry-schedule
-    at: ["*:00", "01:00", "02:00"]
+    at: ['*:00', '01:00', '02:00']
     environment:
       APP_COMMAND: php -d variables_order=EGPCS /app/artisan schedule:run
-      APP_OPTIMIZE: "false"
+      APP_OPTIMIZE: 'false'
