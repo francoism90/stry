@@ -38,7 +38,7 @@ Edit `.env` and set at least:
 
 See [Application Configuration](configuration.md) for all options.
 
-The app reads your library from `/srv/library/videos` and imports from `/srv/library/import`. To use other folders, change `Device=` in `stry-videos.volume`, `stry-import.volume` and `stry-exports.volume` before you install. On SELinux hosts, such as Fedora, label these folders once before starting the services, or the containers can't read them. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
+The app reads your library from `/srv/library/videos` and imports from `/srv/library/import`. To use other folders, give those volumes a drop-in before you start the services (see [Another library folder](podman.md#another-library-folder)). On SELinux hosts, such as Fedora, label these folders once before starting the services, or the containers can't read them. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
 
 ## Install
 

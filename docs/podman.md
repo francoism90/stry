@@ -60,7 +60,7 @@ Then point your reverse proxy at that port. A few services need to be reachable 
 The units don't hard-code anything about your host:
 
 - **Your user.** The app containers run as your own user through `UserNS=keep-id`, with `%U` and `%G` (systemd's specifiers for your user and group ID) wherever an ID is needed.
-- **Your library.** `/media`, `/import` and `/exports` are the `stry-videos`, `stry-import` and `stry-exports` volumes. Each one is a folder on the host: `/srv/library/videos`, `/srv/library/import` and `/srv/library/exports` in production, which you create once (see below), and `storage/app/library/*` in your checkout in development, which the volumes create themselves. To use another folder, change `Device=` in its `.volume` file before you install. See [Storage, ownership & SELinux](#storage-ownership--selinux).
+- **Your library.** `/media`, `/import` and `/exports` are the `stry-videos`, `stry-import` and `stry-exports` volumes. Each one is a folder on the host: `/srv/library/videos`, `/srv/library/import` and `/srv/library/exports` in production, which you create once (see below), and `storage/app/library/*` in your checkout in development, which the volumes create themselves. To use another folder, give its volume a drop-in (see [Another library folder](#another-library-folder)).
 - **Your secrets.** Passwords and the `.env` file are Podman secrets, which the units read with `Secret=`.
 
 ## Install
@@ -79,8 +79,8 @@ Pods then shows the units and asks for the secrets they use. Paste your `.env` f
 git clone https://github.com/francoism90/stry.git ~/projects/stry
 cd ~/projects/stry
 
-# Change Device= in containers/quadlets/production/stry-*.volume first if
-# your library isn't in /srv/library.
+# If your library isn't in /srv/library, add the drop-ins from
+# "Another library folder" in docs/podman.md first.
 podman quadlet install --application=stry containers/quadlets/production
 
 # Create the secrets the units use. "lpod SERVICE secrets" asks for each
@@ -178,7 +178,18 @@ The app, Horizon and the scheduler share these mounts:
     sudo restorecon -R /srv/library
     ```
 
-    If your library lives elsewhere, change `Device=` in `stry-videos.volume`, `stry-import.volume` and `stry-exports.volume` before you install, and label those folders instead. These volumes only point at the folders: removing one, for example with `podman volume rm stry-videos` after changing its folder, never deletes your files. Files you add later get the label automatically.
+    If your library lives elsewhere, point the volumes at it (see below) and label those folders instead. Files you add later get the label automatically.
+
+### Another library folder
+
+To keep your library somewhere other than `/srv/library`, give `stry-videos`, `stry-import` and `stry-exports` a drop-in that sets their `Device=`, instead of editing the `.volume` files: an update, with Pods or `podman quadlet install --replace`, replaces those files, but keeps your drop-ins. For example, `~/.config/containers/systemd/stry-videos.volume.d/path.conf`:
+
+```ini
+[Volume]
+Device=/mnt/videos
+```
+
+Do the same for `stry-import.volume.d/` and `stry-exports.volume.d/`, then run `systemctl --user daemon-reload`. A volume that already exists keeps its old folder, so if you change the folder later, stop stry and remove the volume (`podman volume rm stry-videos`) before you start it again. These volumes only point at the folders: removing one never deletes your files.
 
 ### Troubleshooting
 

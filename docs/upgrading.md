@@ -40,7 +40,7 @@ podman quadlet install --replace --application=stry containers/quadlets/producti
 systemctl --user restart stry
 ```
 
-With Pods, install the application again from the new tag with **Replace** ticked.
+With Pods, choose the new release under **Update** on the application page. It keeps your drop-ins, and then offers **Update stry** (`after_update` in `pods.yml`), which runs the migration step below.
 
 ## Run migrations
 

@@ -73,6 +73,15 @@ after_install:
         label: Password
         type: password
 
+# Steps the application page offers after Pods updates stry to a new release.
+after_update:
+  update:
+    label: Update stry
+    description: Runs the migrations, clears the settings cache and restarts the workers.
+    container: stry
+    user: docker
+    command: php artisan app:update --no-interaction
+
 # The containers the Pods proxy can give a hostname. Pods asks for the
 # hostnames when installing; they must match APP_URL, VITE_REVERB_HOST and
 # AWS_URL in your .env (and in development VITE_HMR_HOST, MAILPIT_UI_HOST and

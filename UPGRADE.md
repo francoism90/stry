@@ -7,7 +7,7 @@
 ### What changes
 
 - **Units.** `containers/stubs/*/quadlets/*.quadlets` became one file per unit in `containers/quadlets/production/` and `containers/quadlets/development/`. The Containerfiles moved to `containers/runtimes/`.
-- **Settings in `.env`.** The `PODMAN_*` keys are gone. Your user and group ID come from systemd (`%U` and `%G`). The library folders are the `stry-videos`, `stry-import` and `stry-exports` volumes, which point at `/srv/library/*` by default: change `Device=` in their `.volume` files if you set `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` or `PODMAN_EXPORTS_PATH`. For other changes, such as `PODMAN_IMAGE_REGISTRY`, use a drop-in (see [Changing a unit](docs/podman.md#changing-a-unit)).
+- **Settings in `.env`.** The `PODMAN_*` keys are gone. Your user and group ID come from systemd (`%U` and `%G`). The library folders are the `stry-videos`, `stry-import` and `stry-exports` volumes, which point at `/srv/library/*` by default: if you set `PODMAN_VIDEOS_PATH`, `PODMAN_IMPORT_PATH` or `PODMAN_EXPORTS_PATH`, point them at those folders with a drop-in (see [Another library folder](docs/podman.md#another-library-folder)). For other changes, such as `PODMAN_IMAGE_REGISTRY`, use a drop-in (see [Changing a unit](docs/podman.md#changing-a-unit)).
 - **No ports on the host.** Every unit, the app included, uses `ExposeHostPort=`, so the units don't clash with other apps or users. If your reverse proxy pointed at port 8000, publish it again with a drop-in, `~/.config/containers/systemd/stry.container.d/port.conf` with `[Container]` and `PublishPort=8000:8000` (see [Podman Quadlet](docs/podman.md#the-units)).
 - **On-demand is optional.** The app now starts at boot. To keep it sleeping when idle, turn it on with `lpod stry ondemand enable` (see [On-demand services](docs/podman.md#on-demand-services)), which writes the units from the settings in `pods.yml`. Its idle check runs `php artisan app:idle` instead of `podman:idle`, and the `laravel-idle@.timer` template is replaced by `stry-idle.timer`.
 - **Commands.** `podman:s3-setup` is now `app:s3-setup`. Its buckets are set in `config/filesystems.php` (`buckets` and `cors_buckets`) instead of `PODMAN_S3_BUCKETS` and `PODMAN_S3_CORS_BUCKETS`.
@@ -44,7 +44,7 @@
     systemctl --user start stry
     ```
 
-    The `stry-videos`, `stry-import` and `stry-exports` volumes are new: they're created on the first start and point at your library, so nothing is copied.
+    The `stry-videos`, `stry-import` and `stry-exports` volumes are new: they're created on the first start and point at your library, so nothing is copied. If your library isn't in `/srv/library`, add their drop-ins (see [Another library folder](docs/podman.md#another-library-folder)) before that first start, with Pods too.
 
 5. **Remove `PODMAN_*` from your `.env`**, and store it as the `stry-env` secret again (`podman secret create --replace stry-env .env`). The keys are ignored now, so this is only cleanup.
 
