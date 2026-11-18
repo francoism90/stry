@@ -30,7 +30,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-The units in `containers/quadlets/development/` run every service against your checkout, so your changes show up right away. They expect the checkout in `~/projects/stry`; if it's somewhere else, change the path in `stry.build` and `stry-source.volume` first. Then build the image and start the app:
+The units in `containers/quadlets/development/` run every service against your checkout, so your changes show up right away. They expect the checkout in `~/projects/stry`; if it's somewhere else, see [Another checkout folder](#another-checkout-folder) first. Then build the image and start the app:
 
 ```bash
 podman quadlet install --application=stry containers/quadlets/development
@@ -64,6 +64,26 @@ pnpm install
 ```
 
 `stry-vite` runs the Vite dev server in its own container, next to `stry`. You don't need to run `pnpm dev` yourself.
+
+### Another checkout folder
+
+If your checkout isn't in `~/projects/stry`, give `stry.build` and `stry-source.volume` a drop-in with its path, instead of editing the files: an update, with Pods or `podman quadlet install --replace`, replaces those files, but keeps your drop-ins. Use absolute paths, as `podman build` looks for a relative `File=` in the service's own directory. For a checkout in `~/code/stry`, create `~/.config/containers/systemd/stry.build.d/path.conf`:
+
+```ini
+[Build]
+SetWorkingDirectory=%h/code/stry
+File=%h/code/stry/containers/runtimes/development/Containerfile
+IgnoreFile=%h/code/stry/containers/runtimes/development/dockerignore
+```
+
+and `~/.config/containers/systemd/stry-source.volume.d/path.conf`:
+
+```ini
+[Volume]
+Device=%h/code/stry
+```
+
+Then run `systemctl --user daemon-reload`. The `stry-source` volume is created once, so if you move your checkout later, stop stry and remove it (`podman volume rm stry-source`) before you start it again. Removing it never deletes your checkout.
 
 ### Admin account
 
@@ -133,7 +153,7 @@ Available when you're logged in as a **super-admin**:
 
 - **A container won't start**: run `journalctl --user -u stry -f`. Look for a missing or invalid `stry-env` secret, or, if you published the app's port with a drop-in, another process using that port.
 - **Permission errors**: run `sudo chown -R "$USER:" ~/projects/stry/storage`. The containers run as your own user, so this is only needed after running a command as root, such as `podman exec` without `--user docker`.
-- **Permission denied on `/media` or `/import`**: the development units keep the library in `storage/app/library/` in your checkout. If you pointed `stry-videos.volume` or the others at another folder, label it once for containers on SELinux hosts. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
+- **Permission denied on `/media` or `/import`**: the development units keep the library in `storage/app/library/` in your checkout. If you gave `stry-videos` or the others another folder with a drop-in (see [Another library folder](podman.md#another-library-folder)), label it once for containers on SELinux hosts. See [Storage, ownership & SELinux](podman.md#storage-ownership--selinux).
 - **The database or caches are empty after regenerating the Podman files**: the `development` volumes used to be named `systemd-stry-pgsql`, `systemd-stry-cache` and so on. They're now named like the production ones, `stry-pgsql` and `stry-cache`, so the services start with new volumes. Your old data is still in the `systemd-stry-*` volumes. For the database, run `lpod stry artisan migrate --seed` to start fresh, or copy the old volume over while the services are stopped: `podman volume export systemd-stry-pgsql | podman volume import stry-pgsql -`. Once you no longer need them, list the old volumes with `podman volume ls --filter name=systemd-stry` and remove them with `podman volume rm`.
 - **Assets don't build**: run `rm -rf bootstrap/ssr && lpod stry npm run build`.
 - **Tests fail with `could not translate host name "systemd-stry-pgsql"`**: you ran `php artisan test` on your machine instead of inside the container network. Start the containers with `lpod stry up`, then run `lpod stry artisan test`.

@@ -1,7 +1,9 @@
 [Build]
-# Builds the development image from your checkout of stry. Change
-# ~/projects/stry below (three times here, and in stry-source.volume) if
-# your checkout is somewhere else. The paths are absolute on purpose:
+# Builds the development image from your checkout of stry. If your
+# checkout isn't in ~/projects/stry, override the three paths below (and
+# the one in stry-source.volume) with a stry.build.d/ drop-in instead of
+# editing this file, see "Another checkout folder" in docs/development.md.
+# The paths are absolute on purpose:
 # SetWorkingDirectory= only sets the build context, so podman build would
 # look for a relative File= or IgnoreFile= in the service's own directory.
 ImageTag=localhost/stry:latest
