@@ -127,7 +127,7 @@ Read before executing:
 
 ### Content Security Policy (optional, requires `spatie/laravel-csp`)
 
-- Presets: `Foxws\Essentials\Csp\Presets\BasicPreset` (strict same-origin policy plus `*.{app host}`, nonce + `strict-dynamic` scripts) `IconifyPreset` (`connect-src api.iconify.design`) and `ReverbPreset` (`connect-src` for Echo's websocket to Reverb, from the first Reverb app's `wsHost`/`wsPort`/`wsScheme` options, falling back to `host`/`port`/`scheme`)
+- Presets: `Foxws\Essentials\Csp\Presets\BasicPreset` (strict same-origin policy plus `*.{app host}`, nonce + `strict-dynamic` scripts), `IconifyPreset` (`connect-src api.iconify.design`) and `ReverbPreset` (`connect-src` for Echo's websocket to Reverb, from the first Reverb app's `wsHost`/`wsPort`/`wsScheme` options, falling back to `host`/`port`/`scheme`)
 - Set `csp.nonce_generator` to `Foxws\Essentials\Csp\Nonce\ViteNonceGenerator` so the header and Vite's tags share one nonce
 - Append Spatie's `Spatie\Csp\AddCspHeaders` to the web middleware; Horizon and Telescope run inside the app and keep its policy
 - Add `Foxws\Essentials\Csp\Middleware\AddHorizonCspNonce` to `horizon.middleware` and `AddTelescopeCspNonce` to `telescope.middleware`, so their inline style and script tags get the nonce; keep `Spatie\Csp\Presets\BunnyFonts` for their font
