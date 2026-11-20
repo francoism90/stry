@@ -15,7 +15,7 @@ AutoUpdate=registry
 HealthCmd=none
 Environment=PUID=%U
 Environment=PGID=%G
-Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon"
+Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon --quiet"
 UserNS=keep-id
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
