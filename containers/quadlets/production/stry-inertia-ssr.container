@@ -9,7 +9,7 @@ StartLimitIntervalSec=300
 StartLimitBurst=5
 
 [Container]
-Image=ghcr.io/francoism90/stry:3.1.0-rc.2
+Image=ghcr.io/francoism90/stry:3.1.0-rc.3
 AutoUpdate=registry
 HealthCmd=none
 Environment=PUID=%U
