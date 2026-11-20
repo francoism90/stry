@@ -77,8 +77,8 @@ return [
 
     'manifest' => [
         'id' => env('PWA_ID', '/'),
-        'name' => env('APP_NAME', 'stry'),
-        'short_name' => env('PWA_SHORT_NAME', 'stry'),
+        'name' => env('APP_NAME', 'Stry'),
+        'short_name' => env('PWA_SHORT_NAME', 'Stry'),
         'description' => env('PWA_DESCRIPTION', 'A streaming service for videos, movies and TV shows.'),
         'start_url' => env('PWA_START_URL', '/'),
         'scope' => env('PWA_SCOPE', '/'),
