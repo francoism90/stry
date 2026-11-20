@@ -24,6 +24,7 @@ HealthCmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8108 && printf "GET /health HTTP/1
 HealthInterval=1m
 HealthTimeout=5s
 HealthRetries=3
+StopTimeout=55
 
 [Service]
 Restart=always

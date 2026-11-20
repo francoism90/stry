@@ -34,6 +34,7 @@ HealthCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up
 HealthInterval=1m
 HealthTimeout=5s
 HealthRetries=3
+StopTimeout=25
 
 [Service]
 Restart=always

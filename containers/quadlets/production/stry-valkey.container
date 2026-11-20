@@ -22,6 +22,7 @@ HealthCmd=valkey-cli ping
 HealthInterval=1m
 HealthTimeout=5s
 HealthRetries=3
+StopTimeout=55
 
 [Service]
 Restart=always

@@ -23,6 +23,7 @@ Secret=stry-env,target=/app/.env,mode=0400,uid=%U,gid=%G
 Volume=stry-exports.volume:/exports:rw
 Volume=stry-cache.volume:/cache:rw
 Network=stry.network
+StopTimeout=55
 
 [Service]
 Restart=always

@@ -15,7 +15,7 @@ AutoUpdate=local
 UserNS=keep-id
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
-Volume=stry-source.volume:/app:rw,z,U
+Volume=stry-source.volume:/app:rw,z
 Volume=stry-videos.volume:/media:rw
 Volume=stry-import.volume:/import:rw
 Volume=stry-exports.volume:/exports:rw
@@ -32,6 +32,7 @@ HealthCmd=curl -fsS -o /dev/null http://127.0.0.1:8000/up
 HealthInterval=1m
 HealthTimeout=5s
 HealthRetries=3
+StopTimeout=25
 
 [Service]
 Restart=always

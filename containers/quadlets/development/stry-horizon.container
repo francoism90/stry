@@ -25,6 +25,7 @@ Volume=stry-import.volume:/import:rw
 Volume=stry-exports.volume:/exports:rw
 Volume=stry-cache.volume:/cache:rw
 Network=stry.network
+StopTimeout=55
 
 [Service]
 Restart=always

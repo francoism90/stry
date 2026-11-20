@@ -19,6 +19,7 @@ UserNS=keep-id
 Secret=stry-env,target=/app/.env,mode=0400,uid=%U,gid=%G
 Network=stry.network
 ExposeHostPort=6001
+StopTimeout=55
 
 [Service]
 Restart=always
