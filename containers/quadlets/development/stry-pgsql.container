@@ -26,6 +26,7 @@ HealthCmd=pg_isready -q -h 127.0.0.1 -U "$$POSTGRES_USER" -d postgres
 HealthInterval=1m
 HealthTimeout=5s
 HealthRetries=3
+StopTimeout=55
 
 [Service]
 Restart=always

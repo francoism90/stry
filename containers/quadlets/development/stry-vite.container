@@ -17,6 +17,7 @@ UserNS=keep-id
 Volume=stry-source.volume:/app:rw,z
 Network=stry.network
 ExposeHostPort=5173
+StopTimeout=55
 
 [Service]
 Restart=always
