@@ -59,14 +59,16 @@ const toggle = (group: Group) => {
         >
           <span class="text-sm font-medium">{{ group.name }}</span>
 
-          <UButton
+          <UToggle
+            :model-value="group.has"
             :icon="group.has ? 'i-lucide-check' : 'i-lucide-plus'"
             :aria-label="group.has ? `Remove from ${group.name}` : `Add to ${group.name}`"
-            :aria-pressed="group.has"
-            :color="group.has ? 'primary' : 'neutral'"
+            color="neutral"
             variant="ghost"
+            active-color="primary"
+            active-variant="ghost"
             size="sm"
-            @click="toggle(group)"
+            @update:model-value="toggle(group)"
           />
         </li>
       </ul>

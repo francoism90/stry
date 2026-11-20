@@ -26,7 +26,14 @@ const filters = [
   { label: 'Unread', value: 'unread' },
 ] as const
 
-const applyFilter = (scope: 'all' | 'unread'): void => {
+/**
+ * Ignores the deselect a single toggle group emits when the active filter is pressed again.
+ */
+const applyFilter = (scope: unknown): void => {
+  if (scope !== 'all' && scope !== 'unread') {
+    return
+  }
+
   router.get(
     index.url({ query: { filter: { scope: scope === 'all' ? undefined : scope } } }),
     {},
@@ -80,28 +87,21 @@ const sections = computed(() =>
         </p>
       </header>
 
-      <div
-        class="flex flex-wrap gap-2"
-        role="group"
+      <UToggleGroup
+        :model-value="filter.scope"
+        :items="filters"
         aria-label="Show"
-      >
-        <UButton
-          v-for="option in filters"
-          :key="option.value"
-          :label="option.label"
-          :aria-pressed="filter.scope === option.value"
-          color="neutral"
-          variant="outline"
-          size="sm"
-          class="rounded-lg px-3"
-          :class="
-            filter.scope === option.value
-              ? 'bg-white text-black ring-white hover:bg-white'
-              : 'bg-(--glass) text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong)'
-          "
-          @click="applyFilter(option.value)"
-        />
-      </div>
+        color="neutral"
+        variant="outline"
+        active-color="neutral"
+        active-variant="outline"
+        size="sm"
+        class="flex flex-wrap gap-2"
+        :ui="{
+          item: 'rounded-lg bg-(--glass) px-3 text-highlighted ring-(--glass-border) backdrop-blur-md backdrop-saturate-140 hover:bg-(--glass-strong) data-[state=on]:bg-white data-[state=on]:text-black data-[state=on]:ring-white data-[state=on]:hover:bg-white',
+        }"
+        @update:model-value="applyFilter"
+      />
 
       <InfiniteScroll
         data="notifications"
