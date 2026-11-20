@@ -6,6 +6,7 @@ import ResourceLayout from '@/layouts/App/ResourceLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import type { Notification, NotificationCollection } from '@/types'
 import { Head, InfiniteScroll, router, usePage } from '@inertiajs/vue3'
+import type { ToggleGroupItem } from '@nuxt/ui'
 import { computed, toRef } from 'vue'
 
 const props = defineProps<{
@@ -21,10 +22,10 @@ const { hasUnread, markAllAsRead } = useNotifications(toRef(props, 'notification
 
 const unreadCount = computed<number>(() => usePage().props.unread ?? 0)
 
-const filters = [
+const filters: ToggleGroupItem[] = [
   { label: 'All', value: 'all' },
   { label: 'Unread', value: 'unread' },
-] as const
+]
 
 /**
  * Ignores the deselect a single toggle group emits when the active filter is pressed again.
