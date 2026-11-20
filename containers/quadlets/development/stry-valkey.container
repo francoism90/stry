@@ -26,5 +26,5 @@ HealthRetries=3
 [Service]
 Restart=always
 RestartSec=5
-TimeoutStartSec=120
+TimeoutStartSec=300
 TimeoutStopSec=60
