@@ -1,6 +1,8 @@
 <?php
 
+use Foxws\Media\Delivery\PackageSegments;
 use Illuminate\Support\Str;
+use Laravel\Scout\Jobs\MakeSearchable;
 
 return [
 
@@ -104,6 +106,7 @@ return [
     'waits' => [
         'redis:default' => 90,
         'redis:broadcasts' => 30,
+        'redis-media:media' => 15,
         'redis-long:processing' => 600,
         'redis-long:background' => 86400,
     ],
@@ -140,7 +143,8 @@ return [
     */
 
     'silenced' => [
-        // App\Jobs\ExampleJob::class,
+        MakeSearchable::class,
+        PackageSegments::class,
     ],
 
     'silenced_tags' => [
@@ -228,9 +232,9 @@ return [
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'minProcesses' => (int) env('QUEUE_BROADCASTS_MIN_PROCESSES', 1),
-            'maxProcesses' => (int) env('QUEUE_BROADCASTS_MAX_PROCESSES', 10),
-            'balanceMaxShift' => 5,
-            'balanceCooldown' => 1,
+            'maxProcesses' => (int) env('QUEUE_BROADCASTS_MAX_PROCESSES', 3),
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 128,
@@ -264,13 +268,13 @@ return [
             'minProcesses' => (int) env('QUEUE_MEDIA_MIN_PROCESSES', 1),
             'maxProcesses' => (int) env('QUEUE_MEDIA_MAX_PROCESSES', 10),
             'balanceMaxShift' => 2,
-            'balanceCooldown' => 1,
+            'balanceCooldown' => 3,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 256,
             'tries' => 1,
             'timeout' => 300,
-            'nice' => 0,
+            'nice' => 5,
         ],
 
         'supervisor-5' => [
