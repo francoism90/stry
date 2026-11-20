@@ -1,39 +1,40 @@
 {
-  "version": 1,
+  "version": 2,
   "skills": {
     "nuxt-ui": {
       "source": "nuxt/ui",
+      "commit": "422d015e288bdae82a62c6aeeb7a722ad3070a83",
       "sourceType": "github",
       "skillPath": "skills/nuxt-ui/SKILL.md",
-      "computedHash": "9724d09a8196e9c991f7afe29a38837b52b9fff80e9c31c04920b5f520e9cf2b"
+      "computedHash": "89a36be1af44314309cc668fab6294b566393e282e2526fa03c6dbc9ca9f2779"
     },
     "spatie-javascript": {
       "source": "spatie/guidelines-skills",
+      "commit": "eca8f60254f87fb4b2afed002494c969ee144841",
       "sourceType": "github",
       "skillPath": "resources/boost/skills/spatie-javascript/SKILL.md",
-      "computedHash": "6f681bb6790b3702ab28e887b7353fde87abb259eb5b9f2806191df9ff55be22",
-      "installMode": "copy"
+      "computedHash": "058b579b577f68797c59147fb21c411a5d9dccff8aa8ffa9025bdf9ff5bfa3c4"
     },
     "spatie-laravel-php": {
       "source": "spatie/guidelines-skills",
+      "commit": "eca8f60254f87fb4b2afed002494c969ee144841",
       "sourceType": "github",
       "skillPath": "resources/boost/skills/spatie-laravel-php/SKILL.md",
-      "computedHash": "970afa735d56e29328d9421d91a9b02d2e424c79be15d9b7fa1c26da46ac5075",
-      "installMode": "copy"
+      "computedHash": "c15e18b408efd52a4cc1ef8357717fc5479cbb09718f25a4e6cebfe0d0087512"
     },
     "spatie-security": {
       "source": "spatie/guidelines-skills",
+      "commit": "eca8f60254f87fb4b2afed002494c969ee144841",
       "sourceType": "github",
       "skillPath": "resources/boost/skills/spatie-security/SKILL.md",
-      "computedHash": "d9b081cdb568fef6027ee740ea8718d0af10cc001cc08ef7abe75a73906c713b",
-      "installMode": "copy"
+      "computedHash": "1ac174a842a946190d9b648f2b9d9969bd4438236a8b92112551e592f34f915f"
     },
     "spatie-version-control": {
       "source": "spatie/guidelines-skills",
+      "commit": "eca8f60254f87fb4b2afed002494c969ee144841",
       "sourceType": "github",
       "skillPath": "resources/boost/skills/spatie-version-control/SKILL.md",
-      "computedHash": "47219215138dbe0c883fd7f8b7751bf9f533b56666a9cc6a568e9951bd01c7d2",
-      "installMode": "copy"
+      "computedHash": "cad6528d5a7187951304f2db4bf00266ffde86e36fb8e36ffb6f6513e9b0b9d4"
     }
   }
 }
