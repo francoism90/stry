@@ -77,16 +77,19 @@ const save = (): void => {
           </span>
         </div>
 
-        <UButton
+        <UToggle
           v-if="item.saved !== null"
+          :model-value="isSaved"
           :icon="isSaved ? 'i-lucide-bookmark-check' : 'i-lucide-bookmark-plus'"
           :aria-label="isSaved ? `Unsave ${item.title}` : `Save ${item.title}`"
-          :aria-pressed="isSaved"
           color="neutral"
           variant="solid"
+          active-color="neutral"
+          active-variant="solid"
           class="pointer-events-auto absolute inset-e-2 top-2 z-10 rounded-full border border-white/20 bg-black/45 text-white opacity-0 backdrop-blur-lg backdrop-saturate-160 transition-opacity group-hover/card:opacity-100 hover:bg-black/60 focus-visible:opacity-100"
           :class="{ 'text-primary': isSaved }"
-          @click.prevent="save"
+          @click.prevent
+          @update:model-value="save"
         />
 
         <div

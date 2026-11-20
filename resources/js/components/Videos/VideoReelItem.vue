@@ -103,28 +103,32 @@ const reelButton =
             @click="emit('toggleMute')"
           />
 
-          <UButton
+          <UToggle
+            :model-value="liked"
             icon="i-lucide-heart"
             :aria-label="liked ? 'Unlike' : 'Like'"
-            :aria-pressed="liked"
             color="neutral"
             variant="ghost"
+            active-color="neutral"
+            active-variant="ghost"
             size="lg"
             :class="[reelButton, { 'text-error hover:text-error': liked }]"
             :ui="{ leadingIcon: liked ? 'fill-current' : '' }"
-            @click="like"
+            @update:model-value="like"
           />
 
-          <UButton
+          <UToggle
+            :model-value="saved"
             icon="i-lucide-bookmark"
             :aria-label="saved ? 'Unsave' : 'Save'"
-            :aria-pressed="saved"
             color="neutral"
             variant="ghost"
+            active-color="neutral"
+            active-variant="ghost"
             size="lg"
             :class="[reelButton, { 'text-primary hover:text-primary': saved }]"
             :ui="{ leadingIcon: saved ? 'fill-current' : '' }"
-            @click="save"
+            @update:model-value="save"
           />
 
           <UButton
