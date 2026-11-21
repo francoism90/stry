@@ -62,7 +62,7 @@ For a visual tour of the app, check out the [screenshots gallery](https://foxws.
 | --------------------- | -------------------------------------------------------------------------------------- |
 | **Backend**           | [Laravel 13.x](https://laravel.com/)                                                   |
 | **Frontend**          | [Inertia 3.x](https://inertiajs.com/) with [NuxtUI](https://ui.nuxt.com/)              |
-| **Database**          | [PostgreSQL 18.x](https://www.postgresql.org/)                                         |
+| **Database**          | [PostgreSQL 19.x](https://www.postgresql.org/)                                         |
 | **Containers**        | Podman Quadlet (Podman 6.x), installable with [Pods](https://github.com/foxws/pods)    |
 | **Search**            | [Typesense 30.x](https://typesense.org/)                                               |
 | **Video Streaming**   | [Laravel Media](https://github.com/foxws/laravel-media) (direct-play HLS + DASH, CMAF) |

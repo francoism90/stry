@@ -8,7 +8,7 @@ StartLimitIntervalSec=300
 StartLimitBurst=5
 
 [Container]
-Image=docker.io/library/postgres:18
+Image=docker.io/library/postgres:19
 AutoUpdate=registry
 Secret=stry-pgsql-db,type=env,target=POSTGRES_DB
 Secret=stry-pgsql-user,type=env,target=POSTGRES_USER
