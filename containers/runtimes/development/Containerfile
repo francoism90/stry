@@ -3,8 +3,10 @@
 # Xdebug and Playwright's browser deps. The source is mounted in at runtime.
 
 # PHP version of the official FrankenPHP image (Debian trixie) and the
-# Node.js major. Pass --build-arg PHP_VERSION=8.5 for another one.
-ARG PHP_VERSION=8.6
+# Node.js major. Pass --build-arg PHP_VERSION=8.6 for another one, once
+# the extensions below support it (igbinary, redis, imagick, APCu and
+# Xdebug don't yet).
+ARG PHP_VERSION=8.5
 ARG NODE_VERSION=26
 
 # FFmpeg release branch of the BtbN builds. Pass --build-arg
