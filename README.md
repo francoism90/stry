@@ -12,7 +12,6 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-19.x-4169E1?logo=postgresql)](https://www.postgresql.org)
 [![FrankenPHP](https://img.shields.io/badge/FrankenPHP-1.x-0A7CFF?logo=php)](https://frankenphp.dev)
 [![Podman](https://img.shields.io/badge/Podman-6.x-892CA0?logo=podman)](https://podman.io)
-[![Demo](https://img.shields.io/badge/Demo-Screenshots-181717)](https://foxws.nl/stry/screenshots)
 
 [Demo](https://foxws.nl/stry/screenshots) • [Documentation](#documentation) • [Installation](#usage)
 
