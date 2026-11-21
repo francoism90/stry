@@ -16,7 +16,7 @@ How to upgrade a running production install to a new **stry** release. For a fir
 
 - Check the [GitHub releases](https://github.com/francoism90/stry/releases) for breaking changes since your current version, and follow the [upgrade guide](https://github.com/francoism90/stry/blob/main/UPGRADE.md) when a release has one. Installs that still have a `podman/` folder or `PODMAN_*` keys in their `.env` need its "Moving to plain Quadlet units" steps once.
 - Back up the database. See the [backup example](production.md#security-checklist) in Production Setup.
-- Images are tagged `latest` (the newest stable release), `{major}`, `{major}.{minor}` and the full version number. The Quadlet files use `latest`. To stay on one release line, pin the major tag instead, such as `ghcr.io/francoism90/stry:4`, with `Image=` in a drop-in for each app unit (see [Changing a unit](podman.md#changing-a-unit)).
+- Images are tagged `latest` (the newest stable release), `{major}`, `{major}.{minor}` and the full version number. The Quadlet files use the major tag, such as `ghcr.io/francoism90/stry:4`, so updates stay within the release line you're on. To pin another tag, set `Image=` in a drop-in for each app unit (see [Changing a unit](podman.md#changing-a-unit)).
 
 ## Pull the new image
 
@@ -26,7 +26,7 @@ Every service in `containers/quadlets/production/` has `AutoUpdate=registry` set
 systemctl --user start podman-auto-update
 ```
 
-With `latest`, this also moves to a new major release as soon as it's out. A new major comes with an upgrade guide, so read it before you pull, or pin the major tag (see above) and move on when you're ready. The other services, such as PostgreSQL, stay on the tags in your installed Quadlet files until you update the units. To run it on a schedule, enable `podman-auto-update.timer`. In [Pods](https://github.com/foxws/pods), use **Redeploy** on the application.
+It stays on the tag in the Quadlet file, so `stry:4` gets 4.x releases but never moves to 5.0 by itself: a new major comes with an upgrade guide, and its Quadlet files use the new tag. The other services, such as PostgreSQL, also stay on the tags in your installed Quadlet files until you update the units. To run it on a schedule, enable `podman-auto-update.timer`. In [Pods](https://github.com/foxws/pods), use **Redeploy** on the application.
 
 The image of the latest stable release is also rebuilt every week with the latest Debian and PHP security updates, under the same tags, so auto-update picks those up between releases too.
 
