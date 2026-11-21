@@ -4,8 +4,7 @@
 
 # PHP version of the official FrankenPHP image (Debian trixie) and the
 # Node.js major. Pass --build-arg PHP_VERSION=8.6 for another one, once
-# the extensions below support it (igbinary, redis, imagick, APCu and
-# Xdebug don't yet).
+# the extensions below support it (redis and Xdebug don't yet).
 ARG PHP_VERSION=8.5
 ARG NODE_VERSION=26
 
@@ -84,16 +83,11 @@ RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
     && npm cache clean --force \
     && rm -rf /tmp/* /var/tmp/* /root/.npm
 
-# Install PHP extensions
+# The extensions beyond PHP's own (OPcache is built in) that Laravel,
+# Horizon, passkeys (bcmath), the media library (exif, gd) and Composer
+# (zip) use
 RUN install-php-extensions @composer \
-    apcu bcmath exif ffi gd opcache \
-    igbinary inotify intl pcntl \
-    pdo_pgsql redis sockets uv zip
-
-# Imagick's build regenerates its arginfo headers, and each parallel make job
-# downloads PHP-Parser for that into the same folder, which fails. One job
-# downloads it once.
-RUN IPE_PROCESSOR_COUNT=1 install-php-extensions imagick
+    bcmath exif gd intl pcntl pdo_pgsql redis zip
 
 # The official image lets frankenphp bind ports below 1024 through a file
 # capability, which can't start in a container without capabilities

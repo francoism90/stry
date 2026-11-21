@@ -7,6 +7,7 @@ stry 4.0 runs PostgreSQL 19 instead of 18. A new major version of PostgreSQL can
 ### What changes
 
 - **PostgreSQL 19.** `stry-pgsql.container` and `stry-dev-pgsql.container` use `postgres:19`, and the app image has the PostgreSQL 19 client (`POSTGRES_VERSION=19`). `pg_dump` refuses to dump a newer server, so the client and server move together.
+- **Fewer PHP extensions.** The images no longer install APCu, FFI, igbinary, Imagick, inotify, sockets and uv, which stry doesn't use. If you set `IMAGE_DRIVER=imagick`, remove it: the media library uses GD.
 
 ### Steps
 
