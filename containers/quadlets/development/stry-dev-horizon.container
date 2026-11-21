@@ -1,10 +1,10 @@
 [Unit]
-Description=Laravel Horizon container
+Description=Laravel Horizon (development)
 # Started with the app (through its Wants=), but not stopped with it, so
 # long-running jobs like transcodes finish while the on-demand app is idle.
-Requires=stry-pgsql.container stry-valkey.container
-After=stry-pgsql.container stry-valkey.container stry-rustfs.container stry-typesense.container
-Wants=stry-rustfs.container stry-typesense.container stry-reverb.container stry-mailpit.container
+Requires=stry-dev-pgsql.container stry-dev-valkey.container
+After=stry-dev-pgsql.container stry-dev-valkey.container stry-dev-rustfs.container stry-dev-typesense.container
+Wants=stry-dev-rustfs.container stry-dev-typesense.container stry-dev-reverb.container stry-dev-mailpit.container
 # Restart=always retries a crash every 5 seconds, which never reaches
 # systemd's default start limit (5 in 10s). Give up after 5 tries in
 # 5 minutes instead, so a broken setup ends up failed, not looping.
@@ -12,19 +12,20 @@ StartLimitIntervalSec=300
 StartLimitBurst=5
 
 [Container]
-Image=stry.build
+Image=stry-dev.build
 AutoUpdate=local
 HealthCmd=none
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan horizon:listen"
 UserNS=keep-id
 AddDevice=/dev/dri:/dev/dri
 GroupAdd=keep-groups
-Volume=stry-source.volume:/app:rw,z
-Volume=stry-videos.volume:/media:rw
-Volume=stry-import.volume:/import:rw
-Volume=stry-exports.volume:/exports:rw
-Volume=stry-cache.volume:/cache:rw
-Network=stry.network
+Volume=stry-dev-source.volume:/app:rw,z
+Volume=stry-dev-videos.volume:/media:rw
+Volume=stry-dev-import.volume:/import:rw
+Volume=stry-dev-exports.volume:/exports:rw
+Volume=stry-dev-cache.volume:/cache:rw
+Network=stry-dev.network
+NetworkAlias=systemd-stry-horizon
 
 [Service]
 Restart=always

@@ -1,12 +1,12 @@
 {
     "name": "stry-devcontainer",
-    "initializeCommand": "podman network create --ignore systemd-stry",
+    "initializeCommand": "podman network create --ignore systemd-stry-dev",
     "image": "ghcr.io/foxws/laravel-podman-devcontainer:php-8.5-ai",
     "remoteUser": "docker",
     "containerUser": "docker",
     "runArgs": [
         "--security-opt=label=disable",
-        "--network=systemd-stry",
+        "--network=systemd-stry-dev",
         "--userns=keep-id:uid=1000,gid=1000",
         "--init"
     ],

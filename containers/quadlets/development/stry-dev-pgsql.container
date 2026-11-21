@@ -1,5 +1,5 @@
 [Unit]
-Description=PostgreSQL container
+Description=PostgreSQL (development)
 StopWhenUnneeded=yes
 # Restart=always retries a crash every 5 seconds, which never reaches
 # systemd's default start limit (5 in 10s). Give up after 5 tries in
@@ -15,8 +15,9 @@ Environment=POSTGRES_USER=user
 Environment=POSTGRES_PASSWORD=password
 Environment=PGPASSWORD=password
 ShmSize=256m
-Volume=stry-pgsql.volume:/var/lib/postgresql:rw,Z,U
-Network=stry.network
+Volume=stry-dev-pgsql.volume:/var/lib/postgresql:rw,Z,U
+Network=stry-dev.network
+NetworkAlias=systemd-stry-pgsql
 ExposeHostPort=5432
 Notify=healthy
 HealthStartupCmd=pg_isready -q -h 127.0.0.1 -U "$$POSTGRES_USER" -d postgres

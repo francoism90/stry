@@ -26,12 +26,12 @@ tags:
 
 ## The units
 
-| Folder                            | Purpose                                                                                     |
-| --------------------------------- | ------------------------------------------------------------------------------------------- |
-| `containers/quadlets/production`  | The application and its services, from the image CI publishes to `ghcr.io/francoism90/stry` |
-| `containers/quadlets/development` | The same services, running against your checkout (see [Development](development.md))        |
-| `containers/devcontainer`         | A [Dev Containers](https://containers.dev/) config (see [Development](development.md))      |
-| `containers/runtimes`             | The Containerfiles of the app image                                                         |
+| Folder                            | Purpose                                                                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `containers/quadlets/production`  | The application and its services, from the image CI publishes to `ghcr.io/francoism90/stry`        |
+| `containers/quadlets/development` | The same services as `stry-dev`, running against your checkout (see [Development](development.md)) |
+| `containers/devcontainer`         | A [Dev Containers](https://containers.dev/) config (see [Development](development.md))             |
+| `containers/runtimes`             | The Containerfiles of the app image                                                                |
 
 `production` installs these units:
 
