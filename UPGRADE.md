@@ -76,7 +76,7 @@ podman volume import stry-pgsql ~/stry-pgsql-18.tar
 
 ## Moving to plain Quadlet units
 
-**stry** no longer uses [foxws/laravel-podman](https://github.com/foxws/laravel-podman) or [Laravel Installer](https://github.com/foxws/laravel-installer). The Quadlet units are plain files in `containers/quadlets/`, ready to install with [Pods](https://github.com/foxws/pods) or `podman quadlet install`: there's no `php artisan podman:setup`, no `podman/` folder and no `PODMAN_*` keys anymore. The units, containers, volumes and secrets keep their names (`stry`, `systemd-stry-pgsql`, `stry-pgsql`, `stry-env` and so on), so your data and `.env` stay as they are.
+**stry** no longer generates its units with `php artisan podman:setup` or a separate installer. The Quadlet units are plain files in `containers/quadlets/`, ready to install with [Pods](https://github.com/foxws/pods) or `podman quadlet install`: there's no `php artisan podman:setup`, no `podman/` folder and no `PODMAN_*` keys anymore. The units, containers, volumes and secrets keep their names (`stry`, `systemd-stry-pgsql`, `stry-pgsql`, `stry-env` and so on), so your data and `.env` stay as they are.
 
 ### What changes
 
@@ -87,7 +87,7 @@ podman volume import stry-pgsql ~/stry-pgsql-18.tar
 - **Commands.** `podman:s3-setup` is now `app:s3-setup`. Its buckets are set in `config/filesystems.php` (`buckets` and `cors_buckets`) instead of `PODMAN_S3_BUCKETS` and `PODMAN_S3_CORS_BUCKETS`.
 - **Installer.** The `installer/` folder and its guide are gone. Install with Pods, or follow [Production Setup](docs/production.md).
 - **Devcontainer.** `containers/devcontainer/devcontainer.json` replaces the generated configs. Point your `.devcontainer/devcontainer.json` symlink at it (see [Development](docs/development.md#vs-code-dev-containers)).
-- **Image.** The Containerfiles build on the official FrankenPHP image themselves instead of `ghcr.io/foxws/laravel-frankenphp`. They run PHP 8.5 by default, through a `PHP_VERSION` build arg. The `RUNTIME_IMAGE` build arg is replaced by `PHP_VERSION`, `NODE_VERSION`, `POSTGRES_VERSION` and `PNPM_VERSION`. Rebuild the development image with `systemctl --user start stry-dev-build`.
+- **Image.** The Containerfiles build on the official FrankenPHP image themselves instead of a separate base image. They run PHP 8.5 by default, through a `PHP_VERSION` build arg. The `RUNTIME_IMAGE` build arg is replaced by `PHP_VERSION`, `NODE_VERSION`, `POSTGRES_VERSION` and `PNPM_VERSION`. Rebuild the development image with `systemctl --user start stry-dev-build`.
 - **Podman 6** is now the minimum.
 
 ### Steps
