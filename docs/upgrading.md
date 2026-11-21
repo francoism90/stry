@@ -85,56 +85,6 @@ Not every migration can be undone. Settings migrations, for example, have no `do
 
 Don't rely on `migrate:rollback` to undo a release. Your database backup is the real way back.
 
-## Upgrading PostgreSQL to a new major version
-
-`AutoUpdate=registry` keeps `stry-pgsql` on the tag in its Quadlet file, such as `postgres:18`, so it never moves to a new major version by itself. A new major can't read the old data files. Changing the tag means you dump the database, start the new version on an empty data folder, and restore the dump. The steps below go from 18 to 19, so swap in your own versions.
-
-1. Stop the app and everything that can start it again. Skip any units you don't have:
-
-    ```bash
-    systemctl --user stop stry-ondemand.socket stry-idle.timer stry-schedule.timer stry stry-horizon stry-reverb
-    ```
-
-2. Dump the database while the old version is still running:
-
-    ```bash
-    podman exec systemd-stry-pgsql sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' > ~/stry-pgsql.dump
-    podman run --rm -i --entrypoint pg_restore docker.io/library/postgres:19 -l < ~/stry-pgsql.dump | head
-    ```
-
-    The second command reads the dump with the new version's `pg_restore`, so you know it's complete and readable before you go on.
-
-3. Stop PostgreSQL and move the old data out of the volume. The images keep each major version in its own folder, such as `18/docker`. The old image also left a `data -> .` symlink in the volume. Remove it too: the new image takes it for an old data folder and won't start.
-
-    ```bash
-    systemctl --user stop stry-pgsql
-    V=$(podman volume inspect stry-pgsql --format '{{.Mountpoint}}')
-    podman unshare sh -c "mkdir -p ~/stry-pgsql-old && mv $V/18 ~/stry-pgsql-old/ && rm -f $V/data"
-    ```
-
-4. Change `Image=` in `podman/production/pgsql.quadlets` to the new tag, then reinstall the unit:
-
-    ```bash
-    lpod install production/pgsql.quadlets --replace
-    systemctl --user reset-failed stry-pgsql
-    ```
-
-5. With the on-demand socket, PostgreSQL stops as soon as nothing needs it. Keep it running with a temporary unit, then restore the dump and rebuild the planner statistics:
-
-    ```bash
-    systemd-run --user --unit=stry-pgsql-hold -p Requires=stry-pgsql.service -p After=stry-pgsql.service sleep infinity
-    podman exec systemd-stry-pgsql sh -c 'psql -U "$POSTGRES_USER" -d postgres -tAc "SHOW server_version"'
-    podman exec -i systemd-stry-pgsql sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists --exit-on-error --single-transaction' < ~/stry-pgsql.dump
-    podman exec systemd-stry-pgsql sh -c 'vacuumdb -U "$POSTGRES_USER" -d "$POSTGRES_DB" --analyze-in-stages'
-    systemctl --user stop stry-pgsql-hold
-    ```
-
-    `--single-transaction` makes the restore all or nothing. If it fails, the database stays empty and you can run it again.
-
-6. Start the app again with the units you stopped in step 1, and [check that it worked](#check-that-it-worked).
-
-Once the app works, delete `~/stry-pgsql-old`. Until then, you can go back by moving the old folder into the volume and switching the tag back.
-
 ## See also
 
 - [Production Setup](production.md): first install

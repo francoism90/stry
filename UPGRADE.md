@@ -2,7 +2,7 @@
 
 ## Upgrading to 4.0 from 3.x
 
-stry 4.0 runs PostgreSQL 19 instead of 18. A new major version of PostgreSQL can't read the data of the previous one, so the database has to be dumped with 18 and restored into 19. **Do this before you start the 4.0 units**: the PostgreSQL image keeps each major version's data in its own folder in the `stry-pgsql` volume (`/var/lib/postgresql/18/docker`), so PostgreSQL 19 doesn't fail on the old data. It starts with a new, empty database next to it instead.
+stry 4.0 runs PostgreSQL 19 instead of 18. A new major version of PostgreSQL can't read the data of the previous one, so the database has to be dumped with 18 and restored into 19. **Do this before you start the 4.0 units**: the PostgreSQL image keeps each major version's data in its own folder in the `stry-pgsql` volume (`/var/lib/postgresql/18/docker`), but PostgreSQL 19 refuses to start while the 18 data is still in the volume. Step 4 moves it out.
 
 ### What changes
 
@@ -17,6 +17,8 @@ stry 4.0 runs PostgreSQL 19 instead of 18. A new major version of PostgreSQL can
 
     ```bash
     systemctl --user stop stry stry-horizon stry-schedule stry-reverb stry-inertia-ssr
+    # with on-demand
+    systemctl --user stop stry-ondemand.socket stry-idle.timer
     ```
 
 2. **Export the `stry-pgsql` volume**, as a copy of the whole PostgreSQL 18 folder to fall back on. With the app stopped, `stry-pgsql` has stopped too, so nothing writes to it. In [Pods](https://github.com/foxws/pods), export `stry-pgsql` on the Volumes page and download the archive from its notification. Or on the host:
@@ -35,35 +37,54 @@ stry 4.0 runs PostgreSQL 19 instead of 18. A new major version of PostgreSQL can
     systemctl --user stop stry-pgsql-hold
     ```
 
-    Check that `~/stry-pg18.dump` isn't empty before you go on.
+    Check that the dump is complete before you go on. This lists its contents with the PostgreSQL 19 tools that will restore it:
 
-4. **Install the 4.0 units**, with **Redeploy** in [Pods](https://github.com/foxws/pods) or `podman quadlet install --replace --application=stry containers/quadlets/production` (see [Upgrading](docs/upgrading.md)). If that started the app, stop it again as in step 1: it would see an empty database, and with `APP_AUTO_UPDATE=true` it migrates one.
+    ```bash
+    podman run --rm -i --entrypoint pg_restore docker.io/library/postgres:19 -l < ~/stry-pg18.dump | head
+    ```
 
-5. **Restore the dump into PostgreSQL 19.** The new database is created from the `stry-pgsql-*` secrets on the first start. `--clean --if-exists` also replaces any tables the app migrated in step 4.
+4. **Move the PostgreSQL 18 data out of the volume.** PostgreSQL 19 won't start while it finds `18/docker`, or the `data -> .` symlink the 18 image left behind, in the volume. It stops with `in 18+, these Docker images are configured to store database data in a format which is compatible with "pg_ctlcluster"`.
+
+    ```bash
+    V=$(podman volume inspect stry-pgsql --format '{{.Mountpoint}}')
+    podman unshare sh -c "mkdir -p ~/stry-pgsql-18 && mv $V/18 ~/stry-pgsql-18/ && rm -f $V/data"
+    ```
+
+    If you already started the 4.0 units and `stry-pgsql` keeps failing with that error, do this step now, then run `systemctl --user reset-failed stry-pgsql` so systemd starts it again.
+
+5. **Install the 4.0 units**, with **Redeploy** in [Pods](https://github.com/foxws/pods) or `podman quadlet install --replace --application=stry containers/quadlets/production` (see [Upgrading](docs/upgrading.md)). If that started the app, stop it again as in step 1: it would see an empty database, and with `APP_AUTO_UPDATE=true` it migrates one.
+
+6. **Restore the dump into PostgreSQL 19.** The new database is created from the `stry-pgsql-*` secrets on the first start. `--clean --if-exists` also replaces any tables the app migrated in step 5, and `--single-transaction` makes the restore all or nothing, so you can run it again if it fails.
 
     ```bash
     systemd-run --user --unit=stry-pgsql-hold -p Requires=stry-pgsql.service -p After=stry-pgsql.service sleep infinity
     podman exec systemd-stry-pgsql sh -c 'psql -U "$POSTGRES_USER" -d postgres -tAc "SHOW server_version"'
-    podman exec -i systemd-stry-pgsql sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists --exit-on-error' < ~/stry-pg18.dump
+    podman exec -i systemd-stry-pgsql sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists --exit-on-error --single-transaction' < ~/stry-pg18.dump
     podman exec systemd-stry-pgsql sh -c 'vacuumdb -U "$POSTGRES_USER" -d "$POSTGRES_DB" --analyze-in-stages'
     systemctl --user stop stry-pgsql-hold
     ```
 
     The second command should print `19.x`.
 
-6. **Start the app** with `systemctl --user start stry`, and check that your videos, users and settings are there.
+7. **Start the app** with `systemctl --user start stry` (and `stry-ondemand.socket stry-idle.timer` with on-demand), and check that your videos, users and settings are there.
 
-7. **Remove the PostgreSQL 18 data** once everything works. Until then it stays in the volume, untouched:
+8. **Remove the PostgreSQL 18 data** once everything works. Until then it stays in `~/stry-pgsql-18`, untouched:
 
     ```bash
-    podman exec systemd-stry-pgsql rm -rf /var/lib/postgresql/18
+    podman unshare rm -rf ~/stry-pgsql-18
     ```
 
-For development, the same steps work with the `stry-dev` names (`stry-dev-pgsql`, `systemd-stry-dev-pgsql`). Or skip them and run `php artisan migrate:fresh --seed` in the new database.
+For development, the same steps work with the `stry-dev` names (`stry-dev-pgsql` for the unit and the volume, `systemd-stry-dev-pgsql` for the container). Or skip them and run `php artisan migrate:fresh --seed` in the new database.
 
 ### Rolling back
 
-Until step 7, the PostgreSQL 18 data is still in the volume, as it was when the app stopped in step 1. Go back to the 3.x units (or set `Image=docker.io/library/postgres:18` in a `stry-pgsql.container.d/` drop-in) and start the app again.
+Until step 8, the PostgreSQL 18 data is in `~/stry-pgsql-18`, as it was when the app stopped in step 1. Move it back into the volume, go back to the 3.x units (or set `Image=docker.io/library/postgres:18` in a `stry-pgsql.container.d/` drop-in) and start the app again:
+
+```bash
+systemctl --user stop stry stry-pgsql
+V=$(podman volume inspect stry-pgsql --format '{{.Mountpoint}}')
+podman unshare mv ~/stry-pgsql-18/18 "$V/"
+```
 
 If the volume itself is lost or damaged, put the archive from step 2 back into a new, empty one, then go back to PostgreSQL 18 as above. The `stry-pgsql-volume` service creates the volume from `stry-pgsql.volume`:
 
