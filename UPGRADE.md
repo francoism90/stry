@@ -13,6 +13,7 @@
 - **Commands.** `podman:s3-setup` is now `app:s3-setup`. Its buckets are set in `config/filesystems.php` (`buckets` and `cors_buckets`) instead of `PODMAN_S3_BUCKETS` and `PODMAN_S3_CORS_BUCKETS`.
 - **Installer.** The `installer/` folder and its guide are gone. Install with Pods, or follow [Production Setup](docs/production.md).
 - **Devcontainer.** `containers/devcontainer/devcontainer.json` replaces the generated configs. Point your `.devcontainer/devcontainer.json` symlink at it (see [Development](docs/development.md#vs-code-dev-containers)).
+- **Image.** The Containerfiles build on the official FrankenPHP image themselves instead of `ghcr.io/foxws/laravel-frankenphp`, and run PHP 8.6. The `RUNTIME_IMAGE` build arg is replaced by `PHP_VERSION`, `NODE_VERSION`, `POSTGRES_VERSION` and `PNPM_VERSION`. Rebuild the development image with `systemctl --user start stry-dev-build`.
 - **Podman 6** is now the minimum.
 
 ### Steps
