@@ -39,6 +39,7 @@ jobs:
         outputs:
             ref: ${{ steps.pick.outputs.ref }}
             rebuild: ${{ steps.pick.outputs.rebuild }}
+            skip: ${{ steps.pick.outputs.skip }}
             version: ${{ steps.pick.outputs.version }}
             prerelease: ${{ steps.pick.outputs.prerelease }}
 
@@ -71,6 +72,16 @@ jobs:
                     exit 1
                   fi
 
+                  # A release from before containers/runtimes/production was
+                  # built differently, so this workflow can't build it again.
+                  for file in Containerfile dockerignore; do
+                    if ! gh api "repos/${{ github.repository }}/contents/containers/runtimes/production/${file}?ref=${tag}" --silent 2>/dev/null; then
+                      echo "::notice::${tag} has no containers/runtimes/production/${file}, so it isn't rebuilt."
+                      echo "skip=true" >> "$GITHUB_OUTPUT"
+                      exit 0
+                    fi
+                  done
+
                   echo "ref=refs/tags/${tag}" >> "$GITHUB_OUTPUT"
                   echo "version=${tag}" >> "$GITHUB_OUTPUT"
                   echo "prerelease=${prerelease}" >> "$GITHUB_OUTPUT"
@@ -78,6 +89,7 @@ jobs:
     build:
         name: Build (${{ matrix.platform }})
         needs: release
+        if: needs.release.outputs.skip != 'true'
         runs-on: ${{ matrix.runner }}
         timeout-minutes: 30
         permissions:
