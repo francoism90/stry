@@ -1,5 +1,5 @@
 [Unit]
-Description=RustFS container
+Description=RustFS (development)
 StopWhenUnneeded=yes
 # Restart=always retries a crash every 5 seconds, which never reaches
 # systemd's default start limit (5 in 10s). Give up after 5 tries in
@@ -21,9 +21,10 @@ Environment=RUSTFS_BUFFER_PROFILE=WebWorkload
 Environment=RUSTFS_DURABILITY_MODE=none
 Environment=RUSTFS_SCANNER_SPEED=slowest
 Environment=RUSTFS_OBS_LOGGER_LEVEL=error
-Volume=stry-rustfs-data.volume:/data:rw,Z,U
-Volume=stry-rustfs-logs.volume:/logs:rw,Z,U
-Network=stry.network
+Volume=stry-dev-rustfs-data.volume:/data:rw,Z,U
+Volume=stry-dev-rustfs-logs.volume:/logs:rw,Z,U
+Network=stry-dev.network
+NetworkAlias=systemd-stry-rustfs
 ExposeHostPort=9000
 ExposeHostPort=9001
 Notify=healthy

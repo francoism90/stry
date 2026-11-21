@@ -2,10 +2,10 @@
 # Your video library, mounted as /media. In development this is a folder in your
 # checkout, which Git ignores, so there's nothing to set up. To use your
 # real library instead, change Device= (and the mkdir below), then remove
-# the volume ("podman volume rm stry-videos") so it's created again.
+# the volume ("podman volume rm stry-dev-videos") so it's created again.
 # Removing it never deletes the files in the folder.
-VolumeName=stry-videos
-Label=stry-videos
+VolumeName=stry-dev-videos
+Label=stry-dev-videos
 Type=none
 Options=bind
 Device=%h/projects/stry/storage/app/library/videos

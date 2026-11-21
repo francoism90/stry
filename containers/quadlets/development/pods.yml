@@ -1,0 +1,98 @@
+# How Pods (https://github.com/foxws/pods) installs the development source
+# of stry. Pods reads the root pods.yml to offer stry, and this one once you
+# choose the development source: lpod returns the pods.yml nearest to the
+# units. The units are named stry-dev, so they can run next to an installed
+# stry; give the application that name when Pods asks.
+version: 1
+name: stry-dev
+description: Self-hosted video library and streaming, built from your checkout
+
+# The development units read .env from your checkout, so there are no
+# secrets to enter.
+
+# Steps the application page in Pods offers once the units are up. Each one
+# runs in the container of a Quadlet, and is safe to run again.
+after_install:
+  install:
+    label: Install stry
+    description: Migrates the database, seeds the roles and sets up the search indexes.
+    container: stry-dev
+    user: docker
+    command: php artisan app:install --no-interaction
+  s3:
+    label: Create the S3 buckets
+    description: Creates the buckets and their CORS policy in RustFS.
+    container: stry-dev
+    user: docker
+    command: php artisan app:s3-setup --no-interaction
+  admin:
+    label: Create a super-admin
+    container: stry-dev
+    user: docker
+    command: php artisan users:create --super-admin --password-stdin --no-interaction
+    inputs:
+      name:
+        label: Name
+        option: --name
+      email:
+        label: Email
+        type: email
+        option: --email
+      password:
+        label: Password
+        type: password
+
+# Steps the application page offers after Pods updates the checkout's units.
+after_update:
+  update:
+    label: Update stry
+    description: Runs the migrations, clears the settings cache and restarts the workers.
+    container: stry-dev
+    user: docker
+    command: php artisan app:update --no-interaction
+
+# The containers the Pods proxy can give a hostname. Pods asks for the
+# hostnames when installing; they must match APP_URL, VITE_REVERB_HOST,
+# AWS_URL, VITE_HMR_HOST, MAILPIT_UI_HOST and RUSTFS_CONSOLE_HOST in your
+# .env. Leave one empty for no route. The first is the main one, see the
+# root pods.yml for how "via: main" routes reach the app.
+routes:
+  app:
+    upstream: systemd-stry-dev:8000
+    description: The web app (the host in APP_URL)
+  ws:
+    upstream: systemd-stry-dev-reverb:6001
+    via: main
+    description: Laravel Reverb (VITE_REVERB_HOST)
+  s3:
+    upstream: systemd-stry-dev-rustfs:9000
+    via: main
+    description: RustFS's S3 API (the host in AWS_URL)
+  vite:
+    upstream: systemd-stry-dev-vite:5173
+    description: The Vite dev server (VITE_HMR_HOST)
+  mail:
+    upstream: systemd-stry-dev-mailpit:8025
+    description: Mailpit's web UI (MAILPIT_UI_HOST)
+  s3-console:
+    upstream: systemd-stry-dev-rustfs:9001
+    description: The RustFS console (RUSTFS_CONSOLE_HOST)
+
+# Optional: start the app on its first request, and let it and its services
+# sleep when idle, as in the root pods.yml.
+ondemand:
+  port: 8000
+  app_port: 8000
+  idle_timeout: 10min
+  workers:
+    - stry-dev-horizon
+  idle_check:
+    container: stry-dev-horizon
+    user: docker
+    command: php -d variables_order=EGPCS /app/artisan app:idle
+  schedule:
+    container: stry-dev-schedule
+    at: ['*:00', '01:00', '02:00']
+    environment:
+      APP_COMMAND: php -d variables_order=EGPCS /app/artisan schedule:run
+      APP_OPTIMIZE: 'false'

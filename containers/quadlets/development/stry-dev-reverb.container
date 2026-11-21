@@ -1,6 +1,6 @@
 [Unit]
-Description=Laravel Reverb container
-After=stry.container
+Description=Laravel Reverb (development)
+After=stry-dev.container
 StopWhenUnneeded=yes
 # Restart=always retries a crash every 5 seconds, which never reaches
 # systemd's default start limit (5 in 10s). Give up after 5 tries in
@@ -9,14 +9,15 @@ StartLimitIntervalSec=300
 StartLimitBurst=5
 
 [Container]
-Image=stry.build
+Image=stry-dev.build
 AutoUpdate=local
 HealthCmd=none
 Environment=APP_COMMAND="php -d variables_order=EGPCS /app/artisan reverb:start"
 UserNS=keep-id
-Volume=stry-source.volume:/app:rw,z
-Volume=stry-cache.volume:/cache:rw
-Network=stry.network
+Volume=stry-dev-source.volume:/app:rw,z
+Volume=stry-dev-cache.volume:/cache:rw
+Network=stry-dev.network
+NetworkAlias=systemd-stry-reverb
 ExposeHostPort=6001
 
 [Service]

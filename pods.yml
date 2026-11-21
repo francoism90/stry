@@ -1,5 +1,7 @@
 # How Pods (https://github.com/foxws/pods) offers and installs stry. Pods
 # reads it when you add stry from Git; it never changes the Quadlet files.
+# The development source has its own pods.yml next to its units, because
+# its containers are named stry-dev.
 version: 1
 name: stry
 description: Self-hosted video library and streaming
@@ -10,7 +12,7 @@ sources:
     description: The published image from ghcr.io/francoism90/stry
   development:
     path: containers/quadlets/development
-    description: Builds and runs a checkout in ~/projects/stry on the host
+    description: Builds and runs a checkout in ~/projects/stry on the host, as stry-dev
 
 secrets:
   stry-env:
@@ -84,8 +86,7 @@ after_update:
 
 # The containers the Pods proxy can give a hostname. Pods asks for the
 # hostnames when installing; they must match APP_URL, VITE_REVERB_HOST and
-# AWS_URL in your .env (and in development VITE_HMR_HOST, MAILPIT_UI_HOST and
-# RUSTFS_CONSOLE_HOST). Leave one empty for no route. The first is the main
+# AWS_URL in your .env. Leave one empty for no route. The first is the main
 # one: while stry is on demand, lpod sends it to the socket, so a request
 # wakes the app. "via: main" routes go there too, and stry's own Caddy
 # (Support\Octane\CaddySites) forwards them, so they wake the app as well.
@@ -101,15 +102,6 @@ routes:
     upstream: systemd-stry-rustfs:9000
     via: main
     description: RustFS's S3 API (the host in AWS_URL)
-  vite:
-    upstream: systemd-stry-vite:5173
-    description: Development only, the Vite dev server (VITE_HMR_HOST)
-  mail:
-    upstream: systemd-stry-mailpit:8025
-    description: Development only, Mailpit's web UI (MAILPIT_UI_HOST)
-  s3-console:
-    upstream: systemd-stry-rustfs:9001
-    description: Development only, the RustFS console (RUSTFS_CONSOLE_HOST)
 
 # Optional: start the app on its first request, and let it and its services
 # sleep when idle. lpod writes the units (`lpod stry ondemand enable`, see

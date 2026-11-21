@@ -1,0 +1,7 @@
+[Network]
+# The network of stry's development units. Named stry-dev, like the units,
+# so they can run next to an installed stry. Each container also answers to
+# its production name on this network (NetworkAlias=), such as
+# systemd-stry-pgsql, so the same .env works for both.
+NetworkName=systemd-stry-dev
+Label=stry-dev

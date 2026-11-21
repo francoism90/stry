@@ -39,7 +39,6 @@ Jellyfin and Plex are media servers first. **stry** is built for streaming first
 | Guide                                         | What it covers                                |
 | --------------------------------------------- | --------------------------------------------- |
 | [Podman Quadlet](podman.md)                   | Running the services: install, secrets, GPU   |
-| [Docker Compose](docker.md)                   | An alternative setup, maintained best-effort  |
 | [Reverse Proxy](proxy.md)                     | Subdomain routing and bringing your own HTTPS |
 | [Object Storage (S3)](s3.md)                  | S3-compatible storage for generated images    |
 | [Database Snapshots](backups.md)              | Scheduled database backups and restoring them |
