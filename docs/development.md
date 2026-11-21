@@ -101,7 +101,7 @@ You can also create an admin interactively, without the seeder: `lpod stry-dev a
 
 ## VS Code Dev Containers
 
-`containers/devcontainer/devcontainer.json` is a config for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), so you can develop **stry** inside a container. This is separate from the units above, which run the app as a service. It connects to the `systemd-stry-dev` network and gives you PHP IntelliSense, debugging, a terminal and the Claude Code and Codex CLIs inside the container. Symlink it, so it stays up to date when you pull:
+`containers/devcontainer/devcontainer.json` is a config for the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), so you can develop **stry** inside a container. This is separate from the units above, which run the app as a service. It connects to the `systemd-stry-dev` network and gives you PHP IntelliSense, debugging, a terminal and the Claude Code and Codex CLIs inside the container. Its image is the `devcontainer` stage of `containers/runtimes/development/Containerfile`: the development image plus Git, the GitHub and AWS CLIs, Claude Code, Codex and Laravel LSP. The first start builds it, which takes a while. Symlink it, so it stays up to date when you pull:
 
 ```bash
 mkdir -p .devcontainer
@@ -129,7 +129,7 @@ lpod stry-dev artisan ide-helper:models --nowrite
 
 [Laravel Boost](https://boost.laravel.com/) is set up as an MCP server. In VS Code, open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`), choose **MCP: List Servers** and start `laravel-boost`.
 
-The `-ai` devcontainer config (see [above](#vs-code-dev-containers)) also installs the `claude` and `codex` CLIs. Your `~/.claude` and `~/.codex` folders are mounted into the container, so you stay logged in after a rebuild. Use either CLI together with Boost, which gives it Laravel-specific context such as routes, the database schema, config and Tinker.
+The devcontainer (see [above](#vs-code-dev-containers)) also has the `claude` and `codex` CLIs. Your `~/.claude` and `~/.codex` folders are mounted into the container, so you stay logged in after a rebuild. Use either CLI together with Boost, which gives it Laravel-specific context such as routes, the database schema, config and Tinker.
 
 ## Testing and code quality
 
