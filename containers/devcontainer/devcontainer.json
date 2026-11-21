@@ -1,7 +1,14 @@
 {
     "name": "stry-devcontainer",
     "initializeCommand": "podman network create --ignore systemd-stry-dev",
-    "image": "ghcr.io/foxws/laravel-podman-devcontainer:php-8.5-ai",
+    // The "devcontainer" stage of the development image. The first start
+    // builds it, which takes a while; Rebuild Container builds it again.
+    "build": {
+        "dockerfile": "${localWorkspaceFolder}/containers/runtimes/development/Containerfile",
+        "context": "${localWorkspaceFolder}",
+        "target": "devcontainer",
+        "options": ["--ignorefile=${localWorkspaceFolder}/containers/runtimes/development/dockerignore"]
+    },
     "remoteUser": "docker",
     "containerUser": "docker",
     "runArgs": [
@@ -10,10 +17,6 @@
         "--userns=keep-id:uid=1000,gid=1000",
         "--init"
     ],
-    "containerEnv": {
-        "PUID": "1000",
-        "PGID": "1000"
-    },
     "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
     "workspaceFolder": "/app",
     "mounts": [
