@@ -28,6 +28,8 @@ systemctl --user start podman-auto-update
 
 It stays on the tag in the Quadlet file, so `stry:3` gets 3.x releases but never moves to 4.0 by itself: a new major comes with an upgrade guide, and its Quadlet files use the new tag. To run it on a schedule, enable `podman-auto-update.timer`. In [Pods](https://github.com/foxws/pods), use **Redeploy** on the application.
 
+The image of the latest stable release is also rebuilt every week with the latest Debian and PHP security updates, under the same tags, so auto-update picks those up between releases too.
+
 Auto-update only pulls images and restarts containers. It doesn't run Artisan commands, so you still need the migration and cache steps below.
 
 ## Update the units, if needed
