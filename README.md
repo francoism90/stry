@@ -73,7 +73,7 @@ For a visual tour of the app, check out the [screenshots gallery](https://foxws.
 
 ## Prerequisites
 
-Requires Linux with [Podman 6+](https://podman.io/)/Quadlet, or [Docker](https://www.docker.com/) (best-effort). Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://foxws.nl/stry/podman#prerequisites) or [Docker Compose](https://foxws.nl/stry/docker#prerequisites) for the full system requirements.
+Requires Linux with [Podman 6+](https://podman.io/)/Quadlet. Basic knowledge of Laravel, Inertia.js, and containers helps. See [Podman Quadlet](https://foxws.nl/stry/podman#prerequisites) for the full system requirements.
 
 ---
 
@@ -89,7 +89,6 @@ Comprehensive guides are available on the [documentation site](https://foxws.nl/
 | [Development Guide](https://foxws.nl/stry/development) | Local development setup                              |
 | [Configuration](https://foxws.nl/stry/configuration)   | Configuration options                                |
 | [Podman Quadlet](https://foxws.nl/stry/podman)         | Container orchestration (services, install, secrets) |
-| [Docker Compose](https://foxws.nl/stry/docker)         | Alternative, best-effort containerization            |
 | [Reverse Proxy](https://foxws.nl/stry/proxy)           | Sibling-service routing; bring your own HTTPS        |
 | [S3 Storage](https://foxws.nl/stry/s3)                 | Object storage setup                                 |
 | [Database Snapshots](https://foxws.nl/stry/backups)    | Scheduled database backups and restoring them        |
