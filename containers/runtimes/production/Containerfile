@@ -1,12 +1,17 @@
-# Built on ghcr.io/foxws/laravel-frankenphp:php-8.5, which has FrankenPHP,
-# the PHP extensions, Composer, Node.js, pnpm, the PostgreSQL client and the
-# "docker" user (see docs/runtime.md in foxws/laravel-podman, which builds
-# it). Pass --build-arg RUNTIME_IMAGE=... for another one.
-ARG RUNTIME_IMAGE=ghcr.io/foxws/laravel-frankenphp:php-8.5
+# The stry image: the official FrankenPHP image with the PHP extensions,
+# Composer, Node.js, pnpm, the PostgreSQL client, FFmpeg and ab-av1, and the
+# app built into it.
+
+# PHP version of the official FrankenPHP image (Debian trixie) and the
+# Node.js major. Pass --build-arg PHP_VERSION=8.5 for another one.
+ARG PHP_VERSION=8.6
+ARG NODE_VERSION=26
 
 # FFmpeg release branch of the BtbN builds. Pass --build-arg
 # FFMPEG_VERSION=... for another one.
 ARG FFMPEG_VERSION=9.0
+
+FROM docker.io/library/node:${NODE_VERSION}-trixie-slim AS node
 
 FROM docker.io/rust:latest AS builder
 
@@ -31,9 +36,93 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     cargo install ab-av1 --root /usr/local
 
-FROM ${RUNTIME_IMAGE} AS production
+FROM docker.io/dunglas/frankenphp:1-php${PHP_VERSION}-trixie AS runtime
 
-# The base image's labels name laravel-podman, where it's built...
+ARG UID=1000
+ARG GID=1000
+ARG POSTGRES_VERSION=18
+ARG PNPM_VERSION=12
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV LANG=C.UTF-8
+ENV APP_USER="docker"
+ENV PNPM_HOME="/home/docker/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
+WORKDIR /app
+
+# Main dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gnupg curl ca-certificates gosu \
+    libavif-bin jpegoptim optipng pngquant gifsicle webp \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Add PostgreSQL APT repository and install client
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg \
+    && CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME") \
+    && echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt ${CODENAME}-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-${POSTGRES_VERSION} \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Node.js from the official image (also Debian trixie), for the frontend
+# build, the Inertia SSR container and svgo
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
+
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx \
+    && npm install -g pnpm@${PNPM_VERSION} svgo@latest \
+    && npm cache clean --force \
+    && rm -rf /tmp/* /var/tmp/* /root/.npm
+
+# Install PHP extensions
+RUN install-php-extensions @composer \
+    apcu bcmath exif ffi gd opcache \
+    igbinary inotify intl pcntl \
+    pdo_pgsql redis sockets uv zip
+
+# Imagick's build regenerates its arginfo headers, and each parallel make job
+# downloads PHP-Parser for that into the same folder, which fails. One job
+# downloads it once.
+RUN IPE_PROCESSOR_COUNT=1 install-php-extensions imagick
+
+# The official image lets frankenphp bind ports below 1024 through a file
+# capability, which can't start in a container without capabilities
+# (--cap-drop=all). stry listens on 8000, so drop it. libcap2-bin is only
+# needed for setcap, so it's installed and purged in this one layer.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libcap2-bin \
+    && setcap -r /usr/local/bin/frankenphp \
+    && apt-get purge -y --auto-remove libcap2-bin \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone \
+    && cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
+
+# The non-root user. /config and /data are where FrankenPHP's Caddy keeps
+# its state (XDG_CONFIG_HOME and XDG_DATA_HOME in the official image). pnpm
+# runs as root here, so chown what it writes for the "docker" user.
+RUN groupadd -o -g "${GID}" docker \
+    && useradd -o -u "${UID}" -g docker -d /home/docker -s /bin/bash -m docker \
+    && mkdir -p /app /config /data ${PNPM_HOME}/store /home/docker/.cache/composer /home/docker/.cache/pnpm \
+    && pnpm config set store-dir ${PNPM_HOME}/store \
+    && chown -R docker:docker /app /config /data /home/docker
+
+# The official image's health check polls Caddy's admin port, which the
+# Horizon, Reverb, scheduler and SSR containers don't serve. The quadlets
+# set their own.
+HEALTHCHECK NONE
+
+FROM runtime AS production
+
 LABEL org.opencontainers.image.title="stry" \
       org.opencontainers.image.description="Self-hosted video library and streaming" \
       org.opencontainers.image.source="https://github.com/francoism90/stry" \
@@ -51,9 +140,8 @@ ENV APP_COMMAND="${PHP_CLI} octane:frankenphp --host=0.0.0.0 --port=8000"
 # Enable non-free and non-free-firmware repositories (for Intel VA drivers)
 RUN sed -i 's/main/main non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
 
-# Packages the runtime image doesn't have. BtbN's arm64 builds of FFmpeg
-# have no VA-API or QSV, so the VA-API and Intel drivers are only installed
-# on amd64.
+# Hardware video drivers. BtbN's arm64 builds of FFmpeg have no VA-API or
+# QSV, so the VA-API and Intel drivers are only installed on amd64.
 RUN arch="$(dpkg --print-architecture)" \
     && AMD64_DRIVERS="" \
     && if [ "$arch" = "amd64" ]; then \
@@ -65,14 +153,6 @@ RUN arch="$(dpkg --print-architecture)" \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# The runtime image's "docker" user is 1000:1000. Renumber it when building
-# with another UID/GID.
-RUN if [ "$(id -u docker)" != "${UID}" ] || [ "$(id -g docker)" != "${GID}" ]; then \
-        groupmod -o -g "${GID}" docker \
-        && usermod -o -u "${UID}" -g "${GID}" docker \
-        && chown -R docker:docker /home/docker /app /config /data; \
-    fi
 
 # Create directories and set ownership
 RUN mkdir -p /cache /media /import /exports \
@@ -125,6 +205,12 @@ RUN ${PHP_CLI} key:generate
 # Create storage symlink
 RUN ${PHP_CLI} storage:link
 
+# Installs Octane's worker script into public/, which "octane:frankenphp"
+# would otherwise do on start. At runtime the "docker" user may be
+# renumbered to the host's PUID, which can't write to the image's public/.
+# The binary is the official image's.
+RUN ${PHP_CLI} octane:install --server=frankenphp --no-interaction
+
 # Install Node.js dependencies, build frontend assets, then prune
 # devDependencies -- all in one layer, since Docker layers are additive and
 # pruning in a later layer wouldn't remove devDependencies (vite, playwright,
@@ -143,3 +229,4 @@ RUN rm -f .env
 USER root
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD []
