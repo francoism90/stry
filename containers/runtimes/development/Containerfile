@@ -194,3 +194,61 @@ USER docker
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD []
+
+# The VS Code Dev Containers image (containers/devcontainer/devcontainer.json):
+# the development image plus Git and the GitHub and AWS CLIs, Claude Code,
+# the OpenAI Codex CLI and Laravel LSP. Build it with --target=devcontainer.
+FROM development AS devcontainer
+
+ARG CLAUDE_CLI="latest"
+ARG CODEX_CLI="latest"
+ARG AI_LARAVEL_LSP="latest"
+ARG AI_NPM_PACKAGES=""
+
+ENV PATH="${PATH}:/home/docker/.local/bin"
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git nano jq procps unzip openssh-client gh awscli shellcheck sqlite3 \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Laravel LSP, the language server laravel/agent-skills' laravel-lsp plugin
+# starts as "laravel-lsp". Set AI_LARAVEL_LSP=false to skip it, or to a
+# version constraint to pin it.
+RUN if [ "$AI_LARAVEL_LSP" != "false" ]; then \
+    if [ "$AI_LARAVEL_LSP" = "latest" ]; then LSP_PACKAGE=laravel/lsp; else LSP_PACKAGE="laravel/lsp:$AI_LARAVEL_LSP"; fi \
+    && COMPOSER_HOME=/usr/local/share/composer composer global require "$LSP_PACKAGE" \
+    && COMPOSER_HOME=/usr/local/share/composer composer clear-cache \
+    && ln -s /usr/local/share/composer/vendor/bin/laravel-lsp /usr/local/bin/laravel-lsp; \
+fi
+
+USER docker
+
+# Claude Code through its native installer, which keeps the binary in
+# ~/.local, so it survives the ~/.claude bind mount. Set CLAUDE_CLI=false to
+# skip it, or to a channel or version (stable, 2.1.89) to pin it.
+RUN if [ "$CLAUDE_CLI" != "false" ]; then \
+    curl -fsSL https://claude.ai/install.sh | bash -s "$CLAUDE_CLI"; \
+fi
+
+# The Codex CLI through npm: its native installer puts the binary in
+# ~/.codex, which the ~/.codex bind mount would hide. Set CODEX_CLI=false to
+# skip it, or to a version to pin it.
+RUN if [ "$CODEX_CLI" != "false" ]; then \
+    npm install -g --prefix=/home/docker/.local @openai/codex@$CODEX_CLI \
+    && npm cache clean --force; \
+fi
+
+# Other npm CLIs, such as AI_NPM_PACKAGES="@google/gemini-cli"
+RUN if [ -n "$AI_NPM_PACKAGES" ]; then \
+    npm install -g --prefix=/home/docker/.local $AI_NPM_PACKAGES \
+    && npm cache clean --force; \
+fi
+
+# VS Code runs its own command in the container, so the app's entrypoint,
+# which starts Octane, isn't used here
+ENTRYPOINT []
+CMD ["sleep", "infinity"]
