@@ -1,5 +1,7 @@
 # Upgrade Guide
 
+For the steps every upgrade needs, see [docs/upgrading.md](docs/upgrading.md). This file only covers what's specific to a major version.
+
 ## Upgrading to 4.0 from 3.x
 
 stry 4.0 runs PostgreSQL 19 instead of 18. A new major version of PostgreSQL can't read the data of the previous one, so the database has to be dumped with 18 and restored into 19. **Do this before you start the 4.0 units**: the PostgreSQL image keeps each major version's data in its own folder in the `stry-pgsql` volume (`/var/lib/postgresql/18/docker`), but PostgreSQL 19 refuses to start while the 18 data is still in the volume. Step 4 moves it out.
@@ -147,6 +149,9 @@ podman volume import stry-pgsql ~/stry-pgsql-18.tar
 6. Add the [on-demand services](docs/podman.md#on-demand-services) again if you used them.
 
 ## Upgrading to 2.0 from 1.x
+
+> [!NOTE]
+> This guide was written for the 2.x tooling, before the [move to plain Quadlet units](#moving-to-plain-quadlet-units). Commands such as `podman:generate` and `lpod install production/*.quadlets` no longer exist. If you're still on 1.x, upgrade to 2.0 with the 2.x release, then follow the newer sections.
 
 stry 2.0 plays every video directly from its stored file. Playlists no longer have to be packaged before a video can be watched: the app builds the DASH manifest and HLS playlist when a player asks for them, and cuts the segments as they're requested. This is done by [foxws/laravel-media](https://github.com/foxws/laravel-media), which replaces laravel-ffmpeg, laravel-shaka and laravel-streamer.
 
