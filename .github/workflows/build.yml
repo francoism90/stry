@@ -107,7 +107,7 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
               with:
                   ref: ${{ needs.release.outputs.ref }}
 
@@ -142,7 +142,7 @@ jobs:
 
             - name: Build image
               id: build
-              uses: redhat-actions/buildah-build@v3
+              uses: redhat-actions/buildah-build@719e3c40d8af9790c23eca13f7daa339f2867034 # v3
               with:
                   image: ${{ env.IMAGE_NAME }}
                   tags: ci-${{ steps.platform.outputs.pair }}-${{ github.sha }}
@@ -155,7 +155,7 @@ jobs:
 
             - name: Push image by tag
               id: push
-              uses: redhat-actions/push-to-registry@v3
+              uses: redhat-actions/push-to-registry@94ade333c38ecc0e60e94785125d9a52ca423b37 # v3
               with:
                   image: ${{ steps.build.outputs.image }}
                   tags: ${{ steps.build.outputs.tags }}
@@ -165,7 +165,7 @@ jobs:
                   digestfile: /tmp/digest.txt
 
             - name: Upload digest
-              uses: actions/upload-artifact@v7
+              uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
               with:
                   name: digests-${{ steps.platform.outputs.pair }}
                   path: /tmp/digest.txt
@@ -182,7 +182,7 @@ jobs:
 
         steps:
             - name: Download digests
-              uses: actions/download-artifact@v8
+              uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
               with:
                   path: /tmp/digests
                   pattern: digests-*
@@ -192,7 +192,7 @@ jobs:
 
             - name: Generate image tags
               id: meta
-              uses: docker/metadata-action@v6
+              uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6
               with:
                   images: ${{ env.IMAGE }}
                   flavor: |
