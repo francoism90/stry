@@ -41,15 +41,15 @@ return Application::configure(basePath: $basePath)
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Trust Proxies configuration
+        // Whom to trust is in config/trustedproxy.php. X-Forwarded-Host is left out: a client could choose the host
         $middleware->trustProxies(
-            at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
-                Request::HEADER_X_FORWARDED_HOST |
                 Request::HEADER_X_FORWARDED_PORT |
-                Request::HEADER_X_FORWARDED_PROTO |
-                Request::HEADER_X_FORWARDED_AWS_ELB,
+                Request::HEADER_X_FORWARDED_PROTO,
         );
+
+        // A new password signs every other session out
+        $middleware->authenticateSessions();
 
         // Global middleware aliases for convenient usage in routes and controllers
         $middleware->alias([
@@ -84,6 +84,9 @@ return Application::configure(basePath: $basePath)
         $middleware->redirectGuestsTo(fn () => route('login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Secrets are never stored as old input after a failed validation, such as those of the storage disks
+        $exceptions->dontFlash(['disks', 'token']);
+
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );

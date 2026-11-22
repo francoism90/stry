@@ -35,6 +35,7 @@ class UserController implements HasMiddleware
             new Middleware('auth'),
             new Middleware('verified'),
             new Middleware('precognitive'),
+            new Middleware('throttle:password-checks', only: ['update']),
         ];
     }
 
@@ -88,7 +89,10 @@ class UserController implements HasMiddleware
         Gate::authorize('update', $user);
 
         // Update the user's profile information
-        $action->update($user, $request->safe()->only(['name', 'email']));
+        $action->update($user, [
+            ...$request->safe()->only(['name', 'email']),
+            'current_password' => $request->input('current_password'),
+        ]);
 
         // Notify the user
         toast(title: (string) $user->name, description: __('The user has been updated.'));

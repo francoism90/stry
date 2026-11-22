@@ -58,3 +58,17 @@ storage/debugbar/*
 tests
 Thumbs.db
 vendor
+
+# What a working copy keeps: private files, media, database dumps and sessions
+storage/app/laravel-db-snapshots
+storage/app/library
+storage/app/media
+storage/app/private
+storage/framework/testing
+
+# Laravel writes into these without creating them, so only their contents
+storage/framework/cache/*
+!storage/framework/cache/.gitignore
+storage/framework/sessions/*
+!storage/framework/sessions/.gitignore
+**/*.sqlite*

@@ -9,9 +9,22 @@ use Domain\Users\Models\User as Model;
 
 class UserPolicy
 {
-    public function before(User $user, string $ability): ?bool
+    public function before(User $user, string $ability, mixed $model = null): ?bool
     {
-        return $user->isAdmin() ? true : null;
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        // An admin can't create users, or act on a super-admin, which would be a way to become one
+        if (! $user->isAdmin() || $ability === 'create') {
+            return null;
+        }
+
+        if ($model instanceof Model && $model->isSuperAdmin()) {
+            return null;
+        }
+
+        return true;
     }
 
     public function viewAny(User $user): bool

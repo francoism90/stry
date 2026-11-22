@@ -2,16 +2,22 @@
 import { useAuth } from '@/composables/auth'
 import { update } from '@/routes/user-profile-information'
 import { useForm } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
 const { user, logOut } = useAuth()
 
 const form = useForm(update(), {
   name: user.value?.name || '',
   email: user.value?.email || '',
+  current_password: '',
 })
+
+const changesEmail = computed(() => form.email !== (user.value?.email || ''))
 
 const onSubmit = () =>
   form.submit({
+    errorBag: 'updateProfileInformation',
+    onSuccess: () => form.reset('current_password'),
     preserveState: true,
     replace: true,
     only: ['auth', 'user'],
@@ -69,6 +75,20 @@ defineExpose({
             <UInput
               v-model="form.email"
               :model-modifiers="{ string: true, trim: true }"
+            />
+          </UFormField>
+
+          <UFormField
+            v-if="changesEmail"
+            label="Current password"
+            description="Password resets go to your email address, so changing it needs your password."
+            required
+            :error="form.errors.current_password"
+          >
+            <UInput
+              v-model="form.current_password"
+              type="password"
+              autocomplete="current-password"
             />
           </UFormField>
         </template>

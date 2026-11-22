@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\Users\Models\User;
 use Modules\Web\Users\Controllers\UserController;
+use Spatie\Permission\Models\Role;
 
 // index
 
@@ -140,4 +141,15 @@ it('forbids regular users from deleting a user', function () {
 
     $response->assertForbidden();
     expect($other->fresh()->trashed())->toBeFalse();
+});
+
+it('keeps an admin from acting on a super-admin or creating users', function () {
+    Role::findOrCreate('admin');
+    $admin = User::factory()->create()->assignRole('admin');
+    $superAdmin = User::factory()->create()->assignRole('super-admin');
+
+    expect($admin->can('update', $superAdmin))->toBeFalse()
+        ->and($admin->can('delete', $superAdmin))->toBeFalse()
+        ->and($admin->can('create', User::class))->toBeFalse()
+        ->and($admin->can('update', User::factory()->create()))->toBeTrue();
 });

@@ -11,6 +11,7 @@ const form = useForm(update(), {
 
 const onSubmit = () =>
   form.submit({
+    errorBag: 'updatePassword',
     preserveScroll: true,
     onSuccess: () => form.reset(),
   })

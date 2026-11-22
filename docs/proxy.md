@@ -77,6 +77,10 @@ To use a different port on the host, you don't need to change either of those. T
 
 Only change `OCTANE_PORT` (and the `--port` in `APP_COMMAND`) if FrankenPHP itself needs to listen on a different port inside the container.
 
+## Forwarded headers
+
+stry believes `X-Forwarded-For`, `-Port` and `-Proto` from private addresses only. Set `TRUSTED_PROXIES` to choose others, such as a proxy with a public address. It never believes `X-Forwarded-Host`, so a proxy in front has to pass the `Host` header on. Links in password reset mails always use `APP_URL`.
+
 ## Local development
 
 The development units don't publish any service either, so Vite's live reload, Reverb, RustFS and Mailpit also go through these hostnames locally. See [Development Setup](development.md).

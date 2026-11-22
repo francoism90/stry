@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { update } from '@/actions/Modules/Web/Users/Controllers/UserController'
 import FormModal from '@/components/Ui/FormModal.vue'
+import { useAuth } from '@/composables/auth'
 import type { User } from '@/types'
 import { useForm } from '@inertiajs/vue3'
 import type { TabsItem } from '@nuxt/ui'
+import { computed } from 'vue'
 
 const props = defineProps<{
   item: User
@@ -13,15 +15,24 @@ const open = defineModel<boolean>('open')
 
 const tabs: TabsItem[] = [{ label: 'General', icon: 'i-lucide-user', slot: 'general' }]
 
+const { user } = useAuth()
+
 const form = useForm(update(props.item.id), {
   name: props.item.name,
   email: props.item.email ?? '',
+  current_password: '',
 })
+
+const changesOwnEmail = computed(() => props.item.id === user.value?.id && form.email !== (props.item.email ?? ''))
 
 const onSubmit = (close: () => void) =>
   form.submit({
+    errorBag: 'updateProfileInformation',
     preserveScroll: true,
-    onSuccess: () => close(),
+    onSuccess: () => {
+      form.reset('current_password')
+      close()
+    },
   })
 </script>
 
@@ -71,6 +82,19 @@ const onSubmit = (close: () => void) =>
             v-model="form.email"
             :model-modifiers="{ string: true, trim: true }"
             type="email"
+          />
+        </UFormField>
+
+        <UFormField
+          v-if="changesOwnEmail"
+          label="Current password"
+          required
+          :error="form.errors.current_password"
+        >
+          <UInput
+            v-model="form.current_password"
+            type="password"
+            autocomplete="current-password"
           />
         </UFormField>
       </UForm>
