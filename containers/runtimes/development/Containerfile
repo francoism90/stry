@@ -137,7 +137,8 @@ ENV PLAYWRIGHT_BROWSERS_PATH=0
 # PHP Configuration
 RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
 
-RUN install-php-extensions xdebug
+# Xdebug, and the sockets extension Pest's browser plugin requires
+RUN install-php-extensions xdebug sockets
 
 # Playwright's OS-level browser deps; browsers are installed per-project via `npx playwright install`
 RUN npx -y playwright install-deps \
