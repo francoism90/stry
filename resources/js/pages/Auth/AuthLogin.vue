@@ -4,6 +4,7 @@ import { Head, useForm } from '@inertiajs/vue3'
 
 const props = defineProps<{
   action: string
+  forgotPasswordUrl: string
   status?: string
 }>()
 
@@ -35,6 +36,13 @@ const {
     description="Enter your credentials to access your account."
     class="sm:min-w-md"
   >
+    <UAlert
+      v-if="status"
+      :title="status"
+      color="success"
+      variant="subtle"
+    />
+
     <UForm
       :state="form"
       @submit="onSubmit"
@@ -64,7 +72,6 @@ const {
       >
         <UInput
           v-model="form.password"
-          :model-modifiers="{ string: true, trim: true }"
           type="password"
           required
           autocomplete="current-password"
@@ -73,18 +80,26 @@ const {
         />
       </UFormField>
 
-      <UFormField
-        name="remember"
-        required
-        :error="form.errors.remember"
-      >
-        <UCheckbox
-          v-model="form.remember"
-          :model-modifiers="{ nullable: true }"
-          id="remember"
-          label="Remember me"
-        />
-      </UFormField>
+      <div class="flex items-center justify-between gap-2">
+        <UFormField
+          name="remember"
+          :error="form.errors.remember"
+        >
+          <UCheckbox
+            v-model="form.remember"
+            :model-modifiers="{ nullable: true }"
+            id="remember"
+            label="Remember me"
+          />
+        </UFormField>
+
+        <ULink
+          :to="forgotPasswordUrl"
+          class="text-sm"
+        >
+          Forgot password?
+        </ULink>
+      </div>
 
       <UButton
         type="submit"

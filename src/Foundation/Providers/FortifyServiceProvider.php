@@ -105,7 +105,29 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::loginView(fn () => Inertia::render('Auth/AuthLogin', [
             'action' => fn () => route('login.store', absolute: false),
+            'forgotPasswordUrl' => fn () => route('password.request', absolute: false),
             'status' => fn () => session('status'),
+        ]));
+
+        Fortify::requestPasswordResetLinkView(fn () => Inertia::render('Auth/AuthForgotPassword', [
+            'action' => fn () => route('password.email', absolute: false),
+            'loginUrl' => fn () => route('login', absolute: false),
+            'status' => fn () => session('status'),
+        ]));
+
+        Fortify::resetPasswordView(fn (Request $request) => Inertia::render('Auth/AuthResetPassword', [
+            'action' => fn () => route('password.update', absolute: false),
+            'token' => fn () => $request->route('token'),
+            'email' => fn () => $request->string('email')->value(),
+        ]));
+
+        Fortify::verifyEmailView(fn () => Inertia::render('Auth/AuthVerifyEmail', [
+            'action' => fn () => route('verification.send', absolute: false),
+            'status' => fn () => session('status'),
+        ]));
+
+        Fortify::confirmPasswordView(fn () => Inertia::render('Auth/AuthConfirmPassword', [
+            'action' => fn () => route('password.confirm.store', absolute: false),
         ]));
 
         return $this;
