@@ -54,6 +54,34 @@ it('skips subtitle streams that fail to convert', function () {
     expect(app(ExtractMediaCaptions::class)->handle($clip)->all())->toBe(["{$clip->uuid}_3_nld.vtt"]);
 });
 
+it('keeps a language tag that is not a code out of the path', function (string $language) {
+    Storage::fake('media');
+    Storage::fake('cache');
+    Media::fake(['clip.mkv' => FakeProbe::video(subtitles: [$language])]);
+
+    $clip = createCaptionsClip();
+
+    expect(app(ExtractMediaCaptions::class)->handle($clip)->all())->toBe(["{$clip->uuid}_2_und.vtt"]);
+
+    Media::assertSaved("{$clip->uuid}_2_und.vtt", 'cache');
+})->with([
+    'forward slashes' => 'x/../../escaped',
+    'backslashes' => 'x/..\\..\\escaped',
+    'line break' => "eng\n",
+    'free text' => 'English (SDH)',
+    'empty' => '',
+]);
+
+it('keeps a language code with a region', function () {
+    Storage::fake('media');
+    Storage::fake('cache');
+    Media::fake(['clip.mkv' => FakeProbe::video(subtitles: ['pt-BR'])]);
+
+    $clip = createCaptionsClip();
+
+    expect(app(ExtractMediaCaptions::class)->handle($clip)->all())->toBe(["{$clip->uuid}_2_pt-BR.vtt"]);
+});
+
 it('extracts nothing without subtitle streams', function () {
     Storage::fake('media');
     Media::fake(['clip.mkv' => FakeProbe::video()]);
