@@ -207,6 +207,9 @@ ARG AI_LARAVEL_LSP="latest"
 ARG AI_NPM_PACKAGES=""
 
 ENV PATH="${PATH}:/home/docker/.local/bin"
+# The base image sets XDG_CONFIG_HOME=/config, where gh would miss the login
+# that devcontainer.json can mount
+ENV GH_CONFIG_DIR="/home/docker/.config/gh"
 
 USER root
 
