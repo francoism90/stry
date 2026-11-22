@@ -30,7 +30,7 @@ class ExtractMediaCaptions
         try {
             return Collection::make($opener->probe()->subtitleStreams())
                 ->map(function (SubtitleStream $stream) use ($opener, $media): ?string {
-                    $language = $stream->language ?? 'und';
+                    $language = $this->languageCode($stream);
                     $path = "{$media->uuid}_{$stream->index}_{$language}.vtt";
 
                     // Streams that can't be converted, such as bitmap subtitles, are skipped
@@ -52,5 +52,15 @@ class ExtractMediaCaptions
         } finally {
             $opener->cleanupTemporaryFiles();
         }
+    }
+
+    /**
+     * The language tag is free text in the file and becomes part of the path, so only a language code is used.
+     */
+    protected function languageCode(SubtitleStream $stream): string
+    {
+        $language = (string) $stream->language;
+
+        return preg_match('/^[a-z]{2,3}(-[a-z0-9]{1,8}){0,3}$/iD', $language) === 1 ? $language : 'und';
     }
 }
