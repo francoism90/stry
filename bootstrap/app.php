@@ -41,7 +41,7 @@ return Application::configure(basePath: $basePath)
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Whom to trust is in config/trustedproxy.php. X-Forwarded-Host is left out: a client could choose the host
+        // Whom to trust is in config/essentials.php. X-Forwarded-Host is left out: a client could choose the host
         $middleware->trustProxies(
             headers: Request::HEADER_X_FORWARDED_FOR |
                 Request::HEADER_X_FORWARDED_PORT |
