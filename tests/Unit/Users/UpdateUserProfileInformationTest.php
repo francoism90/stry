@@ -25,6 +25,23 @@ it('updates the user name and email', function (): void {
     expect($user->email)->toBe('new@example.com');
 });
 
+it('writes nothing but the name when the email stays', function (): void {
+    $user = User::factory()->unverified()->create(['email' => 'same@example.com']);
+    $password = $user->password;
+
+    (new UpdateUserProfileInformation)->update($user, [
+        'name' => 'New Name',
+        'email' => 'same@example.com',
+        'password' => 'An0ther-Secret-Passw0rd!',
+        'email_verified_at' => '2026-01-01 00:00:00',
+    ]);
+
+    expect($user->refresh())
+        ->name->toBe('New Name')
+        ->password->toBe($password)
+        ->email_verified_at->toBeNull();
+});
+
 it('allows resubmitting the same email without failing unique validation', function (): void {
     $user = User::factory()->create([
         'name' => 'Same User',
