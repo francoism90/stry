@@ -33,7 +33,8 @@ $probe->stream(2)?->get('tags.title');   // any raw ffprobe field via dot notati
 
 - `open()` accepts several paths. `probe($path)` probes one (the first by default), and `probeAll()` returns them keyed by path. Results are cached on the opener; after `rememberProbes()` they're also kept in the `media.delivery.index_store` per file version, like keyframe indexes. `stream()` turns that on, so playlist and segment requests don't run ffprobe again.
 - On disks that provide temporary URLs (S3), ffprobe and ffmpeg read a short-lived signed URL instead of downloading the file. Set `media.remote_inputs.enabled` to false to download to the temporary root instead.
-- FFmpeg 9 verifies TLS certificates of those URLs. For storage behind a private CA, set `media.remote_inputs.ca_file`; `media.remote_inputs.verify_tls` false accepts any certificate (development only). When building your own ffmpeg or ffprobe command around `$media->inputPath()`, put `...$media->inputArguments()` before it; they're empty for local paths, where ffmpeg would reject them.
+- FFmpeg 9 verifies TLS certificates of those URLs. For storage behind a private CA, set `media.remote_inputs.ca_file`; `media.remote_inputs.verify_tls` false accepts any certificate (development only). When building your own ffmpeg or ffprobe command around `$media->inputPath()`, put `...$media->inputArguments()` before it: they hold the format and protocol whitelists, and the TLS options of remote inputs.
+- Inputs only open with the demuxers in `media.inputs.format_whitelist`. HLS, DASH, concat and other formats that open other files or URLs are left out, so an upload can't read them. Don't add those for files of unknown origin.
 
 ## Running ffmpeg
 
@@ -60,7 +61,7 @@ $result->paths();  // every written path
 - `addArgs([...])` adds output options (for example `['-vf', 'scale=1280:-2']`), and `addInputArgs([...])` adds options placed before every input.
 - `clip()` seeks on the input, so it applies to every output. With `Format::copy()` the clip starts at the keyframe before `from`.
 - `beforeSaving(fn ($builder) => ...)` can still change the command. `afterSaving(fn ($builder, $result) => ...)` runs once, only after the files are on the target disk.
-- `command('out.mp4')` returns the full command line with keys redacted, without running it.
+- `command('out.mp4')` returns the full command line with keys and the secrets of URLs redacted, without running it. Logs, events, results and exceptions are redacted the same way, so use `$media->inputPath()` when you need a signed URL.
 - Temporary files, including downloaded remote inputs, are deleted after every queue job and at the end of each request. Call `$media->cleanupTemporaryFiles()` to free them earlier, for example between steps of a long job.
 
 ## Keyframes and segments
@@ -105,7 +106,7 @@ MediaStream::hlsUrl('videos', ['video' => $video]);    // HLS with MPEG-TS, e.g.
 MediaStream::chaptersUrl('videos', ['video' => $video]);   // the chapters as WebVTT, for the player's seek bar
 ```
 
-- **Resolvers:** parameters typed as a model (any `UrlRoutable`) are bound like implicit route model binding (404 when missing); other parameters are injected by the container. Return an `Opener` or a configured `DirectStream`. Authorize inside the resolver or with route middleware.
+- **Resolvers:** parameters typed as a model (any `UrlRoutable`) are bound like implicit route model binding (404 when missing, with the route's binding fields and `scopeBindings()`); other parameters are injected by the container. Return an `Opener` or a configured `DirectStream`. Authorize inside the resolver or with route middleware.
 - **Routes:** `Route::mediaStream($uri, $name)` names its routes `media.{name}.cmaf`, `.hls`, `.dash`, `.playlist`, `.segment`, `.key`, `.license`, `.track-playlist`, `.init`, `.fragment` and `.chapters` (tracks are `video`, `audio`, `audio-{n}` and `iframes`), and works inside `Route::name()`/`prefix()` groups. Playlists link to each other with absolute URLs, and are sent with `private, no-cache`.
 - **Signed streams:** `signed($lifetime)` rejects requests without a valid signature (403) and signs every playlist, segment and key URL for `$lifetime` seconds (default `media.delivery.url_lifetime`).
 
@@ -135,17 +136,17 @@ public function segment(Video $video, int $variant, int $segment): Response
   - The per-segment lock still applies, so a segment being packaged ahead is never packaged twice; a request for it waits for the running package.
 - **Probes:** each file is probed once per version, then read from the `media.delivery.index_store`, so playlist, init and segment requests skip ffprobe. `warm()` probes and indexes every opened file and converts embedded subtitles ahead of the first request.
 - **Segments:** `ffmpeg -ss … -t … -copyts -c copy -f mpegts` copies each segment exactly, because segments start on keyframes. S3 sources are read through signed URLs with range requests, so only the needed bytes are fetched. Concurrent requests for the same segment package it once (`Cache::lock`).
-- **The segment cache:** `media.delivery.cache_disk` can be local storage, a mounted `/tmp` or RAM disk, or S3 (override per stream with `toCache()`). Segments are keyed by file version, so a changed file gets new segments. On disks with temporary URLs, `segmentResponse()` redirects to one valid for `media.delivery.url_lifetime` seconds; otherwise it returns the file with long cache headers.
+- **The segment cache:** `media.delivery.cache_disk` can be local storage, a mounted `/tmp` or RAM disk, or S3 (override per stream with `toCache()`). Segments are keyed by file version, so a changed file gets new segments. On disks with temporary URLs, `segmentResponse()` redirects to one valid for `media.delivery.url_lifetime` seconds; otherwise it returns the file with long `private` cache headers, so shared caches never serve it to other viewers.
 - **Errors:** out-of-range segments and variants throw `SegmentNotFoundException` (a 404). Files with codecs MPEG-TS can't carry (VP9, AV1, Opus, ...) throw `InvalidMediaException`.
 - **Formats:** each route picks its own segment format, so one stream definition serves all three URLs. Prefer `url()` (CMAF): one set of cached fragments serves HLS and DASH, and every player plays it natively. MPEG-TS (`hlsUrl()`) is for rotating encryption keys and old devices; Shaka Player needs mux.js loaded (`window.muxjs`) to play it.
 - `segmentDuration()` overrides `media.delivery.segment_duration` per stream.
 - **Cache layout:** segments are stored at `{cache_path}/{version key}/{segment duration}/{track}/{n}.m4s` (`{n}.ts` for MPEG-TS), with one `init.mp4` per track that's written with the first fragment and kept. The version key hashes the disk, path, size and modification time of the source, so every request, viewer and look-ahead job for the same file reuses the same segments, CMAF HLS and DASH share them, and a replaced file gets a new directory. `php artisan media:prune --older-than=0` empties the segment cache, e.g. to test packaging again.
-- **Pruning:** segments are packaged again when requested, so the cache can be pruned at any time. Schedule `php artisan media:prune` daily; it deletes segments (`.ts`, `.m4s` and `init.mp4`) and converted subtitles (`.vtt`) packaged more than `--older-than` minutes ago (default a week) from the cache disk. `--dry-run` counts them.
+- **Pruning:** segments are packaged again when requested, so the cache can be pruned at any time. Schedule `php artisan media:prune` daily; it deletes segments (`.ts`, `.m4s` and `init.mp4`) and converted subtitles (`.vtt`) packaged more than `--older-than` minutes ago (default a week) from the cache disk, but keeps an `init.mp4` while newer segments next to it need it. `--dry-run` counts them.
 
 ### Fragmented MP4 and DASH
 
 - **Tracks:** fragmented segments hold one track (`Track::Video` or `Track::Audio`), as CMAF and DASH expect. Every file with video is a video representation, and the audio of the first file with audio is shared by all of them (HLS `#EXT-X-MEDIA` audio rendition, DASH audio adaptation set).
-- **Audio languages:** every audio stream of that file is an audio track players pick by language (Shaka Player's `preferredAudioLanguage`): one `#EXT-X-MEDIA` per stream with `NAME` (the stream's title, language or number) and `LANGUAGE`, and one DASH adaptation set per stream with `lang`, `<Label>` and a `main`/`alternate` role. The stream marked as default (or the first) is `DEFAULT=YES`. The first stream is the track `audio`, the others `audio-1`, `audio-2` and so on (`Track::Audio->name($position)`, mapped as `0:a:{position}`), each with its own segments. Streams fragmented MP4 can't carry, like TrueHD or DTS, are left out. `->withAudioStreams(['eng', 'jpn'])` (languages or positions, e.g. `[0]`) limits them. MPEG-TS segments (`hlsUrl()`) carry the first audio stream only. In tests, `FakeProbe::video(audioLanguages: ['eng', 'jpn'])` fakes a file with several.
+- **Audio languages:** every audio stream of that file is an audio track players pick by language (Shaka Player's `preferredAudioLanguage`): one `#EXT-X-MEDIA` per stream with `NAME` (the stream's title, language or number) and `LANGUAGE`, and one DASH adaptation set per stream with `lang`, `<Label>` and a `main`/`alternate` role. The stream marked as default (or the first) is `DEFAULT=YES`. The first stream is the track `audio`, the others `audio-1`, `audio-2` and so on (`Track::Audio->name($position)`, mapped as `0:a:{position}`), each with its own segments. Streams fragmented MP4 can't carry, like TrueHD or DTS, are left out. `->withAudioStreams(['eng', 'jpn'])` (languages or positions, e.g. `[0]`) limits them, and the others return 404. MPEG-TS segments (`hlsUrl()`) carry the first audio stream only. In tests, `FakeProbe::video(audioLanguages: ['eng', 'jpn'])` fakes a file with several.
 - **HLS:** CMAF playlists are version 7 with `#EXT-X-MAP` initialization segments. Without routes, `fragmented()` switches `masterPlaylist()` and `mediaPlaylist()` from MPEG-TS to fragmented MP4.
 - **Players:** Shaka Player, hls.js, dash.js and Safari play fragmented MP4 natively, without mux.js.
 - **Codecs:** fragmented MP4 also carries AV1, VP9, Opus and FLAC. HEVC is tagged `hvc1` for Safari. AV1 gets its `av01` codec string from the probed profile, level and pixel format; VP9 has none, so players probe it themselves.
@@ -240,7 +241,7 @@ The same `withEncryption()` stream also serves CMAF and DASH, encrypted with Com
 - **HLS:** CMAF track playlists get `#EXT-X-KEY:METHOD=SAMPLE-AES-CTR,KEYFORMAT="identity"` pointing at the key URL. Shaka Player fetches the raw key, reads the key ID from the initialization segment and plays it with ClearKey.
 - **DASH:** each adaptation set lists `cenc:default_KID` and a ClearKey `ContentProtection` with a `dashif:Laurl` license URL. `Route::mediaStream()` serves the license as `license.json` (GET or POST); without it, call `licenseUrlUsing(fn () => ...)` and return `$stream->licenseResponse()` (a JSON Web Key Set) from your own route.
 - **CSRF:** players POST license requests, so register the streams where CSRF protection doesn't apply (e.g. `routes/api.php`) or exclude `*/license.json` from it.
-- **Fragments:** audio samples are encrypted whole. H.264 and HEVC samples are encrypted per NAL unit, so lengths, NAL headers and parameter sets stay readable. AV1 samples are encrypted per tile, as the AV1 ISOBMFF binding requires: OBU headers, sequence and frame headers and tile sizes stay readable, and the whole blocks at the end of each tile are encrypted. Initialization segments get `encv`/`enca` sample entries with the scheme and key ID, plus a Common PSSH box. Each sample gets its own 8-byte IV, derived from the variant, track, segment and sample number.
+- **Fragments:** audio samples are encrypted whole. H.264 and HEVC samples are encrypted per NAL unit, so lengths, NAL headers and parameter sets stay readable. AV1 samples are encrypted per tile, as the AV1 ISOBMFF binding requires: OBU headers, sequence and frame headers and tile sizes stay readable, and the whole blocks at the end of each tile are encrypted. Initialization segments get `encv`/`enca` sample entries with the scheme and key ID, plus a Common PSSH box. Each sample gets its own 8-byte IV, derived from the key, the segment's content and position, and the sample number, so a replaced file or a key shared between files never repeats a keystream.
 - **Codecs:** VP9 can't be encrypted yet (its frame headers would have to be parsed), so encrypted CMAF and DASH output of it throws `InvalidMediaException`. AV1 frame headers are read to find the tiles; a bitstream that can't be read throws `InvalidMediaException` too.
 - **Players:** browsers support ClearKey through EME (Chrome, Edge and Firefox). Safari doesn't, so give it `hlsUrl()`. ClearKey hands the key to the browser, so it protects segments at rest and in transit, not from viewers.
 - `EncryptionKey::keyIdUuid()` formats the key ID as a UUID, and `toJsonWebKey()` as ClearKey's JSON Web Key.
@@ -371,6 +372,7 @@ $request->validate([
 ```
 
 - Files ffprobe can't read, and values that aren't files, fail with "The :attribute must be a readable media file."
+- `video()` refuses still images. `maxDimensions()`, `videoCodecs()` and `audioCodecs()` apply to every stream of the file (cover art aside), and a maximum fails when ffprobe can't tell the duration or size.
 - Codec names are ffprobe's (`h264`, `hevc`, `av1`, `vp9`, `aac`, `opus`, ...). Keep the `file`/`max` rules too, so oversized uploads are rejected before probing.
 
 ## Packaging into HLS and DASH
@@ -421,7 +423,7 @@ $video->update([
 ]);
 ```
 
-- **The key file:** the raw 16-byte key is saved next to the segments as `key`. HLS playlists get `#EXT-X-KEY:METHOD=SAMPLE-AES-CTR,KEYFORMAT="identity"` pointing at it, relative to each playlist. Keep the disk private and serve the key only through an authorized route or a short-lived signed URL. `$key->binary()` returns the bytes to respond with.
+- **The key file:** the raw 16-byte key is saved next to the segments as `key`, as private whenever `withVisibility()` is used, also with `'public'`. HLS playlists get `#EXT-X-KEY:METHOD=SAMPLE-AES-CTR,KEYFORMAT="identity"` pointing at it, relative to each playlist. Keep the disk private and serve the key only through an authorized route or a short-lived signed URL. `$key->binary()` returns the bytes to respond with.
 - **Serving the key yourself:** pass `withEncryption(keyFile: null, keyUri: route('videos.key', $video))` to skip the key file and point playlists at your route.
 - **DASH** manifests name the key ID with a ClearKey `ContentProtection` but no license URL, so DASH players need the key themselves, e.g. Shaka Player's `drm.clearKeys`. For a license URL, stream with `Route::mediaStream()` instead.
 - **Schemes:** the native driver encrypts with `cenc`; other `ProtectionScheme`s, `withClearLead()` and `withKeyRotation()` need a driver that supports them.
@@ -441,6 +443,7 @@ public function __invoke(Request $request, Video $video, string $path): Response
 
     $manifest = str_ends_with($path, '.m3u8')
         ? $media->hlsPlaylist()
+            ->within("videos/{$video->id}")
             ->resolveKeyUrlsUsing(fn (string $key) => URL::temporarySignedRoute('videos.key', now()->addMinutes(10), [$video]))
             ->resolvePlaylistUrlsUsing(fn (string $playlist) => URL::temporarySignedRoute('videos.manifest', now()->addHours(4), [$video, Str::after($playlist, "videos/{$video->id}/")]))
             ->resolveMediaUrlsUsing(fn (string $file) => Storage::disk('streams')->temporaryUrl($file, now()->addHours(4)))
@@ -459,6 +462,7 @@ public function __invoke(Request $request, Video $video, string $path): Response
   `all()` returns the master and every media playlist it references, keyed by disk path. `process($path)` rewrites one playlist.
 - **`dashManifest()`** rewrites `BaseURL`, `media` and `initialization`/`sourceURL` (`resolveInitUrlsUsing` falls back to the media resolver). Segment templates with `$Number$` are expanded into a segment list, because a template can't produce a different signed URL per segment. Query strings are escaped for XML.
 - Without a resolver, URIs stay as they are, and absolute URLs are never changed. Each path is resolved once per request.
+- Resolvers only get paths inside the opened manifest's directory; a URI or opened path that climbs out throws `ManifestException`. When manifests are nested (`audio/main.m3u8` linking to `../key`), call `within()` with the stream's directory.
 - Both are `Responsable` with the right content type, and also usable standalone: `new DynamicHLSPlaylist('streams')->open($path)`. Add cache headers yourself, and keep them shorter than the signed URLs' lifetime.
 
 ## Several outputs in one run
@@ -688,6 +692,7 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 | `timeout` | Process timeout in seconds; keep it at or below the queue job's `$timeout` |
 | `log_channel` | Log channel, `false` to disable |
 | `ffmpeg_log_level` | ffmpeg's `-loglevel` (`error`); `warning` logs warnings of successful runs (`MEDIA_FFMPEG_LOG_LEVEL`) |
+| `inputs.format_whitelist` | The demuxers inputs may be opened with; `null` turns the format and protocol limits off |
 | `remote_inputs.enabled`, `.url_lifetime` | Read remote disks through signed URLs |
 | `temporary_files.root`, `.cache_root` | Where downloads and outputs are written; the cache root is for small files (e.g. `/dev/shm`) |
 | `temporary_files.min_free`, `.size_multiplier`, `.cache_min_free` | Fail fast with `InsufficientStorageException` when a root is too full |
@@ -723,7 +728,7 @@ public function handle(): void
 
 ## Queue jobs, crashes and cleanup
 
-- **After every job:** temporary directories are deleted when a queue job finishes or throws (`media.temporary_files.cleanup_after_jobs`, on by default), and at the end of each request.
+- **After every job:** the temporary directories a job created (not those of a job that ran it with `dispatchSync()`) are deleted when it finishes or throws (`media.temporary_files.cleanup_after_jobs`, on by default), and at the end of each request.
 - **Timeouts:** when a job times out, Laravel's worker kills itself with SIGKILL. The package listens for `JobTimedOut` and `WorkerStopping` first, stops the running ffmpeg (SIGTERM, then SIGKILL) so it doesn't keep running as an orphan, and deletes the temporary directories. Still give long encodes a `->timeout()` below the job's `$timeout`, so they fail cleanly with a retryable `Timeout` instead.
 - **Crashes:** schedule `media:clean` to remove directories left behind by OOM kills, crashes or power loss. It only deletes the package's own directories (16 hex characters) that haven't been written to for longer than `--older-than` minutes (default: `media.timeout` plus an hour), so it's safe on shared mounts such as `/dev/shm`. `--dry-run` lists them.
 - **Partial exports:** when one file of an export fails to upload, the files of that export that did reach the disk are deleted (`media.uploads.rollback_on_failure`), so retries start clean.

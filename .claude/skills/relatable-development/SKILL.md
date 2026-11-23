@@ -22,7 +22,7 @@ Use this skill when a Laravel application relates models to other models with th
 ### 1. Install
 
 - `composer require foxws/laravel-relatable`
-- The `relatables` migration runs automatically. Don't write your own migration for it.
+- The `relatables` migration runs automatically. Don't write your own migration for it; to change it, publish it (`--tag="relatable-migrations"`) and set `relatable.migrations` to `false`, or both copies run and the second fails with "table already exists".
 - Add `use Foxws\Relatable\Concerns\InteractsWithRelated;` to each model that relates to others.
 
 ### 2. Relate models
@@ -43,13 +43,14 @@ Pass `mutual: true` when both models should list each other in `relates`; withou
 - `detachRelated($b, mutual: true)` removes both rows; without `mutual` B → A stays.
 - `syncRelated($items, mutual: true)` has no `mutualScore` / `mutualBoost`: each B → A gets its item's score and boost. For a different score back, call `attachRelated()` per model instead.
 - Sync only removes a B → A along with the A → B it removes. A B → A that exists without A → B is kept, because it was created independently — detach it explicitly if it must go.
-- Only `$a`'s loaded relations are refreshed. If `$b` already has `relatables` or `relates` loaded, call `$b->refresh()` before reading them.
+- Only `$a`'s loaded relations (`relatables`, `relatablesFrom`, `relates`) are refreshed. If `$b` already has them loaded, call `$b->refresh()` before reading them.
+- A model may be in its own mutual sync; only one row is written for it.
 
 ### 3. Read related models
 
 - `$a->relates` — cached attribute, a `Collection` of models, highest weight first. Works with `append('relates')` in API resources.
 - `$a->getRelates(Video::class)` — only one type (class or morph alias).
-- Eager load for lists: `->with('relatables.related')` to avoid N+1 queries.
+- Eager load for lists: `->with('relatables.related')` to avoid N+1 queries. Without it, `relates` queries the relations but doesn't load `relatables` on the model, so they don't end up in its array or JSON.
 - `relatables()` (A → others) and `relatablesFrom()` (others → A) are `MorphMany` relations to `Relatable`.
 
 ### 4. Query relations
@@ -58,14 +59,27 @@ Pass `mutual: true` when both models should list each other in `relates`; withou
 
 ### 5. Customize (optional)
 
-- `relatable.models.relatable`: a subclass of `Foxws\Relatable\Models\Relatable`. It may set `$table` to keep an existing table; then set `relatable.migrations` to `false`.
+- `relatable.models.relatable`: a subclass of `Foxws\Relatable\Models\Relatable`. It may set `$table` to keep an existing table; then set `relatable.migrations` to `false`, as the migration always creates `relatables`.
 - `relatable.defaults.score` / `relatable.defaults.boost`: values for new relations.
-- `relatable.delete_on_model_delete`: deleting a model removes its relations both ways (soft deletes keep them until force-deleted).
+- `relatable.delete_on_model_delete`: deleting a model removes its relations both ways once the delete succeeded (soft deletes keep them until force-deleted).
+- Relations use the connection of the model they start from, unless the configured model sets its own `$connection`.
 
 ## Rules
 
 - Always resolve the row model via `Relatable::modelClass()`, never `Relatable::class` directly, so a configured subclass is honored.
 - Pass scores as floats; don't store the weight — it is always derived from `score × boost`.
+- Scores and boosts must be finite: `INF`, `NAN` and strings like `'1e999'` (which pass Laravel's `numeric` rule) throw an `InvalidArgumentException`, as does a non-numeric `score` or `boost` in `syncRelated()`. Validate user input in a FormRequest with `numeric` plus `min`/`max`:
+
+```php
+public function rules(): array
+{
+    return [
+        'related' => ['array', 'max:15'],
+        'related.*.id' => ['required', 'exists:tags,id'],
+        'related.*.score' => ['nullable', 'numeric', 'min:0', 'max:1'],
+    ];
+}
+```
 
 ## References
 
