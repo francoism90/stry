@@ -14,7 +14,9 @@ Use this skill when a Laravel application caches values on Eloquent models with 
 ## Concepts
 
 - Values are stored in a Laravel cache store, keyed by the model (one record, or the whole class) and a key name.
-- Each logged-in user gets their own namespace by default (the cache profile's `useCacheNameSuffix()` returns the user ID), so users never see each other's value for the same model. Guests and console share the unsuffixed namespace.
+- Each logged-in user gets their own namespace by default (the cache profile's `useCacheNameSuffix()` returns the user's class, database and ID, the same through every guard), so users never see each other's value for the same model. Guests and console share the unsuffixed namespace.
+- Instance methods need the model's key: unsaved models, and ones selected without it, throw `InvalidModelCache`.
+- To forget another user's value, use `ModelCache::selectCachedItems($model)->usingSuffix(BaseCacheProfile::suffixFor($user))->forKeys([...])->forget()`.
 - A cache profile decides whether caching is enabled, which values are cached and until when (`modelcache.cache_lifetime_in_seconds`, default one week).
 
 ## Workflow
@@ -78,6 +80,7 @@ ModelCache::forget($video, ['playback_position', 'random_seed']);
 
 ## Rules
 
+- Cache scalars, arrays, dates and enums. Other objects come back as `__PHP_Incomplete_Class` unless their class is added to `modelcache.serializable_classes`, which defaults to the Carbon and DateTime classes. Never add models, collections, `CarbonPeriod` or `CarbonInterval`: unserializing those from a writable cache store could run code.
 - Use this for small per-model values; don't use it as a query cache or to store whole models or collections.
 - Remember the per-user default: a value cached in a request for user A isn't visible to user B, a guest, or a queued job. Override `cacheNameSuffix()` to `''` for values that must be shared.
 - Pick a cache store that persists (Redis, database) when values must survive a deploy; `MODEL_CACHE_ENABLED=false` turns everything off.

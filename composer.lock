@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e6323c8ca8cae72a7d72aa7220a42cb",
+    "content-hash": "c5e5311bb2ddeb4046c26065ad434dbf",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1208,24 +1208,24 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "3.1.3",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "6a1c80bf49edf70bba7ac566efaddaa3ef24e9c0"
+                "reference": "d038e4d61765a2711a93df0ed51aa86d9bc6c28e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/6a1c80bf49edf70bba7ac566efaddaa3ef24e9c0",
-                "reference": "6a1c80bf49edf70bba7ac566efaddaa3ef24e9c0",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/d038e4d61765a2711a93df0ed51aa86d9bc6c28e",
+                "reference": "d038e4d61765a2711a93df0ed51aa86d9bc6c28e",
                 "shasum": ""
             },
             "require": {
-                "foxws/laravel-media": "^0.3.4 || ^0.4.0 || ^0.5.0",
+                "foxws/laravel-media": "^0.3.4 || ^0.4.0 || ^0.5.0 || ^0.6.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/filesystem": "^13.0",
                 "illuminate/support": "^13.0",
-                "php": "^8.4"
+                "php": "^8.5"
             },
             "require-dev": {
                 "larastan/larastan": "^3.9",
@@ -1273,7 +1273,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/3.1.3"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/4.0.0"
             },
             "funding": [
                 {
@@ -1281,8 +1281,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-12T15:10:23+00:00",
-            "published-time": "2026-11-12T15:11:11+00:00"
+            "time": "2026-11-19T10:01:15+00:00",
+            "published-time": "2026-11-23T08:22:15+00:00"
         },
         {
             "name": "foxws/laravel-ddd",
@@ -1442,16 +1442,16 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "0.5.0",
+            "version": "0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-media.git",
-                "reference": "d7cbc7f3e301d62d542879539afee31be309461c"
+                "reference": "071e688dfb7cf13960d548429288d8836be5550d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/d7cbc7f3e301d62d542879539afee31be309461c",
-                "reference": "d7cbc7f3e301d62d542879539afee31be309461c",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/071e688dfb7cf13960d548429288d8836be5550d",
+                "reference": "071e688dfb7cf13960d548429288d8836be5550d",
                 "shasum": ""
             },
             "require": {
@@ -1462,7 +1462,7 @@
                 "illuminate/filesystem": "^13.0",
                 "illuminate/process": "^13.0",
                 "illuminate/support": "^13.0",
-                "php": "^8.4",
+                "php": "^8.5",
                 "psr/log": "^3.0",
                 "symfony/process": "^7.4 || ^8.0"
             },
@@ -1523,7 +1523,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-media/issues",
-                "source": "https://github.com/foxws/laravel-media/tree/0.5.0"
+                "source": "https://github.com/foxws/laravel-media/tree/0.6.1"
             },
             "funding": [
                 {
@@ -1531,21 +1531,21 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-12T15:03:48+00:00",
-            "published-time": "2026-11-12T15:05:01+00:00"
+            "time": "2026-11-23T08:20:12+00:00",
+            "published-time": "2026-11-23T08:22:10+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-modelcache.git",
-                "reference": "198e0ea330fdd1ad319241a81dbc1af07778b4ac"
+                "reference": "7f9b1160ecdd651d880ac0dd9dc49e8f170c0072"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/198e0ea330fdd1ad319241a81dbc1af07778b4ac",
-                "reference": "198e0ea330fdd1ad319241a81dbc1af07778b4ac",
+                "url": "https://api.github.com/repos/foxws/laravel-modelcache/zipball/7f9b1160ecdd651d880ac0dd9dc49e8f170c0072",
+                "reference": "7f9b1160ecdd651d880ac0dd9dc49e8f170c0072",
                 "shasum": ""
             },
             "require": {
@@ -1608,7 +1608,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-modelcache/issues",
-                "source": "https://github.com/foxws/laravel-modelcache/tree/2.0.0"
+                "source": "https://github.com/foxws/laravel-modelcache/tree/3.0.0"
             },
             "funding": [
                 {
@@ -1616,8 +1616,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-19T09:45:49+00:00",
-            "published-time": "2026-11-19T09:58:11+00:00"
+            "time": "2026-11-23T08:13:52+00:00",
+            "published-time": "2026-11-23T08:22:12+00:00"
         },
         {
             "name": "foxws/laravel-pwa",
