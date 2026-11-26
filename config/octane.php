@@ -52,9 +52,12 @@ return [
     | framework that all absolute links must be generated using the HTTPS
     | protocol. Otherwise your links may be generated using plain HTTP.
     |
+    | Stry leaves it off: behind the proxy, links get https from the trusted
+    | X-Forwarded-Proto header, and plain HTTP access keeps http links.
+    |
     */
 
-    'https' => env('OCTANE_HTTPS', true),
+    'https' => env('OCTANE_HTTPS', false),
 
     /*
     |--------------------------------------------------------------------------

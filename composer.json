@@ -18,7 +18,7 @@
         "php": "^8.5",
         "foxws/laravel-ab-av1": "^4.1",
         "foxws/laravel-ddd": "^2.0.1",
-        "foxws/laravel-essentials": "^3.2.1",
+        "foxws/laravel-essentials": "^3.3.0",
         "foxws/laravel-media": "^0.7.0",
         "foxws/laravel-modelcache": "^3.0",
         "foxws/laravel-pwa": "^3.0",

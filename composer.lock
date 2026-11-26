@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "454cbb5994a4ed1b9e0c779895ac9607",
+    "content-hash": "7fb18ae98f4610fadc0daa229dd5cdcc",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1362,16 +1362,16 @@
         },
         {
             "name": "foxws/laravel-essentials",
-            "version": "3.2.1",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-essentials.git",
-                "reference": "4b5f72d9883048236db13c3d10f9a1d2185ca5b0"
+                "reference": "7eea9c432c87a520325c14ee127ad712b476afe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-essentials/zipball/4b5f72d9883048236db13c3d10f9a1d2185ca5b0",
-                "reference": "4b5f72d9883048236db13c3d10f9a1d2185ca5b0",
+                "url": "https://api.github.com/repos/foxws/laravel-essentials/zipball/7eea9c432c87a520325c14ee127ad712b476afe1",
+                "reference": "7eea9c432c87a520325c14ee127ad712b476afe1",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1429,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-essentials/issues",
-                "source": "https://github.com/foxws/laravel-essentials/tree/3.2.1"
+                "source": "https://github.com/foxws/laravel-essentials/tree/3.3.0"
             },
             "funding": [
                 {
@@ -1437,8 +1437,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-25T22:33:48+00:00",
-            "published-time": "2026-11-25T22:34:01+00:00"
+            "time": "2026-11-26T15:44:04+00:00",
+            "published-time": "2026-11-26T15:45:34+00:00"
         },
         {
             "name": "foxws/laravel-media",
