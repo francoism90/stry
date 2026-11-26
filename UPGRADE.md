@@ -264,12 +264,12 @@ The packaged segments and encryption keys of 1.x stay in the `segments` and `sec
 
 ### Commands
 
-| 1.x               | 2.0                                                               |
-| ----------------- | ----------------------------------------------------------------- |
-| `playlists:clear` | Removed                                                           |
-| —                 | `videos:thumbnails`: regenerate seek preview thumbnails           |
-| —                 | `media:prune`: delete cached segments (runs daily)                |
-| —                 | `media:doctor`: check that FFmpeg, ffprobe and ab-av1 run         |
+| 1.x               | 2.0                                                       |
+| ----------------- | --------------------------------------------------------- |
+| `playlists:clear` | Removed                                                   |
+| —                 | `videos:thumbnails`: regenerate seek preview thumbnails   |
+| —                 | `media:prune`: delete cached segments (runs daily)        |
+| —                 | `media:doctor`: check that FFmpeg, ffprobe and ab-av1 run |
 
 ### Rolling back
 
