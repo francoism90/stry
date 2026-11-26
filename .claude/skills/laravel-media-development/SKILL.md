@@ -539,7 +539,8 @@ $media->ffmpeg()
   - `Scale::fit()` (letterbox to an exact size) and `Scale::fill()` (crop to an exact size)
   - `new Crop(...)`, `new Pad(...)`, `Rotate::clockwise()`/`counterClockwise()`/`upsideDown()`/`flipHorizontally()`/`flipVertically()`
   - `new Fps(30)`, `Fade::in()`/`out()`
-- **Audio filters:** `Fade::audioIn()`/`audioOut()`, `Volume::times(0.5)`/`decibels(-6)`, `new Loudnorm(-16, -1.5, 11)`.
+- **Audio filters:** `Fade::audioIn()`/`audioOut()`, `Volume::times(0.5)`/`decibels(-6)`, `new Loudnorm(-16, -1.5, 11)`. `Loudnorm` resamples to 48 kHz afterwards (`sampleRate:`, null keeps loudnorm's 192 kHz in dynamic mode).
+- **Two-pass loudness:** `$media->loudness(audioStream: 0)` measures with loudnorm's first pass (cached on the opener) and returns a `LoudnessMeasurement` (`integrated`, `truePeak`, `range`, `threshold`, `targetOffset`; `-inf` values such as silence are null, `isSilent()`). `new Loudnorm(-16)->withMeasurement($measurement)` is the second pass; `isLinear()` tells whether ffmpeg keeps the dynamics with one gain or falls back to dynamic mode. It measures the whole stream, so measure the clip itself when exporting part of it.
 - `Custom::video('hqdn3d')` or `Custom::audio('atempo=1.25')` covers any other filter.
 
 ### HDR to SDR
@@ -645,7 +646,9 @@ Failed copies throw `ExportFailedException`, whose `failures` property lists eac
 
 ## Executables
 
-Each executable resolves lazily: an absolute path from config, or a command name found in the `PATH` or the project root. Only the tools you call need to be installed. Run `php artisan media:info` to see which are found, with their paths and versions. `php artisan about` also has a Media section with the disk, temporary root, timeout and executables. A missing one throws `ExecutableNotFoundException`, which names the env key to set.
+Each executable resolves lazily: an absolute path from config, or a command name found in the `PATH` or the project root. Only the tools you call need to be installed. Run `php artisan media:doctor` to check that they're found and report their version, and that the temporary files root (and cache root) is writable with `min_free` space; it exits with an error when a check fails (`--json` for scripts), and only warns about missing executables of other packages. `php artisan about` also has a Media section with the disk, temporary root, timeout and executables. A missing one throws `ExecutableNotFoundException`, which names the env key to set. One that is found but can't run (e.g. a missing shared library) fails with its exit code and error.
+
+To check what ffmpeg was built with, pass requirements to `php artisan media:doctor`: `--encoder`, `--decoder`, `--muxer`, `--demuxer`, `--filter`, `--protocol`, `--bsf` and `--hwaccel` (repeatable). It fails when one is missing. In code, `Media::capabilities()` returns `Foxws\Media\Executables\Capabilities` with `has(Capability::Encoders, 'libsvtav1')`, `all()`, `missing(['encoders' => [...], 'hwaccels' => ['vaapi']])` and `require([...])`, which throws `MissingCapabilitiesException`. It runs ffmpeg once per kind, so don't call it per request. A compiled-in hwaccel doesn't prove the GPU opens; `HardwareAcceleration` checks that.
 
 ### Executables from other packages
 
@@ -664,7 +667,7 @@ enum EncoderExecutable: string implements Binary
 }
 
 // in the add-on's service provider
-$this->app->make(Executables::class)->register(EncoderExecutable::Encoder);   // lists it in media:info and about
+$this->app->make(Executables::class)->register(EncoderExecutable::Encoder);   // lists it in media:doctor and about
 Opener::macro('encoder', fn () => new EncoderBuilder($this));             // $opener->encoder()
 ```
 
@@ -690,6 +693,7 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 | `delivery.hardware` | GPU for renditions encoded on request (`MEDIA_DELIVERY_HARDWARE`), defaulting to `ladder.hardware` |
 | `playback.video_codecs`, `.audio_codecs`, `.video_codec`, `.crf`, `.preset`, `.audio_bitrate`, `.hardware` | What browsers play through a direct stream, and how `makePlayable()` re-encodes the rest |
 | `timeout` | Process timeout in seconds; keep it at or below the queue job's `$timeout` |
+| `idle_timeout` | Seconds an ffmpeg export, thumbnail sheet or ladder may write no progress before it's stopped (`MEDIA_IDLE_TIMEOUT`, off) |
 | `log_channel` | Log channel, `false` to disable |
 | `ffmpeg_log_level` | ffmpeg's `-loglevel` (`error`); `warning` logs warnings of successful runs (`MEDIA_FFMPEG_LOG_LEVEL`) |
 | `inputs.format_whitelist` | The demuxers inputs may be opened with; `null` turns the format and protocol limits off |
@@ -703,8 +707,8 @@ Publish with `php artisan vendor:publish --tag=media-config`.
 ## Errors, retries and logging
 
 Failed runs throw `Foxws\Media\Exceptions\ProcessFailedException`:
-- `$exception->reason` is a `FailureReason` recognised from ffmpeg's error output: `InvalidInput`, `MissingInput`, `UnsupportedCodec`, `InvalidOptions`, `PermissionDenied`, `NoSpace`, `Network`, `Timeout` or `Unknown`.
-- `$exception->isRetryable()` is true for `Network`, `Timeout`, `NoSpace` and `Unknown`. Broken uploads, missing codecs or wrong options fail the same way every time.
+- `$exception->reason` is a `FailureReason` recognised from ffmpeg's error output and exit code: `BrokenExecutable` (ffmpeg couldn't start, e.g. a missing shared library), `InvalidInput`, `MissingInput`, `UnsupportedCodec`, `InvalidOptions`, `PermissionDenied`, `NoSpace`, `Network`, `Timeout` or `Unknown`.
+- `$exception->isRetryable()` is true for `Network`, `Timeout`, `NoSpace` and `Unknown`. Broken uploads, missing codecs, wrong options or a broken executable fail the same way every time.
 - When the exception is reported, its `context()` (executable, exit code, reason, redacted command, last 20 lines of error output) appears in the logs and in error trackers such as Sentry, Flare or Nightwatch.
 
 <!-- Retrying only what can recover -->
@@ -714,7 +718,7 @@ use Foxws\Media\Exceptions\ProcessFailedException;
 public function handle(): void
 {
     try {
-        Media::fromDisk('s3')->open($this->path)->ffmpeg()->timeout(1800)->inFormat(Format::h264())->save($this->output);
+        Media::fromDisk('s3')->open($this->path)->ffmpeg()->timeout(1800)->idleTimeout(120)->inFormat(Format::h264())->save($this->output);
     } catch (ProcessFailedException $exception) {
         $exception->isRetryable() ? $this->release(60) : $this->fail($exception);
     }
@@ -722,6 +726,7 @@ public function handle(): void
 ```
 
 - `->timeout($seconds)` on the builder or `thumbnails()` overrides `media.timeout`. Keep it below the job's `$timeout`, so the package stops ffmpeg and throws a `Timeout` failure instead of the worker being killed.
+- `->idleTimeout($seconds)` on the builder or `thumbnails()` overrides `media.idle_timeout`: ffmpeg is stopped with a retryable `Timeout` failure when it writes no progress for that long, e.g. a stalled S3 or HTTP read. ffmpeg then always reports progress (about twice a second), even without `onProgress()`. Direct streams and packaging only use `timeout()`.
 - Failures are logged as errors with the same context. Successful runs that still wrote to the error output are logged as warnings (unless `Runner::run()` gets `logWarnings: false`). Set `MEDIA_FFMPEG_LOG_LEVEL=warning` to see why output from damaged files looks wrong.
 - **Events:** `Process\Events\ProcessStarted`, `ProcessCompleted` and `ProcessFailed` (with `$result` and `$reason`) are dispatched for every ffmpeg/ffprobe run, with the command redacted.
 - **Other exceptions** live in `Foxws\Media\Exceptions` too: `ExecutableNotFoundException`, `InvalidMediaException`, `InvalidFormatException`, `InvalidFilterException`, `ExportFailedException`, `InsufficientStorageException` and `TemporaryFileException`.
@@ -775,6 +780,8 @@ Media::assertNotRan(Executable::FFMpeg, fn (array $arguments) => in_array('-pass
 
 - Unknown paths probe as a one-minute 1080p H.264 video with AAC audio. Use `'*'` as the key to fake every probe, e.g. for uploads, which have random temporary names: `Media::fake(['*' => FakeProbe::video(duration: 5)])` makes `MediaFile::video()->minDuration(10)` fail. `FakeProbe::video()` also takes `width`, `height`, `codec`, `audio: false`, `subtitles`, `audioLanguages`, `transfer: 'smpte2084'` (HDR) and `frameRate`.
 - `$fake->failNext(Executable::FFMpeg, 'Invalid data found')` (on the fake `Media::fake()` returned; calling it again starts a new fake) makes the next run throw `ProcessFailedException`. Use it to test failure handling and retries.
+- `$fake->loudness('talk.mp4', integrated: -30, truePeak: -12)` fakes what `loudness()` measures (default -23 LUFS, -4 dBTP, 7 LU; null for silence).
+- `$fake->withCapabilities(['encoders' => ['libx264'], 'hwaccels' => ['vaapi']])` sets what `Media::capabilities()` and `media:doctor` report; the fake ffmpeg has nothing compiled in otherwise.
 - `$fake->respondUsing($binary, fn (array $arguments) => $output)` fakes the output of an add-on's executable, or its error output and exit code with `Process::result()`; without it, add-on executables run as successful with no output.
 - `onProgress()` callbacks receive 50% and 100%. Probes and scenes are matched against the end of the opened path.
 - Other assertions: `assertRanTimes()`, `assertNothingRan()`, `assertNotSaved()`. `Media::fake()` returns the fake, whose `commands(Executable::FFMpeg)` lists the recorded arguments.

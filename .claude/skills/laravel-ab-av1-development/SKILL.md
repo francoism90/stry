@@ -65,7 +65,7 @@ All return an `AbAv1Result` (`crf`, `vmaf`, `xpsnr`, `predictedSize` in bytes, `
 
 ## Configuration
 
-Publish with `php artisan vendor:publish --tag=ab-av1-config`. `php artisan media:info` lists the ab-av1 binary next to ffmpeg and ffprobe.
+Publish with `php artisan vendor:publish --tag=ab-av1-config`. `php artisan media:doctor` checks the ab-av1 binary next to ffmpeg and ffprobe (a missing ab-av1 is a warning; `media:info` before laravel-media 0.7).
 
 | Key | Purpose |
 | --- | --- |

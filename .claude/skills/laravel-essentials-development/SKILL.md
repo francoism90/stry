@@ -34,7 +34,7 @@ Every configurable implements `Foxws\Essentials\Contracts\Configurable` (`enable
 | `EnforceMorphMap` | `essentials.morph_map` is not empty | `Relation::enforceMorphMap(...)` |
 | `FakeSleep` | Running unit tests | `Sleep::fake()` |
 | `ForceHttpsScheme` | Always | `URL::forceHttps()` |
-| `ForceRootUrl` | Outside `local`, with an `app.url` | `URL::useOrigin()` with `app.url` |
+| `ForceRootUrl` | Opt-in (commented out by default), outside `local`, with an `app.url` | `URL::useOrigin()` with `app.url` |
 | `ForceSecurePassword` | Running in production | `Password::defaults()` — 12–64 chars, mixed case, numbers, symbols, "uncompromised" |
 | `ImmutableDates` | Always | `Date::use(CarbonImmutable::class)` |
 | `ModelShouldBeStrict` | Always | `Model::shouldBeStrict()` |
@@ -42,13 +42,13 @@ Every configurable implements `Foxws\Essentials\Contracts\Configurable` (`enable
 | `PreventStrayRequests` | Running unit tests | `Http::preventStrayRequests()` |
 | `ProhibitDestructiveCommands` | Running in production | `DB::prohibitDestructiveCommands()` |
 | `ResourceWithoutWrapping` | Always | `JsonResource::withoutWrapping()` |
-| `SetTrustedProxies` | `essentials.trusted_proxies` (`TRUSTED_PROXIES`) is set | `TrustProxies::at(...)` |
+| `SetTrustedProxies` | Opt-in (commented out by default), when `essentials.trusted_proxies` (`TRUSTED_PROXIES`) is set | `TrustProxies::at(...)` |
 
 If an app's existing behavior conflicts with one of the "Always" defaults (e.g. it relies on lazy loading or wrapped JSON resources), publish the config and remove that configurable rather than working around it downstream.
 
-`ForceRootUrl` sends every generated link and redirect to `app.url`, as `ForceHttpsScheme` alone leaves the host and port to the request. Check `APP_URL` in every non-local environment, remove it for an app that serves several hosts, and add it to configs that were published before it existed, as those replace the default list. It doesn't cover `request()->url()`, `url()->full()`, pagination links, or the port of domain routes.
+`ForceRootUrl` sends every generated link and redirect to `app.url`, as `ForceHttpsScheme` alone leaves the host and port to the request. It's opt-in: add it to a published config once `APP_URL` is right in every non-local environment, and leave it out for an app that serves several hosts or is reached at other addresses. It doesn't cover `request()->url()`, `url()->full()`, pagination links, or the port of domain routes.
 
-For proxies that differ per environment, set `TRUSTED_PROXIES` rather than calling `env()` or `config()` in `withMiddleware()`, which runs before either is loaded. Use `auto` as the app's default (`env('TRUSTED_PROXIES', 'auto')`): it's `*` on Laravel Cloud and `private_ranges` elsewhere, detected on boot, so don't call `laravel_cloud()` in the config. It replaces `trustProxies(at: ...)`. Keep `trustProxies(headers: ...)` in `bootstrap/app.php`, without `X-Forwarded-Host` unless the proxy overwrites it. A config published earlier needs `SetTrustedProxies::class` added.
+For proxies that differ per environment, set `TRUSTED_PROXIES` rather than calling `env()` or `config()` in `withMiddleware()`, which runs before either is loaded. Use `auto` as the app's default (`env('TRUSTED_PROXIES', 'auto')`): it's `*` on Laravel Cloud and `private_ranges` elsewhere, detected on boot, so don't call `laravel_cloud()` in the config. It replaces `trustProxies(at: ...)`. Keep `trustProxies(headers: ...)` in `bootstrap/app.php`, without `X-Forwarded-Host` unless the proxy overwrites it. It's opt-in: add `SetTrustedProxies::class` to a published config's `configurables`, or `TRUSTED_PROXIES` does nothing.
 
 ### 3. Enable, disable, or reorder configurables
 
@@ -133,7 +133,7 @@ Read before executing:
 
 ### Content Security Policy (optional, requires `spatie/laravel-csp`)
 
-- Presets: `Foxws\Essentials\Csp\Presets\BasicPreset` (strict same-origin policy plus `*.{app host}`, nonce + `strict-dynamic` scripts), `IconifyPreset` (`connect-src api.iconify.design`), `GitHubImagesPreset` (`img-src https://raw.githubusercontent.com`, for images in READMEs and docs synced from GitHub) and `ReverbPreset` (`connect-src` for Echo's websocket to Reverb, from the first Reverb app's `wsHost`/`wsPort`/`wsScheme` options, falling back to `host`/`port`/`scheme`)
+- Presets: `Foxws\Essentials\Csp\Presets\BasicPreset` (strict same-origin policy plus `*.{app host}`, nonce + `strict-dynamic` scripts), `IconifyPreset` (`connect-src api.iconify.design api2.iconify.design`, the second being the fallback host), `GitHubImagesPreset` (`img-src https://raw.githubusercontent.com`, for images in READMEs and docs synced from GitHub) and `ReverbPreset` (`connect-src` for Echo's websocket to Reverb, from the first Reverb app's `wsHost`/`wsPort`/`wsScheme` options, falling back to `host`/`port`/`scheme`)
 - Set `csp.nonce_generator` to `Foxws\Essentials\Csp\Nonce\ViteNonceGenerator` so the header and Vite's tags share one nonce
 - Append Spatie's `Spatie\Csp\AddCspHeaders` to the web middleware; Horizon and Telescope run inside the app and keep its policy
 - Add `Foxws\Essentials\Csp\Middleware\AddHorizonCspNonce` to `horizon.middleware` and `AddTelescopeCspNonce` to `telescope.middleware`, so their inline style and script tags get the nonce; keep `Spatie\Csp\Presets\BunnyFonts` for their font

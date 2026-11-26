@@ -20,7 +20,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The ab-av1 binary: a name looked up in the PATH, or a full path such as
-    | /home/user/.cargo/bin/ab-av1. "php artisan media:info" shows what was found.
+    | /home/user/.cargo/bin/ab-av1. "php artisan media:doctor" checks what was found.
     |
     */
 
