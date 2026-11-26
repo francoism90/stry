@@ -269,7 +269,7 @@ The packaged segments and encryption keys of 1.x stay in the `segments` and `sec
 | `playlists:clear` | Removed                                                           |
 | —                 | `videos:thumbnails`: regenerate seek preview thumbnails           |
 | —                 | `media:prune`: delete cached segments (runs daily)                |
-| —                 | `media:info`: show the FFmpeg, ffprobe and ab-av1 that were found |
+| —                 | `media:doctor`: check that FFmpeg, ffprobe and ab-av1 run         |
 
 ### Rolling back
 

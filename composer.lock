@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4bc94fc56ad459f0bd3934f8f4b43ec",
+    "content-hash": "52f50490e0f0f2e43199069f2684644d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1208,20 +1208,20 @@
         },
         {
             "name": "foxws/laravel-ab-av1",
-            "version": "4.0.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-ab-av1.git",
-                "reference": "d038e4d61765a2711a93df0ed51aa86d9bc6c28e"
+                "reference": "f9d4b0d7ce4c055a244bf865d4edec3770a0096f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/d038e4d61765a2711a93df0ed51aa86d9bc6c28e",
-                "reference": "d038e4d61765a2711a93df0ed51aa86d9bc6c28e",
+                "url": "https://api.github.com/repos/foxws/laravel-ab-av1/zipball/f9d4b0d7ce4c055a244bf865d4edec3770a0096f",
+                "reference": "f9d4b0d7ce4c055a244bf865d4edec3770a0096f",
                 "shasum": ""
             },
             "require": {
-                "foxws/laravel-media": "^0.3.4 || ^0.4.0 || ^0.5.0 || ^0.6.0",
+                "foxws/laravel-media": "^0.3.4 || ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0",
                 "illuminate/contracts": "^13.0",
                 "illuminate/filesystem": "^13.0",
                 "illuminate/support": "^13.0",
@@ -1273,7 +1273,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-ab-av1/issues",
-                "source": "https://github.com/foxws/laravel-ab-av1/tree/4.0.0"
+                "source": "https://github.com/foxws/laravel-ab-av1/tree/4.1.0"
             },
             "funding": [
                 {
@@ -1281,8 +1281,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-19T10:01:15+00:00",
-            "published-time": "2026-11-23T08:22:15+00:00"
+            "time": "2026-11-26T12:28:22+00:00",
+            "published-time": "2026-11-26T12:28:38+00:00"
         },
         {
             "name": "foxws/laravel-ddd",
@@ -1442,16 +1442,16 @@
         },
         {
             "name": "foxws/laravel-media",
-            "version": "0.6.1",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/foxws/laravel-media.git",
-                "reference": "071e688dfb7cf13960d548429288d8836be5550d"
+                "reference": "fd27e0c22e8bf2526228dea563261fcebdbc322e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/071e688dfb7cf13960d548429288d8836be5550d",
-                "reference": "071e688dfb7cf13960d548429288d8836be5550d",
+                "url": "https://api.github.com/repos/foxws/laravel-media/zipball/fd27e0c22e8bf2526228dea563261fcebdbc322e",
+                "reference": "fd27e0c22e8bf2526228dea563261fcebdbc322e",
                 "shasum": ""
             },
             "require": {
@@ -1523,7 +1523,7 @@
             ],
             "support": {
                 "issues": "https://github.com/foxws/laravel-media/issues",
-                "source": "https://github.com/foxws/laravel-media/tree/0.6.1"
+                "source": "https://github.com/foxws/laravel-media/tree/0.7.0"
             },
             "funding": [
                 {
@@ -1531,8 +1531,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-23T08:20:12+00:00",
-            "published-time": "2026-11-23T08:22:10+00:00"
+            "time": "2026-11-26T12:23:53+00:00",
+            "published-time": "2026-11-26T12:25:21+00:00"
         },
         {
             "name": "foxws/laravel-modelcache",

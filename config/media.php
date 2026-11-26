@@ -161,6 +161,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Idle Timeout
+    |--------------------------------------------------------------------------
+    |
+    | Seconds an ffmpeg export or rendition ladder may write no progress
+    | before it's stopped, e.g. because reading from the storage disk
+    | stalled. ffmpeg reports progress about twice a second once it writes
+    | output. Thumbnail sheets don't use it from laravel-media 0.7.1 on.
+    | Leave empty to only use the timeout above.
+    |
+    */
+
+    'idle_timeout' => env('MEDIA_IDLE_TIMEOUT'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Log Channel
     |--------------------------------------------------------------------------
     |

@@ -219,7 +219,7 @@ AB_AV1_TIMEOUT=14400
 | `config/videos.php` | Importing and playback | Import, transcode and thumbnail disks, batch size                  |
 | `config/ab-av1.php` | AV1 encoder            | Preset, encoder, VMAF, timeout, FFmpeg options                     |
 
-The `config/*.php` files are part of the repository, so you can read every option there. Run `php artisan media:info` to check which FFmpeg, FFprobe and ab-av1 binaries were found.
+The `config/*.php` files are part of the repository, so you can read every option there. Run `php artisan media:doctor` to check that FFmpeg, FFprobe and ab-av1 are found and run, and that the temporary files directory is usable. Add `--encoder=libsvtav1` or `--hwaccel=vaapi` to also check what FFmpeg was built with.
 
 ## See also
 

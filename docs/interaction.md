@@ -64,7 +64,7 @@ printf '%s' "$PASSWORD" | lpod stry artisan users:create --super-admin --no-inte
 
 | Command                                               | Description                                     |
 | ----------------------------------------------------- | ----------------------------------------------- |
-| `media:info`                                          | Show which FFmpeg, FFprobe and ab-av1 are found |
+| `media:doctor`                                        | Check that FFmpeg, FFprobe and ab-av1 run       |
 | `media:prune`                                         | Delete cached direct play segments (runs daily) |
 | `media:clean`                                         | Delete temporary files left by crashed jobs     |
 | `videos:thumbnails`                                   | Regenerate the seek preview thumbnails          |
