@@ -209,11 +209,12 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
+        // One pool for both queues, broadcasts first: with "auto" balancing every
+        // queue gets its own pool, and minProcesses idle workers in each of them.
+        'default' => [
             'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
+            'queue' => ['broadcasts', 'default'],
+            'balance' => false,
             'minProcesses' => (int) env('QUEUE_DEFAULT_MIN_PROCESSES', 1),
             'maxProcesses' => (int) env('QUEUE_DEFAULT_MAX_PROCESSES', 10),
             'balanceMaxShift' => 1,
@@ -226,24 +227,7 @@ return [
             'nice' => 0,
         ],
 
-        'supervisor-2' => [
-            'connection' => 'redis',
-            'queue' => ['broadcasts'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'minProcesses' => (int) env('QUEUE_BROADCASTS_MIN_PROCESSES', 1),
-            'maxProcesses' => (int) env('QUEUE_BROADCASTS_MAX_PROCESSES', 3),
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 90,
-            'nice' => 0,
-        ],
-
-        'supervisor-3' => [
+        'processing' => [
             'connection' => 'redis-long',
             'queue' => ['processing'],
             'balance' => 'auto',
@@ -260,7 +244,7 @@ return [
             'nice' => 10,
         ],
 
-        'supervisor-4' => [
+        'media' => [
             'connection' => 'redis-media',
             'queue' => ['media'],
             'balance' => 'auto',
@@ -277,7 +261,7 @@ return [
             'nice' => 5,
         ],
 
-        'supervisor-5' => [
+        'background' => [
             'connection' => 'redis-long',
             'queue' => ['background'],
             'balance' => false,
@@ -294,27 +278,24 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [],
-            'supervisor-2' => [],
-            'supervisor-3' => [],
-            'supervisor-4' => [],
-            'supervisor-5' => [],
+            'default' => [],
+            'processing' => [],
+            'media' => [],
+            'background' => [],
         ],
 
         'staging' => [
-            'supervisor-1' => [],
-            'supervisor-2' => [],
-            'supervisor-3' => [],
-            'supervisor-4' => [],
-            'supervisor-5' => [],
+            'default' => [],
+            'processing' => [],
+            'media' => [],
+            'background' => [],
         ],
 
         'local' => [
-            'supervisor-1' => [],
-            'supervisor-2' => [],
-            'supervisor-3' => [],
-            'supervisor-4' => [],
-            'supervisor-5' => [],
+            'default' => [],
+            'processing' => [],
+            'media' => [],
+            'background' => [],
         ],
     ],
 

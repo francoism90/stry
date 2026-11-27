@@ -217,12 +217,10 @@ return [
                         [
                             'name' => 'name',
                             'type' => 'string',
-                            'sort' => true,
                         ],
                         [
                             'name' => 'email',
                             'type' => 'string',
-                            'sort' => true,
                         ],
                         [
                             'name' => 'state',
@@ -364,8 +362,6 @@ return [
                             'name' => 'identifier',
                             'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
-                            'infix' => true,
                             'facet' => true,
                         ],
                         [
@@ -382,21 +378,18 @@ return [
                             'name' => 'season',
                             'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
                             'name' => 'episode',
                             'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
                             'name' => 'part',
                             'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
@@ -437,7 +430,6 @@ return [
                         [
                             'name' => 'released',
                             'type' => 'string',
-                            'sort' => true,
                         ],
                         [
                             'name' => 'captioned',
@@ -543,7 +535,6 @@ return [
                             'name' => 'type',
                             'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                         ],
                         [
                             'name' => 'type_priority',
@@ -660,7 +651,6 @@ return [
                             'name' => 'name',
                             'type' => 'string',
                             'optional' => true,
-                            'sort' => true,
                         ],
                         [
                             'name' => 'file_name',
@@ -733,13 +723,11 @@ return [
                         [
                             'name' => 'groupable_id',
                             'type' => 'string',
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
                             'name' => 'groupable_type',
                             'type' => 'string',
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
@@ -747,7 +735,6 @@ return [
                             'type' => 'string',
                             'reference' => 'videos.id',
                             'optional' => true,
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
@@ -755,7 +742,6 @@ return [
                             'type' => 'string',
                             'reference' => 'users.id',
                             'optional' => true,
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
@@ -763,7 +749,6 @@ return [
                             'type' => 'string',
                             'reference' => 'tags.id',
                             'optional' => true,
-                            'sort' => true,
                             'facet' => true,
                         ],
                         [
