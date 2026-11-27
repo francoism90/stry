@@ -209,11 +209,12 @@ return [
     */
 
     'defaults' => [
+        // One pool for both queues, broadcasts first: with "auto" balancing every
+        // queue gets its own pool, and minProcesses idle workers in each of them.
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
+            'queue' => ['broadcasts', 'default'],
+            'balance' => false,
             'minProcesses' => (int) env('QUEUE_DEFAULT_MIN_PROCESSES', 1),
             'maxProcesses' => (int) env('QUEUE_DEFAULT_MAX_PROCESSES', 10),
             'balanceMaxShift' => 1,
@@ -223,23 +224,6 @@ return [
             'memory' => 128,
             'tries' => 3,
             'timeout' => 300,
-            'nice' => 0,
-        ],
-
-        'supervisor-2' => [
-            'connection' => 'redis',
-            'queue' => ['broadcasts'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'minProcesses' => (int) env('QUEUE_BROADCASTS_MIN_PROCESSES', 1),
-            'maxProcesses' => (int) env('QUEUE_BROADCASTS_MAX_PROCESSES', 3),
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'maxTime' => 0,
-            'maxJobs' => 0,
-            'memory' => 128,
-            'tries' => 3,
-            'timeout' => 90,
             'nice' => 0,
         ],
 
@@ -295,7 +279,6 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [],
-            'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
             'supervisor-5' => [],
@@ -303,7 +286,6 @@ return [
 
         'staging' => [
             'supervisor-1' => [],
-            'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
             'supervisor-5' => [],
@@ -311,7 +293,6 @@ return [
 
         'local' => [
             'supervisor-1' => [],
-            'supervisor-2' => [],
             'supervisor-3' => [],
             'supervisor-4' => [],
             'supervisor-5' => [],
