@@ -211,7 +211,7 @@ return [
     'defaults' => [
         // One pool for both queues, broadcasts first: with "auto" balancing every
         // queue gets its own pool, and minProcesses idle workers in each of them.
-        'supervisor-1' => [
+        'default' => [
             'connection' => 'redis',
             'queue' => ['broadcasts', 'default'],
             'balance' => false,
@@ -227,7 +227,7 @@ return [
             'nice' => 0,
         ],
 
-        'supervisor-3' => [
+        'processing' => [
             'connection' => 'redis-long',
             'queue' => ['processing'],
             'balance' => 'auto',
@@ -244,7 +244,7 @@ return [
             'nice' => 10,
         ],
 
-        'supervisor-4' => [
+        'media' => [
             'connection' => 'redis-media',
             'queue' => ['media'],
             'balance' => 'auto',
@@ -261,7 +261,7 @@ return [
             'nice' => 5,
         ],
 
-        'supervisor-5' => [
+        'background' => [
             'connection' => 'redis-long',
             'queue' => ['background'],
             'balance' => false,
@@ -278,24 +278,24 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [],
-            'supervisor-3' => [],
-            'supervisor-4' => [],
-            'supervisor-5' => [],
+            'default' => [],
+            'processing' => [],
+            'media' => [],
+            'background' => [],
         ],
 
         'staging' => [
-            'supervisor-1' => [],
-            'supervisor-3' => [],
-            'supervisor-4' => [],
-            'supervisor-5' => [],
+            'default' => [],
+            'processing' => [],
+            'media' => [],
+            'background' => [],
         ],
 
         'local' => [
-            'supervisor-1' => [],
-            'supervisor-3' => [],
-            'supervisor-4' => [],
-            'supervisor-5' => [],
+            'default' => [],
+            'processing' => [],
+            'media' => [],
+            'background' => [],
         ],
     ],
 
